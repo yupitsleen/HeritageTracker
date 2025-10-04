@@ -1,3 +1,21 @@
+### claude session management cmds
+
+- Initial setup:
+
+claude code --file CLAUDE.md "Read project guide and create CURRENT_SESSION.md"
+
+- During development:
+
+claude code "Update CURRENT_SESSION.md with our progress"
+
+- Pre-compaction:
+
+claude code "Update CURRENT_SESSION.md with accomplishments and priorities. Suggest CLAUDE.md improvements based on lessons learned."
+
+- Session recovery:
+
+claude code --file CLAUDE.md --file CURRENT_SESSION.md "Continue where we left off"
+
 # HeritageTracker
 
 Heritage Tracker: Documenting displaced and destroyed cultural heritage

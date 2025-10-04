@@ -1,8 +1,24 @@
-# Palestinian Heritage Tracker - AI Assistant Context
+# Heritage Tracker - AI Assistant Context
+
+## Quick Navigation
+
+- [Project Overview](#project-overview) - Mission and purpose
+- [Quick Reference](#quick-reference) - Commands and current MVP scope
+- [Critical Development Rules](#critical-development-rules) - Git workflow and quality gates
+- [Project Architecture](#project-architecture) - Structure and patterns
+- [MVP Scope](#mvp-scope-gaza-heritage-destruction---greatest-hits) - Current focus (20-25 sites)
+- [Development Preferences](#development-preferences) - Coding standards and approach
+- [Data Schema](#data-schema) - TypeScript interfaces
+- [Features & Components](#phase-1-mvp-features-simplified-for-gaza-focus) - What to build
+- [Important Considerations](#important-considerations) - Legal, cultural, technical priorities
+
+---
 
 ## Project Overview
 
-**Palestinian Heritage Tracker** is a web application that documents and visualizes the displacement, looting, and destruction of Palestinian cultural heritage from 1948 to present. The goal is to create a comprehensive, publicly accessible database that supports transparency, legal advocacy, and cultural preservation efforts.
+**Heritage Tracker** is a web application that documents and visualizes the displacement, looting, and destruction of Palestinian cultural heritage. The goal is to create a comprehensive, publicly accessible database that supports transparency, legal advocacy, and cultural preservation efforts.
+
+**Phase 1 MVP Focus:** Gaza heritage destruction (2023-2024) - 20-25 most significant sites
 
 ## Mission & Purpose
 
