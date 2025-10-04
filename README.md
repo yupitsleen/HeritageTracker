@@ -1,5 +1,6 @@
 # HeritageTracker
-Heritage Tracker: Documenting displaced and destroyed cultural heritage 
+
+Heritage Tracker: Documenting displaced and destroyed cultural heritage
 Currently tracking: Gaza 2023-2024 destruction
 
 # Palestinian Heritage Tracker
@@ -28,17 +29,20 @@ This project documents and visualizes the systematic destruction and looting of 
 ## ✨ Features (MVP)
 
 ### Interactive Map
+
 - Visual representation of 20-25 significant Gaza heritage sites
 - Color-coded markers showing destruction status
 - Before/after imagery for each site
 - Detailed historical context
 
-### Timeline Visualization  
+### Timeline Visualization
+
 - See destruction progression from October 2023 to present
 - Animated playback showing how sites disappeared
 - Key dates and escalation points marked
 
 ### Verified Data
+
 - All sites verified by UNESCO, Forensic Architecture, or Heritage for Peace
 - Full source citations for every claim
 - Satellite imagery and ground documentation
@@ -65,7 +69,8 @@ This project documents and visualizes the systematic destruction and looting of 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 - Mapbox API key (free tier)
 
@@ -115,7 +120,7 @@ src/
 
 - **[README](./README.md)** - Project overview and getting started
 - **[CLAUDE.md](./CLAUDE.md)** - Complete project context for AI assistants
-- **[Research & Feasibility Study](./docs/research/heritage-tracking-feasibility-study.md)** - Comprehensive research on data sources, legal frameworks, and implementation strategy
+- **[Research & Feasibility Study](./docs/research/research-document.md)** - Comprehensive research on data sources, legal frameworks, and implementation strategy
 - **[Sources](./docs/SOURCES.md)** - Complete bibliography and data sources
 - **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute (coming soon)
 
@@ -132,6 +137,7 @@ Every site includes full source citations and links to original documentation.
 ## 🗺️ Roadmap
 
 ### Phase 1: MVP (Current) - 4 weeks
+
 - [x] Project setup and planning
 - [ ] Data collection (20-25 Gaza sites)
 - [ ] Interactive map implementation
@@ -140,6 +146,7 @@ Every site includes full source citations and links to original documentation.
 - [ ] Launch and gather feedback
 
 ### Phase 2: Expansion (Future)
+
 - [ ] Expand to all 110 UNESCO-verified Gaza sites
 - [ ] Add 70,000 looted books dataset (1948 Nakba)
 - [ ] Add Steinhardt repatriation case study
@@ -147,6 +154,7 @@ Every site includes full source citations and links to original documentation.
 - [ ] User contribution system
 
 ### Phase 3: Broader Scope (Future)
+
 - [ ] West Bank heritage sites
 - [ ] International museum holdings
 - [ ] Art market tracking
@@ -158,6 +166,7 @@ Every site includes full source citations and links to original documentation.
 We welcome contributions from researchers, developers, designers, and anyone passionate about cultural heritage preservation.
 
 **How to help:**
+
 - **Data:** Help verify site information or find additional sources
 - **Code:** Check our [issues](https://github.com/yourusername/palestinian-heritage-tracker/issues) for tasks
 - **Design:** Improve UI/UX or create graphics
@@ -186,12 +195,11 @@ For corrections or concerns, please open an issue or contact us.
 ## 📬 Contact
 
 - **Issues:** [GitHub Issues](https://github.com/yourusername/palestinian-heritage-tracker/issues)
-- **Email:** [your-email@example.com]
-- **Twitter/X:** [@yourhandle]
 
 ## 🙏 Acknowledgments
 
 This project builds on research and documentation by:
+
 - Palestinian Museum and Digital Archive
 - Institute for Palestine Studies
 - UNESCO
@@ -210,4 +218,4 @@ This project builds on research and documentation by:
 
 ---
 
-*Last updated: October 2025 | Version: 0.1.0-alpha*
+_Last updated: October 2025 | Version: 0.1.0-alpha_
