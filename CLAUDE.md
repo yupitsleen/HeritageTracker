@@ -587,6 +587,47 @@ interface Image {
 
 ## Development Workflow
 
+### JIT (Just-In-Time) Development Strategy
+
+**Core Principle:** Keep dev server running continuously. Build incrementally. See changes instantly.
+
+**Key Practices:**
+
+1. **Hot Module Replacement (HMR)** - Dev server runs at all times during development
+   - Vite's HMR updates browser instantly as code changes
+   - TypeScript errors visible immediately in browser console
+   - Breaking changes caught in real-time
+
+2. **Incremental Feature Development** - One feature at a time, fully functional
+   - Build vertically (complete one feature) not horizontally (scaffold everything)
+   - Each feature should be visible/testable in browser before moving to next
+   - Don't write code until you explicitly need it
+
+3. **Mock Data First** - Start with 2-3 sample sites, expand later
+   - Use minimal realistic data to develop features
+   - Easier to debug with small datasets
+   - Add full 20-25 sites only when features are stable
+
+4. **Minimal Unit Tests** - Quick verification of basic functionality
+   - Write tests as you build features, not after
+   - Focus on critical paths and utility functions
+   - Tests should run fast (<1 second for feedback loop)
+
+5. **Commit at MVP Milestones** - Commit when features are complete and working
+   - After each major feature is functional (e.g., "feat: add basic map display")
+   - When tests pass and app doesn't break
+   - Before starting next major feature
+
+**Development Order:**
+
+- **Phase A:** Clean up Vite default app → Simple header/layout (30 mins)
+- **Phase B:** Minimal types + 2-3 mock sites (20 mins)
+- **Phase C:** Map component with mock data (1-2 hours)
+- **Phase D:** Timeline visualization (1-2 hours)
+- **Phase E:** Detail panel (1 hour)
+- **Phase F:** Filters (1 hour)
+- **Phase G:** Full dataset integration (30 mins)
+
 ### Code Style
 
 - TypeScript strict mode enabled
@@ -600,6 +641,7 @@ interface Image {
 - Main branch is protected
 - Feature branches: `feature/description`
 - Bug fixes: `fix/description`
+- **Commit at MVP milestones** - When feature is complete and working
 - Commit messages: Conventional Commits format
   - `feat: add timeline component`
   - `fix: resolve map marker clustering issue`
@@ -607,10 +649,12 @@ interface Image {
 
 ### Testing
 
-- Unit tests with Vitest
+- **Minimal unit tests with Vitest** - Fast feedback loop
 - Component tests with React Testing Library
+- Write tests AS you build features (not after)
 - Test critical functionality: filtering, data display, map interactions
 - Aim for >80% coverage of utility functions
+- **All tests should run in <1 second for quick verification**
 
 ### Deployment
 

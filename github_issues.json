@@ -1,5 +1,5 @@
 {
-  "repository": "palestinian-heritage-tracker",
+  "repository": "HeritageTracker",
   "issues": [
     {
       "title": "Project Setup: Initialize React + TypeScript + Vite",

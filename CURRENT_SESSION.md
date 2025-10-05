@@ -1,228 +1,278 @@
-# Current Session - Heritage Tracker Development
+# Current Development Session
 
-**Session Date:** October 4, 2025
+**Date:** October 5, 2025
 **Branch:** feature/firstbranch
-**Status:** Active Development - Phase 1 MVP
+**Status:** MVP Phase 1 Development
 
 ---
 
-## Session Context
+## Session Overview
 
-This session begins development on **Heritage Tracker**, a web application documenting the destruction of Palestinian cultural heritage in Gaza (2023-present).
-
-### Project Quick Facts
-
-- **Tech Stack:** React 18+ with TypeScript, Vite, Tailwind CSS, Mapbox GL JS, D3.js
-- **MVP Scope:** 20-25 most significant heritage sites in Gaza
-- **Data Sources:** UNESCO (110 sites), Forensic Architecture, Heritage for Peace
-- **Timeline:** 3-4 weeks to MVP launch
-- **Focus:** Evidence-based documentation with source citations for every claim
+This document tracks the current development session for Heritage Tracker. It serves as a quick reference for what's being worked on, what's completed, and what's next.
 
 ---
 
-## Current Project Status
+## Project Quick Reference
 
-### ✅ Completed
+### What is Heritage Tracker?
+A web application documenting the destruction of Palestinian cultural heritage, focusing initially on 20-25 significant Gaza heritage sites destroyed in 2023-2024.
 
-- [x] Research and data source identification
-- [x] Project structure and planning
-- [x] GitHub issues created
-- [x] CLAUDE.md project guide created
+### Tech Stack (Phase 1)
+- React 18+ with TypeScript
+- Vite (build tool)
+- Tailwind CSS
+- Mapbox GL JS or Leaflet (mapping)
+- D3.js (timeline visualization)
+- Static JSON data files (no database yet)
 
-### 🚧 In Progress (Phase 1 MVP)
+### MVP Scope
+**Focus:** 20-25 priority heritage sites in Gaza (2023-2024)
 
-- [ ] Project setup (React + TypeScript + Vite)
-- [ ] Data schema definition
-- [ ] Data collection for priority datasets (20-25 sites)
-- [ ] Map component implementation
-- [ ] Timeline visualization
-- [ ] Detail panel component
-- [ ] Filter system
-- [ ] Content and design
-- [ ] Documentation
-
----
-
-## Key Features to Build
-
-### 1. Interactive Gaza Map
-
-- 20-25 heritage sites with color-coded markers (red/orange/yellow by damage level)
-- Click markers to open detail panel
-- Filters by site type (mosque/church/archaeological/museum/building)
-- Gaza Strip-focused zoom controls
-
-### 2. Timeline Visualization
-
-- October 2023 → October 2025 horizontal timeline
-- Slider + play button for animated progression
-- Key dates marked (conflict start, escalations)
-
-### 3. Site Detail Panel
-
-- Bilingual (English & Arabic)
-- Before/after images + satellite imagery
-- Historical significance & what was lost
-- Full source citations with links
-- Share functionality
-
-### 4. Statistics Dashboard (Landing)
-
-- Large impact numbers (64.7% destroyed, 207/320 sites, 79% of mosques)
-- Timeline graph showing acceleration
-- Breakdown by site type
-- CTA: "Explore the Map"
-
-### 5. About/Methodology Page
-
-- Project explanation
-- Data verification process
-- Map usage guide
-- Legal disclaimer
-- Contact info
+**Data Sources:**
+1. UNESCO Official List (110 verified sites)
+2. Forensic Architecture (satellite imagery, coordinates)
+3. Heritage for Peace (ground documentation)
 
 ---
 
-## Priority Tasks for This Session
+## Current Session Status
 
-1. **Environment Setup** (if not done)
+### Branch Information
+- **Current Branch:** feature/firstbranch
+- **Base Branch:** main
+- **Uncommitted Changes:** github_issues.json (modified)
 
-   - Initialize React + TypeScript + Vite project
-   - Configure Tailwind CSS
-   - Set up ESLint + Prettier
-   - Create basic project structure
-
-2. **Data Schema**
-
-   - Define TypeScript interfaces (HeritageItem, Source, Image)
-   - Create sample data structure
-   - Plan JSON file organization
-
-3. **Initial Components**
-
-   - Basic app layout (Header, Footer, Navigation)
-   - Map container skeleton
-   - Route structure
-
-4. **Data Collection Strategy**
-   - Access UNESCO reports
-   - Review Forensic Architecture platform
-   - Download Heritage for Peace reports
-   - Create data entry template
+### Recent Activity
+- Created comprehensive CLAUDE.md project guide
+- Documented MCP server recommendations
+- Created GitHub issues for Phase 1 MVP
+- Set up initial project planning
 
 ---
 
-## Critical Development Rules
+## Priority Sites to Document (20-25)
 
-### Git Workflow
+### Religious Sites (5)
+1. ✅ Great Omari Mosque - 7th century, 62 rare manuscripts destroyed
+2. ✅ Church of St. Porphyrius - 5th century, world's third-oldest church
+3. ✅ Saint Hilarion Monastery - 1,700 years old
+4. ✅ Al-Omari Mosque (Jabalia) - 13th century Mamluk
+5. ✅ Katib al-Welaya Mosque - Ottoman era
 
-- Main branch is protected
-- Feature branches: `feature/description`
-- Conventional commits: `feat:`, `fix:`, `docs:`
-- Currently on: `feature/firstbranch`
+### Museums & Cultural Centers (4)
+6. ✅ Qasr Al-Basha - 13th century Mamluk palace, museum
+7. ✅ Al Qarara Museum - 3,000 artifacts
+8. ✅ Rafah Museum - 30 years of collecting
+9. ✅ Al-Israa University Museum - ~3,000 objects
 
-### Code Standards
+### Archaeological Sites (5)
+10. ✅ Blakhiyya Archaeological Site - Ancient seaport 800 BCE-1100 CE
+11. ✅ Tell al-Ajjul - Bronze Age site
+12. ✅ Anthedon (Teda) Harbor - Ancient port
+13. ✅ Byzantine Church Complex (Jabalia)
+14. ✅ Roman Cemetery (Tell al-Ajjul)
 
-- TypeScript strict mode
-- PascalCase for components, camelCase for utilities
-- One component per file
-- JSDoc for public APIs
-
-### Quality Requirements
-
-- Source everything - every claim needs citation
-- WCAG AA accessibility compliance
-- Mobile-first responsive design
-- RTL layout support for Arabic
-- Performance optimization for slow connections
+### Historic Buildings (6)
+15. ✅ Hammam al-Samra - Ottoman bathhouse
+16. ✅ Barquq Castle - 14th century Mamluk
+17. ✅ Pasha's Palace - Ottoman administrative center
+18. ✅ Al-Ghussein Cultural Center
+19. ✅ Al-Saqqa House - Traditional architecture
+20. ✅ Rashad al-Shawa Cultural Center
 
 ---
 
-## Data Structure Reference
+## Data Schema Quick Reference
 
-### MVP Site Data Points
+```typescript
+interface HeritageItem {
+  id: string;
+  type: "manuscript" | "archaeological" | "building" | "artifact" | "site";
+  title: string;
+  titleArabic?: string;
+  description: string;
 
-```json
-{
-  "id": "unique-slug",
-  "name": "English name",
-  "nameArabic": "Arabic name",
-  "type": "mosque|church|archaeological|museum|historic-building",
-  "yearBuilt": "7th century",
-  "coordinates": [longitude, latitude],
-  "status": "destroyed|heavily-damaged|damaged",
-  "dateDestroyed": "2023-12-07",
-  "description": "2-3 sentence description",
-  "historicalSignificance": "Why this matters",
-  "culturalValue": "What was lost",
-  "verifiedBy": ["UNESCO", "Heritage for Peace", "Forensic Architecture"],
-  "images": {
-    "before": "url or path",
-    "after": "url or path",
-    "satellite": "url or path"
-  },
-  "sources": [...]
+  originalLocation: string;
+  coordinates: [number, number]; // [longitude, latitude]
+
+  status: "destroyed" | "looted" | "repatriated" | "disputed" | "unknown";
+
+  sources: Source[];
+  images?: Image[];
+
+  createdAt: string;
+  updatedAt: string;
 }
 ```
 
 ---
 
-## The 20-25 Priority Sites
+## MVP Features Checklist
 
-**Religious Sites (5):**
+### 1. Interactive Map
+- [ ] Display 20-25 heritage sites on Gaza map
+- [ ] Color-coded markers (Red=destroyed, Orange=heavily damaged, Yellow=damaged)
+- [ ] Click marker to open detail panel
+- [ ] Simple filters by site type
+- [ ] Gaza-focused zoom controls
 
-1. Great Omari Mosque (7th c., 62 manuscripts destroyed)
-2. Church of St. Porphyrius (5th c., world's 3rd oldest)
-3. Saint Hilarion Monastery (1,700 years old)
-4. Al-Omari Mosque Jabalia (13th c. Mamluk)
-5. Katib al-Welaya Mosque (Ottoman)
+### 2. Timeline Visualization
+- [ ] Horizontal timeline (Oct 2023 → Oct 2025)
+- [ ] Slider for destruction progression
+- [ ] Play button to animate
+- [ ] Key dates marked
 
-**Museums (4):** 6. Qasr Al-Basha (13th c. Mamluk palace/museum) 7. Al Qarara Museum (3,000 artifacts) 8. Rafah Museum (30 years collection) 9. Al-Israa University Museum (~3,000 objects)
+### 3. Detail Panel
+- [ ] Site name (English & Arabic)
+- [ ] Type and historical period
+- [ ] Description and significance
+- [ ] Date destroyed/damaged
+- [ ] Before/after images
+- [ ] Source citations
+- [ ] Share button
 
-**Archaeological (5):** 10. Blakhiyya Archaeological Site (800 BCE-1100 CE, 4,000+ objects) 11. Tell al-Ajjul (Bronze Age) 12. Anthedon Harbor (Ancient port) 13. Byzantine Church Complex Jabalia 14. Roman Cemetery Tell al-Ajjul
+### 4. Statistics Dashboard (Landing)
+- [ ] Impact numbers display
+- [ ] Timeline graph
+- [ ] Breakdown by site type
+- [ ] Call-to-action
 
-**Historic Buildings (6):** 15. Hammam al-Samra (Ottoman bathhouse) 16. Barquq Castle (14th c. Mamluk) 17. Pasha's Palace (Ottoman admin) 18. Al-Ghussein Cultural Center 19. Al-Saqqa House (Traditional architecture) 20. Rashad al-Shawa Cultural Center
+### 5. About/Methodology Page
+- [ ] Project explanation
+- [ ] Data sources and verification
+- [ ] Map reading guide
+- [ ] Legal disclaimer
+- [ ] Contact information
+
+---
+
+## Development Workflow
+
+### Git Workflow
+- Main branch is protected
+- Feature branches: `feature/description`
+- Bug fixes: `fix/description`
+- Conventional Commits:
+  - `feat:` for new features
+  - `fix:` for bug fixes
+  - `docs:` for documentation
+
+### Code Style
+- TypeScript strict mode
+- ESLint + Prettier
+- PascalCase for components
+- camelCase for utilities
+- JSDoc for public APIs
+
+---
+
+## MCP Servers for Development
+
+### Phase 1 (Install Now)
+1. **Google Maps MCP** ⭐ CRITICAL - Geocoding for heritage sites
+2. **File System MCP** ⭐ HIGH - Manage JSON data files
+3. **GitHub MCP** ⭐ HIGH - Issue tracking and commits
+
+### Phase 2 (Install When Ready)
+4. **Firecrawl MCP** - Web scraping for data collection
+5. **Brave Search MCP** - Research and verification
+
+### Configuration Location
+VS Code Settings (JSON): `Ctrl+Shift+P` → "Preferences: Open User Settings (JSON)"
 
 ---
 
 ## Next Steps
 
-**Immediate priorities:**
+### Immediate (This Session)
+1. [ ] Review current project structure
+2. [ ] Identify what's already built
+3. [ ] Set up development environment if needed
+4. [ ] Begin work on next priority task
 
-1. Review existing project structure
-2. Check if React/Vite project is initialized
-3. Identify which GitHub issues to tackle first
-4. Begin data collection or component development
+### Short Term (This Week)
+1. [ ] Complete project setup (React + TypeScript + Vite)
+2. [ ] Define TypeScript types
+3. [ ] Set up basic routing
+4. [ ] Create layout components
 
-**Data collection workflow:**
-
-- Week 1: Review UNESCO list, select 20-25 sites
-- Week 2: Fill data points, write descriptions, collect sources
-- Week 3: Find before/after images, ensure attribution
-- Week 4: Validate data, test on map, final QA
-
----
-
-## Resources
-
-- **Data Sources:** UNESCO reports, forensic-architecture.org, heritageforpeace.org
-- **Tech Docs:** react.dev, typescriptlang.org/docs, docs.mapbox.com, tailwindcss.com/docs
-- **Similar Projects:** Forensic Architecture, Mapping Police Violence, Syria Heritage Initiative
-- **GitHub Issues:** Check issues for specific tasks
+### Medium Term (Next 2 Weeks)
+1. [ ] Data collection for 20-25 priority sites
+2. [ ] Map component implementation
+3. [ ] Timeline visualization
+4. [ ] Detail panel component
 
 ---
 
-## Legal & Ethical Guidelines
+## Important Reminders
 
-- ⚠️ Disclaimer required (documentation, not advocacy)
-- ⚠️ Source everything with citations
-- ⚠️ Mark disputed items clearly
-- ⚠️ Respect copyright (fair use educational)
-- ⚠️ No personal data collection
-- ⚠️ Bilingual support (EN/AR)
-- ⚠️ Professional, evidence-based tone
-- ⚠️ WCAG AA accessibility
+### Development Principles
+- **Evidence-based:** Every claim must have source citation
+- **Accessibility:** WCAG AA compliance required
+- **Mobile-first:** Responsive design for all screens
+- **Performance:** Fast loading on slow connections
+- **Bilingual:** English + Arabic (RTL support)
+
+### Data Sources
+- UNESCO: 110 verified sites (select top 20-25)
+- Forensic Architecture: Satellite imagery + coordinates
+- Heritage for Peace: Ground documentation + reports
+
+### Legal & Ethical
+- Add disclaimer: Documentation, not political advocacy
+- Source everything with citations
+- Handle disputes carefully
+- Respect copyright (fair use)
+- No personal data collection
 
 ---
 
-**Session initialized.** Ready to continue development.
+## Session Notes
+
+### Current Working Directory
+`C:\Users\eilee\Repos\HeritageTracker\HeritageTracker`
+
+### Git Status
+- On branch: feature/firstbranch
+- Modified: github_issues.json
+- Recent commits show documentation and planning work
+
+### What's Been Done
+- ✅ Comprehensive project planning in CLAUDE.md
+- ✅ MCP server recommendations documented
+- ✅ GitHub issues created for Phase 1
+- ✅ Data schema defined
+- ✅ 20-25 priority sites identified
+
+### What's Next
+- Project setup (if not done)
+- TypeScript types implementation
+- Begin component development
+- Start data collection
+
+---
+
+## Quick Commands
+
+### Development
+```bash
+npm run dev          # Start dev server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm test            # Run tests
+npm run lint        # Run linter
+```
+
+### Git
+```bash
+git status                          # Check current status
+git add .                          # Stage changes
+git commit -m "feat: description"  # Commit with message
+git push                           # Push to remote
+```
+
+---
+
+**Last Updated:** October 5, 2025
+**Session Started:** October 5, 2025
+**Purpose:** MVP Phase 1 Development Setup and Planning

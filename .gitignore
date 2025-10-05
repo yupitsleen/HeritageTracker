@@ -1,24 +1,3 @@
-# Dependencies
-node_modules/
-/.pnp
-.pnp.js
-
-# Testing
-/coverage
-*.lcov
-
-# Production build
-/dist
-/build
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env*.local
-
 # Logs
 logs
 *.log
@@ -28,10 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+node_modules
+dist
+dist-ssr
+*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -39,98 +22,3 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
-*.swp
-*.swo
-*~
-
-# Temporary files
-.tmp/
-tmp/
-temp/
-
-# OS files
-Thumbs.db
-Desktop.ini
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional stylelint cache
-.stylelintcache
-
-# Yarn
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-
-# TypeScript
-*.tsbuildinfo
-*.tsbuildcache
-
-# Vite
-.vite/
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
-
-# Next.js (if you ever add it)
-.next/
-out/
-
-# Vercel
-.vercel
-
-# Netlify
-.netlify/
-
-# Local development
-.cache/
-.parcel-cache
-
-# Sentry
-.sentryclirc
-
-# Storybook (if you add it)
-storybook-static/
-
-# Documentation builds
-/docs/.vitepress/cache
-/docs/.vitepress/dist
-
-# Data files (depending on your workflow)
-# Uncomment if you don't want to commit raw data files
-# /src/data/*.json
-# /public/data/*.json
-
-# Large media files (uncomment if you store locally)
-# /public/images/*.jpg
-# /public/images/*.png
-# /public/images/*.webp
-
-# Backup files
-*.bak
-*.backup
-*~
-
-# Package manager lock files (optional - comment out if you want to commit)
-# Only ignore one of these based on what you use
-# package-lock.json  # npm
-# yarn.lock          # yarn
-# pnpm-lock.yaml     # pnpm
-
-# Keep the lock file for reproducible builds (RECOMMENDED)
-# Just commit whichever lock file matches your package manager
-
-# Test files
-**/*.test.js.snap
-**/*.test.tsx.snap
-
-# Chromatic (if you add visual regression testing)
-chromatic-build/
-
-# Misc
-.turbo
