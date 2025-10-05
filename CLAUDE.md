@@ -62,7 +62,7 @@ This project aims to:
 ## Project Structure
 
 ```
-palestinian-heritage-tracker/
+HeritageTracker/
 ├── src/
 │   ├── components/          # React components
 │   │   ├── Map/            # Map-related components
