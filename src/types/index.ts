@@ -23,7 +23,7 @@ export interface GazaSite {
   nameArabic?: string;
   type: "mosque" | "church" | "archaeological" | "museum" | "historic-building";
   yearBuilt: string;
-  coordinates: [number, number]; // [longitude, latitude]
+  coordinates: [number, number]; // [latitude, longitude] - Leaflet format
   status: "destroyed" | "heavily-damaged" | "damaged";
   dateDestroyed?: string;
   description: string;

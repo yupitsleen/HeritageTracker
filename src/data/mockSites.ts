@@ -11,7 +11,7 @@ export const mockSites: GazaSite[] = [
     nameArabic: "جامع العمري الكبير",
     type: "mosque",
     yearBuilt: "7th century",
-    coordinates: [34.4668, 31.5069], // Gaza City
+    coordinates: [31.5069, 34.4668], // Gaza City [lat, lng]
     status: "destroyed",
     dateDestroyed: "2023-12-07",
     description:
@@ -48,7 +48,7 @@ export const mockSites: GazaSite[] = [
     nameArabic: "كنيسة القديس برفيريوس",
     type: "church",
     yearBuilt: "5th century (425 CE)",
-    coordinates: [34.4547, 31.5203],
+    coordinates: [31.5203, 34.4547], // [lat, lng]
     status: "heavily-damaged",
     dateDestroyed: "2023-10-19",
     description:
@@ -85,7 +85,7 @@ export const mockSites: GazaSite[] = [
     nameArabic: "موقع البلاخية الأثري",
     type: "archaeological",
     yearBuilt: "800 BCE - 1100 CE",
-    coordinates: [34.2945, 31.2656],
+    coordinates: [31.2656, 34.2945], // [lat, lng]
     status: "destroyed",
     dateDestroyed: "2024-01-15",
     description:

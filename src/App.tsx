@@ -1,6 +1,7 @@
 import { mockSites } from "./data/mockSites";
 import { components, cn } from "./styles/theme";
 import { SiteCard } from "./components/SiteCard";
+import { HeritageMap } from "./components/Map/HeritageMap";
 
 function App() {
   return (
@@ -23,12 +24,19 @@ function App() {
             Heritage Sites ({mockSites.length} sample sites)
           </h2>
           <p className="text-gray-600">
-            Displaying {mockSites.length} sample heritage sites for development. Interactive map
-            coming next.
+            Click on map markers to see site details. Scroll to explore the interactive map.
           </p>
         </div>
 
+        {/* Interactive Map */}
+        <div className="mb-8">
+          <HeritageMap sites={mockSites} />
+        </div>
+
         {/* Sites List */}
+        <div className="mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">All Sites</h3>
+        </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {mockSites.map((site) => (
             <SiteCard key={site.id} site={site} />
