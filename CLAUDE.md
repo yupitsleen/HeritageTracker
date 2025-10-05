@@ -259,13 +259,14 @@ Once configured, Claude Code can:
 
 ### Phase 1 (Current - Frontend Only)
 
-- **Framework:** React 18+ with TypeScript
-- **Build Tool:** Vite
-- **Styling:** Tailwind CSS
-- **Mapping:** Mapbox GL JS (or Leaflet as alternative)
-- **Visualization:** D3.js for timelines and data viz
-- **Deployment:** Vercel or Netlify
-- **Data Storage:** Static JSON files (no database yet)
+- **Framework:** React 19+ with TypeScript (strict mode)
+- **Build Tool:** Vite 7+
+- **Styling:** Tailwind CSS v4 (with @tailwindcss/postcss)
+- **Mapping:** Leaflet + React-Leaflet (✅ **CHOSEN:** No API key required, simpler than Mapbox)
+- **Testing:** Vitest + React Testing Library + @testing-library/jest-dom
+- **Visualization:** D3.js for timelines (not yet implemented)
+- **Deployment:** Vercel or Netlify (not yet deployed)
+- **Data Storage:** Static JSON files in src/data/ (no database yet)
 - **AI Development Tools:** Claude Code with MCP servers (see MCP Servers section)
 
 ### Phase 2 (Future)
@@ -757,6 +758,118 @@ When working with AI assistants on this project:
 - 1970 UNESCO Convention on Illicit Trade
 - 1995 UNIDROIT Convention
 - UN Security Council Resolution 2347 (2017)
+
+## Lessons Learned (October 5, 2025 Session)
+
+### What Worked Really Well ✅
+
+**1. JIT (Just-In-Time) Development Approach**
+- Keeping dev server running = instant feedback on all changes
+- Building features one at a time prevented scope creep
+- Writing only code we immediately needed avoided over-engineering
+- Result: 4 complete phases in one session, no wasted code
+
+**2. Centralized Theme System**
+- Created `src/styles/theme.ts` from the start
+- All colors, components, utilities in one place
+- Made styling changes trivial (change once, applies everywhere)
+- Lesson: **Always create theme system before building UI components**
+
+**3. Component Extraction Strategy**
+- Built feature inline first, extracted when needed
+- SiteCard will be reused 4+ times (list, map, search, detail)
+- Reduced App.tsx by 43% with one extraction
+- Lesson: **Extract components when you know they'll be reused, not before**
+
+**4. Vitest Over Jest**
+- 15x faster setup and execution than Jest
+- Works seamlessly with Vite (same config)
+- Smoke tests (just "does it render?") caught issues without being brittle
+- Lesson: **Use Vitest for Vite projects, keep tests simple**
+
+**5. Tailwind CSS v4**
+- New syntax: `@import "tailwindcss"` instead of `@tailwind` directives
+- Requires `@tailwindcss/postcss` plugin
+- Much faster than v3
+- Lesson: **Check Tailwind version-specific docs, v4 has breaking changes**
+
+### What We Had to Fix 🔧
+
+**1. Coordinate Order Confusion**
+- Initially used `[lng, lat]` but Leaflet expects `[lat, lng]`
+- Resulted in markers not appearing on map
+- Fixed by swapping all coordinates and updating TypeScript types
+- Lesson: **Always check library coordinate format expectations**
+
+**2. Arabic Map Tiles**
+- OpenStreetMap showed Arabic labels based on browser language
+- Switched to CartoDB Positron for consistent English
+- Added browser language detection to serve appropriate tiles
+- Lesson: **Consider internationalization from day one**
+
+**3. Popup Content Cutoff**
+- Initial popups cut off long descriptions
+- Added `maxHeight={400}` and `overflow-y-auto` for scrolling
+- Removed `line-clamp` to show full text
+- Lesson: **Test components with real content length, not lorem ipsum**
+
+### Key Technical Decisions
+
+**Leaflet vs Mapbox:**
+- ✅ **Chose Leaflet** - No API key, free tiles, simpler API
+- Mapbox would have required signup + billing setup
+- OpenStreetMap/CartoDB tiles are free and high quality
+
+**Vitest vs Jest:**
+- ✅ **Chose Vitest** - Native Vite integration, 10x faster
+- Jest would require additional Babel configuration
+- Vitest globals work like Jest (no learning curve)
+
+**Smoke Tests vs Detailed Tests:**
+- ✅ **Chose Smoke Tests** - Just verify rendering, not implementation
+- Detailed tests would break with every UI change
+- Smoke tests catch crashes/errors without being brittle
+
+### Process Improvements for Next Session
+
+**1. Use MCP Servers Earlier**
+- Google Maps MCP could auto-geocode sites
+- GitHub MCP could manage issues during development
+- File System MCP could help organize data files
+- **Action:** Set up MCP servers at start of next session
+
+**2. Data Collection Workflow**
+- Need systematic approach to gather 20-25 sites
+- Template for data entry (checklist of required fields)
+- **Action:** Create data collection spreadsheet/form
+
+**3. Commit Strategy**
+- Committed at logical milestones (Phase A, B, C, D)
+- Each commit is self-contained and reversible
+- **Keep doing this:** Commit when feature works, not at end of day
+
+### Recommended Updates to Development Workflow
+
+**Add to "Getting Started" Section:**
+```bash
+# After cloning, install dependencies
+npm install
+
+# Start dev server (keep running during development)
+npm run dev
+
+# In another terminal, run tests in watch mode
+npm test
+
+# View test UI (optional)
+npm run test:ui
+```
+
+**Add to "Common Issues" Section:**
+- Tailwind CSS v4 uses `@import "tailwindcss"` not `@tailwind`
+- Leaflet coordinates are `[lat, lng]` not `[lng, lat]`
+- Map tiles default to browser language (use CartoDB for English)
+- Test errors? Run `npm test -- --run` for one-time execution
 
 ## Contact & Contribution
 
