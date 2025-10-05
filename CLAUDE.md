@@ -4,6 +4,7 @@
 
 - [Project Overview](#project-overview) - Mission and purpose
 - [Quick Reference](#quick-reference) - Commands and current MVP scope
+- [MCP Servers](#mcp-servers-for-development) - Recommended MCP servers to enhance AI assistance
 - [Critical Development Rules](#critical-development-rules) - Git workflow and quality gates
 - [Project Architecture](#project-architecture) - Structure and patterns
 - [MVP Scope](#mvp-scope-gaza-heritage-destruction---greatest-hits) - Current focus (20-25 sites)
@@ -41,6 +42,219 @@ This project aims to:
 - General public interested in cultural justice
 - Educators teaching about Palestine and cultural preservation
 
+## MCP Servers for Development
+
+**Model Context Protocol (MCP)** servers extend AI assistant capabilities by giving them direct access to tools and data sources. The following MCP servers are recommended for HeritageTracker development to enhance your workflow with Claude Code in VS Code.
+
+### Recommended MCP Servers by Priority
+
+#### Phase 1 (MVP Development) - Install Now
+
+**1. Google Maps MCP Server** ⭐ CRITICAL
+
+- **Purpose:** Geocoding, place search, elevation data for heritage site mapping
+- **Use cases:**
+  - Convert site addresses to coordinates automatically
+  - Validate coordinate accuracy for Gaza locations
+  - Get place details for heritage sites
+  - Calculate distances between sites
+- **Installation:**
+  ```bash
+  npx @modelcontextprotocol/server-google-maps
+  ```
+- **Configuration:** Requires `GOOGLE_MAPS_API_KEY` environment variable
+- **Documentation:** https://github.com/modelcontextprotocol/servers
+
+**2. File System MCP Server** ⭐ HIGH PRIORITY
+
+- **Purpose:** Read/write local files, manage data files
+- **Use cases:**
+  - Create and update JSON data files for heritage sites
+  - Manage image assets locally
+  - Organize research documents
+  - Generate data files from research
+- **Installation:**
+  ```bash
+  npx @modelcontextprotocol/server-filesystem
+  ```
+- **Configuration:** Specify allowed directories in MCP config
+- **Security:** Restricts access to specified paths only
+
+**3. GitHub MCP Server** ⭐ HIGH PRIORITY
+
+- **Purpose:** Repository management, issue tracking, code review
+- **Use cases:**
+  - Create and update GitHub issues from conversations
+  - Review pull requests
+  - Make commits and push changes
+  - Track project progress
+- **Installation:**
+  ```bash
+  npx @modelcontextprotocol/server-github
+  ```
+- **Configuration:** Requires `GITHUB_PERSONAL_ACCESS_TOKEN`
+- **Documentation:** https://github.com/modelcontextprotocol/servers
+
+#### Phase 2 (Data Collection & Research) - Install When Ready
+
+**4. Firecrawl MCP Server** ⭐ MEDIUM-HIGH PRIORITY
+
+- **Purpose:** Web scraping and data extraction for heritage documentation
+- **Use cases:**
+  - Scrape UNESCO heritage reports for site data
+  - Extract information from news articles about destruction
+  - Gather data from Forensic Architecture platform
+  - Collect structured data from Heritage for Peace reports
+  - Extract metadata from academic papers
+- **Installation:**
+  ```bash
+  npx firecrawl-mcp
+  ```
+- **Configuration:** Requires `FIRECRAWL_API_KEY` from https://firecrawl.dev
+- **Features:** Structured extraction, batch operations, markdown conversion
+- **Documentation:** https://github.com/firecrawl/firecrawl-mcp-server
+- **Alternative:** MCP WebScraper (https://github.com/MaitreyaM/WEB-SCRAPING-MCP)
+
+**5. Brave Search MCP Server** ⭐ MEDIUM PRIORITY
+
+- **Purpose:** Web search for research and verification
+- **Use cases:**
+  - Research heritage sites and find sources
+  - Verify facts about destruction dates
+  - Find academic papers and reports
+  - Locate before/after images
+- **Installation:**
+  ```bash
+  npx @modelcontextprotocol/server-brave-search
+  ```
+- **Configuration:** Requires Brave Search API key
+- **Documentation:** https://brave.com/search/api/
+
+#### Phase 3 (When Adding Backend) - Future
+
+**6. PostgreSQL MCP Server**
+
+- **Purpose:** Database access when migrating to Supabase
+- **Use cases:**
+  - Query heritage site database
+  - Manage schema migrations
+  - Analyze data patterns
+  - Performance optimization
+- **Options:**
+  - **Postgres MCP Pro:** Performance tuning, health checks (https://github.com/crystaldba/postgres-mcp)
+  - **Reference PostgreSQL MCP:** Simple read-only access
+  - **Supabase MCP:** Direct Supabase integration
+- **Install when:** You set up Supabase backend in Phase 2
+
+### VS Code MCP Configuration
+
+Add MCP servers to your VS Code settings. Press `Ctrl+Shift+P` and select "Preferences: Open User Settings (JSON)", then add:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "google-maps": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-google-maps"],
+        "env": {
+          "GOOGLE_MAPS_API_KEY": "YOUR_API_KEY_HERE"
+        }
+      },
+      "filesystem": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "/path/to/HeritageTracker"
+        ]
+      },
+      "github": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-github"],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_TOKEN_HERE"
+        }
+      }
+    }
+  }
+}
+```
+
+### Getting API Keys
+
+**Google Maps API:**
+
+1. Go to https://console.cloud.google.com/
+2. Create new project or select existing
+3. Enable Maps JavaScript API, Geocoding API, Places API
+4. Create credentials → API Key
+5. Restrict key to your domain/IP for security
+
+**GitHub Personal Access Token:**
+
+1. GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Generate new token with `repo` scope
+3. Copy token immediately (shown only once)
+
+**Firecrawl API Key:**
+
+1. Sign up at https://firecrawl.dev
+2. Get API key from dashboard
+3. Free tier available for testing
+
+### Using MCP Servers with Claude Code
+
+Once configured, Claude Code can:
+
+**Research & Data Collection:**
+
+- "Search for UNESCO reports on Gaza heritage destruction and extract site data"
+- "Scrape the Forensic Architecture Gaza page and create JSON entries for each site"
+- "Find coordinates for Great Omari Mosque in Gaza using Google Maps"
+
+**File Management:**
+
+- "Create a new JSON file for this heritage site with all required fields"
+- "Update manuscripts.json to add these 5 new entries"
+- "Read the current sites.json and show me all destroyed mosques"
+
+**Project Management:**
+
+- "Create a GitHub issue for implementing the timeline component"
+- "Update issue #12 with the latest progress on map markers"
+- "Review the open issues related to data collection"
+
+**Map Development:**
+
+- "Geocode these 10 Gaza heritage site addresses and add coordinates to the JSON"
+- "Verify that all site coordinates fall within Gaza Strip boundaries"
+- "Calculate the center point for these heritage sites to set default map view"
+
+### MCP Benefits for This Project
+
+**Faster Data Collection:** Claude can directly scrape and structure data from your three primary sources (UNESCO, Forensic Architecture, Heritage for Peace) instead of you manually copying information.
+
+**Automated Geocoding:** Convert site addresses to coordinates automatically rather than looking them up one by one.
+
+**Seamless Project Management:** Create and update GitHub issues during conversations about features without switching contexts.
+
+**Local File Operations:** Claude can create, read, and update your JSON data files directly, maintaining proper formatting and structure.
+
+**Research Acceleration:** Search and extract information from web sources while maintaining citations and sources.
+
+### Important Notes
+
+- **Privacy:** MCP servers run locally and only access what you explicitly configure
+- **Security:** Use API key restrictions and only grant necessary permissions
+- **Cost:** Most MCP servers are free; some APIs (Google Maps, Firecrawl) have free tiers then paid usage
+- **Optional:** MCP servers enhance but aren't required - you can develop without them
+- **Documentation:** See https://modelcontextprotocol.io/ for full MCP documentation
+
+## Critical Development Rules
+
+[Rest of the document continues unchanged...]
+
 ## Tech Stack
 
 ### Phase 1 (Current - Frontend Only)
@@ -52,6 +266,7 @@ This project aims to:
 - **Visualization:** D3.js for timelines and data viz
 - **Deployment:** Vercel or Netlify
 - **Data Storage:** Static JSON files (no database yet)
+- **AI Development Tools:** Claude Code with MCP servers (see MCP Servers section)
 
 ### Phase 2 (Future)
 
@@ -410,9 +625,11 @@ interface Image {
 - [x] Research and data source identification
 - [x] Project structure and planning
 - [x] GitHub issues created
+- [x] MCP server recommendations documented
 
 ### In Progress (Phase 1 MVP)
 
+- [ ] MCP server setup in VS Code
 - [ ] Project setup (React + TypeScript + Vite)
 - [ ] Data schema definition
 - [ ] Data collection for priority datasets
@@ -450,6 +667,11 @@ When working with AI assistants on this project:
 - "Suggest how to structure this data for [use case]"
 - "Help me write tests for this utility function"
 - "How should I handle [edge case] given our constraints?"
+- **With MCP servers enabled:**
+  - "Search for and extract data about [heritage site] from UNESCO reports"
+  - "Geocode these heritage site addresses and add coordinates to the JSON"
+  - "Create a new JSON file for this site with proper structure"
+  - "Create a GitHub issue for implementing [feature]"
 
 ### What AI assistants should know
 
@@ -459,6 +681,7 @@ When working with AI assistants on this project:
 - **Arabic support:** Plan for RTL layout from the start
 - **Performance critical:** Users may have slow connections
 - **Legal sensitivity:** Be careful with ownership claims and contested items
+- **MCP capabilities:** When MCP servers are configured, Claude can directly access files, search web, manage GitHub, and geocode locations
 
 ## Resources & References
 
@@ -469,6 +692,7 @@ When working with AI assistants on this project:
 - Mapbox GL JS: https://docs.mapbox.com/mapbox-gl-js/
 - D3.js: https://d3js.org/
 - Tailwind CSS: https://tailwindcss.com/docs
+- Model Context Protocol: https://modelcontextprotocol.io/
 
 ### Similar Projects (for inspiration)
 
@@ -498,6 +722,7 @@ When working with AI assistants on this project:
 - Check existing code patterns before suggesting new approaches
 - When unsure about data or sources, flag for human review
 - Prioritize maintainability and documentation in suggestions
+- Leverage MCP servers when available for file operations, research, and project management
 
 ### For Contributors
 
