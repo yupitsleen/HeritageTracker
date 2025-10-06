@@ -54,6 +54,16 @@ export const components = {
     base: "px-4 py-2 rounded-lg font-semibold transition-colors",
     primary: "bg-gray-900 text-white hover:bg-gray-800",
     secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+    reset: "px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm",
+  },
+
+  // Form styles
+  select: {
+    base: "w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+  },
+
+  label: {
+    base: "block text-sm font-medium text-gray-700 mb-2",
   },
 
   // Badge styles
@@ -100,6 +110,20 @@ export const getStatusColor = (
   };
 
   return statusMap[status];
+};
+
+/**
+ * Get hex color for D3/SVG rendering based on status
+ */
+export const getStatusHexColor = (
+  status: "destroyed" | "heavily-damaged" | "damaged"
+): string => {
+  const colorMap = {
+    destroyed: "#dc2626", // red-600
+    "heavily-damaged": "#ea580c", // orange-600
+    damaged: "#ca8a04", // yellow-600
+  };
+  return colorMap[status];
 };
 
 /**

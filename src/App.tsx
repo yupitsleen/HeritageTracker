@@ -1,9 +1,37 @@
+import { useState } from "react";
 import { mockSites } from "./data/mockSites";
+import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
 import { SiteCard } from "./components/SiteCard";
 import { HeritageMap } from "./components/Map/HeritageMap";
+import { Timeline } from "./components/Timeline/Timeline";
+import { Filters } from "./components/Filters/Filters";
 
 function App() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedType, setSelectedType] = useState<GazaSite["type"] | "all">("all");
+  const [selectedStatus, setSelectedStatus] = useState<GazaSite["status"] | "all">("all");
+
+  // Filter sites based on selected date, type, and status
+  const filteredSites = mockSites.filter((site) => {
+    // Date filter
+    if (selectedDate && site.dateDestroyed) {
+      if (new Date(site.dateDestroyed) > selectedDate) return false;
+    }
+
+    // Type filter
+    if (selectedType !== "all" && site.type !== selectedType) {
+      return false;
+    }
+
+    // Status filter
+    if (selectedStatus !== "all" && site.status !== selectedStatus) {
+      return false;
+    }
+
+    return true;
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -28,17 +56,32 @@ function App() {
           </p>
         </div>
 
+        {/* Timeline */}
+        <Timeline sites={mockSites} onDateChange={setSelectedDate} />
+
+        {/* Filters */}
+        <Filters
+          selectedType={selectedType}
+          selectedStatus={selectedStatus}
+          onTypeChange={setSelectedType}
+          onStatusChange={setSelectedStatus}
+        />
+
         {/* Interactive Map */}
         <div className="mb-8">
-          <HeritageMap sites={mockSites} />
+          <HeritageMap sites={filteredSites} />
         </div>
 
         {/* Sites List */}
         <div className="mb-4">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">All Sites</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            {filteredSites.length === mockSites.length
+              ? "All Sites"
+              : `Sites (${filteredSites.length} of ${mockSites.length})`}
+          </h3>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {mockSites.map((site) => (
+          {filteredSites.map((site) => (
             <SiteCard key={site.id} site={site} />
           ))}
         </div>

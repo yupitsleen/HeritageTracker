@@ -793,6 +793,18 @@ When working with AI assistants on this project:
 - Much faster than v3
 - Lesson: **Check Tailwind version-specific docs, v4 has breaking changes**
 
+**6. Incremental D3.js Development**
+- Built Timeline component piece by piece (basic viz → colors → tooltips → interaction)
+- User could verify each step before adding complexity
+- Prevented debugging nightmare of "what broke when?"
+- Lesson: **For complex visualizations, build incrementally and verify often**
+
+**7. Code Review for Best Practices**
+- Reviewed code for DRY/KISS/SOLID before committing
+- Moved hardcoded styles to theme system
+- Eliminated duplication in Filters component
+- Lesson: **Always review code before committing, refactor for maintainability**
+
 ### What We Had to Fix 🔧
 
 **1. Coordinate Order Confusion**
@@ -813,6 +825,30 @@ When working with AI assistants on this project:
 - Removed `line-clamp` to show full text
 - Lesson: **Test components with real content length, not lorem ipsum**
 
+**4. Timeline Tooltip Overflow (Phase E)**
+- Tooltips at timeline edges got cut off
+- Implemented smart positioning: left-align at left edge, right-align at right edge
+- Used SVG `text-anchor` with dynamic calculation based on position
+- Lesson: **Edge cases matter - always test at boundaries**
+
+**5. Selected State Not Persisting (Phase E)**
+- Hover events reset marker size, overriding selected state
+- Fixed by checking `selectedDate` in `mouseleave` handler
+- Maintained selected styling (r=9, stroke-width=3) after hover
+- Lesson: **State management in event handlers requires careful consideration**
+
+**6. Vitest Performance Issues (Phase E)**
+- Initial test run took 45 seconds (101s environment setup!)
+- Added `pool: 'forks'`, `singleFork: true`, `isolate: false`
+- Reduced to ~6 seconds (8x speedup)
+- Lesson: **Test performance matters - optimize Vitest config for speed**
+
+**7. Linting Before Commits (Phase E)**
+- Discovered `any` types and unused imports during pre-commit review
+- Added linting to commit routine alongside tests
+- Fixed TypeScript strict mode violations
+- Lesson: **Always run lint + tests before committing, no exceptions**
+
 ### Key Technical Decisions
 
 **Leaflet vs Mapbox:**
@@ -830,6 +866,18 @@ When working with AI assistants on this project:
 - Detailed tests would break with every UI change
 - Smoke tests catch crashes/errors without being brittle
 
+**D3.js for Timeline vs Pure SVG/Canvas:**
+- ✅ **Chose D3.js** - Handles scales, axes, data binding elegantly
+- Pure SVG would require manual scale calculations
+- D3's data binding makes updates reactive and clean
+- Downside: Larger bundle, but worth it for timeline complexity
+
+**Theme System Centralization (Phase E):**
+- ✅ **Expanded theme.ts** - Added form styles (select, label), button variants
+- All styles in one place prevents duplication
+- Easy to update entire app's styling from single file
+- Lesson: **Theme system should grow with app, not be static**
+
 ### Process Improvements for Next Session
 
 **1. Use MCP Servers Earlier**
@@ -844,7 +892,11 @@ When working with AI assistants on this project:
 - **Action:** Create data collection spreadsheet/form
 
 **3. Commit Strategy**
-- Committed at logical milestones (Phase A, B, C, D)
+- Committed at logical milestones (Phase A, B, C, D, E)
+- Each commit is a complete, working feature
+- Run lint + tests before every commit
+- Code review for DRY/KISS/SOLID before committing
+- **Action:** Maintain this pattern - quality over speed
 - Each commit is self-contained and reversible
 - **Keep doing this:** Commit when feature works, not at end of day
 

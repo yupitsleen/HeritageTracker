@@ -75,6 +75,36 @@ A web application documenting the destruction of Palestinian cultural heritage, 
 - Set up Vitest + React Testing Library
 - Created smoke tests (3 passing tests in <400ms)
 
+**Phase E: Timeline & Filtering System** ✅
+- Installed D3.js for timeline visualization
+- Built interactive Timeline component with D3.js
+  - Horizontal timeline showing destruction progression (Oct 2023 - Feb 2024)
+  - Color-coded markers matching site status (red/orange/yellow)
+  - Smart tooltip positioning (auto-adjusts at edges)
+  - Click markers to filter by date ("on or before" logic)
+  - Visual feedback: selected markers stay highlighted
+  - Reset button for clearing date selection
+- Created Filters component with Type and Status dropdowns
+  - Site Type: all/mosque/church/archaeological/museum/historic-building
+  - Damage Status: all/destroyed/heavily-damaged/damaged
+  - Filters combine with timeline (AND logic)
+- Expanded dataset from 3 to 5 sites
+  - Added Qasr Al-Basha (museum, Nov 2023, heavily-damaged)
+  - Added Hammam al-Samra (historic-building, Feb 2024, damaged)
+- Enhanced theme system
+  - Added getStatusHexColor() for D3/SVG rendering
+  - Added form component styles (select, label, reset button)
+  - Centralized all styles to prevent duplication
+- Integrated filtering across all views
+  - App.tsx manages combined filter state
+  - Map, timeline, and site cards update synchronously
+  - Dynamic site count display ("X of Y" when filtered)
+- Testing & optimization
+  - Added smoke tests for Timeline and Filters (7 tests total)
+  - Optimized Vitest performance (~6 seconds, down from 45s)
+  - Fixed TypeScript linting errors
+  - Code review for DRY/KISS/SOLID principles
+
 ---
 
 ## Priority Sites to Document (20-25)
@@ -137,17 +167,18 @@ interface HeritageItem {
 ## MVP Features Checklist
 
 ### 1. Interactive Map
-- [ ] Display 20-25 heritage sites on Gaza map
-- [ ] Color-coded markers (Red=destroyed, Orange=heavily damaged, Yellow=damaged)
-- [ ] Click marker to open detail panel
-- [ ] Simple filters by site type
-- [ ] Gaza-focused zoom controls
+- [x] Display heritage sites on Gaza map (5 sites currently)
+- [x] Color-coded markers (Red=destroyed, Orange=heavily damaged, Yellow=damaged)
+- [x] Click marker to open popup with site details
+- [x] Filters by site type and status (dropdowns)
+- [x] Gaza-focused zoom controls
 
 ### 2. Timeline Visualization
-- [ ] Horizontal timeline (Oct 2023 → Oct 2025)
-- [ ] Slider for destruction progression
-- [ ] Play button to animate
-- [ ] Key dates marked
+- [x] Horizontal timeline (Oct 2023 → Feb 2024)
+- [x] Interactive markers for filtering by date
+- [x] Smart tooltip positioning
+- [x] Visual feedback for selected dates
+- [ ] Play button to animate progression (future enhancement)
 
 ### 3. Detail Panel
 - [ ] Site name (English & Arabic)
@@ -212,32 +243,36 @@ VS Code Settings (JSON): `Ctrl+Shift+P` → "Preferences: Open User Settings (JS
 ## Next Steps
 
 ### Priority 1: Data Collection (High Impact)
-- [ ] Collect data for remaining 17-22 priority heritage sites
+- [ ] Collect data for remaining 15-20 priority heritage sites (currently have 5)
 - [ ] Verify coordinates for all sites (consider using Google Maps MCP)
 - [ ] Find before/after images for key sites
 - [ ] Ensure all sources are properly cited
 - **Why:** Need real data to make the app meaningful
 
-### Priority 2: Timeline Visualization (Core Feature)
-- [ ] Create Timeline component with D3.js
-- [ ] Horizontal timeline (Oct 2023 → Oct 2025)
-- [ ] Slider to filter sites by date
-- [ ] "Play" button for animated progression
-- **Why:** Shows destruction progression over time - powerful visual
+### Priority 2: ~~Timeline Visualization~~ ✅ COMPLETED
+- [x] Create Timeline component with D3.js
+- [x] Horizontal timeline with date-based filtering
+- [x] Color-coded markers and tooltips
+- [x] Integration with map and filters
 
-### Priority 3: Filtering & Search (Usability)
-- [ ] Add filter dropdowns (site type, status)
-- [ ] Search functionality by site name
-- [ ] Filter state management
-- [ ] Update map and list based on filters
-- **Why:** Makes app useful with 20-25 sites
+### Priority 3: ~~Filtering & Search~~ ✅ COMPLETED
+- [x] Add filter dropdowns (site type, status)
+- [x] Filter state management
+- [x] Update map and list based on filters
+- [ ] Search functionality by site name (future enhancement)
 
-### Priority 4: Detail Panel/Modal (Polish)
+### Priority 4: Detail Panel/Modal (Next Up)
 - [ ] Click site card to open detailed view
 - [ ] Full description, significance, cultural value
 - [ ] All images (before/after/satellite)
 - [ ] Complete source list with links
 - **Why:** Provides in-depth information
+
+### Priority 5: Timeline Animation (Polish)
+- [ ] Add "Play" button for animated timeline progression
+- [ ] Auto-advance through dates showing sites appearing
+- [ ] Pause/resume controls
+- **Why:** Dramatic visualization of destruction over time
 
 ### Optional Enhancements
 - [ ] Extract Header/Footer into components
