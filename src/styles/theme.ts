@@ -93,6 +93,11 @@ export const components = {
     base: "bg-gray-900 text-gray-400 mt-16",
     text: "text-sm text-center",
   },
+
+  // Map styles
+  map: {
+    container: "h-[600px] w-full rounded-lg shadow-md",
+  },
 };
 
 /**

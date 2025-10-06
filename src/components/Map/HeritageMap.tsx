@@ -1,7 +1,16 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import type { GazaSite } from "../../types";
-import { getStatusColor } from "../../styles/theme";
+import { StatusBadge } from "../StatusBadge";
+import { formatLabel } from "../../utils/format";
+import { components } from "../../styles/theme";
+import {
+  GAZA_CENTER,
+  DEFAULT_ZOOM,
+  MARKER_ICON_BASE_URL,
+  MARKER_SHADOW_URL,
+  MARKER_CONFIG,
+} from "../../constants/map";
 import "leaflet/dist/leaflet.css";
 
 interface HeritageMapProps {
@@ -14,10 +23,6 @@ interface HeritageMapProps {
  * Automatically switches between English/Arabic tiles based on browser language
  */
 export function HeritageMap({ sites, onSiteClick }: HeritageMapProps) {
-  // Gaza Strip center coordinates
-  const GAZA_CENTER: [number, number] = [31.5, 34.45];
-  const DEFAULT_ZOOM = 11;
-
   // Detect browser language
   const browserLang = navigator.language || navigator.languages?.[0] || "en";
   const isArabic = browserLang.startsWith("ar");
@@ -46,12 +51,12 @@ export function HeritageMap({ sites, onSiteClick }: HeritageMapProps) {
       status === "destroyed" ? "red" : status === "heavily-damaged" ? "orange" : "yellow";
 
     return new Icon({
-      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41],
+      iconUrl: `${MARKER_ICON_BASE_URL}/marker-icon-2x-${color}.png`,
+      shadowUrl: MARKER_SHADOW_URL,
+      iconSize: MARKER_CONFIG.iconSize,
+      iconAnchor: MARKER_CONFIG.iconAnchor,
+      popupAnchor: MARKER_CONFIG.popupAnchor,
+      shadowSize: MARKER_CONFIG.shadowSize,
     });
   };
 
@@ -59,7 +64,7 @@ export function HeritageMap({ sites, onSiteClick }: HeritageMapProps) {
     <MapContainer
       center={GAZA_CENTER}
       zoom={DEFAULT_ZOOM}
-      className="h-[600px] w-full rounded-lg shadow-md"
+      className={components.map.container}
       scrollWheelZoom={true}
     >
       {/* Map Tiles - Language adapts to browser setting */}
@@ -82,11 +87,7 @@ export function HeritageMap({ sites, onSiteClick }: HeritageMapProps) {
           <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
             <div className="p-2 max-h-[350px] overflow-y-auto">
               {/* Status Badge */}
-              <div
-                className={`${getStatusColor(site.status)} text-white text-xs font-semibold px-2 py-1 rounded mb-2`}
-              >
-                {site.status.toUpperCase().replace("-", " ")}
-              </div>
+              <StatusBadge status={site.status} className="text-xs px-2 py-1 rounded mb-2" />
 
               {/* Site Info */}
               <h3 className="font-bold text-gray-900 mb-1">{site.name}</h3>
@@ -98,7 +99,7 @@ export function HeritageMap({ sites, onSiteClick }: HeritageMapProps) {
 
               <div className="text-xs text-gray-600 space-y-1">
                 <p>
-                  <span className="font-semibold">Type:</span> {site.type.replace("-", " ")}
+                  <span className="font-semibold">Type:</span> {formatLabel(site.type)}
                 </p>
                 <p>
                   <span className="font-semibold">Built:</span> {site.yearBuilt}

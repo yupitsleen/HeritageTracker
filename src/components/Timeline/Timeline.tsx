@@ -8,6 +8,15 @@ interface TimelineProps {
   onDateChange?: (date: Date | null) => void;
 }
 
+// Constants for timeline dimensions and positioning
+const TIMELINE_CONFIG = {
+  MARGIN: { top: 20, right: 40, bottom: 60, left: 40 },
+  HEIGHT: 120,
+  MARKER_RADIUS: { default: 6, hover: 10, selected: 9 },
+  STROKE_WIDTH: { default: 2, selected: 3 },
+  TOOLTIP_EDGE_THRESHOLD: { LEFT: 0.2, RIGHT: 0.8 },
+} as const;
+
 export function Timeline({ sites, onDateChange }: TimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -27,13 +36,13 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove(); // Clear previous render
 
-    const margin = { top: 20, right: 40, bottom: 60, left: 40 };
-    const width = svgRef.current.clientWidth - margin.left - margin.right;
-    const height = 120 - margin.top - margin.bottom;
+    const { MARGIN, HEIGHT } = TIMELINE_CONFIG;
+    const width = svgRef.current.clientWidth - MARGIN.left - MARGIN.right;
+    const height = HEIGHT - MARGIN.top - MARGIN.bottom;
 
     const g = svg
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", `translate(${MARGIN.left},${MARGIN.top})`);
 
     // Get date range
     const minDate = sitesWithDates[0].date;
@@ -61,14 +70,14 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
       .append("circle")
       .attr("cx", (d) => xScale(d.date))
       .attr("cy", height / 2)
-      .attr("r", 6)
+      .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default)
       .attr("fill", (d) => getStatusHexColor(d.status))
       .attr("stroke", "#fff")
-      .attr("stroke-width", 2)
+      .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default)
       .style("cursor", "pointer")
       .on("mouseenter", function (event, d) {
         // Enlarge marker on hover
-        d3.select(this).attr("r", 10);
+        d3.select(this).attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover);
 
         // Show tooltip with smart positioning
         const tooltip = g.append("g").attr("class", "tooltip");
@@ -76,9 +85,9 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
 
         // Determine text anchor based on position
         let textAnchor: "start" | "middle" | "end" = "middle";
-        if (markerX < width * 0.2) {
+        if (markerX < width * TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.LEFT) {
           textAnchor = "start"; // Near left edge
-        } else if (markerX > width * 0.8) {
+        } else if (markerX > width * TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.RIGHT) {
           textAnchor = "end"; // Near right edge
         }
 
@@ -106,8 +115,8 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
         // Reset marker size only if not selected
         const isSelected = selectedDate?.getTime() === d.date.getTime();
         d3.select(this)
-          .attr("r", isSelected ? 9 : 6)
-          .attr("stroke-width", isSelected ? 3 : 2);
+          .attr("r", isSelected ? TIMELINE_CONFIG.MARKER_RADIUS.selected : TIMELINE_CONFIG.MARKER_RADIUS.default)
+          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
         // Remove tooltip
         g.select(".tooltip").remove();
       })
@@ -128,8 +137,8 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
     if (selectedDate) {
       g.selectAll<SVGCircleElement, typeof sitesWithDates[0]>(".event-marker")
         .filter((d) => d.date.getTime() === selectedDate.getTime())
-        .attr("r", 9)
-        .attr("stroke-width", 3);
+        .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
+        .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected);
     }
   }, [sitesWithDates, selectedDate, onDateChange]);
 

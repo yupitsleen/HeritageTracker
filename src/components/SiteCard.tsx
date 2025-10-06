@@ -1,5 +1,7 @@
 import type { GazaSite } from "../types";
-import { components, getStatusColor, cn } from "../styles/theme";
+import { components, cn } from "../styles/theme";
+import { StatusBadge } from "./StatusBadge";
+import { formatLabel } from "../utils/format";
 
 interface SiteCardProps {
   site: GazaSite;
@@ -17,14 +19,7 @@ export function SiteCard({ site, onClick }: SiteCardProps) {
       onClick={onClick}
     >
       {/* Status Badge */}
-      <div
-        className={cn(
-          getStatusColor(site.status),
-          "px-4 py-2 text-sm font-semibold text-white"
-        )}
-      >
-        {site.status.toUpperCase().replace("-", " ")}
-      </div>
+      <StatusBadge status={site.status} />
 
       {/* Content */}
       <div className={components.card.padding}>
@@ -37,7 +32,7 @@ export function SiteCard({ site, onClick }: SiteCardProps) {
 
         <div className="space-y-2 text-sm text-gray-600 mb-4">
           <p>
-            <span className="font-semibold">Type:</span> {site.type.replace("-", " ")}
+            <span className="font-semibold">Type:</span> {formatLabel(site.type)}
           </p>
           <p>
             <span className="font-semibold">Built:</span> {site.yearBuilt}

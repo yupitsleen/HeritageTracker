@@ -1,5 +1,7 @@
 import type { GazaSite } from "../../types";
 import { components } from "../../styles/theme";
+import { formatLabel } from "../../utils/format";
+import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 
 interface FiltersProps {
   onTypeChange: (type: GazaSite["type"] | "all") => void;
@@ -14,29 +16,6 @@ export function Filters({
   selectedType,
   selectedStatus,
 }: FiltersProps) {
-  const siteTypes: Array<GazaSite["type"] | "all"> = [
-    "all",
-    "mosque",
-    "church",
-    "archaeological",
-    "museum",
-    "historic-building",
-  ];
-
-  const statusOptions: Array<GazaSite["status"] | "all"> = [
-    "all",
-    "destroyed",
-    "heavily-damaged",
-    "damaged",
-  ];
-
-  const formatLabel = (value: string) => {
-    return value
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <h3 className="text-lg font-bold text-gray-800 mb-4">Filters</h3>
@@ -52,7 +31,7 @@ export function Filters({
             onChange={(e) => onTypeChange(e.target.value as GazaSite["type"] | "all")}
             className={components.select.base}
           >
-            {siteTypes.map((type) => (
+            {SITE_TYPES.map((type) => (
               <option key={type} value={type}>
                 {formatLabel(type)}
               </option>
@@ -71,7 +50,7 @@ export function Filters({
             onChange={(e) => onStatusChange(e.target.value as GazaSite["status"] | "all")}
             className={components.select.base}
           >
-            {statusOptions.map((status) => (
+            {STATUS_OPTIONS.map((status) => (
               <option key={status} value={status}>
                 {formatLabel(status)}
               </option>
