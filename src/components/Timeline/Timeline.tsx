@@ -19,6 +19,22 @@ const TIMELINE_CONFIG = {
   TOOLTIP_EDGE_THRESHOLD: { LEFT: 0.2, RIGHT: 0.8 },
 } as const;
 
+/**
+ * Determine tooltip text anchor based on marker position
+ * Prevents tooltips from being cut off at edges
+ */
+const getTooltipAnchor = (markerX: number, width: number): "start" | "middle" | "end" => {
+  const relativePosition = markerX / width;
+
+  if (relativePosition < TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.LEFT) {
+    return "start"; // Near left edge (0-20%)
+  }
+  if (relativePosition > TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.RIGHT) {
+    return "end"; // Near right edge (80-100%)
+  }
+  return "middle"; // Center area (20-80%)
+};
+
 export function Timeline({ sites, onDateChange, onSiteHighlight }: TimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -91,14 +107,7 @@ export function Timeline({ sites, onDateChange, onSiteHighlight }: TimelineProps
         // Show tooltip with smart positioning
         const tooltip = g.append("g").attr("class", "tooltip");
         const markerX = xScale(d.date);
-
-        // Determine text anchor based on position
-        let textAnchor: "start" | "middle" | "end" = "middle";
-        if (markerX < width * TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.LEFT) {
-          textAnchor = "start"; // Near left edge
-        } else if (markerX > width * TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.RIGHT) {
-          textAnchor = "end"; // Near right edge
-        }
+        const textAnchor = getTooltipAnchor(markerX, width);
 
         const text = tooltip
           .append("text")

@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import type { GazaSite } from "../../types";
 import { formatLabel } from "../../utils/format";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 interface FiltersProps {
   onTypeChange: (types: Array<GazaSite["type"]>) => void;
@@ -25,30 +26,7 @@ export function Filters({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      // Close if click is outside both button and dropdown
-      if (
-        buttonRef.current && !buttonRef.current.contains(target) &&
-        dropdownRef.current && !dropdownRef.current.contains(target)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    // Add a small delay to avoid closing immediately on open
-    const timeoutId = setTimeout(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-    }, 0);
-
-    return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
+  useClickOutside([buttonRef, dropdownRef], () => setIsOpen(false), isOpen);
 
   const handleTypeToggle = (type: GazaSite["type"]) => {
     if (selectedTypes.includes(type)) {

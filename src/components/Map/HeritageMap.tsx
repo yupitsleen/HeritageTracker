@@ -1,17 +1,11 @@
 import React, { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
-import { Icon } from "leaflet";
 import type { GazaSite } from "../../types";
-import { StatusBadge } from "../StatusBadge";
-import { formatLabel } from "../../utils/format";
 import { components } from "../../styles/theme";
-import {
-  GAZA_CENTER,
-  DEFAULT_ZOOM,
-  MARKER_ICON_BASE_URL,
-  MARKER_SHADOW_URL,
-  MARKER_CONFIG,
-} from "../../constants/map";
+import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
+import { createMarkerIcon } from "../../utils/mapHelpers";
+import { useTileConfig } from "../../hooks/useTileConfig";
+import { SitePopup } from "./SitePopup";
 import "leaflet/dist/leaflet.css";
 
 interface HeritageMapProps {
@@ -92,54 +86,7 @@ function ScrollWheelHandler() {
  * Automatically switches between English/Arabic tiles based on browser language
  */
 export function HeritageMap({ sites, onSiteClick, highlightedSiteId, onSiteHighlight }: HeritageMapProps) {
-  // Detect browser language
-  const browserLang = navigator.language || navigator.languages?.[0] || "en";
-  const isArabic = browserLang.startsWith("ar");
-
-  // Tile configuration based on language
-  const tileConfig = isArabic
-    ? {
-        // OpenStreetMap for Arabic labels
-        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }
-    : {
-        // CartoDB Positron for clean English labels
-        url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
-      };
-
-  /**
-   * Create custom marker icons based on site status and highlight state
-   */
-  const getMarkerIcon = (status: GazaSite["status"], isHighlighted: boolean) => {
-    const color =
-      status === "destroyed" ? "red" : status === "heavily-damaged" ? "orange" : "yellow";
-
-    // Use larger icon size for highlighted markers
-    const iconSize = isHighlighted
-      ? [38, 61] as [number, number]  // 1.5x larger
-      : MARKER_CONFIG.iconSize;
-    const iconAnchor = isHighlighted
-      ? [19, 61] as [number, number]
-      : MARKER_CONFIG.iconAnchor;
-    const popupAnchor = isHighlighted
-      ? [1, -51] as [number, number]
-      : MARKER_CONFIG.popupAnchor;
-
-    return new Icon({
-      iconUrl: `${MARKER_ICON_BASE_URL}/marker-icon-2x-${color}.png`,
-      shadowUrl: MARKER_SHADOW_URL,
-      iconSize,
-      iconAnchor,
-      popupAnchor,
-      shadowSize: MARKER_CONFIG.shadowSize,
-      className: isHighlighted ? 'highlighted-marker' : '',
-    });
-  };
+  const tileConfig = useTileConfig();
 
   return (
     <div className="relative">
@@ -174,50 +121,13 @@ export function HeritageMap({ sites, onSiteClick, highlightedSiteId, onSiteHighl
         <Marker
           key={site.id}
           position={site.coordinates}
-          icon={getMarkerIcon(site.status, isHighlighted)}
+          icon={createMarkerIcon(site.status, isHighlighted)}
           eventHandlers={{
             click: () => onSiteHighlight?.(site.id),
           }}
         >
           <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
-            <div className="p-2 max-h-[350px] overflow-y-auto">
-              {/* Status Badge */}
-              <StatusBadge status={site.status} className="text-xs px-2 py-1 rounded mb-2" />
-
-              {/* Site Info */}
-              <h3 className="font-bold text-gray-900 mb-1">{site.name}</h3>
-              {site.nameArabic && (
-                <p className="text-gray-600 text-xs mb-2 text-right" dir="rtl">
-                  {site.nameArabic}
-                </p>
-              )}
-
-              <div className="text-xs text-gray-600 space-y-1">
-                <p>
-                  <span className="font-semibold">Type:</span> {formatLabel(site.type)}
-                </p>
-                <p>
-                  <span className="font-semibold">Built:</span> {site.yearBuilt}
-                </p>
-                {site.dateDestroyed && (
-                  <p>
-                    <span className="font-semibold">Destroyed:</span> {site.dateDestroyed}
-                  </p>
-                )}
-              </div>
-
-              <p className="text-xs text-gray-700 mt-2 mb-3">{site.description}</p>
-
-              {/* See More Button */}
-              <div className="flex justify-end">
-                <button
-                  onClick={() => onSiteClick?.(site)}
-                  className="text-xs text-blue-600 hover:text-blue-800 font-medium hover:underline"
-                >
-                  See More →
-                </button>
-              </div>
-            </div>
+            <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
           </Popup>
         </Marker>
         );

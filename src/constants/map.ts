@@ -29,4 +29,24 @@ export const MARKER_CONFIG = {
   iconAnchor: [12, 41] as [number, number],
   popupAnchor: [1, -34] as [number, number],
   shadowSize: [41, 41] as [number, number],
+  highlightedIconSize: [38, 61] as [number, number], // 1.5x larger
+  highlightedIconAnchor: [19, 61] as [number, number],
+  highlightedPopupAnchor: [1, -51] as [number, number],
+} as const;
+
+/**
+ * Tile layer configurations for different languages
+ */
+export const TILE_CONFIGS = {
+  arabic: {
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+  english: {
+    url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: "abcd",
+  },
 } as const;

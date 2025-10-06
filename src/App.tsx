@@ -8,6 +8,7 @@ import { Timeline } from "./components/Timeline/Timeline";
 import { Filters } from "./components/Filters/Filters";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
+import { filterSitesByTypeAndStatus, filterSitesByDate } from "./utils/siteFilters";
 
 function App() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -17,29 +18,14 @@ function App() {
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
 
   // Filter sites by type and status (for timeline display)
-  const typeAndStatusFilteredSites = mockSites.filter((site) => {
-    // Type filter (only filter if types are selected)
-    if (selectedTypes.length > 0 && !selectedTypes.includes(site.type)) {
-      return false;
-    }
-
-    // Status filter (only filter if statuses are selected)
-    if (selectedStatuses.length > 0 && !selectedStatuses.includes(site.status)) {
-      return false;
-    }
-
-    return true;
-  });
+  const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
+    mockSites,
+    selectedTypes,
+    selectedStatuses
+  );
 
   // Filter sites based on date, type, and status (for map and cards)
-  const filteredSites = typeAndStatusFilteredSites.filter((site) => {
-    // Date filter
-    if (selectedDate && site.dateDestroyed) {
-      if (new Date(site.dateDestroyed) > selectedDate) return false;
-    }
-
-    return true;
-  });
+  const filteredSites = filterSitesByDate(typeAndStatusFilteredSites, selectedDate);
 
   return (
     <div className="min-h-screen bg-gray-50">

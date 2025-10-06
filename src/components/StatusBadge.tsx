@@ -1,5 +1,6 @@
 import type { GazaSite } from "../types";
 import { getStatusColor, cn } from "../styles/theme";
+import { formatLabel } from "../utils/format";
 
 interface StatusBadgeProps {
   status: GazaSite["status"];
@@ -19,7 +20,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className
       )}
     >
-      {status.toUpperCase().replace("-", " ")}
+      {formatLabel(status).toUpperCase()}
     </div>
   );
 }
