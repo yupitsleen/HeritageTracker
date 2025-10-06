@@ -112,6 +112,71 @@ A web application documenting the destruction of Palestinian cultural heritage, 
   - Fixed 8 user-reported issues iteratively
   - Polished UX based on real usage feedback
 
+**Phase H: UX Improvements for Data Scalability** ✅
+- Added visible scrollbars for accessibility:
+  - Custom scrollbar styling in index.css
+  - Works in both Firefox and Webkit browsers
+  - Subtle gray colors with hover effects
+- Redesigned Filters as compact dropdown:
+  - Changed from large grid layout to compact button dropdown
+  - Multi-select checkboxes (arrays instead of single values)
+  - Filter icon + "Filters" label + active count badge
+  - Auto-closes when clicking outside (dual ref tracking)
+  - "Clear All Filters" button when filters active
+  - Positioned above Timeline for better placement
+  - Z-index 2000 to appear above Leaflet controls
+- Simplified Site Cards:
+  - Removed expandable accordion pattern
+  - Back to summary view with "See More →" button
+  - Button opens full modal (not inline expansion)
+  - Click card to highlight on map
+- Filter cascade architecture:
+  - Type/Status filters → typeAndStatusFilteredSites (for Timeline)
+  - Date filter from Timeline → filteredSites (for Map & Cards)
+  - Timeline responds to type/status filters
+  - Prevents circular dependencies
+- Added filtered site count display:
+  - Shows "Showing X of Y sites" next to filter button
+  - Updates dynamically with all active filters
+  - Reflects combined filtering (type + status + date)
+- Click-outside improvements:
+  - Separate refs for button and dropdown panel
+  - Closes dropdown when clicking anywhere outside
+  - Includes clicks on count text or empty space
+- Created/Modified files:
+  - src/index.css (scrollbar styling)
+  - src/components/Filters/Filters.tsx (complete redesign)
+  - src/components/SiteCard.tsx (simplified back to summary)
+  - src/App.tsx (filter state management, count props)
+  - src/components/Filters/Filters.test.tsx (updated for new API)
+- All tests passing (11/11), lint clean
+
+**Phase I: Palestinian Flag-Inspired Color Theme** ✅
+- Created comprehensive Palestinian flag-inspired color palette:
+  - Red shades (10 tones): Subdued from flag's #CE1126
+  - Green shades (10 tones): Subdued from flag's #007A3D
+  - Black/Gray shades (10 tones): Sophisticated grays from flag's black
+  - White tones (4 variations): Warm creams instead of stark white
+- Applied theme throughout application:
+  - Headers/Footers: Dark charcoal (#212529) with green accent borders
+  - Primary buttons: Palestine green (#15803d, #166534)
+  - Reset buttons: Palestine red (#b91c1c, #991b1b)
+  - Status badges: Deep red for destroyed, amber for damaged
+  - Verification badges: Light green backgrounds with dark green text
+  - Focus states: Green rings instead of blue
+  - Card borders: Subtle gray instead of blue
+- Color semantic meaning:
+  - Red: Destruction, danger, critical actions
+  - Green: Positive actions, success, primary CTAs
+  - Black/Gray: Authority, text, structure
+  - White/Cream: Backgrounds, cards, content areas
+- Maintained accessibility:
+  - All color combinations meet WCAG AA contrast ratios
+  - Subdued tones feel professional and dignified
+  - Cultural respect for serious subject matter
+- Updated file:
+  - src/styles/theme.ts (complete palette redesign with comments)
+
 ### Previous Session (October 5, 2025)
 
 **Phase A: Project Setup** ✅

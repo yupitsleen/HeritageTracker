@@ -1,40 +1,91 @@
 /**
  * Centralized theme configuration
- * Defines colors, spacing, and reusable style classes
+ * Colors inspired by the Palestinian flag with subdued, sophisticated shades
+ * Red, Black, White, Green palette with various tones
  */
 
 export const colors = {
-  // Status colors
+  // Palestinian flag-inspired palette
+  palestine: {
+    // Subdued reds (from flag's red)
+    red: {
+      50: "#fef2f2",   // Very light red tint
+      100: "#fee2e2",  // Light red
+      200: "#fecaca",  // Soft red
+      300: "#fca5a5",  // Medium light red
+      400: "#f87171",  // Medium red
+      500: "#dc2626",  // Base red (subdued from flag)
+      600: "#b91c1c",  // Deep red
+      700: "#991b1b",  // Darker red
+      800: "#7f1d1d",  // Very dark red
+      900: "#5c1414",  // Nearly black-red
+    },
+    // Subdued greens (from flag's green)
+    green: {
+      50: "#f0fdf4",   // Very light green tint
+      100: "#dcfce7",  // Light green
+      200: "#bbf7d0",  // Soft green
+      300: "#86efac",  // Medium light green
+      400: "#4ade80",  // Medium green
+      500: "#16a34a",  // Base green (subdued from flag)
+      600: "#15803d",  // Deep green
+      700: "#166534",  // Darker green
+      800: "#14532d",  // Very dark green
+      900: "#0f3d21",  // Nearly black-green
+    },
+    // Blacks and grays (from flag's black)
+    black: {
+      50: "#f8f9fa",   // Nearly white
+      100: "#e9ecef",  // Very light gray
+      200: "#dee2e6",  // Light gray
+      300: "#ced4da",  // Medium light gray
+      400: "#adb5bd",  // Medium gray
+      500: "#6c757d",  // Neutral gray
+      600: "#495057",  // Dark gray
+      700: "#343a40",  // Darker gray
+      800: "#212529",  // Very dark gray
+      900: "#1a1d20",  // Nearly black
+    },
+    // Whites and cream tones
+    white: {
+      pure: "#ffffff",   // Pure white
+      cream: "#fafaf9",  // Slight cream tint
+      warm: "#f5f5f4",   // Warm white
+      soft: "#f1f0ef",   // Soft white
+    },
+  },
+
+  // Status colors using Palestine palette
   status: {
-    destroyed: "bg-red-600",
-    destroyedText: "text-red-600",
-    heavilyDamaged: "bg-orange-600",
-    heavilyDamagedText: "text-orange-600",
-    damaged: "bg-yellow-600",
-    damagedText: "text-yellow-600",
+    destroyed: "bg-[#b91c1c]",           // Deep red
+    destroyedText: "text-[#b91c1c]",
+    heavilyDamaged: "bg-[#d97706]",     // Warm amber (between red and green)
+    heavilyDamagedText: "text-[#d97706]",
+    damaged: "bg-[#ca8a04]",            // Muted gold
+    damagedText: "text-[#ca8a04]",
   },
 
   // Base colors
   primary: {
-    bg: "bg-gray-900",
+    bg: "bg-[#212529]",                  // Palestine black-gray
     text: "text-white",
-    hover: "hover:bg-gray-800",
+    hover: "hover:bg-[#343a40]",
   },
 
   secondary: {
-    bg: "bg-gray-50",
-    text: "text-gray-600",
+    bg: "bg-[#f5f5f4]",                  // Palestine warm white
+    text: "text-[#495057]",
   },
 
   card: {
     bg: "bg-white",
-    border: "border-gray-200",
+    border: "border-[#dee2e6]",          // Palestine light gray
     shadow: "shadow-md",
   },
 
   badge: {
-    bg: "bg-blue-100",
-    text: "text-blue-800",
+    bg: "bg-[#dcfce7]",                  // Palestine light green
+    text: "text-[#166534]",              // Palestine dark green
   },
 };
 
@@ -44,35 +95,35 @@ export const colors = {
 export const components = {
   // Card styles
   card: {
-    base: "bg-white rounded-lg shadow-md overflow-hidden",
+    base: "bg-white rounded-lg shadow-md overflow-hidden border border-[#e9ecef]",
     padding: "p-6",
-    hover: "hover:shadow-lg transition-shadow",
+    hover: "hover:shadow-lg hover:border-[#adb5bd] transition-all",
   },
 
   // Button styles
   button: {
     base: "px-4 py-2 rounded-lg font-semibold transition-colors",
-    primary: "bg-gray-900 text-white hover:bg-gray-800",
-    secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
-    reset: "px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm",
+    primary: "bg-[#15803d] text-white hover:bg-[#166534]",        // Palestine green
+    secondary: "bg-[#e9ecef] text-[#343a40] hover:bg-[#dee2e6]",  // Palestine grays
+    reset: "px-4 py-2 bg-[#b91c1c] text-white rounded-md hover:bg-[#991b1b] transition-colors text-sm",  // Palestine red
   },
 
   // Form styles
   select: {
-    base: "w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+    base: "w-full px-4 py-2 border border-[#ced4da] rounded-md focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]",  // Palestine green focus
   },
 
   label: {
-    base: "block text-sm font-medium text-gray-700 mb-2",
+    base: "block text-sm font-medium text-[#495057] mb-2",  // Palestine dark gray
   },
 
   // Badge styles
   badge: {
     base: "inline-block px-2 py-1 rounded text-xs font-medium",
-    primary: "bg-blue-100 text-blue-800",
-    success: "bg-green-100 text-green-800",
-    warning: "bg-yellow-100 text-yellow-800",
-    danger: "bg-red-100 text-red-800",
+    primary: "bg-[#dcfce7] text-[#166534]",     // Palestine light/dark green
+    success: "bg-[#dcfce7] text-[#166534]",     // Palestine greens
+    warning: "bg-[#fef2f2] text-[#991b1b]",     // Palestine light/dark red
+    danger: "bg-[#fee2e2] text-[#b91c1c]",      // Palestine reds
   },
 
   // Container styles
@@ -83,20 +134,20 @@ export const components = {
 
   // Header styles
   header: {
-    base: "bg-gray-900 text-white shadow-lg",
+    base: "bg-[#212529] text-white shadow-lg border-b-2 border-[#16a34a]",  // Black with green accent
     title: "text-3xl font-bold",
-    subtitle: "text-gray-300 mt-2",
+    subtitle: "text-[#e9ecef] mt-2",  // Light gray text
   },
 
   // Footer styles
   footer: {
-    base: "bg-gray-900 text-gray-400 mt-16",
+    base: "bg-[#212529] text-[#adb5bd] mt-16 border-t-2 border-[#16a34a]",  // Black with green accent
     text: "text-sm text-center",
   },
 
   // Map styles
   map: {
-    container: "h-[600px] w-full rounded-lg shadow-md",
+    container: "h-[600px] w-full rounded-lg shadow-md border border-[#dee2e6]",
   },
 };
 
@@ -119,14 +170,15 @@ export const getStatusColor = (
 
 /**
  * Get hex color for D3/SVG rendering based on status
+ * Using Palestine-inspired palette
  */
 export const getStatusHexColor = (
   status: "destroyed" | "heavily-damaged" | "damaged"
 ): string => {
   const colorMap = {
-    destroyed: "#dc2626", // red-600
-    "heavily-damaged": "#ea580c", // orange-600
-    damaged: "#ca8a04", // yellow-600
+    destroyed: "#b91c1c",        // Deep Palestine red
+    "heavily-damaged": "#d97706", // Warm amber
+    damaged: "#ca8a04",           // Muted gold
   };
   return colorMap[status];
 };

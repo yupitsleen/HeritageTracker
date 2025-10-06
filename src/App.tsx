@@ -11,26 +11,31 @@ import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 
 function App() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedType, setSelectedType] = useState<GazaSite["type"] | "all">("all");
-  const [selectedStatus, setSelectedStatus] = useState<GazaSite["status"] | "all">("all");
+  const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
+  const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
 
-  // Filter sites based on selected date, type, and status
-  const filteredSites = mockSites.filter((site) => {
+  // Filter sites by type and status (for timeline display)
+  const typeAndStatusFilteredSites = mockSites.filter((site) => {
+    // Type filter (only filter if types are selected)
+    if (selectedTypes.length > 0 && !selectedTypes.includes(site.type)) {
+      return false;
+    }
+
+    // Status filter (only filter if statuses are selected)
+    if (selectedStatuses.length > 0 && !selectedStatuses.includes(site.status)) {
+      return false;
+    }
+
+    return true;
+  });
+
+  // Filter sites based on date, type, and status (for map and cards)
+  const filteredSites = typeAndStatusFilteredSites.filter((site) => {
     // Date filter
     if (selectedDate && site.dateDestroyed) {
       if (new Date(site.dateDestroyed) > selectedDate) return false;
-    }
-
-    // Type filter
-    if (selectedType !== "all" && site.type !== selectedType) {
-      return false;
-    }
-
-    // Status filter
-    if (selectedStatus !== "all" && site.status !== selectedStatus) {
-      return false;
     }
 
     return true;
@@ -60,19 +65,21 @@ function App() {
           </p>
         </div>
 
-        {/* Timeline */}
-        <Timeline
-          sites={mockSites}
-          onDateChange={setSelectedDate}
-          onSiteHighlight={setHighlightedSiteId}
+        {/* Filters - Above Timeline */}
+        <Filters
+          selectedTypes={selectedTypes}
+          selectedStatuses={selectedStatuses}
+          onTypeChange={setSelectedTypes}
+          onStatusChange={setSelectedStatuses}
+          filteredCount={filteredSites.length}
+          totalCount={mockSites.length}
         />
 
-        {/* Filters */}
-        <Filters
-          selectedType={selectedType}
-          selectedStatus={selectedStatus}
-          onTypeChange={setSelectedType}
-          onStatusChange={setSelectedStatus}
+        {/* Timeline */}
+        <Timeline
+          sites={typeAndStatusFilteredSites}
+          onDateChange={setSelectedDate}
+          onSiteHighlight={setHighlightedSiteId}
         />
 
         {/* Interactive Map */}
@@ -98,7 +105,8 @@ function App() {
             <SiteCard
               key={site.id}
               site={site}
-              onClick={() => {
+              onHighlight={() => setHighlightedSiteId(site.id)}
+              onViewDetails={() => {
                 setHighlightedSiteId(site.id);
                 setSelectedSite(site);
               }}

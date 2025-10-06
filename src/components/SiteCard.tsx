@@ -5,18 +5,32 @@ import { formatLabel } from "../utils/format";
 
 interface SiteCardProps {
   site: GazaSite;
-  onClick?: () => void;
+  onHighlight?: () => void;
+  onViewDetails?: () => void;
 }
 
 /**
- * Reusable card component for displaying heritage site information
- * Used in: list view, map popups, search results, detail panels
+ * Compact card component displaying heritage site summary
+ * Click "See More" to open full details in modal
  */
-export function SiteCard({ site, onClick }: SiteCardProps) {
+export function SiteCard({ site, onHighlight, onViewDetails }: SiteCardProps) {
+  const handleCardClick = () => {
+    if (onHighlight) {
+      onHighlight(); // Highlight on map
+    }
+  };
+
+  const handleSeeMore = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click
+    if (onViewDetails) {
+      onViewDetails();
+    }
+  };
+
   return (
     <div
-      className={cn(components.card.base, onClick && "cursor-pointer", components.card.hover)}
-      onClick={onClick}
+      className={cn(components.card.base, "cursor-pointer", components.card.hover)}
+      onClick={handleCardClick}
     >
       {/* Status Badge */}
       <StatusBadge status={site.status} />
@@ -44,7 +58,15 @@ export function SiteCard({ site, onClick }: SiteCardProps) {
           )}
         </div>
 
-        <p className="text-gray-700 text-sm line-clamp-3">{site.description}</p>
+        <p className="text-gray-700 text-sm line-clamp-3 mb-4">{site.description}</p>
+
+        {/* See More Button */}
+        <button
+          onClick={handleSeeMore}
+          className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+        >
+          See More →
+        </button>
 
         {/* Verified By */}
         <div className="mt-4 pt-4 border-t border-gray-200">
