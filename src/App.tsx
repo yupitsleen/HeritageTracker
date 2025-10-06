@@ -4,7 +4,7 @@ import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
 import { SiteCard } from "./components/SiteCard";
 import { HeritageMap } from "./components/Map/HeritageMap";
-import { Timeline } from "./components/Timeline/Timeline";
+import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { Filters } from "./components/Filters/Filters";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
@@ -39,65 +39,72 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main Content - Two Column Layout */}
       <main className={cn(components.container.base, components.container.section)}>
-        {/* Stats Summary */}
-        <div className={cn(components.card.base, components.card.padding, "mb-8")}>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Heritage Sites ({mockSites.length} sample sites)
-          </h2>
-          <p className="text-gray-600">
-            Click on map markers to see site details. Scroll to explore the interactive map.
-          </p>
-        </div>
-
-        {/* Filters - Above Timeline */}
-        <Filters
-          selectedTypes={selectedTypes}
-          selectedStatuses={selectedStatuses}
-          onTypeChange={setSelectedTypes}
-          onStatusChange={setSelectedStatuses}
-          filteredCount={filteredSites.length}
-          totalCount={mockSites.length}
-        />
-
-        {/* Timeline */}
-        <Timeline
-          sites={typeAndStatusFilteredSites}
-          onDateChange={setSelectedDate}
-          onSiteHighlight={setHighlightedSiteId}
-        />
-
-        {/* Interactive Map */}
-        <div className="mb-8">
-          <HeritageMap
-            sites={filteredSites}
-            onSiteClick={setSelectedSite}
-            highlightedSiteId={highlightedSiteId}
-            onSiteHighlight={setHighlightedSiteId}
-          />
-        </div>
-
-        {/* Sites List */}
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            {filteredSites.length === mockSites.length
-              ? "All Sites"
-              : `Sites (${filteredSites.length} of ${mockSites.length})`}
-          </h3>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredSites.map((site) => (
-            <SiteCard
-              key={site.id}
-              site={site}
-              onHighlight={() => setHighlightedSiteId(site.id)}
-              onViewDetails={() => {
-                setHighlightedSiteId(site.id);
-                setSelectedSite(site);
-              }}
+        <div className="flex gap-6">
+          {/* Left Sidebar - Timeline (Sticky) */}
+          <aside className="w-80 flex-shrink-0 sticky top-8 self-start">
+            <VerticalTimeline
+              sites={typeAndStatusFilteredSites}
+              onDateChange={setSelectedDate}
+              onSiteHighlight={setHighlightedSiteId}
             />
-          ))}
+          </aside>
+
+          {/* Right Main Content */}
+          <div className="flex-1 min-w-0">
+            {/* Stats Summary */}
+            <div className={cn(components.card.base, components.card.padding, "mb-8")}>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Heritage Sites ({mockSites.length} sample sites)
+              </h2>
+              <p className="text-gray-600">
+                Click on map markers to see site details. Scroll to explore the interactive map.
+              </p>
+            </div>
+
+            {/* Filters */}
+            <Filters
+              selectedTypes={selectedTypes}
+              selectedStatuses={selectedStatuses}
+              onTypeChange={setSelectedTypes}
+              onStatusChange={setSelectedStatuses}
+              filteredCount={filteredSites.length}
+              totalCount={mockSites.length}
+            />
+
+            {/* Interactive Map */}
+            <div className="mb-8">
+              <HeritageMap
+                sites={filteredSites}
+                onSiteClick={setSelectedSite}
+                highlightedSiteId={highlightedSiteId}
+                onSiteHighlight={setHighlightedSiteId}
+              />
+            </div>
+
+            {/* Sites List */}
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                {filteredSites.length === mockSites.length
+                  ? "All Sites"
+                  : `Sites (${filteredSites.length} of ${mockSites.length})`}
+              </h3>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+              {filteredSites.map((site) => (
+                <SiteCard
+                  key={site.id}
+                  site={site}
+                  onHighlight={() => setHighlightedSiteId(site.id)}
+                  onViewDetails={() => {
+                    setHighlightedSiteId(site.id);
+                    setSelectedSite(site);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </main>
 
