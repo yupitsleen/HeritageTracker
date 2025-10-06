@@ -6,9 +6,36 @@ import { getStatusHexColor, components } from "../../styles/theme";
 interface TimelineProps {
   sites: GazaSite[];
   onDateChange?: (date: Date | null) => void;
+  onSiteHighlight?: (siteId: string | null) => void;
 }
 
-export function Timeline({ sites, onDateChange }: TimelineProps) {
+// Constants for timeline dimensions and positioning
+const TIMELINE_CONFIG = {
+  MARGIN: { top: 20, right: 40, bottom: 60, left: 40 },
+  HEIGHT: 120,
+  MARKER_RADIUS: { default: 6, hover: 10, selected: 9 },
+  STROKE_WIDTH: { default: 2, selected: 3 },
+  STROKE_COLOR: { default: "#fff", selected: "#000" },
+  TOOLTIP_EDGE_THRESHOLD: { LEFT: 0.2, RIGHT: 0.8 },
+} as const;
+
+/**
+ * Determine tooltip text anchor based on marker position
+ * Prevents tooltips from being cut off at edges
+ */
+const getTooltipAnchor = (markerX: number, width: number): "start" | "middle" | "end" => {
+  const relativePosition = markerX / width;
+
+  if (relativePosition < TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.LEFT) {
+    return "start"; // Near left edge (0-20%)
+  }
+  if (relativePosition > TIMELINE_CONFIG.TOOLTIP_EDGE_THRESHOLD.RIGHT) {
+    return "end"; // Near right edge (80-100%)
+  }
+  return "middle"; // Center area (20-80%)
+};
+
+export function Timeline({ sites, onDateChange, onSiteHighlight }: TimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -27,13 +54,13 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove(); // Clear previous render
 
-    const margin = { top: 20, right: 40, bottom: 60, left: 40 };
-    const width = svgRef.current.clientWidth - margin.left - margin.right;
-    const height = 120 - margin.top - margin.bottom;
+    const { MARGIN, HEIGHT } = TIMELINE_CONFIG;
+    const width = svgRef.current.clientWidth - MARGIN.left - MARGIN.right;
+    const height = HEIGHT - MARGIN.top - MARGIN.bottom;
 
     const g = svg
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", `translate(${MARGIN.left},${MARGIN.top})`);
 
     // Get date range
     const minDate = sitesWithDates[0].date;
@@ -61,26 +88,26 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
       .append("circle")
       .attr("cx", (d) => xScale(d.date))
       .attr("cy", height / 2)
-      .attr("r", 6)
+      .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default)
       .attr("fill", (d) => getStatusHexColor(d.status))
       .attr("stroke", "#fff")
-      .attr("stroke-width", 2)
+      .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default)
       .style("cursor", "pointer")
       .on("mouseenter", function (event, d) {
+        // Check if this marker is selected
+        const isSelected = selectedDate?.getTime() === d.date.getTime();
+
         // Enlarge marker on hover
-        d3.select(this).attr("r", 10);
+        d3.select(this)
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover)
+          // Preserve selected stroke if selected
+          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default)
+          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
 
         // Show tooltip with smart positioning
         const tooltip = g.append("g").attr("class", "tooltip");
         const markerX = xScale(d.date);
-
-        // Determine text anchor based on position
-        let textAnchor: "start" | "middle" | "end" = "middle";
-        if (markerX < width * 0.2) {
-          textAnchor = "start"; // Near left edge
-        } else if (markerX > width * 0.8) {
-          textAnchor = "end"; // Near right edge
-        }
+        const textAnchor = getTooltipAnchor(markerX, width);
 
         const text = tooltip
           .append("text")
@@ -106,15 +133,32 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
         // Reset marker size only if not selected
         const isSelected = selectedDate?.getTime() === d.date.getTime();
         d3.select(this)
-          .attr("r", isSelected ? 9 : 6)
-          .attr("stroke-width", isSelected ? 3 : 2);
+          .attr("r", isSelected ? TIMELINE_CONFIG.MARKER_RADIUS.selected : TIMELINE_CONFIG.MARKER_RADIUS.default)
+          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default)
+          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default);
         // Remove tooltip
         g.select(".tooltip").remove();
       })
-      .on("click", (event, d) => {
+      .on("click", function (event, d) {
         const newDate = selectedDate?.getTime() === d.date.getTime() ? null : d.date;
         setSelectedDate(newDate);
         onDateChange?.(newDate);
+        // Highlight the site on the map
+        onSiteHighlight?.(d.id);
+
+        // Immediately update all markers
+        g.selectAll<SVGCircleElement, typeof sitesWithDates[0]>(".event-marker")
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default)
+          .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default)
+          .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.default);
+
+        // Apply selected style to clicked marker
+        if (newDate) {
+          d3.select(this)
+            .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
+            .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected)
+            .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected);
+        }
       });
 
     // Draw axis
@@ -124,14 +168,15 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
       .attr("transform", `translate(0,${height / 2 + 20})`)
       .call(xAxis);
 
-    // Highlight selected marker
+    // Highlight selected marker with black outline
     if (selectedDate) {
       g.selectAll<SVGCircleElement, typeof sitesWithDates[0]>(".event-marker")
         .filter((d) => d.date.getTime() === selectedDate.getTime())
-        .attr("r", 9)
-        .attr("stroke-width", 3);
+        .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
+        .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected)
+        .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected);
     }
-  }, [sitesWithDates, selectedDate, onDateChange]);
+  }, [sitesWithDates, selectedDate, onDateChange, onSiteHighlight]);
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">

@@ -6,20 +6,20 @@ describe('Filters', () => {
   const mockProps = {
     onTypeChange: vi.fn(),
     onStatusChange: vi.fn(),
-    selectedType: 'all' as const,
-    selectedStatus: 'all' as const,
+    selectedTypes: [] as const,
+    selectedStatuses: [] as const,
   };
 
   it('renders without crashing', () => {
     render(<Filters {...mockProps} />);
   });
 
-  it('renders with different selected values', () => {
+  it('renders with selected filters', () => {
     render(
       <Filters
         {...mockProps}
-        selectedType="mosque"
-        selectedStatus="destroyed"
+        selectedTypes={['mosque', 'church']}
+        selectedStatuses={['destroyed']}
       />
     );
   });
