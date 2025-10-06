@@ -6,6 +6,7 @@ import { getStatusHexColor, components } from "../../styles/theme";
 interface TimelineProps {
   sites: GazaSite[];
   onDateChange?: (date: Date | null) => void;
+  onSiteHighlight?: (siteId: string | null) => void;
 }
 
 // Constants for timeline dimensions and positioning
@@ -14,10 +15,11 @@ const TIMELINE_CONFIG = {
   HEIGHT: 120,
   MARKER_RADIUS: { default: 6, hover: 10, selected: 9 },
   STROKE_WIDTH: { default: 2, selected: 3 },
+  STROKE_COLOR: { default: "#fff", selected: "#000" },
   TOOLTIP_EDGE_THRESHOLD: { LEFT: 0.2, RIGHT: 0.8 },
 } as const;
 
-export function Timeline({ sites, onDateChange }: TimelineProps) {
+export function Timeline({ sites, onDateChange, onSiteHighlight }: TimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -76,8 +78,15 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
       .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default)
       .style("cursor", "pointer")
       .on("mouseenter", function (event, d) {
+        // Check if this marker is selected
+        const isSelected = selectedDate?.getTime() === d.date.getTime();
+
         // Enlarge marker on hover
-        d3.select(this).attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover);
+        d3.select(this)
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover)
+          // Preserve selected stroke if selected
+          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default)
+          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
 
         // Show tooltip with smart positioning
         const tooltip = g.append("g").attr("class", "tooltip");
@@ -116,14 +125,31 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
         const isSelected = selectedDate?.getTime() === d.date.getTime();
         d3.select(this)
           .attr("r", isSelected ? TIMELINE_CONFIG.MARKER_RADIUS.selected : TIMELINE_CONFIG.MARKER_RADIUS.default)
-          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
+          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default)
+          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default);
         // Remove tooltip
         g.select(".tooltip").remove();
       })
-      .on("click", (event, d) => {
+      .on("click", function (event, d) {
         const newDate = selectedDate?.getTime() === d.date.getTime() ? null : d.date;
         setSelectedDate(newDate);
         onDateChange?.(newDate);
+        // Highlight the site on the map
+        onSiteHighlight?.(d.id);
+
+        // Immediately update all markers
+        g.selectAll<SVGCircleElement, typeof sitesWithDates[0]>(".event-marker")
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default)
+          .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default)
+          .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.default);
+
+        // Apply selected style to clicked marker
+        if (newDate) {
+          d3.select(this)
+            .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
+            .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected)
+            .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected);
+        }
       });
 
     // Draw axis
@@ -133,14 +159,15 @@ export function Timeline({ sites, onDateChange }: TimelineProps) {
       .attr("transform", `translate(0,${height / 2 + 20})`)
       .call(xAxis);
 
-    // Highlight selected marker
+    // Highlight selected marker with black outline
     if (selectedDate) {
       g.selectAll<SVGCircleElement, typeof sitesWithDates[0]>(".event-marker")
         .filter((d) => d.date.getTime() === selectedDate.getTime())
         .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
-        .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected);
+        .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected)
+        .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected);
     }
-  }, [sitesWithDates, selectedDate, onDateChange]);
+  }, [sitesWithDates, selectedDate, onDateChange, onSiteHighlight]);
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">

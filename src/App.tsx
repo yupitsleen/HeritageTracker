@@ -6,11 +6,15 @@ import { SiteCard } from "./components/SiteCard";
 import { HeritageMap } from "./components/Map/HeritageMap";
 import { Timeline } from "./components/Timeline/Timeline";
 import { Filters } from "./components/Filters/Filters";
+import { Modal } from "./components/Modal/Modal";
+import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 
 function App() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedType, setSelectedType] = useState<GazaSite["type"] | "all">("all");
   const [selectedStatus, setSelectedStatus] = useState<GazaSite["status"] | "all">("all");
+  const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
+  const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
 
   // Filter sites based on selected date, type, and status
   const filteredSites = mockSites.filter((site) => {
@@ -57,7 +61,11 @@ function App() {
         </div>
 
         {/* Timeline */}
-        <Timeline sites={mockSites} onDateChange={setSelectedDate} />
+        <Timeline
+          sites={mockSites}
+          onDateChange={setSelectedDate}
+          onSiteHighlight={setHighlightedSiteId}
+        />
 
         {/* Filters */}
         <Filters
@@ -69,7 +77,12 @@ function App() {
 
         {/* Interactive Map */}
         <div className="mb-8">
-          <HeritageMap sites={filteredSites} />
+          <HeritageMap
+            sites={filteredSites}
+            onSiteClick={setSelectedSite}
+            highlightedSiteId={highlightedSiteId}
+            onSiteHighlight={setHighlightedSiteId}
+          />
         </div>
 
         {/* Sites List */}
@@ -82,10 +95,26 @@ function App() {
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredSites.map((site) => (
-            <SiteCard key={site.id} site={site} />
+            <SiteCard
+              key={site.id}
+              site={site}
+              onClick={() => {
+                setHighlightedSiteId(site.id);
+                setSelectedSite(site);
+              }}
+            />
           ))}
         </div>
       </main>
+
+      {/* Site Detail Modal */}
+      <Modal
+        isOpen={selectedSite !== null}
+        onClose={() => setSelectedSite(null)}
+        title={selectedSite?.name}
+      >
+        {selectedSite && <SiteDetailPanel site={selectedSite} />}
+      </Modal>
 
       {/* Footer */}
       <footer className={components.footer.base}>
