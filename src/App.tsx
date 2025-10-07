@@ -43,7 +43,7 @@ function App() {
       <main className={cn(components.container.base, components.container.section)}>
         <div className="flex gap-6">
           {/* Left Sidebar - Timeline (Sticky) */}
-          <aside className="w-80 flex-shrink-0 sticky top-8 self-start">
+          <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
             <VerticalTimeline
               sites={typeAndStatusFilteredSites}
               onDateChange={setSelectedDate}
