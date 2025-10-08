@@ -58,7 +58,7 @@ npm run build       # Production build
 
 **Development Mode:**
 
-- Dev server: http://localhost:5175
+- Dev server: http://localhost:5173
 - Keep server running for instant HMR feedback
 - Build incrementally, verify in browser
 - Commit when feature complete and working
@@ -104,19 +104,25 @@ src/
 ├── components/          # React components
 │   ├── Map/            # HeritageMap, markers
 │   ├── Timeline/       # VerticalTimeline (D3.js)
-│   ├── FilterBar/      # Unified filtering system
-│   ├── SitesTable.tsx  # Compact table view
+│   ├── FilterBar/
+│   │   ├── FilterBar.tsx           # Unified filtering with BC/BCE dropdowns
+│   │   ├── FilterBar.test.tsx      # 6 smoke tests
+│   │   └── MultiSelectDropdown.tsx # Checkbox-based multi-select (z-9999)
+│   ├── SitesTable.tsx  # Sortable table with expand modal
+│   ├── SitesTable.test.tsx         # 7 smoke tests
 │   ├── SiteCard.tsx    # Legacy component
 │   ├── Modal/          # Detail panel modal
 │   └── SiteDetail/     # SiteDetailPanel
 ├── data/               # Static JSON data files
-│   └── mockSites.ts    # Heritage site data
+│   └── mockSites.ts    # Heritage site data (5 sites currently)
 ├── types/              # TypeScript definitions
-│   └── index.ts        # GazaSite, Source, Image
+│   └── index.ts        # GazaSite, Source, Image interfaces
 ├── utils/              # Helper functions
-│   └── format.ts       # Shared utilities
+│   ├── format.ts       # Shared utilities
+│   ├── siteFilters.ts  # Filter logic with BCE/century parsing
+│   └── siteFilters.test.ts         # 14 filter tests
 ├── constants/          # Configuration
-│   ├── filters.ts      # SITE_TYPES, STATUS_OPTIONS
+│   ├── filters.ts      # SITE_TYPES, STATUS_OPTIONS (no "all" option)
 │   └── map.ts          # MAP_CONFIG, MARKER_CONFIG
 ├── styles/             # Global styles
 │   └── theme.ts        # Centralized theme (colors, table, components)
@@ -138,21 +144,23 @@ src/
 interface GazaSite {
   id: string;
   type: "mosque" | "church" | "archaeological" | "museum" | "historic-building";
-  title: string;
-  titleArabic?: string;
+  name: string;               // Site name (English)
+  nameArabic?: string;        // Site name (Arabic with RTL)
+  yearBuilt: string;          // Flexible format: "7th century", "800 BCE", "1950", etc.
   description: string;
 
   originalLocation: string;
   coordinates: [number, number]; // [lat, lng] Leaflet format
 
   status: "destroyed" | "heavily-damaged" | "damaged";
-  dateDestroyed: string;
+  dateDestroyed: string;      // ISO format: "2023-12-07"
 
   sources: Source[];
   images?: Image[];
 
   historicalSignificance?: string;
   culturalValue?: string;
+  verifiedBy: string[];       // Organizations that verified this data
 }
 
 interface Source {
@@ -175,13 +183,22 @@ interface Image {
 
 1. **Interactive Map** - Leaflet with color-coded markers (red/orange/yellow by status)
 2. **Vertical Timeline** - D3.js full-height timeline with independent scrolling
-3. **Unified FilterBar** - Type/Status/Date filters with custom dropdowns
-4. **Sites Table** - Compact tabular view replacing card grid
+3. **Enhanced FilterBar** - Type/Status/Date Range/Year Range filters
+   - BC/BCE dropdown selectors (number input + era dropdown)
+   - Destruction date range (start/end)
+   - Creation year range with BCE support
+   - Centered layout with stable "Clear filters" button
+4. **Sortable Sites Table** - Compact tabular view with:
+   - Click headers to sort (visual indicators: ↑↓↕)
+   - Date Built column showing yearBuilt values
+   - "See more" action column (not clickable rows)
+   - Full-screen modal with expand button
 5. **Detail Modal** - Full site info with accessibility (escape, backdrop, focus trap)
-6. **Synchronized Highlighting** - Click timeline/map/table → black ring highlights all
+6. **Synchronized Highlighting** - Click row → black ring highlights across all components
 7. **Custom Map Controls** - Ctrl+scroll zoom (preserves page scroll)
 8. **Palestinian Theme** - Flag-inspired colors (subdued red/green/black/cream)
 9. **Three-Column Layout** - Timeline (left) | Map (center) | Table (right)
+10. **Comprehensive Testing** - 38 smoke tests covering all features
 
 ### Remaining
 
@@ -190,6 +207,107 @@ interface Image {
 - [ ] About/Methodology page
 - [ ] Search functionality
 - [ ] Data collection (15-20 more sites)
+- [ ] Mobile responsiveness (collapsible sidebars)
+
+## Filtering System Patterns (#memorize)
+
+### BC/BCE Date Handling
+
+**Use dropdown selectors, NOT text input:**
+- Number input for year + dropdown for era (BCE/CE)
+- Prevents parsing issues with partial input like "500 b"
+- Layout: `[Year input] [BCE/CE ▼] to [Year input] [BCE/CE ▼]`
+
+**Internal representation:**
+- Store BCE dates as negative numbers: 800 BCE → -800
+- Store CE dates as positive numbers: 425 CE → 425
+- Local state in component prevents filter clearing during typing
+
+**Year parsing logic (`parseYearBuilt()` function):**
+- BCE/BC dates: "800 BCE" → -800
+- CE/AD dates: "425 CE" → 425
+- Century format: "7th century" → 650 (midpoint calculation)
+- Ranges: "800 BCE - 1100 CE" → -800 (extracts first year)
+- Standalone years: "1950" → 1950
+
+**Century midpoint:** `(century - 1) * 100 + 50`
+
+### Date Range Filtering
+
+- Always use start/end pairs (not single dates)
+- Label positioning: above inputs, centered with `flex-col items-center`
+- Clear button: use min-width container to prevent layout shift
+- Example: Destruction date range, Creation year range
+
+### Dropdown Best Practices
+
+- **Z-index for map overlay:** Use `z-[9999]` on dropdowns that need to appear above map
+- **Fixed positioning:** Use `getBoundingClientRect()` to position outside overflow containers
+- **Click outside to close:** `useEffect` with mousedown listener
+- **Visual feedback:** Checkbox UI with green checkmarks (#16a34a)
+
+## Component Patterns (#memorize)
+
+### FilterBar Component
+
+**Layout:**
+- Centered filters: `flex-1` with `justify-center`
+- Stable Clear button: min-width container prevents shift when appearing
+- All filters: controlled components with local state
+
+**BC/BCE Implementation:**
+```typescript
+const [yearInput, setYearInput] = useState("");
+const [yearEra, setYearEra] = useState<"CE" | "BCE">("CE");
+
+// Convert to parent state
+const year = yearEra === "BCE" ? -parseInt(yearInput) : parseInt(yearInput);
+```
+
+### SitesTable Component
+
+**Sorting:**
+- Use `useMemo` for performance with sorted arrays
+- Visual indicators: ↑ (asc), ↓ (desc), ↕ (unsorted)
+- Default sort: dateDestroyed descending
+- Click header to toggle direction
+
+**Interaction patterns:**
+- Row clicks: highlight only (sync across components with `highlightedSiteId`)
+- "See more" button: use `e.stopPropagation()` to prevent row click
+- Expand icon: opens full-screen modal with same table component
+
+**Highlighting:**
+- Use `ring-2 ring-black ring-inset` for black outline
+- Syncs across Timeline, Map, and Table components
+
+### MultiSelectDropdown Component
+
+**Fixed positioning to escape overflow:**
+```typescript
+<div
+  className="fixed z-[9999]"
+  style={{
+    top: dropdownRef.current?.getBoundingClientRect().bottom + 8,
+    left: dropdownRef.current?.getBoundingClientRect().left
+  }}
+>
+```
+
+**Close on outside click:**
+```typescript
+useEffect(() => {
+  const handleClickOutside = (e: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+  if (isOpen) {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }
+}, [isOpen]);
+```
 
 ## Development Preferences
 
@@ -212,11 +330,15 @@ interface Image {
 
 ### Testing Strategy (#memorize)
 
-- **Vitest + React Testing Library** - Fast execution (<1 second)
-- **Smoke tests** - Verify rendering, not implementation
-- **Write as you build** - Tests alongside features
-- **Focus on critical paths** - Filtering, data display, map interactions
-- **Run before commit** - Tests + lint always pass
+- **Vitest + React Testing Library** - Fast execution
+- **Smoke tests** - Verify rendering and basic functionality (not implementation)
+- **Test new features** - Add tests alongside implementation
+- **Coverage goals:**
+  - All new components: 5+ tests minimum
+  - Filter logic: Test edge cases (BCE dates, ranges, null values)
+  - UI interactions: Test click handlers, state updates
+- **Current coverage:** 38 tests across 9 files
+- **Run before commit** - Tests + lint always pass ✓
 
 ### Performance Considerations (#memorize)
 
@@ -250,6 +372,42 @@ interface Image {
 - **Mobile-first** - Responsive design for all screens
 - **Accessibility** - Keyboard navigation, screen readers, focus management
 - **SEO** - Discoverable by researchers and journalists
+
+## Known Issues & Gotchas (#memorize)
+
+### Current Limitations
+
+- **Mobile responsiveness:** Three-column layout needs work for small screens
+- **Timeline/Table on mobile:** May need collapsible sidebars or stacked layout
+- **Year parsing assumptions:** Assumes CE unless BCE/BC explicitly stated
+- **Date range validation:** No enforcement that end date > start date
+
+### Common Pitfalls to Avoid
+
+**DO NOT:**
+- ❌ Use text inputs for BC/BCE dates (parsing is fragile with partial input)
+- ❌ Forget z-[9999] on dropdowns that need to appear above map
+- ❌ Use clickable table rows for modals (use action column instead)
+- ❌ Add hover triggers on table/timeline (causes accidental changes)
+
+**DO:**
+- ✅ Use number input + dropdown for BC/BCE year selection
+- ✅ Test filters with empty state AND populated state
+- ✅ Use `e.stopPropagation()` on nested clickable elements
+- ✅ Remember Leaflet uses [lat, lng] not [lng, lat]
+- ✅ Use `useMemo` for expensive sorting operations
+- ✅ Center filter layout with `flex-1` and `justify-center`
+- ✅ Prevent layout shift with min-width containers
+
+### Coordinate Format Reminder
+
+```typescript
+// ✅ CORRECT - Leaflet format
+coordinates: [31.5069, 34.4668] // [latitude, longitude]
+
+// ❌ WRONG - GeoJSON format (don't use)
+coordinates: [34.4668, 31.5069] // [longitude, latitude]
+```
 
 ## Priority Sites to Document
 
