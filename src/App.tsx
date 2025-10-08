@@ -5,7 +5,7 @@ import { components, cn } from "./styles/theme";
 import { SitesTable } from "./components/SitesTable";
 import { HeritageMap } from "./components/Map/HeritageMap";
 import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
-import { Filters } from "./components/Filters/Filters";
+import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { filterSitesByTypeAndStatus, filterSitesByDate } from "./utils/siteFilters";
@@ -51,12 +51,14 @@ function App() {
           </p>
         </div>
 
-        {/* Filters */}
-        <Filters
+        {/* Unified Filter Bar */}
+        <FilterBar
           selectedTypes={selectedTypes}
           selectedStatuses={selectedStatuses}
+          selectedDate={selectedDate}
           onTypeChange={setSelectedTypes}
           onStatusChange={setSelectedStatuses}
+          onDateChange={setSelectedDate}
           filteredCount={filteredSites.length}
           totalCount={mockSites.length}
         />
@@ -66,7 +68,6 @@ function App() {
           <aside className="w-80 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
             <VerticalTimeline
               sites={typeAndStatusFilteredSites}
-              onDateChange={setSelectedDate}
               onSiteHighlight={setHighlightedSiteId}
             />
           </aside>

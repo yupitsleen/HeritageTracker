@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import type { GazaSite } from "../../types";
-import { getStatusHexColor, components } from "../../styles/theme";
+import { getStatusHexColor } from "../../styles/theme";
 
 interface VerticalTimelineProps {
   sites: GazaSite[];
-  onDateChange?: (date: Date | null) => void;
   onSiteHighlight?: (siteId: string | null) => void;
 }
 
@@ -23,10 +22,9 @@ const TIMELINE_CONFIG = {
  * Vertical timeline component showing destruction events chronologically
  * Scales better than horizontal timeline for many data points
  */
-export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: VerticalTimelineProps) {
+export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isTimelineHovered, setIsTimelineHovered] = useState(false);
 
   // Parse dates and sort sites chronologically
@@ -166,17 +164,13 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
         return statusText.charAt(0).toUpperCase() + statusText.slice(1);
       });
 
-    // Add hover and click interactions
+    // Add hover and click interactions (highlighting only, no filtering)
     items
-      .on("mouseenter", function (event, d) {
-        const isSelected = selectedDate?.getTime() === d.date.getTime();
-
+      .on("mouseenter", function () {
         // Enlarge marker
         d3.select(this)
           .select(".event-marker")
-          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover)
-          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default)
-          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover);
 
         // Highlight site name
         d3.select(this)
@@ -184,72 +178,24 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
           .attr("font-weight", "700")
           .attr("fill", "#111827");
       })
-      .on("mouseleave", function (event, d) {
-        const isSelected = selectedDate?.getTime() === d.date.getTime();
-
+      .on("mouseleave", function () {
         // Reset marker size
         d3.select(this)
           .select(".event-marker")
-          .attr("r", isSelected ? TIMELINE_CONFIG.MARKER_RADIUS.selected : TIMELINE_CONFIG.MARKER_RADIUS.default)
-          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default)
-          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default);
 
         // Reset site name
         d3.select(this)
           .select(".site-name")
-          .attr("font-weight", isSelected ? "700" : "500")
-          .attr("fill", isSelected ? "#111827" : "#1f2937");
-      })
-      .on("click", function (event, d) {
-        const newDate = selectedDate?.getTime() === d.date.getTime() ? null : d.date;
-        setSelectedDate(newDate);
-        onDateChange?.(newDate);
-        onSiteHighlight?.(d.id);
-
-        // Reset all markers
-        g.selectAll(".event-marker")
-          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default)
-          .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.default)
-          .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default);
-
-        // Reset all site names
-        g.selectAll(".site-name")
           .attr("font-weight", "500")
           .attr("fill", "#1f2937");
-
-        // Highlight selected item
-        if (newDate) {
-          d3.select(this)
-            .select(".event-marker")
-            .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
-            .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected)
-            .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected);
-
-          d3.select(this)
-            .select(".site-name")
-            .attr("font-weight", "700")
-            .attr("fill", "#111827");
-        }
+      })
+      .on("click", function (event, d) {
+        // Only highlight the site, no filtering
+        onSiteHighlight?.(d.id);
       });
 
-    // Apply selected state on initial render
-    if (selectedDate) {
-      items
-        .filter((d) => d.date.getTime() === selectedDate.getTime())
-        .each(function () {
-          d3.select(this)
-            .select(".event-marker")
-            .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
-            .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected)
-            .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected);
-
-          d3.select(this)
-            .select(".site-name")
-            .attr("font-weight", "700")
-            .attr("fill", "#111827");
-        });
-    }
-  }, [sitesWithDates, selectedDate, onDateChange, onSiteHighlight]);
+  }, [sitesWithDates, onSiteHighlight]);
 
   // Handle mouse wheel scroll to prevent page scroll when hovering timeline
   useEffect(() => {
@@ -285,25 +231,9 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
         <div className="text-center">
           <h2 className="text-xl font-bold text-gray-800">Destruction Timeline</h2>
           <p className="text-sm text-gray-600 mt-1">
-            {selectedDate
-              ? `Showing sites destroyed on or before ${d3.timeFormat("%B %d, %Y")(selectedDate)}`
-              : "Click any site to filter by date"}
+            Click any site to highlight on map and table
           </p>
         </div>
-        {selectedDate && (
-          <div className="mt-3 text-center">
-            <button
-              onClick={() => {
-                setSelectedDate(null);
-                onDateChange?.(null);
-                onSiteHighlight?.(null);
-              }}
-              className={components.button.reset}
-            >
-              Reset
-            </button>
-          </div>
-        )}
       </div>
       <div className="overflow-y-auto flex-1 px-2">
         <svg ref={svgRef} className="w-full" />
