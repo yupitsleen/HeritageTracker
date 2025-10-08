@@ -72,7 +72,7 @@ export function MultiSelectDropdown<T extends string>({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="fixed z-[100] mt-2 w-56 bg-white border border-gray-300 rounded-md shadow-lg max-h-64 overflow-y-auto"
+        <div className="fixed z-[9999] mt-2 w-56 bg-white border border-gray-300 rounded-md shadow-lg max-h-64 overflow-y-auto"
           style={{
             top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 8 : 0,
             left: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().left : 0,

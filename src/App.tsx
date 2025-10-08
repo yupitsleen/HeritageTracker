@@ -8,24 +8,43 @@ import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
-import { filterSitesByTypeAndStatus, filterSitesByDate } from "./utils/siteFilters";
+import {
+  filterSitesByTypeAndStatus,
+  filterSitesByDestructionDate,
+  filterSitesByCreationYear
+} from "./utils/siteFilters";
 
 function App() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
+  const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
+  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
+  const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
+  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
 
-  // Filter sites by type and status (for timeline display)
+  // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
     mockSites,
     selectedTypes,
     selectedStatuses
   );
 
-  // Filter sites based on date, type, and status (for map and cards)
-  const filteredSites = filterSitesByDate(typeAndStatusFilteredSites, selectedDate);
+  // Filter by destruction date range
+  const destructionDateFilteredSites = filterSitesByDestructionDate(
+    typeAndStatusFilteredSites,
+    destructionDateStart,
+    destructionDateEnd
+  );
+
+  // Filter by creation year range
+  const filteredSites = filterSitesByCreationYear(
+    destructionDateFilteredSites,
+    creationYearStart,
+    creationYearEnd
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -43,22 +62,25 @@ function App() {
       <main className={cn(components.container.base, components.container.section)}>
         {/* Stats Summary */}
         <div className={cn(components.card.base, components.card.padding, "mb-8 text-center")}>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h2 className="text-2xl font-semibold text-gray-800">
             Heritage Sites ({mockSites.length} sample sites)
           </h2>
-          <p className="text-gray-600">
-            Click on map markers or table rows to see site details. Scroll timeline and table independently.
-          </p>
         </div>
 
         {/* Unified Filter Bar */}
         <FilterBar
           selectedTypes={selectedTypes}
           selectedStatuses={selectedStatuses}
-          selectedDate={selectedDate}
+          destructionDateStart={destructionDateStart}
+          destructionDateEnd={destructionDateEnd}
+          creationYearStart={creationYearStart}
+          creationYearEnd={creationYearEnd}
           onTypeChange={setSelectedTypes}
           onStatusChange={setSelectedStatuses}
-          onDateChange={setSelectedDate}
+          onDestructionDateStartChange={setDestructionDateStart}
+          onDestructionDateEndChange={setDestructionDateEnd}
+          onCreationYearStartChange={setCreationYearStart}
+          onCreationYearEndChange={setCreationYearEnd}
           filteredCount={filteredSites.length}
           totalCount={mockSites.length}
         />
@@ -86,12 +108,10 @@ function App() {
           <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
             <SitesTable
               sites={filteredSites}
-              onSiteClick={(site) => {
-                setHighlightedSiteId(site.id);
-                setSelectedSite(site);
-              }}
+              onSiteClick={setSelectedSite}
               onSiteHighlight={setHighlightedSiteId}
               highlightedSiteId={highlightedSiteId}
+              onExpandTable={() => setIsTableExpanded(true)}
             />
           </aside>
         </div>
@@ -104,6 +124,22 @@ function App() {
         title={selectedSite?.name}
       >
         {selectedSite && <SiteDetailPanel site={selectedSite} />}
+      </Modal>
+
+      {/* Expanded Table Modal */}
+      <Modal
+        isOpen={isTableExpanded}
+        onClose={() => setIsTableExpanded(false)}
+        title="All Heritage Sites"
+      >
+        <div className="max-h-[80vh] overflow-auto">
+          <SitesTable
+            sites={filteredSites}
+            onSiteClick={setSelectedSite}
+            onSiteHighlight={setHighlightedSiteId}
+            highlightedSiteId={highlightedSiteId}
+          />
+        </div>
       </Modal>
 
       {/* Footer */}
