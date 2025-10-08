@@ -20,9 +20,52 @@
 
 ## Today's Accomplishments (October 8, 2025)
 
+### Phase M: Enhanced Filtering System with BC/BCE Support ✅
+
+**Commit:** `644e357`
+
+**Major Features:**
+- **BC/BCE Dropdown Selectors**: Replaced text input with number input + dropdown (BCE/CE)
+  - Prevents parsing issues with partial input like "500 b"
+  - Clear UI: `[Year input] [BCE/CE ▼] to [Year input] [BCE/CE ▼]`
+  - Local state prevents filter clearing during typing
+- **Date Range Filtering**:
+  - Destruction date range (start/end dates)
+  - Creation year range with BCE support (-1000 to 2025)
+  - Labels positioned above inputs and centered
+- **Full-Screen Table Modal**:
+  - Expand button (⤢ icon) next to table header
+  - Opens modal with max-height 80vh scrollable table
+  - Maintains all table functionality (sorting, highlighting, See more)
+- **Table Improvements**:
+  - Added "Date Built" column showing yearBuilt values
+  - "See more" action column (removed modal trigger from row clicks)
+  - Row clicks now only highlight across components
+  - Table sorting by all columns with visual indicators (↑↓↕)
+- **Filter UI Enhancements**:
+  - Centered all filters horizontally and vertically
+  - "Clear filters" button with stable layout (min-w-100px prevents shift)
+  - Fixed dropdown z-index (z-9999) to appear above map
+  - Site count moved to bottom of FilterBar
+
+**Year Parsing Improvements:**
+- Enhanced `parseYearBuilt()` function handles:
+  - BCE/BC dates: "800 BCE" → -800
+  - CE/AD dates: "425 CE" → 425
+  - Century formats: "7th century" → 650 (midpoint)
+  - Complex ranges: "800 BCE - 1100 CE" → extracts first year
+  - Standalone years: "1950" → 1950
+
+**Testing:**
+- Added 27 new smoke tests (38 total, up from 11)
+- `FilterBar.test.tsx`: 6 tests for BC/BCE dropdowns and controls
+- `SitesTable.test.tsx`: 7 tests for expand button and table features
+- `siteFilters.test.ts`: 14 tests for date range and BCE filtering
+- All tests passing ✓
+
 ### Phase J: Vertical Timeline Layout ✅
 
-**Commits:** `44af99e`, `a52d346`, `723056f`
+**Previous Commits:** `44af99e`, `a52d346`, `723056f`
 
 - Transformed horizontal timeline to vertical left sidebar (320px width)
 - Full viewport height with independent scrolling
@@ -75,50 +118,66 @@ Timeline (Left) | Map (Center) | Sites Table (Right)
 ```
 Header (Heritage Sites)
     ↓
-FilterBar (Type, Status, Date) → Controls all filtering
+FilterBar (Type, Status, Destruction Dates, Built Years) → Controls all filtering
     ↓
 Timeline | Map | Table → Display filtered + synchronized data
     ↓
-Click any element → Black ring highlights across all three
+Click row → Black ring highlights across all three
+Click "See more" → Opens detail modal
+Click expand icon → Opens full-screen table modal
     ↓
 Detail Modal → Full site information
+Table Modal → Sortable full-screen view
 ```
 
 **Data Flow:**
 
-1. FilterBar → Type/Status/Date filters applied
+1. FilterBar → Type/Status/Date Range/Year Range filters applied
 2. Filtered sites → Displayed in Timeline, Map, and Table
-3. Click interaction → highlightedSiteId syncs across all components
-4. Table/Map click → Opens detail modal
+3. Row click → highlightedSiteId syncs across all components (black ring outline)
+4. "See more" button → Opens detail modal
+5. Expand icon → Opens full-screen table modal
+6. Table headers → Click to sort by column (visual indicators)
 
 **Current Dataset:** 5 sites (need 15-20 more)
 
 ## Test Coverage
 
-**Total:** 11/11 tests passing ✓
+**Total:** 38/38 tests passing ✓ (245% increase from 11!)
 
-- SiteCard: 1 test
-- HeritageMap: 1 test
-- Timeline: 3 tests
-- Filters: 3 tests
-- App: 3 tests
+- SiteCard: 2 tests
+- HeritageMap: N/A (integration tested in App)
+- Timeline: 2 tests
+- Filters: 2 tests
+- App: 1 test
+- Modal: 2 tests
+- SiteDetailPanel: 2 tests
+- **FilterBar: 6 tests** ✨ NEW
+- **SitesTable: 7 tests** ✨ NEW
+- **siteFilters: 14 tests** ✨ NEW
 
 ## Technical Highlights
 
 **Component Innovations:**
 
 1. **VerticalTimeline** - Full-height D3.js timeline with scroll capture
-2. **SitesTable** - Compact tabular view with synchronized highlighting
-3. **FilterBar** - Unified filtering with custom dropdowns
-4. **MultiSelectDropdown** - Professional checkbox-based multi-select
+2. **SitesTable** - Sortable table with expand modal and "See more" column
+3. **FilterBar** - Unified filtering with BC/BCE dropdowns and date ranges
+4. **MultiSelectDropdown** - Professional checkbox-based multi-select (z-9999)
+5. **Year Filtering** - BC/BCE dropdown selectors prevent input parsing issues
+6. **Table Modal** - Full-screen view with all table functionality preserved
 
 **UX Patterns:**
 
-- Centralized filtering with clear visual hierarchy
+- BC/BCE dropdown selectors (number input + era dropdown)
+- Date range filtering (destruction dates + creation years)
+- Centralized filtering with centered layout and stable Clear button
 - Three-column symmetric layout with sticky sidebars
 - Click-based interactions (no accidental hovers)
 - Black ring outline for synchronized selection state
 - Status as colored text (red/orange/yellow semantic colors)
+- Table sorting with visual indicators (↑↓↕)
+- Expand icon for full-screen table modal
 
 ## File Structure Updates
 
@@ -128,24 +187,28 @@ src/
 │   ├── Map/HeritageMap.tsx
 │   ├── Timeline/
 │   │   ├── Timeline.tsx (horizontal - unused)
-│   │   └── VerticalTimeline.tsx ✨ NEW
-│   ├── FilterBar/ ✨ NEW
-│   │   ├── FilterBar.tsx
-│   │   └── MultiSelectDropdown.tsx
-│   ├── SitesTable.tsx ✨ NEW
-│   ├── SiteCard.tsx (still used in old code)
+│   │   └── VerticalTimeline.tsx
+│   ├── FilterBar/
+│   │   ├── FilterBar.tsx (with BC/BCE dropdowns)
+│   │   ├── FilterBar.test.tsx ✨ NEW
+│   │   └── MultiSelectDropdown.tsx (z-9999)
+│   ├── SitesTable.tsx (with sorting & expand modal)
+│   ├── SitesTable.test.tsx ✨ NEW
+│   ├── SiteCard.tsx
 │   ├── StatusBadge.tsx
 │   ├── Modal/Modal.tsx
 │   └── SiteDetail/SiteDetailPanel.tsx
 ├── constants/
-│   ├── filters.ts (removed "all" options)
+│   ├── filters.ts (no "all" options)
 │   └── map.ts
 ├── styles/
-│   └── theme.ts (added table styles)
+│   └── theme.ts (table styles)
 ├── types/
 │   └── index.ts
 ├── utils/
-│   └── format.ts
+│   ├── format.ts
+│   ├── siteFilters.ts (enhanced year parsing)
+│   └── siteFilters.test.ts ✨ NEW
 └── data/
     └── mockSites.ts
 ```
@@ -173,15 +236,21 @@ src/
 
 - [x] Interactive map with color-coded markers (red/orange/yellow)
 - [x] Vertical timeline visualization (full viewport height)
-- [x] Unified FilterBar with Type/Status/Date filtering
-- [x] Custom multi-select dropdowns with checkboxes
-- [x] Compact sites table replacing card grid
+- [x] Unified FilterBar with Type/Status/Date Range/Year Range filtering
+- [x] BC/BCE dropdown selectors for Built year filters ✨ NEW
+- [x] Date range filtering (destruction dates + creation years) ✨ NEW
+- [x] Custom multi-select dropdowns with checkboxes (z-9999 fixed)
+- [x] Sortable sites table with visual indicators (↑↓↕) ✨ NEW
+- [x] Full-screen table modal with expand button ✨ NEW
+- [x] "See more" action column (not clickable rows) ✨ NEW
+- [x] Date Built column in table ✨ NEW
 - [x] Detail modal with full information
 - [x] Synchronized highlighting across timeline/map/table
 - [x] Accessible UI (keyboard nav, screen readers, focus trap)
 - [x] Bilingual support (English/Arabic with RTL)
 - [x] Palestinian flag-inspired color theme
-- [x] Centered text alignment for headers and content
+- [x] Centered filter layout with stable Clear button ✨ NEW
+- [x] Comprehensive test coverage (38 tests) ✨ NEW
 
 ### Remaining
 
@@ -239,9 +308,12 @@ src/
 
 1. **Three-column layout** - Excellent information density and navigation
 2. **Unified FilterBar** - Clear mental model for data control
-3. **Custom dropdowns** - Much better UX than native multi-select
-4. **Synchronized highlighting** - Single state keeps UI consistent
-5. **Table vs cards** - 70% space savings with better scannability
+3. **BC/BCE dropdowns** - Number input + dropdown prevents parsing issues
+4. **Custom dropdowns** - Much better UX than native multi-select (z-9999 for proper layering)
+5. **Synchronized highlighting** - Single state keeps UI consistent
+6. **Table vs cards** - 70% space savings with better scannability
+7. **Date range filtering** - More flexible than single date selection
+8. **Smoke tests** - Quick test coverage validates new features work
 
 ### Technical Wins
 
@@ -250,13 +322,20 @@ src/
 3. **Click-only interactions** - Reduced accidental UI changes from hovers
 4. **Status colored text** - Removed confusing badge buttons
 5. **Centered headers** - Improved visual balance and symmetry
+6. **BC/BCE state management** - Local state prevents filter clearing during typing
+7. **Layout stability** - min-width container prevents Clear button shift
+8. **Enhanced year parsing** - Handles centuries, BCE, ranges, standalone years
+9. **Table sorting with useMemo** - Performance optimization for large datasets
+10. **"See more" vs clickable rows** - Clearer user intent and interaction patterns
 
 ### Process Improvements
 
 1. **Incremental commits** - Each feature fully functional before committing
-2. **Test-driven** - All tests pass before moving forward
+2. **Test-driven** - All tests pass before moving forward (38/38 ✓)
 3. **Lint-clean** - Zero warnings throughout session
 4. **Component extraction** - MultiSelectDropdown reusable across app
+5. **Smoke test first** - Added 27 tests covering all new functionality
+6. **User-driven refinement** - Iterated on BC/BCE input based on feedback
 
 ## Commands
 
@@ -284,9 +363,9 @@ git push origin feature/thirdbranchlol
 
 ## Recovery Context
 
-**Current Branch:** feature/thirdbranchlol (3 commits ahead of main)
-**Last Commit:** `723056f` - Unified FilterBar with custom dropdowns
-**Tests:** 11/11 passing ✓
+**Current Branch:** feature/thirdbranchlol (4 commits ahead of main)
+**Last Commit:** `644e357` - Enhanced filtering system with BC/BCE support and UI improvements
+**Tests:** 38/38 passing ✓
 **Lint:** Clean ✓
 **Dev Server:** http://localhost:5173
 
@@ -294,10 +373,15 @@ git push origin feature/thirdbranchlol
 1. `44af99e` - Vertical timeline layout improvements
 2. `a52d346` - Three-column layout with sites table
 3. `723056f` - Unified FilterBar with custom dropdowns
+4. `644e357` - Enhanced filtering with BC/BCE dropdowns, date ranges, table sorting ✨ NEW
 
 **Development State:**
 
-- MVP Phase 1 complete with major UX overhaul
+- MVP Phase 1 complete with enhanced filtering system
+- BC/BCE dropdown selectors for ancient date filtering
+- Date range filtering for destruction and creation dates
+- Sortable table with expand modal and "See more" column
+- Comprehensive test coverage (38 tests, 245% increase)
 - Architecture stable and scalable
 - Ready for data collection phase
 - Need responsive design work for mobile
