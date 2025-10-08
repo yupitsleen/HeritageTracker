@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { SitesTable } from "./SitesTable";
 import type { GazaSite } from "../types";
+import { CalendarProvider } from "../contexts/CalendarContext";
 
 const mockSites: GazaSite[] = [
   {
@@ -35,20 +36,24 @@ const mockSites: GazaSite[] = [
 describe("SitesTable", () => {
   it("renders without crashing", () => {
     render(
-      <SitesTable
-        sites={mockSites}
-        onSiteClick={vi.fn()}
-      />
+      <CalendarProvider>
+        <SitesTable
+          sites={mockSites}
+          onSiteClick={vi.fn()}
+        />
+      </CalendarProvider>
     );
     expect(screen.getByText("Heritage Sites")).toBeInTheDocument();
   });
 
   it("displays table headers with sort icons", () => {
     render(
-      <SitesTable
-        sites={mockSites}
-        onSiteClick={vi.fn()}
-      />
+      <CalendarProvider>
+        <SitesTable
+          sites={mockSites}
+          onSiteClick={vi.fn()}
+        />
+      </CalendarProvider>
     );
     expect(screen.getByText("Site Name")).toBeInTheDocument();
     expect(screen.getByText("Type")).toBeInTheDocument();
@@ -59,10 +64,12 @@ describe("SitesTable", () => {
 
   it("displays site data in table rows", () => {
     render(
-      <SitesTable
-        sites={mockSites}
-        onSiteClick={vi.fn()}
-      />
+      <CalendarProvider>
+        <SitesTable
+          sites={mockSites}
+          onSiteClick={vi.fn()}
+        />
+      </CalendarProvider>
     );
     expect(screen.getByText("Test Mosque")).toBeInTheDocument();
     expect(screen.getByText("mosque")).toBeInTheDocument();
@@ -72,21 +79,25 @@ describe("SitesTable", () => {
 
   it("renders See more button for each site", () => {
     render(
-      <SitesTable
-        sites={mockSites}
-        onSiteClick={vi.fn()}
-      />
+      <CalendarProvider>
+        <SitesTable
+          sites={mockSites}
+          onSiteClick={vi.fn()}
+        />
+      </CalendarProvider>
     );
     expect(screen.getByText("See more")).toBeInTheDocument();
   });
 
   it("renders expand table button when onExpandTable is provided", () => {
     render(
-      <SitesTable
-        sites={mockSites}
-        onSiteClick={vi.fn()}
-        onExpandTable={vi.fn()}
-      />
+      <CalendarProvider>
+        <SitesTable
+          sites={mockSites}
+          onSiteClick={vi.fn()}
+          onExpandTable={vi.fn()}
+        />
+      </CalendarProvider>
     );
     const expandButton = screen.getByTitle("Expand table");
     expect(expandButton).toBeInTheDocument();
@@ -94,10 +105,12 @@ describe("SitesTable", () => {
 
   it("does not render expand button when onExpandTable is not provided", () => {
     render(
-      <SitesTable
-        sites={mockSites}
-        onSiteClick={vi.fn()}
-      />
+      <CalendarProvider>
+        <SitesTable
+          sites={mockSites}
+          onSiteClick={vi.fn()}
+        />
+      </CalendarProvider>
     );
     const expandButton = screen.queryByTitle("Expand table");
     expect(expandButton).not.toBeInTheDocument();
@@ -105,10 +118,12 @@ describe("SitesTable", () => {
 
   it("displays Arabic name when available", () => {
     render(
-      <SitesTable
-        sites={mockSites}
-        onSiteClick={vi.fn()}
-      />
+      <CalendarProvider>
+        <SitesTable
+          sites={mockSites}
+          onSiteClick={vi.fn()}
+        />
+      </CalendarProvider>
     );
     expect(screen.getByText("مسجد الاختبار")).toBeInTheDocument();
   });

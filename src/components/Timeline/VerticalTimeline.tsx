@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
+import { useCalendar } from "../../contexts/CalendarContext";
 
 interface VerticalTimelineProps {
   sites: GazaSite[];
@@ -26,6 +27,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isTimelineHovered, setIsTimelineHovered] = useState(false);
+  const { calendarType } = useCalendar();
 
   // Parse dates and sort sites chronologically
   const sitesWithDates = sites
@@ -108,7 +110,11 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
       .attr("font-size", "13px")
       .attr("font-weight", "600")
       .attr("fill", "#6b7280")
-      .text((d) => d3.timeFormat("%b %d, %Y")(d.date));
+      .text((d) =>
+        calendarType === "islamic" && d.dateDestroyedIslamic
+          ? d.dateDestroyedIslamic
+          : d3.timeFormat("%b %d, %Y")(d.date)
+      );
 
     // Add site names (right side) with text truncation
     const siteNames = items
@@ -195,7 +201,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
         onSiteHighlight?.(d.id);
       });
 
-  }, [sitesWithDates, onSiteHighlight]);
+  }, [sitesWithDates, onSiteHighlight, calendarType]);
 
   // Handle mouse wheel scroll to prevent page scroll when hovering timeline
   useEffect(() => {

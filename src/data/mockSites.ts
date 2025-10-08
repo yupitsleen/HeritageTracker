@@ -11,9 +11,11 @@ export const mockSites: GazaSite[] = [
     nameArabic: "جامع العمري الكبير",
     type: "mosque",
     yearBuilt: "7th century",
+    yearBuiltIslamic: "1st century AH",
     coordinates: [31.5069, 34.4668], // Gaza City [lat, lng]
     status: "destroyed",
     dateDestroyed: "2023-12-07",
+    dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
     description:
       "Gaza's oldest and largest mosque, originally a Byzantine church converted in the 7th century. The mosque housed rare Islamic manuscripts and served as a center of learning for centuries.",
     historicalSignificance:
@@ -48,9 +50,11 @@ export const mockSites: GazaSite[] = [
     nameArabic: "كنيسة القديس برفيريوس",
     type: "church",
     yearBuilt: "5th century (425 CE)",
+    yearBuiltIslamic: "197 BH (Before Hijra)",
     coordinates: [31.5203, 34.4547], // [lat, lng]
     status: "heavily-damaged",
     dateDestroyed: "2023-10-19",
+    dateDestroyedIslamic: "3 Rabi' al-Thani 1445 AH",
     description:
       "One of the oldest churches in the world, built in 425 CE and named after Saint Porphyrius, Bishop of Gaza. The church served Gaza's small Christian community and was a rare example of early Byzantine architecture.",
     historicalSignificance:
@@ -85,9 +89,11 @@ export const mockSites: GazaSite[] = [
     nameArabic: "موقع البلاخية الأثري",
     type: "archaeological",
     yearBuilt: "800 BCE - 1100 CE",
+    yearBuiltIslamic: "1422 BH - 493 AH",
     coordinates: [31.2656, 34.2945], // [lat, lng]
     status: "destroyed",
     dateDestroyed: "2024-01-15",
+    dateDestroyedIslamic: "4 Rajab 1445 AH",
     description:
       "Ancient seaport and settlement site with continuous occupation from the Iron Age through the Islamic period. Contained over 4,000 archaeological objects including pottery, coins, and architectural remains.",
     historicalSignificance:
@@ -122,9 +128,11 @@ export const mockSites: GazaSite[] = [
     nameArabic: "قصر الباشا",
     type: "museum",
     yearBuilt: "13th century (Mamluk period)",
+    yearBuiltIslamic: "7th century AH",
     coordinates: [31.5050, 34.4620], // Gaza City [lat, lng]
     status: "heavily-damaged",
     dateDestroyed: "2023-11-15",
+    dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
     description:
       "A 13th-century Mamluk palace that served as the residence of Napoleon Bonaparte during his 1799 Gaza campaign. Later converted into a museum showcasing Gaza's history with collections of pottery, coins, and historical artifacts.",
     historicalSignificance:
@@ -158,9 +166,11 @@ export const mockSites: GazaSite[] = [
     nameArabic: "حمام السمرة",
     type: "historic-building",
     yearBuilt: "Ottoman period (16th century)",
+    yearBuiltIslamic: "10th century AH",
     coordinates: [31.5120, 34.4710], // Gaza City [lat, lng]
     status: "damaged",
     dateDestroyed: "2024-02-10",
+    dateDestroyedIslamic: "1 Sha'ban 1445 AH",
     description:
       "A historic Ottoman bathhouse representing traditional Islamic bathing culture and social architecture. The hammam featured distinctive domed chambers, intricate stonework, and a sophisticated water heating system.",
     historicalSignificance:

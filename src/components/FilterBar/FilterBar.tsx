@@ -4,6 +4,7 @@ import { components, cn } from "../../styles/theme";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
 import { MultiSelectDropdown } from "./MultiSelectDropdown";
+import { useCalendar } from "../../contexts/CalendarContext";
 
 interface FilterBarProps {
   selectedTypes: Array<GazaSite["type"]>;
@@ -42,6 +43,8 @@ export function FilterBar({
   filteredCount,
   totalCount,
 }: FilterBarProps) {
+  const { calendarType, toggleCalendar } = useCalendar();
+
   // Local state for year input and era selection
   const [startYearInput, setStartYearInput] = React.useState("");
   const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">("CE");
@@ -52,8 +55,8 @@ export function FilterBar({
   const handleStartYearChange = (input: string, era: "CE" | "BCE") => {
     setStartYearInput(input);
     setStartYearEra(era);
-    if (input.trim()) {
-      const year = parseInt(input);
+    if (input.trim() && !isNaN(parseInt(input))) {
+      const year = Math.abs(parseInt(input)); // Ensure positive
       onCreationYearStartChange(era === "BCE" ? -year : year);
     } else {
       onCreationYearStartChange(null);
@@ -63,8 +66,8 @@ export function FilterBar({
   const handleEndYearChange = (input: string, era: "CE" | "BCE") => {
     setEndYearInput(input);
     setEndYearEra(era);
-    if (input.trim()) {
-      const year = parseInt(input);
+    if (input.trim() && !isNaN(parseInt(input))) {
+      const year = Math.abs(parseInt(input)); // Ensure positive
       onCreationYearEndChange(era === "BCE" ? -year : year);
     } else {
       onCreationYearEndChange(null);
@@ -94,6 +97,22 @@ export function FilterBar({
 
   return (
     <div className={cn(components.card.base, components.card.padding, "mb-6")}>
+      {/* Calendar Toggle */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={toggleCalendar}
+          className="px-4 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-sm font-medium text-gray-700 transition-colors"
+          aria-label="Toggle calendar type"
+        >
+          {calendarType === "gregorian" ? "Switch to Islamic Calendar" : "Switch to Gregorian Calendar"}
+        </button>
+      </div>
+
+      {/* Live region for screen readers to announce calendar changes */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {calendarType === "gregorian" ? "Displaying Gregorian calendar dates" : "Displaying Islamic calendar dates"}
+      </div>
+
       <div className="flex items-center justify-between flex-wrap gap-6">
         {/* Filter controls - centered */}
         <div className="flex-1 flex items-center gap-6 flex-wrap justify-center">
@@ -121,7 +140,9 @@ export function FilterBar({
 
           {/* Destruction Date Range */}
           <div className="flex flex-col items-center gap-2 justify-center">
-            <label className="text-sm font-medium text-gray-700">Destroyed</label>
+            <label className="text-sm font-medium text-gray-700">
+              Destroyed (Gregorian)
+            </label>
             <div className="flex items-center gap-2">
               <input
                 type="date"
@@ -145,9 +166,11 @@ export function FilterBar({
             </div>
           </div>
 
-          {/* Creation Year Range */}
+          {/* Creation Year Range - Always uses Gregorian (CE/BCE) for filtering */}
           <div className="flex flex-col items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Built</label>
+            <label className="text-sm font-medium text-gray-700">
+              Built (CE/BCE)
+            </label>
             <div className="flex items-center gap-2">
               <input
                 type="number"

@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GazaSite } from "../types";
 import { components, getStatusHexColor } from "../styles/theme";
+import { useCalendar } from "../contexts/CalendarContext";
 
 interface SitesTableProps {
   sites: GazaSite[];
@@ -25,6 +26,7 @@ export function SitesTable({
 }: SitesTableProps) {
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const { calendarType } = useCalendar();
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -56,8 +58,8 @@ export function SitesTable({
           bValue = b.status;
           break;
         case "dateDestroyed":
-          aValue = new Date(a.dateDestroyed).getTime();
-          bValue = new Date(b.dateDestroyed).getTime();
+          aValue = a.dateDestroyed ? new Date(a.dateDestroyed).getTime() : 0;
+          bValue = b.dateDestroyed ? new Date(b.dateDestroyed).getTime() : 0;
           break;
         default:
           return 0;
@@ -176,14 +178,24 @@ export function SitesTable({
                   </span>
                 </td>
                 <td className={components.table.td}>
-                  {new Date(site.dateDestroyed).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
+                  {site.dateDestroyed ? (
+                    calendarType === "islamic" && site.dateDestroyedIslamic
+                      ? site.dateDestroyedIslamic
+                      : new Date(site.dateDestroyed).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })
+                  ) : (
+                    "N/A"
+                  )}
                 </td>
                 <td className={components.table.td}>
-                  <span className="text-sm">{site.yearBuilt}</span>
+                  <span className="text-sm">
+                    {calendarType === "islamic" && site.yearBuiltIslamic
+                      ? site.yearBuiltIslamic
+                      : site.yearBuilt}
+                  </span>
                 </td>
                 <td className={components.table.td}>
                   <button

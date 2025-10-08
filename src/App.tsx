@@ -8,6 +8,7 @@ import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
+import { CalendarProvider } from "./contexts/CalendarContext";
 import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
@@ -47,7 +48,8 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <CalendarProvider>
+      <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-6")}>
@@ -151,7 +153,8 @@ function App() {
           </p>
         </div>
       </footer>
-    </div>
+      </div>
+    </CalendarProvider>
   );
 }
 

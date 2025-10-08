@@ -16,6 +16,12 @@ export interface Source {
 
 /**
  * Gaza heritage site (MVP simplified schema)
+ *
+ * Islamic Calendar Dates:
+ * - yearBuiltIslamic and dateDestroyedIslamic are manually entered and should be
+ *   verified using Islamic calendar conversion tools before data entry
+ * - These dates are stored as formatted strings for display purposes
+ * - All filtering logic uses Gregorian dates for consistency
  */
 export interface GazaSite {
   id: string;
@@ -23,9 +29,11 @@ export interface GazaSite {
   nameArabic?: string;
   type: "mosque" | "church" | "archaeological" | "museum" | "historic-building";
   yearBuilt: string;
+  yearBuiltIslamic?: string; // Manually verified Islamic calendar date
   coordinates: [number, number]; // [latitude, longitude] - Leaflet format
   status: "destroyed" | "heavily-damaged" | "damaged";
   dateDestroyed?: string;
+  dateDestroyedIslamic?: string; // Manually verified Islamic calendar date
   description: string;
   historicalSignificance: string;
   culturalValue: string;
