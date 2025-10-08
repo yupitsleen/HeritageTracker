@@ -281,8 +281,8 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
       onMouseEnter={() => setIsTimelineHovered(true)}
       onMouseLeave={() => setIsTimelineHovered(false)}
     >
-      <div className="flex items-center justify-between mb-4 flex-shrink-0 px-2">
-        <div>
+      <div className="mb-4 flex-shrink-0 px-2">
+        <div className="text-center">
           <h2 className="text-xl font-bold text-gray-800">Destruction Timeline</h2>
           <p className="text-sm text-gray-600 mt-1">
             {selectedDate
@@ -291,16 +291,18 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
           </p>
         </div>
         {selectedDate && (
-          <button
-            onClick={() => {
-              setSelectedDate(null);
-              onDateChange?.(null);
-              onSiteHighlight?.(null);
-            }}
-            className={components.button.reset}
-          >
-            Reset
-          </button>
+          <div className="mt-3 text-center">
+            <button
+              onClick={() => {
+                setSelectedDate(null);
+                onDateChange?.(null);
+                onSiteHighlight?.(null);
+              }}
+              className={components.button.reset}
+            >
+              Reset
+            </button>
+          </div>
         )}
       </div>
       <div className="overflow-y-auto flex-1 px-2">

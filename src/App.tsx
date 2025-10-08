@@ -2,7 +2,7 @@ import { useState } from "react";
 import { mockSites } from "./data/mockSites";
 import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
-import { SiteCard } from "./components/SiteCard";
+import { SitesTable } from "./components/SitesTable";
 import { HeritageMap } from "./components/Map/HeritageMap";
 import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { Filters } from "./components/Filters/Filters";
@@ -39,11 +39,31 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content - Two Column Layout */}
+      {/* Main Content - Three Column Layout */}
       <main className={cn(components.container.base, components.container.section)}>
+        {/* Stats Summary */}
+        <div className={cn(components.card.base, components.card.padding, "mb-8 text-center")}>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Heritage Sites ({mockSites.length} sample sites)
+          </h2>
+          <p className="text-gray-600">
+            Click on map markers or table rows to see site details. Scroll timeline and table independently.
+          </p>
+        </div>
+
+        {/* Filters */}
+        <Filters
+          selectedTypes={selectedTypes}
+          selectedStatuses={selectedStatuses}
+          onTypeChange={setSelectedTypes}
+          onStatusChange={setSelectedStatuses}
+          filteredCount={filteredSites.length}
+          totalCount={mockSites.length}
+        />
+
         <div className="flex gap-6">
           {/* Left Sidebar - Timeline (Sticky) */}
-          <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
+          <aside className="w-80 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
             <VerticalTimeline
               sites={typeAndStatusFilteredSites}
               onDateChange={setSelectedDate}
@@ -51,60 +71,28 @@ function App() {
             />
           </aside>
 
-          {/* Right Main Content */}
+          {/* Center - Map */}
           <div className="flex-1 min-w-0">
-            {/* Stats Summary */}
-            <div className={cn(components.card.base, components.card.padding, "mb-8")}>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                Heritage Sites ({mockSites.length} sample sites)
-              </h2>
-              <p className="text-gray-600">
-                Click on map markers to see site details. Scroll to explore the interactive map.
-              </p>
-            </div>
-
-            {/* Filters */}
-            <Filters
-              selectedTypes={selectedTypes}
-              selectedStatuses={selectedStatuses}
-              onTypeChange={setSelectedTypes}
-              onStatusChange={setSelectedStatuses}
-              filteredCount={filteredSites.length}
-              totalCount={mockSites.length}
+            <HeritageMap
+              sites={filteredSites}
+              onSiteClick={setSelectedSite}
+              highlightedSiteId={highlightedSiteId}
+              onSiteHighlight={setHighlightedSiteId}
             />
-
-            {/* Interactive Map */}
-            <div className="mb-8">
-              <HeritageMap
-                sites={filteredSites}
-                onSiteClick={setSelectedSite}
-                highlightedSiteId={highlightedSiteId}
-                onSiteHighlight={setHighlightedSiteId}
-              />
-            </div>
-
-            {/* Sites List */}
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                {filteredSites.length === mockSites.length
-                  ? "All Sites"
-                  : `Sites (${filteredSites.length} of ${mockSites.length})`}
-              </h3>
-            </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-              {filteredSites.map((site) => (
-                <SiteCard
-                  key={site.id}
-                  site={site}
-                  onHighlight={() => setHighlightedSiteId(site.id)}
-                  onViewDetails={() => {
-                    setHighlightedSiteId(site.id);
-                    setSelectedSite(site);
-                  }}
-                />
-              ))}
-            </div>
           </div>
+
+          {/* Right Sidebar - Sites Table (Sticky) */}
+          <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
+            <SitesTable
+              sites={filteredSites}
+              onSiteClick={(site) => {
+                setHighlightedSiteId(site.id);
+                setSelectedSite(site);
+              }}
+              onSiteHighlight={setHighlightedSiteId}
+              highlightedSiteId={highlightedSiteId}
+            />
+          </aside>
         </div>
       </main>
 
