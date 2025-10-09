@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import type { GazaSite } from "../../types";
-import { getStatusHexColor, components } from "../../styles/theme";
+import { getStatusHexColor } from "../../styles/theme";
+import { useCalendar } from "../../contexts/CalendarContext";
 
 interface VerticalTimelineProps {
   sites: GazaSite[];
-  onDateChange?: (date: Date | null) => void;
   onSiteHighlight?: (siteId: string | null) => void;
 }
 
 // Constants for vertical timeline dimensions
 const TIMELINE_CONFIG = {
-  MARGIN: { top: 20, right: 20, bottom: 20, left: 100 },
+  MARGIN: { top: 20, right: 40, bottom: 20, left: 100 },
   ITEM_HEIGHT: 60, // Height per timeline item
   LINE_X: 100, // X position of vertical line
   MARKER_RADIUS: { default: 8, hover: 12, selected: 10 },
@@ -23,9 +23,11 @@ const TIMELINE_CONFIG = {
  * Vertical timeline component showing destruction events chronologically
  * Scales better than horizontal timeline for many data points
  */
-export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: VerticalTimelineProps) {
+export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isTimelineHovered, setIsTimelineHovered] = useState(false);
+  const { calendarType } = useCalendar();
 
   // Parse dates and sort sites chronologically
   const sitesWithDates = sites
@@ -43,7 +45,16 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
     svg.selectAll("*").remove(); // Clear previous render
 
     const { MARGIN, ITEM_HEIGHT, LINE_X } = TIMELINE_CONFIG;
-    const height = sitesWithDates.length * ITEM_HEIGHT + MARGIN.top + MARGIN.bottom;
+
+    // Calculate content height based on number of sites
+    const contentHeight = sitesWithDates.length * ITEM_HEIGHT + MARGIN.top + MARGIN.bottom;
+
+    // Get container height (use viewport height as minimum)
+    const container = svgRef.current.parentElement;
+    const containerHeight = container ? container.clientHeight : window.innerHeight;
+
+    // Use the larger of content height or container height
+    const height = Math.max(contentHeight, containerHeight);
 
     // Set SVG height dynamically
     svg.attr("height", height);
@@ -58,12 +69,12 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
       .domain([0, sitesWithDates.length - 1])
       .range([0, sitesWithDates.length * ITEM_HEIGHT]);
 
-    // Draw vertical timeline line
+    // Draw vertical timeline line (extends to full container height)
     g.append("line")
       .attr("x1", LINE_X)
       .attr("x2", LINE_X)
       .attr("y1", 0)
-      .attr("y2", sitesWithDates.length * ITEM_HEIGHT)
+      .attr("y2", height - MARGIN.top - MARGIN.bottom)
       .attr("stroke", "#cbd5e1")
       .attr("stroke-width", 3);
 
@@ -99,10 +110,14 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
       .attr("font-size", "13px")
       .attr("font-weight", "600")
       .attr("fill", "#6b7280")
-      .text((d) => d3.timeFormat("%b %d, %Y")(d.date));
+      .text((d) =>
+        calendarType === "islamic" && d.dateDestroyedIslamic
+          ? d.dateDestroyedIslamic
+          : d3.timeFormat("%b %d, %Y")(d.date)
+      );
 
-    // Add site names (right side)
-    items
+    // Add site names (right side) with text truncation
+    const siteNames = items
       .append("text")
       .attr("class", "site-name")
       .attr("x", LINE_X + 20)
@@ -113,6 +128,33 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
       .attr("font-weight", "500")
       .attr("fill", "#1f2937")
       .text((d) => d.name);
+
+    // Truncate text that's too long and add ellipsis
+    siteNames.each(function (d) {
+      const textElement = d3.select(this);
+      const fullText = d.name;
+      const maxWidth = 220; // Max width in pixels before truncation
+
+      // Check if getComputedTextLength is available (not available in test environment)
+      if (typeof (this as SVGTextElement).getComputedTextLength !== "function") {
+        return;
+      }
+
+      let textLength = (this as SVGTextElement).getComputedTextLength();
+      let text = fullText;
+
+      if (textLength > maxWidth) {
+        // Binary search for optimal length
+        while (textLength > maxWidth && text.length > 0) {
+          text = text.slice(0, -1);
+          textElement.text(text + "...");
+          textLength = (this as SVGTextElement).getComputedTextLength();
+        }
+
+        // Add tooltip for full name
+        textElement.append("title").text(fullText);
+      }
+    });
 
     // Add status labels (right side, below name)
     items
@@ -128,124 +170,78 @@ export function VerticalTimeline({ sites, onDateChange, onSiteHighlight }: Verti
         return statusText.charAt(0).toUpperCase() + statusText.slice(1);
       });
 
-    // Add hover and click interactions
+    // Add hover and click interactions (highlighting only, no filtering)
     items
-      .on("mouseenter", function (event, d) {
-        const isSelected = selectedDate?.getTime() === d.date.getTime();
-
+      .on("mouseenter", function () {
         // Enlarge marker
         d3.select(this)
           .select(".event-marker")
-          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover)
-          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default)
-          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover);
 
         // Highlight site name
         d3.select(this)
           .select(".site-name")
           .attr("font-weight", "700")
           .attr("fill", "#111827");
-
-        // Highlight on map
-        onSiteHighlight?.(d.id);
       })
-      .on("mouseleave", function (event, d) {
-        const isSelected = selectedDate?.getTime() === d.date.getTime();
-
+      .on("mouseleave", function () {
         // Reset marker size
         d3.select(this)
           .select(".event-marker")
-          .attr("r", isSelected ? TIMELINE_CONFIG.MARKER_RADIUS.selected : TIMELINE_CONFIG.MARKER_RADIUS.default)
-          .attr("stroke", isSelected ? TIMELINE_CONFIG.STROKE_COLOR.selected : TIMELINE_CONFIG.STROKE_COLOR.default)
-          .attr("stroke-width", isSelected ? TIMELINE_CONFIG.STROKE_WIDTH.selected : TIMELINE_CONFIG.STROKE_WIDTH.default);
+          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default);
 
         // Reset site name
         d3.select(this)
           .select(".site-name")
-          .attr("font-weight", isSelected ? "700" : "500")
-          .attr("fill", isSelected ? "#111827" : "#1f2937");
-
-        // Clear highlight unless item is selected
-        if (!isSelected) {
-          onSiteHighlight?.(null);
-        }
-      })
-      .on("click", function (event, d) {
-        const newDate = selectedDate?.getTime() === d.date.getTime() ? null : d.date;
-        setSelectedDate(newDate);
-        onDateChange?.(newDate);
-        onSiteHighlight?.(d.id);
-
-        // Reset all markers
-        g.selectAll(".event-marker")
-          .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.default)
-          .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.default)
-          .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default);
-
-        // Reset all site names
-        g.selectAll(".site-name")
           .attr("font-weight", "500")
           .attr("fill", "#1f2937");
-
-        // Highlight selected item
-        if (newDate) {
-          d3.select(this)
-            .select(".event-marker")
-            .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
-            .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected)
-            .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected);
-
-          d3.select(this)
-            .select(".site-name")
-            .attr("font-weight", "700")
-            .attr("fill", "#111827");
-        }
+      })
+      .on("click", function (event, d) {
+        // Only highlight the site, no filtering
+        onSiteHighlight?.(d.id);
       });
 
-    // Apply selected state on initial render
-    if (selectedDate) {
-      items
-        .filter((d) => d.date.getTime() === selectedDate.getTime())
-        .each(function () {
-          d3.select(this)
-            .select(".event-marker")
-            .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.selected)
-            .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.selected)
-            .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.selected);
+  }, [sitesWithDates, onSiteHighlight, calendarType]);
 
-          d3.select(this)
-            .select(".site-name")
-            .attr("font-weight", "700")
-            .attr("fill", "#111827");
-        });
-    }
-  }, [sitesWithDates, selectedDate, onDateChange, onSiteHighlight]);
+  // Handle mouse wheel scroll to prevent page scroll when hovering timeline
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (isTimelineHovered && containerRef.current) {
+        // Prevent page scroll
+        e.preventDefault();
+
+        // Manually scroll the timeline container
+        const scrollContainer = containerRef.current.querySelector('.overflow-y-auto');
+        if (scrollContainer) {
+          scrollContainer.scrollTop += e.deltaY;
+        }
+      }
+    };
+
+    // Add wheel listener with passive: false to allow preventDefault
+    document.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      document.removeEventListener('wheel', handleWheel);
+    };
+  }, [isTimelineHovered]);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full"
+      onMouseEnter={() => setIsTimelineHovered(true)}
+      onMouseLeave={() => setIsTimelineHovered(false)}
+    >
+      <div className="mb-4 flex-shrink-0 px-2">
+        <div className="text-center">
           <h2 className="text-xl font-bold text-gray-800">Destruction Timeline</h2>
           <p className="text-sm text-gray-600 mt-1">
-            {selectedDate
-              ? `Showing sites destroyed on or before ${d3.timeFormat("%B %d, %Y")(selectedDate)}`
-              : "Click any site to filter by date"}
+            Click any site to highlight on map and table
           </p>
         </div>
-        {selectedDate && (
-          <button
-            onClick={() => {
-              setSelectedDate(null);
-              onDateChange?.(null);
-              onSiteHighlight?.(null);
-            }}
-            className={components.button.reset}
-          >
-            Reset
-          </button>
-        )}
       </div>
-      <div className="overflow-y-auto max-h-[500px]">
+      <div className="overflow-y-auto flex-1 px-2">
         <svg ref={svgRef} className="w-full" />
       </div>
     </div>

@@ -32,10 +32,22 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       {/* Key Information Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-lg p-4">
         <InfoItem label="Site Type" value={formatLabel(site.type)} />
-        <InfoItem label="Year Built" value={site.yearBuilt} />
-        <InfoItem label="Location" value={site.location} />
+        <div>
+          <span className="text-sm font-semibold text-gray-700">Year Built:</span>
+          <p className="text-gray-900 mt-1">{site.yearBuilt}</p>
+          {site.yearBuiltIslamic && (
+            <p className="text-gray-600 text-sm mt-1">{site.yearBuiltIslamic}</p>
+          )}
+        </div>
+        <InfoItem label="Status" value={formatLabel(site.status)} />
         {site.dateDestroyed && (
-          <InfoItem label="Date Destroyed/Damaged" value={site.dateDestroyed} />
+          <div>
+            <span className="text-sm font-semibold text-gray-700">Date Destroyed/Damaged:</span>
+            <p className="text-gray-900 mt-1">{site.dateDestroyed}</p>
+            {site.dateDestroyedIslamic && (
+              <p className="text-gray-600 text-sm mt-1">{site.dateDestroyedIslamic}</p>
+            )}
+          </div>
         )}
       </div>
 
@@ -43,11 +55,6 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       <section>
         <h4 className="text-lg font-semibold text-gray-900 mb-2">Description</h4>
         <p className="text-gray-700 leading-relaxed">{site.description}</p>
-        {site.descriptionArabic && (
-          <p className="text-gray-700 leading-relaxed mt-3 text-right" dir="rtl">
-            {site.descriptionArabic}
-          </p>
-        )}
       </section>
 
       {/* Historical Significance */}
@@ -69,25 +76,40 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       )}
 
       {/* Images Section */}
-      {site.images && site.images.length > 0 && (
+      {site.images && (
         <section>
           <h4 className="text-lg font-semibold text-gray-900 mb-3">Images</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {site.images.map((image, index) => (
-              <div key={index} className="space-y-2">
+            {site.images.before && (
+              <div className="space-y-2">
                 <img
-                  src={image.url}
-                  alt={image.caption || `${site.name} - Image ${index + 1}`}
+                  src={site.images.before}
+                  alt={`${site.name} - Before`}
                   className="w-full h-64 object-cover rounded-lg shadow-md"
                 />
-                {image.caption && (
-                  <p className="text-sm text-gray-600">{image.caption}</p>
-                )}
-                {image.credit && (
-                  <p className="text-xs text-gray-500">Credit: {image.credit}</p>
-                )}
+                <p className="text-sm text-gray-600">Before destruction</p>
               </div>
-            ))}
+            )}
+            {site.images.after && (
+              <div className="space-y-2">
+                <img
+                  src={site.images.after}
+                  alt={`${site.name} - After`}
+                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                />
+                <p className="text-sm text-gray-600">After destruction</p>
+              </div>
+            )}
+            {site.images.satellite && (
+              <div className="space-y-2">
+                <img
+                  src={site.images.satellite}
+                  alt={`${site.name} - Satellite`}
+                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                />
+                <p className="text-sm text-gray-600">Satellite imagery</p>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -105,19 +127,9 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="font-medium text-gray-900">{source.title}</p>
-                    {source.author && (
-                      <p className="text-sm text-gray-600 mt-1">By {source.author}</p>
-                    )}
-                    {source.publisher && (
-                      <p className="text-sm text-gray-600">
-                        Published by {source.publisher}
-                      </p>
-                    )}
+                    <p className="text-sm text-gray-600 mt-1">{source.organization}</p>
                     {source.date && (
                       <p className="text-sm text-gray-500 mt-1">{source.date}</p>
-                    )}
-                    {source.description && (
-                      <p className="text-sm text-gray-700 mt-2">{source.description}</p>
                     )}
                   </div>
                   {source.url && (

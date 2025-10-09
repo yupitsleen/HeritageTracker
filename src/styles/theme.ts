@@ -135,8 +135,8 @@ export const components = {
   // Header styles
   header: {
     base: "bg-[#212529] text-white shadow-lg border-b-2 border-[#16a34a]",  // Black with green accent
-    title: "text-3xl font-bold",
-    subtitle: "text-[#e9ecef] mt-2",  // Light gray text
+    title: "text-3xl font-bold text-center",
+    subtitle: "text-[#e9ecef] mt-2 text-center",  // Light gray text
   },
 
   // Footer styles
@@ -148,6 +148,15 @@ export const components = {
   // Map styles
   map: {
     container: "h-[600px] w-full rounded-lg shadow-md border border-[#dee2e6]",
+  },
+
+  // Table styles
+  table: {
+    base: "w-full text-sm text-left",
+    header: "bg-[#212529] text-white sticky top-0 z-10",
+    th: "px-4 py-3 font-semibold",
+    row: "border-b border-[#dee2e6] hover:bg-[#f8f9fa] cursor-pointer transition-all",
+    td: "px-4 py-3",
   },
 };
 

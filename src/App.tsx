@@ -2,33 +2,54 @@ import { useState } from "react";
 import { mockSites } from "./data/mockSites";
 import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
-import { SiteCard } from "./components/SiteCard";
+import { SitesTable } from "./components/SitesTable";
 import { HeritageMap } from "./components/Map/HeritageMap";
 import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
-import { Filters } from "./components/Filters/Filters";
+import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
-import { filterSitesByTypeAndStatus, filterSitesByDate } from "./utils/siteFilters";
+import { CalendarProvider } from "./contexts/CalendarContext";
+import {
+  filterSitesByTypeAndStatus,
+  filterSitesByDestructionDate,
+  filterSitesByCreationYear
+} from "./utils/siteFilters";
 
 function App() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
+  const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
+  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
+  const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
+  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
 
-  // Filter sites by type and status (for timeline display)
+  // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
     mockSites,
     selectedTypes,
     selectedStatuses
   );
 
-  // Filter sites based on date, type, and status (for map and cards)
-  const filteredSites = filterSitesByDate(typeAndStatusFilteredSites, selectedDate);
+  // Filter by destruction date range
+  const destructionDateFilteredSites = filterSitesByDestructionDate(
+    typeAndStatusFilteredSites,
+    destructionDateStart,
+    destructionDateEnd
+  );
+
+  // Filter by creation year range
+  const filteredSites = filterSitesByCreationYear(
+    destructionDateFilteredSites,
+    creationYearStart,
+    creationYearEnd
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <CalendarProvider>
+      <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-6")}>
@@ -39,72 +60,62 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content - Two Column Layout */}
+      {/* Main Content - Three Column Layout */}
       <main className={cn(components.container.base, components.container.section)}>
+        {/* Stats Summary */}
+        <div className={cn(components.card.base, components.card.padding, "mb-8 text-center")}>
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Heritage Sites ({mockSites.length} sample sites)
+          </h2>
+        </div>
+
+        {/* Unified Filter Bar */}
+        <FilterBar
+          selectedTypes={selectedTypes}
+          selectedStatuses={selectedStatuses}
+          destructionDateStart={destructionDateStart}
+          destructionDateEnd={destructionDateEnd}
+          creationYearStart={creationYearStart}
+          creationYearEnd={creationYearEnd}
+          onTypeChange={setSelectedTypes}
+          onStatusChange={setSelectedStatuses}
+          onDestructionDateStartChange={setDestructionDateStart}
+          onDestructionDateEndChange={setDestructionDateEnd}
+          onCreationYearStartChange={setCreationYearStart}
+          onCreationYearEndChange={setCreationYearEnd}
+          filteredCount={filteredSites.length}
+          totalCount={mockSites.length}
+        />
+
         <div className="flex gap-6">
           {/* Left Sidebar - Timeline (Sticky) */}
-          <aside className="w-80 flex-shrink-0 sticky top-8 self-start">
+          <aside className="w-80 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
             <VerticalTimeline
               sites={typeAndStatusFilteredSites}
-              onDateChange={setSelectedDate}
               onSiteHighlight={setHighlightedSiteId}
             />
           </aside>
 
-          {/* Right Main Content */}
+          {/* Center - Map */}
           <div className="flex-1 min-w-0">
-            {/* Stats Summary */}
-            <div className={cn(components.card.base, components.card.padding, "mb-8")}>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                Heritage Sites ({mockSites.length} sample sites)
-              </h2>
-              <p className="text-gray-600">
-                Click on map markers to see site details. Scroll to explore the interactive map.
-              </p>
-            </div>
-
-            {/* Filters */}
-            <Filters
-              selectedTypes={selectedTypes}
-              selectedStatuses={selectedStatuses}
-              onTypeChange={setSelectedTypes}
-              onStatusChange={setSelectedStatuses}
-              filteredCount={filteredSites.length}
-              totalCount={mockSites.length}
+            <HeritageMap
+              sites={filteredSites}
+              onSiteClick={setSelectedSite}
+              highlightedSiteId={highlightedSiteId}
+              onSiteHighlight={setHighlightedSiteId}
             />
-
-            {/* Interactive Map */}
-            <div className="mb-8">
-              <HeritageMap
-                sites={filteredSites}
-                onSiteClick={setSelectedSite}
-                highlightedSiteId={highlightedSiteId}
-                onSiteHighlight={setHighlightedSiteId}
-              />
-            </div>
-
-            {/* Sites List */}
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                {filteredSites.length === mockSites.length
-                  ? "All Sites"
-                  : `Sites (${filteredSites.length} of ${mockSites.length})`}
-              </h3>
-            </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-              {filteredSites.map((site) => (
-                <SiteCard
-                  key={site.id}
-                  site={site}
-                  onHighlight={() => setHighlightedSiteId(site.id)}
-                  onViewDetails={() => {
-                    setHighlightedSiteId(site.id);
-                    setSelectedSite(site);
-                  }}
-                />
-              ))}
-            </div>
           </div>
+
+          {/* Right Sidebar - Sites Table (Sticky) */}
+          <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
+            <SitesTable
+              sites={filteredSites}
+              onSiteClick={setSelectedSite}
+              onSiteHighlight={setHighlightedSiteId}
+              highlightedSiteId={highlightedSiteId}
+              onExpandTable={() => setIsTableExpanded(true)}
+            />
+          </aside>
         </div>
       </main>
 
@@ -117,6 +128,22 @@ function App() {
         {selectedSite && <SiteDetailPanel site={selectedSite} />}
       </Modal>
 
+      {/* Expanded Table Modal */}
+      <Modal
+        isOpen={isTableExpanded}
+        onClose={() => setIsTableExpanded(false)}
+        title="All Heritage Sites"
+      >
+        <div className="max-h-[80vh] overflow-auto">
+          <SitesTable
+            sites={filteredSites}
+            onSiteClick={setSelectedSite}
+            onSiteHighlight={setHighlightedSiteId}
+            highlightedSiteId={highlightedSiteId}
+          />
+        </div>
+      </Modal>
+
       {/* Footer */}
       <footer className={components.footer.base}>
         <div className={cn(components.container.base, "py-6")}>
@@ -126,7 +153,8 @@ function App() {
           </p>
         </div>
       </footer>
-    </div>
+      </div>
+    </CalendarProvider>
   );
 }
 
