@@ -1,122 +1,132 @@
 # CURRENT_SESSION.md
 
 **Date:** October 9, 2025
-**Branch:** feature/thirdbranchlol
+**Branch:** feature/fourthbranch
 **Project:** Heritage Tracker - Palestinian Cultural Heritage Documentation
 
-## Session Status: ✅ ISLAMIC CALENDAR + UI POLISH COMPLETE
+## Session Status: ✅ STYLE REFACTORING COMPLETE → 🚀 READY FOR DATA SCALE-UP
 
 ## Project Quick Reference
 
 **Purpose:** Document destruction of 20-25 significant Gaza heritage sites (2023-2024)
 **Tech Stack:** React 19+ + TypeScript + Vite 7+ + Tailwind CSS v4 + Leaflet + D3.js
-**Dev Server:** http://localhost:5174
+**Dev Server:** http://localhost:5173
+**Data Sources:** UNESCO, Forensic Architecture, Heritage for Peace
 
 ## Today's Accomplishments (October 9, 2025)
 
-### Phase N: Islamic Calendar Toggle + UI Refinements ✅
+### Phase O: FilterBar UI Improvements + Style Refactoring ✅
 
-**Commits:** `a2aa73d` (Islamic calendar), ongoing UI improvements
+**Branch:** feature/fourthbranch (9 commits ahead of origin)
 
-**Major Features:**
+**Commits:**
+1. `e1a3148` - FilterBar layout and visual grouping improvements
+2. `3f6286c` - Centralize FilterBar styles in theme + optimize tests
+3. `0dcb54f` - Timeline layout improvements and text truncation removal
 
-- **Islamic Calendar Support** - Hijri dates (AH/BH) stored as formatted strings
-- **Calendar Toggle Button** - Switch between Gregorian and Islamic display
-- **CalendarContext** - Global state management for calendar type
-- **Dual Calendar Display** - Modal shows both calendars simultaneously
-- **Accessibility** - Live region announcements for screen readers
-- **Manual Verification** - Islamic dates documented as requiring verification
+**Major Changes:**
 
-**UI Polish:**
+- **FilterBar UI Polish:**
+  - Calendar Toggle aligned with filter elements
+  - Reduced spacing throughout (gap-6→gap-4, mt-3→mt-2, px-6 py-4→px-4 py-3)
+  - Added subtle visual grouping (borders + backgrounds) for date filter sections
+  - More compact, less wasted space
 
-- **Timeline Edge Alignment** - Removed container padding, timeline truly hugs left edge
-- **FilterBar Redesign** - Sleek `items-end` alignment with smaller labels (text-xs)
-- **Table Border** - Outer border (border-2 border-gray-300 rounded-lg) for visual clarity
-- **Info Icon Tooltips** - Gregorian-only filter explanation with z-[10000]
-- **Expand Icon Relocation** - Next to "Heritage Sites" header with hover state
+- **Style Centralization:**
+  - Extracted repetitive Tailwind classes to `theme.ts`
+  - Added `button.toggle`, `label.filter`, and `filter.*` component styles
+  - FilterBar now uses semantic class names (e.g., `components.filter.group`)
+  - Cleaner JSX, easier maintenance
 
-**Testing:**
+- **Timeline Improvements:**
+  - Adjusted width (w-80→w-96) for better spacing
+  - Removed text truncation logic (was causing issues)
+  - Added overflow-visible for natural text flow
 
-- Added 7 new tests for CalendarContext (45 total, up from 38)
-- All FilterBar/SitesTable tests updated with CalendarProvider wrapper
-- All tests passing ✓
-
-**Technical Decisions:**
-
-1. **Stored vs Calculated Islamic Dates** - Chose storage for accuracy and simplicity
-2. **Filters Stay Gregorian** - Consistent filtering logic, Islamic display-only
-3. **Context Performance** - Documented acceptable for MVP scale (3-4 consumers)
-4. **Layout Restructure** - Separated padding concerns (FilterBar padded, layout edges clean)
-
-### Previous Sessions (October 8, 2025)
-
-### Phase M: Enhanced Filtering with BC/BCE Support ✅
-
-**Commit:** `644e357`
-
-**Major Features:**
-
-- **BC/BCE Dropdown Selectors** - Number input + era dropdown (BCE/CE) prevents parsing issues
-- **Date Range Filtering** - Destruction dates + creation years with BCE support (-1000 to 2025)
-- **Full-Screen Table Modal** - Expand button (⤢) opens 80vh scrollable table with all functionality
-- **Table Improvements** - "Date Built" column, "See more" action column, row clicks only highlight
-- **Table Sorting** - Click headers to sort with visual indicators (↑↓↕)
-- **Enhanced Year Parsing** - Handles "800 BCE", "7th century", "800 BCE - 1100 CE", standalone years
-
-**UI Enhancements:**
-
-- Centered filters with stable "Clear filters" button (min-w-100px prevents shift)
-- Fixed dropdown z-index (z-9999) appears above map
-- Labels positioned above inputs and centered
+- **Test Optimization:**
+  - Fixed FilterBar test (removed obsolete "Filters:" check)
+  - Optimized vitest config (forks→threads pool)
+  - Added dependency optimizer for web transforms
+  - All 39 tests passing ✓
 
 **Testing:**
+- 39/39 tests passing ✓
+- Lint clean ✓
+- Test runtime: ~11s (acceptable for React component tests with jsdom)
 
-- Added 27 new smoke tests (38 total, up from 11)
-- FilterBar: 6 tests, SitesTable: 7 tests, siteFilters: 14 tests
-- All tests passing ✓
+## NEXT PHASE: Data Scale-Up Preparation
 
-### Phase J-L: Three-Column Dashboard (Previous) ✅
+### Current State
+- **Dataset:** 5 sites documented
+- **Target:** 20-25 sites total (need 15-20 more)
+- **Status:** Codebase ready, need to prepare for data scale
 
-**Architectural Change:**
+### Phase 1: Prepare for Data (IN PROGRESS)
 
-```
-Timeline (320px) | Map (Flexible) | Table (384px)
-```
+**Objective:** Ensure codebase can handle 25 sites before adding data
 
-- **Vertical Timeline** - Full viewport height, independent scrolling, text truncation
-- **Unified FilterBar** - Type/Status/Date/Year filters with custom multi-select dropdowns
-- **Sites Table** - Sortable, compact (70% space savings vs cards), status as colored text
-- **Synchronized Highlighting** - Black ring outline across all three components
-- **Click-based Interactions** - No accidental hovers, clear user intent
+**Tasks:**
+1. ✅ **Data validation test** - Schema validation to catch errors in new sites
+2. ✅ **Performance smoke test** - Verify 25+ sites render without issues
+3. ✅ **Search/filter by name** - Critical with 25 sites (users need search)
+4. ✅ **Data template/helper** - Simplify adding new sites in correct format
+
+**Why Phase 1 First?**
+- Catch data entry errors automatically
+- Ensure performance doesn't degrade
+- Provide essential UX features for 25 sites
+- Make data entry as easy as possible
+
+### Phase 2: Data Collection (AFTER PHASE 1)
+
+**Research Task:** Claude will research and compile 15-20 Gaza heritage sites from verified sources:
+- UNESCO damage assessments
+- Forensic Architecture investigations
+- Heritage for Peace reports
+
+**Target Distribution:**
+- Religious: 3 more sites
+- Museums: 3 more sites
+- Archaeological: 5 more sites
+- Historic Buildings: 5 more sites
+
+**Required for Each Site:**
+- Name (English + Arabic)
+- Coordinates (within Gaza bounds)
+- Year built (with era)
+- Type (mosque/church/archaeological/museum/historic-building)
+- Status (destroyed/heavily-damaged/damaged)
+- Date destroyed (ISO format)
+- Description
+- Sources with URLs (minimum 1)
+- Islamic calendar dates (optional but preferred)
 
 ## Current System Architecture
 
 ```
-Header → FilterBar (controls all filtering)
+Header → FilterBar (controls all filtering + calendar toggle)
        ↓
-Timeline | Map | Table (display filtered + synchronized data)
+Timeline (w-96) | Map (Flexible) | Table (w-96)
        ↓
 Row click → Black ring highlights across all
-"See more" → Detail modal
-Expand icon → Full-screen table modal
+"See more" → Detail modal (z-10000)
+Expand icon → Full-screen table modal (z-9999)
 ```
 
 **Data Flow:**
-
 1. FilterBar applies filters (Type/Status/Date Range/Year Range)
 2. Filtered sites display in Timeline, Map, Table
 3. Click interactions sync highlightedSiteId (black ring outline)
-4. "See more" opens detail modal, Expand opens table modal
-
-**Current Dataset:** 5 sites (need 15-20 more)
+4. Calendar toggle switches between Gregorian/Islamic display
+5. "See more" opens detail modal, Expand opens table modal
 
 ## Test Coverage
 
-**Total:** 45/45 tests passing ✓ (309% increase from 11 original)
+**Total:** 39/39 tests passing ✓
 
-- SiteCard: 2, Timeline: 2, Filters: 2, App: 1, Modal: 2, SiteDetailPanel: 2
-- FilterBar: 6, SitesTable: 7, siteFilters: 14
-- **CalendarContext: 4** ✨ (NEW)
+- **Component Tests:** App (1), FilterBar (9), SitesTable (7), SiteDetailPanel (2), Modal (2), CalendarContext (4)
+- **Utility Tests:** siteFilters (14)
+- **Runtime:** ~11s (transform 1.34s, setup 915ms, collect 2.65s, tests 3.42s)
 
 ## File Structure
 
@@ -124,22 +134,27 @@ Expand icon → Full-screen table modal
 src/
 ├── components/
 │   ├── FilterBar/
-│   │   ├── FilterBar.tsx (BC/BCE dropdowns, calendar toggle, tooltips)
+│   │   ├── FilterBar.tsx (theme styles, calendar toggle)
 │   │   ├── FilterBar.test.tsx
-│   │   └── MultiSelectDropdown.tsx (z-9999)
-│   ├── SitesTable.tsx (sorting, expand modal, outer border)
-│   ├── SitesTable.test.tsx
-│   ├── Timeline/VerticalTimeline.tsx (calendar support, left-edge aligned)
+│   │   ├── MultiSelectDropdown.tsx (z-9999)
+│   │   └── FilterTag.tsx
+│   ├── Form/
+│   │   ├── Input.tsx
+│   │   └── Select.tsx
+│   ├── SitesTable.tsx (sorting, expand modal)
+│   ├── Timeline/VerticalTimeline.tsx (w-96, overflow-visible)
 │   ├── Map/HeritageMap.tsx
 │   ├── Modal/Modal.tsx
-│   └── Tooltip.tsx ✨ (NEW)
+│   └── Tooltip.tsx
 ├── contexts/
-│   ├── CalendarContext.tsx ✨ (NEW)
-│   └── CalendarContext.test.tsx ✨ (NEW)
+│   ├── CalendarContext.tsx
+│   └── CalendarContext.test.tsx
+├── styles/
+│   └── theme.ts (centralized styles, filter.* components)
 ├── utils/
-│   ├── siteFilters.ts (enhanced year parsing)
+│   ├── siteFilters.ts (BCE parsing, date ranges)
 │   └── siteFilters.test.ts
-└── data/mockSites.ts (Islamic dates added to all 5 sites)
+└── data/mockSites.ts (5 sites with Islamic dates)
 ```
 
 ## MVP Features Status
@@ -147,7 +162,7 @@ src/
 ### Completed ✓
 
 - [x] Interactive map (red/orange/yellow markers)
-- [x] Vertical timeline (full viewport height, left-edge aligned)
+- [x] Vertical timeline (full viewport height, w-96)
 - [x] FilterBar (Type/Status/Date/Year with BC/BCE dropdowns)
 - [x] Date range filtering (destruction + creation)
 - [x] Sortable table with visual indicators
@@ -155,21 +170,28 @@ src/
 - [x] Detail modal with full information
 - [x] Synchronized highlighting (timeline/map/table)
 - [x] Bilingual support (English/Arabic RTL)
-- [x] **Islamic calendar toggle** ✨ (NEW)
-- [x] **Calendar context with accessibility** ✨ (NEW)
-- [x] **Dual calendar display in modals** ✨ (NEW)
-- [x] **Info icon tooltips** ✨ (NEW)
+- [x] Islamic calendar toggle
+- [x] Calendar context with accessibility
+- [x] Dual calendar display in modals
+- [x] Info icon tooltips
 - [x] Palestinian flag-inspired theme
-- [x] Comprehensive tests (45) ✨
+- [x] Centralized theme styles
+- [x] Comprehensive tests (39)
+
+### In Progress 🚀
+
+- [ ] **Data validation test** (Phase 1.1)
+- [ ] **Performance test with 25 sites** (Phase 1.2)
+- [ ] **Search/filter by name** (Phase 1.3)
+- [ ] **Data template helper** (Phase 1.4)
 
 ### Remaining
 
-- [ ] Statistics dashboard (landing page)
+- [ ] Data collection (15-20 more sites) - Phase 2
+- [ ] Statistics dashboard
 - [ ] Timeline animation with play button
 - [ ] About/Methodology page
-- [ ] Search functionality
 - [ ] Mobile responsive design
-- [ ] Data collection (15-20 more sites)
 
 ## Priority Sites Status
 
@@ -177,127 +199,96 @@ src/
 
 - Great Omari Mosque, Church of St. Porphyrius, Qasr Al-Basha, Hammam al-Samra, Saint Hilarion Monastery
 
-**Remaining:** 15-20 sites across Religious (3), Museums (3), Archaeological (5), Historic Buildings (5)
+**Remaining:** 15-20 sites across:
+- Religious (3)
+- Museums (3)
+- Archaeological (5)
+- Historic Buildings (5)
 
 ## Next Session Priorities
 
-### 1. Color Scheme Enhancement (IMMEDIATE)
+### Immediate (Current Session)
 
-- Review and improve site color palette
-- Consider status colors, background tones, visual hierarchy
-- **Impact:** Better UX and visual appeal
+1. **Data Validation Test** - Create schema validator + test
+2. **Performance Test** - Test with 25 mock sites
+3. **Search by Name** - Add text search to FilterBar
+4. **Data Helper** - Template or script for easy data entry
 
-### 2. Component Abstraction Review (IMMEDIATE)
+### After Phase 1 Complete
 
-- Audit for DRY violations and reusable patterns
-- Extract common components (3+ uses rule)
-- Ensure theme.ts centralization
-- **Impact:** Maintainability and scalability
-
-### 3. Data Collection (HIGH)
-
-- Collect 15-20 heritage sites with Gregorian AND Islamic dates
-- Verify Islamic dates using conversion tools
-- Include coordinates, images, sources
-- **Impact:** Real data makes app meaningful
-
-### 4. Mobile Responsive Design (HIGH)
-
-- Three-column layout needs work for small screens
-- Consider collapsible sidebars or vertical stack
-- **Impact:** Accessibility for all users
-
-### 5. Statistics Dashboard (MEDIUM)
-
-- Impact numbers, breakdown by type, timeline graph
-- **Impact:** Compelling landing page
-
-### 6. About/Methodology Page (MEDIUM)
-
-- Project mission, data sources, verification process, legal disclaimer
+1. **Data Collection** (Phase 2) - Research and format 15-20 sites
+2. **Mobile Responsive** - Three-column layout adaptation
+3. **Statistics Dashboard** - Landing page with impact numbers
+4. **About/Methodology** - Mission, sources, verification, disclaimer
 
 ## Lessons Learned
 
 ### What Worked ✓
 
-- **Islamic Calendar Storage** - Pre-stored strings more accurate than calculation
-- **Context for Global State** - Simple, effective for calendar toggle
-- **Tooltip Component** - Reusable info icons improve UX
-- **Layout Padding Separation** - Container padding on inner elements, not layout wrapper
-- **Sleek FilterBar Alignment** - items-end with smaller labels creates polished look
-- Three-column layout with excellent information density
-- BC/BCE dropdowns prevent input parsing issues
-- Unified FilterBar provides clear mental model
-- Custom dropdowns (z-9999) solved layering issues
-- Table sorting with visual indicators
+- **Centralized Theme Styles** - Moving repetitive Tailwind to theme.ts improved maintainability
+- **Phase-by-phase approach** - UI improvements → Style refactoring → Data prep
+- **Test-driven development** - 39 tests catch regressions
+- **Incremental commits** - Small, focused commits with clear messages
+- **Semantic class names** - `components.filter.group` more readable than long Tailwind strings
+- **Performance optimization** - threads pool faster than forks for vitest
 
 ### Technical Wins
 
-- **CalendarContext with eslint-disable** - Fast refresh compatibility
-- **Live Region Accessibility** - Screen reader announcements for calendar changes
-- **Dual Calendar in Modal** - Both calendars displayed simultaneously
-- **z-[10000] for Tooltips** - Above all other UI elements
-- **Container padding debugging** - Found px-4 causing alignment issues
-- Fixed positioning with getBoundingClientRect()
-- Scroll capture for independent timeline scrolling
-- Click-only interactions reduce accidental changes
-- Enhanced year parsing handles centuries, BCE, ranges
-- Stable layout (min-width prevents button shift)
-- useMemo for table sorting performance
+- FilterBar uses centralized theme styles (6 new style definitions)
+- Timeline width adjusted for better balance (w-80→w-96)
+- Text truncation removed (was causing layout issues)
+- Test config optimized (forks→threads, added deps.optimizer)
+- All 39 tests passing with proper CalendarProvider wrappers
 
 ### Process Improvements
 
-- **Code Review Workflow** - Identified 4 improvements before committing
-- **Accessibility First** - Live regions added proactively
-- **Documentation in Code** - Islamic date verification notes
-- **User Feedback Iteration** - Multiple rounds to perfect UI alignment
-- Incremental commits (each feature complete)
-- Test-driven (45/45 passing)
-- Lint-clean throughout
-- Smoke tests first strategy
+- **Plan before scale** - Preparing validation/performance/search before adding 20 sites
+- **Style audit** - Identified repetitive patterns and extracted to theme
+- **Documentation discipline** - CURRENT_SESSION.md updated with clear next steps
+- **JIT development** - Keep dev server running, verify in browser
 
 ## Commands
 
 ```bash
 npm run dev          # Dev server (localhost:5173)
-npm test            # Run tests
+npm test            # Run tests (39 tests, ~11s)
+npm test -- --run   # Single run mode
 npm run lint        # ESLint
 npm run build       # Production build
 ```
 
 ## Recovery Context
 
-**Current Branch:** feature/thirdbranchlol (5+ commits ahead)
-**Last Commit:** `a2aa73d` - Islamic calendar toggle
-**Uncommitted Changes:** UI polish (timeline alignment, FilterBar redesign, table border)
-**Tests:** 45/45 passing ✓
+**Current Branch:** feature/fourthbranch (9 commits ahead of origin/feature/fourthbranch)
+**Last Commit:** `0dcb54f` - Timeline layout improvements
+**Working Tree:** Clean ✓
+**Tests:** 39/39 passing ✓
 **Lint:** Clean ✓
 
-**Commits:**
-
-1. `44af99e` - Vertical timeline layout
-2. `a52d346` - Three-column layout with table
-3. `723056f` - Unified FilterBar
-4. `644e357` - BC/BCE dropdowns, date ranges, table sorting
-5. `a2aa73d` - Islamic calendar toggle with dual calendar support ✨
+**Recent Commits:**
+1. `67dd6e5` - Remove obsolete components and reduce codebase
+2. `b6be5e5` - Add dual calendar columns to expanded table view
+3. `b485078` - Fix modal z-index stacking
+4. `fdb2b1a` - Add expanded table variant
+5. `1e7efc5` - Extract reusable form components
+6. `e1a3148` - FilterBar layout improvements ✨
+7. `3f6286c` - Centralize styles + optimize tests ✨
+8. `0dcb54f` - Timeline layout improvements ✨
 
 **Development State:**
-
-- MVP Phase 1 complete with Islamic calendar support
-- UI polish in progress (timeline, FilterBar, table)
-- Architecture stable and scalable
-- Ready for color scheme review and component abstraction
-- Need mobile responsive work
+- Style refactoring complete
+- Codebase clean and maintainable
+- Ready for Phase 1 (data preparation)
+- Phase 2 (data collection) queued after Phase 1
 
 **Known Issues:**
-
 - Three-column layout not responsive on mobile
-- Timeline/table need different layout for small screens
+- Test runtime ~11s (acceptable for component tests with jsdom)
 
 **Immediate Next Steps:**
 
-1. Run tests to verify UI changes
-2. Commit UI improvements
-3. Review color scheme
-4. Audit component abstraction
-5. Collect 15-20 more heritage sites with Islamic dates
+1. ✅ Create data validation test with schema checks
+2. ✅ Create performance test with 25 mock sites
+3. ✅ Add search/filter by name feature
+4. ✅ Create data entry template/helper
+5. ⏭️ Begin Phase 2: Data collection (15-20 sites)
