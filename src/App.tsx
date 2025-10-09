@@ -13,6 +13,7 @@ import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
   filterSitesByCreationYear,
+  filterSitesBySearch,
 } from "./utils/siteFilters";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
   const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
   const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [isTableExpanded, setIsTableExpanded] = useState(false);
@@ -41,11 +43,14 @@ function App() {
   );
 
   // Filter by creation year range
-  const filteredSites = filterSitesByCreationYear(
+  const yearFilteredSites = filterSitesByCreationYear(
     destructionDateFilteredSites,
     creationYearStart,
     creationYearEnd
   );
+
+  // Filter by search term
+  const filteredSites = filterSitesBySearch(yearFilteredSites, searchTerm);
 
   return (
     <CalendarProvider>
@@ -71,12 +76,14 @@ function App() {
               destructionDateEnd={destructionDateEnd}
               creationYearStart={creationYearStart}
               creationYearEnd={creationYearEnd}
+              searchTerm={searchTerm}
               onTypeChange={setSelectedTypes}
               onStatusChange={setSelectedStatuses}
               onDestructionDateStartChange={setDestructionDateStart}
               onDestructionDateEndChange={setDestructionDateEnd}
               onCreationYearStartChange={setCreationYearStart}
               onCreationYearEndChange={setCreationYearEnd}
+              onSearchChange={setSearchTerm}
               filteredCount={filteredSites.length}
               totalCount={mockSites.length}
             />

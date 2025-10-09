@@ -17,12 +17,14 @@ interface FilterBarProps {
   destructionDateEnd: Date | null;
   creationYearStart: number | null;
   creationYearEnd: number | null;
+  searchTerm: string;
   onTypeChange: (types: Array<GazaSite["type"]>) => void;
   onStatusChange: (statuses: Array<GazaSite["status"]>) => void;
   onDestructionDateStartChange: (date: Date | null) => void;
   onDestructionDateEndChange: (date: Date | null) => void;
   onCreationYearStartChange: (year: number | null) => void;
   onCreationYearEndChange: (year: number | null) => void;
+  onSearchChange: (term: string) => void;
   filteredCount: number;
   totalCount: number;
 }
@@ -38,12 +40,14 @@ export function FilterBar({
   destructionDateEnd,
   creationYearStart,
   creationYearEnd,
+  searchTerm,
   onTypeChange,
   onStatusChange,
   onDestructionDateStartChange,
   onDestructionDateEndChange,
   onCreationYearStartChange,
   onCreationYearEndChange,
+  onSearchChange,
   filteredCount,
   totalCount,
 }: FilterBarProps) {
@@ -84,7 +88,8 @@ export function FilterBar({
     destructionDateStart !== null ||
     destructionDateEnd !== null ||
     creationYearStart !== null ||
-    creationYearEnd !== null;
+    creationYearEnd !== null ||
+    searchTerm.trim().length > 0;
 
   const clearAllFilters = () => {
     onTypeChange([]);
@@ -93,6 +98,7 @@ export function FilterBar({
     onDestructionDateEndChange(null);
     onCreationYearStartChange(null);
     onCreationYearEndChange(null);
+    onSearchChange("");
     setStartYearInput("");
     setEndYearInput("");
     setStartYearEra("CE");
@@ -101,6 +107,17 @@ export function FilterBar({
 
   return (
     <div className={cn(components.card.base, "px-4 py-3 mb-6")}>
+      {/* Search bar - full width at top */}
+      <div className="mb-3">
+        <Input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="Search sites by name (English or Arabic)..."
+          className="w-full"
+        />
+      </div>
+
       {/* Filter controls - sleek horizontal layout */}
       <div className="flex items-end justify-center gap-4 flex-wrap">
         {/* Calendar Toggle */}
