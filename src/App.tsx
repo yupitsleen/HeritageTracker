@@ -94,7 +94,7 @@ function App() {
             {/* Left Sidebar - Timeline (Sticky, with left padding) */}
             <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden pl-6">
               <VerticalTimeline
-                sites={typeAndStatusFilteredSites}
+                sites={filteredSites}
                 onSiteHighlight={setHighlightedSiteId}
               />
             </aside>

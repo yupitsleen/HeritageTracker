@@ -107,15 +107,38 @@ export function FilterBar({
 
   return (
     <div className={cn(components.card.base, "px-4 py-3 mb-6")}>
-      {/* Search bar - full width at top */}
-      <div className="mb-3">
-        <Input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search sites by name (English or Arabic)..."
-          className="w-full"
-        />
+      {/* Search bar - 50% width, centered at top */}
+      <div className="mb-3 flex justify-center">
+        <div className="relative w-1/2">
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="Search sites by name (English or Arabic)..."
+            className="w-full pr-8"
+          />
+          {searchTerm.trim().length > 0 && (
+            <button
+              onClick={() => onSearchChange("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Clear search"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Filter controls - sleek horizontal layout */}
