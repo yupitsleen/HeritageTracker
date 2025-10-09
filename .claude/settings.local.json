@@ -5,5 +5,5 @@
       "Bash(npm run lint)"
     ]
   },
-  "outputStyle": "Explanatory"
+  "outputStyle": "default"
 }
