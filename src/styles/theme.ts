@@ -106,6 +106,7 @@ export const components = {
     primary: "bg-[#15803d] text-white hover:bg-[#166534]",        // Palestine green
     secondary: "bg-[#e9ecef] text-[#343a40] hover:bg-[#dee2e6]",  // Palestine grays
     reset: "px-4 py-2 bg-[#b91c1c] text-white rounded-md hover:bg-[#991b1b] transition-colors text-sm",  // Palestine red
+    toggle: "px-3 py-1.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-sm font-medium text-gray-700 transition-colors",
   },
 
   // Form styles
@@ -123,6 +124,7 @@ export const components = {
 
   label: {
     base: "block text-sm font-medium text-[#495057] mb-2",  // Palestine dark gray
+    filter: "text-xs font-medium text-gray-600",
   },
 
   // Tag/Chip styles (for removable filter tags)
@@ -172,6 +174,16 @@ export const components = {
     th: "px-4 py-3 font-semibold",
     row: "border-b border-[#dee2e6] hover:bg-[#f8f9fa] cursor-pointer transition-all",
     td: "px-4 py-3",
+  },
+
+  // Filter styles
+  filter: {
+    group: "flex flex-col gap-1 px-3 py-2 border border-gray-200 rounded-md bg-gray-50/50",
+    labelContainer: "flex items-center gap-1 justify-center",
+    inputContainer: "flex items-center gap-2",
+    rangeSeparator: "text-xs text-gray-500",
+    count: "mt-2 text-sm text-gray-600 text-center",
+    countNumber: "font-semibold text-gray-900",
   },
 };
 

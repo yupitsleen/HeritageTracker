@@ -106,7 +106,7 @@ export function FilterBar({
         {/* Calendar Toggle */}
         <button
           onClick={toggleCalendar}
-          className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-sm font-medium text-gray-700 transition-colors"
+          className={components.button.toggle}
           aria-label="Toggle calendar type"
         >
           {calendarType === "gregorian"
@@ -140,9 +140,9 @@ export function FilterBar({
         </div>
 
         {/* Destruction Date Range */}
-        <div className="flex flex-col gap-1 px-3 py-2 border border-gray-200 rounded-md bg-gray-50/50">
-          <div className="flex items-center gap-1 justify-center">
-            <label className="text-xs font-medium text-gray-600">Destroyed (Gregorian)</label>
+        <div className={components.filter.group}>
+          <div className={components.filter.labelContainer}>
+            <label className={components.label.filter}>Destroyed (Gregorian)</label>
             <Tooltip content="Date filters use Gregorian calendar only">
               <svg className="w-3.5 h-3.5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -153,7 +153,7 @@ export function FilterBar({
               </svg>
             </Tooltip>
           </div>
-          <div className="flex items-center gap-2">
+          <div className={components.filter.inputContainer}>
             <Input
               variant="date"
               value={destructionDateStart ? destructionDateStart.toISOString().split("T")[0] : ""}
@@ -162,7 +162,7 @@ export function FilterBar({
               }}
               placeholder="From"
             />
-            <span className="text-xs text-gray-500">to</span>
+            <span className={components.filter.rangeSeparator}>to</span>
             <Input
               variant="date"
               value={destructionDateEnd ? destructionDateEnd.toISOString().split("T")[0] : ""}
@@ -175,9 +175,9 @@ export function FilterBar({
         </div>
 
         {/* Creation Year Range - Always uses Gregorian (CE/BCE) for filtering */}
-        <div className="flex flex-col gap-1 px-3 py-2 border border-gray-200 rounded-md bg-gray-50/50">
-          <div className="flex items-center gap-1 justify-center">
-            <label className="text-xs font-medium text-gray-600">Built (CE/BCE)</label>
+        <div className={components.filter.group}>
+          <div className={components.filter.labelContainer}>
+            <label className={components.label.filter}>Built (CE/BCE)</label>
             <Tooltip content="Year filters use Gregorian calendar only">
               <svg className="w-3.5 h-3.5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -188,7 +188,7 @@ export function FilterBar({
               </svg>
             </Tooltip>
           </div>
-          <div className="flex items-center gap-2">
+          <div className={components.filter.inputContainer}>
             <Input
               variant="number"
               value={startYearInput}
@@ -206,7 +206,7 @@ export function FilterBar({
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
             </Select>
-            <span className="text-xs text-gray-500">to</span>
+            <span className={components.filter.rangeSeparator}>to</span>
             <Input
               variant="number"
               value={endYearInput}
@@ -258,9 +258,9 @@ export function FilterBar({
       )}
 
       {/* Site count */}
-      <div className="mt-2 text-sm text-gray-600 text-center">
-        Showing <span className="font-semibold text-gray-900">{filteredCount}</span> of{" "}
-        <span className="font-semibold text-gray-900">{totalCount}</span> sites
+      <div className={components.filter.count}>
+        Showing <span className={components.filter.countNumber}>{filteredCount}</span> of{" "}
+        <span className={components.filter.countNumber}>{totalCount}</span> sites
       </div>
     </div>
   );

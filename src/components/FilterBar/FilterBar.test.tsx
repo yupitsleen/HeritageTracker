@@ -27,7 +27,8 @@ describe("FilterBar", () => {
         <FilterBar {...mockProps} />
       </CalendarProvider>
     );
-    expect(screen.getByText("Filters:")).toBeInTheDocument();
+    expect(screen.getByText("Site Type")).toBeInTheDocument();
+    expect(screen.getByText(/Showing/)).toBeInTheDocument();
   });
 
   it("displays site count", () => {

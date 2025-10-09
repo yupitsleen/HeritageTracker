@@ -9,12 +9,20 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     // Performance optimizations
-    pool: 'forks',
+    pool: 'threads',
     poolOptions: {
-      forks: {
-        singleFork: true,
+      threads: {
+        singleThread: true,
       },
     },
     isolate: false,
+    // Reduce transform overhead
+    deps: {
+      optimizer: {
+        web: {
+          enabled: true,
+        },
+      },
+    },
   },
 })
