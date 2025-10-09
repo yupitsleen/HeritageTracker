@@ -4,8 +4,11 @@ import { components, cn } from "../../styles/theme";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
 import { MultiSelectDropdown } from "./MultiSelectDropdown";
+import { FilterTag } from "./FilterTag";
 import { useCalendar } from "../../contexts/CalendarContext";
 import { Tooltip } from "../Tooltip";
+import { Input } from "../Form/Input";
+import { Select } from "../Form/Select";
 
 interface FilterBarProps {
   selectedTypes: Array<GazaSite["type"]>;
@@ -151,24 +154,22 @@ export function FilterBar({
             </Tooltip>
           </div>
           <div className="flex items-center gap-2">
-            <input
-              type="date"
+            <Input
+              variant="date"
               value={destructionDateStart ? destructionDateStart.toISOString().split('T')[0] : ''}
               onChange={(e) => {
                 onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
               }}
               placeholder="From"
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
             />
             <span className="text-xs text-gray-500">to</span>
-            <input
-              type="date"
+            <Input
+              variant="date"
               value={destructionDateEnd ? destructionDateEnd.toISOString().split('T')[0] : ''}
               onChange={(e) => {
                 onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
               }}
               placeholder="To"
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
             />
           </div>
         </div>
@@ -186,39 +187,37 @@ export function FilterBar({
             </Tooltip>
           </div>
           <div className="flex items-center gap-2">
-            <input
-              type="number"
+            <Input
+              variant="number"
               value={startYearInput}
               onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
               placeholder="Year"
               min="1"
-              className="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
             />
-            <select
+            <Select
+              size="small"
               value={startYearEra}
               onChange={(e) => handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")}
-              className="px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
-            </select>
+            </Select>
             <span className="text-xs text-gray-500">to</span>
-            <input
-              type="number"
+            <Input
+              variant="number"
               value={endYearInput}
               onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
               placeholder="Year"
               min="1"
-              className="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
             />
-            <select
+            <Select
+              size="small"
               value={endYearEra}
               onChange={(e) => handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")}
-              className="px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
-            </select>
+            </Select>
           </div>
         </div>
 
@@ -236,34 +235,20 @@ export function FilterBar({
       {(selectedTypes.length > 0 || selectedStatuses.length > 0) && (
         <div className="mt-3 flex flex-wrap gap-2">
           {selectedTypes.map((type) => (
-            <span
+            <FilterTag
               key={type}
-              className="inline-flex items-center gap-1 px-2 py-1 bg-[#f1f3f5] text-gray-700 rounded text-xs"
-            >
-              {formatLabel(type)}
-              <button
-                onClick={() => onTypeChange(selectedTypes.filter((t) => t !== type))}
-                className="text-gray-500 hover:text-[#b91c1c] font-bold"
-                aria-label={`Remove ${type} filter`}
-              >
-                ×
-              </button>
-            </span>
+              label={formatLabel(type)}
+              onRemove={() => onTypeChange(selectedTypes.filter((t) => t !== type))}
+              ariaLabel={`Remove ${type} filter`}
+            />
           ))}
           {selectedStatuses.map((status) => (
-            <span
+            <FilterTag
               key={status}
-              className="inline-flex items-center gap-1 px-2 py-1 bg-[#f1f3f5] text-gray-700 rounded text-xs"
-            >
-              {formatLabel(status)}
-              <button
-                onClick={() => onStatusChange(selectedStatuses.filter((s) => s !== status))}
-                className="text-gray-500 hover:text-[#b91c1c] font-bold"
-                aria-label={`Remove ${status} filter`}
-              >
-                ×
-              </button>
-            </span>
+              label={formatLabel(status)}
+              onRemove={() => onStatusChange(selectedStatuses.filter((s) => s !== status))}
+              ariaLabel={`Remove ${status} filter`}
+            />
           ))}
         </div>
       )}

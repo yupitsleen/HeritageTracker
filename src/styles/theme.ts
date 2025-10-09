@@ -109,12 +109,27 @@ export const components = {
   },
 
   // Form styles
+  input: {
+    base: "px-3 py-2 border border-gray-300 rounded-md text-sm",
+    focus: "focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]",
+    number: "w-20",
+    date: "",
+  },
+
   select: {
     base: "w-full px-4 py-2 border border-[#ced4da] rounded-md focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]",  // Palestine green focus
+    small: "px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]",
   },
 
   label: {
     base: "block text-sm font-medium text-[#495057] mb-2",  // Palestine dark gray
+  },
+
+  // Tag/Chip styles (for removable filter tags)
+  tag: {
+    base: "inline-flex items-center gap-1 px-2 py-1 rounded text-xs",
+    default: "bg-[#f1f3f5] text-gray-700",
+    removeButton: "text-gray-500 hover:text-[#b91c1c] font-bold",
   },
 
   // Badge styles
