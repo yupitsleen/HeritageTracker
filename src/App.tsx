@@ -145,6 +145,7 @@ function App() {
             onSiteClick={setSelectedSite}
             onSiteHighlight={setHighlightedSiteId}
             highlightedSiteId={highlightedSiteId}
+            variant="expanded"
           />
         </div>
       </Modal>

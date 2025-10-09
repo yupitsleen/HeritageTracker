@@ -9,13 +9,15 @@ interface SitesTableProps {
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
+  variant?: "compact" | "expanded";
 }
 
 type SortField = "name" | "type" | "status" | "dateDestroyed";
 type SortDirection = "asc" | "desc";
 
 /**
- * Compact table view of heritage sites with click-to-view-details and sorting
+ * Table view of heritage sites with click-to-view-details and sorting
+ * Supports compact (3 columns) and expanded (all columns) variants
  */
 export function SitesTable({
   sites,
@@ -23,6 +25,7 @@ export function SitesTable({
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
+  variant = "compact",
 }: SitesTableProps) {
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -114,6 +117,15 @@ export function SitesTable({
                 Site Name
                 <SortIcon field="name" />
               </th>
+              {variant === "expanded" && (
+                <th
+                  className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
+                  onClick={() => handleSort("type")}
+                >
+                  Type
+                  <SortIcon field="type" />
+                </th>
+              )}
               <th
                 className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
                 onClick={() => handleSort("status")}
@@ -128,6 +140,16 @@ export function SitesTable({
                 Destroyed
                 <SortIcon field="dateDestroyed" />
               </th>
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Date Built
+                </th>
+              )}
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Actions
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -142,21 +164,39 @@ export function SitesTable({
                 }}
               >
                 <td className={components.table.td}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSiteClick(site);
-                    }}
-                    className="text-left w-full hover:text-[#15803d] transition-colors"
-                  >
-                    <div className="font-semibold text-gray-900 hover:underline">{site.name}</div>
-                    {site.nameArabic && (
-                      <div className="text-xs text-gray-600 mt-1" dir="rtl">
-                        {site.nameArabic}
-                      </div>
-                    )}
-                  </button>
+                  {variant === "compact" ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSiteClick(site);
+                      }}
+                      className="text-left w-full hover:text-[#15803d] transition-colors"
+                    >
+                      <div className="font-semibold text-gray-900 hover:underline">{site.name}</div>
+                      {site.nameArabic && (
+                        <div className="text-xs text-gray-600 mt-1" dir="rtl">
+                          {site.nameArabic}
+                        </div>
+                      )}
+                    </button>
+                  ) : (
+                    <div>
+                      <div className="font-semibold text-gray-900">{site.name}</div>
+                      {site.nameArabic && (
+                        <div className="text-sm text-gray-600 mt-1" dir="rtl">
+                          {site.nameArabic}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </td>
+                {variant === "expanded" && (
+                  <td className={components.table.td}>
+                    <span className="capitalize">
+                      {site.type.replace("-", " ")}
+                    </span>
+                  </td>
+                )}
                 <td className={components.table.td}>
                   <span
                     className="font-semibold capitalize text-sm"
@@ -178,6 +218,28 @@ export function SitesTable({
                     "N/A"
                   )}
                 </td>
+                {variant === "expanded" && (
+                  <td className={components.table.td}>
+                    <span className="text-sm">
+                      {calendarType === "islamic" && site.yearBuiltIslamic
+                        ? site.yearBuiltIslamic
+                        : site.yearBuilt}
+                    </span>
+                  </td>
+                )}
+                {variant === "expanded" && (
+                  <td className={components.table.td}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSiteClick(site);
+                      }}
+                      className="text-[#16a34a] hover:text-[#15803d] hover:underline font-medium text-sm"
+                    >
+                      See more
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
