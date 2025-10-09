@@ -61,34 +61,39 @@ function App() {
       </header>
 
       {/* Main Content - Three Column Layout */}
-      <main className={cn(components.container.base, components.container.section)}>
-        {/* Stats Summary */}
-        <div className={cn(components.card.base, components.card.padding, "mb-8 text-center")}>
-          <h2 className="text-2xl font-semibold text-gray-800">
-            Heritage Sites ({mockSites.length} sample sites)
-          </h2>
+      <main className={components.container.section}>
+        {/* Stats Summary - with container padding */}
+        <div className={cn(components.container.base, "mb-8")}>
+          <div className={cn(components.card.base, components.card.padding, "text-center")}>
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Heritage Sites ({mockSites.length} sample sites)
+            </h2>
+          </div>
         </div>
 
-        {/* Unified Filter Bar */}
-        <FilterBar
-          selectedTypes={selectedTypes}
-          selectedStatuses={selectedStatuses}
-          destructionDateStart={destructionDateStart}
-          destructionDateEnd={destructionDateEnd}
-          creationYearStart={creationYearStart}
-          creationYearEnd={creationYearEnd}
-          onTypeChange={setSelectedTypes}
-          onStatusChange={setSelectedStatuses}
-          onDestructionDateStartChange={setDestructionDateStart}
-          onDestructionDateEndChange={setDestructionDateEnd}
-          onCreationYearStartChange={setCreationYearStart}
-          onCreationYearEndChange={setCreationYearEnd}
-          filteredCount={filteredSites.length}
-          totalCount={mockSites.length}
-        />
+        {/* Unified Filter Bar - with container padding */}
+        <div className={components.container.base}>
+          <FilterBar
+            selectedTypes={selectedTypes}
+            selectedStatuses={selectedStatuses}
+            destructionDateStart={destructionDateStart}
+            destructionDateEnd={destructionDateEnd}
+            creationYearStart={creationYearStart}
+            creationYearEnd={creationYearEnd}
+            onTypeChange={setSelectedTypes}
+            onStatusChange={setSelectedStatuses}
+            onDestructionDateStartChange={setDestructionDateStart}
+            onDestructionDateEndChange={setDestructionDateEnd}
+            onCreationYearStartChange={setCreationYearStart}
+            onCreationYearEndChange={setCreationYearEnd}
+            filteredCount={filteredSites.length}
+            totalCount={mockSites.length}
+          />
+        </div>
 
-        <div className="flex gap-6">
-          {/* Left Sidebar - Timeline (Sticky) */}
+        {/* Three-column layout - no padding, hugs edges */}
+        <div className="flex gap-0">
+          {/* Left Sidebar - Timeline (Sticky, hugs left edge) */}
           <aside className="w-80 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
             <VerticalTimeline
               sites={typeAndStatusFilteredSites}
@@ -97,7 +102,7 @@ function App() {
           </aside>
 
           {/* Center - Map */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 px-6">
             <HeritageMap
               sites={filteredSites}
               onSiteClick={setSelectedSite}
@@ -106,8 +111,8 @@ function App() {
             />
           </div>
 
-          {/* Right Sidebar - Sites Table (Sticky) */}
-          <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
+          {/* Right Sidebar - Sites Table (Sticky, hugs right edge) */}
+          <aside className="w-80 flex-shrink-0 sticky top-0 h-screen overflow-hidden">
             <SitesTable
               sites={filteredSites}
               onSiteClick={setSelectedSite}

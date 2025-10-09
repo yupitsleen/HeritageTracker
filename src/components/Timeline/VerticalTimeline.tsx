@@ -233,7 +233,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
       onMouseEnter={() => setIsTimelineHovered(true)}
       onMouseLeave={() => setIsTimelineHovered(false)}
     >
-      <div className="mb-4 flex-shrink-0 px-2">
+      <div className="mb-4 flex-shrink-0 pl-4 pr-2">
         <div className="text-center">
           <h2 className="text-xl font-bold text-gray-800">Destruction Timeline</h2>
           <p className="text-sm text-gray-600 mt-1">
@@ -241,7 +241,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
           </p>
         </div>
       </div>
-      <div className="overflow-y-auto flex-1 px-2">
+      <div className="overflow-y-auto flex-1 pl-4 pr-2">
         <svg ref={svgRef} className="w-full" />
       </div>
     </div>

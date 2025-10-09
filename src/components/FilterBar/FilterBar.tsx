@@ -5,6 +5,7 @@ import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
 import { MultiSelectDropdown } from "./MultiSelectDropdown";
 import { useCalendar } from "../../contexts/CalendarContext";
+import { Tooltip } from "../Tooltip";
 
 interface FilterBarProps {
   selectedTypes: Array<GazaSite["type"]>;
@@ -113,99 +114,111 @@ export function FilterBar({
         {calendarType === "gregorian" ? "Displaying Gregorian calendar dates" : "Displaying Islamic calendar dates"}
       </div>
 
-      <div className="flex items-center justify-between flex-wrap gap-6">
-        {/* Filter controls - centered */}
-        <div className="flex-1 flex items-center gap-6 flex-wrap justify-center">
-          <div className="flex items-center gap-4">
-            <div className="font-semibold text-gray-900">Filters:</div>
+      {/* Filter controls - sleek horizontal layout */}
+      <div className="flex items-end justify-center gap-6 flex-wrap">
+        <div className="flex items-center gap-4">
+          <span className="font-semibold text-gray-900 pb-2">Filters:</span>
 
-            {/* Type Filter Dropdown */}
-            <MultiSelectDropdown
-              label="Site Type"
-              options={SITE_TYPES}
-              selectedValues={selectedTypes}
-              onChange={onTypeChange}
-              formatLabel={formatLabel}
-            />
+          {/* Type Filter Dropdown */}
+          <MultiSelectDropdown
+            label="Site Type"
+            options={SITE_TYPES}
+            selectedValues={selectedTypes}
+            onChange={onTypeChange}
+            formatLabel={formatLabel}
+          />
 
-            {/* Status Filter Dropdown */}
-            <MultiSelectDropdown
-              label="Status"
-              options={STATUS_OPTIONS}
-              selectedValues={selectedStatuses}
-              onChange={onStatusChange}
-              formatLabel={formatLabel}
-            />
-          </div>
+          {/* Status Filter Dropdown */}
+          <MultiSelectDropdown
+            label="Status"
+            options={STATUS_OPTIONS}
+            selectedValues={selectedStatuses}
+            onChange={onStatusChange}
+            formatLabel={formatLabel}
+          />
+        </div>
 
-          {/* Destruction Date Range */}
-          <div className="flex flex-col items-center gap-2 justify-center">
-            <label className="text-sm font-medium text-gray-700">
+        {/* Destruction Date Range */}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1 justify-center">
+            <label className="text-xs font-medium text-gray-600">
               Destroyed (Gregorian)
             </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="date"
-                value={destructionDateStart ? destructionDateStart.toISOString().split('T')[0] : ''}
-                onChange={(e) => {
-                  onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
-                }}
-                placeholder="From"
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
-              />
-              <span className="text-gray-500">to</span>
-              <input
-                type="date"
-                value={destructionDateEnd ? destructionDateEnd.toISOString().split('T')[0] : ''}
-                onChange={(e) => {
-                  onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
-                }}
-                placeholder="To"
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
-              />
-            </div>
+            <Tooltip content="Date filters use Gregorian calendar only">
+              <svg className="w-3.5 h-3.5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </Tooltip>
           </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="date"
+              value={destructionDateStart ? destructionDateStart.toISOString().split('T')[0] : ''}
+              onChange={(e) => {
+                onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
+              }}
+              placeholder="From"
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
+            />
+            <span className="text-xs text-gray-500">to</span>
+            <input
+              type="date"
+              value={destructionDateEnd ? destructionDateEnd.toISOString().split('T')[0] : ''}
+              onChange={(e) => {
+                onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
+              }}
+              placeholder="To"
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
+            />
+          </div>
+        </div>
 
-          {/* Creation Year Range - Always uses Gregorian (CE/BCE) for filtering */}
-          <div className="flex flex-col items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">
+        {/* Creation Year Range - Always uses Gregorian (CE/BCE) for filtering */}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1 justify-center">
+            <label className="text-xs font-medium text-gray-600">
               Built (CE/BCE)
             </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                value={startYearInput}
-                onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
-                placeholder="Year"
-                min="1"
-                className="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
-              />
-              <select
-                value={startYearEra}
-                onChange={(e) => handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")}
-                className="px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
-              >
-                <option value="BCE">BCE</option>
-                <option value="CE">CE</option>
-              </select>
-              <span className="text-gray-500">to</span>
-              <input
-                type="number"
-                value={endYearInput}
-                onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
-                placeholder="Year"
-                min="1"
-                className="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
-              />
-              <select
-                value={endYearEra}
-                onChange={(e) => handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")}
-                className="px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
-              >
-                <option value="BCE">BCE</option>
-                <option value="CE">CE</option>
-              </select>
-            </div>
+            <Tooltip content="Year filters use Gregorian calendar only">
+              <svg className="w-3.5 h-3.5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </Tooltip>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              value={startYearInput}
+              onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
+              placeholder="Year"
+              min="1"
+              className="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
+            />
+            <select
+              value={startYearEra}
+              onChange={(e) => handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")}
+              className="px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
+            >
+              <option value="BCE">BCE</option>
+              <option value="CE">CE</option>
+            </select>
+            <span className="text-xs text-gray-500">to</span>
+            <input
+              type="number"
+              value={endYearInput}
+              onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
+              placeholder="Year"
+              min="1"
+              className="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
+            />
+            <select
+              value={endYearEra}
+              onChange={(e) => handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")}
+              className="px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a]"
+            >
+              <option value="BCE">BCE</option>
+              <option value="CE">CE</option>
+            </select>
           </div>
         </div>
 

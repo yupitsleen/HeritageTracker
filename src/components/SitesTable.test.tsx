@@ -56,10 +56,8 @@ describe("SitesTable", () => {
       </CalendarProvider>
     );
     expect(screen.getByText("Site Name")).toBeInTheDocument();
-    expect(screen.getByText("Type")).toBeInTheDocument();
     expect(screen.getByText("Status")).toBeInTheDocument();
-    expect(screen.getByText("Date Destroyed")).toBeInTheDocument();
-    expect(screen.getByText("Date Built")).toBeInTheDocument();
+    expect(screen.getByText("Destroyed")).toBeInTheDocument();
   });
 
   it("displays site data in table rows", () => {
@@ -72,12 +70,10 @@ describe("SitesTable", () => {
       </CalendarProvider>
     );
     expect(screen.getByText("Test Mosque")).toBeInTheDocument();
-    expect(screen.getByText("mosque")).toBeInTheDocument();
     expect(screen.getByText("destroyed")).toBeInTheDocument();
-    expect(screen.getByText("7th century")).toBeInTheDocument();
   });
 
-  it("renders See more button for each site", () => {
+  it("renders clickable site names", () => {
     render(
       <CalendarProvider>
         <SitesTable
@@ -86,7 +82,9 @@ describe("SitesTable", () => {
         />
       </CalendarProvider>
     );
-    expect(screen.getByText("See more")).toBeInTheDocument();
+    const siteButton = screen.getByText("Test Mosque");
+    expect(siteButton).toBeInTheDocument();
+    expect(siteButton.tagName).toBe("DIV"); // Site name is in a div inside a button
   });
 
   it("renders expand table button when onExpandTable is provided", () => {
@@ -99,7 +97,7 @@ describe("SitesTable", () => {
         />
       </CalendarProvider>
     );
-    const expandButton = screen.getByTitle("Expand table");
+    const expandButton = screen.getByTitle("Expand table to see all columns");
     expect(expandButton).toBeInTheDocument();
   });
 
@@ -112,7 +110,7 @@ describe("SitesTable", () => {
         />
       </CalendarProvider>
     );
-    const expandButton = screen.queryByTitle("Expand table");
+    const expandButton = screen.queryByTitle("Expand table to see all columns");
     expect(expandButton).not.toBeInTheDocument();
   });
 
