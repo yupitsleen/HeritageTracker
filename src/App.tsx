@@ -124,11 +124,12 @@ function App() {
         </div>
       </main>
 
-      {/* Site Detail Modal */}
+      {/* Site Detail Modal - Higher z-index to appear above table modal */}
       <Modal
         isOpen={selectedSite !== null}
         onClose={() => setSelectedSite(null)}
         title={selectedSite?.name}
+        zIndex={10000}
       >
         {selectedSite && <SiteDetailPanel site={selectedSite} />}
       </Modal>
@@ -138,6 +139,7 @@ function App() {
         isOpen={isTableExpanded}
         onClose={() => setIsTableExpanded(false)}
         title="All Heritage Sites"
+        zIndex={9999}
       >
         <div className="max-h-[80vh] overflow-auto">
           <SitesTable
