@@ -85,7 +85,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
       .enter()
       .append("g")
       .attr("class", "timeline-item")
-      .attr("transform", (d, i) => `translate(0,${yScale(i) + ITEM_HEIGHT / 2})`)
+      .attr("transform", (_d, i) => `translate(0,${yScale(i) + ITEM_HEIGHT / 2})`)
       .style("cursor", "pointer");
 
     // Draw markers
@@ -169,7 +169,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
           .attr("font-weight", "500")
           .attr("fill", "#1f2937");
       })
-      .on("click", function (event, d) {
+      .on("click", function (_event, d) {
         // Only highlight the site, no filtering
         onSiteHighlight?.(d.id);
       });

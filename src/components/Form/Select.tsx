@@ -1,6 +1,6 @@
 import { components, cn } from "../../styles/theme";
 
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size"> {
   size?: "default" | "small";
 }
 
