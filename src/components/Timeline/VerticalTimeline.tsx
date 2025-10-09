@@ -11,9 +11,9 @@ interface VerticalTimelineProps {
 
 // Constants for vertical timeline dimensions
 const TIMELINE_CONFIG = {
-  MARGIN: { top: 20, right: 40, bottom: 20, left: 100 },
+  MARGIN: { top: 20, right: 24, bottom: 20, left: 84 },
   ITEM_HEIGHT: 60, // Height per timeline item
-  LINE_X: 100, // X position of vertical line
+  LINE_X: 84, // X position of vertical line (centered in available space)
   MARKER_RADIUS: { default: 8, hover: 12, selected: 10 },
   STROKE_WIDTH: { default: 2, selected: 4 },
   STROKE_COLOR: { default: "#fff", selected: "#000" },
@@ -116,8 +116,8 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
           : d3.timeFormat("%b %d, %Y")(d.date)
       );
 
-    // Add site names (right side) with text truncation
-    const siteNames = items
+    // Add site names (right side) - no truncation, allow overflow
+    items
       .append("text")
       .attr("class", "site-name")
       .attr("x", LINE_X + 20)
@@ -128,33 +128,6 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
       .attr("font-weight", "500")
       .attr("fill", "#1f2937")
       .text((d) => d.name);
-
-    // Truncate text that's too long and add ellipsis
-    siteNames.each(function (d) {
-      const textElement = d3.select(this);
-      const fullText = d.name;
-      const maxWidth = 220; // Max width in pixels before truncation
-
-      // Check if getComputedTextLength is available (not available in test environment)
-      if (typeof (this as SVGTextElement).getComputedTextLength !== "function") {
-        return;
-      }
-
-      let textLength = (this as SVGTextElement).getComputedTextLength();
-      let text = fullText;
-
-      if (textLength > maxWidth) {
-        // Binary search for optimal length
-        while (textLength > maxWidth && text.length > 0) {
-          text = text.slice(0, -1);
-          textElement.text(text + "...");
-          textLength = (this as SVGTextElement).getComputedTextLength();
-        }
-
-        // Add tooltip for full name
-        textElement.append("title").text(fullText);
-      }
-    });
 
     // Add status labels (right side, below name)
     items
@@ -233,16 +206,14 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
       onMouseEnter={() => setIsTimelineHovered(true)}
       onMouseLeave={() => setIsTimelineHovered(false)}
     >
-      <div className="mb-4 flex-shrink-0 pl-4 pr-2">
-        <div className="text-center">
-          <h2 className="text-xl font-bold text-gray-800">Destruction Timeline</h2>
-          <p className="text-sm text-gray-600 mt-1">
-            Click any site to highlight on map and table
-          </p>
-        </div>
+      <div className="mb-4 flex-shrink-0 px-4 pt-4">
+        <h2 className="text-xl font-bold text-gray-800 text-center">Destruction Timeline</h2>
+        <p className="text-sm text-gray-600 mt-1 text-center">
+          Click any site to highlight on map and table
+        </p>
       </div>
-      <div className="overflow-y-auto flex-1 pl-4 pr-2">
-        <svg ref={svgRef} className="w-full" />
+      <div className="overflow-y-auto overflow-x-visible flex-1 px-4 relative z-10">
+        <svg ref={svgRef} className="w-full overflow-visible" />
       </div>
     </div>
   );
