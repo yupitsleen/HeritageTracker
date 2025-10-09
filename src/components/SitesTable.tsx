@@ -137,12 +137,22 @@ export function SitesTable({
                 className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
                 onClick={() => handleSort("dateDestroyed")}
               >
-                Destroyed
+                {variant === "compact" ? "Destroyed" : "Destroyed (Gregorian)"}
                 <SortIcon field="dateDestroyed" />
               </th>
               {variant === "expanded" && (
                 <th className={components.table.th}>
-                  Date Built
+                  Destroyed (Islamic)
+                </th>
+              )}
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Built (Gregorian)
+                </th>
+              )}
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Built (Islamic)
                 </th>
               )}
               {variant === "expanded" && (
@@ -206,25 +216,45 @@ export function SitesTable({
                   </span>
                 </td>
                 <td className={`${components.table.td} text-sm`}>
-                  {site.dateDestroyed ? (
-                    calendarType === "islamic" && site.dateDestroyedIslamic
-                      ? site.dateDestroyedIslamic
-                      : new Date(site.dateDestroyed).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
+                  {variant === "compact" ? (
+                    // Compact: Show date based on calendar toggle
+                    site.dateDestroyed ? (
+                      calendarType === "islamic" && site.dateDestroyedIslamic
+                        ? site.dateDestroyedIslamic
+                        : new Date(site.dateDestroyed).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
+                    ) : (
+                      "N/A"
+                    )
                   ) : (
-                    "N/A"
+                    // Expanded: Always show Gregorian date
+                    site.dateDestroyed ? (
+                      new Date(site.dateDestroyed).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })
+                    ) : (
+                      "N/A"
+                    )
                   )}
                 </td>
                 {variant === "expanded" && (
-                  <td className={components.table.td}>
-                    <span className="text-sm">
-                      {calendarType === "islamic" && site.yearBuiltIslamic
-                        ? site.yearBuiltIslamic
-                        : site.yearBuilt}
-                    </span>
+                  <td className={`${components.table.td} text-sm`}>
+                    {site.dateDestroyedIslamic || "N/A"}
+                  </td>
+                )}
+                {variant === "expanded" && (
+                  <td className={`${components.table.td} text-sm`}>
+                    {site.yearBuilt}
+                  </td>
+                )}
+                {variant === "expanded" && (
+                  <td className={`${components.table.td} text-sm`}>
+                    {site.yearBuiltIslamic || "N/A"}
                   </td>
                 )}
                 {variant === "expanded" && (
