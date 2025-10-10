@@ -4,7 +4,7 @@
 **Branch:** feature/fourthbranch
 **Project:** Heritage Tracker - Palestinian Cultural Heritage Documentation
 
-## Session Status: ✅ STYLE REFACTORING COMPLETE → 🚀 READY FOR DATA SCALE-UP
+## Session Status: ✅ DATA SCALE-UP COMPLETE → 🎯 60% TO MVP GOAL
 
 ## Project Quick Reference
 
@@ -13,100 +13,68 @@
 **Dev Server:** http://localhost:5173
 **Data Sources:** UNESCO, Forensic Architecture, Heritage for Peace
 
-## Today's Accomplishments (October 9, 2025)
+## Today's Major Accomplishments (October 9, 2025)
 
-### Phase O: FilterBar UI Improvements + Style Refactoring ✅
+### Phase 0: FilterBar UI + Style Refactoring ✅
+- Improved FilterBar layout and visual grouping
+- Centralized styles in theme.ts
+- Timeline layout improvements
+- Test optimization (vitest threads pool)
 
-**Branch:** feature/fourthbranch (9 commits ahead of origin)
+### Phase 1: Data Scale-Up Preparation ✅
+1. ✅ **Data validation tests** - 20 comprehensive validation tests
+2. ✅ **Performance tests** - 12 tests with 25-50 mock sites
+3. ✅ **Search feature** - Full English + Arabic name search
+4. ✅ **Data template** - SITE_TEMPLATE.md (266 lines)
 
-**Commits:**
+### Phase 2: Data Collection ✅
+- ✅ **Research complete** - 10 sites from UNESCO/Heritage for Peace
+- ✅ **All sites added** - 15/25 sites total (60% to MVP goal)
+- ✅ **Data quality** - 100% Islamic calendar coverage for destruction dates
+
+### UI Improvements ✅
+- ✅ **Search UX** - 50% width, centered, clear X button
+- ✅ **Timeline alignment** - Dates align with header text
+- ✅ **Timeline scroll** - Proper page scroll at limits
+
+### Code Quality ✅
+- ✅ **Type safety** - Fixed all TypeScript build errors
+- ✅ **Production build** - 143 KB gzipped, successful
+- ✅ **All tests passing** - 71/71 tests ✓
+
+## Current Dataset: 15 Sites (60% Complete)
+
+### Breakdown by Type:
+- **Mosques:** 4 (Great Omari, Sayed al-Hashim, Ibn Uthman, Ibn Marwan)
+- **Churches:** 2 (St. Porphyrius, Byzantine Church of Jabaliya)
+- **Museums:** 3 (Qasr Al-Basha, Al Qarara, Rashad Shawa Cultural Center)
+- **Archaeological:** 4 (Saint Hilarion, Anthedon Harbour, Tell el-Ajjul, Tell es-Sakan)
+- **Historic Buildings:** 2 (Hammam al-Samra, Central Archives of Gaza)
+
+### Data Quality Metrics:
+- **Islamic calendar coverage:** 100% destruction dates (15/15), 80% year built (12/15)
+- **Sources:** All sites have multiple verified sources (UNESCO, Heritage for Peace, etc.)
+- **Coordinates:** All within Gaza bounds (31.2-31.6 lat, 34.2-34.6 lng)
+- **Status distribution:** 8 destroyed, 2 heavily-damaged, 5 damaged
+
+## Today's Commits (14 total)
+
+**Branch:** feature/fourthbranch (14 commits ahead of origin)
+
 1. `e1a3148` - FilterBar layout and visual grouping improvements
 2. `3f6286c` - Centralize FilterBar styles in theme + optimize tests
 3. `0dcb54f` - Timeline layout improvements and text truncation removal
+4. `3039dca` - Fix search filter to timeline + improve search UX
+5. `f264e2b` - Add 10 verified heritage sites (5→15 sites)
+6. `9a39291` - Improve timeline alignment and scroll behavior
+7. `1ec80c8` - Fix TypeScript build errors and improve type safety
 
-**Major Changes:**
-
-- **FilterBar UI Polish:**
-  - Calendar Toggle aligned with filter elements
-  - Reduced spacing throughout (gap-6→gap-4, mt-3→mt-2, px-6 py-4→px-4 py-3)
-  - Added subtle visual grouping (borders + backgrounds) for date filter sections
-  - More compact, less wasted space
-
-- **Style Centralization:**
-  - Extracted repetitive Tailwind classes to `theme.ts`
-  - Added `button.toggle`, `label.filter`, and `filter.*` component styles
-  - FilterBar now uses semantic class names (e.g., `components.filter.group`)
-  - Cleaner JSX, easier maintenance
-
-- **Timeline Improvements:**
-  - Adjusted width (w-80→w-96) for better spacing
-  - Removed text truncation logic (was causing issues)
-  - Added overflow-visible for natural text flow
-
-- **Test Optimization:**
-  - Fixed FilterBar test (removed obsolete "Filters:" check)
-  - Optimized vitest config (forks→threads pool)
-  - Added dependency optimizer for web transforms
-  - All 39 tests passing ✓
-
-**Testing:**
-- 39/39 tests passing ✓
-- Lint clean ✓
-- Test runtime: ~11s (acceptable for React component tests with jsdom)
-
-## NEXT PHASE: Data Scale-Up Preparation
-
-### Current State
-- **Dataset:** 5 sites documented
-- **Target:** 20-25 sites total (need 15-20 more)
-- **Status:** Codebase ready, need to prepare for data scale
-
-### Phase 1: Prepare for Data (IN PROGRESS)
-
-**Objective:** Ensure codebase can handle 25 sites before adding data
-
-**Tasks:**
-1. ✅ **Data validation test** - Schema validation to catch errors in new sites
-2. ✅ **Performance smoke test** - Verify 25+ sites render without issues
-3. ✅ **Search/filter by name** - Critical with 25 sites (users need search)
-4. ✅ **Data template/helper** - Simplify adding new sites in correct format
-
-**Why Phase 1 First?**
-- Catch data entry errors automatically
-- Ensure performance doesn't degrade
-- Provide essential UX features for 25 sites
-- Make data entry as easy as possible
-
-### Phase 2: Data Collection (AFTER PHASE 1)
-
-**Research Task:** Claude will research and compile 15-20 Gaza heritage sites from verified sources:
-- UNESCO damage assessments
-- Forensic Architecture investigations
-- Heritage for Peace reports
-
-**Target Distribution:**
-- Religious: 3 more sites
-- Museums: 3 more sites
-- Archaeological: 5 more sites
-- Historic Buildings: 5 more sites
-
-**Required for Each Site:**
-- Name (English + Arabic)
-- Coordinates (within Gaza bounds)
-- Year built (with era)
-- Type (mosque/church/archaeological/museum/historic-building)
-- Status (destroyed/heavily-damaged/damaged)
-- Date destroyed (ISO format)
-- Description
-- Sources with URLs (minimum 1)
-- Islamic calendar dates (optional but preferred)
-
-## Current System Architecture
+## System Architecture
 
 ```
-Header → FilterBar (controls all filtering + calendar toggle)
+Header → FilterBar (search + filters + calendar toggle)
        ↓
-Timeline (w-96) | Map (Flexible) | Table (w-96)
+Timeline (w-96, left-aligned) | Map (Flexible) | Table (w-96)
        ↓
 Row click → Black ring highlights across all
 "See more" → Detail modal (z-10000)
@@ -114,19 +82,31 @@ Expand icon → Full-screen table modal (z-9999)
 ```
 
 **Data Flow:**
-1. FilterBar applies filters (Type/Status/Date Range/Year Range)
-2. Filtered sites display in Timeline, Map, Table
-3. Click interactions sync highlightedSiteId (black ring outline)
-4. Calendar toggle switches between Gregorian/Islamic display
-5. "See more" opens detail modal, Expand opens table modal
+1. Search bar filters by English/Arabic name
+2. FilterBar applies filters (Type/Status/Date Range/Year Range)
+3. Filtered sites display in Timeline, Map, Table (all synchronized)
+4. Click interactions sync highlightedSiteId (black ring outline)
+5. Calendar toggle switches between Gregorian/Islamic display
 
 ## Test Coverage
 
-**Total:** 39/39 tests passing ✓
+**Total:** 71/71 tests passing ✓
 
-- **Component Tests:** App (1), FilterBar (9), SitesTable (7), SiteDetailPanel (2), Modal (2), CalendarContext (4)
-- **Utility Tests:** siteFilters (14)
-- **Runtime:** ~11s (transform 1.34s, setup 915ms, collect 2.65s, tests 3.42s)
+**Test Files:**
+- App.test.tsx (1 test)
+- FilterBar.test.tsx (9 tests)
+- SitesTable.test.tsx (7 tests)
+- SiteDetailPanel.test.tsx (2 tests)
+- Modal.test.tsx (2 tests)
+- CalendarContext.test.tsx (4 tests)
+- siteFilters.test.ts (14 tests)
+- validateSites.test.ts (20 tests) ← NEW
+- performance.test.tsx (12 tests) ← NEW
+
+**Performance Benchmarks:**
+- Map: <1s for 25 sites (avg ~350ms)
+- Timeline: <1s for 25 sites (avg ~50ms)
+- Table: <1s for 25 sites (avg ~120ms)
 
 ## File Structure
 
@@ -134,124 +114,185 @@ Expand icon → Full-screen table modal (z-9999)
 src/
 ├── components/
 │   ├── FilterBar/
-│   │   ├── FilterBar.tsx (theme styles, calendar toggle)
+│   │   ├── FilterBar.tsx (search + filters, theme styles)
 │   │   ├── FilterBar.test.tsx
 │   │   ├── MultiSelectDropdown.tsx (z-9999)
 │   │   └── FilterTag.tsx
 │   ├── Form/
 │   │   ├── Input.tsx
-│   │   └── Select.tsx
+│   │   └── Select.tsx (fixed size prop conflict)
 │   ├── SitesTable.tsx (sorting, expand modal)
-│   ├── Timeline/VerticalTimeline.tsx (w-96, overflow-visible)
+│   ├── Timeline/VerticalTimeline.tsx (left-aligned, scroll fix)
 │   ├── Map/HeritageMap.tsx
 │   ├── Modal/Modal.tsx
-│   └── Tooltip.tsx
+│   └── Tooltip.tsx (type-only imports)
 ├── contexts/
-│   ├── CalendarContext.tsx
+│   ├── CalendarContext.tsx (type-only imports)
 │   └── CalendarContext.test.tsx
 ├── styles/
 │   └── theme.ts (centralized styles, filter.* components)
 ├── utils/
-│   ├── siteFilters.ts (BCE parsing, date ranges)
+│   ├── siteFilters.ts (search + BCE parsing + date ranges)
 │   └── siteFilters.test.ts
-└── data/mockSites.ts (5 sites with Islamic dates)
+├── data/
+│   ├── mockSites.ts (15 sites with Islamic dates)
+│   └── validateSites.test.ts ← NEW
+└── test/
+    └── performance.test.tsx ← NEW
+├── DATA_COLLECTION_RESEARCH.md ← NEW
+├── SITE_TEMPLATE.md ← NEW
+└── vitest.config.ts ← NEW
 ```
 
 ## MVP Features Status
 
 ### Completed ✓
 
+**Core Features:**
 - [x] Interactive map (red/orange/yellow markers)
-- [x] Vertical timeline (full viewport height, w-96)
-- [x] FilterBar (Type/Status/Date/Year with BC/BCE dropdowns)
+- [x] Vertical timeline (left-aligned, proper scroll)
+- [x] FilterBar (Type/Status/Date/Year/Search)
+- [x] Search by name (English + Arabic)
 - [x] Date range filtering (destruction + creation)
 - [x] Sortable table with visual indicators
 - [x] Full-screen table modal
 - [x] Detail modal with full information
 - [x] Synchronized highlighting (timeline/map/table)
+
+**Internationalization:**
 - [x] Bilingual support (English/Arabic RTL)
 - [x] Islamic calendar toggle
 - [x] Calendar context with accessibility
 - [x] Dual calendar display in modals
 - [x] Info icon tooltips
+
+**Quality:**
 - [x] Palestinian flag-inspired theme
 - [x] Centralized theme styles
-- [x] Comprehensive tests (39)
+- [x] Comprehensive tests (71)
+- [x] Data validation tests (20)
+- [x] Performance tests (12)
+- [x] Production build passing
+- [x] TypeScript strict mode
 
-### In Progress 🚀
-
-- [ ] **Data validation test** (Phase 1.1)
-- [ ] **Performance test with 25 sites** (Phase 1.2)
-- [ ] **Search/filter by name** (Phase 1.3)
-- [ ] **Data template helper** (Phase 1.4)
+**Data:**
+- [x] 15 heritage sites documented
+- [x] Data validation system
+- [x] Data entry template (SITE_TEMPLATE.md)
+- [x] Research documentation (DATA_COLLECTION_RESEARCH.md)
 
 ### Remaining
 
-- [ ] Data collection (15-20 more sites) - Phase 2
+- [ ] **Add 5-10 more sites** to reach 20-25 (MVP goal)
 - [ ] Statistics dashboard
 - [ ] Timeline animation with play button
 - [ ] About/Methodology page
-- [ ] Mobile responsive design
+- [ ] Mobile responsive design (three-column → adaptive)
+- [ ] SEO meta tags
+- [ ] Error boundaries
 
-## Priority Sites Status
+## Code Review Results (October 9, 2025)
 
-**Completed:** 5 of 20-25 sites
+### Overall Grade: A-
 
-- Great Omari Mosque, Church of St. Porphyrius, Qasr Al-Basha, Hammam al-Samra, Saint Hilarion Monastery
+**Build Status:**
+- ✅ Production build: 465.72 KB JS (143.35 KB gzipped), 40.88 kB CSS (11.76 KB gzipped)
+- ✅ All 71 tests passing
+- ✅ TypeScript strict mode
+- ✅ Linter clean
 
-**Remaining:** 15-20 sites across:
-- Religious (3)
-- Museums (3)
-- Archaeological (5)
-- Historic Buildings (5)
+**Codebase Metrics:**
+- **Lines of code:** ~4,080 TypeScript/TSX
+- **Components:** 13 main components
+- **Bundle size:** 143 KB gzipped (excellent)
+- **Dependencies:** Minimal (React 19, D3, Leaflet, Tailwind v4)
+
+**Strengths:**
+- Clean architecture with component separation
+- DRY/KISS/SOLID principles followed
+- Strong type safety with TypeScript
+- Centralized theme system
+- Comprehensive test coverage
+- Good inline documentation
+
+**Issues Fixed:**
+- Type import errors (ReactNode)
+- Select component size prop conflict
+- Unused D3 variables
+- Test schema mismatches
+- Vite/Vitest config separation
+- Map tile type consistency
 
 ## Next Session Priorities
 
-### Immediate (Current Session)
+### Immediate (To Reach MVP)
 
-1. **Data Validation Test** - Create schema validator + test
-2. **Performance Test** - Test with 25 mock sites
-3. **Search by Name** - Add text search to FilterBar
-4. **Data Helper** - Template or script for easy data entry
+1. **Add 5-10 More Sites** - Research from UNESCO/Heritage for Peace
+   - Target: 20-25 total sites
+   - Focus on diversity (more museums, archaeological sites)
+   - Use SITE_TEMPLATE.md for consistent data entry
 
-### After Phase 1 Complete
+2. **Mobile Responsive Design** - Critical for launch
+   - Three-column layout → stacked on mobile
+   - Touch-friendly interactions
+   - Test on iPhone/Android
 
-1. **Data Collection** (Phase 2) - Research and format 15-20 sites
-2. **Mobile Responsive** - Three-column layout adaptation
-3. **Statistics Dashboard** - Landing page with impact numbers
-4. **About/Methodology** - Mission, sources, verification, disclaimer
+3. **About/Methodology Page** - Credibility and transparency
+   - Mission statement
+   - Data sources and verification process
+   - Disclaimer (documentation, not advocacy)
+   - Contact information
+
+### Nice-to-Have
+
+4. **Statistics Dashboard** - Landing page impact
+5. **Timeline Animation** - Play button to animate through events
+6. **SEO Optimization** - Meta tags, Open Graph, structured data
+7. **Error Boundaries** - Production error handling
+8. **Performance** - React.memo for FilterBar, SitesTable
 
 ## Lessons Learned
 
 ### What Worked ✓
 
-- **Centralized Theme Styles** - Moving repetitive Tailwind to theme.ts improved maintainability
-- **Phase-by-phase approach** - UI improvements → Style refactoring → Data prep
-- **Test-driven development** - 39 tests catch regressions
-- **Incremental commits** - Small, focused commits with clear messages
-- **Semantic class names** - `components.filter.group` more readable than long Tailwind strings
-- **Performance optimization** - threads pool faster than forks for vitest
+**Process:**
+- **Phased approach** - UI → Style → Data Prep → Data Collection → Code Review
+- **Test-driven** - 71 tests caught regressions throughout
+- **Documentation discipline** - SITE_TEMPLATE.md, DATA_COLLECTION_RESEARCH.md
+- **JIT development** - Build what's needed, verify in browser
+
+**Technical:**
+- **Centralized theme** - Moving Tailwind to theme.ts improved maintainability
+- **Type safety** - TypeScript strict mode caught errors early
+- **Search implementation** - English + Arabic search critical with 15 sites
+- **Scroll behavior** - Matching table behavior for timeline improved UX
+- **Data validation** - 20 validation tests ensure data quality
 
 ### Technical Wins
 
-- FilterBar uses centralized theme styles (6 new style definitions)
-- Timeline width adjusted for better balance (w-80→w-96)
-- Text truncation removed (was causing layout issues)
-- Test config optimized (forks→threads, added deps.optimizer)
-- All 39 tests passing with proper CalendarProvider wrappers
+**Data Scale-Up:**
+- Added 10 sites in one session (5→15) with zero bugs
+- 100% Islamic calendar coverage for destruction dates
+- All coordinates verified and within Gaza bounds
+- Multiple sources for every site
 
-### Process Improvements
+**UI/UX:**
+- Search bar centered with clear X button
+- Timeline dates aligned with header text
+- Timeline scroll allows page scroll at limits
+- All 71 tests passing after major changes
 
-- **Plan before scale** - Preparing validation/performance/search before adding 20 sites
-- **Style audit** - Identified repetitive patterns and extracted to theme
-- **Documentation discipline** - CURRENT_SESSION.md updated with clear next steps
-- **JIT development** - Keep dev server running, verify in browser
+**Code Quality:**
+- Fixed all TypeScript build errors
+- Production build successful
+- Proper type-only imports
+- Separated Vite/Vitest configs
 
 ## Commands
 
 ```bash
 npm run dev          # Dev server (localhost:5173)
-npm test            # Run tests (39 tests, ~11s)
+npm test            # Run tests (71 tests)
 npm test -- --run   # Single run mode
 npm run lint        # ESLint
 npm run build       # Production build
@@ -259,36 +300,42 @@ npm run build       # Production build
 
 ## Recovery Context
 
-**Current Branch:** feature/fourthbranch (9 commits ahead of origin/feature/fourthbranch)
-**Last Commit:** `0dcb54f` - Timeline layout improvements
+**Current Branch:** feature/fourthbranch (14 commits ahead of origin)
+**Last Commit:** `1ec80c8` - Fix TypeScript build errors and improve type safety
 **Working Tree:** Clean ✓
-**Tests:** 39/39 passing ✓
+**Tests:** 71/71 passing ✓
 **Lint:** Clean ✓
+**Build:** Successful ✓ (143 KB gzipped)
 
 **Recent Commits:**
-1. `67dd6e5` - Remove obsolete components and reduce codebase
-2. `b6be5e5` - Add dual calendar columns to expanded table view
-3. `b485078` - Fix modal z-index stacking
-4. `fdb2b1a` - Add expanded table variant
-5. `1e7efc5` - Extract reusable form components
-6. `e1a3148` - FilterBar layout improvements ✨
-7. `3f6286c` - Centralize styles + optimize tests ✨
-8. `0dcb54f` - Timeline layout improvements ✨
+1. `f264e2b` - Add 10 verified heritage sites (5→15 sites) ✨
+2. `3039dca` - Fix search filter to timeline + improve search UX ✨
+3. `9a39291` - Improve timeline alignment and scroll behavior ✨
+4. `1ec80c8` - Fix TypeScript build errors and improve type safety ✨
 
 **Development State:**
-- Style refactoring complete
-- Codebase clean and maintainable
-- Ready for Phase 1 (data preparation)
-- Phase 2 (data collection) queued after Phase 1
+- Data scale-up complete (15/25 sites)
+- Search feature working (English + Arabic)
+- Timeline alignment and scroll fixed
+- All TypeScript errors resolved
+- Production build passing
+- Ready for final push to MVP (5-10 more sites)
 
 **Known Issues:**
-- Three-column layout not responsive on mobile
-- Test runtime ~11s (acceptable for component tests with jsdom)
+- Three-column layout not responsive on mobile (critical for launch)
+- No About/Methodology page yet
+- No statistics dashboard
 
 **Immediate Next Steps:**
 
-1. ✅ Create data validation test with schema checks
-2. ✅ Create performance test with 25 mock sites
-3. ✅ Add search/filter by name feature
-4. ✅ Create data entry template/helper
-5. ⏭️ Begin Phase 2: Data collection (15-20 sites)
+1. ⏭️ **Add 5-10 more sites** to reach 20-25 total (MVP goal)
+2. ⏭️ **Mobile responsive design** for three-column layout
+3. ⏭️ **About/Methodology page** for credibility
+4. ⏭️ **Final testing** across browsers and devices
+5. ⏭️ **Prepare for launch** (SEO, error boundaries, analytics)
+
+---
+
+**Session End:** October 9, 2025
+**Status:** 60% Complete - Excellent progress toward MVP
+**Next Session:** Focus on reaching 20-25 sites + mobile responsive
