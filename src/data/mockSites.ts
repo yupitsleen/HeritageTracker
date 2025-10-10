@@ -538,4 +538,122 @@ export const mockSites: GazaSite[] = [
       },
     ],
   },
+  {
+    id: "saint-hilarion-monastery",
+    name: "Saint Hilarion Monastery",
+    nameArabic: "دير القديس هيلاريون",
+    type: "church",
+    yearBuilt: "340 CE (4th century)",
+    yearBuiltIslamic: "282 BH (Before Hijra)",
+    coordinates: [31.4473, 34.3664], // Tell Umm el-'Amr, Nuseirat
+    status: "damaged",
+    dateDestroyed: "2023-12-14",
+    dateDestroyedIslamic: "1 Jumada al-Akhirah 1445 AH",
+    description:
+      "One of the oldest and largest monasteries in the Middle East, founded around 340 CE by Saint Hilarion, a native of Gaza and key figure in Palestinian monasticism. The archaeological site at Tell Umm el-'Amr spans a large area with intricate Byzantine-era mosaics and church ruins.",
+    historicalSignificance:
+      "Founded by Saint Hilarion, considered one of the fathers of Palestinian monasticism. The monastery was a major center of early Christian monastic life and represents 1,700 years of continuous religious heritage. The site contains exceptional Byzantine architecture and mosaics documenting early Christian presence in Gaza.",
+    culturalValue:
+      "UNESCO granted enhanced protection (highest level of immunity) in December 2023, followed by World Heritage in Danger status in July 2024. The monastery's surrounding areas sustained damage including roads and infrastructure, threatening this irreplaceable archaeological treasure. The site features extensive Byzantine mosaics and architectural remains.",
+    verifiedBy: ["UNESCO", "British Council", "Aliph Foundation"],
+    images: {
+      before: "/images/saint-hilarion-before.jpg",
+    },
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: UNESCO grants enhanced provisional protection to Saint Hilarion Monastery",
+        url: "https://www.unesco.org/en/articles/gaza-unesco-grants-enhanced-provisional-protection-saint-hilarion-monastery",
+        date: "2023-12-18",
+        type: "official",
+      },
+      {
+        organization: "Hyperallergic",
+        title: "1,700-Year-Old Gaza Monastery Designated World Heritage in Danger",
+        url: "https://hyperallergic.com/942804/1700-year-old-saint-hilarion-gaza-monastery-designated-world-heritage-in-danger/",
+        date: "2024-07-26",
+        type: "journalism",
+      },
+    ],
+    originalLocation: "Tell Umm el-'Amr, Nuseirat, Deir al-Balah",
+  },
+  {
+    id: "ard-al-moharbeen-cemetery",
+    name: "Ard-al-Moharbeen Roman Cemetery",
+    nameArabic: "مقبرة أرض المحاربين الرومانية",
+    type: "archaeological",
+    yearBuilt: "1st century BCE - 2nd century CE",
+    yearBuiltIslamic: "722 BH - 478 BH",
+    coordinates: [31.533, 34.500], // Jabaliya (approximate)
+    status: "destroyed",
+    dateDestroyed: "2023-10-08",
+    dateDestroyedIslamic: "23 Rabi' al-Awwal 1445 AH",
+    description:
+      "The largest Roman cemetery discovered in Gaza, with 125+ tombs excavated from an area of 4,000 square meters. The necropolis was discovered in February 2022 during construction work and featured remarkable artifacts including two rare lead sarcophagi - one engraved with grape harvest motifs, the other with dolphins swimming in water.",
+    historicalSignificance:
+      "This cemetery was in use from the 1st century BCE to the 2nd century CE and represents Gaza's importance as a Roman-era city. The discovery in 2022 was considered one of the most significant archaeological finds in recent Palestinian history, providing crucial evidence of Roman burial practices and artistic traditions in the region.",
+    culturalValue:
+      "The site was almost completely destroyed just one day after the conflict began on October 8, 2023, when researchers found rocket damage. UNESCO confirmed the destruction in January 2024. A 2025 report documented severe damage from bombs and bulldozers. The loss of this recently discovered site, with its rare lead sarcophagi and extensive tomb collection, represents an irreplaceable loss to Roman-era archaeology.",
+    verifiedBy: ["UNESCO", "Ministry of Tourism and Antiquities", "Centre for Cultural Heritage Preservation"],
+    images: {
+      before: "/images/ard-al-moharbeen-before.jpg",
+      satellite: "/images/ard-al-moharbeen-satellite.jpg",
+    },
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Preliminary Damage Assessment - Ard-al-Moharbeen Necropolis",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2024-01-15",
+        type: "official",
+      },
+      {
+        organization: "Al Jazeera",
+        title: "Four tombs unearthed at Roman-era cemetery in Gaza",
+        url: "https://www.aljazeera.com/news/2023/9/25/four-tombs-unearthed-at-roman-era-cemetery-in-gaza",
+        date: "2023-09-25",
+        type: "journalism",
+      },
+    ],
+    originalLocation: "Jabaliya, near housing project construction site",
+  },
+  {
+    id: "israa-university-museum",
+    name: "Al-Israa University Museum",
+    nameArabic: "متحف جامعة الإسراء",
+    type: "museum",
+    yearBuilt: "2014",
+    coordinates: [31.480, 34.450], // South of Gaza City (approximate)
+    status: "destroyed",
+    dateDestroyed: "2024-01-17",
+    dateDestroyedIslamic: "6 Rajab 1445 AH",
+    description:
+      "A national museum housed within Al-Israa University, containing more than 3,000 rare archaeological artifacts spanning Gaza's history. The university was the last remaining higher education institution in Gaza when it was destroyed. Before demolition, occupying forces looted the museum's entire collection of artifacts.",
+    historicalSignificance:
+      "Al-Israa University was established in 2014 and became a center for higher education in southern Gaza. Its museum represented an important repository of Palestinian cultural heritage, documenting Gaza's archaeological and historical legacy. The university's destruction marked the complete elimination of all universities in Gaza.",
+    culturalValue:
+      "The museum's 3,000+ artifacts were looted by Israeli forces before the university building was demolished by explosives on January 17, 2024, after 70 days of occupation. University vice president Ahmed Alhussaina stated that such widespread destruction represents a deliberate act aimed at erasing Palestinian cultural memory and archaeological heritage. The loss includes irreplaceable historical artifacts and educational resources.",
+    verifiedBy: ["PEN America", "Al-Israa University"],
+    images: {
+      before: "/images/israa-university-before.jpg",
+      after: "/images/israa-university-after.jpg",
+    },
+    sources: [
+      {
+        organization: "PEN America",
+        title: "Gaza Cultural Heritage Destruction Report",
+        url: "https://www.finestresullarte.info/en/news/gaza-the-silent-massacre-a-report-lists-destroyed-cultural-heritage",
+        date: "2024-02-01",
+        type: "documentation",
+      },
+      {
+        organization: "WAFA News Agency",
+        title: "Occupation forces destroy key facilities of Al-Israa University in Gaza",
+        url: "https://english.wafa.ps/Pages/Details/140840",
+        date: "2024-01-17",
+        type: "journalism",
+      },
+    ],
+    originalLocation: "South of Gaza City",
+  },
 ];
