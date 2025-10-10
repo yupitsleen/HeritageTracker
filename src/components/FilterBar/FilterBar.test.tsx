@@ -11,12 +11,14 @@ describe("FilterBar", () => {
     destructionDateEnd: null,
     creationYearStart: null,
     creationYearEnd: null,
+    searchTerm: "",
     onTypeChange: vi.fn(),
     onStatusChange: vi.fn(),
     onDestructionDateStartChange: vi.fn(),
     onDestructionDateEndChange: vi.fn(),
     onCreationYearStartChange: vi.fn(),
     onCreationYearEndChange: vi.fn(),
+    onSearchChange: vi.fn(),
     filteredCount: 5,
     totalCount: 10,
   };
@@ -27,7 +29,8 @@ describe("FilterBar", () => {
         <FilterBar {...mockProps} />
       </CalendarProvider>
     );
-    expect(screen.getByText("Filters:")).toBeInTheDocument();
+    expect(screen.getByText("Site Type")).toBeInTheDocument();
+    expect(screen.getByText(/Showing/)).toBeInTheDocument();
   });
 
   it("displays site count", () => {

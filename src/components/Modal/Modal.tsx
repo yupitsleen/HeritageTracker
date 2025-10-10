@@ -6,12 +6,14 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   title?: string;
+  zIndex?: number;
 }
 
 /**
  * Accessible modal component with backdrop, escape key support, and focus trapping
+ * Supports custom z-index for modal stacking (e.g., detail modal over table modal)
  */
-export function Modal({ isOpen, onClose, children, title }: ModalProps) {
+export function Modal({ isOpen, onClose, children, title, zIndex = 9999 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Handle escape key press
@@ -50,7 +52,8 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      className="fixed inset-0 flex items-center justify-center p-4"
+      style={{ zIndex }}
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? "modal-title" : undefined}

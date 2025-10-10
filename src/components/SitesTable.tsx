@@ -9,13 +9,15 @@ interface SitesTableProps {
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
+  variant?: "compact" | "expanded";
 }
 
 type SortField = "name" | "type" | "status" | "dateDestroyed";
 type SortDirection = "asc" | "desc";
 
 /**
- * Compact table view of heritage sites with click-to-view-details and sorting
+ * Table view of heritage sites with click-to-view-details and sorting
+ * Supports compact (3 columns) and expanded (all columns) variants
  */
 export function SitesTable({
   sites,
@@ -23,6 +25,7 @@ export function SitesTable({
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
+  variant = "compact",
 }: SitesTableProps) {
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -85,24 +88,22 @@ export function SitesTable({
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-4 flex-shrink-0 px-2">
-        <div className="flex items-center justify-between">
-          <div className="flex-1"></div>
-          <h2 className="text-xl font-bold text-gray-800 flex-1 text-center">Heritage Sites</h2>
-          <div className="flex-1 flex justify-end">
-            {onExpandTable && (
-              <button
-                onClick={onExpandTable}
-                className="text-[#16a34a] hover:text-[#15803d] p-1"
-                title="Expand table"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                </svg>
-              </button>
-            )}
-          </div>
+    <div className="h-full flex flex-col border-2 border-gray-300 rounded-lg bg-white shadow-sm">
+      <div className="mb-4 flex-shrink-0 px-2 pt-4">
+        <div className="flex items-center justify-center gap-2">
+          <h2 className="text-xl font-bold text-gray-800">Heritage Sites</h2>
+          {onExpandTable && (
+            <button
+              onClick={onExpandTable}
+              className="text-[#16a34a] hover:text-[#15803d] p-1 transition-colors"
+              title="Expand table to see all columns"
+              aria-label="Expand table to see all columns"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
@@ -116,13 +117,15 @@ export function SitesTable({
                 Site Name
                 <SortIcon field="name" />
               </th>
-              <th
-                className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
-                onClick={() => handleSort("type")}
-              >
-                Type
-                <SortIcon field="type" />
-              </th>
+              {variant === "expanded" && (
+                <th
+                  className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
+                  onClick={() => handleSort("type")}
+                >
+                  Type
+                  <SortIcon field="type" />
+                </th>
+              )}
               <th
                 className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
                 onClick={() => handleSort("status")}
@@ -134,15 +137,29 @@ export function SitesTable({
                 className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
                 onClick={() => handleSort("dateDestroyed")}
               >
-                Date Destroyed
+                {variant === "compact" ? "Destroyed" : "Destroyed (Gregorian)"}
                 <SortIcon field="dateDestroyed" />
               </th>
-              <th className={components.table.th}>
-                Date Built
-              </th>
-              <th className={components.table.th}>
-                {/* Actions column header */}
-              </th>
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Destroyed (Islamic)
+                </th>
+              )}
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Built (Gregorian)
+                </th>
+              )}
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Built (Islamic)
+                </th>
+              )}
+              {variant === "expanded" && (
+                <th className={components.table.th}>
+                  Actions
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -157,57 +174,102 @@ export function SitesTable({
                 }}
               >
                 <td className={components.table.td}>
-                  <div className="font-semibold text-gray-900">{site.name}</div>
-                  {site.nameArabic && (
-                    <div className="text-sm text-gray-600 mt-1" dir="rtl">
-                      {site.nameArabic}
+                  {variant === "compact" ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSiteClick(site);
+                      }}
+                      className="text-left w-full hover:text-[#15803d] transition-colors"
+                    >
+                      <div className="font-semibold text-gray-900 hover:underline">{site.name}</div>
+                      {site.nameArabic && (
+                        <div className="text-xs text-gray-600 mt-1" dir="rtl">
+                          {site.nameArabic}
+                        </div>
+                      )}
+                    </button>
+                  ) : (
+                    <div>
+                      <div className="font-semibold text-gray-900">{site.name}</div>
+                      {site.nameArabic && (
+                        <div className="text-sm text-gray-600 mt-1" dir="rtl">
+                          {site.nameArabic}
+                        </div>
+                      )}
                     </div>
                   )}
                 </td>
-                <td className={components.table.td}>
-                  <span className="capitalize">
-                    {site.type.replace("-", " ")}
-                  </span>
-                </td>
+                {variant === "expanded" && (
+                  <td className={components.table.td}>
+                    <span className="capitalize">
+                      {site.type.replace("-", " ")}
+                    </span>
+                  </td>
+                )}
                 <td className={components.table.td}>
                   <span
-                    className="font-semibold capitalize"
+                    className="font-semibold capitalize text-sm"
                     style={{ color: getStatusHexColor(site.status) }}
                   >
                     {site.status.replace("-", " ")}
                   </span>
                 </td>
-                <td className={components.table.td}>
-                  {site.dateDestroyed ? (
-                    calendarType === "islamic" && site.dateDestroyedIslamic
-                      ? site.dateDestroyedIslamic
-                      : new Date(site.dateDestroyed).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
+                <td className={`${components.table.td} text-sm`}>
+                  {variant === "compact" ? (
+                    // Compact: Show date based on calendar toggle
+                    site.dateDestroyed ? (
+                      calendarType === "islamic" && site.dateDestroyedIslamic
+                        ? site.dateDestroyedIslamic
+                        : new Date(site.dateDestroyed).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
+                    ) : (
+                      "N/A"
+                    )
                   ) : (
-                    "N/A"
+                    // Expanded: Always show Gregorian date
+                    site.dateDestroyed ? (
+                      new Date(site.dateDestroyed).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })
+                    ) : (
+                      "N/A"
+                    )
                   )}
                 </td>
-                <td className={components.table.td}>
-                  <span className="text-sm">
-                    {calendarType === "islamic" && site.yearBuiltIslamic
-                      ? site.yearBuiltIslamic
-                      : site.yearBuilt}
-                  </span>
-                </td>
-                <td className={components.table.td}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSiteClick(site);
-                    }}
-                    className="text-[#16a34a] hover:text-[#15803d] hover:underline font-medium text-sm"
-                  >
-                    See more
-                  </button>
-                </td>
+                {variant === "expanded" && (
+                  <td className={`${components.table.td} text-sm`}>
+                    {site.dateDestroyedIslamic || "N/A"}
+                  </td>
+                )}
+                {variant === "expanded" && (
+                  <td className={`${components.table.td} text-sm`}>
+                    {site.yearBuilt}
+                  </td>
+                )}
+                {variant === "expanded" && (
+                  <td className={`${components.table.td} text-sm`}>
+                    {site.yearBuiltIslamic || "N/A"}
+                  </td>
+                )}
+                {variant === "expanded" && (
+                  <td className={components.table.td}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSiteClick(site);
+                      }}
+                      className="text-[#16a34a] hover:text-[#15803d] hover:underline font-medium text-sm"
+                    >
+                      See more
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

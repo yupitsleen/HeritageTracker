@@ -119,3 +119,30 @@ export const filterSitesByCreationYear = (
     return true;
   });
 };
+
+/**
+ * Filter sites by search term (searches English and Arabic names)
+ * Returns all sites if search term is empty
+ */
+export const filterSitesBySearch = (
+  sites: GazaSite[],
+  searchTerm: string
+): GazaSite[] => {
+  if (!searchTerm || searchTerm.trim().length === 0) return sites;
+
+  const lowerSearch = searchTerm.toLowerCase().trim();
+
+  return sites.filter((site) => {
+    // Search in English name
+    if (site.name.toLowerCase().includes(lowerSearch)) {
+      return true;
+    }
+
+    // Search in Arabic name if it exists
+    if (site.nameArabic && site.nameArabic.includes(searchTerm.trim())) {
+      return true;
+    }
+
+    return false;
+  });
+};

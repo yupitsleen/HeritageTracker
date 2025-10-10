@@ -11,29 +11,26 @@ describe("SiteDetailPanel", () => {
       nameArabic: "موقع تراثي اختباري",
       type: "mosque",
       yearBuilt: "7th century",
-      location: "Gaza City",
       coordinates: [31.5, 34.45],
       status: "destroyed",
       dateDestroyed: "2023-10-15",
       description: "A test heritage site",
-      descriptionArabic: "موقع تراثي للاختبار",
       historicalSignificance: "Very significant",
       culturalValue: "Immense cultural value",
+      verifiedBy: ["UNESCO", "Heritage for Peace"],
       sources: [
         {
+          organization: "UNESCO",
           type: "official",
           title: "UNESCO Report",
           url: "https://example.com",
           date: "2024-01-01",
         },
       ],
-      images: [
-        {
-          url: "https://example.com/image.jpg",
-          caption: "Before destruction",
-          type: "before",
-        },
-      ],
+      images: {
+        before: "https://example.com/before.jpg",
+        after: "https://example.com/after.jpg",
+      },
     };
 
     render(<SiteDetailPanel site={mockSite} />);
@@ -52,10 +49,12 @@ describe("SiteDetailPanel", () => {
       name: "Minimal Site",
       type: "archaeological",
       yearBuilt: "Unknown",
-      location: "Gaza",
       coordinates: [31.5, 34.45],
       status: "damaged",
       description: "A minimal site",
+      historicalSignificance: "Historical significance",
+      culturalValue: "Cultural value",
+      verifiedBy: ["UNESCO"],
       sources: [],
     };
 
