@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import type { GazaSite } from "../types";
 import { components, getStatusHexColor } from "../styles/theme";
 import { useCalendar } from "../contexts/CalendarContext";
+import { formatDateCompact, formatDateStandard, formatDateLong } from "../utils/format";
 
 interface SitesTableProps {
   sites: GazaSite[];
@@ -17,7 +18,13 @@ type SortDirection = "asc" | "desc";
 
 /**
  * Table view of heritage sites with click-to-view-details and sorting
- * Supports compact (3 columns) and expanded (all columns) variants
+ * Supports compact, expanded, and mobile accordion variants
+ *
+ * @variant compact - Desktop sidebar table (Name, Status, Destruction Date, Actions)
+ * @variant expanded - Full modal table with all fields (Type, Islamic dates, Built dates)
+ * @variant mobile - Accordion list for screens < 768px (Name/Type/Date collapsed, tap to expand for full details)
+ *
+ * Mobile features: Status shown via name color, sortable columns, sticky headers, inline detail expansion
  */
 export function SitesTable({
   sites,
@@ -136,7 +143,7 @@ export function SitesTable({
             >
               {/* Collapsed row - clickable to expand */}
               <div
-                className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-gray-50"
+                className="grid grid-cols-[1fr_auto_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-gray-50"
                 onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
               >
                 {/* Site Name - color-coded by status */}
@@ -148,7 +155,7 @@ export function SitesTable({
                     {site.name}
                   </div>
                   {site.nameArabic && (
-                    <div className="text-xs text-gray-600 truncate">
+                    <div className="text-xs text-gray-600 truncate" dir="rtl" lang="ar">
                       {site.nameArabic}
                     </div>
                   )}
@@ -159,13 +166,21 @@ export function SitesTable({
                   {site.type.replace("-", " ")}
                 </div>
 
-                {/* Date Destroyed (Gregorian only, compact) */}
+                {/* Date */}
                 <div className="text-xs text-gray-700 whitespace-nowrap">
-                  {site.dateDestroyed ? new Date(site.dateDestroyed).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "2-digit",
-                  }) : "N/A"}
+                  {formatDateCompact(site.dateDestroyed)}
+                </div>
+
+                {/* Chevron indicator */}
+                <div className="text-gray-400">
+                  <svg
+                    className={`w-4 h-4 transition-transform ${expandedRowId === site.id ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </div>
               </div>
 
@@ -207,11 +222,7 @@ export function SitesTable({
                   <div>
                     <span className="text-xs font-semibold text-gray-600 uppercase">Date Destroyed:</span>
                     <p className="text-sm text-gray-900">
-                      {site.dateDestroyed ? new Date(site.dateDestroyed).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      }) : "N/A"}
+                      {formatDateLong(site.dateDestroyed)}
                     </p>
                     {site.dateDestroyedIslamic && (
                       <p className="text-xs text-gray-600">Islamic: {site.dateDestroyedIslamic}</p>
@@ -388,28 +399,12 @@ export function SitesTable({
                 <td className={`${components.table.td} text-sm`}>
                   {variant === "compact" ? (
                     // Compact: Show date based on calendar toggle
-                    site.dateDestroyed ? (
-                      calendarType === "islamic" && site.dateDestroyedIslamic
-                        ? site.dateDestroyedIslamic
-                        : new Date(site.dateDestroyed).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })
-                    ) : (
-                      "N/A"
-                    )
+                    site.dateDestroyed && calendarType === "islamic" && site.dateDestroyedIslamic
+                      ? site.dateDestroyedIslamic
+                      : formatDateStandard(site.dateDestroyed)
                   ) : (
                     // Expanded: Always show Gregorian date
-                    site.dateDestroyed ? (
-                      new Date(site.dateDestroyed).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })
-                    ) : (
-                      "N/A"
-                    )
+                    formatDateStandard(site.dateDestroyed)
                   )}
                 </td>
                 {variant === "expanded" && (

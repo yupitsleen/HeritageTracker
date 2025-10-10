@@ -57,7 +57,7 @@ describe("SitesTable", () => {
     );
     expect(screen.getByText("Site Name")).toBeInTheDocument();
     expect(screen.getByText("Status")).toBeInTheDocument();
-    expect(screen.getByText("Destroyed")).toBeInTheDocument();
+    expect(screen.getByText("Destruction Date")).toBeInTheDocument();
   });
 
   it("displays site data in table rows", () => {
