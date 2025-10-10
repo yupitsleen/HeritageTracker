@@ -30,7 +30,7 @@ This file provides guidance to Claude Code when working on Heritage Tracker.
 
 ```bash
 npm run dev          # Dev server (localhost:5173) - keep running
-npm test            # Run tests (38 tests)
+npm test            # Run tests (84 tests)
 npm run lint        # Code quality
 npm run build       # Production build
 ```
@@ -41,7 +41,7 @@ npm run build       # Production build
 
 **Data Sources:** UNESCO, Forensic Architecture, Heritage for Peace
 
-**Current State:** 5 sites documented, MVP Phase 1 complete with enhanced filtering
+**Current State:** 15 sites documented, MVP Phase 1 complete with enhanced filtering and mobile optimization
 
 ## Critical Development Rules
 
@@ -59,7 +59,7 @@ git commit -m "fix: resolve table sorting bug"
 
 ### Quality Gates (#memorize)
 
-- **Always run tests** - 38/38 must pass ✓
+- **Always run tests** - 84/84 must pass ✓
 - **Dev server running** - HMR for instant feedback
 - **Smoke tests** - Quick verification, not implementation
 - **Code review** - Check DRY/KISS/SOLID before commit
@@ -74,8 +74,16 @@ git commit -m "fix: resolve table sorting bug"
 
 ### Current Layout (Three-Column Dashboard)
 
+**Desktop:**
 ```
-Timeline (320px left) | Map (flexible center) | Table (384px right)
+Timeline (440px left, red border) | Map (centered, sticky) | Table (480px right, white/black borders)
+```
+
+**Mobile:**
+```
+FilterBar (compact, text-[10px])
+↓
+SitesTable (accordion view, Type column removed)
 ```
 
 **File Structure:**
@@ -84,9 +92,9 @@ Timeline (320px left) | Map (flexible center) | Table (384px right)
 src/
 ├── components/
 │   ├── FilterBar/
-│   │   ├── FilterBar.tsx           # BC/BCE dropdowns, date ranges
+│   │   ├── FilterBar.tsx           # Compact filters (text-[10px]), mobile search
 │   │   └── MultiSelectDropdown.tsx # Checkbox multi-select (z-9999)
-│   ├── SitesTable.tsx              # Sortable with expand modal
+│   ├── SitesTable.tsx              # Desktop + mobile accordion variants
 │   ├── Timeline/VerticalTimeline.tsx
 │   ├── Map/HeritageMap.tsx
 │   └── Modal/Modal.tsx
@@ -97,7 +105,7 @@ src/
 │   ├── filters.ts                  # SITE_TYPES, STATUS_OPTIONS
 │   └── map.ts
 ├── styles/theme.ts                 # Centralized colors/styles
-└── data/mockSites.ts               # 5 sites currently
+└── data/mockSites.ts               # 15 sites currently
 ```
 
 **Key Patterns:**
@@ -156,9 +164,11 @@ src/
 
 **Layout:**
 
-- Centered filters: `flex-1` with `justify-center`
+- Desktop: Centered filters with inline search, all text-[10px] for compactness
+- Mobile: Full-width search bar above (hidden md:hidden), compact filters below
 - Stable Clear button: min-width prevents shift
 - Controlled components with local state
+- No longer displays site count (removed unused props)
 
 **BC/BCE Implementation:**
 
@@ -170,6 +180,20 @@ const year = yearEra === "BCE" ? -parseInt(yearInput) : parseInt(yearInput);
 
 ### SitesTable Component (#memorize)
 
+**Variants:**
+
+- `compact` - Desktop sidebar (Name, Status, Date, Actions)
+- `expanded` - Modal with all fields (Type, Islamic dates, Built dates)
+- `mobile` - Accordion list (Name/Date collapsed, Type column removed)
+
+**Mobile Features:**
+
+- Type column removed for space efficiency
+- Arabic names left-aligned (not RTL) for consistency
+- Collapsible accordion rows with chevron indicator
+- Site count shown in header ("Showing X sites")
+- Color-coded site names by status
+
 **Sorting:**
 
 - `useMemo` for performance
@@ -179,7 +203,8 @@ const year = yearEra === "BCE" ? -parseInt(yearInput) : parseInt(yearInput);
 
 **Interaction:**
 
-- Row clicks → highlight only (no modal)
+- Desktop row clicks → highlight only (no modal)
+- Mobile accordion clicks → expand/collapse details
 - "See more" button → use `e.stopPropagation()`
 - Expand icon → full-screen modal
 
@@ -255,8 +280,8 @@ interface GazaSite {
 - Vitest + React Testing Library
 - Smoke tests (rendering, basic functionality)
 - 5+ tests minimum for new components
-- Test edge cases (BCE dates, null values)
-- Current: 38 tests across 9 files
+- Test edge cases (BCE dates, null values, mobile variants)
+- Current: 84 tests across 9 files
 - Run before every commit
 
 ### Performance (#memorize)
@@ -311,41 +336,40 @@ interface GazaSite {
 
 ### Current Limitations
 
-- Mobile responsiveness needs work (three-column layout)
 - No validation that end date > start date
 - Year parsing assumes CE unless BCE/BC explicit
+- Search bar code duplicated (mobile/desktop) - acceptable for different styling needs
 
 ## Priority Sites
 
-**Current:** 5 of 20-25 sites
+**Current:** 15 of 20-25 sites documented
 
-- ✅ Great Omari Mosque, Church of St. Porphyrius, Saint Hilarion Monastery, Qasr Al-Basha, Hammam al-Samra
-
-**Remaining:** 15-20 sites (Religious: 3, Museums: 3, Archaeological: 5, Historic: 5)
+**Remaining:** 5-10 sites to reach MVP target
 
 ## MVP Status
 
 ### Completed ✓
 
-- Interactive map (red/orange/yellow markers)
-- Vertical timeline (full viewport height)
-- Enhanced FilterBar (BC/BCE dropdowns, date ranges)
-- Sortable table with expand modal
+- Interactive map (red/orange/yellow markers, centered sticky positioning)
+- Vertical timeline (440px width, red border, sticky)
+- Enhanced FilterBar (BC/BCE dropdowns, date ranges, text-[10px] compact design)
+- Sortable table (desktop + mobile accordion variants)
+- Mobile optimization (Type column removed, left-aligned Arabic, compact header)
 - Detail modal with accessibility
 - Synchronized highlighting (black ring)
-- Palestinian flag-inspired theme
-- 38 comprehensive tests
+- Palestinian flag-inspired theme (thicker flag line: RED-BLACK-RED-GREEN)
+- Desktop table styling (white border + black inner border)
+- 84 comprehensive tests (including mobile variant tests)
 
 ### Remaining
 
 - Statistics dashboard
 - Timeline animation
 - About/Methodology page
-- Mobile responsiveness
-- Data collection (15-20 sites)
+- Data collection (5-10 more sites to reach 20-25 target)
 
 ---
 
-**Last Updated:** October 8, 2025  
-**Version:** 0.1.0 (Pre-launch)  
-**Status:** MVP Phase 1 Complete
+**Last Updated:** October 10, 2025
+**Version:** 0.2.0 (Pre-launch)
+**Status:** MVP Phase 1 Complete with Mobile Optimization
