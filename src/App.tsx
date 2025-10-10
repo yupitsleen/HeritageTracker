@@ -8,6 +8,7 @@ import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
+import { About } from "./components/About/About";
 import { CalendarProvider } from "./contexts/CalendarContext";
 import {
   filterSitesByTypeAndStatus,
@@ -27,6 +28,7 @@ function App() {
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [isTableExpanded, setIsTableExpanded] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
@@ -59,11 +61,19 @@ function App() {
         <div className="sticky top-0 z-50 bg-[#000000]">
           {/* Header - BLACK background */}
           <header className={components.header.base}>
-            <div className={cn(components.container.base, "py-3 md:py-6")}>
+            <div className={cn(components.container.base, "py-3 md:py-6 relative")}>
               <h1 className="text-xl md:text-3xl font-bold text-center">Heritage Tracker</h1>
               <p className="text-[#f5f5f5] mt-1 md:mt-2 text-center text-xs md:text-base">
                 Documenting the destruction of cultural heritage in Gaza (2023-2024)
               </p>
+              {/* About button - desktop only, positioned in top right */}
+              <button
+                onClick={() => setIsAboutOpen(true)}
+                className="hidden md:block absolute top-3 right-4 md:top-6 md:right-6 px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
+                aria-label="About Heritage Tracker"
+              >
+                About
+              </button>
             </div>
           </header>
 
@@ -207,6 +217,15 @@ function App() {
           </div>
         </Modal>
 
+        {/* About Modal */}
+        <Modal
+          isOpen={isAboutOpen}
+          onClose={() => setIsAboutOpen(false)}
+          zIndex={10001}
+        >
+          <About />
+        </Modal>
+
         {/* Footer - GREEN background, sticky at bottom */}
         <footer className="fixed bottom-0 left-0 right-0 bg-[#009639] text-[#fefefe] shadow-lg z-50">
           {/* Desktop footer - full text with more height */}
@@ -218,11 +237,18 @@ function App() {
               </p>
             </div>
           </div>
-          {/* Mobile footer - minimal with just site name */}
+          {/* Mobile footer - site name with About link */}
           <div className="md:hidden py-2">
             <div className={cn(components.container.base)}>
               <p className="text-xs text-center font-semibold">
-                Heritage Tracker
+                Heritage Tracker •{" "}
+                <button
+                  onClick={() => setIsAboutOpen(true)}
+                  className="underline hover:text-[#fefefe]/80 transition-colors"
+                  aria-label="About Heritage Tracker"
+                >
+                  About
+                </button>
               </p>
             </div>
           </div>
