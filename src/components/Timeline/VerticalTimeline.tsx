@@ -12,8 +12,10 @@ interface VerticalTimelineProps {
 // Constants for vertical timeline dimensions
 const TIMELINE_CONFIG = {
   MARGIN: { top: 20, right: 24, bottom: 20, left: 0 },
-  ITEM_HEIGHT: 60, // Height per timeline item
-  LINE_X: 84, // X position of vertical line from left edge of SVG
+  ITEM_HEIGHT: 80, // Height per timeline item (increased for word wrap)
+  LINE_X: 120, // X position of vertical line from left edge of SVG (moved right for date space)
+  DATE_WIDTH: 110, // Width allocated for date labels
+  NAME_WIDTH: 260, // Width allocated for site names
   MARKER_RADIUS: { default: 8, hover: 12, selected: 10 },
   STROKE_WIDTH: { default: 2, selected: 4 },
   STROKE_COLOR: { default: "#fff", selected: "#000" },
@@ -99,34 +101,50 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
       .attr("stroke", TIMELINE_CONFIG.STROKE_COLOR.default)
       .attr("stroke-width", TIMELINE_CONFIG.STROKE_WIDTH.default);
 
-    // Add date labels (left side, aligned with header text)
+    // Add date labels (left side, word-wrapping with foreignObject)
     items
-      .append("text")
+      .append("foreignObject")
       .attr("class", "date-label")
       .attr("x", 0)
-      .attr("y", 0)
-      .attr("text-anchor", "start")
-      .attr("alignment-baseline", "middle")
-      .attr("font-size", "13px")
-      .attr("font-weight", "600")
-      .attr("fill", "#6b7280")
-      .text((d) =>
+      .attr("y", -30) // Center vertically
+      .attr("width", TIMELINE_CONFIG.DATE_WIDTH)
+      .attr("height", 60)
+      .append("xhtml:div")
+      .style("display", "flex")
+      .style("align-items", "center")
+      .style("height", "100%")
+      .style("font-size", "13px")
+      .style("font-weight", "600")
+      .style("color", "#6b7280")
+      .style("word-wrap", "break-word")
+      .style("overflow-wrap", "break-word")
+      .style("hyphens", "auto")
+      .style("line-height", "1.3")
+      .html((d) =>
         calendarType === "islamic" && d.dateDestroyedIslamic
           ? d.dateDestroyedIslamic
           : d3.timeFormat("%b %d, %Y")(d.date)
       );
 
-    // Add site names (right side) - no truncation, allow overflow
+    // Add site names (right side) - word-wrapping with foreignObject
     items
-      .append("text")
+      .append("foreignObject")
       .attr("class", "site-name")
       .attr("x", LINE_X + 20)
-      .attr("y", -2)
-      .attr("text-anchor", "start")
-      .attr("alignment-baseline", "middle")
-      .attr("font-size", "14px")
-      .attr("font-weight", "500")
-      .attr("fill", "#1f2937")
+      .attr("y", -30) // Center vertically
+      .attr("width", TIMELINE_CONFIG.NAME_WIDTH)
+      .attr("height", 60)
+      .append("xhtml:div")
+      .style("display", "flex")
+      .style("align-items", "center")
+      .style("height", "100%")
+      .style("font-size", "14px")
+      .style("font-weight", "500")
+      .style("color", "#1f2937")
+      .style("word-wrap", "break-word")
+      .style("overflow-wrap", "break-word")
+      .style("hyphens", "auto")
+      .style("line-height", "1.3")
       .text((d) => d.name);
 
     // Add status labels (right side, below name)
@@ -134,7 +152,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
       .append("text")
       .attr("class", "status-label")
       .attr("x", LINE_X + 20)
-      .attr("y", 14)
+      .attr("y", 20)
       .attr("text-anchor", "start")
       .attr("font-size", "11px")
       .attr("fill", (d) => getStatusHexColor(d.status))
@@ -151,11 +169,11 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
           .select(".event-marker")
           .attr("r", TIMELINE_CONFIG.MARKER_RADIUS.hover);
 
-        // Highlight site name
+        // Highlight site name (foreignObject contains div)
         d3.select(this)
-          .select(".site-name")
-          .attr("font-weight", "700")
-          .attr("fill", "#111827");
+          .select(".site-name div")
+          .style("font-weight", "700")
+          .style("color", "#111827");
       })
       .on("mouseleave", function () {
         // Reset marker size
@@ -165,9 +183,9 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
 
         // Reset site name
         d3.select(this)
-          .select(".site-name")
-          .attr("font-weight", "500")
-          .attr("fill", "#1f2937");
+          .select(".site-name div")
+          .style("font-weight", "500")
+          .style("color", "#1f2937");
       })
       .on("click", function (_event, d) {
         // Only highlight the site, no filtering

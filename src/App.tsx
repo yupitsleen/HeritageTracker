@@ -89,10 +89,21 @@ function App() {
             />
           </div>
 
-          {/* Three-column layout - no padding, hugs edges */}
-          <div className="flex gap-0">
+          {/* Mobile Layout - Table only */}
+          <div className="md:hidden px-4">
+            <SitesTable
+              sites={filteredSites}
+              onSiteClick={setSelectedSite}
+              onSiteHighlight={setHighlightedSiteId}
+              highlightedSiteId={highlightedSiteId}
+              variant="mobile"
+            />
+          </div>
+
+          {/* Desktop Three-column layout - no padding, hugs edges */}
+          <div className="hidden md:flex gap-0">
             {/* Left Sidebar - Timeline (Sticky, with left padding) */}
-            <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden pl-6">
+            <aside className="w-[440px] flex-shrink-0 sticky top-0 h-screen overflow-hidden pl-6">
               <VerticalTimeline
                 sites={filteredSites}
                 onSiteHighlight={setHighlightedSiteId}
@@ -110,7 +121,7 @@ function App() {
             </div>
 
             {/* Right Sidebar - Sites Table (Sticky, wider for full column visibility) */}
-            <aside className="w-96 flex-shrink-0 sticky top-0 h-screen overflow-hidden pr-6">
+            <aside className="w-[480px] flex-shrink-0 sticky top-0 h-screen overflow-hidden pr-6">
               <SitesTable
                 sites={filteredSites}
                 onSiteClick={setSelectedSite}
@@ -126,7 +137,6 @@ function App() {
         <Modal
           isOpen={selectedSite !== null}
           onClose={() => setSelectedSite(null)}
-          title={selectedSite?.name}
           zIndex={10000}
         >
           {selectedSite && <SiteDetailPanel site={selectedSite} />}

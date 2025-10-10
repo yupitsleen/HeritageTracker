@@ -107,9 +107,9 @@ export function FilterBar({
 
   return (
     <div className={cn(components.card.base, "px-4 py-3 mb-6")}>
-      {/* Search bar - 50% width, centered at top */}
+      {/* Search bar - full width on mobile, 50% on desktop */}
       <div className="mb-3 flex justify-center">
-        <div className="relative w-1/2">
+        <div className="relative w-full md:w-1/2">
           <Input
             type="text"
             value={searchTerm}
@@ -141,8 +141,8 @@ export function FilterBar({
         </div>
       </div>
 
-      {/* Filter controls - sleek horizontal layout */}
-      <div className="flex items-end justify-center gap-4 flex-wrap">
+      {/* Filter controls - sleek horizontal layout (hidden on mobile) */}
+      <div className="hidden md:flex items-end justify-center gap-4 flex-wrap">
         {/* Calendar Toggle */}
         <button
           onClick={toggleCalendar}

@@ -19,10 +19,10 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
         <StatusBadge status={site.status} className="inline-block" />
 
         {/* Site Names */}
-        <div>
+        <div className="text-center">
           <h3 className="text-3xl font-bold text-gray-900">{site.name}</h3>
           {site.nameArabic && (
-            <p className="text-xl text-gray-600 mt-2 text-right" dir="rtl">
+            <p className="text-xl text-gray-600 mt-2">
               {site.nameArabic}
             </p>
           )}
