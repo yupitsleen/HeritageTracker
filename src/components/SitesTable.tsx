@@ -89,7 +89,7 @@ export function SitesTable({
       return <span className="text-gray-400 ml-1">↕</span>;
     }
     return (
-      <span className="text-[#16a34a] ml-1">
+      <span className="text-[#009639] ml-1">
         {sortDirection === "asc" ? "↑" : "↓"}
       </span>
     );
@@ -108,21 +108,14 @@ export function SitesTable({
         </div>
 
         {/* Sticky column headers with sorting */}
-        <div className="sticky top-0 bg-white z-10 border-b-2 border-gray-300 pb-2 mb-2">
-          <div className="grid grid-cols-[1fr_auto_auto] gap-3 px-3 py-2">
+        <div className="sticky top-[85px] bg-white z-40 border-b-2 border-gray-300 pb-2 mb-2 shadow-sm">
+          <div className="grid grid-cols-[1fr_auto] gap-3 px-3 py-2">
             <div
               className="text-xs font-bold text-gray-700 uppercase cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
               onClick={() => handleSort("name")}
             >
               Site Name
               <SortIcon field="name" />
-            </div>
-            <div
-              className="text-xs font-bold text-gray-700 uppercase whitespace-nowrap cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
-              onClick={() => handleSort("type")}
-            >
-              Type
-              <SortIcon field="type" />
             </div>
             <div
               className="text-xs font-bold text-gray-700 uppercase whitespace-nowrap cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
@@ -143,7 +136,7 @@ export function SitesTable({
             >
               {/* Collapsed row - clickable to expand */}
               <div
-                className="grid grid-cols-[1fr_auto_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-gray-50"
+                className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-gray-50"
                 onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
               >
                 {/* Site Name - color-coded by status */}
@@ -155,15 +148,10 @@ export function SitesTable({
                     {site.name}
                   </div>
                   {site.nameArabic && (
-                    <div className="text-xs text-gray-600 truncate" dir="rtl" lang="ar">
+                    <div className="text-xs text-gray-600 truncate text-left" lang="ar">
                       {site.nameArabic}
                     </div>
                   )}
-                </div>
-
-                {/* Type */}
-                <div className="text-xs text-gray-700 whitespace-nowrap capitalize italic">
-                  {site.type.replace("-", " ")}
                 </div>
 
                 {/* Date */}
@@ -255,7 +243,7 @@ export function SitesTable({
                               href={source.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[#16a34a] hover:underline"
+                              className="text-[#009639] hover:underline"
                             >
                               {source.title}
                             </a>
@@ -288,14 +276,14 @@ export function SitesTable({
 
   // Desktop variants (compact/expanded)
   return (
-    <div className="h-full flex flex-col border-2 border-gray-300 rounded-lg bg-white shadow-sm">
+    <div className="h-full flex flex-col bg-white">
       <div className="mb-4 flex-shrink-0 px-2 pt-4">
         <div className="flex items-center justify-center gap-2">
           <h2 className="text-xl font-bold text-gray-800">Heritage Sites</h2>
           {onExpandTable && (
             <button
               onClick={onExpandTable}
-              className="text-[#16a34a] hover:text-[#15803d] p-1 transition-colors"
+              className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
               title="Expand table to see all columns"
               aria-label="Expand table to see all columns"
             >
@@ -428,7 +416,7 @@ export function SitesTable({
                       e.stopPropagation();
                       onSiteClick(site);
                     }}
-                    className="text-[#16a34a] hover:text-[#15803d] hover:underline font-medium text-sm"
+                    className="text-[#009639] hover:text-[#007b2f] hover:underline font-medium text-sm"
                   >
                     See more
                   </button>

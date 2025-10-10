@@ -55,81 +55,129 @@ function App() {
   return (
     <CalendarProvider>
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className={components.header.base}>
-          <div className={cn(components.container.base, "py-6")}>
-            <h1 className={components.header.title}>Heritage Tracker</h1>
-            <p className={components.header.subtitle}>
-              Documenting the destruction of cultural heritage in Gaza (2023-2024)
-            </p>
+        {/* Sticky Header with flag line */}
+        <div className="sticky top-0 z-50 bg-[#000000]">
+          {/* Header - BLACK background */}
+          <header className={components.header.base}>
+            <div className={cn(components.container.base, "py-3 md:py-6")}>
+              <h1 className="text-xl md:text-3xl font-bold text-center">Heritage Tracker</h1>
+              <p className="text-[#f5f5f5] mt-1 md:mt-2 text-center text-xs md:text-base">
+                Documenting the destruction of cultural heritage in Gaza (2023-2024)
+              </p>
+            </div>
+          </header>
+
+          {/* Flag-colored horizontal line - RED, BLACK, RED, GREEN (4px high, 4 bars) */}
+          <div className="flex h-1">
+            <div className="flex-1 bg-[#ed3039]"></div>
+            <div className="flex-1 bg-[#000000]"></div>
+            <div className="flex-1 bg-[#ed3039]"></div>
+            <div className="flex-1 bg-[#009639]"></div>
           </div>
-        </header>
+        </div>
 
-        {/* Main Content - Three Column Layout */}
-        <main className={components.container.section}>
-          {/* Unified Filter Bar - with container padding */}
-          <div className={components.container.base}>
-            <FilterBar
-              selectedTypes={selectedTypes}
-              selectedStatuses={selectedStatuses}
-              destructionDateStart={destructionDateStart}
-              destructionDateEnd={destructionDateEnd}
-              creationYearStart={creationYearStart}
-              creationYearEnd={creationYearEnd}
-              searchTerm={searchTerm}
-              onTypeChange={setSelectedTypes}
-              onStatusChange={setSelectedStatuses}
-              onDestructionDateStartChange={setDestructionDateStart}
-              onDestructionDateEndChange={setDestructionDateEnd}
-              onCreationYearStartChange={setCreationYearStart}
-              onCreationYearEndChange={setCreationYearEnd}
-              onSearchChange={setSearchTerm}
-              filteredCount={filteredSites.length}
-              totalCount={mockSites.length}
-            />
-          </div>
-
-          {/* Mobile Layout - Table only */}
-          <div className="md:hidden px-4">
-            <SitesTable
-              sites={filteredSites}
-              onSiteClick={setSelectedSite}
-              onSiteHighlight={setHighlightedSiteId}
-              highlightedSiteId={highlightedSiteId}
-              variant="mobile"
-            />
-          </div>
-
-          {/* Desktop Three-column layout - no padding, hugs edges */}
-          <div className="hidden md:flex gap-0">
-            {/* Left Sidebar - Timeline (Sticky, with left padding) */}
-            <aside className="w-[440px] flex-shrink-0 sticky top-0 h-screen overflow-hidden pl-6">
-              <VerticalTimeline
-                sites={filteredSites}
-                onSiteHighlight={setHighlightedSiteId}
-              />
-            </aside>
-
-            {/* Center - Map */}
-            <div className="flex-1 min-w-0 px-6">
-              <HeritageMap
-                sites={filteredSites}
-                onSiteClick={setSelectedSite}
-                highlightedSiteId={highlightedSiteId}
-                onSiteHighlight={setHighlightedSiteId}
+        {/* Main Content */}
+        <main className="pb-24 md:pb-32">
+          {/* Mobile Layout - FilterBar and Table only */}
+          <div className="md:hidden">
+            {/* Filter Bar */}
+            <div className={cn(components.container.base, "py-2")}>
+              <FilterBar
+                selectedTypes={selectedTypes}
+                selectedStatuses={selectedStatuses}
+                destructionDateStart={destructionDateStart}
+                destructionDateEnd={destructionDateEnd}
+                creationYearStart={creationYearStart}
+                creationYearEnd={creationYearEnd}
+                searchTerm={searchTerm}
+                onTypeChange={setSelectedTypes}
+                onStatusChange={setSelectedStatuses}
+                onDestructionDateStartChange={setDestructionDateStart}
+                onDestructionDateEndChange={setDestructionDateEnd}
+                onCreationYearStartChange={setCreationYearStart}
+                onCreationYearEndChange={setCreationYearEnd}
+                onSearchChange={setSearchTerm}
               />
             </div>
-
-            {/* Right Sidebar - Sites Table (Sticky, wider for full column visibility) */}
-            <aside className="w-[480px] flex-shrink-0 sticky top-0 h-screen overflow-hidden pr-6">
+            {/* Mobile Table */}
+            <div className="px-2">
               <SitesTable
                 sites={filteredSites}
                 onSiteClick={setSelectedSite}
                 onSiteHighlight={setHighlightedSiteId}
                 highlightedSiteId={highlightedSiteId}
-                onExpandTable={() => setIsTableExpanded(true)}
+                variant="mobile"
               />
-            </aside>
+            </div>
+          </div>
+
+          {/* Desktop Layout - FilterBar full width, then three columns below */}
+          <div className="hidden md:block">
+            {/* Filter Bar - Full width, very compact */}
+            <div className={components.container.base}>
+              <div className="bg-white rounded-lg p-1">
+                <div className="bg-[#000000] rounded-lg p-2">
+                  <FilterBar
+                    selectedTypes={selectedTypes}
+                    selectedStatuses={selectedStatuses}
+                    destructionDateStart={destructionDateStart}
+                    destructionDateEnd={destructionDateEnd}
+                    creationYearStart={creationYearStart}
+                    creationYearEnd={creationYearEnd}
+                    searchTerm={searchTerm}
+                    onTypeChange={setSelectedTypes}
+                    onStatusChange={setSelectedStatuses}
+                    onDestructionDateStartChange={setDestructionDateStart}
+                    onDestructionDateEndChange={setDestructionDateEnd}
+                    onCreationYearStartChange={setCreationYearStart}
+                    onCreationYearEndChange={setCreationYearEnd}
+                    onSearchChange={setSearchTerm}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Three-column layout below FilterBar - Timeline and Table sticky below header, Map scrolls */}
+            <div className="flex gap-6 pt-6">
+              {/* Left Sidebar - Timeline (Sticky below header, scrollable on hover, RED outline) */}
+              <aside className="w-[440px] flex-shrink-0 pl-6">
+                <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
+                  <VerticalTimeline
+                    sites={filteredSites}
+                    onSiteHighlight={setHighlightedSiteId}
+                  />
+                </div>
+              </aside>
+
+              {/* Center - Map (Sticky, vertically centered) */}
+              <div className="flex-1 min-w-0">
+                <div className="w-full sticky top-[calc(50vh-300px)]">
+                  <HeritageMap
+                    sites={filteredSites}
+                    onSiteClick={setSelectedSite}
+                    highlightedSiteId={highlightedSiteId}
+                    onSiteHighlight={setHighlightedSiteId}
+                  />
+                </div>
+                {/* Spacer to allow full scrolling */}
+                <div className="h-[600px]"></div>
+              </div>
+
+              {/* Right Sidebar - Sites Table (Sticky below header, scrollable on hover, WHITE outline with black inner border) */}
+              <aside className="w-[480px] flex-shrink-0 pr-6">
+                <div className="border-4 border-white rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
+                  <div className="border border-black rounded-lg h-full overflow-y-auto">
+                    <SitesTable
+                      sites={filteredSites}
+                      onSiteClick={setSelectedSite}
+                      onSiteHighlight={setHighlightedSiteId}
+                      highlightedSiteId={highlightedSiteId}
+                      onExpandTable={() => setIsTableExpanded(true)}
+                    />
+                  </div>
+                </div>
+              </aside>
+            </div>
           </div>
         </main>
 
@@ -146,7 +194,6 @@ function App() {
         <Modal
           isOpen={isTableExpanded}
           onClose={() => setIsTableExpanded(false)}
-          title="All Heritage Sites"
           zIndex={9999}
         >
           <div className="max-h-[80vh] overflow-auto">
@@ -160,13 +207,24 @@ function App() {
           </div>
         </Modal>
 
-        {/* Footer */}
-        <footer className={components.footer.base}>
-          <div className={cn(components.container.base, "py-6")}>
-            <p className={components.footer.text}>
-              Heritage Tracker • Evidence-based documentation • All data verified by UNESCO,
-              Forensic Architecture, and Heritage for Peace
-            </p>
+        {/* Footer - GREEN background, sticky at bottom */}
+        <footer className="fixed bottom-0 left-0 right-0 bg-[#009639] text-[#fefefe] shadow-lg z-50">
+          {/* Desktop footer - full text with more height */}
+          <div className="hidden md:block py-8">
+            <div className={cn(components.container.base)}>
+              <p className="text-sm text-center">
+                Heritage Tracker • Evidence-based documentation • All data verified by UNESCO,
+                Forensic Architecture, and Heritage for Peace
+              </p>
+            </div>
+          </div>
+          {/* Mobile footer - minimal with just site name */}
+          <div className="md:hidden py-2">
+            <div className={cn(components.container.base)}>
+              <p className="text-xs text-center font-semibold">
+                Heritage Tracker
+              </p>
+            </div>
           </div>
         </footer>
       </div>

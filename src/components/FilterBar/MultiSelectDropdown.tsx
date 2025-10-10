@@ -49,19 +49,19 @@ export function MultiSelectDropdown<T extends string>({
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md text-sm bg-white hover:bg-gray-50 focus:ring-2 focus:ring-[#16a34a] focus:border-[#16a34a] transition-colors"
+        className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-md text-[10px] bg-white hover:bg-gray-50 focus:ring-2 focus:ring-[#009639] focus:border-[#009639] transition-colors"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
         <span className="font-medium text-gray-700">
           {label}
           {selectedValues.length > 0 && (
-            <span className="ml-1 text-[#16a34a] font-semibold">({selectedValues.length})</span>
+            <span className="ml-0.5 text-[#009639] font-semibold">({selectedValues.length})</span>
           )}
         </span>
         {/* Chevron icon */}
         <svg
-          className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`w-3 h-3 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -72,34 +72,34 @@ export function MultiSelectDropdown<T extends string>({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="fixed z-[9999] mt-2 w-56 bg-white border border-gray-300 rounded-md shadow-lg max-h-64 overflow-y-auto"
+        <div className="fixed z-[9999] mt-1 w-44 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
           style={{
-            top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 8 : 0,
+            top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 4 : 0,
             left: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().left : 0,
           }}
         >
-          <ul className="py-1" role="listbox">
+          <ul className="py-0.5" role="listbox">
             {options.map((option) => {
               const isSelected = selectedValues.includes(option);
               return (
                 <li
                   key={option}
-                  className="px-3 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2"
+                  className="px-2 py-1 hover:bg-gray-50 cursor-pointer flex items-center gap-1.5"
                   onClick={() => toggleOption(option)}
                   role="option"
                   aria-selected={isSelected}
                 >
                   {/* Checkbox */}
                   <div
-                    className={`w-4 h-4 border-2 rounded flex items-center justify-center ${
+                    className={`w-3 h-3 border-2 rounded flex items-center justify-center ${
                       isSelected
-                        ? "bg-[#16a34a] border-[#16a34a]"
+                        ? "bg-[#009639] border-[#009639]"
                         : "border-gray-300 bg-white"
                     }`}
                   >
                     {isSelected && (
                       <svg
-                        className="w-3 h-3 text-white"
+                        className="w-2 h-2 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -113,7 +113,7 @@ export function MultiSelectDropdown<T extends string>({
                       </svg>
                     )}
                   </div>
-                  <span className="text-sm text-gray-700">{formatLabel(option)}</span>
+                  <span className="text-[10px] text-gray-700">{formatLabel(option)}</span>
                 </li>
               );
             })}
