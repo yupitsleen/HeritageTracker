@@ -25,8 +25,6 @@ interface FilterBarProps {
   onCreationYearStartChange: (year: number | null) => void;
   onCreationYearEndChange: (year: number | null) => void;
   onSearchChange: (term: string) => void;
-  filteredCount: number;
-  totalCount: number;
 }
 
 /**
@@ -48,8 +46,6 @@ export function FilterBar({
   onCreationYearStartChange,
   onCreationYearEndChange,
   onSearchChange,
-  filteredCount,
-  totalCount,
 }: FilterBarProps) {
   const { calendarType, toggleCalendar } = useCalendar();
 
@@ -106,16 +102,16 @@ export function FilterBar({
   };
 
   return (
-    <div className={cn(components.card.base, "px-4 py-3 mb-6")}>
-      {/* Search bar - 50% width, centered at top */}
-      <div className="mb-3 flex justify-center">
-        <div className="relative w-1/2">
+    <div className="text-white">
+      {/* Mobile Search bar */}
+      <div className="md:hidden mb-2">
+        <div className="relative w-full">
           <Input
             type="text"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search sites by name (English or Arabic)..."
-            className="w-full pr-8"
+            placeholder="Search"
+            className="w-full pr-8 text-xs py-1 px-2 text-black placeholder:text-gray-400"
           />
           {searchTerm.trim().length > 0 && (
             <button
@@ -124,7 +120,7 @@ export function FilterBar({
               aria-label="Clear search"
             >
               <svg
-                className="w-4 h-4"
+                className="w-3 h-3"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -141,12 +137,43 @@ export function FilterBar({
         </div>
       </div>
 
-      {/* Filter controls - sleek horizontal layout */}
-      <div className="flex items-end justify-center gap-4 flex-wrap">
+      {/* Filter controls - sleek horizontal layout (hidden on mobile) */}
+      <div className="hidden md:flex items-center justify-center gap-2 flex-wrap">
+        {/* Search bar - inline on left */}
+        <div className="relative flex-1 max-w-xs">
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="Search sites..."
+            className="w-full pr-8 text-xs py-1 px-2"
+          />
+          {searchTerm.trim().length > 0 && (
+            <button
+              onClick={() => onSearchChange("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Clear search"
+            >
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
         {/* Calendar Toggle */}
         <button
           onClick={toggleCalendar}
-          className={components.button.toggle}
+          className="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-[10px] font-medium text-gray-700 transition-colors"
           aria-label="Toggle calendar type"
         >
           {calendarType === "gregorian"
@@ -159,7 +186,7 @@ export function FilterBar({
             ? "Displaying Gregorian calendar dates"
             : "Displaying Islamic calendar dates"}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5">
           {/* Type Filter Dropdown */}
           <MultiSelectDropdown
             label="Site Type"
@@ -180,11 +207,11 @@ export function FilterBar({
         </div>
 
         {/* Destruction Date Range */}
-        <div className={components.filter.group}>
-          <div className={components.filter.labelContainer}>
-            <label className={components.label.filter}>Destroyed (Gregorian)</label>
+        <div className="flex flex-col gap-0.5 px-2 py-1 border border-gray-200 rounded-md bg-gray-50/50">
+          <div className="flex items-center gap-0.5 justify-center">
+            <label className="text-[10px] font-medium text-white">Destroyed (Gregorian)</label>
             <Tooltip content="Date filters use Gregorian calendar only">
-              <svg className="w-3.5 h-3.5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-2.5 h-2.5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -193,7 +220,7 @@ export function FilterBar({
               </svg>
             </Tooltip>
           </div>
-          <div className={components.filter.inputContainer}>
+          <div className="flex items-center gap-1">
             <Input
               variant="date"
               value={destructionDateStart ? destructionDateStart.toISOString().split("T")[0] : ""}
@@ -201,8 +228,9 @@ export function FilterBar({
                 onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
               }}
               placeholder="From"
+              className="text-[10px] py-0.5 px-1"
             />
-            <span className={components.filter.rangeSeparator}>to</span>
+            <span className="text-[10px] text-gray-500">to</span>
             <Input
               variant="date"
               value={destructionDateEnd ? destructionDateEnd.toISOString().split("T")[0] : ""}
@@ -210,16 +238,17 @@ export function FilterBar({
                 onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
               }}
               placeholder="To"
+              className="text-[10px] py-0.5 px-1"
             />
           </div>
         </div>
 
         {/* Creation Year Range - Always uses Gregorian (CE/BCE) for filtering */}
-        <div className={components.filter.group}>
-          <div className={components.filter.labelContainer}>
-            <label className={components.label.filter}>Built (CE/BCE)</label>
+        <div className="flex flex-col gap-0.5 px-2 py-1 border border-gray-200 rounded-md bg-gray-50/50">
+          <div className="flex items-center gap-0.5 justify-center">
+            <label className="text-[10px] font-medium text-white">Built (CE/BCE)</label>
             <Tooltip content="Year filters use Gregorian calendar only">
-              <svg className="w-3.5 h-3.5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-2.5 h-2.5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -228,13 +257,14 @@ export function FilterBar({
               </svg>
             </Tooltip>
           </div>
-          <div className={components.filter.inputContainer}>
+          <div className="flex items-center gap-1">
             <Input
               variant="number"
               value={startYearInput}
               onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
               placeholder="Year"
               min="1"
+              className="w-14 text-[10px] py-0.5 px-1"
             />
             <Select
               size="small"
@@ -242,22 +272,25 @@ export function FilterBar({
               onChange={(e) =>
                 handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")
               }
+              className="px-1 py-0.5 text-[10px]"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
             </Select>
-            <span className={components.filter.rangeSeparator}>to</span>
+            <span className="text-[10px] text-gray-500">to</span>
             <Input
               variant="number"
               value={endYearInput}
               onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
               placeholder="Year"
               min="1"
+              className="w-14 text-[10px] py-0.5 px-1"
             />
             <Select
               size="small"
               value={endYearEra}
               onChange={(e) => handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")}
+              className="px-1 py-0.5 text-[10px]"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
@@ -266,10 +299,10 @@ export function FilterBar({
         </div>
 
         {/* Clear filters button - right aligned, always takes up space */}
-        <div className="min-w-[100px]">
+        <div className="min-w-[70px]">
           {hasActiveFilters && (
-            <button onClick={clearAllFilters} className={components.button.reset}>
-              Clear filters
+            <button onClick={clearAllFilters} className="px-2 py-1 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-[10px]">
+              Clear
             </button>
           )}
         </div>
@@ -277,7 +310,7 @@ export function FilterBar({
 
       {/* Active filter tags */}
       {(selectedTypes.length > 0 || selectedStatuses.length > 0) && (
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-1 flex flex-wrap gap-1">
           {selectedTypes.map((type) => (
             <FilterTag
               key={type}
@@ -296,12 +329,6 @@ export function FilterBar({
           ))}
         </div>
       )}
-
-      {/* Site count */}
-      <div className={components.filter.count}>
-        Showing <span className={components.filter.countNumber}>{filteredCount}</span> of{" "}
-        <span className={components.filter.countNumber}>{totalCount}</span> sites
-      </div>
     </div>
   );
 }

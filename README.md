@@ -3,10 +3,10 @@
 **Documenting the destruction of Palestinian cultural heritage through interactive visualization.**
 
 ![Project Status](https://img.shields.io/badge/status-mvp%20phase%201-green)
-![Tests](https://img.shields.io/badge/tests-38%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-84%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-TBD-lightgrey)
 
-**Currently tracking:** 5 of 20-25 significant Gaza heritage sites destroyed during 2023-2024 conflict
+**Currently tracking:** 15 of 20-25 significant Gaza heritage sites destroyed during 2023-2024 conflict
 
 ---
 
@@ -26,20 +26,23 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 
 ### ✅ Implemented
 
-- Interactive map with Leaflet (custom zoom controls)
-- Advanced filtering (type, status, date ranges, BC/BCE handling)
-- Timeline visualization with D3.js
-- Detail modals with bilingual display (English/Arabic RTL)
-- Cross-component highlighting (map ↔ timeline ↔ cards sync)
-- Accessible UI with keyboard navigation
-- Responsive design with Palestinian flag-inspired theme
-- Comprehensive test suite (38 tests)
+- **Interactive map** with Leaflet (custom zoom controls, centered sticky positioning)
+- **Advanced filtering** (type, status, date ranges, BC/BCE handling, compact text-[10px] design)
+- **Timeline visualization** with D3.js (440px width, red border, sticky)
+- **Mobile-optimized table** (accordion view, Type column removed for space efficiency)
+- **Desktop table** with white border + black inner border styling
+- **Detail modals** with bilingual display (English/Arabic)
+- **Cross-component highlighting** (map ↔ timeline ↔ table sync with black ring)
+- **Accessible UI** with keyboard navigation and ARIA labels
+- **Responsive design** with Palestinian flag-inspired theme (thicker RED-BLACK-RED-GREEN line)
+- **Comprehensive test suite** (84 tests including mobile variant coverage)
 
 ### 🚧 In Progress
 
-- Expanding to 20-25 sites (currently 5 completed)
+- Expanding to 20-25 sites (currently 15 completed - 75% of MVP target)
 - Historical imagery integration
 - Source citation tooltips
+- Statistics dashboard
 
 ## 🛠️ Tech Stack
 
@@ -47,7 +50,7 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **Tailwind CSS v4** - Styling with custom Palestinian theme
 - **Leaflet** - Interactive mapping
 - **D3.js** - Timeline visualization
-- **Vitest** - Testing framework (38 tests passing)
+- **Vitest** - Testing framework (84 tests passing)
 
 ## 🚀 Quick Start
 
@@ -73,7 +76,7 @@ npm run dev
 
 ```bash
 npm run dev          # Dev server with HMR
-npm test            # Run test suite (38 tests)
+npm test            # Run test suite (84 tests)
 npm run lint        # ESLint code quality check
 npm run build       # Production build
 npm run preview     # Preview production build
@@ -84,16 +87,19 @@ npm run preview     # Preview production build
 ```
 src/
 ├── components/
-│   ├── FilterBar/       # Multi-select dropdown filters
-│   ├── Map/            # Leaflet map with custom controls
-│   ├── Timeline/       # D3.js timeline visualization
+│   ├── FilterBar/       # Compact filters (text-[10px]) with mobile search
+│   ├── Map/            # Leaflet map (centered sticky positioning)
+│   ├── Timeline/       # D3.js timeline (440px, red border, sticky)
+│   ├── SitesTable/     # Desktop + mobile accordion variants
 │   ├── SiteDetailPanel/ # Modal with bilingual content
-│   └── SiteCards/      # Grid display with highlighting
+│   └── Modal/          # Reusable modal component
 ├── data/
-│   └── sites.json      # Heritage sites data (5/20-25 complete)
+│   └── mockSites.ts    # Heritage sites data (15/20-25 complete)
 ├── types/
 │   └── index.ts        # TypeScript interfaces
-└── utils/              # Shared utilities and constants
+├── utils/              # Shared utilities and constants
+└── styles/
+    └── theme.ts        # Centralized Palestinian flag colors
 ```
 
 ## 📖 Documentation
@@ -105,16 +111,18 @@ src/
 
 ## 🗺️ Development Roadmap
 
-### Phase 1: MVP (Current) ✅ 90% Complete
+### Phase 1: MVP (Current) ✅ 95% Complete
 
 - [x] Project setup and architecture
-- [x] Interactive map implementation
-- [x] Timeline visualization
-- [x] Advanced filtering system
+- [x] Interactive map implementation (centered sticky positioning)
+- [x] Timeline visualization (440px, red border, sticky)
+- [x] Advanced filtering system (compact text-[10px] design)
 - [x] Detail modals with bilingual support
 - [x] Cross-component state management
-- [x] Comprehensive test suite
-- [ ] Complete 20-25 Gaza sites data collection (5/20-25)
+- [x] Mobile optimization (accordion table, compact filters)
+- [x] Desktop styling (white/black table borders, thicker flag line)
+- [x] Comprehensive test suite (84 tests including mobile variants)
+- [ ] Complete 20-25 Gaza sites data collection (15/20-25 ✅ 75%)
 - [ ] Historical imagery integration
 - [ ] Launch MVP
 
@@ -153,9 +161,9 @@ We welcome contributions! Ways to help:
 **Development Standards:**
 
 - Follow existing patterns in CLAUDE.md
-- Write tests for new features
+- Write tests for new features (including mobile variants)
 - Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-- Ensure all 38 tests pass before committing
+- Ensure all 84 tests pass before committing
 
 ## ⚖️ Legal & Ethical Framework
 
@@ -182,4 +190,4 @@ This project builds on documentation by UNESCO, Forensic Architecture, Heritage 
 
 ---
 
-_Last updated: October 2025 | Version: 0.2.0-alpha | 5 of 20-25 sites documented_
+_Last updated: October 10, 2025 | Version: 0.2.0-alpha | 15 of 20-25 sites documented (75% MVP complete)_

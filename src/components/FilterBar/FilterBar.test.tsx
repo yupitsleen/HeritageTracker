@@ -19,8 +19,6 @@ describe("FilterBar", () => {
     onCreationYearStartChange: vi.fn(),
     onCreationYearEndChange: vi.fn(),
     onSearchChange: vi.fn(),
-    filteredCount: 5,
-    totalCount: 10,
   };
 
   it("renders without crashing", () => {
@@ -30,18 +28,6 @@ describe("FilterBar", () => {
       </CalendarProvider>
     );
     expect(screen.getByText("Site Type")).toBeInTheDocument();
-    expect(screen.getByText(/Showing/)).toBeInTheDocument();
-  });
-
-  it("displays site count", () => {
-    render(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
-    );
-    expect(screen.getByText(/Showing/)).toBeInTheDocument();
-    expect(screen.getByText("5")).toBeInTheDocument();
-    expect(screen.getByText("10")).toBeInTheDocument();
   });
 
   it("renders BC/BCE dropdowns for Built year filters", () => {
@@ -66,7 +52,7 @@ describe("FilterBar", () => {
     expect(dateInputs.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("shows Clear filters button when filters are active", () => {
+  it("shows Clear button when filters are active", () => {
     render(
       <CalendarProvider>
         <FilterBar
@@ -75,16 +61,16 @@ describe("FilterBar", () => {
         />
       </CalendarProvider>
     );
-    expect(screen.getByText("Clear filters")).toBeInTheDocument();
+    expect(screen.getByText("Clear")).toBeInTheDocument();
   });
 
-  it("does not show Clear filters button when no filters are active", () => {
+  it("does not show Clear button when no filters are active", () => {
     render(
       <CalendarProvider>
         <FilterBar {...mockProps} />
       </CalendarProvider>
     );
-    expect(screen.queryByText("Clear filters")).not.toBeInTheDocument();
+    expect(screen.queryByText("Clear")).not.toBeInTheDocument();
   });
 
   it("renders calendar toggle button", () => {
