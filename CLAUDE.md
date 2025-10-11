@@ -41,7 +41,9 @@ npm run build       # Production build
 
 **Data Sources:** UNESCO, Forensic Architecture, Heritage for Peace
 
-**Current State:** 18 sites documented, MVP Phase 1 complete with mobile optimization, CSV export, and statistics dashboard
+**Current State:** 18 sites documented, MVP Phase 1 complete and **DEPLOYED TO PRODUCTION**
+
+**Live Site:** https://yupitsleen.github.io/HeritageTracker/
 
 ## Critical Development Rules
 
@@ -255,13 +257,20 @@ interface GazaSite {
   name: string;
   nameArabic?: string;
   yearBuilt: string; // "7th century", "800 BCE", "1950"
+  yearBuiltIslamic?: string; // Manually verified Islamic calendar date
   description: string;
-  originalLocation: string;
+  historicalSignificance: string;
+  culturalValue: string;
   coordinates: [number, number]; // [lat, lng] Leaflet format
   status: "destroyed" | "heavily-damaged" | "damaged";
-  dateDestroyed: string; // ISO: "2023-12-07"
+  dateDestroyed?: string; // ISO: "2023-12-07"
+  dateDestroyedIslamic?: string; // Manually verified Islamic calendar date
   sources: Source[];
-  images?: Image[];
+  images?: {
+    before?: string;
+    after?: string;
+    satellite?: string;
+  };
   verifiedBy: string[];
 }
 ```
@@ -372,14 +381,23 @@ interface GazaSite {
 - Desktop table styling (white border + black inner border)
 - 107 comprehensive tests (including CSV export, mobile variants, Stats/About)
 
-### Remaining
+### Deployment ✅
 
-- Deploy to production (next session)
+- **LIVE:** https://yupitsleen.github.io/HeritageTracker/
+- GitHub Actions CI/CD pipeline (`.github/workflows/deploy.yml`)
+- Automated testing and deployment on push to main
+- Base URL configured for GitHub Pages subdirectory
+
+### Next Phase
+
 - Timeline animation (future enhancement)
 - Data collection (2-7 more sites to reach 20-25 target)
+- SEO optimization
+- Social media preview cards
+- Performance optimizations (code splitting)
 
 ---
 
-**Last Updated:** October 10, 2025
-**Version:** 0.9.0 (Pre-launch - Ready for Deployment)
-**Status:** MVP Complete - All Core Features Implemented
+**Last Updated:** October 11, 2025
+**Version:** 1.0.0 (Production - Deployed)
+**Status:** 🚀 Live in Production with CI/CD
