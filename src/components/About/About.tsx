@@ -7,37 +7,37 @@ import { components } from "../../styles/theme";
 export function About() {
   return (
     <div className="max-h-[80vh] overflow-y-auto bg-white">
-      <div className="p-6 md:p-8 max-w-4xl mx-auto">
+      <div className="p-4 md:p-8 max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        <div className="mb-6 md:mb-8 text-center">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
             About Heritage Tracker
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-sm md:text-lg text-gray-600">
             Evidence-based documentation of Palestinian cultural heritage destruction
           </p>
         </div>
 
         {/* Mission Section */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <section className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
             Mission
           </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-3 md:mb-4">
             Heritage Tracker documents the systematic destruction of Palestinian cultural heritage
             sites in Gaza during the 2023-2024 conflict. Our goal is to create a transparent,
             evidence-based record that serves researchers, legal advocates, journalists, educators,
             and the global public.
           </p>
-          <div className="bg-gray-50 border-l-4 border-[#009639] p-4 rounded">
-            <p className="text-gray-800 font-medium">
+          <div className="bg-gray-50 border-l-4 border-[#009639] p-3 md:p-4 rounded">
+            <p className="text-xs md:text-base text-gray-800 font-medium">
               "Cultural heritage belongs to all of humanity. Its destruction is everyone's loss."
             </p>
           </div>
         </section>
 
-        {/* Methodology Section */}
-        <section className="mb-8">
+        {/* Methodology Section - Desktop only */}
+        <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Methodology
           </h2>
@@ -66,14 +66,14 @@ export function About() {
         </section>
 
         {/* Data Sources Section */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <section className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
             Data Sources
           </h2>
-          <div className="space-y-4">
-            <div className="border border-gray-200 rounded-lg p-4">
-              <h3 className="font-bold text-gray-900 mb-2">UNESCO</h3>
-              <p className="text-gray-700 text-sm leading-relaxed">
+          <div className="space-y-3 md:space-y-4">
+            <div className="border border-gray-200 rounded-lg p-3 md:p-4">
+              <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1 md:mb-2">UNESCO</h3>
+              <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
                 The United Nations Educational, Scientific and Cultural Organization provides official
                 heritage damage assessments using satellite imagery and ground verification. UNESCO has
                 verified damage to 110+ cultural sites in Gaza as of August 2024.
@@ -82,15 +82,15 @@ export function About() {
                 href="https://www.unesco.org/en/gaza/assessment"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#009639] hover:underline text-sm font-medium mt-2 inline-block"
+                className="text-[#009639] hover:underline text-xs md:text-sm font-medium mt-1 md:mt-2 inline-block"
               >
                 View UNESCO Gaza Assessment →
               </a>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4">
-              <h3 className="font-bold text-gray-900 mb-2">Forensic Architecture</h3>
-              <p className="text-gray-700 text-sm leading-relaxed">
+            <div className="border border-gray-200 rounded-lg p-3 md:p-4">
+              <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1 md:mb-2">Forensic Architecture</h3>
+              <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
                 An investigative journalism agency at Goldsmiths, University of London, that uses
                 spatial analysis and open-source data to document human rights violations and cultural
                 heritage destruction.
@@ -99,15 +99,15 @@ export function About() {
                 href="https://forensic-architecture.org/investigation/living-archaeology-in-gaza"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#009639] hover:underline text-sm font-medium mt-2 inline-block"
+                className="text-[#009639] hover:underline text-xs md:text-sm font-medium mt-1 md:mt-2 inline-block"
               >
                 View Living Archaeology Investigation →
               </a>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4">
-              <h3 className="font-bold text-gray-900 mb-2">Heritage for Peace</h3>
-              <p className="text-gray-700 text-sm leading-relaxed">
+            <div className="border border-gray-200 rounded-lg p-3 md:p-4">
+              <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1 md:mb-2">Heritage for Peace</h3>
+              <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
                 A nonprofit organization dedicated to protecting cultural heritage in conflict zones.
                 They provide detailed documentation and preliminary damage assessments of heritage sites
                 in Gaza.
@@ -116,8 +116,8 @@ export function About() {
           </div>
         </section>
 
-        {/* The Data Section */}
-        <section className="mb-8">
+        {/* The Data Section - Desktop only */}
+        <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             The Data
           </h2>
@@ -146,8 +146,8 @@ export function About() {
           </div>
         </section>
 
-        {/* Legal & Ethical Framework */}
-        <section className="mb-8">
+        {/* Legal & Ethical Framework - Desktop only */}
+        <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Legal & Ethical Framework
           </h2>
@@ -176,22 +176,22 @@ export function About() {
         </section>
 
         {/* Contributing Section */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <section className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
             How to Contribute
           </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-xs md:text-base text-gray-700 leading-relaxed mb-3 md:mb-4">
             We welcome contributions from researchers, cultural heritage experts, and community members:
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <ul className="list-disc list-inside text-xs md:text-base text-gray-700 space-y-1 md:space-y-2">
             <li>
               <strong>Verify information:</strong> Help us cross-reference data with additional sources
             </li>
-            <li>
+            <li className="hidden md:list-item">
               <strong>Provide documentation:</strong> Share published reports, satellite imagery, or
               archaeological records
             </li>
-            <li>
+            <li className="hidden md:list-item">
               <strong>Translate content:</strong> Help make this resource available in Arabic and other
               languages
             </li>
@@ -200,7 +200,7 @@ export function About() {
               supporting evidence
             </li>
           </ul>
-          <p className="text-sm text-gray-600 mt-4">
+          <p className="text-xs md:text-sm text-gray-600 mt-3 md:mt-4">
             Contact:{" "}
             <a
               href="https://github.com/yupitsleen/HeritageTracker"
@@ -213,8 +213,8 @@ export function About() {
           </p>
         </section>
 
-        {/* Acknowledgments */}
-        <section className="mb-8">
+        {/* Acknowledgments - Desktop only */}
+        <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Acknowledgments
           </h2>
@@ -227,8 +227,8 @@ export function About() {
         </section>
 
         {/* Disclaimer */}
-        <section className="border-t border-gray-200 pt-6">
-          <p className="text-xs text-gray-500 leading-relaxed">
+        <section className="border-t border-gray-200 pt-4 md:pt-6">
+          <p className="text-[10px] md:text-xs text-gray-500 leading-relaxed">
             <strong>Disclaimer:</strong> Heritage Tracker is an independent documentation project. All
             information is sourced from publicly available reports by UNESCO, Forensic Architecture,
             Heritage for Peace, and other reputable cultural heritage organizations. While we strive for

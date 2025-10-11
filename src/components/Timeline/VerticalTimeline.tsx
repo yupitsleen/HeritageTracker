@@ -229,7 +229,7 @@ export function VerticalTimeline({ sites, onSiteHighlight }: VerticalTimelinePro
   return (
     <div
       ref={containerRef}
-      className="flex flex-col h-full"
+      className="flex flex-col h-full bg-[#ed3039]/10"
       onMouseEnter={() => setIsTimelineHovered(true)}
       onMouseLeave={() => setIsTimelineHovered(false)}
     >

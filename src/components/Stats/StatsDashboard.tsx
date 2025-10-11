@@ -65,26 +65,26 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
 
   return (
     <div className="max-h-[80vh] overflow-y-auto bg-white">
-      <div className="p-6 md:p-8 max-w-6xl mx-auto">
+      <div className="p-4 md:p-8 max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        <div className="mb-6 md:mb-8 text-center">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
             The Scale of Destruction
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-sm md:text-lg text-gray-600">
             Understanding what has been lost to humanity
           </p>
         </div>
 
         {/* Hero statistic - Years of history */}
-        <div className="bg-gradient-to-br from-[#009639]/10 to-[#009639]/5 border-2 border-[#009639] rounded-lg p-8 mb-8 text-center">
-          <div className="text-6xl md:text-7xl font-bold text-[#ed3039] mb-3">
+        <div className="bg-gradient-to-br from-[#009639]/10 to-[#009639]/5 border-2 border-[#009639] rounded-lg p-4 md:p-8 mb-6 md:mb-8 text-center">
+          <div className="text-5xl md:text-7xl font-bold text-[#ed3039] mb-2 md:mb-3">
             {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) / 10}k` : "5.3k"}
           </div>
-          <div className="text-xl md:text-2xl font-semibold text-gray-900 mb-2">
+          <div className="text-lg md:text-2xl font-semibold text-gray-900 mb-1 md:mb-2">
             Years of Human History
           </div>
-          <p className="text-gray-700 max-w-2xl mx-auto">
+          <p className="text-xs md:text-base text-gray-700 max-w-2xl mx-auto">
             From Bronze Age Egyptian settlements to Ottoman architecture, Gaza's heritage spans
             over 5,300 years of continuous civilization. Every destroyed site is an irreplaceable
             loss to humanity.
@@ -92,56 +92,56 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
         </div>
 
         {/* Key impact metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
           {/* Sites over 1000 years old */}
-          <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-6">
-            <div className="text-4xl font-bold text-[#009639] mb-2">{stats.ancientSites}</div>
-            <div className="text-sm font-semibold text-gray-900 mb-3">
+          <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4 md:p-6">
+            <div className="text-3xl md:text-4xl font-bold text-[#009639] mb-1 md:mb-2">{stats.ancientSites}</div>
+            <div className="text-xs md:text-sm font-semibold text-gray-900 mb-2 md:mb-3">
               Sites Over 1,000 Years Old
             </div>
-            <p className="text-xs text-gray-600 leading-relaxed">
+            <p className="text-xs text-gray-600 leading-relaxed hidden md:block">
               Ancient mosques, churches, and archaeological sites that survived centuries of
               history—destroyed in months.
             </p>
           </div>
 
           {/* Religious sites */}
-          <div className="bg-red-50 border-2 border-[#ed3039] rounded-lg p-6">
-            <div className="text-4xl font-bold text-[#ed3039] mb-2">
+          <div className="bg-red-50 border-2 border-[#ed3039] rounded-lg p-4 md:p-6">
+            <div className="text-3xl md:text-4xl font-bold text-[#ed3039] mb-1 md:mb-2">
               {stats.religiousDestroyed}/{stats.religiousSites}
             </div>
-            <div className="text-sm font-semibold text-gray-900 mb-3">
+            <div className="text-xs md:text-sm font-semibold text-gray-900 mb-2 md:mb-3">
               Houses of Worship Destroyed
             </div>
-            <p className="text-xs text-gray-600 leading-relaxed">
+            <p className="text-xs text-gray-600 leading-relaxed hidden md:block">
               Active mosques and churches serving Muslim and Christian communities, including
               pilgrimage sites with tombs of revered figures.
             </p>
           </div>
 
           {/* Museums */}
-          <div className="bg-orange-50 border-2 border-orange-400 rounded-lg p-6">
-            <div className="text-4xl font-bold text-orange-600 mb-2">
+          <div className="bg-orange-50 border-2 border-orange-400 rounded-lg p-4 md:p-6">
+            <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-1 md:mb-2">
               {stats.museumsDestroyed}/{stats.museums}
             </div>
-            <div className="text-sm font-semibold text-gray-900 mb-3">
+            <div className="text-xs md:text-sm font-semibold text-gray-900 mb-2 md:mb-3">
               Museums & Cultural Centers
             </div>
-            <p className="text-xs text-gray-600 leading-relaxed">
+            <p className="text-xs text-gray-600 leading-relaxed hidden md:block">
               Including 3,000+ looted artifacts, tens of thousands of books burned, and 150 years
               of archives deliberately destroyed.
             </p>
           </div>
         </div>
 
-        {/* What Was Lost - Specific Examples */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">What Humanity Has Lost</h2>
-          <div className="space-y-4">
+        {/* What Was Lost - Specific Examples - Desktop only, mobile shows 1 example */}
+        <section className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">What Humanity Has Lost</h2>
+          <div className="space-y-3 md:space-y-4">
             {/* Great Omari Mosque */}
-            <div className="border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
-              <h3 className="font-bold text-gray-900 mb-1">Great Omari Mosque</h3>
-              <p className="text-sm text-gray-700 mb-2">
+            <div className="border-l-4 border-[#ed3039] bg-gray-50 p-3 md:p-4 rounded-r-lg">
+              <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1">Great Omari Mosque</h3>
+              <p className="text-xs md:text-sm text-gray-700 mb-2">
                 <strong>1,400 years old</strong> • Gaza's oldest and largest mosque
               </p>
               <ul className="text-xs text-gray-600 space-y-1 list-disc list-inside">
@@ -149,16 +149,16 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
                   <strong>62 rare manuscripts destroyed</strong> including handwritten Qurans and
                   Islamic scholarly texts
                 </li>
-                <li>
+                <li className="hidden md:list-item">
                   Continuous religious heritage from Byzantine, Islamic, Crusader, Mamluk, and
                   Ottoman periods
                 </li>
-                <li>Architectural masterpiece blending multiple historical eras</li>
+                <li className="hidden md:list-item">Architectural masterpiece blending multiple historical eras</li>
               </ul>
             </div>
 
-            {/* Byzantine Church Jabaliya */}
-            <div className="border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
+            {/* Byzantine Church Jabaliya - Desktop only */}
+            <div className="hidden md:block border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
               <h3 className="font-bold text-gray-900 mb-1">Byzantine Church of Jabaliya</h3>
               <p className="text-sm text-gray-700 mb-2">
                 <strong>1,580 years old (444 CE)</strong> • Just restored in January 2022
@@ -173,8 +173,8 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               </ul>
             </div>
 
-            {/* Ard-al-Moharbeen Cemetery */}
-            <div className="border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
+            {/* Ard-al-Moharbeen Cemetery - Desktop only */}
+            <div className="hidden md:block border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
               <h3 className="font-bold text-gray-900 mb-1">
                 Ard-al-Moharbeen Roman Cemetery
               </h3>
@@ -195,8 +195,8 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               </ul>
             </div>
 
-            {/* Al-Israa University Museum */}
-            <div className="border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
+            {/* Al-Israa University Museum - Desktop only */}
+            <div className="hidden md:block border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
               <h3 className="font-bold text-gray-900 mb-1">Al-Israa University Museum</h3>
               <p className="text-sm text-gray-700 mb-2">
                 <strong>Last remaining university</strong> in Gaza when destroyed
@@ -213,8 +213,8 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               </ul>
             </div>
 
-            {/* Central Archives */}
-            <div className="border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
+            {/* Central Archives - Desktop only */}
+            <div className="hidden md:block border-l-4 border-[#ed3039] bg-gray-50 p-4 rounded-r-lg">
               <h3 className="font-bold text-gray-900 mb-1">Central Archives of Gaza City</h3>
               <p className="text-sm text-gray-700 mb-2">
                 <strong>150 years of Palestinian records</strong> • Deliberately burned
@@ -232,8 +232,8 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
           </div>
         </section>
 
-        {/* Lost Knowledge - Unsolved Mysteries */}
-        <section className="mb-8">
+        {/* Lost Knowledge - Unsolved Mysteries - Desktop only */}
+        <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Lost Forever: Unsolved Mysteries</h2>
           <p className="text-gray-700 mb-4">
             These sites held answers to questions we were still asking. Research that was underway,
@@ -352,8 +352,8 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
           </div>
         </section>
 
-        {/* What Remains - Hope and Urgency */}
-        <section className="mb-8">
+        {/* What Remains - Hope and Urgency - Desktop only */}
+        <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">What Remains: Still at Risk</h2>
           <p className="text-gray-700 mb-4">
             Of the {stats.total} documented sites, {stats.surviving} are damaged but still standing.
@@ -462,8 +462,8 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
           </div>
         </section>
 
-        {/* Comparison Context */}
-        <section className="mb-8">
+        {/* Comparison Context - Desktop only */}
+        <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Putting It in Perspective</h2>
           <div className="bg-[#009639]/10 border-l-4 border-[#009639] rounded-lg p-6 space-y-4">
             <p className="text-gray-800">
@@ -500,9 +500,9 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
         </section>
 
         {/* Legal Context */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Legal Framework</h2>
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 space-y-3 text-sm text-gray-700">
+        <section className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Legal Framework</h2>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-6 space-y-2 md:space-y-3 text-xs md:text-sm text-gray-700">
             <p>
               <strong>1954 Hague Convention:</strong> Prohibits targeting cultural heritage during
               armed conflict. Cultural property must be protected and preserved.
@@ -512,7 +512,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               against buildings dedicated to religion, education, art, science, or historic
               monuments constitutes a <strong>war crime</strong>.
             </p>
-            <p>
+            <p className="hidden md:block">
               <strong>UNESCO Enhanced Protection:</strong> Saint Hilarion Monastery was granted the
               highest level of immunity in December 2023, then designated World Heritage in Danger
               in July 2024—yet sustained damage to surrounding infrastructure.
