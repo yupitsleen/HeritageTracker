@@ -232,6 +232,70 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
           </div>
         </section>
 
+        {/* Looted Artifacts */}
+        <section className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Looted Artifacts</h2>
+          <p className="text-xs md:text-sm text-gray-700 mb-3 md:mb-4">
+            Beyond destruction, deliberate looting of cultural artifacts during occupation represents
+            systematic erasure of Palestinian heritage and violations of international law.
+          </p>
+
+          {/* Looted artifacts stat */}
+          <div className="bg-purple-50 border-2 border-purple-600 rounded-lg p-4 md:p-6 mb-4">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-1">3,000+</div>
+                <div className="text-xs md:text-sm font-semibold text-gray-900">
+                  Artifacts Looted
+                </div>
+              </div>
+              <div className="flex-1 text-xs md:text-sm text-gray-700 space-y-2">
+                <p>
+                  <strong>Site:</strong> Al-Israa University Museum
+                </p>
+                <p>
+                  <strong>Taken by:</strong> Israeli forces during 70-day occupation (Oct 2023 - Jan 2024)
+                </p>
+                <p>
+                  <strong>Current location:</strong> Unknown
+                </p>
+                <p>
+                  <strong>Status:</strong> Building demolished with explosives on January 17, 2024
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Legal context */}
+          <div className="bg-gray-50 border-l-4 border-purple-600 p-3 md:p-4 rounded-r-lg">
+            <p className="text-xs md:text-sm text-gray-800 mb-2">
+              <strong>International Law:</strong>
+            </p>
+            <ul className="text-xs text-gray-700 space-y-1 list-disc list-inside">
+              <li>
+                <strong>1954 Hague Convention Article 4:</strong> Prohibits theft, pillage, or
+                misappropriation of cultural property during armed conflict
+              </li>
+              <li>
+                <strong>Rome Statute Article 8(2)(b)(xvi):</strong> Pillaging constitutes a war crime
+              </li>
+              <li className="hidden md:list-item">
+                University VP Ahmed Alhussaina: "Deliberate act aimed at erasing Palestinian cultural
+                memory and archaeological heritage"
+              </li>
+            </ul>
+          </div>
+
+          {/* Note for future expansion */}
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded text-xs text-gray-600 hidden md:block">
+            <p>
+              <strong>Note:</strong> This data represents documented cases from verified sources.
+              Additional looting incidents may exist but lack sufficient verification for inclusion.
+              Research is ongoing to document the full scope of artifact theft and current whereabouts.
+            </p>
+          </div>
+        </section>
+
         {/* Lost Knowledge - Unsolved Mysteries - Desktop only */}
         <section className="hidden md:block mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Lost Forever: Unsolved Mysteries</h2>

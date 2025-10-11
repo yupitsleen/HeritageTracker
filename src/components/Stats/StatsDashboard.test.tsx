@@ -113,10 +113,11 @@ describe("StatsDashboard", () => {
   it("displays legal framework section", () => {
     render(<StatsDashboard sites={mockSites} />);
     expect(screen.getByText("Legal Framework")).toBeInTheDocument();
-    // Use getAllByText since "1954 Hague Convention" appears in multiple sections
+    // Use getAllByText since "1954 Hague Convention" and "Rome Statute" appear in multiple sections
     const hagueElements = screen.getAllByText(/1954 Hague Convention/);
     expect(hagueElements.length).toBeGreaterThan(0);
-    expect(screen.getByText(/Rome Statute/)).toBeInTheDocument();
+    const romeElements = screen.getAllByText(/Rome Statute/);
+    expect(romeElements.length).toBeGreaterThan(0);
   });
 
   it("is scrollable with proper styling", () => {
