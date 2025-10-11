@@ -30,7 +30,7 @@ This file provides guidance to Claude Code when working on Heritage Tracker.
 
 ```bash
 npm run dev          # Dev server (localhost:5173) - keep running
-npm test            # Run tests (84 tests)
+npm test            # Run tests (107 tests)
 npm run lint        # Code quality
 npm run build       # Production build
 ```
@@ -41,7 +41,7 @@ npm run build       # Production build
 
 **Data Sources:** UNESCO, Forensic Architecture, Heritage for Peace
 
-**Current State:** 15 sites documented, MVP Phase 1 complete with enhanced filtering and mobile optimization
+**Current State:** 18 sites documented, MVP Phase 1 complete with mobile optimization, CSV export, and statistics dashboard
 
 ## Critical Development Rules
 
@@ -59,7 +59,7 @@ git commit -m "fix: resolve table sorting bug"
 
 ### Quality Gates (#memorize)
 
-- **Always run tests** - 84/84 must pass ✓
+- **Always run tests** - 107/107 must pass ✓
 - **Dev server running** - HMR for instant feedback
 - **Smoke tests** - Quick verification, not implementation
 - **Code review** - Check DRY/KISS/SOLID before commit
@@ -76,7 +76,7 @@ git commit -m "fix: resolve table sorting bug"
 
 **Desktop:**
 ```
-Timeline (440px left, red border) | Map (centered, sticky) | Table (480px right, white/black borders)
+Timeline (320px left, red bg) | Map (centered, sticky) | Table (384px right, CSV export)
 ```
 
 **Mobile:**
@@ -94,9 +94,11 @@ src/
 │   ├── FilterBar/
 │   │   ├── FilterBar.tsx           # Compact filters (text-[10px]), mobile search
 │   │   └── MultiSelectDropdown.tsx # Checkbox multi-select (z-9999)
-│   ├── SitesTable.tsx              # Desktop + mobile accordion variants
-│   ├── Timeline/VerticalTimeline.tsx
+│   ├── SitesTable.tsx              # Desktop + mobile accordion variants, CSV export
+│   ├── Timeline/VerticalTimeline.tsx # Red background (10% opacity)
 │   ├── Map/HeritageMap.tsx
+│   ├── Stats/StatsDashboard.tsx    # Statistics modal with Looted Artifacts section
+│   ├── About/About.tsx             # About/Methodology modal
 │   └── Modal/Modal.tsx
 ├── utils/
 │   ├── siteFilters.ts              # Filter logic with BCE parsing
@@ -105,7 +107,7 @@ src/
 │   ├── filters.ts                  # SITE_TYPES, STATUS_OPTIONS
 │   └── map.ts
 ├── styles/theme.ts                 # Centralized colors/styles
-└── data/mockSites.ts               # 15 sites currently
+└── data/mockSites.ts               # 18 sites currently
 ```
 
 **Key Patterns:**
@@ -183,8 +185,14 @@ const year = yearEra === "BCE" ? -parseInt(yearInput) : parseInt(yearInput);
 **Variants:**
 
 - `compact` - Desktop sidebar (Name, Status, Date, Actions)
-- `expanded` - Modal with all fields (Type, Islamic dates, Built dates)
+- `expanded` - Modal with all fields (Type, Islamic dates, Built dates, CSV export)
 - `mobile` - Accordion list (Name/Date collapsed, Type column removed)
+
+**CSV Export (Expanded Variant):**
+
+- RFC 4180 compliant escaping (commas, quotes, newlines)
+- Includes Arabic names, Islamic dates, coordinates
+- Timestamped filenames: `heritage-tracker-sites-YYYY-MM-DD.csv`
 
 **Mobile Features:**
 
@@ -281,7 +289,7 @@ interface GazaSite {
 - Smoke tests (rendering, basic functionality)
 - 5+ tests minimum for new components
 - Test edge cases (BCE dates, null values, mobile variants)
-- Current: 84 tests across 9 files
+- Current: 107 tests across 11 files
 - Run before every commit
 
 ### Performance (#memorize)
@@ -342,34 +350,36 @@ interface GazaSite {
 
 ## Priority Sites
 
-**Current:** 15 of 20-25 sites documented
+**Current:** 18 of 20-25 sites documented
 
-**Remaining:** 5-10 sites to reach MVP target
+**Remaining:** 2-7 sites to reach MVP target
 
 ## MVP Status
 
 ### Completed ✓
 
 - Interactive map (red/orange/yellow markers, centered sticky positioning)
-- Vertical timeline (440px width, red border, sticky)
+- Vertical timeline (320px width, 10% red background, sticky)
 - Enhanced FilterBar (BC/BCE dropdowns, date ranges, text-[10px] compact design)
-- Sortable table (desktop + mobile accordion variants)
+- Sortable table (desktop + mobile accordion variants, CSV export)
+- CSV Export (RFC 4180 compliant, Arabic/Islamic dates, timestamped)
 - Mobile optimization (Type column removed, left-aligned Arabic, compact header)
+- Statistics dashboard (Looted Artifacts section, mobile-optimized)
+- About/Methodology page (mobile-optimized)
 - Detail modal with accessibility
 - Synchronized highlighting (black ring)
 - Palestinian flag-inspired theme (thicker flag line: RED-BLACK-RED-GREEN)
 - Desktop table styling (white border + black inner border)
-- 84 comprehensive tests (including mobile variant tests)
+- 107 comprehensive tests (including CSV export, mobile variants, Stats/About)
 
 ### Remaining
 
-- Statistics dashboard
-- Timeline animation
-- About/Methodology page
-- Data collection (5-10 more sites to reach 20-25 target)
+- Deploy to production (next session)
+- Timeline animation (future enhancement)
+- Data collection (2-7 more sites to reach 20-25 target)
 
 ---
 
 **Last Updated:** October 10, 2025
-**Version:** 0.2.0 (Pre-launch)
-**Status:** MVP Phase 1 Complete with Mobile Optimization
+**Version:** 0.9.0 (Pre-launch - Ready for Deployment)
+**Status:** MVP Complete - All Core Features Implemented
