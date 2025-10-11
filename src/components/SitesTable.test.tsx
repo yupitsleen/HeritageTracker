@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SitesTable } from "./SitesTable";
 import type { GazaSite } from "../types";
@@ -31,7 +31,6 @@ const mockSites: GazaSite[] = [
         type: "official",
       },
     ],
-    originalLocation: "Gaza City",
   },
   {
     id: "site-2",
@@ -58,7 +57,6 @@ const mockSites: GazaSite[] = [
         type: "official",
       },
     ],
-    originalLocation: "Old City",
   },
 ];
 
@@ -277,9 +275,8 @@ describe("SitesTable", () => {
       expect(screen.getByText(/Year Built:/)).toBeInTheDocument();
       expect(screen.getByText(/Date Destroyed:/)).toBeInTheDocument();
       expect(screen.getByText(/Description:/)).toBeInTheDocument();
-      expect(screen.getByText(/Location:/)).toBeInTheDocument();
+      expect(screen.getByText(/Coordinates:/)).toBeInTheDocument();
       expect(screen.getByText("Test description")).toBeInTheDocument();
-      expect(screen.getByText("Gaza City")).toBeInTheDocument();
     });
 
     it("collapses accordion on second click", async () => {

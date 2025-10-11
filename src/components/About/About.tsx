@@ -1,5 +1,3 @@
-import { components } from "../../styles/theme";
-
 /**
  * About/Methodology page explaining the project's purpose, data sources, and verification process
  * Establishes credibility and transparency for the Heritage Tracker project

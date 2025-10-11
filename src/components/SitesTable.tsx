@@ -30,7 +30,6 @@ function sitesToCSV(sites: GazaSite[]): string {
     "Destruction Date",
     "Destruction Date (Islamic)",
     "Description",
-    "Location",
     "Coordinates (Lat, Lng)",
     "Verified By",
   ];
@@ -55,7 +54,6 @@ function sitesToCSV(sites: GazaSite[]): string {
     escapeCSV(site.dateDestroyed),
     escapeCSV(site.dateDestroyedIslamic),
     escapeCSV(site.description),
-    escapeCSV(site.originalLocation),
     `"${site.coordinates[0]}, ${site.coordinates[1]}"`,
     escapeCSV(site.verifiedBy?.join("; ")),
   ]);
@@ -289,11 +287,10 @@ export function SitesTable({
                     <p className="text-sm text-gray-900 mt-1">{site.description}</p>
                   </div>
 
-                  {/* Location */}
+                  {/* Coordinates */}
                   <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">Location:</span>
-                    <p className="text-sm text-gray-900">{site.originalLocation}</p>
-                    <p className="text-xs text-gray-600">
+                    <span className="text-xs font-semibold text-gray-600 uppercase">Coordinates:</span>
+                    <p className="text-sm text-gray-900">
                       {site.coordinates[0].toFixed(6)}, {site.coordinates[1].toFixed(6)}
                     </p>
                   </div>

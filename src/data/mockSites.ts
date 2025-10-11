@@ -575,7 +575,6 @@ export const mockSites: GazaSite[] = [
         type: "journalism",
       },
     ],
-    originalLocation: "Tell Umm el-'Amr, Nuseirat, Deir al-Balah",
   },
   {
     id: "ard-al-moharbeen-cemetery",
@@ -615,7 +614,6 @@ export const mockSites: GazaSite[] = [
         type: "journalism",
       },
     ],
-    originalLocation: "Jabaliya, near housing project construction site",
   },
   {
     id: "israa-university-museum",
@@ -654,6 +652,5 @@ export const mockSites: GazaSite[] = [
         type: "journalism",
       },
     ],
-    originalLocation: "South of Gaza City",
   },
 ];

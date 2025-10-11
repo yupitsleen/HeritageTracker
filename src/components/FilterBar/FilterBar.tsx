@@ -1,6 +1,5 @@
 import React from "react";
 import type { GazaSite } from "../../types";
-import { components, cn } from "../../styles/theme";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
 import { MultiSelectDropdown } from "./MultiSelectDropdown";
