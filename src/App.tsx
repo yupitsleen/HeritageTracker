@@ -9,6 +9,7 @@ import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
+import { StatsDashboard } from "./components/Stats/StatsDashboard";
 import { CalendarProvider } from "./contexts/CalendarContext";
 import {
   filterSitesByTypeAndStatus,
@@ -29,6 +30,7 @@ function App() {
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [isTableExpanded, setIsTableExpanded] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
 
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
@@ -66,14 +68,23 @@ function App() {
               <p className="text-[#f5f5f5] mt-1 md:mt-2 text-center text-xs md:text-base">
                 Documenting the destruction of cultural heritage in Gaza (2023-2024)
               </p>
-              {/* About button - desktop only, positioned in top right */}
-              <button
-                onClick={() => setIsAboutOpen(true)}
-                className="hidden md:block absolute top-3 right-4 md:top-6 md:right-6 px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
-                aria-label="About Heritage Tracker"
-              >
-                About
-              </button>
+              {/* Navigation buttons - desktop only, positioned in top right */}
+              <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
+                <button
+                  onClick={() => setIsStatsOpen(true)}
+                  className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
+                  aria-label="View Statistics"
+                >
+                  Statistics
+                </button>
+                <button
+                  onClick={() => setIsAboutOpen(true)}
+                  className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
+                  aria-label="About Heritage Tracker"
+                >
+                  About
+                </button>
+              </div>
             </div>
           </header>
 
@@ -217,6 +228,15 @@ function App() {
           </div>
         </Modal>
 
+        {/* Statistics Modal */}
+        <Modal
+          isOpen={isStatsOpen}
+          onClose={() => setIsStatsOpen(false)}
+          zIndex={10001}
+        >
+          <StatsDashboard sites={mockSites} />
+        </Modal>
+
         {/* About Modal */}
         <Modal
           isOpen={isAboutOpen}
@@ -237,11 +257,19 @@ function App() {
               </p>
             </div>
           </div>
-          {/* Mobile footer - site name with About link */}
+          {/* Mobile footer - site name with navigation links */}
           <div className="md:hidden py-2">
             <div className={cn(components.container.base)}>
               <p className="text-xs text-center font-semibold">
                 Heritage Tracker •{" "}
+                <button
+                  onClick={() => setIsStatsOpen(true)}
+                  className="underline hover:text-[#fefefe]/80 transition-colors"
+                  aria-label="View Statistics"
+                >
+                  Stats
+                </button>
+                {" • "}
                 <button
                   onClick={() => setIsAboutOpen(true)}
                   className="underline hover:text-[#fefefe]/80 transition-colors"
