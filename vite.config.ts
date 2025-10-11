@@ -5,4 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // Test configuration moved to vitest.config.ts to avoid build errors
+  base: '/HeritageTracker/',
 })

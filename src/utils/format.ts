@@ -19,7 +19,7 @@ export const formatLabel = (value: string): string => {
  * @example formatDateCompact("2023-12-07") => "Dec 7, 23"
  * @example formatDateCompact(null) => "N/A"
  */
-export const formatDateCompact = (dateString: string | null): string => {
+export const formatDateCompact = (dateString: string | null | undefined): string => {
   if (!dateString) return "N/A";
   return new Date(dateString).toLocaleDateString("en-US", {
     month: "short",
@@ -33,7 +33,7 @@ export const formatDateCompact = (dateString: string | null): string => {
  * @example formatDateStandard("2023-12-07") => "Dec 7, 2023"
  * @example formatDateStandard(null) => "N/A"
  */
-export const formatDateStandard = (dateString: string | null): string => {
+export const formatDateStandard = (dateString: string | null | undefined): string => {
   if (!dateString) return "N/A";
   return new Date(dateString).toLocaleDateString("en-US", {
     month: "short",
@@ -47,7 +47,7 @@ export const formatDateStandard = (dateString: string | null): string => {
  * @example formatDateLong("2023-12-07") => "December 7, 2023"
  * @example formatDateLong(null) => "N/A"
  */
-export const formatDateLong = (dateString: string | null): string => {
+export const formatDateLong = (dateString: string | null | undefined): string => {
   if (!dateString) return "N/A";
   return new Date(dateString).toLocaleDateString("en-US", {
     month: "long",
