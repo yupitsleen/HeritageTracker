@@ -17,6 +17,72 @@ type SortField = "name" | "type" | "status" | "dateDestroyed";
 type SortDirection = "asc" | "desc";
 
 /**
+ * Convert sites array to CSV format
+ */
+function sitesToCSV(sites: GazaSite[]): string {
+  const headers = [
+    "Name",
+    "Name (Arabic)",
+    "Type",
+    "Status",
+    "Year Built",
+    "Year Built (Islamic)",
+    "Destruction Date",
+    "Destruction Date (Islamic)",
+    "Description",
+    "Location",
+    "Coordinates (Lat, Lng)",
+    "Verified By",
+  ];
+
+  const escapeCSV = (value: string | undefined | null): string => {
+    if (!value) return "";
+    // Escape quotes and wrap in quotes if contains comma, newline, or quote
+    const stringValue = String(value);
+    if (stringValue.includes(",") || stringValue.includes("\n") || stringValue.includes('"')) {
+      return `"${stringValue.replace(/"/g, '""')}"`;
+    }
+    return stringValue;
+  };
+
+  const rows = sites.map((site) => [
+    escapeCSV(site.name),
+    escapeCSV(site.nameArabic),
+    escapeCSV(site.type),
+    escapeCSV(site.status),
+    escapeCSV(site.yearBuilt),
+    escapeCSV(site.yearBuiltIslamic),
+    escapeCSV(site.dateDestroyed),
+    escapeCSV(site.dateDestroyedIslamic),
+    escapeCSV(site.description),
+    escapeCSV(site.originalLocation),
+    `"${site.coordinates[0]}, ${site.coordinates[1]}"`,
+    escapeCSV(site.verifiedBy?.join("; ")),
+  ]);
+
+  return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
+}
+
+/**
+ * Trigger CSV download
+ */
+function downloadCSV(sites: GazaSite[]) {
+  const csv = sitesToCSV(sites);
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+
+  link.setAttribute("href", url);
+  link.setAttribute("download", `heritage-tracker-sites-${new Date().toISOString().split("T")[0]}.csv`);
+  link.style.visibility = "hidden";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
  * Table view of heritage sites with click-to-view-details and sorting
  * Supports compact, expanded, and mobile accordion variants
  *
@@ -278,18 +344,33 @@ export function SitesTable({
   return (
     <div className="h-full flex flex-col bg-white">
       <div className="mb-4 flex-shrink-0 px-2 pt-4">
-        <div className="flex items-center justify-center gap-2">
-          <h2 className="text-xl font-bold text-gray-800">Heritage Sites</h2>
-          {onExpandTable && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center gap-2 flex-1">
+            <h2 className="text-xl font-bold text-gray-800">Heritage Sites</h2>
+            {onExpandTable && (
+              <button
+                onClick={onExpandTable}
+                className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
+                title="Expand table to see all columns"
+                aria-label="Expand table to see all columns"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </button>
+            )}
+          </div>
+          {variant === "expanded" && (
             <button
-              onClick={onExpandTable}
-              className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
-              title="Expand table to see all columns"
-              aria-label="Expand table to see all columns"
+              onClick={() => downloadCSV(sortedSites)}
+              className="flex items-center gap-2 px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-sm rounded transition-colors font-medium"
+              title="Export table data to CSV file"
+              aria-label="Export to CSV"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
+              Export CSV
             </button>
           )}
         </div>

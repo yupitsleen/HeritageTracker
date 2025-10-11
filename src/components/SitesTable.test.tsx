@@ -466,4 +466,63 @@ describe("SitesTable", () => {
       expect(screen.getByText("UNESCO")).toBeInTheDocument();
     });
   });
+
+  describe("Expanded variant", () => {
+    it("displays Export CSV button in expanded variant", () => {
+      render(
+        <CalendarProvider>
+          <SitesTable
+            sites={mockSites}
+            onSiteClick={vi.fn()}
+            variant="expanded"
+          />
+        </CalendarProvider>
+      );
+
+      const exportButton = screen.getByText("Export CSV");
+      expect(exportButton).toBeInTheDocument();
+      expect(exportButton).toHaveAttribute("title", "Export table data to CSV file");
+    });
+
+    it("does not display Export CSV button in compact variant", () => {
+      render(
+        <CalendarProvider>
+          <SitesTable
+            sites={mockSites}
+            onSiteClick={vi.fn()}
+            variant="compact"
+          />
+        </CalendarProvider>
+      );
+
+      const exportButton = screen.queryByText("Export CSV");
+      expect(exportButton).not.toBeInTheDocument();
+    });
+
+    it("Export CSV button is clickable without errors", async () => {
+      const user = userEvent.setup();
+
+      // Mock URL.createObjectURL and URL.revokeObjectURL
+      global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
+      global.URL.revokeObjectURL = vi.fn();
+
+      render(
+        <CalendarProvider>
+          <SitesTable
+            sites={mockSites}
+            onSiteClick={vi.fn()}
+            variant="expanded"
+          />
+        </CalendarProvider>
+      );
+
+      const exportButton = screen.getByText("Export CSV");
+
+      // Verify button is clickable and doesn't throw errors
+      await expect(user.click(exportButton)).resolves.not.toThrow();
+
+      // Verify URL.createObjectURL was called (CSV download triggered)
+      expect(global.URL.createObjectURL).toHaveBeenCalled();
+    });
+  });
 });
