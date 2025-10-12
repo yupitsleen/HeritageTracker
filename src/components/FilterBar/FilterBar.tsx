@@ -17,8 +17,6 @@ interface FilterBarProps {
   creationYearStart: number | null;
   creationYearEnd: number | null;
   searchTerm: string;
-  filteredSiteCount: number;
-  totalSiteCount: number;
   onTypeChange: (types: Array<GazaSite["type"]>) => void;
   onStatusChange: (statuses: Array<GazaSite["status"]>) => void;
   onDestructionDateStartChange: (date: Date | null) => void;
@@ -40,8 +38,6 @@ export function FilterBar({
   creationYearStart,
   creationYearEnd,
   searchTerm,
-  filteredSiteCount,
-  totalSiteCount,
   onTypeChange,
   onStatusChange,
   onDestructionDateStartChange,
@@ -329,13 +325,6 @@ export function FilterBar({
             ariaLabel={`Remove ${status} filter`}
           />
         ))}
-      </div>
-
-      {/* Site count - shown below filter tags (desktop only) */}
-      <div className="hidden md:block text-center mt-1">
-        <span className="text-[10px] font-medium text-gray-300">
-          Showing {filteredSiteCount} of {totalSiteCount} sites
-        </span>
       </div>
     </div>
   );

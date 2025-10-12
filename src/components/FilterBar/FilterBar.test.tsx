@@ -12,8 +12,6 @@ describe("FilterBar", () => {
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
-    filteredSiteCount: 18,
-    totalSiteCount: 18,
     onTypeChange: vi.fn(),
     onStatusChange: vi.fn(),
     onDestructionDateStartChange: vi.fn(),
