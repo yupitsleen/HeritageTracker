@@ -10,7 +10,7 @@ export function StatusLegend() {
 
   return (
     <div className="flex items-center justify-center gap-4 mb-3 px-3 py-2 bg-white rounded-lg border border-gray-200">
-      <span className="text-xs font-semibold text-gray-700">Status:</span>
+      <span className="text-xs font-semibold text-gray-700">Color Key:</span>
       {statusColors.map((status) => (
         <div key={status.label} className="flex items-center gap-1.5">
           <div
