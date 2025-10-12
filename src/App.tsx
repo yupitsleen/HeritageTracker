@@ -23,9 +23,9 @@ function App() {
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
-  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
+  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(new Date());
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
-  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
+  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(new Date().getFullYear());
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);

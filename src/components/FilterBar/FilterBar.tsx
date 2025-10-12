@@ -55,7 +55,7 @@ export function FilterBar({
   // Local state for year input and era selection
   const [startYearInput, setStartYearInput] = React.useState("");
   const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">("CE");
-  const [endYearInput, setEndYearInput] = React.useState("");
+  const [endYearInput, setEndYearInput] = React.useState(new Date().getFullYear().toString());
   const [endYearEra, setEndYearEra] = React.useState<"CE" | "BCE">("CE");
 
   // Update parent state when year or era changes
@@ -233,7 +233,7 @@ export function FilterBar({
               placeholder="From"
               className="text-[10px] py-0.5 px-1"
             />
-            <span className="text-[10px] text-gray-500">to</span>
+            <span className="text-[10px] text-black">to</span>
             <Input
               variant="date"
               value={destructionDateEnd ? destructionDateEnd.toISOString().split("T")[0] : ""}
@@ -280,7 +280,7 @@ export function FilterBar({
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
             </Select>
-            <span className="text-[10px] text-gray-500">to</span>
+            <span className="text-[10px] text-black">to</span>
             <Input
               variant="number"
               value={endYearInput}
