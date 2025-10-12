@@ -55,9 +55,10 @@ export function MultiSelectDropdown<T extends string>({
       >
         <span className="font-medium text-gray-700">
           {label}
-          {selectedValues.length > 0 && (
-            <span className="ml-0.5 text-[#009639] font-semibold">({selectedValues.length})</span>
-          )}
+          {/* Always reserve space for count to prevent layout shift */}
+          <span className={`ml-0.5 font-semibold inline-block min-w-[20px] ${selectedValues.length > 0 ? 'text-[#009639]' : 'opacity-0'}`}>
+            ({selectedValues.length > 0 ? selectedValues.length : '99'})
+          </span>
         </span>
         {/* Chevron icon */}
         <svg

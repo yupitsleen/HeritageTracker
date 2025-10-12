@@ -4,6 +4,7 @@ import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
 import { SitesTable } from "./components/SitesTable";
 import { HeritageMap } from "./components/Map/HeritageMap";
+import { StatusLegend } from "./components/Map/StatusLegend";
 import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
@@ -22,9 +23,9 @@ function App() {
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
-  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
+  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(new Date());
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
-  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
+  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(new Date().getFullYear());
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
@@ -111,6 +112,8 @@ function App() {
                 creationYearStart={creationYearStart}
                 creationYearEnd={creationYearEnd}
                 searchTerm={searchTerm}
+                filteredSiteCount={filteredSites.length}
+                totalSiteCount={mockSites.length}
                 onTypeChange={setSelectedTypes}
                 onStatusChange={setSelectedStatuses}
                 onDestructionDateStartChange={setDestructionDateStart}
@@ -146,6 +149,8 @@ function App() {
                     creationYearStart={creationYearStart}
                     creationYearEnd={creationYearEnd}
                     searchTerm={searchTerm}
+                    filteredSiteCount={filteredSites.length}
+                    totalSiteCount={mockSites.length}
                     onTypeChange={setSelectedTypes}
                     onStatusChange={setSelectedStatuses}
                     onDestructionDateStartChange={setDestructionDateStart}
@@ -166,6 +171,7 @@ function App() {
                   <VerticalTimeline
                     sites={filteredSites}
                     onSiteHighlight={setHighlightedSiteId}
+                    highlightedSiteId={highlightedSiteId}
                   />
                 </div>
               </aside>
@@ -173,6 +179,7 @@ function App() {
               {/* Center - Map (Sticky, vertically centered) */}
               <div className="flex-1 min-w-0">
                 <div className="w-full sticky top-[calc(50vh-300px)]">
+                  <StatusLegend />
                   <HeritageMap
                     sites={filteredSites}
                     onSiteClick={setSelectedSite}

@@ -2,11 +2,14 @@
 
 **Documenting the destruction of Palestinian cultural heritage through interactive visualization.**
 
-![Project Status](https://img.shields.io/badge/status-mvp%20phase%201-green)
-![Tests](https://img.shields.io/badge/tests-84%20passing-brightgreen)
+![Project Status](https://img.shields.io/badge/status-production-brightgreen)
+![Tests](https://img.shields.io/badge/tests-107%20passing-brightgreen)
+![Deployment](https://img.shields.io/badge/deployment-live-success)
 ![License](https://img.shields.io/badge/license-TBD-lightgrey)
 
-**Currently tracking:** 15 of 20-25 significant Gaza heritage sites destroyed during 2023-2024 conflict
+**🌐 Live Site:** https://yupitsleen.github.io/HeritageTracker/
+
+**Currently tracking:** 18 of 20-25 significant Gaza heritage sites destroyed during 2023-2024 conflict
 
 ---
 
@@ -24,25 +27,27 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 
 ## ✨ Current Features
 
-### ✅ Implemented
+### ✅ Live in Production
 
-- **Interactive map** with Leaflet (custom zoom controls, centered sticky positioning)
+- **Interactive map** with Leaflet (color-coded status markers, centered sticky positioning)
 - **Advanced filtering** (type, status, date ranges, BC/BCE handling, compact text-[10px] design)
-- **Timeline visualization** with D3.js (440px width, red border, sticky)
+- **Timeline visualization** with D3.js (320px width, 10% red background, sticky)
 - **Mobile-optimized table** (accordion view, Type column removed for space efficiency)
-- **Desktop table** with white border + black inner border styling
+- **CSV Export** with RFC 4180 compliance (Arabic names, Islamic dates, coordinates)
+- **Statistics Dashboard** with impact metrics and Looted Artifacts section
+- **About/Methodology Page** with data sources and legal framework
 - **Detail modals** with bilingual display (English/Arabic)
 - **Cross-component highlighting** (map ↔ timeline ↔ table sync with black ring)
 - **Accessible UI** with keyboard navigation and ARIA labels
-- **Responsive design** with Palestinian flag-inspired theme (thicker RED-BLACK-RED-GREEN line)
-- **Comprehensive test suite** (84 tests including mobile variant coverage)
+- **Responsive design** with Palestinian flag-inspired theme
+- **CI/CD Pipeline** with automated testing and deployment
+- **Comprehensive test suite** (107 tests including mobile variants, CSV export, Stats/About)
 
 ### 🚧 In Progress
 
-- Expanding to 20-25 sites (currently 15 completed - 75% of MVP target)
-- Historical imagery integration
-- Source citation tooltips
-- Statistics dashboard
+- SEO optimization (meta tags, structured data)
+- Performance improvements (code splitting, bundle optimization)
+- Expanding to 20-25 sites (currently 18 completed - 72% of MVP target)
 
 ## 🛠️ Tech Stack
 
@@ -50,7 +55,9 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **Tailwind CSS v4** - Styling with custom Palestinian theme
 - **Leaflet** - Interactive mapping
 - **D3.js** - Timeline visualization
-- **Vitest** - Testing framework (84 tests passing)
+- **Vitest** - Testing framework (107 tests passing)
+- **GitHub Actions** - CI/CD automation
+- **GitHub Pages** - Production hosting
 
 ## 🚀 Quick Start
 
@@ -75,12 +82,22 @@ npm run dev
 ### Development Commands
 
 ```bash
-npm run dev          # Dev server with HMR
-npm test            # Run test suite (84 tests)
+npm run dev          # Dev server with HMR (localhost:5173)
+npm test            # Run test suite (107 tests)
 npm run lint        # ESLint code quality check
 npm run build       # Production build
 npm run preview     # Preview production build
 ```
+
+### Deployment
+
+The project automatically deploys to GitHub Pages on every push to `main`:
+
+```bash
+git push origin main  # Triggers CI/CD: Tests → Build → Deploy
+```
+
+View deployment status: https://github.com/yupitsleen/HeritageTracker/actions
 
 ## 📁 Project Structure
 
@@ -89,17 +106,22 @@ src/
 ├── components/
 │   ├── FilterBar/       # Compact filters (text-[10px]) with mobile search
 │   ├── Map/            # Leaflet map (centered sticky positioning)
-│   ├── Timeline/       # D3.js timeline (440px, red border, sticky)
-│   ├── SitesTable/     # Desktop + mobile accordion variants
+│   ├── Timeline/       # D3.js timeline (320px, 10% red background, sticky)
+│   ├── SitesTable/     # Desktop + mobile accordion variants with CSV export
+│   ├── Stats/          # Statistics dashboard with impact metrics
+│   ├── About/          # About/Methodology page
 │   ├── SiteDetailPanel/ # Modal with bilingual content
 │   └── Modal/          # Reusable modal component
 ├── data/
-│   └── mockSites.ts    # Heritage sites data (15/20-25 complete)
+│   └── mockSites.ts    # Heritage sites data (18/20-25 complete)
 ├── types/
 │   └── index.ts        # TypeScript interfaces
 ├── utils/              # Shared utilities and constants
 └── styles/
     └── theme.ts        # Centralized Palestinian flag colors
+.github/
+└── workflows/
+    └── deploy.yml      # CI/CD pipeline for GitHub Pages
 ```
 
 ## 📖 Documentation
@@ -111,20 +133,23 @@ src/
 
 ## 🗺️ Development Roadmap
 
-### Phase 1: MVP (Current) ✅ 95% Complete
+### Phase 1: MVP ✅ COMPLETE - LIVE IN PRODUCTION
 
 - [x] Project setup and architecture
 - [x] Interactive map implementation (centered sticky positioning)
-- [x] Timeline visualization (440px, red border, sticky)
+- [x] Timeline visualization (320px, 10% red background, sticky)
 - [x] Advanced filtering system (compact text-[10px] design)
 - [x] Detail modals with bilingual support
 - [x] Cross-component state management
 - [x] Mobile optimization (accordion table, compact filters)
-- [x] Desktop styling (white/black table borders, thicker flag line)
-- [x] Comprehensive test suite (84 tests including mobile variants)
-- [ ] Complete 20-25 Gaza sites data collection (15/20-25 ✅ 75%)
-- [ ] Historical imagery integration
-- [ ] Launch MVP
+- [x] CSV Export functionality (RFC 4180 compliant)
+- [x] Statistics dashboard with impact metrics
+- [x] About/Methodology page
+- [x] Comprehensive test suite (107 tests including mobile variants, CSV, Stats, About)
+- [x] CI/CD pipeline with GitHub Actions
+- [x] **DEPLOYED TO PRODUCTION:** https://yupitsleen.github.io/HeritageTracker/
+- [ ] Complete 20-25 Gaza sites data collection (18/20-25 ✅ 72%)
+- [ ] SEO optimization
 
 ### Phase 2: Expansion (Future)
 
@@ -141,13 +166,15 @@ src/
 - [ ] Educational resources
 - [ ] Mobile PWA
 
-## 📚 Data Sources
+## 📚 Data Sources & Research Methodology
 
 All sites verified by multiple authoritative sources with full citations:
 
 1. **UNESCO** - Official heritage damage verification
 2. **Forensic Architecture** - Satellite imagery and coordinates
 3. **Heritage for Peace** - Ground documentation
+
+**Research & Content Attribution:** Site descriptions and historical information are original syntheses created by combining factual data from multiple verified sources. Research assistance provided by Claude (Anthropic). All factual claims (dates, coordinates, artifact counts, destruction dates) are cross-referenced against multiple sources and cited accordingly. Narrative descriptions are original summaries of publicly available information, not direct quotations. See [research documentation](docs/research/research_document.md) for detailed methodology and sources.
 
 ## 🤝 Contributing
 
@@ -163,7 +190,8 @@ We welcome contributions! Ways to help:
 - Follow existing patterns in CLAUDE.md
 - Write tests for new features (including mobile variants)
 - Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-- Ensure all 84 tests pass before committing
+- Ensure all 107 tests pass before committing
+- All changes automatically tested and deployed via CI/CD
 
 ## ⚖️ Legal & Ethical Framework
 
@@ -190,4 +218,6 @@ This project builds on documentation by UNESCO, Forensic Architecture, Heritage 
 
 ---
 
-_Last updated: October 10, 2025 | Version: 0.2.0-alpha | 15 of 20-25 sites documented (75% MVP complete)_
+_Last updated: October 11, 2025 | Version: 1.0.0 | 🚀 Live in Production | 18 of 20-25 sites documented (72% to target)_
+
+**Live Site:** https://yupitsleen.github.io/HeritageTracker/
