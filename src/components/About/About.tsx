@@ -191,8 +191,8 @@ export function About() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Legal & Ethical Framework</h2>
           <div className="space-y-3 text-gray-700 text-sm leading-relaxed">
             <p>
-              <strong>Documentation, not advocacy:</strong> This project presents factual
-              information from verified sources without political commentary.
+              <strong>Documentation:</strong> This project presents factual information from
+              verified sources.
             </p>
             <p>
               <strong>Full attribution:</strong> Every claim is sourced with citations, dates, and
@@ -219,8 +219,8 @@ export function About() {
             How to Contribute
           </h2>
           <p className="text-xs md:text-base text-gray-700 leading-relaxed mb-3 md:mb-4">
-            We welcome contributions from researchers, cultural heritage experts, and community
-            members:
+            We welcome contributions from researchers, cultural heritage experts, software
+            developers, and community members:
           </p>
           <ul className="list-disc list-inside text-xs md:text-base text-gray-700 space-y-1 md:space-y-2">
             <li>
