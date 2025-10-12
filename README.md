@@ -166,13 +166,15 @@ src/
 - [ ] Educational resources
 - [ ] Mobile PWA
 
-## 📚 Data Sources
+## 📚 Data Sources & Research Methodology
 
 All sites verified by multiple authoritative sources with full citations:
 
 1. **UNESCO** - Official heritage damage verification
 2. **Forensic Architecture** - Satellite imagery and coordinates
 3. **Heritage for Peace** - Ground documentation
+
+**Research & Content Attribution:** Site descriptions and historical information are original syntheses created by combining factual data from multiple verified sources. Research assistance provided by Claude (Anthropic). All factual claims (dates, coordinates, artifact counts, destruction dates) are cross-referenced against multiple sources and cited accordingly. Narrative descriptions are original summaries of publicly available information, not direct quotations. See [research documentation](docs/research/research_document.md) for detailed methodology and sources.
 
 ## 🤝 Contributing
 
