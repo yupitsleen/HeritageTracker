@@ -129,8 +129,8 @@ export const components = {
 
   // Tag/Chip styles (for removable filter tags)
   tag: {
-    base: "inline-flex items-center gap-1 px-2 py-1 rounded text-xs",
-    default: "bg-[#fafafa] text-gray-700",
+    base: "inline-flex items-center gap-1 px-2 py-1 text-xs",
+    default: "bg-[#e5e5e5] text-gray-700",
     removeButton: "text-gray-500 hover:text-[#ed3039] font-bold",  // Palestine flag red
   },
 

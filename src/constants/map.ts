@@ -25,13 +25,15 @@ export const MARKER_SHADOW_URL =
  * Marker icon configuration
  */
 export const MARKER_CONFIG = {
-  iconSize: [25, 41] as [number, number],
-  iconAnchor: [12, 41] as [number, number],
-  popupAnchor: [1, -34] as [number, number],
-  shadowSize: [41, 41] as [number, number],
-  highlightedIconSize: [38, 61] as [number, number], // 1.5x larger
-  highlightedIconAnchor: [19, 61] as [number, number],
-  highlightedPopupAnchor: [1, -51] as [number, number],
+  // Small dots for default state
+  iconSize: [12, 20] as [number, number],
+  iconAnchor: [6, 20] as [number, number],
+  popupAnchor: [0, -17] as [number, number],
+  shadowSize: [20, 20] as [number, number],
+  // Regular marker size when selected (not enlarged)
+  highlightedIconSize: [25, 41] as [number, number],
+  highlightedIconAnchor: [12, 41] as [number, number],
+  highlightedPopupAnchor: [1, -34] as [number, number],
 } as const;
 
 /**

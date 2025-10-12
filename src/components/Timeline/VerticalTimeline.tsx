@@ -29,6 +29,7 @@ const TIMELINE_CONFIG = {
 export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: VerticalTimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isTimelineHovered, setIsTimelineHovered] = useState(false);
   const { calendarType } = useCalendar();
 
@@ -50,13 +51,14 @@ export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: 
     const { MARGIN, ITEM_HEIGHT, LINE_X } = TIMELINE_CONFIG;
 
     // Calculate content height based on number of sites
-    const contentHeight = sitesWithDates.length * ITEM_HEIGHT + MARGIN.top + MARGIN.bottom;
+    // Add extra bottom padding to ensure last item is fully visible
+    const contentHeight = sitesWithDates.length * ITEM_HEIGHT + MARGIN.top + MARGIN.bottom + 100;
 
     // Get container height (use viewport height as minimum)
     const container = svgRef.current.parentElement;
     const containerHeight = container ? container.clientHeight : window.innerHeight;
 
-    // Use the larger of content height or container height
+    // Always use content height to ensure all items are visible
     const height = Math.max(contentHeight, containerHeight);
 
     // Set SVG height dynamically
@@ -259,11 +261,11 @@ export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: 
 
   // Scroll to highlighted site when it changes
   useEffect(() => {
-    if (!highlightedSiteId || !containerRef.current) return;
+    if (!highlightedSiteId || !scrollContainerRef.current) return;
 
     // Use a small delay to ensure the DOM is fully updated
     const timeoutId = setTimeout(() => {
-      const scrollContainer = containerRef.current?.querySelector('.overflow-y-auto');
+      const scrollContainer = scrollContainerRef.current;
       if (!scrollContainer) return;
 
       // Find the index of the highlighted site
@@ -291,24 +293,22 @@ export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: 
   // Handle mouse wheel scroll to prevent page scroll when hovering timeline
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (isTimelineHovered && containerRef.current) {
-        const scrollContainer = containerRef.current.querySelector('.overflow-y-auto');
-        if (scrollContainer) {
-          const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-          const isAtTop = scrollTop === 0;
-          const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+      if (isTimelineHovered && scrollContainerRef.current) {
+        const scrollContainer = scrollContainerRef.current;
+        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+        const isAtTop = scrollTop === 0;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
 
-          // Only prevent default if we're not at scroll limits
-          // or if we're scrolling in a direction that keeps us within bounds
-          const isScrollingDown = e.deltaY > 0;
-          const isScrollingUp = e.deltaY < 0;
+        // Only prevent default if we're not at scroll limits
+        // or if we're scrolling in a direction that keeps us within bounds
+        const isScrollingDown = e.deltaY > 0;
+        const isScrollingUp = e.deltaY < 0;
 
-          if ((isScrollingDown && !isAtBottom) || (isScrollingUp && !isAtTop)) {
-            e.preventDefault();
-            scrollContainer.scrollTop += e.deltaY;
-          }
-          // If at limits, allow page scroll by not preventing default
+        if ((isScrollingDown && !isAtBottom) || (isScrollingUp && !isAtTop)) {
+          e.preventDefault();
+          scrollContainer.scrollTop += e.deltaY;
         }
+        // If at limits, allow page scroll by not preventing default
       }
     };
 
@@ -333,7 +333,7 @@ export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: 
           Only sites with a Destruction Date are shown
         </p>
       </div>
-      <div className="overflow-y-auto overflow-x-visible flex-1 px-4 relative z-10">
+      <div ref={scrollContainerRef} className="overflow-y-auto overflow-x-visible flex-1 px-4 relative z-10">
         <svg ref={svgRef} className="w-full overflow-visible" />
       </div>
     </div>

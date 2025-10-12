@@ -17,6 +17,8 @@ interface FilterBarProps {
   creationYearStart: number | null;
   creationYearEnd: number | null;
   searchTerm: string;
+  filteredSiteCount: number;
+  totalSiteCount: number;
   onTypeChange: (types: Array<GazaSite["type"]>) => void;
   onStatusChange: (statuses: Array<GazaSite["status"]>) => void;
   onDestructionDateStartChange: (date: Date | null) => void;
@@ -38,6 +40,8 @@ export function FilterBar({
   creationYearStart,
   creationYearEnd,
   searchTerm,
+  filteredSiteCount,
+  totalSiteCount,
   onTypeChange,
   onStatusChange,
   onDestructionDateStartChange,
@@ -297,37 +301,42 @@ export function FilterBar({
           </div>
         </div>
 
-        {/* Clear filters button - right aligned, always takes up space */}
-        <div className="min-w-[70px]">
-          {hasActiveFilters && (
-            <button onClick={clearAllFilters} className="px-2 py-1 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-[10px]">
-              Clear
-            </button>
-          )}
-        </div>
+        {/* Clear filters button - always visible to prevent layout shift */}
+        <button
+          onClick={clearAllFilters}
+          disabled={!hasActiveFilters}
+          className="px-3 py-1.5 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-xs font-medium disabled:opacity-0 disabled:cursor-default"
+        >
+          Clear
+        </button>
       </div>
 
-      {/* Active filter tags */}
-      {(selectedTypes.length > 0 || selectedStatuses.length > 0) && (
-        <div className="mt-1 flex flex-wrap gap-1">
-          {selectedTypes.map((type) => (
-            <FilterTag
-              key={type}
-              label={formatLabel(type)}
-              onRemove={() => onTypeChange(selectedTypes.filter((t) => t !== type))}
-              ariaLabel={`Remove ${type} filter`}
-            />
-          ))}
-          {selectedStatuses.map((status) => (
-            <FilterTag
-              key={status}
-              label={formatLabel(status)}
-              onRemove={() => onStatusChange(selectedStatuses.filter((s) => s !== status))}
-              ariaLabel={`Remove ${status} filter`}
-            />
-          ))}
-        </div>
-      )}
+      {/* Active filter tags - always reserve space to prevent layout shift */}
+      <div className="mt-1 flex flex-wrap gap-1 min-h-[24px]">
+        {selectedTypes.map((type) => (
+          <FilterTag
+            key={type}
+            label={formatLabel(type)}
+            onRemove={() => onTypeChange(selectedTypes.filter((t) => t !== type))}
+            ariaLabel={`Remove ${type} filter`}
+          />
+        ))}
+        {selectedStatuses.map((status) => (
+          <FilterTag
+            key={status}
+            label={formatLabel(status)}
+            onRemove={() => onStatusChange(selectedStatuses.filter((s) => s !== status))}
+            ariaLabel={`Remove ${status} filter`}
+          />
+        ))}
+      </div>
+
+      {/* Site count - shown below filter tags (desktop only) */}
+      <div className="hidden md:block text-center mt-1">
+        <span className="text-[10px] font-medium text-gray-300">
+          Showing {filteredSiteCount} of {totalSiteCount} sites
+        </span>
+      </div>
     </div>
   );
 }

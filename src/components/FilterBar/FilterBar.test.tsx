@@ -12,6 +12,8 @@ describe("FilterBar", () => {
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
+    filteredSiteCount: 18,
+    totalSiteCount: 18,
     onTypeChange: vi.fn(),
     onStatusChange: vi.fn(),
     onDestructionDateStartChange: vi.fn(),
@@ -65,13 +67,15 @@ describe("FilterBar", () => {
     expect(screen.getByText("Clear")).toBeInTheDocument();
   });
 
-  it("does not show Clear button when no filters are active", () => {
+  it("Clear button is disabled when no filters are active", () => {
     render(
       <CalendarProvider>
         <FilterBar {...mockProps} />
       </CalendarProvider>
     );
-    expect(screen.queryByText("Clear")).not.toBeInTheDocument();
+    const clearButton = screen.getByText("Clear");
+    expect(clearButton).toBeInTheDocument();
+    expect(clearButton).toBeDisabled();
   });
 
   it("renders calendar toggle button", () => {

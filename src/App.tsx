@@ -112,6 +112,8 @@ function App() {
                 creationYearStart={creationYearStart}
                 creationYearEnd={creationYearEnd}
                 searchTerm={searchTerm}
+                filteredSiteCount={filteredSites.length}
+                totalSiteCount={mockSites.length}
                 onTypeChange={setSelectedTypes}
                 onStatusChange={setSelectedStatuses}
                 onDestructionDateStartChange={setDestructionDateStart}
@@ -147,6 +149,8 @@ function App() {
                     creationYearStart={creationYearStart}
                     creationYearEnd={creationYearEnd}
                     searchTerm={searchTerm}
+                    filteredSiteCount={filteredSites.length}
+                    totalSiteCount={mockSites.length}
                     onTypeChange={setSelectedTypes}
                     onStatusChange={setSelectedStatuses}
                     onDestructionDateStartChange={setDestructionDateStart}
