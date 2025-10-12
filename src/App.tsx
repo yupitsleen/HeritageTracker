@@ -4,6 +4,7 @@ import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
 import { SitesTable } from "./components/SitesTable";
 import { HeritageMap } from "./components/Map/HeritageMap";
+import { StatusLegend } from "./components/Map/StatusLegend";
 import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { FilterBar } from "./components/FilterBar/FilterBar";
 import { Modal } from "./components/Modal/Modal";
@@ -166,6 +167,7 @@ function App() {
                   <VerticalTimeline
                     sites={filteredSites}
                     onSiteHighlight={setHighlightedSiteId}
+                    highlightedSiteId={highlightedSiteId}
                   />
                 </div>
               </aside>
@@ -173,6 +175,7 @@ function App() {
               {/* Center - Map (Sticky, vertically centered) */}
               <div className="flex-1 min-w-0">
                 <div className="w-full sticky top-[calc(50vh-300px)]">
+                  <StatusLegend />
                   <HeritageMap
                     sites={filteredSites}
                     onSiteClick={setSelectedSite}

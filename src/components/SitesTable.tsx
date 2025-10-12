@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import type { GazaSite } from "../types";
 import { components, getStatusHexColor } from "../styles/theme";
 import { useCalendar } from "../contexts/CalendarContext";
@@ -105,6 +105,8 @@ export function SitesTable({
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
   const { calendarType } = useCalendar();
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const highlightedRowRef = useRef<HTMLTableRowElement>(null);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -157,6 +159,19 @@ export function SitesTable({
     }
     return <span className="text-[#009639] ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>;
   };
+
+  // Scroll to highlighted site when it changes (desktop variants)
+  useEffect(() => {
+    if (!highlightedSiteId || !highlightedRowRef.current || !tableContainerRef.current) return;
+
+    // Only scroll for desktop variants (compact and expanded)
+    if (variant !== "mobile") {
+      highlightedRowRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [highlightedSiteId, variant]);
 
   // Mobile accordion variant
   if (variant === "mobile") {
@@ -361,94 +376,107 @@ export function SitesTable({
   // Desktop variants (compact/expanded)
   return (
     <div className="h-full flex flex-col bg-white">
-      <div className="mb-4 flex-shrink-0 px-2 pt-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center justify-center gap-2 flex-1">
-            <h2 className="text-xl font-bold text-gray-800">Heritage Sites</h2>
-            {onExpandTable && (
+      {/* Sticky header section - includes both title and column headers */}
+      <div className="sticky top-0 z-20 bg-white flex-shrink-0 shadow-sm">
+        {/* Title section */}
+        <div className="px-2 pt-4 pb-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center gap-2 flex-1">
+              <h2 className="text-xl font-bold text-gray-800">Heritage Sites</h2>
+              {onExpandTable && (
+                <button
+                  onClick={onExpandTable}
+                  className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
+                  title="Expand table to see all columns"
+                  aria-label="Expand table to see all columns"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+            {variant === "expanded" && (
               <button
-                onClick={onExpandTable}
-                className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
-                title="Expand table to see all columns"
-                aria-label="Expand table to see all columns"
+                onClick={() => downloadCSV(sortedSites)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-sm rounded transition-colors font-medium"
+                title="Export table data to CSV file"
+                aria-label="Export to CSV"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
+                Export CSV
               </button>
             )}
           </div>
-          {variant === "expanded" && (
-            <button
-              onClick={() => downloadCSV(sortedSites)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-sm rounded transition-colors font-medium"
-              title="Export table data to CSV file"
-              aria-label="Export to CSV"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              Export CSV
-            </button>
-          )}
+        </div>
+
+        {/* Column headers - part of sticky section */}
+        <div className="bg-[#000000] text-[#fefefe]">
+          <table className="w-full text-sm text-left">
+            <thead>
+              <tr>
+                <th
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                  onClick={() => handleSort("name")}
+                >
+                  Site Name
+                  <SortIcon field="name" />
+                </th>
+                {variant === "expanded" && (
+                  <th
+                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                    onClick={() => handleSort("type")}
+                  >
+                    Type
+                    <SortIcon field="type" />
+                  </th>
+                )}
+                <th
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                  onClick={() => handleSort("status")}
+                >
+                  Status
+                  <SortIcon field="status" />
+                </th>
+                <th
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                  onClick={() => handleSort("dateDestroyed")}
+                >
+                  {variant === "compact" ? "Destruction Date" : "Destruction Date (Gregorian)"}
+                  <SortIcon field="dateDestroyed" />
+                </th>
+                {variant === "expanded" && (
+                  <th className="px-4 py-3 font-semibold">Destruction Date (Islamic)</th>
+                )}
+                {variant === "expanded" && <th className="px-4 py-3 font-semibold">Built (Gregorian)</th>}
+                {variant === "expanded" && <th className="px-4 py-3 font-semibold">Built (Islamic)</th>}
+                <th className="px-4 py-3 font-semibold">Actions</th>
+              </tr>
+            </thead>
+          </table>
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">
+
+      {/* Scrollable table body */}
+      <div className="flex-1 overflow-y-auto" ref={tableContainerRef}>
         <table className={components.table.base}>
-          <thead className={components.table.header}>
-            <tr>
-              <th
-                className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
-                onClick={() => handleSort("name")}
-              >
-                Site Name
-                <SortIcon field="name" />
-              </th>
-              {variant === "expanded" && (
-                <th
-                  className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
-                  onClick={() => handleSort("type")}
-                >
-                  Type
-                  <SortIcon field="type" />
-                </th>
-              )}
-              <th
-                className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
-                onClick={() => handleSort("status")}
-              >
-                Status
-                <SortIcon field="status" />
-              </th>
-              <th
-                className={`${components.table.th} cursor-pointer hover:bg-gray-100 select-none`}
-                onClick={() => handleSort("dateDestroyed")}
-              >
-                {variant === "compact" ? "Destruction Date" : "Destruction Date (Gregorian)"}
-                <SortIcon field="dateDestroyed" />
-              </th>
-              {variant === "expanded" && (
-                <th className={components.table.th}>Destruction Date (Islamic)</th>
-              )}
-              {variant === "expanded" && <th className={components.table.th}>Built (Gregorian)</th>}
-              {variant === "expanded" && <th className={components.table.th}>Built (Islamic)</th>}
-              <th className={components.table.th}>Actions</th>
-            </tr>
-          </thead>
           <tbody>
             {sortedSites.map((site) => (
               <tr
                 key={site.id}
+                ref={highlightedSiteId === site.id ? highlightedRowRef : null}
                 className={`${components.table.row} ${
                   highlightedSiteId === site.id ? "ring-2 ring-black ring-inset" : ""
                 }`}
