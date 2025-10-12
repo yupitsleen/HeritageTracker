@@ -138,53 +138,6 @@ export function FilterBar({
 
       {/* Filter controls - sleek horizontal layout (hidden on mobile) */}
       <div className="hidden md:flex items-center justify-center gap-2 flex-wrap">
-        {/* Search bar - inline on left */}
-        <div className="relative flex-1 max-w-xs">
-          <Input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search sites..."
-            className="w-full pr-8 text-xs py-1 px-2"
-          />
-          {searchTerm.trim().length > 0 && (
-            <button
-              onClick={() => onSearchChange("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Clear search"
-            >
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
-        {/* Calendar Toggle */}
-        <button
-          onClick={toggleCalendar}
-          className="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-[10px] font-medium text-gray-700 transition-colors"
-          aria-label="Toggle calendar type"
-        >
-          {calendarType === "gregorian"
-            ? "Switch to Islamic Calendar"
-            : "Switch to Gregorian Calendar"}
-        </button>
-        {/* Live region for screen readers to announce calendar changes */}
-        <div role="status" aria-live="polite" className="sr-only">
-          {calendarType === "gregorian"
-            ? "Displaying Gregorian calendar dates"
-            : "Displaying Islamic calendar dates"}
-        </div>
         <div className="flex items-center gap-1.5">
           {/* Type Filter Dropdown */}
           <MultiSelectDropdown

@@ -75,36 +75,4 @@ describe("FilterBar", () => {
     expect(clearButton).toBeInTheDocument();
     expect(clearButton).toBeDisabled();
   });
-
-  it("renders calendar toggle button", () => {
-    render(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
-    );
-    const buttons = screen.getAllByRole("button");
-    const calendarButton = buttons.find(btn => btn.textContent?.includes("Calendar"));
-    expect(calendarButton).toBeInTheDocument();
-  });
-
-  it("toggles calendar when button clicked", () => {
-    render(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
-    );
-
-    const buttons = screen.getAllByRole("button");
-    const calendarButton = buttons.find(btn => btn.textContent?.includes("Calendar"));
-
-    const initialText = calendarButton?.textContent;
-
-    // Click toggle button
-    if (calendarButton) {
-      fireEvent.click(calendarButton);
-    }
-
-    // Text should change after toggle
-    expect(calendarButton?.textContent).not.toBe(initialText);
-  });
 });

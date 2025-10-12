@@ -10,6 +10,8 @@ import { FilterBar } from "./components/FilterBar/FilterBar";
 import { FilterTag } from "./components/FilterBar/FilterTag";
 import { Modal } from "./components/Modal/Modal";
 import { formatLabel } from "./utils/format";
+import { Input } from "./components/Form/Input";
+import { useCalendar } from "./contexts/CalendarContext";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
@@ -21,13 +23,40 @@ import {
   filterSitesBySearch,
 } from "./utils/siteFilters";
 
+/**
+ * Calendar toggle button component for switching between Gregorian and Islamic calendars
+ */
+function CalendarToggleButton() {
+  const { calendarType, toggleCalendar } = useCalendar();
+
+  return (
+    <>
+      <button
+        onClick={toggleCalendar}
+        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-[10px] font-medium text-gray-700 transition-colors"
+        aria-label="Toggle calendar type"
+      >
+        {calendarType === "gregorian"
+          ? "Switch to Islamic Calendar"
+          : "Switch to Gregorian Calendar"}
+      </button>
+      {/* Live region for screen readers to announce calendar changes */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {calendarType === "gregorian"
+          ? "Displaying Gregorian calendar dates"
+          : "Displaying Islamic calendar dates"}
+      </div>
+    </>
+  );
+}
+
 function App() {
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
-  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(new Date());
+  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
-  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(new Date().getFullYear());
+  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
@@ -156,7 +185,7 @@ function App() {
             </div>
           </div>
 
-          {/* Desktop Layout - Filter button and active filters */}
+          {/* Desktop Layout - Filter button, search, calendar toggle, and active filters */}
           <div className="hidden md:block">
             <div className={cn(components.container.base, "pt-2 pb-1")}>
               <div className="flex items-center gap-3 flex-wrap">
@@ -167,6 +196,41 @@ function App() {
                 >
                   Filters
                 </button>
+
+                {/* Search bar - inline */}
+                <div className="relative flex-1 max-w-xs">
+                  <Input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search sites..."
+                    className="w-full pr-8 text-xs py-1 px-2"
+                  />
+                  {searchTerm.trim().length > 0 && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label="Clear search"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+
+                {/* Calendar Toggle */}
+                <CalendarToggleButton />
 
                 {/* Active filter tags */}
                 {selectedTypes.map((type) => (
@@ -317,15 +381,7 @@ function App() {
               onCreationYearEndChange={setCreationYearEnd}
               onSearchChange={setSearchTerm}
             />
-            <div className="mt-6 flex justify-end gap-3">
-              {hasActiveFilters && (
-                <button
-                  onClick={clearAllFilters}
-                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
-                >
-                  Clear All
-                </button>
-              )}
+            <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setIsFilterOpen(false)}
                 className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
