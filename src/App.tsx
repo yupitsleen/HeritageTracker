@@ -382,7 +382,15 @@ function App() {
               onCreationYearEndChange={setCreationYearEnd}
               onSearchChange={setSearchTerm}
             />
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex justify-end gap-3">
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
+                >
+                  Clear All
+                </button>
+              )}
               <button
                 onClick={() => setIsFilterOpen(false)}
                 className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
