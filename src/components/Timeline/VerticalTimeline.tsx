@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import * as d3 from "d3";
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
@@ -33,14 +33,16 @@ export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: 
   const [isTimelineHovered, setIsTimelineHovered] = useState(false);
   const { calendarType } = useCalendar();
 
-  // Parse dates and sort sites chronologically
-  const sitesWithDates = sites
-    .filter((site) => site.dateDestroyed)
-    .map((site) => ({
-      ...site,
-      date: new Date(site.dateDestroyed!),
-    }))
-    .sort((a, b) => a.date.getTime() - b.date.getTime());
+  // Parse dates and sort sites chronologically - memoized to prevent unnecessary re-renders
+  const sitesWithDates = useMemo(() => {
+    return sites
+      .filter((site) => site.dateDestroyed)
+      .map((site) => ({
+        ...site,
+        date: new Date(site.dateDestroyed!),
+      }))
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+  }, [sites]);
 
   useEffect(() => {
     if (!svgRef.current || sitesWithDates.length === 0) return;
@@ -323,11 +325,11 @@ export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: 
   return (
     <div
       ref={containerRef}
-      className="flex flex-col h-full bg-[#b01822]"
+      className="flex flex-col h-full bg-[#c05060]"
       onMouseEnter={() => setIsTimelineHovered(true)}
       onMouseLeave={() => setIsTimelineHovered(false)}
     >
-      <div className="sticky top-0 z-20 bg-[#b01822] mb-4 flex-shrink-0 px-4 pt-4 pb-4 border-b-2 border-white">
+      <div className="sticky top-0 z-20 bg-[#c05060] mb-4 flex-shrink-0 px-4 pt-4 pb-4 border-b-2 border-white">
         <h2 className="text-xl font-bold text-white text-center">Destruction Timeline</h2>
         <p className="text-xs text-gray-300 mt-1 text-center">
           Only sites with a Destruction Date are shown

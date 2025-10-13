@@ -7,7 +7,11 @@ import { HeritageMap } from "./components/Map/HeritageMap";
 import { StatusLegend } from "./components/Map/StatusLegend";
 import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
 import { FilterBar } from "./components/FilterBar/FilterBar";
+import { FilterTag } from "./components/FilterBar/FilterTag";
 import { Modal } from "./components/Modal/Modal";
+import { formatLabel } from "./utils/format";
+import { Input } from "./components/Form/Input";
+import { useCalendar } from "./contexts/CalendarContext";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
@@ -19,19 +23,47 @@ import {
   filterSitesBySearch,
 } from "./utils/siteFilters";
 
+/**
+ * Calendar toggle button component for switching between Gregorian and Islamic calendars
+ */
+function CalendarToggleButton() {
+  const { calendarType, toggleCalendar } = useCalendar();
+
+  return (
+    <>
+      <button
+        onClick={toggleCalendar}
+        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-[10px] font-medium text-gray-700 transition-colors"
+        aria-label="Toggle calendar type"
+      >
+        {calendarType === "gregorian"
+          ? "Switch to Islamic Calendar"
+          : "Switch to Gregorian Calendar"}
+      </button>
+      {/* Live region for screen readers to announce calendar changes */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {calendarType === "gregorian"
+          ? "Displaying Gregorian calendar dates"
+          : "Displaying Islamic calendar dates"}
+      </div>
+    </>
+  );
+}
+
 function App() {
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
-  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(new Date());
+  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
-  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(new Date().getFullYear());
+  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [isTableExpanded, setIsTableExpanded] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
@@ -57,6 +89,26 @@ function App() {
   // Filter by search term
   const filteredSites = filterSitesBySearch(yearFilteredSites, searchTerm);
 
+  // Check if any filters are active
+  const hasActiveFilters =
+    selectedTypes.length > 0 ||
+    selectedStatuses.length > 0 ||
+    destructionDateStart !== null ||
+    destructionDateEnd !== null ||
+    creationYearStart !== null ||
+    creationYearEnd !== null ||
+    searchTerm.trim().length > 0;
+
+  const clearAllFilters = () => {
+    setSelectedTypes([]);
+    setSelectedStatuses([]);
+    setDestructionDateStart(null);
+    setDestructionDateEnd(null);
+    setCreationYearStart(null);
+    setCreationYearEnd(null);
+    setSearchTerm("");
+  };
+
   return (
     <CalendarProvider>
       <div className="min-h-screen bg-gray-50">
@@ -64,7 +116,7 @@ function App() {
         <div className="sticky top-0 z-50 bg-[#000000]">
           {/* Header - BLACK background */}
           <header className={components.header.base}>
-            <div className={cn(components.container.base, "py-3 md:py-6 relative")}>
+            <div className={cn(components.container.base, "py-3 relative")}>
               <h1 className="text-xl md:text-3xl font-bold text-center">Heritage Tracker</h1>
               <p className="text-[#f5f5f5] mt-1 md:mt-2 text-center text-xs md:text-base">
                 Documenting the destruction of cultural heritage in Gaza (2023-2024)
@@ -112,8 +164,6 @@ function App() {
                 creationYearStart={creationYearStart}
                 creationYearEnd={creationYearEnd}
                 searchTerm={searchTerm}
-                filteredSiteCount={filteredSites.length}
-                totalSiteCount={mockSites.length}
                 onTypeChange={setSelectedTypes}
                 onStatusChange={setSelectedStatuses}
                 onDestructionDateStartChange={setDestructionDateStart}
@@ -135,40 +185,95 @@ function App() {
             </div>
           </div>
 
-          {/* Desktop Layout - FilterBar full width, then three columns below */}
+          {/* Desktop Layout - Filter button, search, calendar toggle, and active filters */}
           <div className="hidden md:block">
-            {/* Filter Bar - Full width, very compact */}
-            <div className={components.container.base}>
-              <div className="bg-white rounded-lg p-1">
-                <div className="bg-[#000000] rounded-lg p-2">
-                  <FilterBar
-                    selectedTypes={selectedTypes}
-                    selectedStatuses={selectedStatuses}
-                    destructionDateStart={destructionDateStart}
-                    destructionDateEnd={destructionDateEnd}
-                    creationYearStart={creationYearStart}
-                    creationYearEnd={creationYearEnd}
-                    searchTerm={searchTerm}
-                    filteredSiteCount={filteredSites.length}
-                    totalSiteCount={mockSites.length}
-                    onTypeChange={setSelectedTypes}
-                    onStatusChange={setSelectedStatuses}
-                    onDestructionDateStartChange={setDestructionDateStart}
-                    onDestructionDateEndChange={setDestructionDateEnd}
-                    onCreationYearStartChange={setCreationYearStart}
-                    onCreationYearEndChange={setCreationYearEnd}
-                    onSearchChange={setSearchTerm}
+            <div className={cn(components.container.base, "pt-2 pb-1")}>
+              <div className="flex items-center gap-3 flex-wrap">
+                {/* Filter Button */}
+                <button
+                  onClick={() => setIsFilterOpen(true)}
+                  className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
+                >
+                  Filters
+                </button>
+
+                {/* Search bar - inline */}
+                <div className="relative flex-1 max-w-xs">
+                  <Input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search sites..."
+                    className="w-full pr-8 text-xs py-1 px-2"
                   />
+                  {searchTerm.trim().length > 0 && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label="Clear search"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </div>
+
+                {/* Calendar Toggle */}
+                <CalendarToggleButton />
+
+                {/* Active filter tags */}
+                {selectedTypes.map((type) => (
+                  <FilterTag
+                    key={type}
+                    label={formatLabel(type)}
+                    onRemove={() => setSelectedTypes(selectedTypes.filter((t) => t !== type))}
+                    ariaLabel={`Remove ${type} filter`}
+                  />
+                ))}
+                {selectedStatuses.map((status) => (
+                  <FilterTag
+                    key={status}
+                    label={formatLabel(status)}
+                    onRemove={() => setSelectedStatuses(selectedStatuses.filter((s) => s !== status))}
+                    ariaLabel={`Remove ${status} filter`}
+                  />
+                ))}
+
+                {/* Clear button */}
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearAllFilters}
+                    className="px-3 py-1.5 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-xs font-medium"
+                  >
+                    Clear
+                  </button>
+                )}
+
+                {/* Site count */}
+                <span className="text-xs font-medium text-gray-600 ml-auto">
+                  Showing {filteredSites.length} of {mockSites.length} sites
+                </span>
               </div>
             </div>
 
             {/* Three-column layout below FilterBar - Timeline and Table sticky below header, Map scrolls */}
-            <div className="flex gap-6 pt-6">
+            <div className="flex gap-6">
               {/* Left Sidebar - Timeline (Sticky below header, scrollable on hover, RED outline) */}
-              <aside className="w-[440px] flex-shrink-0 pl-6">
+              <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
                 <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
                   <VerticalTimeline
+                    key={`${selectedTypes.join(',')}-${selectedStatuses.join(',')}-${filteredSites.length}`}
                     sites={filteredSites}
                     onSiteHighlight={setHighlightedSiteId}
                     highlightedSiteId={highlightedSiteId}
@@ -177,7 +282,7 @@ function App() {
               </aside>
 
               {/* Center - Map (Sticky, vertically centered) */}
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 pt-3">
                 <div className="w-full sticky top-[calc(50vh-300px)]">
                   <StatusLegend />
                   <HeritageMap
@@ -192,7 +297,7 @@ function App() {
               </div>
 
               {/* Right Sidebar - Sites Table (Sticky below header, scrollable on hover, WHITE outline with black inner border) */}
-              <aside className="w-[480px] flex-shrink-0 pr-6">
+              <aside className="w-[480px] flex-shrink-0 pr-6 pt-3">
                 <div className="border-4 border-white rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
                   <div className="border border-black rounded-lg h-full overflow-y-auto">
                     <SitesTable
@@ -253,10 +358,53 @@ function App() {
           <About />
         </Modal>
 
+        {/* Filter Modal */}
+        <Modal
+          isOpen={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+          zIndex={10001}
+        >
+          <div className="bg-white rounded-lg p-6 max-w-5xl">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Filter Sites</h2>
+            <FilterBar
+              selectedTypes={selectedTypes}
+              selectedStatuses={selectedStatuses}
+              destructionDateStart={destructionDateStart}
+              destructionDateEnd={destructionDateEnd}
+              creationYearStart={creationYearStart}
+              creationYearEnd={creationYearEnd}
+              searchTerm={searchTerm}
+              onTypeChange={setSelectedTypes}
+              onStatusChange={setSelectedStatuses}
+              onDestructionDateStartChange={setDestructionDateStart}
+              onDestructionDateEndChange={setDestructionDateEnd}
+              onCreationYearStartChange={setCreationYearStart}
+              onCreationYearEndChange={setCreationYearEnd}
+              onSearchChange={setSearchTerm}
+            />
+            <div className="mt-6 flex justify-end gap-3">
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
+                >
+                  Clear All
+                </button>
+              )}
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
+              >
+                Apply Filters
+              </button>
+            </div>
+          </div>
+        </Modal>
+
         {/* Footer - GREEN background, sticky at bottom */}
         <footer className="fixed bottom-0 left-0 right-0 bg-[#009639] text-[#fefefe] shadow-lg z-50">
           {/* Desktop footer - full text with more height */}
-          <div className="hidden md:block py-8">
+          <div className="hidden md:block py-4">
             <div className={cn(components.container.base)}>
               <p className="text-sm text-center">
                 Heritage Tracker • Evidence-based documentation • All data verified by UNESCO,

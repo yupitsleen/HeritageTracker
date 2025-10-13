@@ -12,8 +12,6 @@ describe("FilterBar", () => {
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
-    filteredSiteCount: 18,
-    totalSiteCount: 18,
     onTypeChange: vi.fn(),
     onStatusChange: vi.fn(),
     onDestructionDateStartChange: vi.fn(),
@@ -55,58 +53,15 @@ describe("FilterBar", () => {
     expect(dateInputs.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("shows Clear button when filters are active", () => {
-    render(
-      <CalendarProvider>
-        <FilterBar
-          {...mockProps}
-          selectedTypes={["mosque"]}
-        />
-      </CalendarProvider>
-    );
-    expect(screen.getByText("Clear")).toBeInTheDocument();
-  });
-
-  it("Clear button is disabled when no filters are active", () => {
+  it("renders filter sections with proper labels", () => {
     render(
       <CalendarProvider>
         <FilterBar {...mockProps} />
       </CalendarProvider>
     );
-    const clearButton = screen.getByText("Clear");
-    expect(clearButton).toBeInTheDocument();
-    expect(clearButton).toBeDisabled();
-  });
-
-  it("renders calendar toggle button", () => {
-    render(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
-    );
-    const buttons = screen.getAllByRole("button");
-    const calendarButton = buttons.find(btn => btn.textContent?.includes("Calendar"));
-    expect(calendarButton).toBeInTheDocument();
-  });
-
-  it("toggles calendar when button clicked", () => {
-    render(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
-    );
-
-    const buttons = screen.getAllByRole("button");
-    const calendarButton = buttons.find(btn => btn.textContent?.includes("Calendar"));
-
-    const initialText = calendarButton?.textContent;
-
-    // Click toggle button
-    if (calendarButton) {
-      fireEvent.click(calendarButton);
-    }
-
-    // Text should change after toggle
-    expect(calendarButton?.textContent).not.toBe(initialText);
+    expect(screen.getByText("Site Type")).toBeInTheDocument();
+    expect(screen.getByText("Status")).toBeInTheDocument();
+    expect(screen.getByText("Destruction Date")).toBeInTheDocument();
+    expect(screen.getByText("Year Built")).toBeInTheDocument();
   });
 });

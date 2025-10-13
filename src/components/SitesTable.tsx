@@ -13,7 +13,7 @@ interface SitesTableProps {
   variant?: "compact" | "expanded" | "mobile";
 }
 
-type SortField = "name" | "type" | "status" | "dateDestroyed";
+type SortField = "name" | "type" | "status" | "dateDestroyed" | "dateDestroyedIslamic" | "yearBuilt" | "yearBuiltIslamic";
 type SortDirection = "asc" | "desc";
 
 /**
@@ -140,6 +140,21 @@ export function SitesTable({
         case "dateDestroyed":
           aValue = a.dateDestroyed ? new Date(a.dateDestroyed).getTime() : 0;
           bValue = b.dateDestroyed ? new Date(b.dateDestroyed).getTime() : 0;
+          break;
+        case "dateDestroyedIslamic":
+          // Sort by Islamic date string (put N/A at end)
+          aValue = a.dateDestroyedIslamic || "zzz";
+          bValue = b.dateDestroyedIslamic || "zzz";
+          break;
+        case "yearBuilt":
+          // Sort by year built string (put empty at end)
+          aValue = a.yearBuilt || "zzz";
+          bValue = b.yearBuilt || "zzz";
+          break;
+        case "yearBuiltIslamic":
+          // Sort by Islamic year string (put N/A at end)
+          aValue = a.yearBuiltIslamic || "zzz";
+          bValue = b.yearBuiltIslamic || "zzz";
           break;
         default:
           return 0;
@@ -458,10 +473,32 @@ export function SitesTable({
                   <SortIcon field="dateDestroyed" />
                 </th>
                 {variant === "expanded" && (
-                  <th className="px-4 py-3 font-semibold">Destruction Date (Islamic)</th>
+                  <th
+                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                    onClick={() => handleSort("dateDestroyedIslamic")}
+                  >
+                    Destruction Date (Islamic)
+                    <SortIcon field="dateDestroyedIslamic" />
+                  </th>
                 )}
-                {variant === "expanded" && <th className="px-4 py-3 font-semibold">Built (Gregorian)</th>}
-                {variant === "expanded" && <th className="px-4 py-3 font-semibold">Built (Islamic)</th>}
+                {variant === "expanded" && (
+                  <th
+                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                    onClick={() => handleSort("yearBuilt")}
+                  >
+                    Built (Gregorian)
+                    <SortIcon field="yearBuilt" />
+                  </th>
+                )}
+                {variant === "expanded" && (
+                  <th
+                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                    onClick={() => handleSort("yearBuiltIslamic")}
+                  >
+                    Built (Islamic)
+                    <SortIcon field="yearBuiltIslamic" />
+                  </th>
+                )}
                 <th className="px-4 py-3 font-semibold">Actions</th>
               </tr>
             </thead>
