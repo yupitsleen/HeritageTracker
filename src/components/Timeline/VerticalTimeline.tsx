@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import * as d3 from "d3";
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
@@ -33,14 +33,16 @@ export function VerticalTimeline({ sites, onSiteHighlight, highlightedSiteId }: 
   const [isTimelineHovered, setIsTimelineHovered] = useState(false);
   const { calendarType } = useCalendar();
 
-  // Parse dates and sort sites chronologically
-  const sitesWithDates = sites
-    .filter((site) => site.dateDestroyed)
-    .map((site) => ({
-      ...site,
-      date: new Date(site.dateDestroyed!),
-    }))
-    .sort((a, b) => a.date.getTime() - b.date.getTime());
+  // Parse dates and sort sites chronologically - memoized to prevent unnecessary re-renders
+  const sitesWithDates = useMemo(() => {
+    return sites
+      .filter((site) => site.dateDestroyed)
+      .map((site) => ({
+        ...site,
+        date: new Date(site.dateDestroyed!),
+      }))
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+  }, [sites]);
 
   useEffect(() => {
     if (!svgRef.current || sitesWithDates.length === 0) return;

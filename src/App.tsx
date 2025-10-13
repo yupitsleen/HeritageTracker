@@ -273,6 +273,7 @@ function App() {
               <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
                 <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
                   <VerticalTimeline
+                    key={`${selectedTypes.join(',')}-${selectedStatuses.join(',')}-${filteredSites.length}`}
                     sites={filteredSites}
                     onSiteHighlight={setHighlightedSiteId}
                     highlightedSiteId={highlightedSiteId}

@@ -2,6 +2,10 @@
 
 AI assistant guidance for developing Heritage Tracker.
 
+## Communication Preferences
+
+**⚠️ IMPORTANT:** Do not provide unprompted summaries after completing work. Only summarize when explicitly asked by the user.
+
 ## Quick Navigation
 
 - [Project Overview](#project-overview) - Mission and current state

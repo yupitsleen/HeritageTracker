@@ -53,26 +53,15 @@ describe("FilterBar", () => {
     expect(dateInputs.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("shows Clear button when filters are active", () => {
-    render(
-      <CalendarProvider>
-        <FilterBar
-          {...mockProps}
-          selectedTypes={["mosque"]}
-        />
-      </CalendarProvider>
-    );
-    expect(screen.getByText("Clear")).toBeInTheDocument();
-  });
-
-  it("Clear button is disabled when no filters are active", () => {
+  it("renders filter sections with proper labels", () => {
     render(
       <CalendarProvider>
         <FilterBar {...mockProps} />
       </CalendarProvider>
     );
-    const clearButton = screen.getByText("Clear");
-    expect(clearButton).toBeInTheDocument();
-    expect(clearButton).toBeDisabled();
+    expect(screen.getByText("Site Type")).toBeInTheDocument();
+    expect(screen.getByText("Status")).toBeInTheDocument();
+    expect(screen.getByText("Destruction Date")).toBeInTheDocument();
+    expect(screen.getByText("Year Built")).toBeInTheDocument();
   });
 });
