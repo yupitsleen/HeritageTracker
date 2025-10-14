@@ -14,8 +14,6 @@ interface FilterBarProps {
   selectedStatuses: Array<GazaSite["status"]>;
   destructionDateStart: Date | null;
   destructionDateEnd: Date | null;
-  creationYearStart: number | null;
-  creationYearEnd: number | null;
   searchTerm: string;
   filteredSiteCount: number;
   totalSiteCount: number;
@@ -37,8 +35,6 @@ export function FilterBar({
   selectedStatuses,
   destructionDateStart,
   destructionDateEnd,
-  creationYearStart,
-  creationYearEnd,
   searchTerm,
   filteredSiteCount,
   totalSiteCount,
@@ -86,8 +82,6 @@ export function FilterBar({
     selectedStatuses.length > 0 ||
     destructionDateStart !== null ||
     destructionDateEnd !== null ||
-    creationYearStart !== null ||
-    creationYearEnd !== null ||
     searchTerm.trim().length > 0;
 
   const clearAllFilters = () => {
@@ -122,12 +116,7 @@ export function FilterBar({
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Clear search"
             >
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -157,12 +146,7 @@ export function FilterBar({
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Clear search"
             >
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

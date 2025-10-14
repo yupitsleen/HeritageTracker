@@ -58,10 +58,7 @@ describe("FilterBar", () => {
   it("shows Clear button when filters are active", () => {
     render(
       <CalendarProvider>
-        <FilterBar
-          {...mockProps}
-          selectedTypes={["mosque"]}
-        />
+        <FilterBar {...mockProps} selectedTypes={["mosque"]} />
       </CalendarProvider>
     );
     expect(screen.getByText("Clear")).toBeInTheDocument();
@@ -85,7 +82,7 @@ describe("FilterBar", () => {
       </CalendarProvider>
     );
     const buttons = screen.getAllByRole("button");
-    const calendarButton = buttons.find(btn => btn.textContent?.includes("Calendar"));
+    const calendarButton = buttons.find((btn) => btn.textContent?.includes("Calendar"));
     expect(calendarButton).toBeInTheDocument();
   });
 
@@ -97,7 +94,7 @@ describe("FilterBar", () => {
     );
 
     const buttons = screen.getAllByRole("button");
-    const calendarButton = buttons.find(btn => btn.textContent?.includes("Calendar"));
+    const calendarButton = buttons.find((btn) => btn.textContent?.includes("Calendar"));
 
     const initialText = calendarButton?.textContent;
 

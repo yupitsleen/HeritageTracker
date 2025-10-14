@@ -77,11 +77,13 @@ git commit -m "fix: resolve table sorting bug"
 ### Current Layout (Three-Column Dashboard)
 
 **Desktop:**
+
 ```
 Timeline (320px left, red bg) | Map (centered, sticky) | Table (384px right, CSV export)
 ```
 
 **Mobile:**
+
 ```
 FilterBar (compact, text-[10px])
 ↓
@@ -398,6 +400,9 @@ interface GazaSite {
 
 ---
 
-**Last Updated:** October 11, 2025
-**Version:** 1.0.0 (Production - Deployed)
-**Status:** 🚀 Live in Production with CI/CD
+**Last Updated:** October 12, 2025
+**Version:** 1.0.0 (Production)
+**Status:** 🚀 Live with CI/CD | 18/20-25 sites | 99 tests passing
+
+- to memorize we should always run the linter before we commit
+- to memorize we should always test the prod build before we make a PR
