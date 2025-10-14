@@ -5,7 +5,8 @@ import { components, cn } from "./styles/theme";
 import { SitesTable } from "./components/SitesTable";
 import { HeritageMap } from "./components/Map/HeritageMap";
 import { StatusLegend } from "./components/Map/StatusLegend";
-import { VerticalTimeline } from "./components/Timeline/VerticalTimeline";
+// import { VerticalTimeline } from "./components/Timeline/VerticalTimeline"; // HIDDEN - Phase 5 will remove
+import { TimelineScrubber } from "./components/Timeline/TimelineScrubber";
 import { FilterBar } from "./components/FilterBar/FilterBar";
 import { FilterTag } from "./components/FilterBar/FilterTag";
 import { Modal } from "./components/Modal/Modal";
@@ -16,6 +17,7 @@ import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
 import { CalendarProvider } from "./contexts/CalendarContext";
+import { AnimationProvider, useAnimation } from "./contexts/AnimationContext";
 import { DonateModal } from "./components/Donate/DonateModal";
 import {
   filterSitesByTypeAndStatus,
@@ -51,7 +53,11 @@ function CalendarToggleButton() {
   );
 }
 
-function App() {
+/**
+ * Main app content - uses animation context
+ */
+function AppContent() {
+  const { currentTimestamp } = useAnimation();
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
@@ -89,7 +95,14 @@ function App() {
   );
 
   // Filter by search term
-  const filteredSites = filterSitesBySearch(yearFilteredSites, searchTerm);
+  const searchFilteredSites = filterSitesBySearch(yearFilteredSites, searchTerm);
+
+  // Filter by timeline timestamp (only show sites destroyed up to current time)
+  const filteredSites = searchFilteredSites.filter((site) => {
+    if (!site.dateDestroyed) return true; // Always show sites without destruction date
+    const destructionDate = new Date(site.dateDestroyed);
+    return destructionDate <= currentTimestamp;
+  });
 
   // Check if any filters are active
   const hasActiveFilters =
@@ -112,8 +125,7 @@ function App() {
   };
 
   return (
-    <CalendarProvider>
-      <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
         {/* Sticky Header with flag line */}
         <div className="sticky top-0 z-50 bg-[#000000]">
           {/* Header - BLACK background */}
@@ -276,10 +288,10 @@ function App() {
               </div>
             </div>
 
-            {/* Three-column layout below FilterBar - Timeline and Table sticky below header, Map scrolls */}
+            {/* Three-column layout below FilterBar - Map and Table (Timeline moved below map) */}
             <div className="flex gap-6">
-              {/* Left Sidebar - Timeline (Sticky below header, scrollable on hover, RED outline) */}
-              <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
+              {/* Left Sidebar - OLD Timeline (HIDDEN - will be removed in Phase 5) */}
+              {/* <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
                 <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
                   <VerticalTimeline
                     key={`${selectedTypes.join(",")}-${selectedStatuses.join(",")}-${
@@ -290,21 +302,26 @@ function App() {
                     highlightedSiteId={highlightedSiteId}
                   />
                 </div>
-              </aside>
+              </aside> */}
 
-              {/* Center - Map (Sticky, vertically centered) */}
-              <div className="flex-1 min-w-0 pt-3">
-                <div className="w-full sticky top-[calc(50vh-300px)]">
+              {/* Center-Left - Map (Expanded to fill space) */}
+              <div className="flex-1 min-w-0 pl-6 pt-3">
+                <div className="w-full sticky top-[120px]">
                   <StatusLegend />
+                  {/* Map without height wrapper - sizes to content */}
                   <HeritageMap
                     sites={filteredSites}
                     onSiteClick={setSelectedSite}
                     highlightedSiteId={highlightedSiteId}
                     onSiteHighlight={setHighlightedSiteId}
                   />
+                  {/* Timeline Scrubber - Directly below map */}
+                  <div className="mt-4">
+                    <TimelineScrubber sites={mockSites} />
+                  </div>
                 </div>
-                {/* Spacer to allow full scrolling */}
-                <div className="h-[600px]"></div>
+                {/* Spacer to allow table scrolling */}
+                <div className="h-[200px]"></div>
               </div>
 
               {/* Right Sidebar - Sites Table (Sticky below header, scrollable on hover, WHITE outline with black inner border) */}
@@ -439,6 +456,18 @@ function App() {
           </div>
         </footer>
       </div>
+  );
+}
+
+/**
+ * App wrapper with providers
+ */
+function App() {
+  return (
+    <CalendarProvider>
+      <AnimationProvider>
+        <AppContent />
+      </AnimationProvider>
     </CalendarProvider>
   );
 }
