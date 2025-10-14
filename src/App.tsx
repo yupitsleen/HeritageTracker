@@ -16,6 +16,7 @@ import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
 import { CalendarProvider } from "./contexts/CalendarContext";
+import { DonateModal } from "./components/Donate/DonateModal";
 import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
@@ -64,6 +65,7 @@ function App() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
 
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
@@ -124,6 +126,13 @@ function App() {
               {/* Navigation buttons - desktop only, positioned in top right */}
               <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
                 <button
+                  onClick={() => setIsDonateOpen(true)}
+                  className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white text-xs md:text-sm rounded transition-colors font-medium"
+                  aria-label="Help Palestine - Donate to relief efforts"
+                >
+                  Help Palestine
+                </button>
+                <button
                   onClick={() => setIsStatsOpen(true)}
                   className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
                   aria-label="View Statistics"
@@ -161,8 +170,6 @@ function App() {
                 selectedStatuses={selectedStatuses}
                 destructionDateStart={destructionDateStart}
                 destructionDateEnd={destructionDateEnd}
-                creationYearStart={creationYearStart}
-                creationYearEnd={creationYearEnd}
                 searchTerm={searchTerm}
                 onTypeChange={setSelectedTypes}
                 onStatusChange={setSelectedStatuses}
@@ -245,7 +252,9 @@ function App() {
                   <FilterTag
                     key={status}
                     label={formatLabel(status)}
-                    onRemove={() => setSelectedStatuses(selectedStatuses.filter((s) => s !== status))}
+                    onRemove={() =>
+                      setSelectedStatuses(selectedStatuses.filter((s) => s !== status))
+                    }
                     ariaLabel={`Remove ${status} filter`}
                   />
                 ))}
@@ -273,7 +282,9 @@ function App() {
               <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
                 <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
                   <VerticalTimeline
-                    key={`${selectedTypes.join(',')}-${selectedStatuses.join(',')}-${filteredSites.length}`}
+                    key={`${selectedTypes.join(",")}-${selectedStatuses.join(",")}-${
+                      filteredSites.length
+                    }`}
                     sites={filteredSites}
                     onSiteHighlight={setHighlightedSiteId}
                     highlightedSiteId={highlightedSiteId}
@@ -315,20 +326,12 @@ function App() {
         </main>
 
         {/* Site Detail Modal - Higher z-index to appear above table modal */}
-        <Modal
-          isOpen={selectedSite !== null}
-          onClose={() => setSelectedSite(null)}
-          zIndex={10000}
-        >
+        <Modal isOpen={selectedSite !== null} onClose={() => setSelectedSite(null)} zIndex={10000}>
           {selectedSite && <SiteDetailPanel site={selectedSite} />}
         </Modal>
 
         {/* Expanded Table Modal */}
-        <Modal
-          isOpen={isTableExpanded}
-          onClose={() => setIsTableExpanded(false)}
-          zIndex={9999}
-        >
+        <Modal isOpen={isTableExpanded} onClose={() => setIsTableExpanded(false)} zIndex={9999}>
           <div className="max-h-[80vh] overflow-auto">
             <SitesTable
               sites={filteredSites}
@@ -341,29 +344,22 @@ function App() {
         </Modal>
 
         {/* Statistics Modal */}
-        <Modal
-          isOpen={isStatsOpen}
-          onClose={() => setIsStatsOpen(false)}
-          zIndex={10001}
-        >
+        <Modal isOpen={isStatsOpen} onClose={() => setIsStatsOpen(false)} zIndex={10001}>
           <StatsDashboard sites={mockSites} />
         </Modal>
 
         {/* About Modal */}
-        <Modal
-          isOpen={isAboutOpen}
-          onClose={() => setIsAboutOpen(false)}
-          zIndex={10001}
-        >
+        <Modal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} zIndex={10001}>
           <About />
         </Modal>
 
+        {/* Donate Modal */}
+        <Modal isOpen={isDonateOpen} onClose={() => setIsDonateOpen(false)} zIndex={10001}>
+          <DonateModal />
+        </Modal>
+
         {/* Filter Modal */}
-        <Modal
-          isOpen={isFilterOpen}
-          onClose={() => setIsFilterOpen(false)}
-          zIndex={10001}
-        >
+        <Modal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} zIndex={10001}>
           <div className="bg-white rounded-lg p-6 max-w-5xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Filter Sites</h2>
             <FilterBar
@@ -371,8 +367,6 @@ function App() {
               selectedStatuses={selectedStatuses}
               destructionDateStart={destructionDateStart}
               destructionDateEnd={destructionDateEnd}
-              creationYearStart={creationYearStart}
-              creationYearEnd={creationYearEnd}
               searchTerm={searchTerm}
               onTypeChange={setSelectedTypes}
               onStatusChange={setSelectedStatuses}
@@ -417,6 +411,14 @@ function App() {
             <div className={cn(components.container.base)}>
               <p className="text-xs text-center font-semibold">
                 Heritage Tracker •{" "}
+                <button
+                  onClick={() => setIsDonateOpen(true)}
+                  className="underline hover:text-[#fefefe]/80 transition-colors"
+                  aria-label="Help Palestine - Donate to relief efforts"
+                >
+                  Donate
+                </button>
+                {" • "}
                 <button
                   onClick={() => setIsStatsOpen(true)}
                   className="underline hover:text-[#fefefe]/80 transition-colors"
