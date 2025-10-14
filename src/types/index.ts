@@ -15,6 +15,18 @@ export interface Source {
 }
 
 /**
+ * Image with attribution information
+ */
+export interface ImageWithAttribution {
+  url: string;
+  credit: string; // Photographer, organization, or source name
+  license?: string; // e.g., "CC BY-SA 4.0", "Fair Use", "Public Domain"
+  sourceUrl?: string; // Link to original source
+  date?: string; // When photo was taken
+  description?: string; // Additional context about the image
+}
+
+/**
  * Gaza heritage site (MVP simplified schema)
  *
  * Islamic Calendar Dates:
@@ -39,9 +51,9 @@ export interface GazaSite {
   culturalValue: string;
   verifiedBy: string[];
   images?: {
-    before?: string;
-    after?: string;
-    satellite?: string;
+    before?: ImageWithAttribution;
+    after?: ImageWithAttribution;
+    satellite?: ImageWithAttribution;
   };
   sources: Source[];
 }

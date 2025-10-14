@@ -2,6 +2,7 @@ import type { GazaSite } from "../../types";
 import { StatusBadge } from "../StatusBadge";
 import { formatLabel } from "../../utils/format";
 import { cn } from "../../styles/theme";
+import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
 
 interface SiteDetailPanelProps {
   site: GazaSite;
@@ -76,43 +77,41 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       )}
 
       {/* Images Section */}
-      {site.images && (
-        <section>
-          <h4 className="text-lg font-semibold text-gray-900 mb-3">Images</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {site.images.before && (
-              <div className="space-y-2">
-                <img
-                  src={site.images.before}
-                  alt={`${site.name} - Before`}
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
-                />
-                <p className="text-sm text-gray-600">Before destruction</p>
-              </div>
-            )}
-            {site.images.after && (
-              <div className="space-y-2">
-                <img
-                  src={site.images.after}
-                  alt={`${site.name} - After`}
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
-                />
-                <p className="text-sm text-gray-600">After destruction</p>
-              </div>
-            )}
-            {site.images.satellite && (
-              <div className="space-y-2">
-                <img
-                  src={site.images.satellite}
-                  alt={`${site.name} - Satellite`}
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
-                />
-                <p className="text-sm text-gray-600">Satellite imagery</p>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
+      <section>
+        <h4 className="text-lg font-semibold text-gray-900 mb-3">Images</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Before image */}
+          {site.images?.before ? (
+            <SiteImage
+              image={site.images.before}
+              alt={`${site.name} - Before destruction`}
+              label="Before destruction"
+            />
+          ) : (
+            <SiteImagePlaceholder label="Before destruction" />
+          )}
+
+          {/* After image */}
+          {site.images?.after ? (
+            <SiteImage
+              image={site.images.after}
+              alt={`${site.name} - After destruction`}
+              label="After destruction"
+            />
+          ) : (
+            <SiteImagePlaceholder label="After destruction" />
+          )}
+
+          {/* Satellite image (optional, only show if provided) */}
+          {site.images?.satellite && (
+            <SiteImage
+              image={site.images.satellite}
+              alt={`${site.name} - Satellite imagery`}
+              label="Satellite imagery"
+            />
+          )}
+        </div>
+      </section>
 
       {/* Sources Section */}
       {site.sources && site.sources.length > 0 && (
