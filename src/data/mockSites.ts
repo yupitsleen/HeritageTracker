@@ -23,11 +23,17 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "Contained 62 rare manuscripts including handwritten Qurans and Islamic scholarly texts. The building itself was an architectural masterpiece blending multiple historical periods.",
     verifiedBy: ["UNESCO", "Heritage for Peace", "Forensic Architecture"],
-    images: {
-      before: "/images/great-omari-before.jpg",
-      after: "/images/great-omari-after.jpg",
-      satellite: "/images/great-omari-satellite.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // Example structure:
+    // images: {
+    //   before: {
+    //     url: "/images/great-omari-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //     sourceUrl: "https://...",
+    //     date: "2023-01-15"
+    //   }
+    // },
     sources: [
       {
         organization: "UNESCO",

@@ -28,8 +28,18 @@ describe("SiteDetailPanel", () => {
         },
       ],
       images: {
-        before: "https://example.com/before.jpg",
-        after: "https://example.com/after.jpg",
+        before: {
+          url: "https://example.com/before.jpg",
+          credit: "Test Photographer / Test Organization",
+          license: "CC BY-SA 4.0",
+          sourceUrl: "https://example.com/source",
+          date: "2023-01-15",
+        },
+        after: {
+          url: "https://example.com/after.jpg",
+          credit: "Test Photographer / Test Organization",
+          license: "CC BY-SA 4.0",
+        },
       },
     };
 
