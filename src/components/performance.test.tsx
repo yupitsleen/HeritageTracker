@@ -47,8 +47,14 @@ const generateMockSites = (count: number): GazaSite[] => {
       },
     ],
     images: {
-      before: `https://example.com/before-${i + 1}.jpg`,
-      after: `https://example.com/after-${i + 1}.jpg`,
+      before: {
+        url: `https://example.com/before-${i + 1}.jpg`,
+        credit: "Test Photographer",
+      },
+      after: {
+        url: `https://example.com/after-${i + 1}.jpg`,
+        credit: "Test Photographer",
+      },
     },
   }));
 };

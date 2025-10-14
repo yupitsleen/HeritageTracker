@@ -68,10 +68,19 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "Irreplaceable Byzantine-era mosaics, ancient religious artifacts, and architectural elements. Served as a sanctuary and community center for Gaza's Christian minority.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
-    images: {
-      before: "/images/st-porphyrius-before.jpg",
-      after: "/images/st-porphyrius-after.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // images: {
+    //   before: {
+    //     url: "/images/st-porphyrius-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    //   after: {
+    //     url: "/images/st-porphyrius-after.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    // },
     sources: [
       {
         organization: "UNESCO",
@@ -107,10 +116,19 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "Irreplaceable archaeological artifacts spanning multiple civilizations. The site was crucial for understanding ancient Gaza's role as a major port city and cultural crossroads.",
     verifiedBy: ["UNESCO", "Forensic Architecture", "Heritage for Peace"],
-    images: {
-      before: "/images/blakhiyya-before.jpg",
-      satellite: "/images/blakhiyya-satellite.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // images: {
+    //   before: {
+    //     url: "/images/blakhiyya-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    //   satellite: {
+    //     url: "/images/blakhiyya-satellite.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    // },
     sources: [
       {
         organization: "UNESCO",
@@ -146,10 +164,19 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "Housed museum collections documenting Gaza's history from ancient to modern times. The building itself was an architectural treasure featuring distinctive Mamluk stonework and vaulted chambers.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
-    images: {
-      before: "/images/qasr-al-basha-before.jpg",
-      after: "/images/qasr-al-basha-after.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // images: {
+    //   before: {
+    //     url: "/images/qasr-al-basha-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    //   after: {
+    //     url: "/images/qasr-al-basha-after.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    // },
     sources: [
       {
         organization: "UNESCO",
@@ -184,10 +211,19 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "The hammam represents traditional Ottoman architectural techniques and social customs. Its preservation was crucial for understanding daily life and public health practices in historic Gaza.",
     verifiedBy: ["Heritage for Peace", "Forensic Architecture"],
-    images: {
-      before: "/images/hammam-al-samra-before.jpg",
-      after: "/images/hammam-al-samra-after.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // images: {
+    //   before: {
+    //     url: "/images/hammam-al-samra-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    //   after: {
+    //     url: "/images/hammam-al-samra-after.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    // },
     sources: [
       {
         organization: "Heritage for Peace",
@@ -562,9 +598,14 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "UNESCO granted enhanced protection (highest level of immunity) in December 2023, followed by World Heritage in Danger status in July 2024. The monastery's surrounding areas sustained damage including roads and infrastructure, threatening this irreplaceable archaeological treasure. The site features extensive Byzantine mosaics and architectural remains.",
     verifiedBy: ["UNESCO", "British Council", "Aliph Foundation"],
-    images: {
-      before: "/images/saint-hilarion-before.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // images: {
+    //   before: {
+    //     url: "/images/saint-hilarion-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    // },
     sources: [
       {
         organization: "UNESCO",
@@ -600,10 +641,19 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "The site was almost completely destroyed just one day after the conflict began on October 8, 2023, when researchers found rocket damage. UNESCO confirmed the destruction in January 2024. A 2025 report documented severe damage from bombs and bulldozers. The loss of this recently discovered site, with its rare lead sarcophagi and extensive tomb collection, represents an irreplaceable loss to Roman-era archaeology.",
     verifiedBy: ["UNESCO", "Ministry of Tourism and Antiquities", "Centre for Cultural Heritage Preservation"],
-    images: {
-      before: "/images/ard-al-moharbeen-before.jpg",
-      satellite: "/images/ard-al-moharbeen-satellite.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // images: {
+    //   before: {
+    //     url: "/images/ard-al-moharbeen-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    //   satellite: {
+    //     url: "/images/ard-al-moharbeen-satellite.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    // },
     sources: [
       {
         organization: "UNESCO",
@@ -638,10 +688,19 @@ export const mockSites: GazaSite[] = [
     culturalValue:
       "The museum's 3,000+ artifacts were looted by Israeli forces before the university building was demolished by explosives on January 17, 2024, after 70 days of occupation. University vice president Ahmed Alhussaina stated that such widespread destruction represents a deliberate act aimed at erasing Palestinian cultural memory and archaeological heritage. The loss includes irreplaceable historical artifacts and educational resources.",
     verifiedBy: ["PEN America", "Al-Israa University"],
-    images: {
-      before: "/images/israa-university-before.jpg",
-      after: "/images/israa-university-after.jpg",
-    },
+    // Images need to be sourced with proper attribution
+    // images: {
+    //   before: {
+    //     url: "/images/israa-university-before.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    //   after: {
+    //     url: "/images/israa-university-after.jpg",
+    //     credit: "Photographer Name / Organization",
+    //     license: "CC BY-SA 4.0",
+    //   },
+    // },
     sources: [
       {
         organization: "PEN America",
