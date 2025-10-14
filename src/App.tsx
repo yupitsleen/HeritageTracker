@@ -16,6 +16,7 @@ import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
 import { CalendarProvider } from "./contexts/CalendarContext";
+import { DonateModal } from "./components/Donate/DonateModal";
 import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
@@ -64,6 +65,7 @@ function App() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
 
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
@@ -123,6 +125,13 @@ function App() {
               </p>
               {/* Navigation buttons - desktop only, positioned in top right */}
               <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
+                <button
+                  onClick={() => setIsDonateOpen(true)}
+                  className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white text-xs md:text-sm rounded transition-colors font-medium"
+                  aria-label="Help Palestine - Donate to relief efforts"
+                >
+                  Help Palestine
+                </button>
                 <button
                   onClick={() => setIsStatsOpen(true)}
                   className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
@@ -344,6 +353,11 @@ function App() {
           <About />
         </Modal>
 
+        {/* Donate Modal */}
+        <Modal isOpen={isDonateOpen} onClose={() => setIsDonateOpen(false)} zIndex={10001}>
+          <DonateModal />
+        </Modal>
+
         {/* Filter Modal */}
         <Modal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} zIndex={10001}>
           <div className="bg-white rounded-lg p-6 max-w-5xl">
@@ -397,6 +411,14 @@ function App() {
             <div className={cn(components.container.base)}>
               <p className="text-xs text-center font-semibold">
                 Heritage Tracker •{" "}
+                <button
+                  onClick={() => setIsDonateOpen(true)}
+                  className="underline hover:text-[#fefefe]/80 transition-colors"
+                  aria-label="Help Palestine - Donate to relief efforts"
+                >
+                  Donate
+                </button>
+                {" • "}
                 <button
                   onClick={() => setIsStatsOpen(true)}
                   className="underline hover:text-[#fefefe]/80 transition-colors"
