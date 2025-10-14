@@ -57,8 +57,9 @@ export const filterSitesByDestructionDate = (
 /**
  * Parse yearBuilt string to numeric year
  * Handles formats like: "7th century", "425 CE", "16th century", "5th century (425 CE)", "800 BCE - 1100 CE"
+ * Exported for use in heritageCalculations.ts
  */
-const parseYearBuilt = (yearBuilt: string): number | null => {
+export const parseYearBuilt = (yearBuilt: string): number | null => {
   // Try to extract explicit year with BCE/BC
   const bceMatch = yearBuilt.match(/(\d+)\s*(BCE|BC)/i);
   if (bceMatch) {
