@@ -12,8 +12,6 @@ describe("FilterBar", () => {
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
-    filteredSiteCount: 18,
-    totalSiteCount: 18,
     onTypeChange: vi.fn(),
     onStatusChange: vi.fn(),
     onDestructionDateStartChange: vi.fn(),
@@ -105,5 +103,9 @@ describe("FilterBar", () => {
 
     // Text should change after toggle
     expect(calendarButton?.textContent).not.toBe(initialText);
+    expect(screen.getByText("Site Type")).toBeInTheDocument();
+    expect(screen.getByText("Status")).toBeInTheDocument();
+    expect(screen.getByText("Destruction Date")).toBeInTheDocument();
+    expect(screen.getByText("Year Built")).toBeInTheDocument();
   });
 });
