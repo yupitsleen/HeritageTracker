@@ -26,7 +26,7 @@ AI assistant guidance for developing Heritage Tracker.
 
 **Status:** 🚀 **LIVE IN PRODUCTION** - https://yupitsleen.github.io/HeritageTracker/
 
-**Current:** 18 of 20-25 MVP sites documented | 99 tests passing | CI/CD deployed
+**Current:** 18 of 20-25 MVP sites documented | 121 tests passing | CI/CD deployed
 
 **Tech Stack:** React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
 
@@ -36,7 +36,7 @@ AI assistant guidance for developing Heritage Tracker.
 
 ```bash
 npm run dev     # Dev server (localhost:5173) - keep running
-npm test        # Run 99 tests - must pass before commit
+npm test        # Run 121 tests - must pass before commit
 npm run lint    # Code quality check
 npm run build   # Production build
 ```
@@ -60,7 +60,7 @@ npm run lint && npm test
 
 ### Quality Gates
 
-- ✅ All tests must pass (99 existing + new timeline tests)
+- ✅ All tests must pass (121 tests total: 99 existing + 22 timeline tests)
 - ✅ Linter must be clean
 - ✅ Dev server running for visual verification
 - ✅ Follow DRY/KISS/SOLID principles
@@ -77,9 +77,9 @@ npm run lint && npm test
 
 ### Layout
 
-**Desktop (Current):** Timeline (left, 440px) | Map (center, sticky) | Table (right, 480px)
+**Desktop (Current - Phase 1 Complete):** Map (expanded, fills left space) + Timeline Scrubber (below map) | Table (right, 480px)
 
-**Desktop (Future - Timeline Feature):** Map (center-left, expanded) + Timeline Scrubber (below map) | Table (right, expanded)
+**Desktop (Future - Phase 2+):** Map with glow overlay + Timeline Scrubber + Metrics Dashboard | Table (right, ~600px)
 
 **Mobile:** FilterBar → Accordion Table (Type column removed)
 
@@ -91,9 +91,8 @@ src/
 │   ├── FilterBar/FilterBar.tsx        # Compact filters (text-[10px])
 │   ├── SitesTable.tsx                 # 3 variants: compact/expanded/mobile
 │   ├── Timeline/
-│   │   ├── VerticalTimeline.tsx       # CURRENT - Left sidebar (will be deprecated)
-│   │   ├── TimelineScrubber.tsx       # NEW - D3 horizontal timeline
-│   │   └── AnimationController.tsx    # NEW - Play/pause/speed controls
+│   │   ├── VerticalTimeline.tsx       # HIDDEN - Will be removed Phase 5
+│   │   └── TimelineScrubber.tsx       # ✅ IMPLEMENTED - D3 horizontal timeline
 │   ├── Map/
 │   │   ├── HeritageMap.tsx            # Leaflet map
 │   │   ├── MapGlowLayer.tsx           # NEW - Canvas ambient glow overlay
@@ -103,14 +102,15 @@ src/
 │   ├── Stats/StatsDashboard.tsx       # Statistics modal
 │   ├── About/About.tsx                # About/Research modal
 │   └── Modal/Modal.tsx                # Reusable modal
+├── contexts/
+│   └── AnimationContext.tsx           # ✅ IMPLEMENTED - Global animation state
 ├── hooks/
-│   ├── useTimelineAnimation.ts        # NEW - Animation state management
-│   └── useMapGlow.ts                  # NEW - Glow effect calculations
+│   └── useMapGlow.ts                  # TODO Phase 2 - Glow effect calculations
 ├── utils/
 │   ├── siteFilters.ts                 # Filter logic + BCE parsing
 │   ├── format.ts                      # Formatting utilities
-│   ├── heritageCalculations.ts        # NEW - Glow contribution formulas
-│   └── animationHelpers.ts            # NEW - Animation timing/easing
+│   ├── heritageCalculations.ts        # TODO Phase 2 - Glow contribution formulas
+│   └── animationHelpers.ts            # TODO Phase 3 - Animation timing/easing
 ├── constants/
 │   ├── filters.ts                     # SITE_TYPES, STATUS_OPTIONS
 │   └── map.ts                         # Map config (marker sizes)
@@ -255,11 +255,13 @@ interface GazaSite {
 ### Testing Standards
 
 - **Framework:** Vitest + React Testing Library
-- **Coverage:** 99+ tests across 11+ files
+- **Coverage:** 121 tests across 14 test files
 - **Types:** Smoke tests + edge cases (BCE, null values, mobile)
 - **Minimum:** 5+ tests per new component
 - **Run:** Before every commit
-- **Timeline tests:** Animation state, glow calculations, performance benchmarks
+- **Timeline tests (22 total):**
+  - TimelineScrubber: 12 tests (render, controls, keyboard, accessibility)
+  - AnimationContext: 10 tests (state management, play/pause, speed control)
 
 ### Performance Patterns
 
@@ -292,7 +294,7 @@ useEffect(() => {
 
 ## Timeline Animation Feature
 
-**Status:** 🚧 Planning phase → Implementation starting
+**Status:** ✅ **Phase 1 Complete** | 🚧 Phase 2 In Progress
 
 **Spec Document:** `docs/timeline-animation-spec.md`
 
@@ -311,21 +313,19 @@ As destruction occurs chronologically, the map visually "dims" - representing th
 
 ### Architecture Changes
 
-**Remove:**
+**Phase 1 Complete:**
 
-- Left sidebar VerticalTimeline (440px) - will be deprecated
+- ✅ Left sidebar VerticalTimeline (440px) - HIDDEN (code preserved)
+- ✅ Horizontal TimelineScrubber below map (D3.js-based) - IMPLEMENTED
+- ✅ Map column expanded to fill left space
+- ✅ AnimationContext for global state management
 
-**Add:**
+**Phase 2-4 Upcoming:**
 
-- Horizontal TimelineScrubber below map (D3.js-based)
 - Canvas MapGlowLayer overlay on map (ambient heritage glow)
 - HeritageMetricsDashboard above map (real-time stats)
 - MarkerAnimations system (destruction mode animations)
-
-**Expand:**
-
-- Map column (center-left, larger viewport)
-- Table column (right, expanded from 480px to ~600px)
+- Table column expansion (right, ~600px when metrics added)
 
 ### New Components Structure
 
@@ -333,9 +333,8 @@ As destruction occurs chronologically, the map visually "dims" - representing th
 src/
 ├── components/
 │   ├── Timeline/
-│   │   ├── TimelineScrubber.tsx       # NEW - D3 horizontal timeline with scrubber
-│   │   ├── AnimationController.tsx    # NEW - Play/pause/speed/reset controls
-│   │   └── VerticalTimeline.tsx       # DEPRECATED - will be removed Phase 5
+│   │   ├── TimelineScrubber.tsx       # ✅ Phase 1 - D3 horizontal timeline (296 lines)
+│   │   └── VerticalTimeline.tsx       # HIDDEN - will be removed Phase 5
 │   ├── Map/
 │   │   ├── HeritageMap.tsx            # EXISTING - Leaflet map
 │   │   ├── MapGlowLayer.tsx           # NEW - Canvas ambient glow effect
@@ -343,13 +342,12 @@ src/
 │   ├── Metrics/
 │   │   └── HeritageMetricsDashboard.tsx # NEW - Heritage integrity meter + stats
 ├── hooks/
-│   ├── useTimelineAnimation.ts        # NEW - Animation state (play/pause/speed)
-│   └── useMapGlow.ts                  # NEW - Glow contribution calculations
+│   └── useMapGlow.ts                  # TODO Phase 2 - Glow contribution calculations
 ├── utils/
-│   ├── heritageCalculations.ts        # NEW - Site value/glow formulas
-│   └── animationHelpers.ts            # NEW - Easing functions, timing
+│   ├── heritageCalculations.ts        # TODO Phase 2 - Site value/glow formulas
+│   └── animationHelpers.ts            # TODO Phase 3 - Easing functions, timing
 └── contexts/
-    └── AnimationContext.tsx           # NEW - Global animation state
+    └── AnimationContext.tsx           # ✅ Phase 1 - Global animation state (153 lines)
 ```
 
 ### Animation Design System
@@ -486,13 +484,20 @@ const heritageMetrics = (currentTimestamp: Date) => {
 
 ### Implementation Phases
 
-**Phase 1 (Sessions 1-2): Timeline Foundation**
+**Phase 1 (Sessions 1-2): Timeline Foundation** ✅ **COMPLETE**
 
-- [ ] Create TimelineScrubber component with D3.js
-- [ ] Add play/pause/scrub functionality
-- [ ] Connect timeline to map filtering
-- [ ] Remove old VerticalTimeline from layout
-- [ ] Tests: Scrubbing, play/pause, keyboard controls
+- [x] Create TimelineScrubber component with D3.js (296 lines)
+- [x] Create AnimationContext for global state (153 lines)
+- [x] Add play/pause/reset/scrub functionality
+- [x] Speed control dropdown (0.5x, 1x, 2x, 4x)
+- [x] Keyboard controls (Space, Arrows, Home/End)
+- [x] Connect timeline to map filtering (filters by currentTimestamp)
+- [x] Hide old VerticalTimeline from layout (code preserved)
+- [x] Map expanded to fill available space
+- [x] Tests: 22 total (12 TimelineScrubber + 10 AnimationContext)
+- [x] All 121 tests passing, linter clean
+
+**Commit:** `bf5e504` - feat(timeline): implement Phase 1
 
 **Phase 2 (Sessions 3-4): Visual States**
 
@@ -602,21 +607,35 @@ const particlePool = useMemo(() => createParticlePool(100), []);
 
 ### Testing Requirements for Timeline
 
-**Minimum 15 new tests:**
+**Phase 1 Tests (22 Complete):**
 
-**TimelineScrubber.tsx (5 tests):**
+**TimelineScrubber.tsx (12 tests):** ✅
 
-- Renders with correct date range
-- Scrubber updates map on drag
-- Play button animates timeline
-- Keyboard controls work (space, arrows, home/end)
-- Speed control changes animation rate
+- Renders without crashing
+- Toggles between play and pause states
+- Resets timeline to start date
+- Changes animation speed (dropdown)
+- Pauses when space key pressed while playing
+- Jumps to start when Home key pressed
+- Displays event markers for destruction dates
+- Has proper ARIA labels for accessibility
+- Handles empty sites array without crashing
+- Handles sites without destruction dates
+- Displays current date
+- Displays keyboard shortcuts hint
 
-**AnimationController.tsx (3 tests):**
+**AnimationContext.tsx (10 tests):** ✅
 
-- Play/pause toggles correctly
-- Reset returns to start
-- Speed multiplier applies correctly
+- Provides animation context to children
+- Throws error when used outside provider
+- Initializes with correct start date and state
+- Toggles playing state with play and pause
+- Resets to start date when reset is called
+- Updates animation speed
+- Sets timestamp within valid range
+- Clamps timestamp to start date when set before range
+- Clamps timestamp to end date when set after range
+- Provides correct start and end dates
 
 **MapGlowLayer.tsx (4 tests):**
 
@@ -785,11 +804,15 @@ const activateParticle = (x: number, y: number) => {
 
 **Timeline Animation (In Progress):**
 
-- [ ] Phase 1: Timeline scrubber with D3.js (Sessions 1-2)
-- [ ] Phase 2: Canvas glow system (Sessions 3-4)
-- [ ] Phase 3: Destruction animations (Sessions 5-6)
-- [ ] Phase 4: Metrics dashboard (Session 7)
-- [ ] Phase 5: Polish and testing (Session 8+)
+- [x] **Phase 1: Timeline scrubber with D3.js** ✅ COMPLETE (Session 1)
+  - TimelineScrubber component (296 lines)
+  - AnimationContext (153 lines)
+  - 22 tests passing
+  - Commit: `bf5e504`
+- [ ] Phase 2: Canvas glow system (Sessions 2-3)
+- [ ] Phase 3: Destruction animations (Sessions 4-5)
+- [ ] Phase 4: Metrics dashboard (Session 6)
+- [ ] Phase 5: Polish and testing (Session 7+)
 
 **Future phases (Post-animation):**
 
@@ -802,5 +825,5 @@ const activateParticle = (x: number, y: number) => {
 ---
 
 **Last Updated:** October 14, 2025
-**Version:** 1.1.0 (Production + Timeline Feature in Development)
-**Status:** 🚀 Live with CI/CD | 18/20-25 sites | 99 tests passing | Timeline animation Phase 1 starting
+**Version:** 1.2.0 (Production + Timeline Phase 1 Complete)
+**Status:** 🚀 Live with CI/CD | 18/20-25 sites | 121 tests passing | ✅ Phase 1 Complete | 🚧 Phase 2 Next
