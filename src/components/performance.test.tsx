@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { HeritageMap } from "./Map/HeritageMap";
-import { VerticalTimeline } from "./Timeline/VerticalTimeline";
+// import { VerticalTimeline } from "./Timeline/VerticalTimeline"; // HIDDEN - Phase 5 will remove
 import { SitesTable } from "./SitesTable";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import type { GazaSite } from "../types";
@@ -98,35 +98,36 @@ describe("Performance Tests (25+ Sites)", () => {
     });
   });
 
-  describe("Timeline Component Performance", () => {
-    it("renders timeline with 25 sites without crashing", () => {
-      const { container } = render(
-        <CalendarProvider>
-          <VerticalTimeline sites={mockSites25} onSiteHighlight={() => {}} />
-        </CalendarProvider>
-      );
+  // HIDDEN - VerticalTimeline tests commented out (Phase 5 will remove completely)
+  // describe("Timeline Component Performance", () => {
+  //   it("renders timeline with 25 sites without crashing", () => {
+  //     const { container } = render(
+  //       <CalendarProvider>
+  //         <VerticalTimeline sites={mockSites25} onSiteHighlight={() => {}} />
+  //       </CalendarProvider>
+  //     );
 
-      expect(container.querySelector("svg")).toBeInTheDocument();
-    });
+  //     expect(container.querySelector("svg")).toBeInTheDocument();
+  //   });
 
-    it("timeline renders within acceptable time", () => {
-      const startTime = performance.now();
+  //   it("timeline renders within acceptable time", () => {
+  //     const startTime = performance.now();
 
-      render(
-        <CalendarProvider>
-          <VerticalTimeline sites={mockSites25} onSiteHighlight={() => {}} />
-        </CalendarProvider>
-      );
+  //     render(
+  //       <CalendarProvider>
+  //         <VerticalTimeline sites={mockSites25} onSiteHighlight={() => {}} />
+  //       </CalendarProvider>
+  //     );
 
-      const endTime = performance.now();
-      const renderTime = endTime - startTime;
+  //     const endTime = performance.now();
+  //     const renderTime = endTime - startTime;
 
-      console.log(`\n✓ Timeline rendered 25 sites in ${renderTime.toFixed(2)}ms`);
+  //     console.log(`\n✓ Timeline rendered 25 sites in ${renderTime.toFixed(2)}ms`);
 
-      // Should render in less than 1 second
-      expect(renderTime).toBeLessThan(1000);
-    });
-  });
+  //     // Should render in less than 1 second
+  //     expect(renderTime).toBeLessThan(1000);
+  //   });
+  // });
 
   describe("Table Component Performance", () => {
     it("renders table with 25 sites without crashing", () => {
@@ -243,15 +244,16 @@ describe("Performance Tests (25+ Sites)", () => {
       expect(container.querySelector(".leaflet-container")).toBeInTheDocument();
     });
 
-    it("handles 50 sites in timeline", () => {
-      const { container } = render(
-        <CalendarProvider>
-          <VerticalTimeline sites={mockSites50} onSiteHighlight={() => {}} />
-        </CalendarProvider>
-      );
+    // HIDDEN - VerticalTimeline test commented out (Phase 5 will remove)
+    // it("handles 50 sites in timeline", () => {
+    //   const { container } = render(
+    //     <CalendarProvider>
+    //       <VerticalTimeline sites={mockSites50} onSiteHighlight={() => {}} />
+    //     </CalendarProvider>
+    //   );
 
-      expect(container.querySelector("svg")).toBeInTheDocument();
-    });
+    //   expect(container.querySelector("svg")).toBeInTheDocument();
+    // });
 
     it("handles 50 sites in table", () => {
       render(
