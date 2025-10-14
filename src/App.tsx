@@ -161,8 +161,6 @@ function App() {
                 selectedStatuses={selectedStatuses}
                 destructionDateStart={destructionDateStart}
                 destructionDateEnd={destructionDateEnd}
-                creationYearStart={creationYearStart}
-                creationYearEnd={creationYearEnd}
                 searchTerm={searchTerm}
                 onTypeChange={setSelectedTypes}
                 onStatusChange={setSelectedStatuses}
@@ -245,7 +243,9 @@ function App() {
                   <FilterTag
                     key={status}
                     label={formatLabel(status)}
-                    onRemove={() => setSelectedStatuses(selectedStatuses.filter((s) => s !== status))}
+                    onRemove={() =>
+                      setSelectedStatuses(selectedStatuses.filter((s) => s !== status))
+                    }
                     ariaLabel={`Remove ${status} filter`}
                   />
                 ))}
@@ -273,7 +273,9 @@ function App() {
               <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
                 <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
                   <VerticalTimeline
-                    key={`${selectedTypes.join(',')}-${selectedStatuses.join(',')}-${filteredSites.length}`}
+                    key={`${selectedTypes.join(",")}-${selectedStatuses.join(",")}-${
+                      filteredSites.length
+                    }`}
                     sites={filteredSites}
                     onSiteHighlight={setHighlightedSiteId}
                     highlightedSiteId={highlightedSiteId}
@@ -315,20 +317,12 @@ function App() {
         </main>
 
         {/* Site Detail Modal - Higher z-index to appear above table modal */}
-        <Modal
-          isOpen={selectedSite !== null}
-          onClose={() => setSelectedSite(null)}
-          zIndex={10000}
-        >
+        <Modal isOpen={selectedSite !== null} onClose={() => setSelectedSite(null)} zIndex={10000}>
           {selectedSite && <SiteDetailPanel site={selectedSite} />}
         </Modal>
 
         {/* Expanded Table Modal */}
-        <Modal
-          isOpen={isTableExpanded}
-          onClose={() => setIsTableExpanded(false)}
-          zIndex={9999}
-        >
+        <Modal isOpen={isTableExpanded} onClose={() => setIsTableExpanded(false)} zIndex={9999}>
           <div className="max-h-[80vh] overflow-auto">
             <SitesTable
               sites={filteredSites}
@@ -341,29 +335,17 @@ function App() {
         </Modal>
 
         {/* Statistics Modal */}
-        <Modal
-          isOpen={isStatsOpen}
-          onClose={() => setIsStatsOpen(false)}
-          zIndex={10001}
-        >
+        <Modal isOpen={isStatsOpen} onClose={() => setIsStatsOpen(false)} zIndex={10001}>
           <StatsDashboard sites={mockSites} />
         </Modal>
 
         {/* About Modal */}
-        <Modal
-          isOpen={isAboutOpen}
-          onClose={() => setIsAboutOpen(false)}
-          zIndex={10001}
-        >
+        <Modal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} zIndex={10001}>
           <About />
         </Modal>
 
         {/* Filter Modal */}
-        <Modal
-          isOpen={isFilterOpen}
-          onClose={() => setIsFilterOpen(false)}
-          zIndex={10001}
-        >
+        <Modal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} zIndex={10001}>
           <div className="bg-white rounded-lg p-6 max-w-5xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Filter Sites</h2>
             <FilterBar
@@ -371,8 +353,6 @@ function App() {
               selectedStatuses={selectedStatuses}
               destructionDateStart={destructionDateStart}
               destructionDateEnd={destructionDateEnd}
-              creationYearStart={creationYearStart}
-              creationYearEnd={creationYearEnd}
               searchTerm={searchTerm}
               onTypeChange={setSelectedTypes}
               onStatusChange={setSelectedStatuses}

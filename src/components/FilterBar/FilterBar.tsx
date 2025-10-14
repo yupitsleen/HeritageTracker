@@ -12,8 +12,6 @@ interface FilterBarProps {
   selectedStatuses: Array<GazaSite["status"]>;
   destructionDateStart: Date | null;
   destructionDateEnd: Date | null;
-  creationYearStart: number | null;
-  creationYearEnd: number | null;
   searchTerm: string;
   onTypeChange: (types: Array<GazaSite["type"]>) => void;
   onStatusChange: (statuses: Array<GazaSite["status"]>) => void;
@@ -33,8 +31,6 @@ export function FilterBar({
   selectedStatuses,
   destructionDateStart,
   destructionDateEnd,
-  creationYearStart,
-  creationYearEnd,
   searchTerm,
   onTypeChange,
   onStatusChange,
@@ -91,12 +87,7 @@ export function FilterBar({
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Clear search"
             >
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -226,7 +217,9 @@ export function FilterBar({
                 <Select
                   size="small"
                   value={endYearEra}
-                  onChange={(e) => handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")}
+                  onChange={(e) =>
+                    handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")
+                  }
                   className="px-2 py-2 text-sm"
                 >
                   <option value="BCE">BCE</option>
@@ -237,7 +230,6 @@ export function FilterBar({
           </div>
         </div>
       </div>
-
     </div>
   );
 }
