@@ -20,8 +20,14 @@ const mockSites: GazaSite[] = [
     culturalValue: "Test value",
     verifiedBy: ["UNESCO"],
     images: {
-      before: "/test-before.jpg",
-      after: "/test-after.jpg",
+      before: {
+        url: "/test-before.jpg",
+        credit: "Test Photographer",
+      },
+      after: {
+        url: "/test-after.jpg",
+        credit: "Test Photographer",
+      },
     },
     sources: [
       {
@@ -46,8 +52,14 @@ const mockSites: GazaSite[] = [
     culturalValue: "High value",
     verifiedBy: ["UNESCO"],
     images: {
-      before: "/church-before.jpg",
-      after: "/church-after.jpg",
+      before: {
+        url: "/church-before.jpg",
+        credit: "Test Photographer",
+      },
+      after: {
+        url: "/church-after.jpg",
+        credit: "Test Photographer",
+      },
     },
     sources: [
       {
