@@ -97,8 +97,12 @@ function AppContent() {
   // Filter by search term
   const searchFilteredSites = filterSitesBySearch(yearFilteredSites, searchTerm);
 
-  // Filter by timeline timestamp (only show sites destroyed up to current time)
-  const filteredSites = searchFilteredSites.filter((site) => {
+  // Phase 2: Show ALL sites on map for glow effect, but filter table by timeline
+  // Map will show all sites with golden glow that dims as they're destroyed
+  const mapSites = searchFilteredSites; // All filtered sites shown on map
+
+  // Table still filters by destruction date (only show destroyed sites up to current time)
+  const tableSites = searchFilteredSites.filter((site) => {
     if (!site.dateDestroyed) return true; // Always show sites without destruction date
     const destructionDate = new Date(site.dateDestroyed);
     return destructionDate <= currentTimestamp;
@@ -195,7 +199,7 @@ function AppContent() {
             {/* Mobile Table */}
             <div className="px-2">
               <SitesTable
-                sites={filteredSites}
+                sites={tableSites}
                 onSiteClick={setSelectedSite}
                 onSiteHighlight={setHighlightedSiteId}
                 highlightedSiteId={highlightedSiteId}
@@ -283,7 +287,7 @@ function AppContent() {
 
                 {/* Site count */}
                 <span className="text-xs font-medium text-gray-600 ml-auto">
-                  Showing {filteredSites.length} of {mockSites.length} sites
+                  Showing {tableSites.length} of {mockSites.length} sites
                 </span>
               </div>
             </div>
@@ -310,7 +314,7 @@ function AppContent() {
                   <StatusLegend />
                   {/* Map without height wrapper - sizes to content */}
                   <HeritageMap
-                    sites={filteredSites}
+                    sites={mapSites}
                     onSiteClick={setSelectedSite}
                     highlightedSiteId={highlightedSiteId}
                     onSiteHighlight={setHighlightedSiteId}
@@ -329,7 +333,7 @@ function AppContent() {
                 <div className="border-4 border-white rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
                   <div className="border border-black rounded-lg h-full overflow-y-auto">
                     <SitesTable
-                      sites={filteredSites}
+                      sites={tableSites}
                       onSiteClick={setSelectedSite}
                       onSiteHighlight={setHighlightedSiteId}
                       highlightedSiteId={highlightedSiteId}
@@ -351,7 +355,7 @@ function AppContent() {
         <Modal isOpen={isTableExpanded} onClose={() => setIsTableExpanded(false)} zIndex={9999}>
           <div className="max-h-[80vh] overflow-auto">
             <SitesTable
-              sites={filteredSites}
+              sites={tableSites}
               onSiteClick={setSelectedSite}
               onSiteHighlight={setHighlightedSiteId}
               highlightedSiteId={highlightedSiteId}

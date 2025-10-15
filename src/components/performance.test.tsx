@@ -4,6 +4,7 @@ import { HeritageMap } from "./Map/HeritageMap";
 // import { VerticalTimeline } from "./Timeline/VerticalTimeline"; // HIDDEN - Phase 5 will remove
 import { SitesTable } from "./SitesTable";
 import { CalendarProvider } from "../contexts/CalendarContext";
+import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
 
 /**
@@ -65,12 +66,14 @@ describe("Performance Tests (25+ Sites)", () => {
   describe("Map Component Performance", () => {
     it("renders map with 25 sites without crashing", () => {
       const { container } = render(
-        <HeritageMap
-          sites={mockSites25}
-          onSiteClick={() => {}}
-          highlightedSiteId={null}
-          onSiteHighlight={() => {}}
-        />
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites25}
+            onSiteClick={() => {}}
+            highlightedSiteId={null}
+            onSiteHighlight={() => {}}
+          />
+        </AnimationProvider>
       );
 
       expect(container.querySelector(".leaflet-container")).toBeInTheDocument();
@@ -80,12 +83,14 @@ describe("Performance Tests (25+ Sites)", () => {
       const startTime = performance.now();
 
       render(
-        <HeritageMap
-          sites={mockSites25}
-          onSiteClick={() => {}}
-          highlightedSiteId={null}
-          onSiteHighlight={() => {}}
-        />
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites25}
+            onSiteClick={() => {}}
+            highlightedSiteId={null}
+            onSiteHighlight={() => {}}
+          />
+        </AnimationProvider>
       );
 
       const endTime = performance.now();
@@ -233,12 +238,14 @@ describe("Performance Tests (25+ Sites)", () => {
 
     it("handles 50 sites in map", () => {
       const { container } = render(
-        <HeritageMap
-          sites={mockSites50}
-          onSiteClick={() => {}}
-          highlightedSiteId={null}
-          onSiteHighlight={() => {}}
-        />
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites50}
+            onSiteClick={() => {}}
+            highlightedSiteId={null}
+            onSiteHighlight={() => {}}
+          />
+        </AnimationProvider>
       );
 
       expect(container.querySelector(".leaflet-container")).toBeInTheDocument();
