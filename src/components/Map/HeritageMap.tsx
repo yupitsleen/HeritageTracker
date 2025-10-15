@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { components } from "../../styles/theme";
@@ -6,6 +6,9 @@ import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
 import { createMarkerIcon } from "../../utils/mapHelpers";
 import { useTileConfig } from "../../hooks/useTileConfig";
 import { SitePopup } from "./SitePopup";
+import { MapGlowLayer } from "./MapGlowLayer";
+import { useMapGlow } from "../../hooks/useMapGlow";
+import { useAnimation } from "../../contexts/AnimationContext";
 import "leaflet/dist/leaflet.css";
 
 interface HeritageMapProps {
@@ -18,7 +21,13 @@ interface HeritageMapProps {
 /**
  * Component to handle map centering when a site is highlighted
  */
-function MapCenterHandler({ sites, highlightedSiteId }: { sites: GazaSite[]; highlightedSiteId?: string | null }) {
+function MapCenterHandler({
+  sites,
+  highlightedSiteId,
+}: {
+  sites: GazaSite[];
+  highlightedSiteId?: string | null;
+}) {
   const map = useMap();
 
   useEffect(() => {
@@ -36,6 +45,31 @@ function MapCenterHandler({ sites, highlightedSiteId }: { sites: GazaSite[]; hig
       }
     }
   }, [highlightedSiteId, sites, map]);
+
+  return null;
+}
+
+/**
+ * Component to log zoom level changes
+ */
+function ZoomLogger() {
+  const map = useMap();
+
+  useEffect(() => {
+    const logZoom = () => {
+      console.log('🔍 Current Zoom Level:', map.getZoom());
+    };
+
+    // Log initial zoom
+    logZoom();
+
+    // Log on zoom changes
+    map.on('zoomend', logZoom);
+
+    return () => {
+      map.off('zoomend', logZoom);
+    };
+  }, [map]);
 
   return null;
 }
@@ -71,10 +105,10 @@ function ScrollWheelHandler() {
       // If Ctrl/Cmd not pressed, do nothing (allow normal page scroll)
     };
 
-    container.addEventListener('wheel', handleWheel, { passive: false });
+    container.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      container.removeEventListener('wheel', handleWheel);
+      container.removeEventListener("wheel", handleWheel);
     };
   }, [map]);
 
@@ -84,15 +118,34 @@ function ScrollWheelHandler() {
 /**
  * Interactive map displaying heritage sites in Gaza
  * Automatically switches between English/Arabic tiles based on browser language
+ * Phase 2: Includes MapGlowLayer for "Dimming Gaza" effect
  */
-export function HeritageMap({ sites, onSiteClick, highlightedSiteId, onSiteHighlight }: HeritageMapProps) {
+export function HeritageMap({
+  sites,
+  onSiteClick,
+  highlightedSiteId,
+  onSiteHighlight,
+}: HeritageMapProps) {
   const tileConfig = useTileConfig();
+  const { currentTimestamp } = useAnimation();
+
+  // Calculate glow contributions based on timeline position
+  const { glowContributions } = useMapGlow(sites, currentTimestamp);
+
+  // Find max BASE glow for normalization (not current glow)
+  // This ensures each site shows at 100% intensity when intact,
+  // and dims proportionally as it's destroyed
+  const maxGlow = useMemo(() => {
+    if (glowContributions.length === 0) return 1;
+    return Math.max(...glowContributions.map((gc) => gc.baseGlow));
+  }, [glowContributions]);
 
   return (
     <div className="relative">
       {/* Map interaction hint */}
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md text-xs text-gray-700 pointer-events-none">
-        Use <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-[10px] font-semibold">Ctrl</kbd> + scroll to zoom • Click markers for details
+        Use <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-[10px] font-semibold">Ctrl</kbd>{" "}
+        + scroll to zoom • Click markers for details
       </div>
 
       <MapContainer
@@ -101,38 +154,44 @@ export function HeritageMap({ sites, onSiteClick, highlightedSiteId, onSiteHighl
         className={components.map.container}
         scrollWheelZoom={false}
       >
-      {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}
-      <ScrollWheelHandler />
+        {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}
+        <ScrollWheelHandler />
 
-      {/* Map center handler for highlighted sites */}
-      <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} />
+        {/* Map center handler for highlighted sites */}
+        <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} />
 
-      {/* Map Tiles - Language adapts to browser setting */}
-      <TileLayer
-        attribution={tileConfig.attribution}
-        url={tileConfig.url}
-        subdomains={tileConfig.subdomains}
-      />
+        {/* Zoom level logger for debugging */}
+        <ZoomLogger />
 
-      {/* Heritage Site Markers */}
-      {sites.map((site) => {
-        const isHighlighted = site.id === highlightedSiteId;
-        return (
-        <Marker
-          key={site.id}
-          position={site.coordinates}
-          icon={createMarkerIcon(site.status, isHighlighted)}
-          eventHandlers={{
-            click: () => onSiteHighlight?.(site.id),
-          }}
-        >
-          <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
-            <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
-          </Popup>
-        </Marker>
-        );
-      })}
-    </MapContainer>
+        {/* Map Tiles - Language adapts to browser setting */}
+        <TileLayer
+          attribution={tileConfig.attribution}
+          url={tileConfig.url}
+          subdomains={tileConfig.subdomains}
+        />
+
+        {/* Phase 2: Ambient heritage glow layer - dims as sites are destroyed */}
+        <MapGlowLayer glowContributions={glowContributions} maxGlow={maxGlow} />
+
+        {/* Heritage Site Markers */}
+        {sites.map((site) => {
+          const isHighlighted = site.id === highlightedSiteId;
+          return (
+            <Marker
+              key={site.id}
+              position={site.coordinates}
+              icon={createMarkerIcon(site.status, isHighlighted)}
+              eventHandlers={{
+                click: () => onSiteHighlight?.(site.id),
+              }}
+            >
+              <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
+                <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MapContainer>
     </div>
   );
 }

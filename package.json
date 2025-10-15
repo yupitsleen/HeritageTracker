@@ -12,9 +12,11 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@types/d3": "^7.4.3",
+    "@types/leaflet.heat": "^0.2.5",
     "d3": "^7.9.0",
+    "d3-scale": "^4.0.2",
     "leaflet": "^1.9.4",
+    "leaflet.heat": "^0.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-leaflet": "^5.0.0"
@@ -25,6 +27,8 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/d3": "^7.4.3",
+    "@types/d3-scale": "^4.0.9",
     "@types/leaflet": "^1.9.20",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
