@@ -50,6 +50,31 @@ function MapCenterHandler({
 }
 
 /**
+ * Component to log zoom level changes
+ */
+function ZoomLogger() {
+  const map = useMap();
+
+  useEffect(() => {
+    const logZoom = () => {
+      console.log('🔍 Current Zoom Level:', map.getZoom());
+    };
+
+    // Log initial zoom
+    logZoom();
+
+    // Log on zoom changes
+    map.on('zoomend', logZoom);
+
+    return () => {
+      map.off('zoomend', logZoom);
+    };
+  }, [map]);
+
+  return null;
+}
+
+/**
  * Component to handle Ctrl+Scroll zoom behavior
  */
 function ScrollWheelHandler() {
@@ -107,10 +132,12 @@ export function HeritageMap({
   // Calculate glow contributions based on timeline position
   const { glowContributions } = useMapGlow(sites, currentTimestamp);
 
-  // Find max glow for normalization
+  // Find max BASE glow for normalization (not current glow)
+  // This ensures each site shows at 100% intensity when intact,
+  // and dims proportionally as it's destroyed
   const maxGlow = useMemo(() => {
     if (glowContributions.length === 0) return 1;
-    return Math.max(...glowContributions.map((gc) => gc.currentGlow));
+    return Math.max(...glowContributions.map((gc) => gc.baseGlow));
   }, [glowContributions]);
 
   return (
@@ -132,6 +159,9 @@ export function HeritageMap({
 
         {/* Map center handler for highlighted sites */}
         <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} />
+
+        {/* Zoom level logger for debugging */}
+        <ZoomLogger />
 
         {/* Map Tiles - Language adapts to browser setting */}
         <TileLayer

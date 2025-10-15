@@ -91,11 +91,11 @@ describe("MapGlowLayer", () => {
       expect(mockHeatLayer.addTo).toHaveBeenCalled();
     });
 
-    it("filters out sites with zero glow", () => {
+    it("separates intact and destroyed sites into different layers", () => {
       const glowContributions = [
-        createGlowContribution({ siteId: "site-1", currentGlow: 100 }),
-        createGlowContribution({ siteId: "site-2", currentGlow: 0 }),
-        createGlowContribution({ siteId: "site-3", currentGlow: 50 }),
+        createGlowContribution({ siteId: "site-1", isDestroyed: false, status: "destroyed" }),
+        createGlowContribution({ siteId: "site-2", isDestroyed: true, status: "destroyed" }),
+        createGlowContribution({ siteId: "site-3", isDestroyed: false, status: "heavily-damaged" }),
       ];
 
       render(
@@ -104,11 +104,19 @@ describe("MapGlowLayer", () => {
         </MapContainer>
       );
 
-      const heatLayerCall = (L.heatLayer as ReturnType<typeof vi.fn>).mock.calls[0];
-      const heatData = heatLayerCall[0];
+      // Should create 2 heat layers: gold for intact, grey for destroyed
+      expect(L.heatLayer).toHaveBeenCalledTimes(2);
 
-      // Should only include sites with currentGlow > 0
-      expect(heatData).toHaveLength(2);
+      const goldLayerCall = (L.heatLayer as ReturnType<typeof vi.fn>).mock.calls[0];
+      const greyLayerCall = (L.heatLayer as ReturnType<typeof vi.fn>).mock.calls[1];
+
+      const goldData = goldLayerCall[0];
+      const greyData = greyLayerCall[0];
+
+      // 2 intact sites in gold layer
+      expect(goldData).toHaveLength(2);
+      // 1 destroyed site in grey layer
+      expect(greyData).toHaveLength(1);
     });
 
     it("updates when glowContributions change", () => {

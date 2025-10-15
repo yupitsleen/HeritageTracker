@@ -24,6 +24,7 @@ export interface GlowContribution {
   coordinates: [number, number];
   status: "destroyed" | "heavily-damaged" | "damaged";
   dateDestroyed?: string;
+  isDestroyed: boolean; // Flag indicating if destruction has occurred by current timeline position
 }
 
 export interface MapGlowState {
@@ -56,12 +57,16 @@ export function useMapGlow(sites: GazaSite[], currentDate: Date): MapGlowState {
 
       // Calculate current glow based on damage status and timeline position
       let currentGlow = baseGlow;
+      let isDestroyed = false;
 
       if (site.dateDestroyed) {
         const destructionDate = new Date(site.dateDestroyed);
 
-        // Only reduce glow if destruction has occurred by current date
+        // Check if destruction has occurred by current date
         if (destructionDate <= currentDate) {
+          isDestroyed = true;
+          // Set currentGlow to negative values to signal destruction state
+          // This will be used to render grey/black instead of gold
           const reductionPercent = getGlowReductionPercentage(site.status);
           currentGlow = baseGlow * ((100 - reductionPercent) / 100);
         }
@@ -75,6 +80,7 @@ export function useMapGlow(sites: GazaSite[], currentDate: Date): MapGlowState {
         coordinates: site.coordinates,
         status: site.status,
         dateDestroyed: site.dateDestroyed,
+        isDestroyed, // Add flag to track destruction state
       };
     });
   }, [sites, currentDate]);

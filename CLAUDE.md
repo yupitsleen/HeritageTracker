@@ -26,9 +26,9 @@ AI assistant guidance for developing Heritage Tracker.
 
 **Status:** 🚀 **LIVE IN PRODUCTION** - https://yupitsleen.github.io/HeritageTracker/
 
-**Current:** 18 of 20-25 MVP sites documented | 121 tests passing | CI/CD deployed
+**Current:** 18 of 20-25 MVP sites documented | 181 tests passing | CI/CD deployed
 
-**Tech Stack:** React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Tech Stack:** React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + Leaflet.heat + D3.js
 
 **Data Sources:** UNESCO, Forensic Architecture, Heritage for Peace
 
@@ -94,9 +94,9 @@ src/
 │   │   ├── VerticalTimeline.tsx       # HIDDEN - Will be removed Phase 5
 │   │   └── TimelineScrubber.tsx       # ✅ IMPLEMENTED - D3 horizontal timeline
 │   ├── Map/
-│   │   ├── HeritageMap.tsx            # Leaflet map
-│   │   ├── MapGlowLayer.tsx           # NEW - Canvas ambient glow overlay
-│   │   └── MarkerAnimations.tsx       # NEW - Destruction animations
+│   │   ├── HeritageMap.tsx            # Leaflet map + MapGlowLayer integration
+│   │   ├── MapGlowLayer.tsx           # ✅ IMPLEMENTED - Canvas ambient glow overlay
+│   │   └── MarkerAnimations.tsx       # TODO Phase 3 - Destruction animations
 │   ├── Metrics/
 │   │   └── HeritageMetricsDashboard.tsx # NEW - Real-time stats
 │   ├── Stats/StatsDashboard.tsx       # Statistics modal
@@ -105,7 +105,7 @@ src/
 ├── contexts/
 │   └── AnimationContext.tsx           # ✅ IMPLEMENTED - Global animation state
 ├── hooks/
-│   └── useMapGlow.ts                  # TODO Phase 2 - Glow effect calculations
+│   └── useMapGlow.ts                  # ✅ IMPLEMENTED - Glow effect calculations
 ├── utils/
 │   ├── siteFilters.ts                 # Filter logic + BCE parsing
 │   ├── format.ts                      # Formatting utilities
@@ -320,12 +320,12 @@ As destruction occurs chronologically, the map visually "dims" - representing th
 - ✅ Map column expanded to fill left space
 - ✅ AnimationContext for global state management
 
-**Phase 2-4 Upcoming:**
+**Phase 2 In Progress:**
 
-- Canvas MapGlowLayer overlay on map (ambient heritage glow)
-- HeritageMetricsDashboard above map (real-time stats)
-- MarkerAnimations system (destruction mode animations)
-- Table column expansion (right, ~600px when metrics added)
+- 🚧 Canvas MapGlowLayer overlay on map (ambient heritage glow) - IMPLEMENTED, needs tests
+- HeritageMetricsDashboard above map (real-time stats) - TODO Phase 4
+- MarkerAnimations system (destruction mode animations) - TODO Phase 3
+- Table column expansion (right, ~600px when metrics added) - TODO Phase 4
 
 ### New Components Structure
 
@@ -336,13 +336,13 @@ src/
 │   │   ├── TimelineScrubber.tsx       # ✅ Phase 1 - D3 horizontal timeline (296 lines)
 │   │   └── VerticalTimeline.tsx       # HIDDEN - will be removed Phase 5
 │   ├── Map/
-│   │   ├── HeritageMap.tsx            # EXISTING - Leaflet map
-│   │   ├── MapGlowLayer.tsx           # NEW - Canvas ambient glow effect
-│   │   └── MarkerAnimations.tsx       # NEW - Destruction animations
+│   │   ├── HeritageMap.tsx            # ✅ UPDATED - Integrated MapGlowLayer
+│   │   ├── MapGlowLayer.tsx           # ✅ Phase 2 - Canvas ambient glow effect (176 lines)
+│   │   └── MarkerAnimations.tsx       # TODO Phase 3 - Destruction animations
 │   ├── Metrics/
-│   │   └── HeritageMetricsDashboard.tsx # NEW - Heritage integrity meter + stats
+│   │   └── HeritageMetricsDashboard.tsx # TODO Phase 4 - Heritage integrity meter + stats
 ├── hooks/
-│   └── useMapGlow.ts                  # TODO Phase 2 - Glow contribution calculations
+│   └── useMapGlow.ts                  # ✅ Phase 2 - Glow contribution calculations (implemented)
 ├── utils/
 │   ├── heritageCalculations.ts        # TODO Phase 2 - Site value/glow formulas
 │   └── animationHelpers.ts            # TODO Phase 3 - Easing functions, timing
@@ -499,13 +499,22 @@ const heritageMetrics = (currentTimestamp: Date) => {
 
 **Commit:** `bf5e504` - feat(timeline): implement Phase 1
 
-**Phase 2 (Sessions 3-4): Visual States**
+**Phase 2 (Sessions 3-4): Visual States** 🚧 **IN PROGRESS**
 
-- [ ] Implement Canvas MapGlowLayer
-- [ ] Calculate glow contributions for all sites
-- [ ] Add marker color coding by age
-- [ ] Implement grey-out transitions
+- [x] Implement Canvas MapGlowLayer component (176 lines)
+- [x] Calculate glow contributions for all sites (useMapGlow hook)
+- [x] Add marker color coding by age (age-based glow colors)
+- [x] Implement grey-out transitions (destruction reduces opacity)
+- [x] Canvas overlay with proper z-index and pointer events
+- [x] Connected to AnimationContext currentTimestamp
+- [x] Basic glow gradient system (radial gradients around sites)
 - [ ] Tests: Glow calculations, color transitions
+- [ ] Performance optimization and mobile testing
+
+**Uncommitted Code Changes:**
+- `src/components/Map/MapGlowLayer.tsx` - 176 lines (+142 additions)
+- `src/components/Map/HeritageMap.tsx` - Integrated MapGlowLayer (+34 additions)
+- `src/hooks/useMapGlow.ts` - Glow contribution calculations (+8 additions)
 
 **Phase 3 (Sessions 5-6): Animations**
 
@@ -809,7 +818,13 @@ const activateParticle = (x: number, y: number) => {
   - AnimationContext (153 lines)
   - 22 tests passing
   - Commit: `bf5e504`
-- [ ] Phase 2: Canvas glow system (Sessions 2-3)
+- [x] **Phase 2: Canvas glow system** 🚧 IMPLEMENTATION COMPLETE (Session 2)
+  - MapGlowLayer component (176 lines)
+  - useMapGlow hook with glow contribution calculations
+  - Age-based glow colors (ancient → gold, medieval → bronze, etc.)
+  - Destruction reduces glow opacity (100% → 50% → 25% → 0%)
+  - Canvas overlay with proper z-index and pointer events
+  - **Status:** Code complete, needs tests + commit
 - [ ] Phase 3: Destruction animations (Sessions 4-5)
 - [ ] Phase 4: Metrics dashboard (Session 6)
 - [ ] Phase 5: Polish and testing (Session 7+)
@@ -824,6 +839,6 @@ const activateParticle = (x: number, y: number) => {
 
 ---
 
-**Last Updated:** October 14, 2025
-**Version:** 1.2.0 (Production + Timeline Phase 1 Complete)
-**Status:** 🚀 Live with CI/CD | 18/20-25 sites | 121 tests passing | ✅ Phase 1 Complete | 🚧 Phase 2 Next
+**Last Updated:** October 15, 2025
+**Version:** 1.3.0-dev (Production + Timeline Phase 2 Implementation Complete)
+**Status:** 🚀 Live with CI/CD | 18/20-25 sites | 121 tests passing | ✅ Phase 1 Complete | 🚧 Phase 2 Code Complete (needs tests)
