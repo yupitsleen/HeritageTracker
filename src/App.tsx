@@ -321,7 +321,7 @@ function AppContent() {
                   />
                   {/* Timeline Scrubber - Directly below map */}
                   <div className="mt-4">
-                    <TimelineScrubber sites={mockSites} />
+                    <TimelineScrubber sites={searchFilteredSites} />
                   </div>
                 </div>
                 {/* Spacer to allow table scrolling */}
