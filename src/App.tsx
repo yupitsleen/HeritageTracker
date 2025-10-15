@@ -17,7 +17,7 @@ import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
 import { CalendarProvider } from "./contexts/CalendarContext";
-import { AnimationProvider, useAnimation } from "./contexts/AnimationContext";
+import { AnimationProvider } from "./contexts/AnimationContext";
 import { DonateModal } from "./components/Donate/DonateModal";
 import {
   filterSitesByTypeAndStatus,
@@ -57,7 +57,6 @@ function CalendarToggleButton() {
  * Main app content - uses animation context
  */
 function AppContent() {
-  const { currentTimestamp } = useAnimation();
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
@@ -97,16 +96,12 @@ function AppContent() {
   // Filter by search term
   const searchFilteredSites = filterSitesBySearch(yearFilteredSites, searchTerm);
 
-  // Phase 2: Show ALL sites on map for glow effect, but filter table by timeline
-  // Map will show all sites with golden glow that dims as they're destroyed
-  const mapSites = searchFilteredSites; // All filtered sites shown on map
-
-  // Table still filters by destruction date (only show destroyed sites up to current time)
-  const tableSites = searchFilteredSites.filter((site) => {
-    if (!site.dateDestroyed) return true; // Always show sites without destruction date
-    const destructionDate = new Date(site.dateDestroyed);
-    return destructionDate <= currentTimestamp;
-  });
+  // Phase 2: Show ALL filtered sites on map, timeline, and table
+  // The map uses glow effect to show destruction state
+  // Timeline shows event markers for all filtered sites
+  // Table shows all filtered sites (user can see the full dataset)
+  const mapSites = searchFilteredSites;
+  const tableSites = searchFilteredSites;
 
   // Check if any filters are active
   const hasActiveFilters =
