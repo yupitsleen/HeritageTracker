@@ -34,6 +34,7 @@ const createGlowContribution = (
   coordinates: [31.5, 34.5],
   status: "destroyed",
   dateDestroyed: "2023-10-15",
+  isDestroyed: false, // Default to not destroyed (intact)
   ...overrides,
 });
 

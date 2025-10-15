@@ -56,4 +56,12 @@ export interface GazaSite {
     satellite?: ImageWithAttribution;
   };
   sources: Source[];
+
+  // Timeline animation enhancements (Phase 2+)
+  unescoListed?: boolean;
+  artifactCount?: number;
+  isUnique?: boolean; // Only one of its kind in Gaza
+  religiousSignificance?: boolean;
+  communityGatheringPlace?: boolean;
+  historicalEvents?: string[];
 }
