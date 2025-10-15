@@ -50,14 +50,6 @@ export function MapGlowLayer({ glowContributions, maxGlow }: MapGlowLayerProps) 
   // State to track zoom level and trigger re-renders
   const [zoomLevel, setZoomLevel] = useState(map.getZoom());
 
-  // Debug log on mount and whenever props change
-  console.log('🔥 MapGlowLayer Render:', {
-    totalContributions: glowContributions.length,
-    maxGlow,
-    zoomLevel,
-    firstSite: glowContributions[0],
-  });
-
   useEffect(() => {
     // Get current zoom level
     const zoom = map.getZoom();
@@ -100,16 +92,6 @@ export function MapGlowLayer({ glowContributions, maxGlow }: MapGlowLayerProps) 
       if (contrib.status === "destroyed") intensity = 1.0; // Black
       else if (contrib.status === "heavily-damaged") intensity = 0.6; // Dark grey
       return [lat, lng, intensity] as [number, number, number];
-    });
-
-    // Debug logging
-    console.log('🔥 MapGlowLayer Debug:', {
-      zoom,
-      radius,
-      blur,
-      totalContributions: glowContributions.length,
-      intactSites: goldHeatData.length,
-      destroyedSites: greyHeatData.length,
     });
 
     // Create gold heat layer for intact heritage

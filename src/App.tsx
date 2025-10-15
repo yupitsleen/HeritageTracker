@@ -18,6 +18,7 @@ import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
 import { CalendarProvider } from "./contexts/CalendarContext";
 import { AnimationProvider } from "./contexts/AnimationContext";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { DonateModal } from "./components/Donate/DonateModal";
 import {
   filterSitesByTypeAndStatus,
@@ -460,13 +461,16 @@ function AppContent() {
 
 /**
  * App wrapper with providers
+ * ErrorBoundary wraps AnimationProvider to gracefully handle timeline errors
  */
 function App() {
   return (
     <CalendarProvider>
-      <AnimationProvider>
-        <AppContent />
-      </AnimationProvider>
+      <ErrorBoundary>
+        <AnimationProvider>
+          <AppContent />
+        </AnimationProvider>
+      </ErrorBoundary>
     </CalendarProvider>
   );
 }
