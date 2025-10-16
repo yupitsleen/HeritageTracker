@@ -1,53 +1,51 @@
 import { useState, useMemo, useEffect, useRef } from "react";
-import type { GazaSite } from "../types";
-import { components, getStatusHexColor } from "../styles/theme";
-import { formatDateCompact, formatDateStandard, formatDateLong } from "../utils/format";
-import { downloadCSV } from "../utils/csvExport";
+import type { GazaSite } from "../../types";
+import { components, getStatusHexColor } from "../../styles/theme";
+import { formatDateStandard } from "../../utils/format";
+import { downloadCSV } from "../../utils/csvExport";
 
-interface SitesTableProps {
+interface SitesTableDesktopProps {
   sites: GazaSite[];
   onSiteClick: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
-  variant?: "compact" | "expanded" | "mobile";
+  variant: "compact" | "expanded";
   visibleColumns?: string[]; // For resizable table - which columns to show
 }
 
-type SortField = "name" | "type" | "status" | "dateDestroyed" | "dateDestroyedIslamic" | "yearBuilt" | "yearBuiltIslamic";
+type SortField =
+  | "name"
+  | "type"
+  | "status"
+  | "dateDestroyed"
+  | "dateDestroyedIslamic"
+  | "yearBuilt"
+  | "yearBuiltIslamic";
 type SortDirection = "asc" | "desc";
 
 /**
- * Table view of heritage sites with click-to-view-details and sorting
- * Supports compact, expanded, and mobile accordion variants
- *
- * @variant compact - Desktop sidebar table (Name, Status, Destruction Date, Actions)
- * @variant expanded - Full modal table with all fields (Type, Islamic dates, Built dates)
- * @variant mobile - Accordion list for screens < 768px (Name/Type/Date collapsed, tap to expand for full details)
- *
- * Mobile features: Status shown via name color, sortable columns, sticky headers, inline detail expansion
+ * Desktop table variant for heritage sites
+ * Supports compact (sidebar) and expanded (modal) layouts
  */
-export function SitesTable({
+export function SitesTableDesktop({
   sites,
   onSiteClick,
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
-  variant = "compact",
+  variant,
   visibleColumns,
-}: SitesTableProps) {
+}: SitesTableDesktopProps) {
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const highlightedRowRef = useRef<HTMLTableRowElement>(null);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      // Toggle direction if clicking same field
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
-      // Default to ascending for new field
       setSortField(field);
       setSortDirection("asc");
     }
@@ -76,17 +74,14 @@ export function SitesTable({
           bValue = b.dateDestroyed ? new Date(b.dateDestroyed).getTime() : 0;
           break;
         case "dateDestroyedIslamic":
-          // Sort by Islamic date string (put N/A at end)
           aValue = a.dateDestroyedIslamic || "zzz";
           bValue = b.dateDestroyedIslamic || "zzz";
           break;
         case "yearBuilt":
-          // Sort by year built string (put empty at end)
           aValue = a.yearBuilt || "zzz";
           bValue = b.yearBuilt || "zzz";
           break;
         case "yearBuiltIslamic":
-          // Sort by Islamic year string (put N/A at end)
           aValue = a.yearBuiltIslamic || "zzz";
           bValue = b.yearBuiltIslamic || "zzz";
           break;
@@ -111,228 +106,29 @@ export function SitesTable({
 
   // Helper to check if column should be visible (for resizable table)
   const isColumnVisible = (columnName: string): boolean => {
-    // If visibleColumns not provided (modal/mobile), use variant logic
+    // If visibleColumns not provided (modal), use variant logic
     if (!visibleColumns) {
-      return variant === "expanded" || columnName === "name" || columnName === "status" || columnName === "dateDestroyed" || columnName === "actions";
+      return (
+        variant === "expanded" ||
+        columnName === "name" ||
+        columnName === "status" ||
+        columnName === "dateDestroyed" ||
+        columnName === "actions"
+      );
     }
     return visibleColumns.includes(columnName);
   };
 
-  // Scroll to highlighted site when it changes (desktop variants)
+  // Scroll to highlighted site when it changes
   useEffect(() => {
     if (!highlightedSiteId || !highlightedRowRef.current || !tableContainerRef.current) return;
 
-    // Only scroll for desktop variants (compact and expanded)
-    if (variant !== "mobile") {
-      highlightedRowRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  }, [highlightedSiteId, variant]);
+    highlightedRowRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, [highlightedSiteId]);
 
-  // Mobile accordion variant
-  if (variant === "mobile") {
-    return (
-      <div className="flex flex-col">
-        {/* Non-sticky header - centered */}
-        <div className="pb-3 mb-3 border-b-2 border-gray-300">
-          <h2 className="text-lg font-bold text-gray-800 text-center">Heritage Sites</h2>
-          <p className="text-xs text-gray-600 text-center">
-            Showing {sortedSites.length} site{sortedSites.length !== 1 ? "s" : ""}
-          </p>
-        </div>
-
-        {/* Sticky column headers with sorting */}
-        <div className="sticky top-[85px] bg-white z-40 border-b-2 border-gray-300 pb-2 mb-2 shadow-sm">
-          <div className="grid grid-cols-[1fr_auto] gap-3 px-3 py-2">
-            <div
-              className="text-xs font-bold text-gray-700 uppercase cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
-              onClick={() => handleSort("name")}
-            >
-              Site Name
-              <SortIcon field="name" />
-            </div>
-            <div
-              className="text-xs font-bold text-gray-700 uppercase whitespace-nowrap cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
-              onClick={() => handleSort("dateDestroyed")}
-            >
-              Destruction Date
-              <SortIcon field="dateDestroyed" />
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile accordion table */}
-        <div className="space-y-2">
-          {sortedSites.map((site, index) => (
-            <div
-              key={site.id}
-              className="border-2 border-[#fecaca] rounded-lg overflow-hidden"
-              style={{ backgroundColor: index % 2 === 0 ? '#fee2e2' : '#ffffff' }}
-            >
-              {/* Collapsed row - clickable to expand */}
-              <div
-                className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-[#fecaca]"
-                onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
-              >
-                {/* Site Name - color-coded by status */}
-                <div className="min-w-0">
-                  <div
-                    className="font-semibold text-xs truncate"
-                    style={{ color: getStatusHexColor(site.status) }}
-                  >
-                    {site.name}
-                  </div>
-                  {site.nameArabic && (
-                    <div className="text-xs text-gray-600 truncate text-left" lang="ar">
-                      {site.nameArabic}
-                    </div>
-                  )}
-                </div>
-
-                {/* Date */}
-                <div className="text-xs text-gray-700 whitespace-nowrap">
-                  {formatDateCompact(site.dateDestroyed)}
-                </div>
-
-                {/* Chevron indicator */}
-                <div className="text-gray-400">
-                  <svg
-                    className={`w-4 h-4 transition-transform ${
-                      expandedRowId === site.id ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Expanded details - full site information */}
-              {expandedRowId === site.id && (
-                <div className="border-t-2 border-gray-200 p-4 bg-gray-50 space-y-3">
-                  {/* Site Name (Full) */}
-                  <div className="text-center">
-                    <h3 className="font-bold text-base text-gray-900">{site.name}</h3>
-                    {site.nameArabic && (
-                      <p className="text-sm text-gray-700 mt-1">{site.nameArabic}</p>
-                    )}
-                  </div>
-
-                  {/* Type */}
-                  <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">Type:</span>
-                    <p className="text-sm text-gray-900 capitalize">
-                      {site.type.replace("-", " ")}
-                    </p>
-                  </div>
-
-                  {/* Status */}
-                  <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">Status:</span>
-                    <p
-                      className="text-sm font-semibold capitalize"
-                      style={{ color: getStatusHexColor(site.status) }}
-                    >
-                      {site.status.replace("-", " ")}
-                    </p>
-                  </div>
-
-                  {/* Year Built */}
-                  <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">
-                      Year Built:
-                    </span>
-                    <p className="text-sm text-gray-900">{site.yearBuilt}</p>
-                    {site.yearBuiltIslamic && (
-                      <p className="text-xs text-gray-600">Islamic: {site.yearBuiltIslamic}</p>
-                    )}
-                  </div>
-
-                  {/* Date Destroyed */}
-                  <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">
-                      Date Destroyed:
-                    </span>
-                    <p className="text-sm text-gray-900">{formatDateLong(site.dateDestroyed)}</p>
-                    {site.dateDestroyedIslamic && (
-                      <p className="text-xs text-gray-600">Islamic: {site.dateDestroyedIslamic}</p>
-                    )}
-                  </div>
-
-                  {/* Description */}
-                  <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">
-                      Description:
-                    </span>
-                    <p className="text-sm text-gray-900 mt-1">{site.description}</p>
-                  </div>
-
-                  {/* Coordinates */}
-                  <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">
-                      Coordinates:
-                    </span>
-                    <p className="text-sm text-gray-900">
-                      {site.coordinates[0].toFixed(6)}, {site.coordinates[1].toFixed(6)}
-                    </p>
-                  </div>
-
-                  {/* Sources */}
-                  {site.sources && site.sources.length > 0 && (
-                    <div>
-                      <span className="text-xs font-semibold text-gray-600 uppercase">
-                        Sources:
-                      </span>
-                      <ul className="mt-1 space-y-1">
-                        {site.sources.map((source, idx) => (
-                          <li key={idx} className="text-sm">
-                            <a
-                              href={source.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[#009639] hover:underline"
-                            >
-                              {source.title}
-                            </a>
-                            {source.date && (
-                              <span className="text-xs text-gray-600 ml-2">
-                                ({new Date(source.date).toLocaleDateString()})
-                              </span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Verified By */}
-                  {site.verifiedBy && site.verifiedBy.length > 0 && (
-                    <div>
-                      <span className="text-xs font-semibold text-gray-600 uppercase">
-                        Verified By:
-                      </span>
-                      <p className="text-sm text-gray-900">{site.verifiedBy.join(", ")}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Desktop variants (compact/expanded)
   return (
     <div className="h-full flex flex-col bg-white">
       {/* Title section - sticky */}
@@ -418,7 +214,11 @@ export function SitesTable({
                   className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
                   onClick={() => handleSort("dateDestroyed")}
                 >
-                  {visibleColumns ? "Destruction Date" : (variant === "compact" ? "Destruction Date" : "Destruction Date (Gregorian)")}
+                  {visibleColumns
+                    ? "Destruction Date"
+                    : variant === "compact"
+                      ? "Destruction Date"
+                      : "Destruction Date (Gregorian)"}
                   <SortIcon field="dateDestroyed" />
                 </th>
               )}
@@ -462,7 +262,7 @@ export function SitesTable({
                 className={`border-b border-[#fecaca] cursor-pointer hover:bg-[#fecaca] ${
                   highlightedSiteId === site.id ? "ring-2 ring-black ring-inset" : ""
                 }`}
-                style={{ backgroundColor: index % 2 === 0 ? '#fee2e2' : '#ffffff' }}
+                style={{ backgroundColor: index % 2 === 0 ? "#fee2e2" : "#ffffff" }}
                 onClick={() => {
                   onSiteHighlight?.(site.id);
                 }}
