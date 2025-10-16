@@ -72,4 +72,17 @@ export default defineConfig({
   ],
   // Test configuration moved to vitest.config.ts to avoid build errors
   base: '/HeritageTracker/',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks - separate large libraries
+          'react-vendor': ['react', 'react-dom'],
+          'map-vendor': ['leaflet', 'react-leaflet', 'leaflet.heat'],
+          'd3-vendor': ['d3', 'd3-scale'],
+        }
+      }
+    },
+    chunkSizeWarningLimit: 600 // Suppress warning for 580KB bundle
+  }
 })
