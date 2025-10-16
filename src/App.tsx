@@ -288,24 +288,25 @@ function AppContent() {
               </div>
             </div>
 
-            {/* Three-column layout below FilterBar - Map and Table (Timeline moved below map) */}
+            {/* Two-column layout below FilterBar - Table on Left, Map on Right */}
             <div className="flex gap-6">
-              {/* Left Sidebar - OLD Timeline (HIDDEN - will be removed in Phase 5) */}
-              {/* <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
-                <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
-                  <VerticalTimeline
-                    key={`${selectedTypes.join(",")}-${selectedStatuses.join(",")}-${
-                      filteredSites.length
-                    }`}
-                    sites={filteredSites}
-                    onSiteHighlight={setHighlightedSiteId}
-                    highlightedSiteId={highlightedSiteId}
-                  />
+              {/* Left Sidebar - Sites Table (Sticky below header, scrollable on hover, WHITE outline with black inner border) */}
+              <aside className="w-[480px] flex-shrink-0 pl-6 pt-3">
+                <div className="border-4 border-white rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
+                  <div className="border border-black rounded-lg h-full overflow-y-auto">
+                    <SitesTable
+                      sites={tableSites}
+                      onSiteClick={setSelectedSite}
+                      onSiteHighlight={setHighlightedSiteId}
+                      highlightedSiteId={highlightedSiteId}
+                      onExpandTable={() => setIsTableExpanded(true)}
+                    />
+                  </div>
                 </div>
-              </aside> */}
+              </aside>
 
-              {/* Center-Left - Map (Expanded to fill space) */}
-              <div className="flex-1 min-w-0 pl-6 pt-3">
+              {/* Right - Map (Expanded to fill space) */}
+              <div className="flex-1 min-w-0 pr-6 pt-3">
                 <div className="w-full sticky top-[120px]">
                   <StatusLegend />
                   {/* Map without height wrapper - sizes to content */}
@@ -323,21 +324,6 @@ function AppContent() {
                 {/* Spacer to allow table scrolling */}
                 <div className="h-[200px]"></div>
               </div>
-
-              {/* Right Sidebar - Sites Table (Sticky below header, scrollable on hover, WHITE outline with black inner border) */}
-              <aside className="w-[480px] flex-shrink-0 pr-6 pt-3">
-                <div className="border-4 border-white rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
-                  <div className="border border-black rounded-lg h-full overflow-y-auto">
-                    <SitesTable
-                      sites={tableSites}
-                      onSiteClick={setSelectedSite}
-                      onSiteHighlight={setHighlightedSiteId}
-                      highlightedSiteId={highlightedSiteId}
-                      onExpandTable={() => setIsTableExpanded(true)}
-                    />
-                  </div>
-                </div>
-              </aside>
             </div>
           </div>
         </main>

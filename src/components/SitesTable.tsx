@@ -222,14 +222,15 @@ export function SitesTable({
 
         {/* Mobile accordion table */}
         <div className="space-y-2">
-          {sortedSites.map((site) => (
+          {sortedSites.map((site, index) => (
             <div
               key={site.id}
-              className="border-2 border-gray-300 rounded-lg bg-white overflow-hidden"
+              className="border-2 border-[#fecaca] rounded-lg overflow-hidden"
+              style={{ backgroundColor: index % 2 === 0 ? '#fee2e2' : '#ffffff' }}
             >
               {/* Collapsed row - clickable to expand */}
               <div
-                className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-gray-50"
+                className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-[#fecaca]"
                 onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
               >
                 {/* Site Name - color-coded by status */}
@@ -510,13 +511,14 @@ export function SitesTable({
       <div className="flex-1 overflow-y-auto" ref={tableContainerRef}>
         <table className={components.table.base}>
           <tbody>
-            {sortedSites.map((site) => (
+            {sortedSites.map((site, index) => (
               <tr
                 key={site.id}
                 ref={highlightedSiteId === site.id ? highlightedRowRef : null}
-                className={`${components.table.row} ${
+                className={`border-b border-[#fecaca] cursor-pointer hover:bg-[#fecaca] ${
                   highlightedSiteId === site.id ? "ring-2 ring-black ring-inset" : ""
                 }`}
+                style={{ backgroundColor: index % 2 === 0 ? '#fee2e2' : '#ffffff' }}
                 onClick={() => {
                   onSiteHighlight?.(site.id);
                 }}
