@@ -35,20 +35,22 @@
 - `285e576` - fix: rename useTableSort to .tsx and fix TypeScript errors
 
 ### 🚧 Phase 2: Major Components (Current)
-**Status:** In Progress - Hooks and Layout Components Complete
+**Status:** In Progress - App.tsx Complete
 
 **Completed:**
 - ✅ Extracted App.tsx hooks (useAppState, useFilteredSites, useTableResize)
 - ✅ Created Layout components (AppHeader, AppFooter, DesktopLayout, MobileLayout)
+- ✅ Refactored App.tsx to use new hooks and components (593 → 264 lines, 55% reduction)
 - ✅ All 184 tests passing
 - ✅ Linter clean (0 errors, 0 warnings)
+- ✅ App verified working in browser
 
 **Commits:**
 - `17756ce` - refactor: extract App.tsx hooks (Phase 2 - part 1)
 - `1cb91ec` - refactor: create App.tsx layout components (Phase 2 - part 2)
+- `d09fb52` - refactor: use extracted hooks and layout components in App.tsx (Phase 2 - part 3)
 
 **Remaining:**
-- [ ] Refactor App.tsx to use new hooks and components (593 → ~150 lines)
 - [ ] Refactor SitesTable.tsx (606 → ~200 lines)
 - [ ] Refactor StatsDashboard.tsx (601 → ~150 lines)
 
