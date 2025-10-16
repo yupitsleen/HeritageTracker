@@ -2,7 +2,7 @@
 
 **Version:** 1.5.0
 **Date:** October 16, 2025
-**Status:** 🚧 **Phases 1-3 Complete** - Priority 1 & 2 refactorings done
+**Status:** ✅ **ALL PHASES COMPLETE** - All Priority 1, 2, & 3 refactorings done
 **Purpose:** Break down large files into smaller, more maintainable modules following DRY/SOLID/React best practices
 
 ---
@@ -78,6 +78,30 @@
 - `8622a2b` - refactor: extract TimelineScrubber D3 logic and timeline data processing (Phase 3 - part 1)
 - `2b24386` - refactor: extract About.tsx content sections into separate components (Phase 3 - part 2)
 - `6edc8ae` - refactor: extract FilterBar date/year range components (Phase 3 - part 3)
+
+### ✅ Phase 4: Priority 3 Optimizations Complete
+**Status:** Complete - All optional Priority 3 refactorings done
+
+**Completed:**
+- ✅ Fixed TimelineScrubber TypeScript error (rendererRef null default value)
+- ✅ Production build verified successful (293KB main bundle, 628KB total precached)
+- ✅ Extracted HeritageMap components (245 → 84 lines, 66% reduction)
+  - MapHelperComponents.tsx (101 lines) - MapCenterHandler, ZoomLogger, ScrollWheelHandler
+  - MapTileLayers.tsx (35 lines) - Street/Satellite layer configuration
+  - MapMarkers.tsx (83 lines) - Marker rendering with popup support
+- ✅ Organized heritageCalculations.ts into themed modules (219 → 19 lines, 91% reduction)
+  - calculations/glowContributions.ts (136 lines) - Glow value calculations
+  - calculations/heritageMetrics.ts (73 lines) - Heritage integrity metrics
+  - calculations/significance.ts (30 lines) - Marker size calculations
+  - calculations/index.ts (17 lines) - Barrel export for backward compatibility
+- ✅ All 184 tests passing
+- ✅ Linter clean (0 errors, 0 warnings)
+- ✅ Production build successful
+
+**Commits:**
+- `f98c3fa` - fix: add null default value to TimelineScrubber rendererRef for TypeScript compatibility
+- `adf459d` - refactor: extract HeritageMap components for better separation of concerns (Phase 4 - part 1)
+- `4e5b6ba` - refactor: organize heritageCalculations into themed calculation modules (Phase 4 - part 2)
 
 ---
 
