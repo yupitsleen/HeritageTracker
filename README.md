@@ -3,13 +3,14 @@
 **Documenting the destruction of Palestinian cultural heritage through interactive visualization.**
 
 ![Project Status](https://img.shields.io/badge/status-production-brightgreen)
-![Tests](https://img.shields.io/badge/tests-107%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-184%20passing-brightgreen)
 ![Deployment](https://img.shields.io/badge/deployment-live-success)
+![PWA](https://img.shields.io/badge/PWA-enabled-blue)
 ![License](https://img.shields.io/badge/license-TBD-lightgrey)
 
 **🌐 Live Site:** https://yupitsleen.github.io/HeritageTracker/
 
-**Currently tracking:** 18 of 20-25 significant Gaza heritage sites destroyed during 2023-2024 conflict
+**Currently tracking:** 45 documented heritage sites in Gaza (2023-2024 conflict)
 
 ---
 
@@ -17,7 +18,7 @@
 
 Document and visualize the destruction of Palestinian cultural heritage with evidence-based, publicly accessible data to support transparency, legal advocacy, and preservation efforts.
 
-**MVP Phase 1:** Interactive documentation of 20-25 most significant Gaza heritage sites (2023-2024)
+**Current Status:** 45 heritage sites documented with interactive map, timeline, and filtering capabilities
 
 ## 📊 The Context
 
@@ -29,35 +30,40 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 
 ### ✅ Live in Production
 
-- **Interactive map** with Leaflet (color-coded status markers, centered sticky positioning)
-- **Advanced filtering** (type, status, date ranges, BC/BCE handling, compact text-[10px] design)
-- **Timeline visualization** with D3.js (320px width, 10% red background, sticky)
-- **Mobile-optimized table** (accordion view, Type column removed for space efficiency)
+- **Interactive map** with Leaflet (satellite/street toggle, dot markers, centered sticky positioning)
+- **Advanced filtering** (type, status, date ranges, BC/BCE handling, deferred application)
+- **Timeline visualization** with D3.js (horizontal scrubber, play/pause, speed control)
+- **Resizable table** with progressive column display (480px-1100px range)
+- **Mobile-optimized** (accordion table, conditional rendering prevents errors)
 - **CSV Export** with RFC 4180 compliance (Arabic names, Islamic dates, coordinates)
 - **Statistics Dashboard** with impact metrics and Looted Artifacts section
 - **About/Methodology Page** with data sources and legal framework
 - **Detail modals** with bilingual display (English/Arabic)
-- **Cross-component highlighting** (map ↔ timeline ↔ table sync with black ring)
+- **Cross-component highlighting** (map ↔ timeline ↔ table sync)
 - **Accessible UI** with keyboard navigation and ARIA labels
-- **Responsive design** with Palestinian flag-inspired theme
-- **CI/CD Pipeline** with automated testing and deployment
-- **Comprehensive test suite** (107 tests including mobile variants, CSV export, Stats/About)
+- **Responsive design** with Palestinian flag-inspired theme (red/white striped table rows)
+- **PWA support** with offline map tile caching (30-day expiration)
+- **Lazy loading** for Map, Timeline, and Modal components
+- **Code splitting** (287KB main bundle, 621KB total precached)
+- **CI/CD Pipeline** with automated testing, mobile smoke tests, and bundle monitoring
+- **Comprehensive test suite** (184 tests including mobile variants, performance tests)
 
 ### 🚧 In Progress
 
 - SEO optimization (meta tags, structured data)
-- Performance improvements (code splitting, bundle optimization)
-- Expanding to 20-25 sites (currently 18 completed - 72% of MVP target)
+- Social media preview cards
 
 ## 🛠️ Tech Stack
 
-- **React 19** + **TypeScript 5.7** + **Vite 7**
+- **React 19** + **TypeScript 5.9** + **Vite 7**
 - **Tailwind CSS v4** - Styling with custom Palestinian theme
-- **Leaflet** - Interactive mapping
-- **D3.js** - Timeline visualization
-- **Vitest** - Testing framework (107 tests passing)
-- **GitHub Actions** - CI/CD automation
-- **GitHub Pages** - Production hosting
+- **Leaflet** + **Leaflet.heat** - Interactive mapping with heatmap support
+- **D3.js** - Timeline visualization with time scales
+- **vite-plugin-pwa** + **Workbox** - Progressive Web App with offline support
+- **Vitest** - Testing framework (184 tests passing)
+- **React Testing Library** - Component testing
+- **GitHub Actions** - CI/CD automation with mobile smoke tests and bundle monitoring
+- **GitHub Pages** - Production hosting with auto-deployment
 
 ## 🚀 Quick Start
 
@@ -83,10 +89,10 @@ npm run dev
 
 ```bash
 npm run dev          # Dev server with HMR (localhost:5173)
-npm test            # Run test suite (107 tests)
+npm test            # Run test suite (184 tests)
 npm run lint        # ESLint code quality check
-npm run build       # Production build
-npm run preview     # Preview production build
+npm run build       # Production build (with PWA manifest + service worker)
+npm run preview     # Preview production build locally
 ```
 
 ### Deployment
@@ -104,24 +110,41 @@ View deployment status: https://github.com/yupitsleen/HeritageTracker/actions
 ```
 src/
 ├── components/
-│   ├── FilterBar/       # Compact filters (text-[10px]) with mobile search
-│   ├── Map/            # Leaflet map (centered sticky positioning)
-│   ├── Timeline/       # D3.js timeline (320px, 10% red background, sticky)
-│   ├── SitesTable/     # Desktop + mobile accordion variants with CSV export
-│   ├── Stats/          # Statistics dashboard with impact metrics
-│   ├── About/          # About/Methodology page
-│   ├── SiteDetailPanel/ # Modal with bilingual content
+│   ├── FilterBar/       # Deferred filter application with BC/BCE support
+│   ├── Map/            # Leaflet map with satellite toggle, lazy loaded
+│   │   ├── HeritageMap.tsx
+│   │   ├── MapGlowLayer.tsx     # Canvas ambient glow effect
+│   │   └── StatusLegend.tsx
+│   ├── Timeline/       # D3.js horizontal timeline scrubber, lazy loaded
+│   │   └── TimelineScrubber.tsx
+│   ├── SitesTable.tsx  # Resizable desktop + mobile accordion with CSV export
+│   ├── Stats/          # Statistics dashboard, lazy loaded
+│   ├── About/          # About/Methodology page, lazy loaded
+│   ├── SiteDetail/     # Site detail panel, lazy loaded
+│   ├── Donate/         # Donate modal, lazy loaded
 │   └── Modal/          # Reusable modal component
+├── contexts/
+│   ├── AnimationContext.tsx  # Global animation state (desktop only)
+│   └── CalendarContext.tsx   # Calendar type management
+├── hooks/
+│   └── useMapGlow.ts    # Glow effect calculations
 ├── data/
-│   └── mockSites.ts    # Heritage sites data (18/20-25 complete)
+│   └── mockSites.ts    # Heritage sites data (45 sites documented)
 ├── types/
 │   └── index.ts        # TypeScript interfaces
-├── utils/              # Shared utilities and constants
+├── utils/
+│   ├── siteFilters.ts  # Filter logic + BCE parsing
+│   ├── format.ts       # Formatting utilities
+│   └── heritageCalculations.ts  # Glow contribution formulas
+├── constants/
+│   ├── filters.ts      # SITE_TYPES, STATUS_OPTIONS
+│   └── map.ts          # Map configuration
 └── styles/
-    └── theme.ts        # Centralized Palestinian flag colors
+    └── theme.ts        # Centralized Palestinian flag theme
 .github/
 └── workflows/
-    └── deploy.yml      # CI/CD pipeline for GitHub Pages
+    └── deploy.yml      # CI/CD with mobile tests + bundle monitoring
+vite.config.ts          # Vite config with PWA plugin + code splitting
 ```
 
 ## 📖 Documentation
@@ -136,35 +159,39 @@ src/
 ### Phase 1: MVP ✅ COMPLETE - LIVE IN PRODUCTION
 
 - [x] Project setup and architecture
-- [x] Interactive map implementation (centered sticky positioning)
-- [x] Timeline visualization (320px, 10% red background, sticky)
-- [x] Advanced filtering system (compact text-[10px] design)
+- [x] Interactive map implementation with satellite/street toggle
+- [x] Timeline visualization (D3.js horizontal scrubber)
+- [x] Advanced filtering system with deferred application
+- [x] Resizable table with progressive column display
 - [x] Detail modals with bilingual support
 - [x] Cross-component state management
-- [x] Mobile optimization (accordion table, compact filters)
+- [x] Mobile optimization (conditional rendering, accordion table)
 - [x] CSV Export functionality (RFC 4180 compliant)
 - [x] Statistics dashboard with impact metrics
 - [x] About/Methodology page
-- [x] Comprehensive test suite (107 tests including mobile variants, CSV, Stats, About)
-- [x] CI/CD pipeline with GitHub Actions
+- [x] **45 Gaza heritage sites documented** ✅
+- [x] Comprehensive test suite (184 tests including mobile smoke tests)
+- [x] CI/CD pipeline with mobile tests + bundle monitoring
+- [x] **Performance optimizations:** Lazy loading, code splitting, PWA
 - [x] **DEPLOYED TO PRODUCTION:** https://yupitsleen.github.io/HeritageTracker/
-- [ ] Complete 20-25 Gaza sites data collection (18/20-25 ✅ 72%)
-- [ ] SEO optimization
+- [ ] SEO optimization (meta tags, structured data)
+- [ ] Social media preview cards
 
 ### Phase 2: Expansion (Future)
 
-- [ ] All 110 UNESCO-verified Gaza sites
+- [ ] Expand to all 110 UNESCO-verified Gaza sites
 - [ ] 70,000 looted books dataset (1948 Nakba)
 - [ ] Database integration (Supabase)
-- [ ] User contribution system
-- [ ] Arabic translation
+- [ ] User contribution system with verification workflow
+- [ ] Full Arabic translation with RTL support
+- [ ] Resume timeline animation work (destruction animations, metrics dashboard)
 
 ### Phase 3: Broader Scope (Future)
 
-- [ ] West Bank heritage sites
-- [ ] International museum holdings
-- [ ] Educational resources
-- [ ] Mobile PWA
+- [ ] West Bank heritage sites documentation
+- [ ] International museum holdings of Palestinian artifacts
+- [ ] Educational resources and curriculum materials
+- [ ] Enhanced PWA features (push notifications, background sync)
 
 ## 📚 Data Sources & Research Methodology
 
@@ -187,11 +214,14 @@ We welcome contributions! Ways to help:
 
 **Development Standards:**
 
-- Follow existing patterns in CLAUDE.md
-- Write tests for new features (including mobile variants)
+- Follow existing patterns documented in CLAUDE.md
+- Write tests for new features (minimum 5+ tests per component)
+- Include mobile-specific tests when applicable
 - Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-- Ensure all 107 tests pass before committing
+- Ensure all 184 tests pass before committing
+- Run `npm run lint && npm test` before every commit
 - All changes automatically tested and deployed via CI/CD
+- Mobile smoke tests and bundle size monitoring in CI pipeline
 
 ## ⚖️ Legal & Ethical Framework
 
@@ -218,6 +248,26 @@ This project builds on documentation by UNESCO, Forensic Architecture, Heritage 
 
 ---
 
-_Last updated: October 11, 2025 | Version: 1.0.0 | 🚀 Live in Production | 18 of 20-25 sites documented (72% to target)_
+_Last updated: October 16, 2025 | Version: 1.5.0 | 🚀 Live in Production with PWA | 45 sites documented | 184 tests passing | Bundle optimized (287KB main, 621KB total precached) | Offline support enabled_
 
 **Live Site:** https://yupitsleen.github.io/HeritageTracker/
+
+## 📈 Recent Updates (v1.5.0)
+
+### Performance Optimizations
+- **Lazy Loading:** Map, Timeline, and Modal components load on-demand
+- **Code Splitting:** Main bundle reduced from 580KB to 287KB (50% reduction)
+- **PWA Support:** Offline functionality with map tile caching
+- **Service Worker:** 621KB total assets precached with 30-day tile expiration
+
+### CI/CD Enhancements
+- Mobile smoke test pipeline integration
+- Automated bundle size monitoring and limits
+- GitHub Actions step summary reporting
+
+### Bundle Analysis
+- Main: 287KB (83KB gzipped)
+- React vendor: 12KB (4KB gzipped)
+- Map vendor: 161KB (47KB gzipped)
+- D3 vendor: 62KB (21KB gzipped)
+- Lazy chunks: ~60KB total

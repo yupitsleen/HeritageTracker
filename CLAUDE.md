@@ -28,7 +28,7 @@ AI assistant guidance for developing Heritage Tracker.
 
 **Current:** 45 sites documented | 184 tests passing | CI/CD deployed
 
-**Tech Stack:** React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + Leaflet.heat + D3.js
+**Tech Stack:** React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + Leaflet.heat + D3.js + PWA (vite-plugin-pwa)
 
 **Data Sources:** UNESCO, Forensic Architecture, Heritage for Peace
 
@@ -271,6 +271,15 @@ interface GazaSite {
 ### Performance Patterns
 
 ```tsx
+// ✅ Lazy loading (React.lazy + Suspense)
+const HeritageMap = lazy(() => import("./components/Map/HeritageMap").then(m => ({ default: m.HeritageMap })));
+const TimelineScrubber = lazy(() => import("./components/Timeline/TimelineScrubber").then(m => ({ default: m.TimelineScrubber })));
+
+// Usage with Suspense
+<Suspense fallback={<div>Loading map...</div>}>
+  <HeritageMap sites={sites} />
+</Suspense>
+
 // ✅ Memoization
 const sortedSites = useMemo(() => [...sites].sort(), [sites, sortKey]);
 
@@ -296,6 +305,31 @@ useEffect(() => {
 - **Mobile:** 30fps acceptable (reduced particle effects)
 - **Initial load:** <3s on 3G connection
 - **Animation latency:** <100ms response to scrubbing
+
+### Performance Optimizations (Implemented)
+
+**✅ Lazy Loading:**
+- Map, Timeline, and Modal components load on-demand
+- Reduces initial bundle by ~50%
+- Suspense boundaries with loading states
+
+**✅ Code Splitting:**
+- Manual chunks: `react-vendor` (12KB), `map-vendor` (161KB), `d3-vendor` (62KB)
+- Main bundle: 287KB (83KB gzipped) - down from 580KB
+- Automatic chunks for lazy-loaded components
+
+**✅ Service Worker (PWA):**
+- Offline support via vite-plugin-pwa
+- Runtime caching for map tiles (OpenStreetMap + Esri)
+- 30-day tile cache expiration
+- 621KB total precached assets
+
+**✅ Bundle Analysis:**
+- Total: 621KB precached by service worker
+- Main: 287KB (83KB gzipped)
+- Map vendor: 161KB (47KB gzipped)
+- D3 vendor: 62KB (21KB gzipped)
+- Lazy chunks: ~60KB total
 
 ## Timeline Animation Feature
 
@@ -821,12 +855,18 @@ const activateParticle = (x: number, y: number) => {
 - [x] **Fix mobile view** ✅
 - [x] **Production build validation** ✅
 
-**Immediate (Post-PR #14):**
+**Completed (Post-PR #14):**
+
+- [x] **Add mobile smoke test to CI/CD pipeline** ✅
+- [x] **Bundle size monitoring in CI** ✅
+- [x] **Code splitting for performance** ✅
+- [x] **Lazy loading for faster initial load** ✅
+- [x] **Service worker for offline support** ✅
+
+**Immediate:**
 
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
-- [ ] Add mobile smoke test to CI/CD pipeline
-- [ ] Bundle size monitoring in CI
 
 **Timeline Animation (Paused):**
 
@@ -839,11 +879,10 @@ const activateParticle = (x: number, y: number) => {
 - [ ] All 110+ UNESCO-verified sites
 - [ ] Database integration (Supabase)
 - [ ] Full Arabic translation
-- [ ] Code splitting for performance
 - [ ] Resume timeline animation work (if desired)
 
 ---
 
 **Last Updated:** October 16, 2025
-**Version:** 1.4.0-dev (Production + PR #14 Merged)
-**Status:** 🚀 Live with CI/CD | 45 sites documented | 184 tests passing | Timeline Phase 1-2 Complete (paused) | Mobile fixes complete | Production ready
+**Version:** 1.5.0-dev (Production + Performance Optimizations)
+**Status:** 🚀 Live with CI/CD | 45 sites documented | 184 tests passing | PWA enabled | Lazy loading active | Code splitting implemented | Bundle optimized (287KB main, 621KB total precached) | Production ready
