@@ -26,7 +26,7 @@ AI assistant guidance for developing Heritage Tracker.
 
 **Status:** 🚀 **LIVE IN PRODUCTION** - https://yupitsleen.github.io/HeritageTracker/
 
-**Current:** 18 of 20-25 MVP sites documented | 181 tests passing | CI/CD deployed
+**Current:** 45 sites documented (expanded for timeline animations) | 181 tests passing | CI/CD deployed
 
 **Tech Stack:** React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + Leaflet.heat + D3.js
 
@@ -115,7 +115,7 @@ src/
 │   ├── filters.ts                     # SITE_TYPES, STATUS_OPTIONS
 │   └── map.ts                         # Map config (marker sizes)
 ├── styles/theme.ts                    # Centralized Palestinian flag theme
-└── data/mockSites.ts                  # 18 sites (static JSON)
+└── data/mockSites.ts                  # 45 sites (static JSON, expanded for timeline testing)
 ```
 
 ### Key Patterns
@@ -807,7 +807,7 @@ const activateParticle = (x: number, y: number) => {
 
 **Immediate (MVP completion):**
 
-- [ ] Add 2-7 more sites (reach 20-25 target)
+- [x] **Expand site data for timeline animation testing (18 → 45 sites)** ✅ COMPLETE
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
 
@@ -841,4 +841,4 @@ const activateParticle = (x: number, y: number) => {
 
 **Last Updated:** October 15, 2025
 **Version:** 1.3.0-dev (Production + Timeline Phase 2 Implementation Complete)
-**Status:** 🚀 Live with CI/CD | 18/20-25 sites | 121 tests passing | ✅ Phase 1 Complete | 🚧 Phase 2 Code Complete (needs tests)
+**Status:** 🚀 Live with CI/CD | 45 sites (2.5x expansion for timeline testing) | 181 tests passing | ✅ Phase 1 Complete | 🚧 Phase 2 Code Complete (needs tests)

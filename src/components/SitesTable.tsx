@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import type { GazaSite } from "../types";
 import { components, getStatusHexColor } from "../styles/theme";
-import { useCalendar } from "../contexts/CalendarContext";
 import { formatDateCompact, formatDateStandard, formatDateLong } from "../utils/format";
 
 interface SitesTableProps {
@@ -11,6 +10,7 @@ interface SitesTableProps {
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
   variant?: "compact" | "expanded" | "mobile";
+  visibleColumns?: string[]; // For resizable table - which columns to show
 }
 
 type SortField = "name" | "type" | "status" | "dateDestroyed" | "dateDestroyedIslamic" | "yearBuilt" | "yearBuiltIslamic";
@@ -100,11 +100,11 @@ export function SitesTable({
   highlightedSiteId,
   onExpandTable,
   variant = "compact",
+  visibleColumns,
 }: SitesTableProps) {
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
-  const { calendarType } = useCalendar();
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const highlightedRowRef = useRef<HTMLTableRowElement>(null);
 
@@ -175,6 +175,15 @@ export function SitesTable({
     return <span className="text-[#009639] ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>;
   };
 
+  // Helper to check if column should be visible (for resizable table)
+  const isColumnVisible = (columnName: string): boolean => {
+    // If visibleColumns not provided (modal/mobile), use variant logic
+    if (!visibleColumns) {
+      return variant === "expanded" || columnName === "name" || columnName === "status" || columnName === "dateDestroyed" || columnName === "actions";
+    }
+    return visibleColumns.includes(columnName);
+  };
+
   // Scroll to highlighted site when it changes (desktop variants)
   useEffect(() => {
     if (!highlightedSiteId || !highlightedRowRef.current || !tableContainerRef.current) return;
@@ -222,14 +231,15 @@ export function SitesTable({
 
         {/* Mobile accordion table */}
         <div className="space-y-2">
-          {sortedSites.map((site) => (
+          {sortedSites.map((site, index) => (
             <div
               key={site.id}
-              className="border-2 border-gray-300 rounded-lg bg-white overflow-hidden"
+              className="border-2 border-[#fecaca] rounded-lg overflow-hidden"
+              style={{ backgroundColor: index % 2 === 0 ? '#fee2e2' : '#ffffff' }}
             >
               {/* Collapsed row - clickable to expand */}
               <div
-                className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-gray-50"
+                className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-[#fecaca]"
                 onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
               >
                 {/* Site Name - color-coded by status */}
@@ -391,9 +401,8 @@ export function SitesTable({
   // Desktop variants (compact/expanded)
   return (
     <div className="h-full flex flex-col bg-white">
-      {/* Sticky header section - includes both title and column headers */}
+      {/* Title section - sticky */}
       <div className="sticky top-0 z-20 bg-white flex-shrink-0 shadow-sm">
-        {/* Title section */}
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
@@ -436,152 +445,157 @@ export function SitesTable({
             )}
           </div>
         </div>
+      </div>
 
-        {/* Column headers - part of sticky section */}
-        <div className="bg-[#000000] text-[#fefefe]">
-          <table className="w-full text-sm text-left">
-            <thead>
-              <tr>
+      {/* Scrollable table with sticky headers */}
+      <div className="flex-1 overflow-y-auto" ref={tableContainerRef}>
+        <table className={components.table.base}>
+          <thead className="sticky top-0 z-10 bg-[#000000] text-[#fefefe]">
+            <tr>
+              {isColumnVisible("name") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
                   onClick={() => handleSort("name")}
                 >
                   Site Name
                   <SortIcon field="name" />
                 </th>
-                {variant === "expanded" && (
-                  <th
-                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
-                    onClick={() => handleSort("type")}
-                  >
-                    Type
-                    <SortIcon field="type" />
-                  </th>
-                )}
+              )}
+              {isColumnVisible("type") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  onClick={() => handleSort("type")}
+                >
+                  Type
+                  <SortIcon field="type" />
+                </th>
+              )}
+              {isColumnVisible("status") && (
+                <th
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
                   onClick={() => handleSort("status")}
                 >
                   Status
                   <SortIcon field="status" />
                 </th>
+              )}
+              {isColumnVisible("dateDestroyed") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
                   onClick={() => handleSort("dateDestroyed")}
                 >
-                  {variant === "compact" ? "Destruction Date" : "Destruction Date (Gregorian)"}
+                  {visibleColumns ? "Destruction Date" : (variant === "compact" ? "Destruction Date" : "Destruction Date (Gregorian)")}
                   <SortIcon field="dateDestroyed" />
                 </th>
-                {variant === "expanded" && (
-                  <th
-                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
-                    onClick={() => handleSort("dateDestroyedIslamic")}
-                  >
-                    Destruction Date (Islamic)
-                    <SortIcon field="dateDestroyedIslamic" />
-                  </th>
-                )}
-                {variant === "expanded" && (
-                  <th
-                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
-                    onClick={() => handleSort("yearBuilt")}
-                  >
-                    Built (Gregorian)
-                    <SortIcon field="yearBuilt" />
-                  </th>
-                )}
-                {variant === "expanded" && (
-                  <th
-                    className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none"
-                    onClick={() => handleSort("yearBuiltIslamic")}
-                  >
-                    Built (Islamic)
-                    <SortIcon field="yearBuiltIslamic" />
-                  </th>
-                )}
-                <th className="px-4 py-3 font-semibold">Actions</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-      </div>
-
-      {/* Scrollable table body */}
-      <div className="flex-1 overflow-y-auto" ref={tableContainerRef}>
-        <table className={components.table.base}>
+              )}
+              {isColumnVisible("dateDestroyedIslamic") && (
+                <th
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  onClick={() => handleSort("dateDestroyedIslamic")}
+                >
+                  Destruction Date (Islamic)
+                  <SortIcon field="dateDestroyedIslamic" />
+                </th>
+              )}
+              {isColumnVisible("yearBuilt") && (
+                <th
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  onClick={() => handleSort("yearBuilt")}
+                >
+                  Built (Gregorian)
+                  <SortIcon field="yearBuilt" />
+                </th>
+              )}
+              {isColumnVisible("yearBuiltIslamic") && (
+                <th
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  onClick={() => handleSort("yearBuiltIslamic")}
+                >
+                  Built (Islamic)
+                  <SortIcon field="yearBuiltIslamic" />
+                </th>
+              )}
+              {isColumnVisible("actions") && (
+                <th className="px-4 py-3 font-semibold text-sm">Actions</th>
+              )}
+            </tr>
+          </thead>
           <tbody>
-            {sortedSites.map((site) => (
+            {sortedSites.map((site, index) => (
               <tr
                 key={site.id}
                 ref={highlightedSiteId === site.id ? highlightedRowRef : null}
-                className={`${components.table.row} ${
+                className={`border-b border-[#fecaca] cursor-pointer hover:bg-[#fecaca] ${
                   highlightedSiteId === site.id ? "ring-2 ring-black ring-inset" : ""
                 }`}
+                style={{ backgroundColor: index % 2 === 0 ? '#fee2e2' : '#ffffff' }}
                 onClick={() => {
                   onSiteHighlight?.(site.id);
                 }}
               >
-                <td className={components.table.td}>
-                  <div>
-                    <div className="font-semibold text-gray-900">{site.name}</div>
-                    {site.nameArabic && (
-                      <div
-                        className={`${
-                          variant === "compact" ? "text-xs" : "text-sm"
-                        } text-gray-600 mt-1`}
-                        dir="rtl"
-                      >
-                        {site.nameArabic}
-                      </div>
-                    )}
-                  </div>
-                </td>
-                {variant === "expanded" && (
+                {isColumnVisible("name") && (
+                  <td className={components.table.td}>
+                    <div>
+                      <div className="font-semibold text-gray-900">{site.name}</div>
+                      {site.nameArabic && (
+                        <div
+                          className={`${
+                            variant === "compact" ? "text-xs" : "text-sm"
+                          } text-gray-600 mt-1`}
+                          dir="rtl"
+                        >
+                          {site.nameArabic}
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                )}
+                {isColumnVisible("type") && (
                   <td className={components.table.td}>
                     <span className="capitalize">{site.type.replace("-", " ")}</span>
                   </td>
                 )}
-                <td className={components.table.td}>
-                  <span
-                    className="font-semibold capitalize text-sm"
-                    style={{ color: getStatusHexColor(site.status) }}
-                  >
-                    {site.status.replace("-", " ")}
-                  </span>
-                </td>
-                <td className={`${components.table.td} text-sm`}>
-                  {variant === "compact"
-                    ? // Compact: Show date based on calendar toggle
-                      site.dateDestroyed && calendarType === "islamic" && site.dateDestroyedIslamic
-                      ? site.dateDestroyedIslamic
-                      : formatDateStandard(site.dateDestroyed)
-                    : // Expanded: Always show Gregorian date
-                      formatDateStandard(site.dateDestroyed)}
-                </td>
-                {variant === "expanded" && (
+                {isColumnVisible("status") && (
+                  <td className={components.table.td}>
+                    <span
+                      className="font-semibold capitalize text-sm"
+                      style={{ color: getStatusHexColor(site.status) }}
+                    >
+                      {site.status.replace("-", " ")}
+                    </span>
+                  </td>
+                )}
+                {isColumnVisible("dateDestroyed") && (
+                  <td className={`${components.table.td} text-sm`}>
+                    {formatDateStandard(site.dateDestroyed)}
+                  </td>
+                )}
+                {isColumnVisible("dateDestroyedIslamic") && (
                   <td className={`${components.table.td} text-sm`}>
                     {site.dateDestroyedIslamic || "N/A"}
                   </td>
                 )}
-                {variant === "expanded" && (
+                {isColumnVisible("yearBuilt") && (
                   <td className={`${components.table.td} text-sm`}>{site.yearBuilt}</td>
                 )}
-                {variant === "expanded" && (
+                {isColumnVisible("yearBuiltIslamic") && (
                   <td className={`${components.table.td} text-sm`}>
                     {site.yearBuiltIslamic || "N/A"}
                   </td>
                 )}
-                <td className={components.table.td}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSiteClick(site);
-                    }}
-                    className="text-[#009639] hover:text-[#007b2f] hover:underline font-medium text-sm"
-                  >
-                    See more
-                  </button>
-                </td>
+                {isColumnVisible("actions") && (
+                  <td className={components.table.td}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSiteClick(site);
+                      }}
+                      className="text-[#009639] hover:text-[#007b2f] hover:underline font-medium text-sm"
+                    >
+                      See more
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

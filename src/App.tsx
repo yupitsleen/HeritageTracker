@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { mockSites } from "./data/mockSites";
 import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
@@ -12,7 +12,6 @@ import { FilterTag } from "./components/FilterBar/FilterTag";
 import { Modal } from "./components/Modal/Modal";
 import { formatLabel } from "./utils/format";
 import { Input } from "./components/Form/Input";
-import { useCalendar } from "./contexts/CalendarContext";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
@@ -28,36 +27,9 @@ import {
 } from "./utils/siteFilters";
 
 /**
- * Calendar toggle button component for switching between Gregorian and Islamic calendars
+ * Main app content - uses animation context on desktop only
  */
-function CalendarToggleButton() {
-  const { calendarType, toggleCalendar } = useCalendar();
-
-  return (
-    <>
-      <button
-        onClick={toggleCalendar}
-        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-[10px] font-medium text-gray-700 transition-colors"
-        aria-label="Toggle calendar type"
-      >
-        {calendarType === "gregorian"
-          ? "Switch to Islamic Calendar"
-          : "Switch to Gregorian Calendar"}
-      </button>
-      {/* Live region for screen readers to announce calendar changes */}
-      <div role="status" aria-live="polite" className="sr-only">
-        {calendarType === "gregorian"
-          ? "Displaying Gregorian calendar dates"
-          : "Displaying Islamic calendar dates"}
-      </div>
-    </>
-  );
-}
-
-/**
- * Main app content - uses animation context
- */
-function AppContent() {
+function AppContent({ isMobile }: { isMobile: boolean }) {
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
@@ -72,6 +44,16 @@ function AppContent() {
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [tableWidth, setTableWidth] = useState(480); // Resizable table width
+  const [isResizing, setIsResizing] = useState(false);
+
+  // Local filter state for modal (not applied until "Apply Filters" clicked)
+  const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
+  const [tempSelectedStatuses, setTempSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
+  const [tempDestructionDateStart, setTempDestructionDateStart] = useState<Date | null>(null);
+  const [tempDestructionDateEnd, setTempDestructionDateEnd] = useState<Date | null>(null);
+  const [tempCreationYearStart, setTempCreationYearStart] = useState<number | null>(null);
+  const [tempCreationYearEnd, setTempCreationYearEnd] = useState<number | null>(null);
 
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
@@ -124,6 +106,79 @@ function AppContent() {
     setSearchTerm("");
   };
 
+  // Open filter modal and initialize temp state with current filters
+  const openFilterModal = () => {
+    setTempSelectedTypes(selectedTypes);
+    setTempSelectedStatuses(selectedStatuses);
+    setTempDestructionDateStart(destructionDateStart);
+    setTempDestructionDateEnd(destructionDateEnd);
+    setTempCreationYearStart(creationYearStart);
+    setTempCreationYearEnd(creationYearEnd);
+    setIsFilterOpen(true);
+  };
+
+  // Apply filters from temp state to actual state
+  const applyFilters = () => {
+    setSelectedTypes(tempSelectedTypes);
+    setSelectedStatuses(tempSelectedStatuses);
+    setDestructionDateStart(tempDestructionDateStart);
+    setDestructionDateEnd(tempDestructionDateEnd);
+    setCreationYearStart(tempCreationYearStart);
+    setCreationYearEnd(tempCreationYearEnd);
+    setIsFilterOpen(false);
+  };
+
+  // Clear all temp filters in modal
+  const clearTempFilters = () => {
+    setTempSelectedTypes([]);
+    setTempSelectedStatuses([]);
+    setTempDestructionDateStart(null);
+    setTempDestructionDateEnd(null);
+    setTempCreationYearStart(null);
+    setTempCreationYearEnd(null);
+  };
+
+  // Resize handler for table
+  const handleResizeStart = useCallback(() => {
+    setIsResizing(true);
+  }, []);
+
+  // Handle mouse move during resize
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate new width from left edge of viewport to mouse position
+      // Subtract 24px for left padding (pl-6)
+      const newWidth = e.clientX - 24;
+      // Min width: 480px, Max width: 1100px
+      const clampedWidth = Math.max(480, Math.min(1100, newWidth));
+      setTableWidth(clampedWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing]);
+
+  // Calculate which columns to show based on table width
+  const getVisibleColumns = (): string[] => {
+    const columns = ['name', 'status', 'dateDestroyed', 'actions'];
+    if (tableWidth >= 650) columns.splice(1, 0, 'type'); // Add Type after Name
+    if (tableWidth >= 800) columns.splice(columns.length - 1, 0, 'dateDestroyedIslamic'); // Add before Actions
+    if (tableWidth >= 950) columns.splice(columns.length - 1, 0, 'yearBuilt');
+    if (tableWidth >= 1100) columns.splice(columns.length - 1, 0, 'yearBuiltIslamic');
+    return columns;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
         {/* Sticky Header with flag line */}
@@ -135,8 +190,8 @@ function AppContent() {
               <p className="text-[#f5f5f5] mt-1 md:mt-2 text-center text-xs md:text-base">
                 Documenting the destruction of cultural heritage in Gaza (2023-2024)
               </p>
-              {/* Navigation buttons - desktop only, positioned in top right */}
-              <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
+              {/* Help Palestine button - desktop only, positioned in top left */}
+              <div className="hidden md:flex absolute top-3 left-4 md:top-6 md:left-6">
                 <button
                   onClick={() => setIsDonateOpen(true)}
                   className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white text-xs md:text-sm rounded transition-colors font-medium"
@@ -144,6 +199,9 @@ function AppContent() {
                 >
                   Help Palestine
                 </button>
+              </div>
+              {/* Statistics and About buttons - desktop only, positioned in top right */}
+              <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
                 <button
                   onClick={() => setIsStatsOpen(true)}
                   className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
@@ -210,7 +268,7 @@ function AppContent() {
               <div className="flex items-center gap-3 flex-wrap">
                 {/* Filter Button */}
                 <button
-                  onClick={() => setIsFilterOpen(true)}
+                  onClick={openFilterModal}
                   className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
                 >
                   Filters
@@ -247,9 +305,6 @@ function AppContent() {
                     </button>
                   )}
                 </div>
-
-                {/* Calendar Toggle */}
-                <CalendarToggleButton />
 
                 {/* Active filter tags */}
                 {selectedTypes.map((type) => (
@@ -288,56 +343,55 @@ function AppContent() {
               </div>
             </div>
 
-            {/* Three-column layout below FilterBar - Map and Table (Timeline moved below map) */}
+            {/* Two-column layout below FilterBar - Table on Left, Map on Right */}
             <div className="flex gap-6">
-              {/* Left Sidebar - OLD Timeline (HIDDEN - will be removed in Phase 5) */}
-              {/* <aside className="w-[440px] flex-shrink-0 pl-6 pt-3">
-                <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto">
-                  <VerticalTimeline
-                    key={`${selectedTypes.join(",")}-${selectedStatuses.join(",")}-${
-                      filteredSites.length
-                    }`}
-                    sites={filteredSites}
-                    onSiteHighlight={setHighlightedSiteId}
-                    highlightedSiteId={highlightedSiteId}
-                  />
-                </div>
-              </aside> */}
-
-              {/* Center-Left - Map (Expanded to fill space) */}
-              <div className="flex-1 min-w-0 pl-6 pt-3">
-                <div className="w-full sticky top-[120px]">
-                  <StatusLegend />
-                  {/* Map without height wrapper - sizes to content */}
-                  <HeritageMap
-                    sites={mapSites}
-                    onSiteClick={setSelectedSite}
-                    highlightedSiteId={highlightedSiteId}
-                    onSiteHighlight={setHighlightedSiteId}
-                  />
-                  {/* Timeline Scrubber - Directly below map */}
-                  <div className="mt-4">
-                    <TimelineScrubber sites={searchFilteredSites} />
-                  </div>
-                </div>
-                {/* Spacer to allow table scrolling */}
-                <div className="h-[200px]"></div>
-              </div>
-
-              {/* Right Sidebar - Sites Table (Sticky below header, scrollable on hover, WHITE outline with black inner border) */}
-              <aside className="w-[480px] flex-shrink-0 pr-6 pt-3">
-                <div className="border-4 border-white rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
-                  <div className="border border-black rounded-lg h-full overflow-y-auto">
+              {/* Left Sidebar - Sites Table (Resizable, RED outline with white inner border) */}
+              <aside
+                className="flex-shrink-0 pl-6 pt-3 relative"
+                style={{ width: `${tableWidth}px` }}
+              >
+                <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
+                  <div className="border-2 border-white rounded-lg h-full overflow-y-auto">
                     <SitesTable
                       sites={tableSites}
                       onSiteClick={setSelectedSite}
                       onSiteHighlight={setHighlightedSiteId}
                       highlightedSiteId={highlightedSiteId}
                       onExpandTable={() => setIsTableExpanded(true)}
+                      visibleColumns={getVisibleColumns()}
                     />
                   </div>
                 </div>
+                {/* Resize handle */}
+                <div
+                  className={`absolute top-3 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${isResizing ? 'bg-[#ed3039] bg-opacity-50' : ''}`}
+                  onMouseDown={handleResizeStart}
+                  title="Drag to resize table"
+                  aria-label="Resize table"
+                />
               </aside>
+
+              {/* Right - Map (Expanded to fill space) - Desktop only */}
+              {!isMobile && (
+                <div className="flex-1 min-w-0 pr-6 pt-3">
+                  <div className="w-full sticky top-[120px]">
+                    <StatusLegend />
+                    {/* Map without height wrapper - sizes to content */}
+                    <HeritageMap
+                      sites={mapSites}
+                      onSiteClick={setSelectedSite}
+                      highlightedSiteId={highlightedSiteId}
+                      onSiteHighlight={setHighlightedSiteId}
+                    />
+                    {/* Timeline Scrubber - Directly below map */}
+                    <div className="mt-4">
+                      <TimelineScrubber sites={searchFilteredSites} />
+                    </div>
+                  </div>
+                  {/* Spacer to allow table scrolling */}
+                  <div className="h-[200px]"></div>
+                </div>
+              )}
             </div>
           </div>
         </main>
@@ -380,30 +434,28 @@ function AppContent() {
           <div className="bg-white rounded-lg p-6 max-w-5xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Filter Sites</h2>
             <FilterBar
-              selectedTypes={selectedTypes}
-              selectedStatuses={selectedStatuses}
-              destructionDateStart={destructionDateStart}
-              destructionDateEnd={destructionDateEnd}
+              selectedTypes={tempSelectedTypes}
+              selectedStatuses={tempSelectedStatuses}
+              destructionDateStart={tempDestructionDateStart}
+              destructionDateEnd={tempDestructionDateEnd}
               searchTerm={searchTerm}
-              onTypeChange={setSelectedTypes}
-              onStatusChange={setSelectedStatuses}
-              onDestructionDateStartChange={setDestructionDateStart}
-              onDestructionDateEndChange={setDestructionDateEnd}
-              onCreationYearStartChange={setCreationYearStart}
-              onCreationYearEndChange={setCreationYearEnd}
+              onTypeChange={setTempSelectedTypes}
+              onStatusChange={setTempSelectedStatuses}
+              onDestructionDateStartChange={setTempDestructionDateStart}
+              onDestructionDateEndChange={setTempDestructionDateEnd}
+              onCreationYearStartChange={setTempCreationYearStart}
+              onCreationYearEndChange={setTempCreationYearEnd}
               onSearchChange={setSearchTerm}
             />
             <div className="mt-6 flex justify-end gap-3">
-              {hasActiveFilters && (
-                <button
-                  onClick={clearAllFilters}
-                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
-                >
-                  Clear All
-                </button>
-              )}
               <button
-                onClick={() => setIsFilterOpen(false)}
+                onClick={clearTempFilters}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
+              >
+                Clear All
+              </button>
+              <button
+                onClick={applyFilters}
                 className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
               >
                 Apply Filters
@@ -462,14 +514,38 @@ function AppContent() {
 /**
  * App wrapper with providers
  * ErrorBoundary wraps AnimationProvider to gracefully handle timeline errors
+ * AnimationProvider only active on desktop (where timeline is shown)
  */
 function App() {
+  // Check if we're on mobile - initialize immediately from window.innerWidth
+  const [isMobile, setIsMobile] = useState(() => {
+    // Check during initial render (works in browser, defaults to false in SSR)
+    return typeof window !== 'undefined' && window.innerWidth < 768;
+  });
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    // Recheck on mount (in case window was resized before mount)
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <CalendarProvider>
       <ErrorBoundary>
-        <AnimationProvider>
-          <AppContent />
-        </AnimationProvider>
+        {isMobile ? (
+          // Mobile: No AnimationProvider (timeline not shown)
+          <AppContent isMobile={true} />
+        ) : (
+          // Desktop: AnimationProvider for timeline features
+          <AnimationProvider sites={mockSites}>
+            <AppContent isMobile={false} />
+          </AnimationProvider>
+        )}
       </ErrorBoundary>
     </CalendarProvider>
   );

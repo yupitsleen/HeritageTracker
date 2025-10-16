@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, useRef, useMemo, type ReactNode } from "react";
+import type { GazaSite } from "../types";
 
 /**
  * Timeline animation state management
@@ -14,7 +15,7 @@ interface AnimationContextValue {
   isPlaying: boolean;
   // Animation speed multiplier
   speed: AnimationSpeed;
-  // Timeline date range (Oct 7, 2023 → Present)
+  // Timeline date range (calculated from site data)
   startDate: Date;
   endDate: Date;
 
@@ -28,16 +29,39 @@ interface AnimationContextValue {
 
 const AnimationContext = createContext<AnimationContextValue | undefined>(undefined);
 
-// Timeline constants
-const TIMELINE_START = new Date("2023-10-07"); // Oct 7, 2023
-const TIMELINE_END = new Date(); // Current date
+// Default timeline constants (fallback if no sites provided)
+const DEFAULT_TIMELINE_START = new Date("2023-10-07"); // Oct 7, 2023
+const DEFAULT_TIMELINE_END = new Date(); // Current date
 
 interface AnimationProviderProps {
   children: ReactNode;
+  sites?: GazaSite[];
 }
 
-export function AnimationProvider({ children }: AnimationProviderProps) {
-  const [currentTimestamp, setCurrentTimestamp] = useState<Date>(TIMELINE_START);
+export function AnimationProvider({ children, sites = [] }: AnimationProviderProps) {
+  // Calculate timeline start and end dates from site data
+  const { startDate, endDate } = useMemo(() => {
+    if (sites.length === 0) {
+      return { startDate: DEFAULT_TIMELINE_START, endDate: DEFAULT_TIMELINE_END };
+    }
+
+    // Get all destruction dates
+    const destructionDates = sites
+      .filter((site) => site.dateDestroyed)
+      .map((site) => new Date(site.dateDestroyed!).getTime());
+
+    if (destructionDates.length === 0) {
+      return { startDate: DEFAULT_TIMELINE_START, endDate: DEFAULT_TIMELINE_END };
+    }
+
+    // Find earliest and latest destruction dates
+    const earliestDate = new Date(Math.min(...destructionDates));
+    const latestDate = new Date(Math.max(...destructionDates));
+
+    return { startDate: earliestDate, endDate: latestDate };
+  }, [sites]);
+
+  const [currentTimestamp, setCurrentTimestamp] = useState<Date>(startDate);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState<AnimationSpeed>(1);
 
@@ -55,19 +79,19 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
 
   const reset = useCallback(() => {
     setIsPlaying(false);
-    setCurrentTimestamp(TIMELINE_START);
-  }, []);
+    setCurrentTimestamp(startDate);
+  }, [startDate]);
 
   const setTimestamp = useCallback((timestamp: Date) => {
     // Clamp timestamp to valid range
     const clampedTimestamp = new Date(
       Math.max(
-        TIMELINE_START.getTime(),
-        Math.min(TIMELINE_END.getTime(), timestamp.getTime())
+        startDate.getTime(),
+        Math.min(endDate.getTime(), timestamp.getTime())
       )
     );
     setCurrentTimestamp(clampedTimestamp);
-  }, []);
+  }, [startDate, endDate]);
 
   // Animation loop using requestAnimationFrame
   useEffect(() => {
@@ -96,9 +120,9 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
         const nextTimestamp = new Date(prevTimestamp.getTime() + advancement);
 
         // If we've reached the end, pause
-        if (nextTimestamp >= TIMELINE_END) {
+        if (nextTimestamp >= endDate) {
           setIsPlaying(false);
-          return TIMELINE_END;
+          return endDate;
         }
 
         return nextTimestamp;
@@ -117,14 +141,19 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
         animationFrameRef.current = null;
       }
     };
-  }, [isPlaying, speed]);
+  }, [isPlaying, speed, endDate]);
+
+  // Reset current timestamp if start date changes
+  useEffect(() => {
+    setCurrentTimestamp(startDate);
+  }, [startDate]);
 
   const value: AnimationContextValue = {
     currentTimestamp,
     isPlaying,
     speed,
-    startDate: TIMELINE_START,
-    endDate: TIMELINE_END,
+    startDate,
+    endDate,
     play,
     pause,
     reset,

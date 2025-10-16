@@ -111,15 +111,15 @@ export const components = {
 
   // Form styles
   input: {
-    base: "px-3 py-2 border border-gray-300 rounded-md text-sm",
+    base: "px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 bg-white",
     focus: "focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
     number: "w-20",
     date: "",
   },
 
   select: {
-    base: "w-full px-4 py-2 border border-[#d4d4d4] rounded-md focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",  // Palestine flag green focus
-    small: "px-2 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
+    base: "w-full px-4 py-2 border border-[#d4d4d4] rounded-md text-gray-900 bg-white focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",  // Palestine flag green focus
+    small: "px-2 py-2 border border-gray-300 rounded-md text-sm text-gray-900 bg-white focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
   },
 
   label: {

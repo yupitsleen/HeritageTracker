@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, CircleMarker, Popup, useMapEvents, useMap, LayersControl } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { components } from "../../styles/theme";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
-import { createMarkerIcon } from "../../utils/mapHelpers";
+import { createMarkerIcon, getMarkerColor } from "../../utils/mapHelpers";
 import { useTileConfig } from "../../hooks/useTileConfig";
 import { SitePopup } from "./SitePopup";
 import { MapGlowLayer } from "./MapGlowLayer";
@@ -143,7 +143,7 @@ export function HeritageMap({
   return (
     <div className="relative">
       {/* Map interaction hint */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md text-xs text-gray-700 pointer-events-none">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md text-xs text-gray-700 pointer-events-none">
         Use <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-[10px] font-semibold">Ctrl</kbd>{" "}
         + scroll to zoom • Click markers for details
       </div>
@@ -163,12 +163,26 @@ export function HeritageMap({
         {/* Zoom level logger for debugging */}
         <ZoomLogger />
 
-        {/* Map Tiles - Language adapts to browser setting */}
-        <TileLayer
-          attribution={tileConfig.attribution}
-          url={tileConfig.url}
-          subdomains={tileConfig.subdomains}
-        />
+        {/* Layer Control for switching between Street and Satellite views */}
+        <LayersControl position="topright">
+          {/* Street Map (Default) */}
+          <LayersControl.BaseLayer checked name="Street Map">
+            <TileLayer
+              attribution={tileConfig.attribution}
+              url={tileConfig.url}
+              subdomains={tileConfig.subdomains}
+            />
+          </LayersControl.BaseLayer>
+
+          {/* Satellite View */}
+          <LayersControl.BaseLayer name="Satellite">
+            <TileLayer
+              attribution='&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={19}
+            />
+          </LayersControl.BaseLayer>
+        </LayersControl>
 
         {/* Phase 2: Ambient heritage glow layer - dims as sites are destroyed */}
         <MapGlowLayer glowContributions={glowContributions} maxGlow={maxGlow} />
@@ -176,11 +190,45 @@ export function HeritageMap({
         {/* Heritage Site Markers */}
         {sites.map((site) => {
           const isHighlighted = site.id === highlightedSiteId;
+          const color = getMarkerColor(site.status);
+
+          // Map color names to hex values
+          const colorMap: Record<string, string> = {
+            red: "#ed3039",
+            orange: "#D97706",
+            yellow: "#CA8A04",
+          };
+
+          // If highlighted, show teardrop marker; otherwise show circle
+          if (isHighlighted) {
+            return (
+              <Marker
+                key={site.id}
+                position={site.coordinates}
+                icon={createMarkerIcon(site.status, isHighlighted)}
+                eventHandlers={{
+                  click: () => onSiteHighlight?.(site.id),
+                }}
+              >
+                <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
+                  <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
+                </Popup>
+              </Marker>
+            );
+          }
+
+          // Default: show circle marker (dot)
           return (
-            <Marker
+            <CircleMarker
               key={site.id}
-              position={site.coordinates}
-              icon={createMarkerIcon(site.status, isHighlighted)}
+              center={site.coordinates}
+              radius={6}
+              pathOptions={{
+                fillColor: colorMap[color],
+                fillOpacity: 0.8,
+                color: "#000000",
+                weight: 1,
+              }}
               eventHandlers={{
                 click: () => onSiteHighlight?.(site.id),
               }}
@@ -188,7 +236,7 @@ export function HeritageMap({
               <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
                 <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
               </Popup>
-            </Marker>
+            </CircleMarker>
           );
         })}
       </MapContainer>
