@@ -97,7 +97,6 @@ src/
 │   ├── FilterBar/FilterBar.tsx        # Compact filters (text-[10px])
 │   ├── SitesTable.tsx                 # 3 variants: compact/expanded/mobile
 │   ├── Timeline/
-│   │   ├── VerticalTimeline.tsx       # HIDDEN - Will be removed Phase 5
 │   │   └── TimelineScrubber.tsx       # ✅ IMPLEMENTED - D3 horizontal timeline
 │   ├── Map/
 │   │   ├── HeritageMap.tsx            # Leaflet map + MapGlowLayer integration
@@ -356,10 +355,10 @@ As destruction occurs chronologically, the map visually "dims" - representing th
 
 **Phase 1 Complete:**
 
-- ✅ Left sidebar VerticalTimeline (440px) - HIDDEN (code preserved)
 - ✅ Horizontal TimelineScrubber below map (D3.js-based) - IMPLEMENTED
 - ✅ Map column expanded to fill left space
 - ✅ AnimationContext for global state management
+- ✅ Removed deprecated VerticalTimeline component
 
 **Phase 2 Complete:**
 
@@ -374,8 +373,7 @@ As destruction occurs chronologically, the map visually "dims" - representing th
 src/
 ├── components/
 │   ├── Timeline/
-│   │   ├── TimelineScrubber.tsx       # ✅ Phase 1 - D3 horizontal timeline (296 lines)
-│   │   └── VerticalTimeline.tsx       # HIDDEN - will be removed Phase 5
+│   │   └── TimelineScrubber.tsx       # ✅ Phase 1 - D3 horizontal timeline (296 lines)
 │   ├── Map/
 │   │   ├── HeritageMap.tsx            # ✅ UPDATED - Integrated MapGlowLayer
 │   │   ├── MapGlowLayer.tsx           # ✅ Phase 2 - Canvas ambient glow effect (176 lines)
@@ -533,7 +531,7 @@ const heritageMetrics = (currentTimestamp: Date) => {
 - [x] Speed control dropdown (0.5x, 1x, 2x, 4x)
 - [x] Keyboard controls (Space, Arrows, Home/End)
 - [x] Connect timeline to map filtering (filters by currentTimestamp)
-- [x] Hide old VerticalTimeline from layout (code preserved)
+- [x] Remove deprecated VerticalTimeline component
 - [x] Map expanded to fill available space
 
 **Phase 2 (Sessions 3-13): UX Improvements & Production Readiness** ✅ **COMPLETE**
@@ -578,7 +576,6 @@ const heritageMetrics = (currentTimestamp: Date) => {
 - [ ] Mobile timeline support (currently disabled on mobile)
 - [ ] Accessibility (keyboard nav ✅ done, screen readers pending)
 - [ ] Cross-browser testing
-- [ ] Remove deprecated VerticalTimeline
 - [ ] Integration tests: Full animation cycle
 
 ### Technical Dependencies
