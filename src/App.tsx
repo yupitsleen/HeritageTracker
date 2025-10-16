@@ -178,8 +178,8 @@ function AppContent() {
               <p className="text-[#f5f5f5] mt-1 md:mt-2 text-center text-xs md:text-base">
                 Documenting the destruction of cultural heritage in Gaza (2023-2024)
               </p>
-              {/* Navigation buttons - desktop only, positioned in top right */}
-              <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
+              {/* Help Palestine button - desktop only, positioned in top left */}
+              <div className="hidden md:flex absolute top-3 left-4 md:top-6 md:left-6">
                 <button
                   onClick={() => setIsDonateOpen(true)}
                   className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white text-xs md:text-sm rounded transition-colors font-medium"
@@ -187,6 +187,9 @@ function AppContent() {
                 >
                   Help Palestine
                 </button>
+              </div>
+              {/* Statistics and About buttons - desktop only, positioned in top right */}
+              <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
                 <button
                   onClick={() => setIsStatsOpen(true)}
                   className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
