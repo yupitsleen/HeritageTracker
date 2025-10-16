@@ -27,9 +27,9 @@ import {
 } from "./utils/siteFilters";
 
 /**
- * Main app content - uses animation context
+ * Main app content - uses animation context on desktop only
  */
-function AppContent() {
+function AppContent({ isMobile }: { isMobile: boolean }) {
   const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
@@ -371,25 +371,27 @@ function AppContent() {
                 />
               </aside>
 
-              {/* Right - Map (Expanded to fill space) */}
-              <div className="flex-1 min-w-0 pr-6 pt-3">
-                <div className="w-full sticky top-[120px]">
-                  <StatusLegend />
-                  {/* Map without height wrapper - sizes to content */}
-                  <HeritageMap
-                    sites={mapSites}
-                    onSiteClick={setSelectedSite}
-                    highlightedSiteId={highlightedSiteId}
-                    onSiteHighlight={setHighlightedSiteId}
-                  />
-                  {/* Timeline Scrubber - Directly below map */}
-                  <div className="mt-4">
-                    <TimelineScrubber sites={searchFilteredSites} />
+              {/* Right - Map (Expanded to fill space) - Desktop only */}
+              {!isMobile && (
+                <div className="flex-1 min-w-0 pr-6 pt-3">
+                  <div className="w-full sticky top-[120px]">
+                    <StatusLegend />
+                    {/* Map without height wrapper - sizes to content */}
+                    <HeritageMap
+                      sites={mapSites}
+                      onSiteClick={setSelectedSite}
+                      highlightedSiteId={highlightedSiteId}
+                      onSiteHighlight={setHighlightedSiteId}
+                    />
+                    {/* Timeline Scrubber - Directly below map */}
+                    <div className="mt-4">
+                      <TimelineScrubber sites={searchFilteredSites} />
+                    </div>
                   </div>
+                  {/* Spacer to allow table scrolling */}
+                  <div className="h-[200px]"></div>
                 </div>
-                {/* Spacer to allow table scrolling */}
-                <div className="h-[200px]"></div>
-              </div>
+              )}
             </div>
           </div>
         </main>
@@ -512,14 +514,38 @@ function AppContent() {
 /**
  * App wrapper with providers
  * ErrorBoundary wraps AnimationProvider to gracefully handle timeline errors
+ * AnimationProvider only active on desktop (where timeline is shown)
  */
 function App() {
+  // Check if we're on mobile - initialize immediately from window.innerWidth
+  const [isMobile, setIsMobile] = useState(() => {
+    // Check during initial render (works in browser, defaults to false in SSR)
+    return typeof window !== 'undefined' && window.innerWidth < 768;
+  });
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    // Recheck on mount (in case window was resized before mount)
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <CalendarProvider>
       <ErrorBoundary>
-        <AnimationProvider sites={mockSites}>
-          <AppContent />
-        </AnimationProvider>
+        {isMobile ? (
+          // Mobile: No AnimationProvider (timeline not shown)
+          <AppContent isMobile={true} />
+        ) : (
+          // Desktop: AnimationProvider for timeline features
+          <AnimationProvider sites={mockSites}>
+            <AppContent isMobile={false} />
+          </AnimationProvider>
+        )}
       </ErrorBoundary>
     </CalendarProvider>
   );

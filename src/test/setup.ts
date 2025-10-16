@@ -2,6 +2,20 @@ import { afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
+// Mock ResizeObserver for D3/TimelineScrubber
+// ResizeObserver is not available in JSDOM test environment
+global.ResizeObserver = class ResizeObserver {
+  observe() {
+    // Mock implementation - do nothing
+  }
+  unobserve() {
+    // Mock implementation - do nothing
+  }
+  disconnect() {
+    // Mock implementation - do nothing
+  }
+};
+
 // Mock HTMLCanvasElement for leaflet.heat
 // The heat map library requires canvas context, which isn't available in JSDOM
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
