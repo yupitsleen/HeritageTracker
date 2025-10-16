@@ -34,8 +34,30 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Run mobile smoke test
+        run: npm test -- App.mobile.test.tsx
+
       - name: Build
         run: npm run build
+
+      - name: Analyze bundle size
+        run: |
+          echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          du -sh dist/ >> $GITHUB_STEP_SUMMARY
+          ls -lh dist/assets/*.js | awk '{print $5 "\t" $9}' >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check bundle size limit
+        run: |
+          BUNDLE_SIZE=$(du -sb dist/ | awk '{print $1}')
+          MAX_SIZE=$((1024 * 1024))  # 1MB limit
+          if [ $BUNDLE_SIZE -gt $MAX_SIZE ]; then
+            echo "❌ Bundle size ($BUNDLE_SIZE bytes) exceeds limit ($MAX_SIZE bytes)"
+            exit 1
+          else
+            echo "✅ Bundle size ($BUNDLE_SIZE bytes) is within limit ($MAX_SIZE bytes)"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
