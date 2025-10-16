@@ -37,7 +37,7 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
-  const rendererRef = useRef<D3TimelineRenderer>();
+  const rendererRef = useRef<D3TimelineRenderer | null>(null);
 
   // Extract timeline data using custom hook
   const { events: destructionDates } = useTimelineData(sites);
