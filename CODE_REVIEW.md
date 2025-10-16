@@ -34,8 +34,8 @@
 - `028093d` - feat: add reusable Stats UI components
 - `285e576` - fix: rename useTableSort to .tsx and fix TypeScript errors
 
-### 🚧 Phase 2: Major Components (Current)
-**Status:** In Progress - App.tsx and SitesTable Complete
+### ✅ Phase 2: Major Components Complete
+**Status:** Complete - All 3 major files refactored
 
 **Completed:**
 - ✅ Extracted App.tsx hooks (useAppState, useFilteredSites, useTableResize)
@@ -45,6 +45,7 @@
   - SitesTable/index.tsx (50 lines) - Router component
   - SitesTable/SitesTableMobile.tsx (261 lines) - Mobile accordion
   - SitesTable/SitesTableDesktop.tsx (340 lines) - Desktop variants
+- ✅ Extracted StatsDashboard statistics calculation to useHeritageStats hook (601 → 550 lines)
 - ✅ All 184 tests passing
 - ✅ Linter clean (0 errors, 0 warnings)
 - ✅ App verified working in browser
@@ -54,9 +55,7 @@
 - `1cb91ec` - refactor: create App.tsx layout components (Phase 2 - part 2)
 - `d09fb52` - refactor: use extracted hooks and layout components in App.tsx (Phase 2 - part 3)
 - `d4fdb99` - refactor: split SitesTable into separate variant components (Phase 2 - part 4)
-
-**Remaining:**
-- [ ] Refactor StatsDashboard.tsx (601 → ~150 lines)
+- `c13d444` - refactor: extract statistics calculation to useHeritageStats hook (Phase 2 - part 5)
 
 ---
 
