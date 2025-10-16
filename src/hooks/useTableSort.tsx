@@ -17,7 +17,7 @@ export type SortDirection = "asc" | "desc";
  *   'desc'
  * );
  */
-export function useTableSort<T extends Record<string, any>>(
+export function useTableSort<T extends Record<string, unknown>>(
   data: T[],
   initialField: keyof T,
   initialDirection: SortDirection = "asc"
@@ -57,7 +57,7 @@ export function useTableSort<T extends Record<string, any>>(
 
       // Handle Date objects
       if (aValue instanceof Date && bValue instanceof Date) {
-        const diff = aValue.getTime() - bValue.getTime();
+        const diff = (aValue as Date).getTime() - (bValue as Date).getTime();
         return sortDirection === "asc" ? diff : -diff;
       }
 
