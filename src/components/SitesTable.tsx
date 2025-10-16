@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import type { GazaSite } from "../types";
 import { components, getStatusHexColor } from "../styles/theme";
 import { formatDateCompact, formatDateStandard, formatDateLong } from "../utils/format";
+import { downloadCSV } from "../utils/csvExport";
 
 interface SitesTableProps {
   sites: GazaSite[];
@@ -15,73 +16,6 @@ interface SitesTableProps {
 
 type SortField = "name" | "type" | "status" | "dateDestroyed" | "dateDestroyedIslamic" | "yearBuilt" | "yearBuiltIslamic";
 type SortDirection = "asc" | "desc";
-
-/**
- * Convert sites array to CSV format
- */
-function sitesToCSV(sites: GazaSite[]): string {
-  const headers = [
-    "Name",
-    "Name (Arabic)",
-    "Type",
-    "Status",
-    "Year Built",
-    "Year Built (Islamic)",
-    "Destruction Date",
-    "Destruction Date (Islamic)",
-    "Description",
-    "Coordinates (Lat, Lng)",
-    "Verified By",
-  ];
-
-  const escapeCSV = (value: string | undefined | null): string => {
-    if (!value) return "";
-    // Escape quotes and wrap in quotes if contains comma, newline, or quote
-    const stringValue = String(value);
-    if (stringValue.includes(",") || stringValue.includes("\n") || stringValue.includes('"')) {
-      return `"${stringValue.replace(/"/g, '""')}"`;
-    }
-    return stringValue;
-  };
-
-  const rows = sites.map((site) => [
-    escapeCSV(site.name),
-    escapeCSV(site.nameArabic),
-    escapeCSV(site.type),
-    escapeCSV(site.status),
-    escapeCSV(site.yearBuilt),
-    escapeCSV(site.yearBuiltIslamic),
-    escapeCSV(site.dateDestroyed),
-    escapeCSV(site.dateDestroyedIslamic),
-    escapeCSV(site.description),
-    `"${site.coordinates[0]}, ${site.coordinates[1]}"`,
-    escapeCSV(site.verifiedBy?.join("; ")),
-  ]);
-
-  return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
-}
-
-/**
- * Trigger CSV download
- */
-function downloadCSV(sites: GazaSite[]) {
-  const csv = sitesToCSV(sites);
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-
-  link.setAttribute("href", url);
-  link.setAttribute(
-    "download",
-    `heritage-tracker-sites-${new Date().toISOString().split("T")[0]}.csv`
-  );
-  link.style.visibility = "hidden";
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
 
 /**
  * Table view of heritage sites with click-to-view-details and sorting

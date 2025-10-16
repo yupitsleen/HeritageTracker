@@ -1,455 +1,998 @@
-# Code Review: feature/timelineImprovements Branch
+# Code Refactoring Plan - Heritage Tracker
 
-**Review Date:** October 16, 2025
-**Reviewer:** Claude (Anthropic)
-**Branch:** feature/timelineImprovements
-**Base Branch:** main
-**Commits Reviewed:** 12 commits (4 ahead of origin)
+**Version:** 1.5.0
+**Date:** October 16, 2025
+**Purpose:** Break down large files into smaller, more maintainable modules following DRY/SOLID/React best practices
 
 ---
 
 ## Executive Summary
 
-✅ **APPROVED - HIGH QUALITY**
+This document provides a comprehensive plan to refactor the Heritage Tracker codebase by separating large files into smaller, focused modules. The current codebase has several files exceeding 200-600 lines, which can make maintenance and collaboration difficult.
 
-This branch represents excellent work on improving the Heritage Tracker application with significant UX enhancements, critical mobile bug fixes, and production readiness improvements. All changes maintain code quality standards, pass comprehensive test coverage (184/184 tests), and successfully build for production.
+### Current Problem Files (by line count)
 
-**Key Achievements:**
-- 🎯 Enhanced map functionality (satellite toggle, better UX)
-- 🐛 Fixed critical mobile rendering bug
-- ✨ Improved filter UX with deferred application
-- 🧹 Removed unnecessary calendar toggle
-- ✅ Production build validated (580KB / 171KB gzipped)
-- 🧪 Maintained 100% test pass rate with new mobile-specific tests
+| File | Lines | Issue |
+|------|-------|-------|
+| `mockSites.ts` | 1,557 | Pure data file - acceptable size for static JSON |
+| `SitesTable.tsx` | 606 | Multiple table variants in one file |
+| `StatsDashboard.tsx` | 601 | Monolithic statistics component with many sections |
+| `App.tsx` | 593 | God component with too many responsibilities |
+| `TimelineScrubber.tsx` | 313 | Complex D3 timeline with mixed concerns |
+| `About.tsx` | 291 | Long content component with multiple sections |
+| `HeritageMap.tsx` | 245 | Map component with mixed concerns |
+| `FilterBar.tsx` | 235 | Complex filter UI with state management |
+| `theme.ts` | 227 | Mixed theme configuration and utilities |
+| `heritageCalculations.ts` | 219 | Complex calculations in one file |
 
----
+### Goals
 
-## Statistics
-
-- **Total Commits:** 12
-- **Files Changed:** ~15 files
-- **Test Status:** 184/184 passing ✅
-- **Linter Status:** Clean ✅
-- **Production Build:** Successful ✅
-- **Bundle Size:** 580KB (171KB gzipped)
-- **Branch Status:** 4 commits ahead of origin, ready to merge
-
----
-
-## Commit-by-Commit Analysis
-
-### Commit 1: refactor: change map markers from teardrops to dots
-**Type:** Refactor
-**Impact:** Visual/UX improvement
-**Quality:** ✅ Good
-
-**Changes:**
-- Updated map marker styling from teardrop/pin shape to circular dots
-- Improved visual clarity and modern aesthetic
-
-**Assessment:** Clean refactor with clear purpose. Aligns with modern mapping UX patterns.
+1. **Improve Maintainability:** Smaller files are easier to understand and modify
+2. **Follow SOLID Principles:** Single Responsibility, Open/Closed, etc.
+3. **Enhance Testability:** Smaller units are easier to test
+4. **Reduce Cognitive Load:** Developers can focus on one concern at a time
+5. **Enable Better Collaboration:** Multiple developers can work on different pieces
+6. **Improve Code Reusability:** Extract common patterns into shared utilities
 
 ---
 
-### Commit 2: refactor: remove calendar toggle and simplify date display
-**Type:** Refactor
-**Impact:** UX simplification
-**Quality:** ✅ Excellent
-
-**Changes:**
-- Removed CalendarToggleButton component
-- Removed useCalendar hook usage from App.tsx
-- Kept Islamic dates in separate table columns
-- Simplified calendar context to single calendar type
-
-**Rationale:** After research confirmed Islamic calendar is actively used in Arab world, determined dual display (both Gregorian and Islamic columns) is superior UX to toggle button.
-
-**Assessment:** Well-reasoned decision based on cultural research. Reduces complexity while maintaining cultural sensitivity.
-
----
-
-### Commit 3: fix(styles): improve input text visibility in filter modal
-**Type:** Bug Fix
-**Impact:** Critical accessibility fix
-**Quality:** ✅ Excellent
-
-**Problem:** Date pickers and year inputs had white text on white background, making them unreadable.
-
-**Changes:**
-- Added `text-gray-900 bg-white` to input.base in theme.ts
-- Added same styling to select.base and select.small
-
-**Assessment:** Critical accessibility fix. Proper use of centralized theme configuration. Should have been caught earlier but resolved correctly.
-
----
-
-### Commit 4: feat(filters): implement deferred filter application
-**Type:** Feature Enhancement
-**Impact:** Major UX improvement
-**Quality:** ✅ Excellent
-
-**Changes:**
-- Added temporary filter state (temp*) in App.tsx
-- Filters now only apply when "Apply Filters" button clicked
-- Added openFilterModal(), applyFilters(), clearTempFilters() functions
-- Users can experiment with filter combinations before applying
-
-**Code Quality:**
-- Clean state management pattern
-- Clear function naming
-- Maintains single source of truth for active filters
-
-**Assessment:** Excellent UX improvement. Prevents jarring immediate updates while user is still adjusting filters. Well-implemented with proper state management.
-
----
-
-### Commit 5: feat(map): add satellite/street map layer toggle
-**Type:** Feature Addition
-**Impact:** User-requested enhancement
-**Quality:** ✅ Excellent
-
-**Changes:**
-- Added LayersControl component to HeritageMap.tsx
-- Street Map (OpenStreetMap) - default layer
-- Satellite (Esri World Imagery) - optional layer
-- Proper attribution for both providers
-
-**Technical Details:**
-- Uses native react-leaflet LayersControl
-- Positioned at topright
-- Clean implementation with proper licensing attribution
-
-**Assessment:** Solid feature addition. Follows Leaflet best practices, provides value to users comparing satellite imagery with street context.
-
----
-
-### Commit 6: refactor(map): move interaction hint to bottom
-**Type:** UX Polish
-**Impact:** Minor visual improvement
-**Quality:** ✅ Good
-
-**Changes:**
-- Moved "Use Ctrl + scroll to zoom" hint from top-4 to bottom-4
-- Better visual hierarchy, less intrusive
-
-**Assessment:** Small but thoughtful UX improvement. Bottom placement is less distracting.
-
----
-
-### Commit 7-9: fix(mobile): resolve Timeline Feature Error on mobile view
-**Type:** Critical Bug Fix
-**Impact:** High - Mobile view was completely broken
-**Quality:** ✅ Excellent (after iteration)
-
-**Problem:** Mobile view rendering ErrorBoundary with "Timeline Feature Error" and IndexSizeError.
-
-**Root Cause:** AnimationProvider was wrapping entire app. HeritageMap and TimelineScrubber components use useAnimation() hook which requires AnimationProvider. Even though components were hidden on mobile with CSS, they were still rendering and throwing errors.
-
-**Solution Journey:**
-1. First attempt: Conditional AnimationProvider (failed - timing issue)
-2. Second attempt: Conditional component rendering with isMobile prop (success)
-
-**Final Implementation:**
-- Initialize isMobile state during render: `useState(() => window.innerWidth < 768)`
-- Pass isMobile prop to AppContent
-- Conditionally render HeritageMap and TimelineScrubber only when `!isMobile`
-- AnimationProvider only wraps desktop view
-
-**Code Quality:**
-- Proper state initialization pattern
-- Clean prop passing
-- Maintains separation of concerns
-
-**Assessment:** Excellent problem-solving. Initial approach didn't work, pivoted to better solution. Final implementation is clean and maintainable.
-
----
-
-### Commit 10: test(mobile): add dedicated mobile view tests
-**Type:** Test Coverage
-**Impact:** Improves test reliability
-**Quality:** ✅ Excellent
-
-**Changes:**
-- Created separate App.mobile.test.tsx file with 3 mobile-specific tests:
-  1. Mobile view renders without errors
-  2. HeritageMap does not render on mobile
-  3. FilterBar and Table render on mobile
-- Properly mocks mobile viewport with beforeAll/afterAll
-- Separates mobile concerns from desktop tests
-
-**Test Quality:**
-- Clear test descriptions
-- Proper setup/teardown
-- Tests actual DOM structure, not just absence of errors
-
-**Assessment:** Excellent test structure. Separation of mobile/desktop tests improves maintainability and debugging.
-
----
-
-### Commit 11: test: add ResizeObserver mock for TimelineScrubber tests
-**Type:** Test Infrastructure
-**Impact:** Fixes desktop test failures
-**Quality:** ✅ Excellent
-
-**Problem:** Desktop test "renders without crashing" was failing because ResizeObserver is not available in JSDOM.
-
-**Changes:**
-- Added ResizeObserver mock to src/test/setup.ts
-- Mock includes observe(), unobserve(), disconnect() methods
-- Documented why mock is needed (not available in JSDOM)
-
-**Assessment:** Proper test environment configuration. Good documentation of why mock is needed. Follows testing best practices.
-
----
-
-### Commit 12: fix(build): exclude test files from production build
-**Type:** Build Configuration
-**Impact:** Critical - Production build was failing
-**Quality:** ✅ Excellent
-
-**Problem:** `npm run build` was failing with TypeScript errors about `expect` not being defined.
-
-**Root Cause:** Test files were being included in production compilation.
-
-**Solution:**
-- Updated tsconfig.app.json with exclude pattern:
-  ```json
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/test"]
-  ```
-
-**Result:** Production build successful - 580KB bundle (171KB gzipped)
-
-**Assessment:** Critical fix for production readiness. Proper TypeScript configuration. Should have been in original setup but resolved correctly.
-
----
-
-## Code Quality Assessment
-
-### ✅ Strengths
-
-1. **Clear Commit Messages**: Follows conventional commit format (feat/fix/refactor)
-2. **Incremental Development**: Each commit is focused and reviewable
-3. **Test Coverage**: Maintained 100% test pass rate, added new tests for new features
-4. **Cultural Sensitivity**: Thoughtful approach to Islamic calendar display
-5. **Problem-Solving**: When initial mobile fix didn't work, pivoted to better solution
-6. **Documentation**: Good inline comments explaining technical decisions
-7. **Production Ready**: Validated with successful build and bundle size check
-
-### ⚠️ Minor Areas for Improvement
-
-1. **Input Visibility Bug**: White-on-white text should have been caught earlier in theme.ts
-2. **Mobile Testing Gap**: Mobile view breaking suggests need for mobile smoke test in CI/CD
-3. **Build Config**: tsconfig.app.json exclude pattern should have been in initial setup
-
-### 📊 Metrics
-
-- **Code Churn:** Moderate (mostly focused changes)
-- **Test Coverage:** Excellent (184/184 passing, +3 new mobile tests)
-- **Breaking Changes:** None (all changes backward compatible)
-- **Performance Impact:** Positive (removed unused calendar toggle code)
-- **Bundle Size:** Acceptable (580KB / 171KB gzipped)
-
----
-
-## Testing Summary
-
-### Test Results: ✅ 184/184 PASSING
-
-**Test Breakdown:**
-- Existing tests: 181 ✅
-- New mobile tests: 3 ✅
-- Desktop smoke test: 1 ✅
-
-**Test Categories:**
-- Component rendering tests
-- Mobile viewport tests
-- Desktop feature tests
-- Filter logic tests
-- Map interaction tests
-- Timeline functionality tests (22 tests)
-- Animation context tests
-
-**Test Infrastructure:**
-- ResizeObserver mock added for JSDOM compatibility
-- Separate mobile/desktop test files for clarity
-- Proper viewport mocking with beforeAll/afterAll
-
-**Linter Status:** ✅ Clean (no warnings or errors)
-
----
-
-## Production Build Validation
-
-**Build Command:** `npm run build`
-**Status:** ✅ SUCCESS
-
-**Bundle Analysis:**
-- Total Size: 580.46 kB
-- Gzipped: 171.37 kB
-- Build Time: ~3.5 seconds
-
-**Bundle Breakdown:**
-- index.js: 577.04 kB (170.30 kB gzipped)
-- index.css: 3.42 kB (1.07 kB gzipped)
-
-**Performance:**
-- Bundle size is reasonable for a map + timeline application
-- Gzip ratio: ~29.5% (excellent compression)
-- No build warnings or errors
-
----
-
-## Security & Best Practices Review
-
-### ✅ Security
-
-- No sensitive data exposed in code
-- Proper attribution for map tile providers
-- No new dependencies added (uses existing stack)
-- Environment variables not committed
-
-### ✅ Accessibility
-
-- Fixed critical color contrast issue (white on white)
-- Keyboard navigation maintained
-- ARIA labels preserved in timeline components
-- Mobile viewport properly configured
-
-### ✅ Performance
-
-- No performance regressions
-- Conditional rendering reduces mobile bundle execution
-- ResizeObserver properly cleaned up in unmount
-- Event listeners properly removed
-
-### ✅ Best Practices
-
-- React 19 patterns followed
-- TypeScript strict mode enabled
-- Proper state management (no prop drilling)
-- Clean component composition
-
----
-
-## Files Modified Summary
-
-**Key Files:**
-- `src/App.tsx` - Major refactor for mobile support and filter UX
-- `src/App.mobile.test.tsx` - NEW: Mobile-specific tests
-- `src/test/setup.ts` - Added ResizeObserver mock
-- `src/styles/theme.ts` - Fixed input text visibility
-- `src/components/Map/HeritageMap.tsx` - Satellite toggle, hint positioning
-- `tsconfig.app.json` - Excluded test files from build
-
-**Total Impact:**
-- ~15 files modified
-- ~500 lines added
-- ~200 lines removed
-- Net positive: More features, fewer bugs, better UX
-
----
-
-## Deployment Readiness
-
-### ✅ Pre-Merge Checklist
-
-- [x] All tests passing (184/184)
-- [x] Linter clean
-- [x] Production build successful
-- [x] Bundle size acceptable
-- [x] No console errors in dev mode
-- [x] Mobile view works correctly
-- [x] Desktop view works correctly
-- [x] Git history clean (meaningful commits)
-- [x] No merge conflicts with main
-- [x] Feature complete per scope
-
-### ✅ Deployment Verification Steps
-
-1. Run `npm run build` - ✅ SUCCESS
-2. Test mobile viewport (375px) - ✅ WORKS
-3. Test desktop viewport (1920px) - ✅ WORKS
-4. Verify all tests pass - ✅ 184/184
-5. Check bundle size - ✅ 171KB gzipped
-
----
-
-## Recommendations
-
-### Immediate Actions (Before Merge)
-1. ✅ All critical items complete - Ready to merge!
-
-### Post-Merge Improvements
-1. **Add Mobile Smoke Test to CI/CD**: Ensure mobile view is tested in automated pipeline
-2. **Bundle Size Monitoring**: Set up tracking for bundle size changes in CI
-3. **Visual Regression Testing**: Consider adding screenshot testing for map/timeline
-4. **Performance Monitoring**: Add bundle analysis to CI for future PRs
-
-### Future Enhancements
-1. Consider lazy-loading map/timeline components for faster initial load
-2. Add service worker for offline support
-3. Implement code splitting for larger feature sets
-4. Add E2E tests with Playwright for critical user journeys
-
----
-
-## Final Verdict
-
-### ✅ APPROVED FOR MERGE
-
-**Overall Quality:** Excellent
-**Risk Level:** Low
-**Merge Recommendation:** **APPROVE AND MERGE**
-
-**Justification:**
-- All tests passing (184/184)
-- Production build validated
-- Critical mobile bug fixed
-- Meaningful UX improvements
-- Clean, maintainable code
-- No breaking changes
-- Proper documentation and commit messages
-
-**Merge Instructions:**
-```bash
-# Ensure you're on feature/timelineImprovements branch
-git checkout feature/timelineImprovements
-
-# Pull latest changes (if working with team)
-git pull origin feature/timelineImprovements
-
-# Checkout main and ensure it's up to date
-git checkout main
-git pull origin main
-
-# Merge feature branch (using --no-ff to preserve branch history)
-git merge --no-ff feature/timelineImprovements
-
-# Push to origin
-git push origin main
-
-# Optional: Delete feature branch after successful merge
-git branch -d feature/timelineImprovements
-git push origin --delete feature/timelineImprovements
+## Priority 1: Critical Refactorings (High Impact, High Value)
+
+### 1.1 App.tsx Refactoring (593 lines → ~150 lines)
+
+**Current Issues:**
+- Single component handles application state, filter logic, modal management, layout, and event handling
+- 50+ lines of state declarations
+- Complex resize logic mixed with business logic
+- Violates Single Responsibility Principle
+
+**Refactoring Plan:**
+
+#### Step 1: Extract State Management Hook
+**Create:** `src/hooks/useAppState.ts` (~100 lines)
+```typescript
+export function useAppState() {
+  // Extract all useState declarations
+  // Extract filter logic
+  // Export clean interface
+  return {
+    // Site selection
+    selectedSite, setSelectedSite,
+    highlightedSiteId, setHighlightedSiteId,
+
+    // Filters
+    filters, updateFilters, clearFilters,
+    tempFilters, updateTempFilters,
+    hasActiveFilters,
+
+    // Modals
+    modals, openModal, closeModal,
+
+    // UI state
+    tableWidth, setTableWidth,
+    isResizing, setIsResizing,
+  };
+}
 ```
 
+**Benefits:**
+- Centralized state management
+- Easier to test state transitions
+- Can be reused in other components if needed
+
+#### Step 2: Extract Filter Logic Hook
+**Create:** `src/hooks/useFilteredSites.ts` (~80 lines)
+```typescript
+export function useFilteredSites(
+  sites: GazaSite[],
+  filters: FilterState
+) {
+  // Memoized filter pipeline
+  const typeAndStatusFiltered = useMemo(...);
+  const destructionDateFiltered = useMemo(...);
+  const yearFiltered = useMemo(...);
+  const searchFiltered = useMemo(...);
+
+  return {
+    filteredSites: searchFiltered,
+    count: searchFiltered.length,
+    total: sites.length,
+  };
+}
+```
+
+**Benefits:**
+- Pure filter logic separated from UI
+- Easy to unit test
+- Memoization optimizations in one place
+
+#### Step 3: Extract Table Resize Hook
+**Create:** `src/hooks/useTableResize.ts` (~60 lines)
+```typescript
+export function useTableResize(
+  initialWidth: number = 480,
+  minWidth: number = 480,
+  maxWidth: number = 1100
+) {
+  const [tableWidth, setTableWidth] = useState(initialWidth);
+  const [isResizing, setIsResizing] = useState(false);
+
+  // Extract all resize logic
+  const handleResizeStart = useCallback(...);
+  const getVisibleColumns = useCallback(...);
+
+  // Effect for mouse move/up listeners
+  useEffect(...);
+
+  return {
+    tableWidth,
+    isResizing,
+    handleResizeStart,
+    getVisibleColumns,
+  };
+}
+```
+
+**Benefits:**
+- Reusable resize logic
+- Cleaner component code
+- Testable in isolation
+
+#### Step 4: Extract Layout Components
+**Create:** `src/components/Layout/AppHeader.tsx` (~60 lines)
+```typescript
+export function AppHeader({
+  onOpenDonate,
+  onOpenStats,
+  onOpenAbout
+}: AppHeaderProps) {
+  return (
+    <div className="sticky top-0 z-50 bg-[#000000]">
+      {/* Header content */}
+      {/* Flag line */}
+    </div>
+  );
+}
+```
+
+**Create:** `src/components/Layout/AppFooter.tsx` (~40 lines)
+```typescript
+export function AppFooter({
+  onOpenDonate,
+  onOpenStats,
+  onOpenAbout,
+  isMobile,
+}: AppFooterProps) {
+  return (
+    <footer className="fixed bottom-0 left-0 right-0 bg-[#009639]">
+      {/* Footer content */}
+    </footer>
+  );
+}
+```
+
+**Create:** `src/components/Layout/DesktopLayout.tsx` (~120 lines)
+```typescript
+export function DesktopLayout({
+  filteredSites,
+  tableProps,
+  mapProps,
+  timelineProps,
+  filterBarProps,
+}: DesktopLayoutProps) {
+  return (
+    <div className="hidden md:block">
+      {/* Filter bar, search, tags */}
+      {/* Two-column layout */}
+    </div>
+  );
+}
+```
+
+**Create:** `src/components/Layout/MobileLayout.tsx` (~40 lines)
+```typescript
+export function MobileLayout({
+  filteredSites,
+  filterBarProps,
+  tableProps,
+}: MobileLayoutProps) {
+  return (
+    <div className="md:hidden">
+      {/* Mobile filter bar */}
+      {/* Mobile table */}
+    </div>
+  );
+}
+```
+
+**Benefits:**
+- Clear separation of layout concerns
+- Easier to modify desktop vs mobile layouts
+- Components can be tested independently
+
+#### Step 5: New App.tsx Structure (~150 lines)
+```typescript
+function AppContent({ isMobile }: { isMobile: boolean }) {
+  // Use extracted hooks
+  const appState = useAppState();
+  const { filteredSites } = useFilteredSites(mockSites, appState.filters);
+  const tableResize = useTableResize();
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <AppHeader {...appState.modals} />
+
+      <main className="pb-24 md:pb-32">
+        {isMobile ? (
+          <MobileLayout
+            filteredSites={filteredSites}
+            {...appState}
+            {...tableResize}
+          />
+        ) : (
+          <DesktopLayout
+            filteredSites={filteredSites}
+            {...appState}
+            {...tableResize}
+          />
+        )}
+      </main>
+
+      {/* Modals with extracted components */}
+      <AppModals {...appState} filteredSites={filteredSites} />
+
+      <AppFooter isMobile={isMobile} {...appState.modals} />
+    </div>
+  );
+}
+```
+
+**Result:** App.tsx reduced from 593 → ~150 lines
+
 ---
 
-## Reviewer Notes
+### 1.2 SitesTable.tsx Refactoring (606 lines → ~200 lines)
 
-This was a well-executed feature branch with clear incremental progress. The developer demonstrated strong problem-solving skills, especially when the initial mobile fix approach didn't work and they pivoted to a better solution. Code quality is high, test coverage is maintained, and the UX improvements are meaningful.
+**Current Issues:**
+- Three table variants (compact, expanded, mobile) in one file
+- CSV export logic embedded
+- Sorting logic embedded
+- Mobile accordion and desktop table logic intermingled
 
-The only notable issues were:
-1. Input visibility bug (quickly fixed)
-2. Initial mobile fix approach (corrected in next iteration)
-3. Build configuration oversight (resolved before merge)
+**Refactoring Plan:**
 
-All issues were identified and resolved during development, demonstrating good quality control practices.
+#### Step 1: Extract CSV Export Utilities
+**Create:** `src/utils/csvExport.ts` (~60 lines)
+```typescript
+export function sitesToCSV(sites: GazaSite[]): string {
+  // CSV conversion logic
+}
 
-**Recommended for merge without reservations.**
+export function downloadCSV(sites: GazaSite[], filename?: string) {
+  // Download trigger logic
+}
+
+export function escapeCSV(value: string | undefined | null): string {
+  // RFC 4180 escaping
+}
+```
+
+**Benefits:**
+- Reusable across app (e.g., for other export features)
+- Unit testable
+- Follows Single Responsibility
+
+#### Step 2: Extract Table Sorting Hook
+**Create:** `src/hooks/useTableSort.ts` (~80 lines)
+```typescript
+export function useTableSort<T extends Record<string, any>>(
+  data: T[],
+  initialField: string,
+  initialDirection: 'asc' | 'desc' = 'asc'
+) {
+  const [sortField, setSortField] = useState(initialField);
+  const [sortDirection, setSortDirection] = useState(initialDirection);
+
+  const sortedData = useMemo(() => {
+    // Generic sorting logic
+  }, [data, sortField, sortDirection]);
+
+  const handleSort = useCallback((field: string) => {
+    // Toggle logic
+  }, [sortField, sortDirection]);
+
+  const SortIcon = ({ field }: { field: string }) => {
+    // Sort indicator component
+  };
+
+  return { sortedData, sortField, sortDirection, handleSort, SortIcon };
+}
+```
+
+**Benefits:**
+- Reusable sorting logic
+- Type-safe
+- Reduces table component complexity
+
+#### Step 3: Split Table Variants into Separate Components
+**Create:** `src/components/SitesTable/SitesTableCompact.tsx` (~150 lines)
+```typescript
+export function SitesTableCompact({
+  sites,
+  visibleColumns,
+  onSiteClick,
+  onSiteHighlight,
+  highlightedSiteId,
+  onExpandTable,
+}: SitesTableCompactProps) {
+  const { sortedData, handleSort, SortIcon } = useTableSort(sites, 'dateDestroyed', 'desc');
+  // Desktop compact table logic only
+}
+```
+
+**Create:** `src/components/SitesTable/SitesTableExpanded.tsx` (~170 lines)
+```typescript
+export function SitesTableExpanded({
+  sites,
+  onSiteClick,
+  onSiteHighlight,
+  highlightedSiteId,
+}: SitesTableExpandedProps) {
+  const { sortedData, handleSort, SortIcon } = useTableSort(sites, 'dateDestroyed', 'desc');
+  // Expanded modal table with all columns + CSV export
+}
+```
+
+**Create:** `src/components/SitesTable/SitesTableMobile.tsx` (~150 lines)
+```typescript
+export function SitesTableMobile({
+  sites,
+  onSiteClick,
+  onSiteHighlight,
+  highlightedSiteId,
+}: SitesTableMobileProps) {
+  const { sortedData, handleSort, SortIcon } = useTableSort(sites, 'dateDestroyed', 'desc');
+  // Mobile accordion logic only
+}
+```
+
+**Create:** `src/components/SitesTable/index.tsx` (~40 lines)
+```typescript
+export function SitesTable(props: SitesTableProps) {
+  switch (props.variant) {
+    case 'mobile':
+      return <SitesTableMobile {...props} />;
+    case 'expanded':
+      return <SitesTableExpanded {...props} />;
+    case 'compact':
+    default:
+      return <SitesTableCompact {...props} />;
+  }
+}
+```
+
+**Benefits:**
+- Each variant is independently maintainable
+- No conditional logic mixing variants
+- Easier to add new variants
+- Follows Open/Closed Principle
+
+**Result:** SitesTable split into 4 files, each ~150 lines
 
 ---
 
-**Review Completed By:** Claude (Anthropic)
-**Review Date:** October 16, 2025
-**Branch Status:** ✅ Ready for Production
+### 1.3 StatsDashboard.tsx Refactoring (601 lines → ~150 lines)
+
+**Current Issues:**
+- Monolithic component with 10+ distinct sections
+- Mixed statistics calculation and presentation logic
+- Lots of hardcoded content
+- Difficult to test individual sections
+
+**Refactoring Plan:**
+
+#### Step 1: Extract Statistics Calculation Hook
+**Create:** `src/hooks/useHeritageStats.ts` (~100 lines)
+```typescript
+export function useHeritageStats(sites: GazaSite[]) {
+  return useMemo(() => {
+    // All calculation logic
+    return {
+      total,
+      destroyed,
+      damaged,
+      heavilyDamaged,
+      surviving,
+      religiousSites,
+      religiousDestroyed,
+      religiousSurviving,
+      oldestSiteAge,
+      ancientSites,
+      museums,
+      museumsDestroyed,
+      archaeological,
+      archaeologicalSurviving,
+    };
+  }, [sites]);
+}
+```
+
+**Benefits:**
+- Pure calculation logic
+- Easy to unit test
+- Reusable in other dashboards or exports
+
+#### Step 2: Extract Individual Stat Sections
+**Create:** `src/components/Stats/HeroStatistic.tsx` (~40 lines)
+```typescript
+export function HeroStatistic({
+  value,
+  title,
+  description
+}: HeroStatisticProps) {
+  // Reusable hero stat card
+}
+```
+
+**Create:** `src/components/Stats/StatCard.tsx` (~40 lines)
+```typescript
+export function StatCard({
+  value,
+  title,
+  description,
+  variant,
+}: StatCardProps) {
+  // Reusable stat card with different color variants
+}
+```
+
+**Create:** `src/components/Stats/SiteLossExample.tsx` (~60 lines)
+```typescript
+export function SiteLossExample({
+  name,
+  age,
+  facts,
+}: SiteLossExampleProps) {
+  // Reusable site loss card
+}
+```
+
+**Create:** `src/components/Stats/sections/YearsOfHistorySection.tsx` (~50 lines)
+```typescript
+export function YearsOfHistorySection({ stats }: { stats: HeritageStats }) {
+  return <HeroStatistic ... />;
+}
+```
+
+**Create:** `src/components/Stats/sections/KeyMetricsSection.tsx` (~70 lines)
+```typescript
+export function KeyMetricsSection({ stats }: { stats: HeritageStats }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <StatCard ... />
+      <StatCard ... />
+      <StatCard ... />
+    </div>
+  );
+}
+```
+
+**Create:** Similar section components for:**
+- `WhatWasLostSection.tsx` (~100 lines)
+- `LootedArtifactsSection.tsx` (~80 lines)
+- `LostKnowledgeSection.tsx` (~120 lines)
+- `WhatRemainsSection.tsx` (~100 lines)
+- `PerspectiveSection.tsx` (~70 lines)
+- `LegalContextSection.tsx` (~50 lines)
+
+#### Step 3: New StatsDashboard.tsx (~150 lines)
+```typescript
+export function StatsDashboard({ sites }: StatsDashboardProps) {
+  const stats = useHeritageStats(sites);
+
+  return (
+    <div className="max-h-[80vh] overflow-y-auto bg-white">
+      <div className="p-4 md:p-8 max-w-6xl mx-auto">
+        <StatsHeader />
+        <YearsOfHistorySection stats={stats} />
+        <KeyMetricsSection stats={stats} />
+        <WhatWasLostSection />
+        <LootedArtifactsSection />
+        <LostKnowledgeSection />
+        <WhatRemainsSection stats={stats} />
+        <PerspectiveSection />
+        <LegalContextSection />
+        <StatsFooter />
+      </div>
+    </div>
+  );
+}
+```
+
+**Benefits:**
+- Each section independently testable
+- Easy to reorder or remove sections
+- Sections can be reused in other contexts
+- Clear component hierarchy
+
+**Result:** StatsDashboard split into 12+ files, main file ~150 lines
+
+---
+
+## Priority 2: Important Refactorings (Medium Impact, High Value)
+
+### 2.1 TimelineScrubber.tsx Refactoring (313 lines → ~180 lines)
+
+**Current Issues:**
+- D3 rendering logic mixed with React component logic
+- Complex timeline calculations embedded
+- State management and rendering intertwined
+
+**Refactoring Plan:**
+
+#### Step 1: Extract D3 Timeline Logic
+**Create:** `src/utils/d3Timeline.ts` (~100 lines)
+```typescript
+export class D3TimelineRenderer {
+  private svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
+  private scale: d3.ScaleTime<number, number>;
+
+  constructor(svgElement: SVGSVGElement, config: TimelineConfig) {
+    // D3 setup
+  }
+
+  render(data: TimelineData, currentDate: Date) {
+    // Pure D3 rendering logic
+  }
+
+  updateScale(width: number) {
+    // Scale updates
+  }
+
+  cleanup() {
+    // D3 cleanup
+  }
+}
+```
+
+**Benefits:**
+- D3 logic separated from React
+- Easier to test D3 operations
+- Can be used in other timeline components
+
+#### Step 2: Extract Timeline Calculations Hook
+**Create:** `src/hooks/useTimelineData.ts` (~60 lines)
+```typescript
+export function useTimelineData(
+  sites: GazaSite[],
+  startDate: Date,
+  endDate: Date
+) {
+  return useMemo(() => {
+    // Process sites into timeline events
+    // Calculate event positions
+    // Group events by date
+    return {
+      events: [...],
+      dateRange: [startDate, endDate],
+      eventDensity: ...,
+    };
+  }, [sites, startDate, endDate]);
+}
+```
+
+**Benefits:**
+- Pure data transformation
+- Memoized for performance
+- Easy to test
+
+#### Step 3: Refactored TimelineScrubber.tsx (~180 lines)
+```typescript
+export function TimelineScrubber({ sites }: TimelineScrubberProps) {
+  const { currentDate, isPlaying, speed, ... } = useAnimation();
+  const timelineData = useTimelineData(sites, startDate, endDate);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  // Initialize D3 renderer
+  const rendererRef = useRef<D3TimelineRenderer>();
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+    rendererRef.current = new D3TimelineRenderer(svgRef.current, config);
+    return () => rendererRef.current?.cleanup();
+  }, []);
+
+  // Render on data/date changes
+  useEffect(() => {
+    rendererRef.current?.render(timelineData, currentDate);
+  }, [timelineData, currentDate]);
+
+  return (
+    <div>
+      {/* Timeline controls */}
+      <svg ref={svgRef} />
+      {/* Current date display */}
+    </div>
+  );
+}
+```
+
+**Result:** TimelineScrubber 313 → ~180 lines + separate utilities
+
+---
+
+### 2.2 About.tsx Refactoring (291 lines → ~80 lines)
+
+**Current Issues:**
+- Long content component with mixed sections
+- All content inline in JSX
+- Hard to update individual sections
+
+**Refactoring Plan:**
+
+#### Step 1: Extract Content Sections
+**Create:** `src/components/About/sections/ProjectOverviewSection.tsx` (~50 lines)
+**Create:** `src/components/About/sections/DataSourcesSection.tsx` (~60 lines)
+**Create:** `src/components/About/sections/MethodologySection.tsx` (~80 lines)
+**Create:** `src/components/About/sections/LegalFrameworkSection.tsx` (~60 lines)
+**Create:** `src/components/About/sections/AttributionSection.tsx` (~40 lines)
+
+#### Step 2: New About.tsx (~80 lines)
+```typescript
+export function About() {
+  return (
+    <div className="max-h-[80vh] overflow-y-auto bg-white p-6">
+      <AboutHeader />
+      <ProjectOverviewSection />
+      <DataSourcesSection />
+      <MethodologySection />
+      <LegalFrameworkSection />
+      <AttributionSection />
+      <AboutFooter />
+    </div>
+  );
+}
+```
+
+**Benefits:**
+- Easy to update individual sections
+- Sections can be reused or reordered
+- Better organization of content
+
+**Result:** About split into 6 section files
+
+---
+
+### 2.3 FilterBar.tsx Refactoring (235 lines → ~120 lines)
+
+**Current Issues:**
+- Complex filter UI with embedded date picker logic
+- BC/BCE year handling mixed with UI
+- Multiple filter types in one component
+
+**Refactoring Plan:**
+
+#### Step 1: Extract Date Filter Components
+**Create:** `src/components/FilterBar/DateRangeFilter.tsx` (~60 lines)
+```typescript
+export function DateRangeFilter({
+  startDate,
+  endDate,
+  onStartChange,
+  onEndChange,
+  label,
+}: DateRangeFilterProps) {
+  // Date range picker with validation
+}
+```
+
+**Create:** `src/components/FilterBar/YearRangeFilter.tsx` (~80 lines)
+```typescript
+export function YearRangeFilter({
+  startYear,
+  endYear,
+  onStartChange,
+  onEndChange,
+  supportBCE = true,
+}: YearRangeFilterProps) {
+  // Year range with BC/BCE dropdown
+}
+```
+
+#### Step 2: Refactored FilterBar.tsx (~120 lines)
+```typescript
+export function FilterBar({
+  selectedTypes,
+  selectedStatuses,
+  destructionDateStart,
+  destructionDateEnd,
+  creationYearStart,
+  creationYearEnd,
+  searchTerm,
+  onTypeChange,
+  onStatusChange,
+  onDestructionDateStartChange,
+  onDestructionDateEndChange,
+  onCreationYearStartChange,
+  onCreationYearEndChange,
+  onSearchChange,
+}: FilterBarProps) {
+  return (
+    <div>
+      <MultiSelectDropdown
+        label="Type"
+        options={SITE_TYPES}
+        selected={selectedTypes}
+        onChange={onTypeChange}
+      />
+      <MultiSelectDropdown
+        label="Status"
+        options={STATUS_OPTIONS}
+        selected={selectedStatuses}
+        onChange={onStatusChange}
+      />
+      <DateRangeFilter
+        label="Destruction Date"
+        startDate={destructionDateStart}
+        endDate={destructionDateEnd}
+        onStartChange={onDestructionDateStartChange}
+        onEndChange={onDestructionDateEndChange}
+      />
+      <YearRangeFilter
+        startYear={creationYearStart}
+        endYear={creationYearEnd}
+        onStartChange={onCreationYearStartChange}
+        onEndChange={onCreationYearEndChange}
+        supportBCE
+      />
+    </div>
+  );
+}
+```
+
+**Result:** FilterBar 235 → ~120 lines + reusable filter components
+
+---
+
+### 2.4 theme.ts Refactoring (227 lines → ~80 lines + utilities)
+
+**Current Issues:**
+- Theme configuration mixed with utility functions
+- Color constants and components in same file
+- `cn()` utility buried in theme file
+
+**Refactoring Plan:**
+
+#### Step 1: Extract Utility Functions
+**Create:** `src/utils/classNames.ts` (~20 lines)
+```typescript
+/**
+ * Conditionally join class names
+ * Similar to clsx/classnames but lightweight
+ */
+export function cn(...classes: (string | undefined | false)[]): string {
+  return classes.filter(Boolean).join(' ');
+}
+```
+
+**Create:** `src/utils/colorHelpers.ts` (~40 lines)
+```typescript
+export function getStatusColor(status: GazaSite["status"]): string {
+  // Tailwind class logic
+}
+
+export function getStatusHexColor(status: GazaSite["status"]): string {
+  // Hex color logic
+}
+```
+
+#### Step 2: Organize Theme File
+**Create:** `src/styles/colors.ts` (~30 lines)
+```typescript
+/**
+ * Palestinian Flag Theme Colors
+ */
+export const colors = {
+  red: '#ed3039',
+  green: '#009639',
+  black: '#000000',
+  white: '#fefefe',
+  // ... other colors
+} as const;
+```
+
+**Create:** `src/styles/components.ts` (~80 lines)
+```typescript
+/**
+ * Component-level style configurations
+ */
+export const components = {
+  header: { base: '...' },
+  table: { base: '...', td: '...' },
+  container: { base: '...' },
+  // ... other components
+} as const;
+```
+
+**Create:** `src/styles/theme.ts` (~30 lines)
+```typescript
+/**
+ * Main theme export
+ */
+export { colors } from './colors';
+export { components } from './components';
+export { cn } from '../utils/classNames';
+export { getStatusColor, getStatusHexColor } from '../utils/colorHelpers';
+```
+
+**Benefits:**
+- Clear separation of concerns
+- Utilities can be imported independently
+- Theme configuration is cleaner
+
+**Result:** theme.ts split into multiple focused files
+
+---
+
+## Priority 3: Nice-to-Have Refactorings (Lower Impact, Medium Value)
+
+### 3.1 HeritageMap.tsx Refactoring (245 lines → ~150 lines)
+
+**Refactoring Plan:**
+- Extract marker creation logic to `src/components/Map/MapMarkers.tsx`
+- Extract tile configuration to `src/components/Map/MapTiles.tsx`
+- Use composition instead of one large component
+
+### 3.2 heritageCalculations.ts Organization (219 lines → multiple files)
+
+**Refactoring Plan:**
+- Split into themed files:
+  - `src/utils/calculations/glowContributions.ts`
+  - `src/utils/calculations/heritageMetrics.ts`
+  - `src/utils/calculations/significance.ts`
+
+### 3.3 mockSites.ts (1,557 lines)
+
+**Note:** This is a data file, not code. Consider:
+- Moving to JSON: `src/data/sites.json`
+- Or splitting by type: `mosques.ts`, `churches.ts`, etc.
+- Or keeping as-is (acceptable for static data)
+
+---
+
+## Implementation Strategy
+
+### Phase 1: Foundation (Week 1-2)
+1. Extract common hooks (`useTableSort`, `useAppState`)
+2. Extract utility functions (`csvExport`, `classNames`, `colorHelpers`)
+3. Create reusable UI components (`StatCard`, `SiteLossExample`)
+
+### Phase 2: Major Components (Week 3-4)
+1. Refactor `App.tsx` → Layout components + hooks
+2. Refactor `SitesTable.tsx` → Variant components
+3. Refactor `StatsDashboard.tsx` → Section components
+
+### Phase 3: Timeline & Specialized (Week 5)
+1. Refactor `TimelineScrubber.tsx` → D3 utilities
+2. Refactor `About.tsx` → Section components
+3. Refactor `FilterBar.tsx` → Filter components
+
+### Phase 4: Theme & Utilities (Week 6)
+1. Reorganize `theme.ts` → Separate config files
+2. Refactor `heritageCalculations.ts` → Themed files
+3. Clean up any remaining large files
+
+### Phase 5: Testing & Documentation (Week 7)
+1. Add unit tests for extracted hooks
+2. Add unit tests for utility functions
+3. Update component tests
+4. Update documentation (README, CLAUDE.md)
+
+---
+
+## Testing Strategy
+
+### For Each Refactoring:
+
+1. **Before:** Ensure all existing tests pass
+2. **During:** Write tests for new utilities/hooks
+3. **After:** Verify all tests still pass
+4. **Coverage:** Aim for 80%+ coverage on new utilities
+
+### Priority Test Coverage:
+
+- **High Priority:** Hooks, utilities, calculations
+- **Medium Priority:** Layout components, section components
+- **Lower Priority:** Presentational components
+
+---
+
+## Migration Checklist Template
+
+For each file refactoring:
+
+- [ ] Create new file structure
+- [ ] Extract logic into new files
+- [ ] Update imports in dependent files
+- [ ] Add JSDoc comments
+- [ ] Write unit tests
+- [ ] Run full test suite
+- [ ] Run linter
+- [ ] Build production bundle
+- [ ] Verify no increase in bundle size
+- [ ] Update CLAUDE.md if needed
+- [ ] Commit with conventional message
+
+---
+
+## Expected Benefits
+
+### Code Quality
+- **Before:** 10 files >200 lines
+- **After:** ~40 focused files <200 lines each
+- **Average file size:** Reduced from ~250 lines to ~100 lines
+
+### Maintainability
+- Easier to locate specific functionality
+- Clearer component responsibilities
+- Better code organization
+
+### Testability
+- More granular unit tests
+- Easier to mock dependencies
+- Better test coverage
+
+### Performance
+- No performance degradation expected
+- Potential improvements from better memoization
+- Tree-shaking benefits from modular structure
+
+### Developer Experience
+- Faster to understand codebase
+- Easier to onboard new developers
+- Better IDE performance (smaller files)
+
+---
+
+## Risks & Mitigations
+
+### Risk 1: Breaking Changes
+**Mitigation:** Comprehensive test suite, careful refactoring, incremental approach
+
+### Risk 2: Import Complexity
+**Mitigation:** Barrel exports (index.ts files), clear folder structure
+
+### Risk 3: Over-Engineering
+**Mitigation:** Follow "Rule of Three" - extract only when pattern repeats 3+ times
+
+### Risk 4: Time Investment
+**Mitigation:** Prioritize high-impact refactorings first, spread over multiple weeks
+
+---
+
+## Success Criteria
+
+1. **All tests passing:** 184/184 tests green
+2. **No linter errors:** Clean eslint run
+3. **Bundle size:** No increase (or reduction)
+4. **No functionality breaks:** All features work as before
+5. **Documentation updated:** CLAUDE.md reflects new structure
+6. **File count:** ~40-50 focused files instead of 10 large files
+7. **Average file size:** <200 lines per file (excluding data)
+
+---
+
+## Notes for Implementation
+
+1. **Start Small:** Begin with utilities and hooks (low risk)
+2. **One Component at a Time:** Don't refactor multiple components simultaneously
+3. **Keep Main Branch Stable:** Use feature branches for each refactoring
+4. **Document as You Go:** Update CLAUDE.md with new structure
+5. **Leverage Existing Tests:** Use test suite to catch regressions
+6. **Ask for Review:** Have another developer review larger refactorings
+
+---
+
+**Last Updated:** October 16, 2025
+**Status:** Ready for Implementation
+**Estimated Effort:** 6-7 weeks (part-time) or 3-4 weeks (full-time)
