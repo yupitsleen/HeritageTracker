@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { mockSites } from "./data/mockSites";
 import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
@@ -72,6 +72,8 @@ function AppContent() {
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [tableWidth, setTableWidth] = useState(480); // Resizable table width
+  const [isResizing, setIsResizing] = useState(false);
 
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
@@ -122,6 +124,47 @@ function AppContent() {
     setCreationYearStart(null);
     setCreationYearEnd(null);
     setSearchTerm("");
+  };
+
+  // Resize handler for table
+  const handleResizeStart = useCallback(() => {
+    setIsResizing(true);
+  }, []);
+
+  // Handle mouse move during resize
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate new width from left edge of viewport to mouse position
+      // Subtract 24px for left padding (pl-6)
+      const newWidth = e.clientX - 24;
+      // Min width: 480px, Max width: 1100px
+      const clampedWidth = Math.max(480, Math.min(1100, newWidth));
+      setTableWidth(clampedWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing]);
+
+  // Calculate which columns to show based on table width
+  const getVisibleColumns = (): string[] => {
+    const columns = ['name', 'status', 'dateDestroyed', 'actions'];
+    if (tableWidth >= 650) columns.splice(1, 0, 'type'); // Add Type after Name
+    if (tableWidth >= 800) columns.splice(columns.length - 1, 0, 'dateDestroyedIslamic'); // Add before Actions
+    if (tableWidth >= 950) columns.splice(columns.length - 1, 0, 'yearBuilt');
+    if (tableWidth >= 1100) columns.splice(columns.length - 1, 0, 'yearBuiltIslamic');
+    return columns;
   };
 
   return (
@@ -290,19 +333,30 @@ function AppContent() {
 
             {/* Two-column layout below FilterBar - Table on Left, Map on Right */}
             <div className="flex gap-6">
-              {/* Left Sidebar - Sites Table (Sticky below header, scrollable on hover, WHITE outline with black inner border) */}
-              <aside className="w-[480px] flex-shrink-0 pl-6 pt-3">
-                <div className="border-4 border-white rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
-                  <div className="border border-black rounded-lg h-full overflow-y-auto">
+              {/* Left Sidebar - Sites Table (Resizable, RED outline with white inner border) */}
+              <aside
+                className="flex-shrink-0 pl-6 pt-3 relative"
+                style={{ width: `${tableWidth}px` }}
+              >
+                <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
+                  <div className="border-2 border-white rounded-lg h-full overflow-y-auto">
                     <SitesTable
                       sites={tableSites}
                       onSiteClick={setSelectedSite}
                       onSiteHighlight={setHighlightedSiteId}
                       highlightedSiteId={highlightedSiteId}
                       onExpandTable={() => setIsTableExpanded(true)}
+                      visibleColumns={getVisibleColumns()}
                     />
                   </div>
                 </div>
+                {/* Resize handle */}
+                <div
+                  className={`absolute top-3 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${isResizing ? 'bg-[#ed3039] bg-opacity-50' : ''}`}
+                  onMouseDown={handleResizeStart}
+                  title="Drag to resize table"
+                  aria-label="Resize table"
+                />
               </aside>
 
               {/* Right - Map (Expanded to fill space) */}
