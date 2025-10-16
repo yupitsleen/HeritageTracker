@@ -1,0 +1,261 @@
+import { useState, useMemo } from "react";
+import type { GazaSite } from "../../types";
+import { getStatusHexColor } from "../../styles/theme";
+import { formatDateCompact, formatDateLong } from "../../utils/format";
+
+interface SitesTableMobileProps {
+  sites: GazaSite[];
+}
+
+type SortField = "name" | "dateDestroyed";
+type SortDirection = "asc" | "desc";
+
+/**
+ * Mobile accordion variant of sites table
+ * Features: Collapsible rows, status-colored names, sortable columns
+ */
+export function SitesTableMobile({ sites }: SitesTableMobileProps) {
+  const [sortField, setSortField] = useState<SortField>("dateDestroyed");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedSites = useMemo(() => {
+    const sorted = [...sites].sort((a, b) => {
+      let aValue: string | number;
+      let bValue: string | number;
+
+      switch (sortField) {
+        case "name":
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case "dateDestroyed":
+          aValue = a.dateDestroyed ? new Date(a.dateDestroyed).getTime() : 0;
+          bValue = b.dateDestroyed ? new Date(b.dateDestroyed).getTime() : 0;
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    return sorted;
+  }, [sites, sortField, sortDirection]);
+
+  const SortIcon = ({ field }: { field: SortField }) => {
+    if (sortField !== field) {
+      return <span className="text-gray-400 ml-1">↕</span>;
+    }
+    return <span className="text-[#009639] ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>;
+  };
+
+  return (
+    <div className="flex flex-col">
+      {/* Non-sticky header - centered */}
+      <div className="pb-3 mb-3 border-b-2 border-gray-300">
+        <h2 className="text-lg font-bold text-gray-800 text-center">Heritage Sites</h2>
+        <p className="text-xs text-gray-600 text-center">
+          Showing {sortedSites.length} site{sortedSites.length !== 1 ? "s" : ""}
+        </p>
+      </div>
+
+      {/* Sticky column headers with sorting */}
+      <div className="sticky top-[85px] bg-white z-40 border-b-2 border-gray-300 pb-2 mb-2 shadow-sm">
+        <div className="grid grid-cols-[1fr_auto] gap-3 px-3 py-2">
+          <div
+            className="text-xs font-bold text-gray-700 uppercase cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
+            onClick={() => handleSort("name")}
+          >
+            Site Name
+            <SortIcon field="name" />
+          </div>
+          <div
+            className="text-xs font-bold text-gray-700 uppercase whitespace-nowrap cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
+            onClick={() => handleSort("dateDestroyed")}
+          >
+            Destruction Date
+            <SortIcon field="dateDestroyed" />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile accordion table */}
+      <div className="space-y-2">
+        {sortedSites.map((site, index) => (
+          <div
+            key={site.id}
+            className="border-2 border-[#fecaca] rounded-lg overflow-hidden"
+            style={{ backgroundColor: index % 2 === 0 ? "#fee2e2" : "#ffffff" }}
+          >
+            {/* Collapsed row - clickable to expand */}
+            <div
+              className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-[#fecaca]"
+              onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
+            >
+              {/* Site Name - color-coded by status */}
+              <div className="min-w-0">
+                <div
+                  className="font-semibold text-xs truncate"
+                  style={{ color: getStatusHexColor(site.status) }}
+                >
+                  {site.name}
+                </div>
+                {site.nameArabic && (
+                  <div className="text-xs text-gray-600 truncate text-left" lang="ar">
+                    {site.nameArabic}
+                  </div>
+                )}
+              </div>
+
+              {/* Date */}
+              <div className="text-xs text-gray-700 whitespace-nowrap">
+                {formatDateCompact(site.dateDestroyed)}
+              </div>
+
+              {/* Chevron indicator */}
+              <div className="text-gray-400">
+                <svg
+                  className={`w-4 h-4 transition-transform ${
+                    expandedRowId === site.id ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Expanded details - full site information */}
+            {expandedRowId === site.id && (
+              <div className="border-t-2 border-gray-200 p-4 bg-gray-50 space-y-3">
+                {/* Site Name (Full) */}
+                <div className="text-center">
+                  <h3 className="font-bold text-base text-gray-900">{site.name}</h3>
+                  {site.nameArabic && (
+                    <p className="text-sm text-gray-700 mt-1">{site.nameArabic}</p>
+                  )}
+                </div>
+
+                {/* Type */}
+                <div>
+                  <span className="text-xs font-semibold text-gray-600 uppercase">Type:</span>
+                  <p className="text-sm text-gray-900 capitalize">
+                    {site.type.replace("-", " ")}
+                  </p>
+                </div>
+
+                {/* Status */}
+                <div>
+                  <span className="text-xs font-semibold text-gray-600 uppercase">Status:</span>
+                  <p
+                    className="text-sm font-semibold capitalize"
+                    style={{ color: getStatusHexColor(site.status) }}
+                  >
+                    {site.status.replace("-", " ")}
+                  </p>
+                </div>
+
+                {/* Year Built */}
+                <div>
+                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                    Year Built:
+                  </span>
+                  <p className="text-sm text-gray-900">{site.yearBuilt}</p>
+                  {site.yearBuiltIslamic && (
+                    <p className="text-xs text-gray-600">Islamic: {site.yearBuiltIslamic}</p>
+                  )}
+                </div>
+
+                {/* Date Destroyed */}
+                <div>
+                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                    Date Destroyed:
+                  </span>
+                  <p className="text-sm text-gray-900">{formatDateLong(site.dateDestroyed)}</p>
+                  {site.dateDestroyedIslamic && (
+                    <p className="text-xs text-gray-600">Islamic: {site.dateDestroyedIslamic}</p>
+                  )}
+                </div>
+
+                {/* Description */}
+                <div>
+                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                    Description:
+                  </span>
+                  <p className="text-sm text-gray-900 mt-1">{site.description}</p>
+                </div>
+
+                {/* Coordinates */}
+                <div>
+                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                    Coordinates:
+                  </span>
+                  <p className="text-sm text-gray-900">
+                    {site.coordinates[0].toFixed(6)}, {site.coordinates[1].toFixed(6)}
+                  </p>
+                </div>
+
+                {/* Sources */}
+                {site.sources && site.sources.length > 0 && (
+                  <div>
+                    <span className="text-xs font-semibold text-gray-600 uppercase">
+                      Sources:
+                    </span>
+                    <ul className="mt-1 space-y-1">
+                      {site.sources.map((source, idx) => (
+                        <li key={idx} className="text-sm">
+                          <a
+                            href={source.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#009639] hover:underline"
+                          >
+                            {source.title}
+                          </a>
+                          {source.date && (
+                            <span className="text-xs text-gray-600 ml-2">
+                              ({new Date(source.date).toLocaleDateString()})
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Verified By */}
+                {site.verifiedBy && site.verifiedBy.length > 0 && (
+                  <div>
+                    <span className="text-xs font-semibold text-gray-600 uppercase">
+                      Verified By:
+                    </span>
+                    <p className="text-sm text-gray-900">{site.verifiedBy.join(", ")}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

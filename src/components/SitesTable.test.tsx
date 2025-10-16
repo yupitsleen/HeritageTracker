@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { SitesTable } from "./SitesTable";
+import { SitesTable } from "./SitesTable/index";
 import type { GazaSite } from "../types";
 import { CalendarProvider } from "../contexts/CalendarContext";
 

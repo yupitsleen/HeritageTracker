@@ -17,6 +17,8 @@ As destruction occurs chronologically, the map visually "dims" - representing th
 
 **Note:** Timeline animation work paused after Phase 2. Current production branch includes expanded dataset (45 sites), resizable table, satellite map toggle, and deferred filter application. See PR #14 for full details.
 
+**Recent Update (Oct 2025):** Codebase underwent major refactoring to improve maintainability (Phase 1 & 2 complete). Timeline animation code remains functional but was not the focus of this refactoring work. See [CODE_REVIEW.md](../CODE_REVIEW.md) and [ARCHITECTURE_REVIEW.md](../ARCHITECTURE_REVIEW.md) for details on the modular architecture improvements.
+
 ---
 
 ## Features to Implement

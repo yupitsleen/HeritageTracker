@@ -6,7 +6,8 @@
       "WebSearch",
       "Bash(npm run build:*)",
       "Bash(awk:*)",
-      "Bash(sort:*)"
+      "Bash(sort:*)",
+      "Bash(cat:*)"
     ]
   },
   "outputStyle": "default"

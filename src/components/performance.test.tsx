@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { HeritageMap } from "./Map/HeritageMap";
-import { SitesTable } from "./SitesTable";
+import { SitesTable } from "./SitesTable/index";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";

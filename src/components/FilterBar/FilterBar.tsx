@@ -1,11 +1,10 @@
-import React from "react";
 import type { GazaSite } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
 import { MultiSelectDropdown } from "./MultiSelectDropdown";
-import { Tooltip } from "../Tooltip";
+import { DateRangeFilter } from "./DateRangeFilter";
+import { YearRangeFilter } from "./YearRangeFilter";
 import { Input } from "../Form/Input";
-import { Select } from "../Form/Select";
 
 interface FilterBarProps {
   selectedTypes: Array<GazaSite["type"]>;
@@ -40,35 +39,6 @@ export function FilterBar({
   onCreationYearEndChange,
   onSearchChange,
 }: FilterBarProps) {
-  // Local state for year input and era selection
-  const [startYearInput, setStartYearInput] = React.useState("");
-  const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">("CE");
-  const [endYearInput, setEndYearInput] = React.useState(new Date().getFullYear().toString());
-  const [endYearEra, setEndYearEra] = React.useState<"CE" | "BCE">("CE");
-
-  // Update parent state when year or era changes
-  const handleStartYearChange = (input: string, era: "CE" | "BCE") => {
-    setStartYearInput(input);
-    setStartYearEra(era);
-    if (input.trim() && !isNaN(parseInt(input))) {
-      const year = Math.abs(parseInt(input)); // Ensure positive
-      onCreationYearStartChange(era === "BCE" ? -year : year);
-    } else {
-      onCreationYearStartChange(null);
-    }
-  };
-
-  const handleEndYearChange = (input: string, era: "CE" | "BCE") => {
-    setEndYearInput(input);
-    setEndYearEra(era);
-    if (input.trim() && !isNaN(parseInt(input))) {
-      const year = Math.abs(parseInt(input)); // Ensure positive
-      onCreationYearEndChange(era === "BCE" ? -year : year);
-    } else {
-      onCreationYearEndChange(null);
-    }
-  };
-
   return (
     <div className="text-white">
       {/* Mobile Search bar */}
@@ -117,41 +87,13 @@ export function FilterBar({
           </div>
 
           {/* Destruction Date Range */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <label className="text-sm font-semibold text-gray-900">Destruction Date</label>
-              <Tooltip content="Date filters use Gregorian calendar only">
-                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </Tooltip>
-            </div>
-            <div className="flex items-center gap-2">
-              <Input
-                variant="date"
-                value={destructionDateStart ? destructionDateStart.toISOString().split("T")[0] : ""}
-                onChange={(e) => {
-                  onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
-                }}
-                placeholder="From"
-                className="flex-1 text-sm py-2 px-3"
-              />
-              <span className="text-sm text-gray-600 font-medium">to</span>
-              <Input
-                variant="date"
-                value={destructionDateEnd ? destructionDateEnd.toISOString().split("T")[0] : ""}
-                onChange={(e) => {
-                  onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
-                }}
-                placeholder="To"
-                className="flex-1 text-sm py-2 px-3"
-              />
-            </div>
-          </div>
+          <DateRangeFilter
+            label="Destruction Date"
+            startDate={destructionDateStart}
+            endDate={destructionDateEnd}
+            onStartChange={onDestructionDateStartChange}
+            onEndChange={onDestructionDateEndChange}
+          />
         </div>
 
         {/* Right Column */}
@@ -169,65 +111,12 @@ export function FilterBar({
           </div>
 
           {/* Creation Year Range */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <label className="text-sm font-semibold text-gray-900">Year Built</label>
-              <Tooltip content="Year filters use Gregorian calendar only">
-                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </Tooltip>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 flex-1">
-                <Input
-                  variant="number"
-                  value={startYearInput}
-                  onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
-                  placeholder="Year"
-                  min="1"
-                  className="flex-1 text-sm py-2 px-3"
-                />
-                <Select
-                  size="small"
-                  value={startYearEra}
-                  onChange={(e) =>
-                    handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")
-                  }
-                  className="px-2 py-2 text-sm"
-                >
-                  <option value="BCE">BCE</option>
-                  <option value="CE">CE</option>
-                </Select>
-              </div>
-              <span className="text-sm text-gray-600 font-medium">to</span>
-              <div className="flex items-center gap-1 flex-1">
-                <Input
-                  variant="number"
-                  value={endYearInput}
-                  onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
-                  placeholder="Year"
-                  min="1"
-                  className="flex-1 text-sm py-2 px-3"
-                />
-                <Select
-                  size="small"
-                  value={endYearEra}
-                  onChange={(e) =>
-                    handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")
-                  }
-                  className="px-2 py-2 text-sm"
-                >
-                  <option value="BCE">BCE</option>
-                  <option value="CE">CE</option>
-                </Select>
-              </div>
-            </div>
-          </div>
+          <YearRangeFilter
+            label="Year Built"
+            onStartChange={onCreationYearStartChange}
+            onEndChange={onCreationYearEndChange}
+            supportBCE={true}
+          />
         </div>
       </div>
     </div>

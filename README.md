@@ -107,50 +107,84 @@ View deployment status: https://github.com/yupitsleen/HeritageTracker/actions
 
 ## 📁 Project Structure
 
+### Modular Architecture (Refactored Oct 2025)
+
 ```
 src/
+├── App.tsx                      # Main app (264 lines, was 593)
 ├── components/
-│   ├── FilterBar/       # Deferred filter application with BC/BCE support
-│   ├── Map/            # Leaflet map with satellite toggle, lazy loaded
+│   ├── Layout/                  # ✨ NEW - App layout components
+│   │   ├── AppHeader.tsx       # Header with navigation
+│   │   ├── AppFooter.tsx       # Footer with links
+│   │   ├── DesktopLayout.tsx   # Desktop: Table + Map + Timeline
+│   │   └── MobileLayout.tsx    # Mobile: FilterBar + Accordion
+│   ├── FilterBar/              # Deferred filter application with BC/BCE support
+│   ├── Map/                    # Leaflet map with satellite toggle, lazy loaded
 │   │   ├── HeritageMap.tsx
-│   │   ├── MapGlowLayer.tsx     # Canvas ambient glow effect
+│   │   ├── MapGlowLayer.tsx    # Canvas ambient glow effect
 │   │   └── StatusLegend.tsx
-│   ├── Timeline/       # D3.js horizontal timeline scrubber, lazy loaded
+│   ├── Timeline/               # D3.js horizontal timeline scrubber, lazy loaded
 │   │   └── TimelineScrubber.tsx
-│   ├── SitesTable.tsx  # Resizable desktop + mobile accordion with CSV export
-│   ├── Stats/          # Statistics dashboard, lazy loaded
-│   ├── About/          # About/Methodology page, lazy loaded
-│   ├── SiteDetail/     # Site detail panel, lazy loaded
-│   ├── Donate/         # Donate modal, lazy loaded
-│   └── Modal/          # Reusable modal component
+│   ├── SitesTable/             # ✨ REFACTORED - Modular table variants
+│   │   ├── index.tsx           # Router (50 lines, was 540)
+│   │   ├── SitesTableMobile.tsx    # Mobile accordion (261 lines)
+│   │   └── SitesTableDesktop.tsx   # Desktop table (340 lines)
+│   ├── Stats/                  # Statistics dashboard, lazy loaded
+│   │   ├── StatsDashboard.tsx  # Main dashboard (550 lines, was 601)
+│   │   ├── HeroStatistic.tsx   # Reusable hero stat
+│   │   ├── StatCard.tsx        # Reusable stat card
+│   │   └── SiteLossExample.tsx # Reusable loss example
+│   ├── About/                  # About/Methodology page, lazy loaded
+│   ├── SiteDetail/             # Site detail panel, lazy loaded
+│   ├── Donate/                 # Donate modal, lazy loaded
+│   └── Modal/                  # Reusable modal component
 ├── contexts/
-│   ├── AnimationContext.tsx  # Global animation state (desktop only)
-│   └── CalendarContext.tsx   # Calendar type management
-├── hooks/
-│   └── useMapGlow.ts    # Glow effect calculations
+│   ├── AnimationContext.tsx    # Global animation state (desktop only)
+│   └── CalendarContext.tsx     # Calendar type management
+├── hooks/                      # ✨ EXPANDED - Reusable logic hooks
+│   ├── useAppState.ts          # Central app state management
+│   ├── useFilteredSites.ts     # Site filtering logic
+│   ├── useTableResize.ts       # Resizable table logic
+│   ├── useHeritageStats.ts     # Statistics calculations
+│   ├── useMapGlow.ts           # Glow effect calculations
+│   └── useTableSort.tsx        # Table sorting logic
 ├── data/
-│   └── mockSites.ts    # Heritage sites data (45 sites documented)
+│   └── mockSites.ts            # Heritage sites data (45 sites documented)
 ├── types/
-│   └── index.ts        # TypeScript interfaces
+│   └── index.ts                # TypeScript interfaces
 ├── utils/
-│   ├── siteFilters.ts  # Filter logic + BCE parsing
-│   ├── format.ts       # Formatting utilities
-│   └── heritageCalculations.ts  # Glow contribution formulas
+│   ├── siteFilters.ts          # Filter logic + BCE parsing
+│   ├── format.ts               # Formatting utilities
+│   ├── heritageCalculations.ts # Glow contribution formulas
+│   ├── csvExport.ts            # ✨ NEW - CSV export utilities
+│   ├── classNames.ts           # ✨ NEW - cn() utility function
+│   └── colorHelpers.ts         # ✨ NEW - Status color helpers
 ├── constants/
-│   ├── filters.ts      # SITE_TYPES, STATUS_OPTIONS
-│   └── map.ts          # Map configuration
+│   ├── filters.ts              # SITE_TYPES, STATUS_OPTIONS
+│   └── map.ts                  # Map configuration
 └── styles/
-    └── theme.ts        # Centralized Palestinian flag theme
+    ├── theme.ts                # Main theme barrel export (16 lines, was 227)
+    ├── colors.ts               # ✨ NEW - Palestinian flag palette
+    └── components.ts           # ✨ NEW - Component style configs
 .github/
 └── workflows/
-    └── deploy.yml      # CI/CD with mobile tests + bundle monitoring
-vite.config.ts          # Vite config with PWA plugin + code splitting
+    └── deploy.yml              # CI/CD with mobile tests + bundle monitoring
+vite.config.ts                  # Vite config with PWA plugin + code splitting
 ```
+
+**Architecture Notes:**
+- **870 lines** reduced from main components (App, SitesTable, StatsDashboard)
+- **7 new hooks** for reusable logic
+- **11 new components** for better separation of concerns
+- **Modular structure** following SOLID principles
+- See [ARCHITECTURE_REVIEW.md](ARCHITECTURE_REVIEW.md) for detailed refactoring documentation
 
 ## 📖 Documentation
 
 - **[CLAUDE.md](./CLAUDE.md)** - Complete development context for AI assistants
-- **[CURRENT_SESSION.md](./CURRENT_SESSION.md)** - Active development session log
+- **[CODE_REVIEW.md](./CODE_REVIEW.md)** - Refactoring plan and progress tracking
+- **[ARCHITECTURE_REVIEW.md](./ARCHITECTURE_REVIEW.md)** - ✨ NEW - Detailed architecture analysis
+- **[timeline-animation-spec.md](./docs/timeline-animation-spec.md)** - Timeline animation feature spec
 - **[Research Study](./docs/research/research-document.md)** - Data sources and legal framework
 - **[SOURCES.md](./docs/SOURCES.md)** - Bibliography and citations
 
@@ -248,13 +282,20 @@ This project builds on documentation by UNESCO, Forensic Architecture, Heritage 
 
 ---
 
-_Last updated: October 16, 2025 | Version: 1.5.0 | 🚀 Live in Production with PWA | 45 sites documented | 184 tests passing | Bundle optimized (287KB main, 621KB total precached) | Offline support enabled_
+_Last updated: October 16, 2025 | Version: 1.5.1 | 🚀 Live in Production with PWA | 45 sites documented | 184 tests passing | Bundle optimized (287KB main, 621KB total precached) | Offline support enabled | **Codebase refactored for maintainability**_
 
 **Live Site:** https://yupitsleen.github.io/HeritageTracker/
 
-## 📈 Recent Updates (v1.5.0)
+## 📈 Recent Updates (v1.5.1)
 
-### Performance Optimizations
+### Code Architecture Refactoring (Oct 2025)
+- **Modular structure:** 870 lines reduced from main components
+- **7 new hooks:** Reusable logic (state, filtering, resizing, stats)
+- **11 new components:** Better separation of concerns
+- **SOLID principles:** Single responsibility per module
+- **See:** [ARCHITECTURE_REVIEW.md](ARCHITECTURE_REVIEW.md) for full details
+
+### Performance Optimizations (v1.5.0)
 - **Lazy Loading:** Map, Timeline, and Modal components load on-demand
 - **Code Splitting:** Main bundle reduced from 580KB to 287KB (50% reduction)
 - **PWA Support:** Offline functionality with map tile caching

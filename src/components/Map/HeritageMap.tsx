@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, Marker, CircleMarker, Popup, useMapEvents, useMap, LayersControl } from "react-leaflet";
+import { useMemo } from "react";
+import { MapContainer } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { components } from "../../styles/theme";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
-import { createMarkerIcon, getMarkerColor } from "../../utils/mapHelpers";
-import { useTileConfig } from "../../hooks/useTileConfig";
-import { SitePopup } from "./SitePopup";
-import { MapGlowLayer } from "./MapGlowLayer";
 import { useMapGlow } from "../../hooks/useMapGlow";
 import { useAnimation } from "../../contexts/AnimationContext";
+import { MapCenterHandler, ZoomLogger, ScrollWheelHandler } from "./MapHelperComponents";
+import { MapTileLayers } from "./MapTileLayers";
+import { MapGlowLayer } from "./MapGlowLayer";
+import { MapMarkers } from "./MapMarkers";
 import "leaflet/dist/leaflet.css";
 
 interface HeritageMapProps {
@@ -16,103 +16,6 @@ interface HeritageMapProps {
   onSiteClick?: (site: GazaSite) => void;
   highlightedSiteId?: string | null;
   onSiteHighlight?: (siteId: string | null) => void;
-}
-
-/**
- * Component to handle map centering when a site is highlighted
- */
-function MapCenterHandler({
-  sites,
-  highlightedSiteId,
-}: {
-  sites: GazaSite[];
-  highlightedSiteId?: string | null;
-}) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (highlightedSiteId) {
-      const site = sites.find((s) => s.id === highlightedSiteId);
-      if (site) {
-        // Close any open popups
-        map.closePopup();
-
-        // Smoothly pan to the site without scrolling the page
-        map.flyTo(site.coordinates, map.getZoom(), {
-          duration: 0.8,
-          easeLinearity: 0.25,
-        });
-      }
-    }
-  }, [highlightedSiteId, sites, map]);
-
-  return null;
-}
-
-/**
- * Component to log zoom level changes
- */
-function ZoomLogger() {
-  const map = useMap();
-
-  useEffect(() => {
-    const logZoom = () => {
-      console.log('🔍 Current Zoom Level:', map.getZoom());
-    };
-
-    // Log initial zoom
-    logZoom();
-
-    // Log on zoom changes
-    map.on('zoomend', logZoom);
-
-    return () => {
-      map.off('zoomend', logZoom);
-    };
-  }, [map]);
-
-  return null;
-}
-
-/**
- * Component to handle Ctrl+Scroll zoom behavior
- */
-function ScrollWheelHandler() {
-  const map = useMapEvents({});
-
-  // Use useEffect to add direct DOM event listener for better control
-  React.useEffect(() => {
-    const container = map.getContainer();
-
-    const handleWheel = (e: WheelEvent) => {
-      // Only zoom if Ctrl (or Cmd on Mac) is pressed
-      if (e.ctrlKey || e.metaKey) {
-        e.preventDefault(); // Prevent browser zoom
-        e.stopPropagation(); // Stop event from bubbling
-
-        const delta = e.deltaY;
-        const currentZoom = map.getZoom();
-
-        // Use a smaller increment for smoother zooming
-        if (delta < 0) {
-          // Scroll up = zoom in
-          map.setZoom(currentZoom + 1);
-        } else if (delta > 0) {
-          // Scroll down = zoom out
-          map.setZoom(currentZoom - 1);
-        }
-      }
-      // If Ctrl/Cmd not pressed, do nothing (allow normal page scroll)
-    };
-
-    container.addEventListener("wheel", handleWheel, { passive: false });
-
-    return () => {
-      container.removeEventListener("wheel", handleWheel);
-    };
-  }, [map]);
-
-  return null;
 }
 
 /**
@@ -126,7 +29,6 @@ export function HeritageMap({
   highlightedSiteId,
   onSiteHighlight,
 }: HeritageMapProps) {
-  const tileConfig = useTileConfig();
   const { currentTimestamp } = useAnimation();
 
   // Calculate glow contributions based on timeline position
@@ -164,81 +66,18 @@ export function HeritageMap({
         <ZoomLogger />
 
         {/* Layer Control for switching between Street and Satellite views */}
-        <LayersControl position="topright">
-          {/* Street Map (Default) */}
-          <LayersControl.BaseLayer checked name="Street Map">
-            <TileLayer
-              attribution={tileConfig.attribution}
-              url={tileConfig.url}
-              subdomains={tileConfig.subdomains}
-            />
-          </LayersControl.BaseLayer>
-
-          {/* Satellite View */}
-          <LayersControl.BaseLayer name="Satellite">
-            <TileLayer
-              attribution='&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-              maxZoom={19}
-            />
-          </LayersControl.BaseLayer>
-        </LayersControl>
+        <MapTileLayers />
 
         {/* Phase 2: Ambient heritage glow layer - dims as sites are destroyed */}
         <MapGlowLayer glowContributions={glowContributions} maxGlow={maxGlow} />
 
         {/* Heritage Site Markers */}
-        {sites.map((site) => {
-          const isHighlighted = site.id === highlightedSiteId;
-          const color = getMarkerColor(site.status);
-
-          // Map color names to hex values
-          const colorMap: Record<string, string> = {
-            red: "#ed3039",
-            orange: "#D97706",
-            yellow: "#CA8A04",
-          };
-
-          // If highlighted, show teardrop marker; otherwise show circle
-          if (isHighlighted) {
-            return (
-              <Marker
-                key={site.id}
-                position={site.coordinates}
-                icon={createMarkerIcon(site.status, isHighlighted)}
-                eventHandlers={{
-                  click: () => onSiteHighlight?.(site.id),
-                }}
-              >
-                <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
-                  <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
-                </Popup>
-              </Marker>
-            );
-          }
-
-          // Default: show circle marker (dot)
-          return (
-            <CircleMarker
-              key={site.id}
-              center={site.coordinates}
-              radius={6}
-              pathOptions={{
-                fillColor: colorMap[color],
-                fillOpacity: 0.8,
-                color: "#000000",
-                weight: 1,
-              }}
-              eventHandlers={{
-                click: () => onSiteHighlight?.(site.id),
-              }}
-            >
-              <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
-                <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
-              </Popup>
-            </CircleMarker>
-          );
-        })}
+        <MapMarkers
+          sites={sites}
+          highlightedSiteId={highlightedSiteId}
+          onSiteClick={onSiteClick}
+          onSiteHighlight={onSiteHighlight}
+        />
       </MapContainer>
     </div>
   );

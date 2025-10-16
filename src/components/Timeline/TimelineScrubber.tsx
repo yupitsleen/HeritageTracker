@@ -3,6 +3,8 @@ import * as d3 from "d3";
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
 import { components } from "../../styles/theme";
+import { D3TimelineRenderer } from "../../utils/d3Timeline";
+import { useTimelineData } from "../../hooks/useTimelineData";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
@@ -35,18 +37,10 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
+  const rendererRef = useRef<D3TimelineRenderer | null>(null);
 
-  // Extract destruction dates from sites (memoized)
-  const destructionDates = useMemo(() => {
-    return sites
-      .filter((site) => site.dateDestroyed)
-      .map((site) => ({
-        date: new Date(site.dateDestroyed!),
-        siteName: site.name,
-        siteId: site.id,
-      }))
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
-  }, [sites]);
+  // Extract timeline data using custom hook
+  const { events: destructionDates } = useTimelineData(sites);
 
   // Observe container width changes
   useEffect(() => {
@@ -73,7 +67,35 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
       .range([margin, containerWidth - margin]);
   }, [startDate, endDate, containerWidth]);
 
-  // Note: Scrubber drag is handled by D3 drag behavior in useEffect
+  // Initialize D3 renderer
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    rendererRef.current = new D3TimelineRenderer(
+      svgRef.current,
+      timeScale,
+      {}, // Use default config
+      {
+        onTimestampChange: setTimestamp,
+        onPause: pause,
+      }
+    );
+
+    return () => {
+      rendererRef.current?.cleanup();
+    };
+  }, [timeScale, setTimestamp, pause]);
+
+  // Update timeline rendering when data or timestamp changes
+  useEffect(() => {
+    if (!rendererRef.current) return;
+
+    // Update scale in case container width changed
+    rendererRef.current.updateScale(timeScale);
+
+    // Render timeline with current state
+    rendererRef.current.render(destructionDates, currentTimestamp);
+  }, [timeScale, destructionDates, currentTimestamp]);
 
   // Keyboard controls
   useEffect(() => {
@@ -124,110 +146,6 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
     reset,
     setTimestamp,
     endDate,
-  ]);
-
-  // Render D3 timeline
-  useEffect(() => {
-    if (!svgRef.current || !containerRef.current) return;
-
-    const svg = d3.select(svgRef.current);
-    const height = 80;
-
-    // Clear previous content
-    svg.selectAll("*").remove();
-
-    // Create axis
-    const xAxis = d3.axisBottom(timeScale).ticks(6).tickFormat((d) => {
-      const date = d as Date;
-      return d3.timeFormat("%b %Y")(date);
-    });
-
-    const axisGroup = svg
-      .append("g")
-      .attr("transform", `translate(0, ${height / 2})`)
-      .call(xAxis);
-
-    // Style axis
-    axisGroup.selectAll("text").attr("fill", "#525252").attr("font-size", "12px");
-
-    axisGroup
-      .selectAll("line")
-      .attr("stroke", "#d4d4d4")
-      .attr("stroke-width", 1);
-
-    axisGroup.select(".domain").attr("stroke", "#a3a3a3").attr("stroke-width", 2);
-
-    // Event markers (dots for destruction dates)
-    svg
-      .selectAll("circle.event-marker")
-      .data(destructionDates)
-      .enter()
-      .append("circle")
-      .attr("class", "event-marker")
-      .attr("cx", (d) => timeScale(d.date))
-      .attr("cy", height / 2)
-      .attr("r", 4)
-      .attr("fill", "#ed3039") // Palestinian flag red
-      .attr("stroke", "#000000")
-      .attr("stroke-width", 1)
-      .style("cursor", "pointer")
-      .on("click", function (_event, d) {
-        setTimestamp(d.date);
-        pause();
-      })
-      .append("title")
-      .text((d) => `${d.siteName}\n${d3.timeFormat("%B %d, %Y")(d.date)}`);
-
-    // Current position indicator (vertical line + handle)
-    const scrubberGroup = svg.append("g").attr("class", "scrubber-group");
-
-    scrubberGroup
-      .append("line")
-      .attr("class", "scrubber-line")
-      .attr("x1", timeScale(currentTimestamp))
-      .attr("y1", 10)
-      .attr("x2", timeScale(currentTimestamp))
-      .attr("y2", height - 10)
-      .attr("stroke", "#009639") // Palestinian flag green
-      .attr("stroke-width", 3);
-
-    const handle = scrubberGroup
-      .append("circle")
-      .attr("class", "scrubber-handle")
-      .attr("cx", timeScale(currentTimestamp))
-      .attr("cy", height / 2)
-      .attr("r", 10)
-      .attr("fill", "#009639") // Palestinian flag green
-      .attr("stroke", "#000000")
-      .attr("stroke-width", 2)
-      .style("cursor", "grab");
-
-    // Drag behavior
-    const drag = d3
-      .drag<SVGCircleElement, unknown>()
-      .on("start", function () {
-        d3.select(this).style("cursor", "grabbing");
-        pause(); // Pause animation during drag
-      })
-      .on("drag", function (event) {
-        const x = Math.max(
-          timeScale.range()[0],
-          Math.min(timeScale.range()[1], event.x)
-        );
-        const newDate = timeScale.invert(x);
-        setTimestamp(newDate);
-      })
-      .on("end", function () {
-        d3.select(this).style("cursor", "grab");
-      });
-
-    handle.call(drag);
-  }, [
-    timeScale,
-    currentTimestamp,
-    destructionDates,
-    setTimestamp,
-    pause,
   ]);
 
   // Speed options
