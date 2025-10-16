@@ -8,11 +8,14 @@ Replace the current static timeline sidebar with an interactive, animated timeli
 
 As destruction occurs chronologically, the map visually "dims" - representing the extinguishing of cultural heritage and collective memory.
 
-**Implementation Status:** Phase 1-2 Complete ✅
+**Implementation Status:** Phase 1-2 Complete ✅ | Branch feature/timelineImprovements **MERGED**
 
 - ✅ TimelineScrubber with D3.js (Phase 1)
 - ✅ MapGlowLayer with Leaflet.heat plugin (Phase 2)
-- 🚧 Phase 3: Destruction animations (Next)
+- ✅ Mobile responsiveness fixes and production build ready
+- 🚧 Phase 3: Destruction animations (Next - future work)
+
+**Note:** Timeline animation work paused after Phase 2. Current production branch includes expanded dataset (45 sites), resizable table, satellite map toggle, and deferred filter application. See PR #14 for full details.
 
 ---
 
@@ -398,6 +401,8 @@ interface GazaSite {
 - ✅ Canvas mock added to test setup for heat map
 
 **Key Decision:** Used Leaflet.heat plugin instead of custom Canvas implementation for better performance and maintainability.
+
+**Status:** Completed and merged in feature/timelineImprovements branch (PR #14)
 
 ### Phase 3: Animations 🚧 NEXT (Sessions 5-6)
 

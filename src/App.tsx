@@ -1,24 +1,25 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import { mockSites } from "./data/mockSites";
 import type { GazaSite } from "./types";
 import { components, cn } from "./styles/theme";
 import { SitesTable } from "./components/SitesTable";
-import { HeritageMap } from "./components/Map/HeritageMap";
 import { StatusLegend } from "./components/Map/StatusLegend";
-// import { VerticalTimeline } from "./components/Timeline/VerticalTimeline"; // HIDDEN - Phase 5 will remove
-import { TimelineScrubber } from "./components/Timeline/TimelineScrubber";
 import { FilterBar } from "./components/FilterBar/FilterBar";
 import { FilterTag } from "./components/FilterBar/FilterTag";
 import { Modal } from "./components/Modal/Modal";
 import { formatLabel } from "./utils/format";
 import { Input } from "./components/Form/Input";
-import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
-import { About } from "./components/About/About";
-import { StatsDashboard } from "./components/Stats/StatsDashboard";
 import { CalendarProvider } from "./contexts/CalendarContext";
 import { AnimationProvider } from "./contexts/AnimationContext";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
-import { DonateModal } from "./components/Donate/DonateModal";
+
+// Lazy load heavy components for better initial load performance
+const HeritageMap = lazy(() => import("./components/Map/HeritageMap").then(m => ({ default: m.HeritageMap })));
+const TimelineScrubber = lazy(() => import("./components/Timeline/TimelineScrubber").then(m => ({ default: m.TimelineScrubber })));
+const SiteDetailPanel = lazy(() => import("./components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
+const About = lazy(() => import("./components/About/About").then(m => ({ default: m.About })));
+const StatsDashboard = lazy(() => import("./components/Stats/StatsDashboard").then(m => ({ default: m.StatsDashboard })));
+const DonateModal = lazy(() => import("./components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
@@ -377,15 +378,27 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
                   <div className="w-full sticky top-[120px]">
                     <StatusLegend />
                     {/* Map without height wrapper - sizes to content */}
-                    <HeritageMap
-                      sites={mapSites}
-                      onSiteClick={setSelectedSite}
-                      highlightedSiteId={highlightedSiteId}
-                      onSiteHighlight={setHighlightedSiteId}
-                    />
+                    <Suspense fallback={
+                      <div className="h-[500px] bg-gray-100 rounded-lg flex items-center justify-center">
+                        <div className="text-gray-600 text-sm">Loading map...</div>
+                      </div>
+                    }>
+                      <HeritageMap
+                        sites={mapSites}
+                        onSiteClick={setSelectedSite}
+                        highlightedSiteId={highlightedSiteId}
+                        onSiteHighlight={setHighlightedSiteId}
+                      />
+                    </Suspense>
                     {/* Timeline Scrubber - Directly below map */}
                     <div className="mt-4">
-                      <TimelineScrubber sites={searchFilteredSites} />
+                      <Suspense fallback={
+                        <div className="h-[80px] bg-gray-100 rounded-lg flex items-center justify-center">
+                          <div className="text-gray-600 text-sm">Loading timeline...</div>
+                        </div>
+                      }>
+                        <TimelineScrubber sites={searchFilteredSites} />
+                      </Suspense>
                     </div>
                   </div>
                   {/* Spacer to allow table scrolling */}
@@ -398,7 +411,15 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
 
         {/* Site Detail Modal - Higher z-index to appear above table modal */}
         <Modal isOpen={selectedSite !== null} onClose={() => setSelectedSite(null)} zIndex={10000}>
-          {selectedSite && <SiteDetailPanel site={selectedSite} />}
+          {selectedSite && (
+            <Suspense fallback={
+              <div className="p-8 text-center">
+                <div className="text-gray-600">Loading site details...</div>
+              </div>
+            }>
+              <SiteDetailPanel site={selectedSite} />
+            </Suspense>
+          )}
         </Modal>
 
         {/* Expanded Table Modal */}
@@ -416,17 +437,35 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
 
         {/* Statistics Modal */}
         <Modal isOpen={isStatsOpen} onClose={() => setIsStatsOpen(false)} zIndex={10001}>
-          <StatsDashboard sites={mockSites} />
+          <Suspense fallback={
+            <div className="p-8 text-center">
+              <div className="text-gray-600">Loading statistics...</div>
+            </div>
+          }>
+            <StatsDashboard sites={mockSites} />
+          </Suspense>
         </Modal>
 
         {/* About Modal */}
         <Modal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} zIndex={10001}>
-          <About />
+          <Suspense fallback={
+            <div className="p-8 text-center">
+              <div className="text-gray-600">Loading about...</div>
+            </div>
+          }>
+            <About />
+          </Suspense>
         </Modal>
 
         {/* Donate Modal */}
         <Modal isOpen={isDonateOpen} onClose={() => setIsDonateOpen(false)} zIndex={10001}>
-          <DonateModal />
+          <Suspense fallback={
+            <div className="p-8 text-center">
+              <div className="text-gray-600">Loading...</div>
+            </div>
+          }>
+            <DonateModal />
+          </Suspense>
         </Modal>
 
         {/* Filter Modal */}
