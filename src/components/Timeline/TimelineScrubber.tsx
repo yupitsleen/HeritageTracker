@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 import * as d3 from "d3";
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
@@ -16,6 +16,7 @@ interface TimelineScrubberProps {
  * - Play/pause/reset controls
  * - Speed control dropdown
  * - Keyboard navigation (space, arrows, home/end)
+ * - Responsive to container width changes
  */
 export function TimelineScrubber({ sites }: TimelineScrubberProps) {
   const {
@@ -33,6 +34,7 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
 
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(800);
 
   // Extract destruction dates from sites (memoized)
   const destructionDates = useMemo(() => {
@@ -46,15 +48,30 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
       .sort((a, b) => a.date.getTime() - b.date.getTime());
   }, [sites]);
 
-  // D3 time scale
+  // Observe container width changes
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = entry.contentRect.width;
+        setContainerWidth(width);
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  // D3 time scale (responsive to container width)
   const timeScale = useMemo(() => {
-    const width = containerRef.current?.clientWidth || 800;
     const margin = 50; // Leave space for handles
     return d3
       .scaleTime()
       .domain([startDate, endDate])
-      .range([margin, width - margin]);
-  }, [startDate, endDate]);
+      .range([margin, containerWidth - margin]);
+  }, [startDate, endDate, containerWidth]);
 
   // Note: Scrubber drag is handled by D3 drag behavior in useEffect
 

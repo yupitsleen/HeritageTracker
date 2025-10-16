@@ -453,7 +453,7 @@ function App() {
   return (
     <CalendarProvider>
       <ErrorBoundary>
-        <AnimationProvider>
+        <AnimationProvider sites={mockSites}>
           <AppContent />
         </AnimationProvider>
       </ErrorBoundary>

@@ -4,6 +4,19 @@ import { TimelineScrubber } from "../components/Timeline/TimelineScrubber";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
 
+// Mock ResizeObserver for jsdom environment
+global.ResizeObserver = class ResizeObserver {
+  observe() {
+    // Mock observe method
+  }
+  unobserve() {
+    // Mock unobserve method
+  }
+  disconnect() {
+    // Mock disconnect method
+  }
+};
+
 // Mock D3 drag behavior - returns a proper drag behavior function
 vi.mock("d3", async () => {
   const actual = await vi.importActual<typeof import("d3")>("d3");
