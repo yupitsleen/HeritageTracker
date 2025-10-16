@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, Marker, CircleMarker, Popup, useMapEvents, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, CircleMarker, Popup, useMapEvents, useMap, LayersControl } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { components } from "../../styles/theme";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
@@ -163,12 +163,26 @@ export function HeritageMap({
         {/* Zoom level logger for debugging */}
         <ZoomLogger />
 
-        {/* Map Tiles - Language adapts to browser setting */}
-        <TileLayer
-          attribution={tileConfig.attribution}
-          url={tileConfig.url}
-          subdomains={tileConfig.subdomains}
-        />
+        {/* Layer Control for switching between Street and Satellite views */}
+        <LayersControl position="topright">
+          {/* Street Map (Default) */}
+          <LayersControl.BaseLayer checked name="Street Map">
+            <TileLayer
+              attribution={tileConfig.attribution}
+              url={tileConfig.url}
+              subdomains={tileConfig.subdomains}
+            />
+          </LayersControl.BaseLayer>
+
+          {/* Satellite View */}
+          <LayersControl.BaseLayer name="Satellite">
+            <TileLayer
+              attribution='&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={19}
+            />
+          </LayersControl.BaseLayer>
+        </LayersControl>
 
         {/* Phase 2: Ambient heritage glow layer - dims as sites are destroyed */}
         <MapGlowLayer glowContributions={glowContributions} maxGlow={maxGlow} />
