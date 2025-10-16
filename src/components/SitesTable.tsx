@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import type { GazaSite } from "../types";
 import { components, getStatusHexColor } from "../styles/theme";
-import { useCalendar } from "../contexts/CalendarContext";
 import { formatDateCompact, formatDateStandard, formatDateLong } from "../utils/format";
 
 interface SitesTableProps {
@@ -106,7 +105,6 @@ export function SitesTable({
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
-  const { calendarType } = useCalendar();
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const highlightedRowRef = useRef<HTMLTableRowElement>(null);
 
@@ -569,13 +567,7 @@ export function SitesTable({
                 )}
                 {isColumnVisible("dateDestroyed") && (
                   <td className={`${components.table.td} text-sm`}>
-                    {variant === "compact" && !visibleColumns
-                      ? // Compact without resize: Show date based on calendar toggle
-                        site.dateDestroyed && calendarType === "islamic" && site.dateDestroyedIslamic
-                        ? site.dateDestroyedIslamic
-                        : formatDateStandard(site.dateDestroyed)
-                      : // Expanded or resizable: Always show Gregorian date
-                        formatDateStandard(site.dateDestroyed)}
+                    {formatDateStandard(site.dateDestroyed)}
                   </td>
                 )}
                 {isColumnVisible("dateDestroyedIslamic") && (

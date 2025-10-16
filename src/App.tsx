@@ -12,7 +12,6 @@ import { FilterTag } from "./components/FilterBar/FilterTag";
 import { Modal } from "./components/Modal/Modal";
 import { formatLabel } from "./utils/format";
 import { Input } from "./components/Form/Input";
-import { useCalendar } from "./contexts/CalendarContext";
 import { SiteDetailPanel } from "./components/SiteDetail/SiteDetailPanel";
 import { About } from "./components/About/About";
 import { StatsDashboard } from "./components/Stats/StatsDashboard";
@@ -26,33 +25,6 @@ import {
   filterSitesByCreationYear,
   filterSitesBySearch,
 } from "./utils/siteFilters";
-
-/**
- * Calendar toggle button component for switching between Gregorian and Islamic calendars
- */
-function CalendarToggleButton() {
-  const { calendarType, toggleCalendar } = useCalendar();
-
-  return (
-    <>
-      <button
-        onClick={toggleCalendar}
-        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-[10px] font-medium text-gray-700 transition-colors"
-        aria-label="Toggle calendar type"
-      >
-        {calendarType === "gregorian"
-          ? "Switch to Islamic Calendar"
-          : "Switch to Gregorian Calendar"}
-      </button>
-      {/* Live region for screen readers to announce calendar changes */}
-      <div role="status" aria-live="polite" className="sr-only">
-        {calendarType === "gregorian"
-          ? "Displaying Gregorian calendar dates"
-          : "Displaying Islamic calendar dates"}
-      </div>
-    </>
-  );
-}
 
 /**
  * Main app content - uses animation context
@@ -293,9 +265,6 @@ function AppContent() {
                     </button>
                   )}
                 </div>
-
-                {/* Calendar Toggle */}
-                <CalendarToggleButton />
 
                 {/* Active filter tags */}
                 {selectedTypes.map((type) => (
