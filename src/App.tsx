@@ -47,6 +47,14 @@ function AppContent() {
   const [tableWidth, setTableWidth] = useState(480); // Resizable table width
   const [isResizing, setIsResizing] = useState(false);
 
+  // Local filter state for modal (not applied until "Apply Filters" clicked)
+  const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
+  const [tempSelectedStatuses, setTempSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
+  const [tempDestructionDateStart, setTempDestructionDateStart] = useState<Date | null>(null);
+  const [tempDestructionDateEnd, setTempDestructionDateEnd] = useState<Date | null>(null);
+  const [tempCreationYearStart, setTempCreationYearStart] = useState<number | null>(null);
+  const [tempCreationYearEnd, setTempCreationYearEnd] = useState<number | null>(null);
+
   // Filter sites by type and status
   const typeAndStatusFilteredSites = filterSitesByTypeAndStatus(
     mockSites,
@@ -96,6 +104,38 @@ function AppContent() {
     setCreationYearStart(null);
     setCreationYearEnd(null);
     setSearchTerm("");
+  };
+
+  // Open filter modal and initialize temp state with current filters
+  const openFilterModal = () => {
+    setTempSelectedTypes(selectedTypes);
+    setTempSelectedStatuses(selectedStatuses);
+    setTempDestructionDateStart(destructionDateStart);
+    setTempDestructionDateEnd(destructionDateEnd);
+    setTempCreationYearStart(creationYearStart);
+    setTempCreationYearEnd(creationYearEnd);
+    setIsFilterOpen(true);
+  };
+
+  // Apply filters from temp state to actual state
+  const applyFilters = () => {
+    setSelectedTypes(tempSelectedTypes);
+    setSelectedStatuses(tempSelectedStatuses);
+    setDestructionDateStart(tempDestructionDateStart);
+    setDestructionDateEnd(tempDestructionDateEnd);
+    setCreationYearStart(tempCreationYearStart);
+    setCreationYearEnd(tempCreationYearEnd);
+    setIsFilterOpen(false);
+  };
+
+  // Clear all temp filters in modal
+  const clearTempFilters = () => {
+    setTempSelectedTypes([]);
+    setTempSelectedStatuses([]);
+    setTempDestructionDateStart(null);
+    setTempDestructionDateEnd(null);
+    setTempCreationYearStart(null);
+    setTempCreationYearEnd(null);
   };
 
   // Resize handler for table
@@ -228,7 +268,7 @@ function AppContent() {
               <div className="flex items-center gap-3 flex-wrap">
                 {/* Filter Button */}
                 <button
-                  onClick={() => setIsFilterOpen(true)}
+                  onClick={openFilterModal}
                   className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
                 >
                   Filters
@@ -392,30 +432,28 @@ function AppContent() {
           <div className="bg-white rounded-lg p-6 max-w-5xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Filter Sites</h2>
             <FilterBar
-              selectedTypes={selectedTypes}
-              selectedStatuses={selectedStatuses}
-              destructionDateStart={destructionDateStart}
-              destructionDateEnd={destructionDateEnd}
+              selectedTypes={tempSelectedTypes}
+              selectedStatuses={tempSelectedStatuses}
+              destructionDateStart={tempDestructionDateStart}
+              destructionDateEnd={tempDestructionDateEnd}
               searchTerm={searchTerm}
-              onTypeChange={setSelectedTypes}
-              onStatusChange={setSelectedStatuses}
-              onDestructionDateStartChange={setDestructionDateStart}
-              onDestructionDateEndChange={setDestructionDateEnd}
-              onCreationYearStartChange={setCreationYearStart}
-              onCreationYearEndChange={setCreationYearEnd}
+              onTypeChange={setTempSelectedTypes}
+              onStatusChange={setTempSelectedStatuses}
+              onDestructionDateStartChange={setTempDestructionDateStart}
+              onDestructionDateEndChange={setTempDestructionDateEnd}
+              onCreationYearStartChange={setTempCreationYearStart}
+              onCreationYearEndChange={setTempCreationYearEnd}
               onSearchChange={setSearchTerm}
             />
             <div className="mt-6 flex justify-end gap-3">
-              {hasActiveFilters && (
-                <button
-                  onClick={clearAllFilters}
-                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
-                >
-                  Clear All
-                </button>
-              )}
               <button
-                onClick={() => setIsFilterOpen(false)}
+                onClick={clearTempFilters}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
+              >
+                Clear All
+              </button>
+              <button
+                onClick={applyFilters}
                 className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
               >
                 Apply Filters
