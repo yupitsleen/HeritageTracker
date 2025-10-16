@@ -2,7 +2,7 @@
 
 **Version:** 1.5.0
 **Date:** October 16, 2025
-**Status:** 🚧 **Phase 1 Complete** - Phase 2 In Progress
+**Status:** 🚧 **Phases 1-3 Complete** - Priority 1 & 2 refactorings done
 **Purpose:** Break down large files into smaller, more maintainable modules following DRY/SOLID/React best practices
 
 ---
@@ -56,6 +56,28 @@
 - `d09fb52` - refactor: use extracted hooks and layout components in App.tsx (Phase 2 - part 3)
 - `d4fdb99` - refactor: split SitesTable into separate variant components (Phase 2 - part 4)
 - `c13d444` - refactor: extract statistics calculation to useHeritageStats hook (Phase 2 - part 5)
+
+### ✅ Phase 3: Timeline & Specialized Components Complete
+**Status:** Complete - All Priority 2 files refactored
+
+**Completed:**
+- ✅ Extracted D3 timeline rendering to D3TimelineRenderer class (src/utils/d3Timeline.ts, 210 lines)
+- ✅ Created useTimelineData hook for timeline data processing (32 lines)
+- ✅ Refactored TimelineScrubber.tsx to use extracted utilities (313 → 231 lines, 26% reduction)
+- ✅ Split About.tsx into 10 section components (291 → 33 lines, 88% reduction)
+  - AboutHeader, MissionSection, MethodologySection, DataSourcesSection, TheDataSection
+  - ResearchSection, LegalFrameworkSection, ContributingSection, AcknowledgmentsSection, AttributionSection
+- ✅ Extracted DateRangeFilter component (64 lines) - Reusable date range picker
+- ✅ Extracted YearRangeFilter component (133 lines) - BC/BCE support with local state
+- ✅ Refactored FilterBar.tsx to use extracted filter components (235 → 124 lines, 47% reduction)
+- ✅ All 184 tests passing
+- ✅ Linter clean (0 errors, 0 warnings)
+- ✅ App verified working in browser
+
+**Commits:**
+- `8622a2b` - refactor: extract TimelineScrubber D3 logic and timeline data processing (Phase 3 - part 1)
+- `2b24386` - refactor: extract About.tsx content sections into separate components (Phase 3 - part 2)
+- `6edc8ae` - refactor: extract FilterBar date/year range components (Phase 3 - part 3)
 
 ---
 
