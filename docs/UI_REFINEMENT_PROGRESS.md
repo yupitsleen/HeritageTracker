@@ -476,6 +476,158 @@ git reset --hard da39b3d  # Phase 1 completion commit
 
 ---
 
+## 🔮 Phase 5: Future Enhancements (PROPOSED)
+**Status:** Not Started - For Future Consideration
+**Effort:** 3-4 hours | **Impact:** High (SEO, Accessibility, Performance)
+
+### Proposed Enhancements
+
+#### 5.1: SEO & Meta Tags Optimization
+**Goal:** Improve discoverability and social sharing
+**Files:** `index.html`, `vite.config.ts`, new `public/og-image.png`
+
+**Tasks:**
+1. **Meta Tags** - Add comprehensive meta tags
+   - Title, description, keywords
+   - Open Graph tags (Facebook, LinkedIn)
+   - Twitter Card tags
+   - Canonical URL
+
+2. **Social Preview Cards** - Create custom OG image
+   - 1200x630px image featuring map + Palestinian flag colors
+   - Site title and tagline overlay
+   - Attractive preview for social media shares
+
+3. **Structured Data** - Add JSON-LD for rich snippets
+   - Schema.org/WebApplication markup
+   - Site metadata for search engines
+   - Cultural heritage site collection data
+
+**Expected Impact:** Better search rankings, professional social shares
+
+---
+
+#### 5.2: Accessibility Enhancements
+**Goal:** WCAG 2.1 AA compliance
+**Files:** Multiple components
+
+**Tasks:**
+1. **Keyboard Navigation** - Improve tab order and focus management
+   - Visible focus rings on all interactive elements
+   - Skip to content link
+   - Proper ARIA labels throughout
+
+2. **Screen Reader Optimization**
+   - Meaningful alt text for all images
+   - ARIA live regions for dynamic content
+   - Descriptive button labels (not just icons)
+
+3. **Color Contrast** - Ensure all text meets 4.5:1 ratio
+   - Check semi-transparent text on red triangle
+   - Verify green buttons have sufficient contrast
+   - Test with color blindness simulators
+
+**Expected Impact:** Accessible to users with disabilities, legal compliance
+
+---
+
+#### 5.3: Performance Optimizations
+**Goal:** Faster load times and smoother interactions
+**Files:** Multiple
+
+**Tasks:**
+1. **Image Optimization**
+   - Add WebP format for flag graphics
+   - Lazy load images in modals
+   - Optimize PNG assets
+
+2. **Code Splitting Improvements**
+   - Further split map vendor bundle
+   - Lazy load modal components
+   - Defer non-critical CSS
+
+3. **Animation Performance**
+   - Use CSS transforms instead of position changes
+   - Add will-change hints for frequent animations
+   - Throttle scroll/resize listeners
+
+**Expected Impact:** <2s load time on 3G, 60fps on all devices
+
+---
+
+#### 5.4: Mobile Experience Refinements
+**Goal:** Better mobile UX (currently no map/timeline on mobile)
+**Files:** Mobile components
+
+**Tasks:**
+1. **Mobile Map View** - Add swipeable map carousel
+   - HeritageMap on first tab
+   - SiteDetailView on second tab
+   - Touch-optimized controls
+
+2. **Compact Timeline** - Mobile-friendly timeline scrubber
+   - Vertical timeline variant
+   - Touch-friendly date picker
+   - Simplified controls
+
+3. **Touch Gestures** - Native mobile interactions
+   - Swipe to dismiss modals
+   - Pull to refresh site data
+   - Pinch to zoom on maps
+
+**Expected Impact:** Full-featured mobile experience
+
+---
+
+#### 5.5: Advanced Interactions
+**Goal:** Delight users with polished micro-interactions
+**Files:** Multiple components
+
+**Tasks:**
+1. **Animated Transitions**
+   - Page transition animations
+   - Staggered list item reveals
+   - Smooth modal enter/exit animations
+
+2. **Hover Effects**
+   - Card lift on hover (translate-y)
+   - Button shine effect
+   - Map marker pulse animation
+
+3. **Loading States**
+   - Progress bars for data loading
+   - Optimistic UI updates
+   - Smooth skeleton transitions
+
+**Expected Impact:** More engaging, professional feel
+
+---
+
+### Phase 5 Time Estimates
+- Task 5.1 (SEO): 1 hour
+- Task 5.2 (Accessibility): 1.5 hours
+- Task 5.3 (Performance): 1 hour
+- Task 5.4 (Mobile): 2 hours (requires significant new components)
+- Task 5.5 (Interactions): 1 hour
+**Total:** ~6.5 hours
+
+### Phase 5 Success Criteria
+- [ ] Google Lighthouse score: 90+ (SEO, Accessibility, Performance)
+- [ ] WCAG 2.1 AA compliant
+- [ ] <2s load time on 3G
+- [ ] Full mobile feature parity
+- [ ] Delightful micro-interactions throughout
+- [ ] All 204 tests still passing
+
+### Priority Ranking (High to Low)
+1. **5.1 SEO & Meta Tags** - Quick win, high impact
+2. **5.2 Accessibility** - Important for inclusivity
+3. **5.3 Performance** - Noticeable improvement
+4. **5.4 Mobile Experience** - Significant effort, requires design decisions
+5. **5.5 Advanced Interactions** - Nice-to-have polish
+
+---
+
 ## Contact/Handoff Notes
 
 **✅ PROJECT COMPLETE - PR #19 READY FOR MERGE**
