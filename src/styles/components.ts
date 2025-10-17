@@ -22,8 +22,8 @@ export const components = {
 
   // Form styles
   input: {
-    base: "px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 bg-white",
-    focus: "focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
+    base: "px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 bg-white transition-all duration-200 placeholder:text-gray-400",
+    focus: "focus:outline-none focus:ring-2 focus:ring-[#009639] focus:border-transparent",
     number: "w-20",
     date: "",
   },
@@ -40,9 +40,9 @@ export const components = {
 
   // Tag/Chip styles (for removable filter tags)
   tag: {
-    base: "inline-flex items-center gap-1 px-2 py-1 text-xs",
-    default: "bg-[#e5e5e5] text-gray-700",
-    removeButton: "text-gray-500 hover:text-[#ed3039] font-bold",  // Palestine flag red
+    base: "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full",
+    default: "bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium border border-gray-200 transition-colors duration-200",
+    removeButton: "ml-0.5 text-gray-500 hover:text-[#ed3039] transition-colors",  // Palestine flag red
   },
 
   // Badge styles
