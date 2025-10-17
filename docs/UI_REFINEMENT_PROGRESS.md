@@ -478,11 +478,131 @@ git reset --hard da39b3d  # Phase 1 completion commit
 
 ## 🔮 Phase 5: Future Enhancements (PROPOSED)
 **Status:** Not Started - For Future Consideration
-**Effort:** 3-4 hours | **Impact:** High (SEO, Accessibility, Performance)
+**Effort:** 6-8 hours | **Impact:** High (Visual Polish, Accessibility, Performance)
 
 ### Proposed Enhancements
 
-#### 5.1: SEO & Meta Tags Optimization
+**Note:** Based on remaining items from UI_DESIGN_IMPROVEMENTS.md and UI_IMPLEMENTATION_PLAN.md
+
+#### 5.1: Icon System with Heroicons
+**Goal:** Replace emoji icons with professional SVG icons
+**Files:** `src/components/SitesTable/SitesTableDesktop.tsx`, new `src/components/Icons/`
+**Status:** Currently using styled emojis (Phase 4), not true icon library
+
+**Tasks:**
+1. **Install Heroicons**
+   ```bash
+   npm install @heroicons/react
+   ```
+
+2. **Create Icon Mapping Component**
+   - New file: `src/components/Icons/SiteTypeIcon.tsx`
+   - Map site types to appropriate Heroicons
+   - Use BuildingLibraryIcon, HomeModernIcon, etc.
+
+3. **Replace Emoji Usage**
+   - Update table Type column to use new icon component
+   - Replace styled emoji containers with SVG icons
+   - Consistent sizing (w-5 h-5)
+
+**Expected Impact:** More professional appearance, consistent rendering across browsers
+
+---
+
+#### 5.2: Glassmorphism Effects
+**Goal:** Add modern frosted glass effects to certain components
+**Files:** Modal components, overlays
+**Status:** Currently have backdrop-blur-sm on transparent components
+
+**Tasks:**
+1. **Enhanced Modal Overlays**
+   - Increase backdrop blur: `backdrop-blur-md` or `backdrop-blur-lg`
+   - Add subtle background color: `bg-white/80`
+   - Test with different blur levels
+
+2. **Floating Panels** (Optional)
+   - Create glassmorphic panels for statistics
+   - Semi-transparent with backdrop-blur
+   - Subtle border for definition
+
+3. **Popover Components**
+   - Apply glassmorphism to tooltips
+   - Filter dropdowns with blur effect
+   - Maintain readability
+
+**Expected Impact:** More modern, layered appearance with depth
+
+---
+
+#### 5.3: Colored Shadow System
+**Goal:** Add subtle colored shadows matching Palestinian flag
+**Files:** `src/styles/theme.ts`, button components
+**Status:** Currently using standard gray shadows (shadow-xl)
+
+**Tasks:**
+1. **Define Colored Shadows**
+   ```css
+   .shadow-red: 0 4px 6px -1px rgba(237, 48, 57, 0.15)
+   .shadow-green: 0 4px 6px -1px rgba(0, 150, 57, 0.15)
+   ```
+
+2. **Apply to Branded Elements**
+   - Green buttons: `shadow-md shadow-green-200/50`
+   - Red buttons: `shadow-md shadow-red-200/50`
+   - Subtle brand reinforcement
+
+3. **Hover States**
+   - Amplify colored shadow on hover
+   - Smooth shadow transitions
+
+**Expected Impact:** Subtle brand reinforcement, more sophisticated shadows
+
+---
+
+#### 5.4: Dark Mode Support
+**Goal:** Add dark theme toggle for professional appearance
+**Files:** Multiple, new context for theme state
+**Status:** Not implemented - significant effort
+
+**Tasks:**
+1. **Theme Context** - Create dark/light mode state management
+2. **Color Palette** - Define dark mode color variants
+3. **Component Updates** - Update all components for theme support
+4. **Toggle UI** - Add theme switcher button in header
+5. **Persistence** - Save preference to localStorage
+
+**Expected Impact:** Professional feature, reduced eye strain, broader appeal
+
+**Note:** This is a major undertaking (2-3 hours alone), may be deferred
+
+---
+
+#### 5.5: Timeline Visual Upgrades
+**Goal:** Polish timeline scrubber appearance and interactions
+**Files:** `src/components/Timeline/TimelineScrubber.tsx`
+**Status:** Currently functional but could be more refined
+
+**Tasks:**
+1. **Better Event Markers**
+   - Larger, more visible dots
+   - Hover states with tooltips
+   - Color-coded by status
+
+2. **Refined Scrubber Handle**
+   - Larger grab area
+   - Shadow on drag
+   - Smooth animations
+
+3. **Improved Controls**
+   - Icon buttons (Play/Pause with Heroicons)
+   - Better visual hierarchy
+   - Loading state for timeline
+
+**Expected Impact:** More professional timeline, easier to use
+
+---
+
+#### 5.6: SEO & Meta Tags Optimization
 **Goal:** Improve discoverability and social sharing
 **Files:** `index.html`, `vite.config.ts`, new `public/og-image.png`
 
@@ -507,7 +627,7 @@ git reset --hard da39b3d  # Phase 1 completion commit
 
 ---
 
-#### 5.2: Accessibility Enhancements
+#### 5.7: Accessibility Enhancements
 **Goal:** WCAG 2.1 AA compliance
 **Files:** Multiple components
 
@@ -531,7 +651,7 @@ git reset --hard da39b3d  # Phase 1 completion commit
 
 ---
 
-#### 5.3: Performance Optimizations
+#### 5.8: Performance Optimizations
 **Goal:** Faster load times and smoother interactions
 **Files:** Multiple
 
@@ -555,7 +675,7 @@ git reset --hard da39b3d  # Phase 1 completion commit
 
 ---
 
-#### 5.4: Mobile Experience Refinements
+#### 5.9: Mobile Experience Refinements
 **Goal:** Better mobile UX (currently no map/timeline on mobile)
 **Files:** Mobile components
 
@@ -579,7 +699,7 @@ git reset --hard da39b3d  # Phase 1 completion commit
 
 ---
 
-#### 5.5: Advanced Interactions
+#### 5.10: Advanced Interactions
 **Goal:** Delight users with polished micro-interactions
 **Files:** Multiple components
 
@@ -604,12 +724,17 @@ git reset --hard da39b3d  # Phase 1 completion commit
 ---
 
 ### Phase 5 Time Estimates
-- Task 5.1 (SEO): 1 hour
-- Task 5.2 (Accessibility): 1.5 hours
-- Task 5.3 (Performance): 1 hour
-- Task 5.4 (Mobile): 2 hours (requires significant new components)
-- Task 5.5 (Interactions): 1 hour
-**Total:** ~6.5 hours
+- Task 5.1 (Icon System): 1 hour
+- Task 5.2 (Glassmorphism): 30 min
+- Task 5.3 (Colored Shadows): 30 min
+- Task 5.4 (Dark Mode): 2-3 hours (major undertaking - may defer)
+- Task 5.5 (Timeline Upgrades): 1 hour
+- Task 5.6 (SEO): 1 hour
+- Task 5.7 (Accessibility): 1.5 hours
+- Task 5.8 (Performance): 1 hour
+- Task 5.9 (Mobile): 2 hours (requires significant new components)
+- Task 5.10 (Interactions): 1 hour
+**Total:** ~11-12 hours (or 8-9 hours if deferring Dark Mode)
 
 ### Phase 5 Success Criteria
 - [ ] Google Lighthouse score: 90+ (SEO, Accessibility, Performance)
@@ -620,11 +745,16 @@ git reset --hard da39b3d  # Phase 1 completion commit
 - [ ] All 204 tests still passing
 
 ### Priority Ranking (High to Low)
-1. **5.1 SEO & Meta Tags** - Quick win, high impact
-2. **5.2 Accessibility** - Important for inclusivity
-3. **5.3 Performance** - Noticeable improvement
-4. **5.4 Mobile Experience** - Significant effort, requires design decisions
-5. **5.5 Advanced Interactions** - Nice-to-have polish
+1. **5.1 Icon System (Heroicons)** - Quick win, professional appearance
+2. **5.6 SEO & Meta Tags** - Quick win, high impact for discoverability
+3. **5.7 Accessibility** - Important for inclusivity, legal compliance
+4. **5.2 Glassmorphism** - Quick enhancement, modern feel
+5. **5.3 Colored Shadows** - Quick enhancement, brand reinforcement
+6. **5.5 Timeline Upgrades** - Medium effort, noticeable improvement
+7. **5.8 Performance** - Optimization, measurable improvement
+8. **5.10 Advanced Interactions** - Nice-to-have polish
+9. **5.9 Mobile Experience** - Significant effort, requires design decisions
+10. **5.4 Dark Mode** - Major undertaking, consider deferring
 
 ---
 
