@@ -50,14 +50,13 @@ export function useTableResize(
 
   // Calculate which columns to show based on table width
   const getVisibleColumns = useCallback((): string[] => {
-    const columns = ["name", "status", "dateDestroyed", "actions"];
-    if (tableWidth >= 650) columns.splice(1, 0, "type"); // Add Type after Name
+    const columns = ["name", "type", "status", "dateDestroyed"];
+    if (tableWidth >= 650)
+      columns.push("dateDestroyedIslamic");
     if (tableWidth >= 800)
-      columns.splice(columns.length - 1, 0, "dateDestroyedIslamic"); // Add before Actions
+      columns.push("yearBuilt");
     if (tableWidth >= 950)
-      columns.splice(columns.length - 1, 0, "yearBuilt");
-    if (tableWidth >= 1100)
-      columns.splice(columns.length - 1, 0, "yearBuiltIslamic");
+      columns.push("yearBuiltIslamic");
     return columns;
   }, [tableWidth]);
 
