@@ -185,11 +185,11 @@ export function SitesTableDesktop({
       {/* Scrollable table with sticky headers */}
       <div className="flex-1 overflow-y-auto" ref={tableContainerRef}>
         <table className={components.table.base}>
-          <thead className="sticky top-0 z-10 bg-[#000000] text-[#fefefe]">
+          <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
             <tr>
               {isColumnVisible("name") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("name")}
                 >
                   Site Name
@@ -198,7 +198,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("type") && (
                 <th
-                  className="px-2 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm text-center"
+                  className="px-2 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm text-center transition-colors duration-200"
                   onClick={() => handleSort("type")}
                   style={{ width: `${TABLE_CONFIG.TYPE_COLUMN_WIDTH}px` }}
                 >
@@ -208,7 +208,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("status") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("status")}
                 >
                   Status
@@ -217,7 +217,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyed") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("dateDestroyed")}
                 >
                   {visibleColumns
@@ -230,7 +230,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyedIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("dateDestroyedIslamic")}
                 >
                   Destruction Date (Islamic)
@@ -239,7 +239,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuilt") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("yearBuilt")}
                 >
                   Built (Gregorian)
@@ -248,7 +248,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuiltIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("yearBuiltIslamic")}
                 >
                   Built (Islamic)
@@ -258,14 +258,16 @@ export function SitesTableDesktop({
             </tr>
           </thead>
           <tbody>
-            {sortedSites.map((site, index) => (
+            {sortedSites.map((site) => (
               <tr
                 key={site.id}
                 ref={highlightedSiteId === site.id ? highlightedRowRef : null}
-                className={`border-b border-[#fecaca] hover:bg-[#fecaca] ${
-                  highlightedSiteId === site.id ? "ring-2 ring-black ring-inset" : ""
-                }`}
-                style={{ backgroundColor: index % 2 === 0 ? "#fee2e2" : "#ffffff" }}
+                className={`border-b border-gray-100
+                            hover:bg-gray-50 transition-colors duration-150
+                            ${highlightedSiteId === site.id
+                              ? "bg-green-50 ring-2 ring-[#009639] ring-inset"
+                              : "bg-white"
+                            }`}
                 onClick={() => {
                   onSiteHighlight?.(site.id);
                 }}
