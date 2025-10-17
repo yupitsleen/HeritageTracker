@@ -154,12 +154,12 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
   return (
     <div
       ref={containerRef}
-      className="bg-[#fefefe] border-2 border-[#000000] rounded-lg p-4 shadow-md"
+      className="bg-[#fefefe] border-2 border-[#000000] rounded-lg p-3 shadow-md"
       role="region"
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center justify-between mb-4 gap-4">
+      <div className="flex items-center justify-between mb-3 gap-4">
         {/* Left: Play/Pause/Reset */}
         <div className="flex items-center gap-2">
           {!isPlaying ? (
