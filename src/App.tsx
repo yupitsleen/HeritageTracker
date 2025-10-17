@@ -37,7 +37,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
           className="fixed top-0 left-0 pointer-events-none z-[8]"
           style={{
             width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
-            height: '100vh', // Full viewport height - entire left edge
+            height: '100vh', // Full viewport height
             background: '#ed3039',
             clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
           }}
