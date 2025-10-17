@@ -15,6 +15,12 @@ export const GAZA_CENTER: [number, number] = [31.42, 34.38] as const;
 export const DEFAULT_ZOOM = 10.5;
 
 /**
+ * Zoom level for satellite detail view of individual sites
+ * Zoom 19 is one below maximum to ensure ESRI satellite tiles are available
+ */
+export const SITE_DETAIL_ZOOM = 19;
+
+/**
  * CDN URLs for Leaflet marker icons
  */
 export const MARKER_ICON_BASE_URL =

@@ -1,18 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
+import { TABLE_CONFIG } from "../constants/layout";
 
 /**
  * Hook to manage resizable table width
  * Handles mouse events for drag-to-resize functionality
  *
- * @param initialWidth - Initial table width in pixels (default: 480)
- * @param minWidth - Minimum table width in pixels (default: 480)
- * @param maxWidth - Maximum table width in pixels (default: 1100)
+ * @param initialWidth - Initial table width in pixels
+ * @param minWidth - Minimum table width in pixels
+ * @param maxWidth - Maximum table width in pixels
  * @returns Table width state and resize handlers
  */
 export function useTableResize(
-  initialWidth: number = 480,
-  minWidth: number = 480,
-  maxWidth: number = 1100
+  initialWidth: number = TABLE_CONFIG.DEFAULT_TABLE_WIDTH,
+  minWidth: number = TABLE_CONFIG.MIN_TABLE_WIDTH,
+  maxWidth: number = TABLE_CONFIG.MAX_TABLE_WIDTH
 ) {
   const [tableWidth, setTableWidth] = useState(initialWidth);
   const [isResizing, setIsResizing] = useState(false);
@@ -51,11 +52,11 @@ export function useTableResize(
   // Calculate which columns to show based on table width
   const getVisibleColumns = useCallback((): string[] => {
     const columns = ["name", "type", "status", "dateDestroyed"];
-    if (tableWidth >= 650)
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyedIslamic)
       columns.push("dateDestroyedIslamic");
-    if (tableWidth >= 800)
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuilt)
       columns.push("yearBuilt");
-    if (tableWidth >= 950)
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuiltIslamic)
       columns.push("yearBuiltIslamic");
     return columns;
   }, [tableWidth]);

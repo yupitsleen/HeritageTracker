@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import type { GazaSite } from "../../types";
-import { GAZA_CENTER } from "../../constants/map";
+import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM } from "../../constants/map";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -29,13 +29,13 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
       // Zoom in on selected site at maximum available detail
       return {
         center: highlightedSite.coordinates,
-        zoom: 19, // One below max to ensure tiles are available
+        zoom: SITE_DETAIL_ZOOM,
       };
     }
     // Default: Gaza overview
     return {
       center: GAZA_CENTER,
-      zoom: 10.5, // Match DEFAULT_ZOOM for consistency
+      zoom: DEFAULT_ZOOM,
     };
   }, [highlightedSite]);
 
