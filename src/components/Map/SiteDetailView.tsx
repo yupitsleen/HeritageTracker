@@ -39,10 +39,10 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
   // Determine map center and zoom level
   const { center, zoom } = useMemo(() => {
     if (highlightedSite) {
-      // Zoom in on selected site
+      // Zoom in on selected site at maximum available detail
       return {
         center: highlightedSite.coordinates,
-        zoom: 18, // High zoom for detailed satellite view
+        zoom: 19, // One below max to ensure tiles are available
       };
     }
     // Default: Gaza overview
