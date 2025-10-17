@@ -4,6 +4,7 @@ import { Input } from "../Form/Input";
 import { FilterTag } from "../FilterBar/FilterTag";
 import { formatLabel } from "../../utils/format";
 import { SitesTable } from "../SitesTable";
+import { SkeletonMap } from "../Loading/Skeleton";
 
 // Lazy load heavy components
 const HeritageMap = lazy(() =>
@@ -225,13 +226,7 @@ export function DesktopLayout({
           <div className="flex gap-4 min-h-0" style={{ height: 'calc(100% - 220px)' }}>
             {/* Center - Heritage Map (Traditional/Satellite toggle) */}
             <div className="flex-1 min-w-0 h-full">
-              <Suspense
-                fallback={
-                  <div className="h-full bg-gray-100 rounded-lg flex items-center justify-center">
-                    <div className="text-gray-600 text-sm">Loading map...</div>
-                  </div>
-                }
-              >
+              <Suspense fallback={<SkeletonMap />}>
                 <HeritageMap
                   sites={filteredSites}
                   onSiteClick={onSiteClick}
@@ -243,13 +238,7 @@ export function DesktopLayout({
 
             {/* Right - Site Detail View (Satellite only, zooms on selection) */}
             <div className="flex-1 min-w-0 h-full">
-              <Suspense
-                fallback={
-                  <div className="h-full bg-gray-100 rounded-lg flex items-center justify-center">
-                    <div className="text-gray-600 text-sm">Loading detail view...</div>
-                  </div>
-                }
-              >
+              <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
                   sites={filteredSites}
                   highlightedSiteId={highlightedSiteId}
@@ -260,13 +249,7 @@ export function DesktopLayout({
 
           {/* Timeline Scrubber - Fixed height at bottom */}
           <div className="mt-3 flex-shrink-0 h-[200px]">
-            <Suspense
-              fallback={
-                <div className="h-full bg-gray-100 rounded-lg flex items-center justify-center">
-                  <div className="text-gray-600 text-sm">Loading timeline...</div>
-                </div>
-              }
-            >
+            <Suspense fallback={<SkeletonMap />}>
               <TimelineScrubber sites={filteredSites} />
             </Suspense>
           </div>
