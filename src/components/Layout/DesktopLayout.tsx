@@ -101,7 +101,7 @@ export function DesktopLayout({
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-6 flex flex-col">
           {/* Filter bar - Horizontal component with compact padding */}
-          <div className="flex-shrink-0 mt-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-md relative z-[5]">
+          <div className="flex-shrink-0 mt-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl relative z-[5]">
             <div className="flex items-start gap-4 px-3">
               {/* Left side - Filter controls */}
               <div className="flex-1 flex items-center gap-3 flex-wrap">
@@ -117,13 +117,13 @@ export function DesktopLayout({
                 </button>
 
                 {/* Search bar - inline */}
-                <div className="relative flex-1 max-w-xs">
+                <div className="relative flex-1 max-w-xs border border-[#000000] rounded-lg">
                   <Input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search sites..."
-                    className="w-full pr-8 text-xs py-1 px-2"
+                    className="w-full pr-8 text-xs py-1 px-2 border-0"
                   />
                   {searchTerm.trim().length > 0 && (
                     <button
@@ -190,7 +190,7 @@ export function DesktopLayout({
                 </span>
 
                 {/* Status Legend (Color Key) */}
-                <div className="flex items-center gap-3 px-3 py-1.5 bg-gray-50 rounded-md border border-gray-200">
+                <div className="flex items-center gap-3 px-3 py-1.5 bg-gray-50 rounded-md border border-[#000000]">
                   <span className="text-xs font-semibold text-gray-700">Color Key:</span>
                   <div className="flex items-center gap-1.5">
                     <div
@@ -221,7 +221,7 @@ export function DesktopLayout({
           {/* Two maps side by side - Constrained height to leave room for timeline */}
           <div className="flex gap-4 min-h-0 pt-3" style={{ height: 'calc(100% - 270px)' }}>
             {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-md overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <HeritageMap
                   sites={filteredSites}
@@ -233,7 +233,7 @@ export function DesktopLayout({
             </div>
 
             {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-md overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
                   sites={filteredSites}

@@ -154,7 +154,7 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
   return (
     <div
       ref={containerRef}
-      className="bg-white/90 backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-md"
+      className="bg-white/90 backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl"
       role="region"
       aria-label="Timeline Scrubber"
     >

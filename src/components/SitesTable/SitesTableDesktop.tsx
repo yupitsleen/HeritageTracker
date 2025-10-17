@@ -131,7 +131,7 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className="flex flex-col bg-white/50 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-md" style={{ height: 'calc(100% - 4px)' }}>
+    <div className="flex flex-col bg-white/50 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl" style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
       <div className="sticky top-0 z-20 bg-white/50 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg">
         <div className="px-2 pt-4 pb-2">
