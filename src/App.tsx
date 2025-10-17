@@ -34,10 +34,10 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       {/* Palestinian Flag Red Triangle - Background Element (Desktop only) */}
       {!isMobile && (
         <div
-          className="fixed top-[80px] left-0 pointer-events-none z-[8]"
+          className="fixed top-0 left-0 pointer-events-none z-[8]"
           style={{
             width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
-            height: 'calc(100vh - 80px)', // From below header to bottom of viewport
+            height: '100vh', // Full viewport height - entire left edge
             background: '#ed3039',
             clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
           }}
