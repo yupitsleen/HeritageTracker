@@ -348,10 +348,20 @@ interface GazaSite {
 
    - Satellite-only aerial view map for selected sites
    - Automatically zooms to selected site at maximum detail (zoom 19)
-   - Shows Gaza overview when no site selected
+   - Shows Gaza overview when no site selected (zoom 10.5)
    - Synced with existing `highlightedSiteId` state (table/timeline/map)
+   - Optimized initial view: center [31.42, 34.38] for better framing
    - Location: `src/components/Map/SiteDetailView.tsx`
    - Tests: 10 passing tests in `src/components/Map/SiteDetailView.test.tsx`
+
+7. **Map View Configuration** ✅ Updated (Oct 2025)
+
+   - Optimized Gaza center coordinates: `[31.42, 34.38]` (adjusted from `[31.5, 34.45]`)
+   - Default zoom level: `10.5` (balanced between 10 and 11)
+   - Better initial framing prevents Gaza from being cut off at bottom
+   - Improved utilization of horizontal map space
+   - Applied consistently across HeritageMap and SiteDetailView
+   - Location: `src/constants/map.ts`
 
 ### To Be Created 🚧
 
@@ -390,6 +400,9 @@ interface GazaSite {
    - ✅ Timeline below both maps with fixed 200px height
    - ✅ Maps constrained to leave room for timeline
    - ✅ Only table scrolls - everything else fits on screen
+   - ✅ Horizontal filter bar with Color Key integrated
+   - ✅ Site Type column with icon-based display and tooltips
+   - ✅ Clickable site names (removed Actions column)
 
 ---
 

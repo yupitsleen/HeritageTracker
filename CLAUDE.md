@@ -26,7 +26,7 @@ AI assistant guidance for developing Heritage Tracker.
 
 **Status:** 🚀 **LIVE IN PRODUCTION** - https://yupitsleen.github.io/HeritageTracker/
 
-**Current:** 45 sites documented | 184 tests passing | CI/CD deployed
+**Current:** 45 sites documented | 194 tests passing | CI/CD deployed
 
 **Tech Stack:** React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + Leaflet.heat + D3.js + PWA (vite-plugin-pwa)
 
@@ -62,7 +62,7 @@ npm run lint && npm test
 
 ### Quality Gates
 
-- ✅ All tests must pass (184 tests total: 181 existing + 3 mobile-specific)
+- ✅ All tests must pass (194 tests total across 19 test files)
 - ✅ Linter must be clean
 - ✅ Dev server running for visual verification
 - ✅ Follow DRY/KISS/SOLID principles
@@ -85,7 +85,11 @@ npm run lint && npm test
 **Mobile:** FilterBar (with deferred filter application) → Accordion Table (Type column removed) - Map and Timeline not rendered on mobile to prevent AnimationProvider errors
 
 **Key Features:**
+- Horizontal filter bar with integrated Color Key and site count
+- Table Type column with icon-based display (🕌⛪🏛️🏰) and tooltips
+- Clickable site names (Actions column removed for better space usage)
 - Map has satellite/street toggle (LayersControl top-right)
+- Optimized initial Gaza view (center: [31.42, 34.38], zoom: 10.5)
 - Markers changed from teardrops to dots
 - Table is resizable with progressive column display
 - Filters use deferred application pattern (apply on button click)
@@ -162,9 +166,16 @@ src/
 
 **Variants:**
 
-- `compact` - Desktop sidebar (Name, Status, Date, Actions)
+- `compact` - Desktop sidebar (Name, Type, Status, Date - Actions removed)
 - `expanded` - Modal (all fields, CSV export)
 - `mobile` - Accordion (Type column removed)
+
+**Type Column:**
+
+- Icon-based display for space efficiency (60px wide)
+- Emoji icons: 🕌 Mosque, ⛪ Church, 🏛️ Archaeological/Museum, 🏰 Historic Building
+- Tooltip component shows full type name on hover
+- Center-aligned with compact styling
 
 **CSV Export:**
 
@@ -174,9 +185,10 @@ src/
 
 **Interaction:**
 
-- Desktop: Row click → highlight only
+- Desktop: Row click → highlight only, Site name click → opens detail modal
 - Mobile: Accordion expand/collapse
-- "See more" → `e.stopPropagation()`
+- Site name is clickable link styled in green (#009639)
+- Actions column removed - name serves as primary interaction
 
 **Highlighting:**
 
@@ -262,7 +274,7 @@ interface GazaSite {
 ### Testing Standards
 
 - **Framework:** Vitest + React Testing Library
-- **Coverage:** 184 tests across 15 test files
+- **Coverage:** 194 tests across 19 test files
 - **Types:** Smoke tests + edge cases (BCE, null values, mobile, desktop)
 - **Minimum:** 5+ tests per new component
 - **Run:** Before every commit
@@ -882,6 +894,35 @@ const activateParticle = (x: number, y: number) => {
 
 ---
 
-**Last Updated:** October 16, 2025
-**Version:** 1.5.0-dev (Production + Performance Optimizations)
-**Status:** 🚀 Live with CI/CD | 45 sites documented | 184 tests passing | PWA enabled | Lazy loading active | Code splitting implemented | Bundle optimized (287KB main, 621KB total precached) | Production ready
+**Completed (feature/sidePics branch - Oct 2025):**
+
+- [x] **Satellite detail view map** ✅ (right side, zooms to selected sites)
+- [x] **Horizontal filter bar with Color Key** ✅ (better space utilization)
+- [x] **Icon-based Type column with tooltips** ✅ (compact 60px, emoji icons)
+- [x] **Clickable site names** ✅ (removed Actions column)
+- [x] **Optimized Gaza map view** ✅ (center [31.42, 34.38], zoom 10.5)
+- [x] **All 194 tests passing** ✅
+
+**Immediate:**
+
+- [ ] SEO optimization (meta tags, structured data)
+- [ ] Social media preview cards
+
+**Timeline Animation (Paused):**
+
+- ⏸️ Phase 3: Destruction animations
+- ⏸️ Phase 4: Metrics dashboard
+- ⏸️ Phase 5: Polish and testing
+
+**Future Phases:**
+
+- [ ] All 110+ UNESCO-verified sites
+- [ ] Database integration (Supabase)
+- [ ] Full Arabic translation
+- [ ] Resume timeline animation work (if desired)
+
+---
+
+**Last Updated:** October 17, 2025
+**Version:** 1.6.0-dev (feature/sidePics - Satellite Detail View + UX Improvements)
+**Status:** 🚀 Live with CI/CD | 45 sites documented | 194 tests passing | Dual map layout | Icon-based Type column | Optimized Gaza view | Production ready
