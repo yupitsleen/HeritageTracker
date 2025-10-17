@@ -5,6 +5,7 @@ import { formatDateStandard } from "../../utils/format";
 import { downloadCSV } from "../../utils/csvExport";
 import { Tooltip } from "../Tooltip";
 import { TABLE_CONFIG } from "../../constants/layout";
+import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -297,15 +298,9 @@ export function SitesTableDesktop({
                 )}
                 {isColumnVisible("type") && (
                   <td className={`${components.table.td} text-center`}>
-                    <Tooltip
-                      content={site.type.replace("-", " ").split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                    >
-                      <span className="inline-block px-2 py-1 text-xs font-medium rounded bg-gray-100 text-gray-700">
-                        {site.type === "mosque" ? "🕌" :
-                         site.type === "church" ? "⛪" :
-                         site.type === "archaeological" ? "🏛️" :
-                         site.type === "museum" ? "🏛️" :
-                         site.type === "historic-building" ? "🏰" : site.type}
+                    <Tooltip content={getSiteTypeLabel(site.type)}>
+                      <span className="inline-flex items-center justify-center px-2 py-1.5 text-xs font-medium rounded bg-gray-100 text-gray-700">
+                        <SiteTypeIcon type={site.type} className="w-5 h-5" />
                       </span>
                     </Tooltip>
                   </td>
