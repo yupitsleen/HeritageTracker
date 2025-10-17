@@ -35,6 +35,7 @@ vi.mock("leaflet", () => ({
 
 // Mock MapHelperComponents
 vi.mock("./MapHelperComponents", () => ({
+  MapUpdater: () => null,
   ScrollWheelHandler: () => null,
 }));
 

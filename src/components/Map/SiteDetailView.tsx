@@ -1,27 +1,14 @@
-import { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, useMap, Marker } from "react-leaflet";
+import { useMemo } from "react";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { GAZA_CENTER } from "../../constants/map";
-import { ScrollWheelHandler } from "./MapHelperComponents";
+import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 interface SiteDetailViewProps {
   sites: GazaSite[];
   highlightedSiteId: string | null;
-}
-
-/**
- * MapUpdater component - handles map centering when highlighted site changes
- */
-function MapUpdater({ center, zoom }: { center: [number, number]; zoom: number }) {
-  const map = useMap();
-
-  useEffect(() => {
-    map.setView(center, zoom, { animate: true, duration: 0.5 });
-  }, [map, center, zoom]);
-
-  return null;
 }
 
 /**

@@ -3,6 +3,20 @@ import { useMap, useMapEvents } from "react-leaflet";
 import type { GazaSite } from "../../types";
 
 /**
+ * MapUpdater - Updates map view (center and zoom) with smooth animation
+ * Used when map needs to programmatically change position
+ */
+export function MapUpdater({ center, zoom }: { center: [number, number]; zoom: number }) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.setView(center, zoom, { animate: true, duration: 0.5 });
+  }, [map, center, zoom]);
+
+  return null;
+}
+
+/**
  * MapCenterHandler - Handles map centering when a site is highlighted
  * Smoothly pans to the highlighted site
  */
