@@ -61,3 +61,33 @@ export const TILE_CONFIGS = {
     subdomains: "abcd",
   },
 } as const;
+
+/**
+ * Historical satellite imagery time periods using ESRI Wayback archive
+ * Wayback provides access to historical World Imagery basemap releases
+ */
+export const HISTORICAL_IMAGERY = {
+  /** Baseline - February 20, 2014 (earliest available Wayback imagery) */
+  BASELINE_2014: {
+    releaseNum: 10,
+    date: "2014-02-20",
+    label: "2014 Baseline",
+    url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
+  },
+  /** Pre-conflict - August 31, 2023 (last imagery before October 7, 2023) */
+  PRE_CONFLICT_2023: {
+    releaseNum: 64776,
+    date: "2023-08-31",
+    label: "Aug 2023 (Pre-conflict)",
+    url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/64776/{z}/{y}/{x}",
+  },
+  /** Current - Latest ESRI World Imagery */
+  CURRENT: {
+    releaseNum: null, // Uses current/latest imagery
+    date: "current",
+    label: "Current",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  },
+} as const;
+
+export type TimePeriod = "BASELINE_2014" | "PRE_CONFLICT_2023" | "CURRENT";

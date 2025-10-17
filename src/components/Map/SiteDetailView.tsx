@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import type { GazaSite } from "../../types";
-import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM } from "../../constants/map";
+import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
+import { TimeToggle } from "./TimeToggle";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -15,13 +16,27 @@ interface SiteDetailViewProps {
  * Satellite aerial view that zooms in on selected heritage sites
  * Shows Gaza overview when no site is selected
  * Desktop only - always displays satellite imagery
+ * Supports historical imagery comparison (2014, Aug 2023, Current)
  */
 export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps) {
+  // Time period state for historical imagery
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("PRE_CONFLICT_2023");
+
   // Find the highlighted site
   const highlightedSite = useMemo(() => {
     if (!highlightedSiteId) return null;
     return sites.find((site) => site.id === highlightedSiteId) || null;
   }, [sites, highlightedSiteId]);
+
+  // Get tile URL for selected time period
+  const tileUrl = useMemo(() => {
+    return HISTORICAL_IMAGERY[selectedPeriod].url;
+  }, [selectedPeriod]);
+
+  // Get label for selected time period
+  const periodLabel = useMemo(() => {
+    return HISTORICAL_IMAGERY[selectedPeriod].label;
+  }, [selectedPeriod]);
 
   // Determine map center and zoom level
   const { center, zoom } = useMemo(() => {
@@ -53,14 +68,17 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
 
   return (
     <div className="relative h-full">
+      {/* Time period toggle */}
+      <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
+
       {/* Label for the detail view */}
       <div className="absolute top-2 left-2 z-[1000] bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md pointer-events-none">
         <div className="text-xs font-semibold text-gray-900">
           {highlightedSite ? "Site Detail (Satellite)" : "Gaza Overview (Satellite)"}
         </div>
-        {highlightedSite && (
-          <div className="text-[10px] text-gray-600 mt-0.5">{highlightedSite.name}</div>
-        )}
+        <div className="text-[10px] text-gray-600 mt-0.5">
+          {highlightedSite ? highlightedSite.name : periodLabel}
+        </div>
       </div>
 
       <MapContainer
@@ -77,9 +95,10 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
         {/* Map updater for smooth transitions */}
         <MapUpdater center={center} zoom={zoom} />
 
-        {/* Satellite tile layer (ESRI World Imagery) */}
+        {/* Satellite tile layer - supports historical imagery via Wayback */}
         <TileLayer
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          key={selectedPeriod} // Force re-render when time period changes
+          url={tileUrl}
           attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
           maxZoom={20}
           minZoom={1}

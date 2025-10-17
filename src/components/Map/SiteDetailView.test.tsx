@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { SiteDetailView } from "./SiteDetailView";
 import type { GazaSite } from "../../types";
 
@@ -37,6 +38,11 @@ vi.mock("leaflet", () => ({
 vi.mock("./MapHelperComponents", () => ({
   MapUpdater: () => null,
   ScrollWheelHandler: () => null,
+}));
+
+// Mock TimeToggle component
+vi.mock("./TimeToggle", () => ({
+  TimeToggle: () => <div data-testid="time-toggle" />,
 }));
 
 const mockSites: GazaSite[] = [
@@ -137,5 +143,24 @@ describe("SiteDetailView", () => {
 
     rerender(<SiteDetailView sites={mockSites} highlightedSiteId="2" />);
     expect(screen.getByText("Al-Saqqa Mosque")).toBeInTheDocument();
+  });
+
+  it("renders TimeToggle component", () => {
+    render(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+    expect(screen.getByTestId("time-toggle")).toBeInTheDocument();
+  });
+
+  it("displays time period label when no site is highlighted", () => {
+    render(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+    // The label should show the period label (Aug 2023 (Pre-conflict))
+    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
+    expect(screen.getByText("Aug 2023 (Pre-conflict)")).toBeInTheDocument();
+  });
+
+  it("shows site name instead of period label when site is highlighted", () => {
+    render(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
+    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    // Period label not shown when site is highlighted
+    expect(screen.queryByText("Aug 2023 (Pre-conflict)")).not.toBeInTheDocument();
   });
 });

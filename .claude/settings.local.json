@@ -8,7 +8,10 @@
       "Bash(awk:*)",
       "Bash(sort:*)",
       "Bash(cat:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "WebFetch(domain:s3-us-west-2.amazonaws.com)",
+      "Bash(curl:*)",
+      "Bash(/dev/null)"
     ]
   },
   "outputStyle": "default"
