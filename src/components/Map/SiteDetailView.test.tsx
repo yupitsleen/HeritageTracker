@@ -16,7 +16,14 @@ vi.mock("react-leaflet", () => ({
   ),
   useMap: () => ({
     setView: vi.fn(),
+    getContainer: () => ({
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }),
+    getZoom: () => 10,
+    setZoom: vi.fn(),
   }),
+  useMapEvents: () => ({}),
 }));
 
 // Mock Leaflet library
@@ -24,6 +31,11 @@ vi.mock("leaflet", () => ({
   default: {
     divIcon: vi.fn(() => ({})),
   },
+}));
+
+// Mock MapHelperComponents
+vi.mock("./MapHelperComponents", () => ({
+  ScrollWheelHandler: () => null,
 }));
 
 const mockSites: GazaSite[] = [

@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { MapContainer, TileLayer, useMap, Marker } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { GAZA_CENTER } from "../../constants/map";
+import { ScrollWheelHandler } from "./MapHelperComponents";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -90,6 +91,9 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
         zoomControl={true}
         attributionControl={true}
       >
+        {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}
+        <ScrollWheelHandler />
+
         {/* Map updater for smooth transitions */}
         <MapUpdater center={center} zoom={zoom} />
 
