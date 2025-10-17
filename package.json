@@ -12,6 +12,8 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@types/leaflet.heat": "^0.2.5",
     "d3": "^7.9.0",
     "d3-scale": "^4.0.2",

@@ -196,13 +196,17 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
           <div className="mt-6 flex justify-end gap-3">
             <button
               onClick={appState.clearTempFilters}
-              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 text-gray-600 hover:bg-gray-100
+                         rounded-lg transition-colors duration-200 font-medium"
             >
               Clear All
             </button>
             <button
               onClick={appState.applyFilters}
-              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
+                         rounded-lg shadow-md hover:shadow-lg
+                         transition-all duration-200 font-semibold
+                         active:scale-95"
             >
               Apply Filters
             </button>

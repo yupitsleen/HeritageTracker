@@ -25,7 +25,10 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
           <div className="hidden md:flex absolute top-3 left-4 md:top-6 md:left-6">
             <button
               onClick={onOpenDonate}
-              className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white text-xs md:text-sm rounded transition-colors font-medium"
+              className="px-4 py-2 bg-[#ed3039] hover:bg-[#d4202a] text-white
+                         text-sm rounded-lg shadow-md hover:shadow-lg
+                         transition-all duration-200 font-semibold
+                         active:scale-95"
               aria-label="Help Palestine - Donate to relief efforts"
             >
               Help Palestine
@@ -33,17 +36,23 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
           </div>
 
           {/* Statistics and About buttons - desktop only, positioned in top right */}
-          <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-2">
+          <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-3">
             <button
               onClick={onOpenStats}
-              className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
+              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
+                         text-sm rounded-lg shadow-md hover:shadow-lg
+                         transition-all duration-200 font-semibold
+                         active:scale-95"
               aria-label="View Statistics"
             >
               Statistics
             </button>
             <button
               onClick={onOpenAbout}
-              className="px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-xs md:text-sm rounded transition-colors font-medium"
+              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
+                         text-sm rounded-lg shadow-md hover:shadow-lg
+                         transition-all duration-200 font-semibold
+                         active:scale-95"
               aria-label="About Heritage Tracker"
             >
               About

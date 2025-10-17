@@ -78,7 +78,10 @@ export function DesktopLayout({
             {/* Filter Button */}
             <button
               onClick={openFilterModal}
-              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
+                         rounded-lg shadow-md hover:shadow-lg
+                         transition-all duration-200 font-semibold
+                         active:scale-95 text-sm"
             >
               Filters
             </button>
@@ -139,7 +142,10 @@ export function DesktopLayout({
             {hasActiveFilters && (
               <button
                 onClick={clearAllFilters}
-                className="px-3 py-1.5 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-xs font-medium"
+                className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white
+                           rounded-lg shadow-md hover:shadow-lg
+                           transition-all duration-200 font-semibold
+                           active:scale-95 text-xs"
               >
                 Clear
               </button>
