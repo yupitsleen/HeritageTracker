@@ -49,7 +49,7 @@ export function MultiSelectDropdown<T extends string>({
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-md text-[10px] bg-white hover:bg-gray-50 focus:ring-2 focus:ring-[#009639] focus:border-[#009639] transition-colors"
+        className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-lg text-[10px] bg-white hover:bg-gray-50 focus:ring-2 focus:ring-[#009639] focus:border-transparent transition-all duration-200"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >

@@ -45,7 +45,7 @@ export function SitePopup({ site, onViewMore }: SitePopupProps) {
       <div className="flex justify-end">
         <button
           onClick={onViewMore}
-          className="text-xs text-blue-600 hover:text-blue-800 font-medium hover:underline"
+          className="px-3 py-1.5 text-xs text-[#009639] hover:text-white bg-transparent hover:bg-[#009639] border border-[#009639] rounded-lg font-semibold transition-all duration-200 active:scale-95"
         >
           See More →
         </button>

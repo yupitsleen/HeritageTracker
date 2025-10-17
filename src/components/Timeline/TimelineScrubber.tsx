@@ -165,7 +165,7 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
           {!isPlaying ? (
             <button
               onClick={play}
-              className="px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
               aria-label="Play timeline animation"
             >
               ▶ Play
@@ -173,7 +173,7 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
           ) : (
             <button
               onClick={pause}
-              className="px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
               aria-label="Pause timeline animation"
             >
               ❚❚ Pause
