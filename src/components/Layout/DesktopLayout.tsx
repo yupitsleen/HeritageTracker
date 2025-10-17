@@ -72,10 +72,10 @@ export function DesktopLayout({
   return (
     <div className="hidden md:flex md:flex-col md:h-[calc(100vh-140px)] md:overflow-hidden relative">
       {/* Filter bar - Horizontal component with compact padding */}
-      <div className="flex-shrink-0 px-6 py-3 bg-white border-b border-gray-200 relative z-10">
+      <div className="flex-shrink-0 px-6 py-3 bg-white border-b border-gray-200 relative z-[5]">
         <div className="flex items-start gap-4">
           {/* Left side - Filter controls */}
-          <div className="flex-1 flex items-center gap-3 flex-wrap">
+          <div className="flex-1 flex items-center gap-3 flex-wrap ml-[280px]">
             {/* Filter Button */}
             <button
               onClick={openFilterModal}

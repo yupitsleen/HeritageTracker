@@ -12,7 +12,7 @@ interface AppHeaderProps {
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderProps) {
   return (
-    <div className="sticky top-0 z-50 bg-[#000000]">
+    <div className="sticky top-0 z-[5] bg-[#000000]">
       {/* Header - BLACK background */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-3 relative")}>
