@@ -39,7 +39,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       />
 
       {/* Main Content */}
-      <main className="pb-24 md:pb-32">
+      <main className="pb-24 md:pb-0">
         {isMobile ? (
           <MobileLayout
             selectedTypes={appState.filters.selectedTypes}

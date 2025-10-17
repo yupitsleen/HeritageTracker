@@ -344,6 +344,25 @@ interface GazaSite {
    - Location: `src/utils/heritageCalculations.ts`
    - Tests: 42 passing tests in `src/__tests__/heritageCalculations.test.ts`
 
+6. **`SiteDetailView.tsx`** ✅ New Feature (Oct 2025)
+
+   - Satellite-only aerial view map for selected sites
+   - Automatically zooms to selected site at maximum detail (zoom 19)
+   - Shows Gaza overview when no site selected (zoom 10.5)
+   - Synced with existing `highlightedSiteId` state (table/timeline/map)
+   - Optimized initial view: center [31.42, 34.38] for better framing
+   - Location: `src/components/Map/SiteDetailView.tsx`
+   - Tests: 10 passing tests in `src/components/Map/SiteDetailView.test.tsx`
+
+7. **Map View Configuration** ✅ Updated (Oct 2025)
+
+   - Optimized Gaza center coordinates: `[31.42, 34.38]` (adjusted from `[31.5, 34.45]`)
+   - Default zoom level: `10.5` (balanced between 10 and 11)
+   - Better initial framing prevents Gaza from being cut off at bottom
+   - Improved utilization of horizontal map space
+   - Applied consistently across HeritageMap and SiteDetailView
+   - Location: `src/constants/map.ts`
+
 ### To Be Created 🚧
 
 1. **`MarkerAnimations.tsx`** - Phase 3
@@ -360,17 +379,30 @@ interface GazaSite {
 
 ### Updated Components
 
-1. **`App.tsx`**
+1. **`App.tsx`** ✅ Updated
 
-   - Remove left sidebar timeline (reclaim 440px)
-   - Add TimelineScrubber below map
-   - Add HeritageMetricsDashboard above map
-   - Widen map and table columns
+   - ✅ Removed left sidebar timeline (reclaimed space)
+   - ✅ Added TimelineScrubber below maps
+   - ✅ Fixed viewport layout - no page scrolling
+   - ⏸️ HeritageMetricsDashboard (future work)
 
-2. **`HeritageMap.tsx`**
-   - Add MapGlowLayer as overlay
-   - Update marker rendering to use animated states
-   - Filter markers based on timeline position
+2. **`HeritageMap.tsx`** ✅ Updated
+
+   - ✅ Added MapGlowLayer as overlay
+   - ✅ Uses `h-full` for flex layout instead of fixed height
+   - ✅ Filter markers based on timeline position
+   - ⏸️ Animated marker states (Phase 3)
+
+3. **`DesktopLayout.tsx`** ✅ Updated (Oct 2025)
+
+   - ✅ Three-column layout: Table (left, resizable) | HeritageMap (center) | SiteDetailView (right)
+   - ✅ Fixed viewport height with flexbox (`calc(100vh-140px)`)
+   - ✅ Timeline below both maps with fixed 200px height
+   - ✅ Maps constrained to leave room for timeline
+   - ✅ Only table scrolls - everything else fits on screen
+   - ✅ Horizontal filter bar with Color Key integrated
+   - ✅ Site Type column with icon-based display and tooltips
+   - ✅ Clickable site names (removed Actions column)
 
 ---
 
@@ -466,7 +498,8 @@ interface GazaSite {
 ### Test Setup
 
 - **Canvas mock** in `src/test/setup.ts` for `leaflet.heat` compatibility
-- All 181 tests passing (was 121, +60 from timeline animation work)
+- **ResizeObserver mock** for TimelineScrubber compatibility
+- All 194 tests passing (was 184 before satellite detail view feature)
 
 ---
 

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { MapContainer } from "react-leaflet";
 import type { GazaSite } from "../../types";
-import { components } from "../../styles/theme";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
 import { useMapGlow } from "../../hooks/useMapGlow";
 import { useAnimation } from "../../contexts/AnimationContext";
@@ -43,7 +42,7 @@ export function HeritageMap({
   }, [glowContributions]);
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       {/* Map interaction hint */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md text-xs text-gray-700 pointer-events-none">
         Use <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-[10px] font-semibold">Ctrl</kbd>{" "}
@@ -53,7 +52,7 @@ export function HeritageMap({
       <MapContainer
         center={GAZA_CENTER}
         zoom={DEFAULT_ZOOM}
-        className={components.map.container}
+        className="h-full w-full rounded-lg shadow-md border border-[#e5e5e5]"
         scrollWheelZoom={false}
       >
         {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}

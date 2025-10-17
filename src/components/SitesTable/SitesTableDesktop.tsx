@@ -3,6 +3,7 @@ import type { GazaSite } from "../../types";
 import { components, getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard } from "../../utils/format";
 import { downloadCSV } from "../../utils/csvExport";
+import { Tooltip } from "../Tooltip";
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -112,8 +113,7 @@ export function SitesTableDesktop({
         variant === "expanded" ||
         columnName === "name" ||
         columnName === "status" ||
-        columnName === "dateDestroyed" ||
-        columnName === "actions"
+        columnName === "dateDestroyed"
       );
     }
     return visibleColumns.includes(columnName);
@@ -193,8 +193,9 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("type") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-2 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm text-center"
                   onClick={() => handleSort("type")}
+                  style={{ width: "60px" }}
                 >
                   Type
                   <SortIcon field="type" />
@@ -249,9 +250,6 @@ export function SitesTableDesktop({
                   <SortIcon field="yearBuiltIslamic" />
                 </th>
               )}
-              {isColumnVisible("actions") && (
-                <th className="px-4 py-3 font-semibold text-sm">Actions</th>
-              )}
             </tr>
           </thead>
           <tbody>
@@ -259,7 +257,7 @@ export function SitesTableDesktop({
               <tr
                 key={site.id}
                 ref={highlightedSiteId === site.id ? highlightedRowRef : null}
-                className={`border-b border-[#fecaca] cursor-pointer hover:bg-[#fecaca] ${
+                className={`border-b border-[#fecaca] hover:bg-[#fecaca] ${
                   highlightedSiteId === site.id ? "ring-2 ring-black ring-inset" : ""
                 }`}
                 style={{ backgroundColor: index % 2 === 0 ? "#fee2e2" : "#ffffff" }}
@@ -269,8 +267,14 @@ export function SitesTableDesktop({
               >
                 {isColumnVisible("name") && (
                   <td className={components.table.td}>
-                    <div>
-                      <div className="font-semibold text-gray-900">{site.name}</div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSiteClick(site);
+                      }}
+                      className="text-left w-full hover:underline"
+                    >
+                      <div className="font-semibold text-[#009639] hover:text-[#007b2f]">{site.name}</div>
                       {site.nameArabic && (
                         <div
                           className={`${
@@ -281,12 +285,22 @@ export function SitesTableDesktop({
                           {site.nameArabic}
                         </div>
                       )}
-                    </div>
+                    </button>
                   </td>
                 )}
                 {isColumnVisible("type") && (
-                  <td className={components.table.td}>
-                    <span className="capitalize">{site.type.replace("-", " ")}</span>
+                  <td className={`${components.table.td} text-center`}>
+                    <Tooltip
+                      content={site.type.replace("-", " ").split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                    >
+                      <span className="inline-block px-2 py-1 text-xs font-medium rounded bg-gray-100 text-gray-700">
+                        {site.type === "mosque" ? "🕌" :
+                         site.type === "church" ? "⛪" :
+                         site.type === "archaeological" ? "🏛️" :
+                         site.type === "museum" ? "🏛️" :
+                         site.type === "historic-building" ? "🏰" : site.type}
+                      </span>
+                    </Tooltip>
                   </td>
                 )}
                 {isColumnVisible("status") && (
@@ -315,19 +329,6 @@ export function SitesTableDesktop({
                 {isColumnVisible("yearBuiltIslamic") && (
                   <td className={`${components.table.td} text-sm`}>
                     {site.yearBuiltIslamic || "N/A"}
-                  </td>
-                )}
-                {isColumnVisible("actions") && (
-                  <td className={components.table.td}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSiteClick(site);
-                      }}
-                      className="text-[#009639] hover:text-[#007b2f] hover:underline font-medium text-sm"
-                    >
-                      See more
-                    </button>
                   </td>
                 )}
               </tr>
