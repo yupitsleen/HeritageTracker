@@ -8,7 +8,7 @@
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
 **Current:** 45 sites | 204 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feature/UI-refinement (PR #19) | main (production)
+**Branch:** fetaure/cleaningUp-prepping (docs updates) | feature/UI-refinement (PR #19) | main (production)
 
 ### Essential Commands
 ```bash
