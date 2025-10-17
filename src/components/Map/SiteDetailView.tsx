@@ -44,14 +44,7 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
     return L.divIcon({
       className: "custom-marker-icon",
       html: `
-        <div style="
-          width: 20px;
-          height: 20px;
-          background-color: #ed3039;
-          border: 3px solid white;
-          border-radius: 50%;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        "></div>
+        <div class="w-5 h-5 bg-[#ed3039] border-[3px] border-white rounded-full shadow-md"></div>
       `,
       iconSize: [20, 20],
       iconAnchor: [10, 10],
