@@ -89,7 +89,9 @@ npm run lint && npm test
 - Table Type column with icon-based display (🕌⛪🏛️🏰) and tooltips
 - Clickable site names (Actions column removed for better space usage)
 - Map has satellite/street toggle (LayersControl top-right)
+- **Historical satellite imagery toggle** (SiteDetailView) - 3 time periods: 2014, Aug 2023, Current
 - Optimized initial Gaza view (center: [31.42, 34.38], zoom: 10.5)
+- Consistent zoom levels across historical imagery (zoom 17 for all periods)
 - Markers changed from teardrops to dots
 - Table is resizable with progressive column display
 - Filters use deferred application pattern (apply on button click)
@@ -107,6 +109,8 @@ src/
 │   ├── Map/
 │   │   ├── HeritageMap.tsx            # Leaflet map + MapGlowLayer integration
 │   │   ├── MapGlowLayer.tsx           # ✅ IMPLEMENTED - Canvas ambient glow overlay
+│   │   ├── SiteDetailView.tsx         # ✅ IMPLEMENTED - Satellite aerial view (right side)
+│   │   ├── TimeToggle.tsx             # ✅ IMPLEMENTED - Historical imagery time period selector
 │   │   └── MarkerAnimations.tsx       # TODO Phase 3 - Destruction animations
 │   ├── Metrics/
 │   │   └── HeritageMetricsDashboard.tsx # NEW - Real-time stats
@@ -124,7 +128,7 @@ src/
 │   └── animationHelpers.ts            # TODO Phase 3 - Animation timing/easing
 ├── constants/
 │   ├── filters.ts                     # SITE_TYPES, STATUS_OPTIONS
-│   └── map.ts                         # Map config (marker sizes)
+│   └── map.ts                         # Map config (marker sizes, HISTORICAL_IMAGERY)
 ├── styles/theme.ts                    # Centralized Palestinian flag theme
 └── data/mockSites.ts                  # 45 sites (static JSON, expanded for timeline testing)
 ```
@@ -194,6 +198,51 @@ src/
 
 - `ring-2 ring-black ring-inset`
 - Syncs: Timeline ↔ Map ↔ Table via `highlightedSiteId`
+
+### SiteDetailView & Historical Imagery
+
+**Purpose:** Satellite-only aerial map (right side) that zooms to selected heritage sites, with historical imagery comparison.
+
+**Features:**
+
+- Shows Gaza overview when no site selected (center: [31.42, 34.38], zoom: 10.5)
+- Zooms to selected site at detail level (zoom: 17)
+- Historical imagery toggle (3 time periods): 2014 Baseline, Aug 2023 Pre-conflict, Current
+- Consistent zoom levels across all historical periods (zoom 17 for fair comparison)
+- Red dot marker shows selected site location
+- Uses ESRI Wayback WMTS service for historical imagery
+
+**Time Periods:**
+
+```typescript
+// 3 periods available via TimeToggle component
+BASELINE_2014: {
+  date: "2014-02-20",
+  maxZoom: 17,  // Oldest imagery, lower resolution
+}
+PRE_CONFLICT_2023: {
+  date: "2023-08-31", // Last before Oct 7, 2023
+  maxZoom: 18,
+}
+CURRENT: {
+  date: "current",
+  maxZoom: 19,  // Latest ESRI imagery
+}
+```
+
+**Implementation Notes:**
+
+- TimeToggle positioned top-right (z-[1000], above map)
+- TileLayer uses `key={selectedPeriod}` to force re-render on time period change
+- Zoom clamped to period's maxZoom: `Math.min(SITE_DETAIL_ZOOM, periodMaxZoom)`
+- Default selected period: PRE_CONFLICT_2023 (shows pre-conflict baseline)
+
+**ESRI Wayback:**
+
+- Historical satellite imagery archive dating back to February 2014
+- 162+ versions available via WMTS tile service
+- URL pattern: `https://wayback.maptiles.arcgis.com/.../tile/{releaseNum}/{z}/{y}/{x}`
+- Release numbers (timeId) identify specific archive versions
 
 ### MultiSelectDropdown
 
@@ -274,12 +323,13 @@ interface GazaSite {
 ### Testing Standards
 
 - **Framework:** Vitest + React Testing Library
-- **Coverage:** 194 tests across 19 test files
+- **Coverage:** 204 tests across 21 test files
 - **Types:** Smoke tests + edge cases (BCE, null values, mobile, desktop)
 - **Minimum:** 5+ tests per new component
 - **Run:** Before every commit
 - **Mobile tests:** Separate App.mobile.test.tsx file with 3 mobile-specific tests
 - **Test setup:** ResizeObserver mock added for TimelineScrubber compatibility
+- **Recent additions:** TimeToggle (7 tests), SiteDetailView historical imagery (3 new tests)
 
 ### Performance Patterns
 
@@ -897,11 +947,13 @@ const activateParticle = (x: number, y: number) => {
 **Completed (feature/sidePics branch - Oct 2025):**
 
 - [x] **Satellite detail view map** ✅ (right side, zooms to selected sites)
+- [x] **Historical satellite imagery toggle** ✅ (2014/Aug 2023/Current comparison)
+- [x] **Consistent zoom levels** ✅ (zoom 17 across all historical periods)
 - [x] **Horizontal filter bar with Color Key** ✅ (better space utilization)
 - [x] **Icon-based Type column with tooltips** ✅ (compact 60px, emoji icons)
 - [x] **Clickable site names** ✅ (removed Actions column)
 - [x] **Optimized Gaza map view** ✅ (center [31.42, 34.38], zoom 10.5)
-- [x] **All 194 tests passing** ✅
+- [x] **All 204 tests passing** ✅
 
 **Immediate:**
 
@@ -924,5 +976,5 @@ const activateParticle = (x: number, y: number) => {
 ---
 
 **Last Updated:** October 17, 2025
-**Version:** 1.6.0-dev (feature/sidePics - Satellite Detail View + UX Improvements)
-**Status:** 🚀 Live with CI/CD | 45 sites documented | 194 tests passing | Dual map layout | Icon-based Type column | Optimized Gaza view | Production ready
+**Version:** 1.6.0-dev (feature/secondMapfixes-viewImprovements - Historical Imagery + Satellite Detail View)
+**Status:** 🚀 Live with CI/CD | 45 sites documented | 204 tests passing | Dual map layout | Historical imagery (2014/2023/Current) | Icon-based Type column | Optimized Gaza view | Production ready

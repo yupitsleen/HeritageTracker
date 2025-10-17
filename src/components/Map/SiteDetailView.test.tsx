@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { SiteDetailView } from "./SiteDetailView";
 import type { GazaSite } from "../../types";
 
@@ -38,11 +37,6 @@ vi.mock("leaflet", () => ({
 vi.mock("./MapHelperComponents", () => ({
   MapUpdater: () => null,
   ScrollWheelHandler: () => null,
-}));
-
-// Mock TimeToggle component
-vi.mock("./TimeToggle", () => ({
-  TimeToggle: () => <div data-testid="time-toggle" />,
 }));
 
 const mockSites: GazaSite[] = [
@@ -147,7 +141,10 @@ describe("SiteDetailView", () => {
 
   it("renders TimeToggle component", () => {
     render(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    expect(screen.getByTestId("time-toggle")).toBeInTheDocument();
+    // TimeToggle renders with 3 buttons
+    expect(screen.getByLabelText("Switch to 2014 Baseline satellite imagery")).toBeInTheDocument();
+    expect(screen.getByLabelText("Switch to Aug 2023 (Pre-conflict) satellite imagery")).toBeInTheDocument();
+    expect(screen.getByLabelText("Switch to Current satellite imagery")).toBeInTheDocument();
   });
 
   it("displays time period label when no site is highlighted", () => {

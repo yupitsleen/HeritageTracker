@@ -17,7 +17,11 @@ As destruction occurs chronologically, the map visually "dims" - representing th
 
 **Note:** Timeline animation work paused after Phase 2. Current production branch includes expanded dataset (45 sites), resizable table, satellite map toggle, and deferred filter application. See PR #14 for full details.
 
-**Recent Update (Oct 2025):** Codebase underwent major refactoring to improve maintainability (Phase 1 & 2 complete). Timeline animation code remains functional but was not the focus of this refactoring work. See [CODE_REVIEW.md](../CODE_REVIEW.md) and [ARCHITECTURE_REVIEW.md](../ARCHITECTURE_REVIEW.md) for details on the modular architecture improvements.
+**Recent Update (Oct 2025):**
+
+1. Codebase underwent major refactoring to improve maintainability (Phase 1 & 2 complete). Timeline animation code remains functional but was not the focus of this refactoring work. See [CODE_REVIEW.md](../CODE_REVIEW.md) and [ARCHITECTURE_REVIEW.md](../ARCHITECTURE_REVIEW.md) for details on the modular architecture improvements.
+
+2. **Historical Satellite Imagery Feature Added** - SiteDetailView now includes TimeToggle component for comparing three time periods: 2014 Baseline (earliest available ESRI Wayback imagery from Feb 20, 2014), Aug 2023 Pre-conflict (last imagery before October 7, 2023), and Current (latest ESRI World Imagery). Zoom levels standardized to 17 across all periods for consistent comparison. This provides visual evidence of heritage site destruction over a decade-long timeline.
 
 ---
 
@@ -347,21 +351,44 @@ interface GazaSite {
 6. **`SiteDetailView.tsx`** ✅ New Feature (Oct 2025)
 
    - Satellite-only aerial view map for selected sites
-   - Automatically zooms to selected site at maximum detail (zoom 19)
+   - **Historical satellite imagery toggle** (3 time periods via TimeToggle component)
+   - Automatically zooms to selected site at detail level (zoom 17)
    - Shows Gaza overview when no site selected (zoom 10.5)
    - Synced with existing `highlightedSiteId` state (table/timeline/map)
    - Optimized initial view: center [31.42, 34.38] for better framing
+   - Consistent zoom levels across all historical periods (zoom 17 for fair comparison)
    - Location: `src/components/Map/SiteDetailView.tsx`
-   - Tests: 10 passing tests in `src/components/Map/SiteDetailView.test.tsx`
+   - Tests: 13 passing tests in `src/components/Map/SiteDetailView.test.tsx`
 
-7. **Map View Configuration** ✅ Updated (Oct 2025)
+7. **`TimeToggle.tsx`** ✅ New Feature (Oct 2025)
+
+   - 3-button toggle for historical satellite imagery periods
+   - Options: 2014 Baseline, Aug 2023 (Pre-conflict), Current
+   - Positioned top-right corner of SiteDetailView
+   - Green highlight for selected period (Palestinian flag color #009639)
+   - ARIA labels for accessibility
+   - Location: `src/components/Map/TimeToggle.tsx`
+   - Tests: 7 passing tests in `src/components/Map/TimeToggle.test.tsx`
+
+8. **Map View Configuration** ✅ Updated (Oct 2025)
 
    - Optimized Gaza center coordinates: `[31.42, 34.38]` (adjusted from `[31.5, 34.45]`)
    - Default zoom level: `10.5` (balanced between 10 and 11)
+   - Site detail zoom: `17` (consistent across all historical imagery periods)
    - Better initial framing prevents Gaza from being cut off at bottom
    - Improved utilization of horizontal map space
    - Applied consistently across HeritageMap and SiteDetailView
    - Location: `src/constants/map.ts`
+
+9. **Historical Imagery Constants** ✅ New Feature (Oct 2025)
+
+   - ESRI Wayback WMTS integration for historical satellite imagery
+   - 3 time periods: BASELINE_2014, PRE_CONFLICT_2023, CURRENT
+   - Each period has unique URL, release number, label, and maxZoom
+   - 2014: Earliest available (Feb 20, 2014), maxZoom 17
+   - Aug 2023: Pre-conflict baseline (Aug 31, 2023), maxZoom 18
+   - Current: Latest ESRI World Imagery, maxZoom 19
+   - Location: `src/constants/map.ts` (HISTORICAL_IMAGERY constant)
 
 ### To Be Created 🚧
 
@@ -499,7 +526,7 @@ interface GazaSite {
 
 - **Canvas mock** in `src/test/setup.ts` for `leaflet.heat` compatibility
 - **ResizeObserver mock** for TimelineScrubber compatibility
-- All 194 tests passing (was 184 before satellite detail view feature)
+- All 204 tests passing (was 194 before historical imagery feature)
 
 ---
 
