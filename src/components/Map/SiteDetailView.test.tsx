@@ -5,8 +5,8 @@ import type { GazaSite } from "../../types";
 
 // Mock Leaflet components
 vi.mock("react-leaflet", () => ({
-  MapContainer: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => (
-    <div data-testid="map-container" {...props}>
+  MapContainer: ({ children, className }: { children?: React.ReactNode; className?: string; [key: string]: unknown }) => (
+    <div data-testid="map-container" className={className}>
       {children}
     </div>
   ),

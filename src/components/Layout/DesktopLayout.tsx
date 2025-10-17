@@ -71,9 +71,9 @@ export function DesktopLayout({
   onExpandTable,
 }: DesktopLayoutProps) {
   return (
-    <div className="hidden md:block">
-      {/* Filter bar with search, tags, and clear button */}
-      <div className={cn(components.container.base, "pt-2 pb-1")}>
+    <div className="hidden md:flex md:flex-col md:h-[calc(100vh-140px)] md:overflow-hidden">
+      {/* Filter bar with search, tags, and clear button - Fixed height */}
+      <div className={cn(components.container.base, "pt-2 pb-2 flex-shrink-0")}>
         <div className="flex items-center gap-3 flex-wrap">
           {/* Filter Button */}
           <button
@@ -152,15 +152,15 @@ export function DesktopLayout({
         </div>
       </div>
 
-      {/* Three-column layout below FilterBar - Table | Heritage Map | Detail View */}
-      <div className="flex gap-4">
+      {/* Three-column layout - Fills remaining space */}
+      <div className="flex gap-4 flex-1 min-h-0">
         {/* Left Column - Sites Table (Resizable, RED outline with white inner border) */}
         <aside
-          className="flex-shrink-0 pl-6 pt-3 relative"
+          className="flex-shrink-0 pl-6 pt-3 pb-3 relative flex flex-col"
           style={{ width: `${tableWidth}px` }}
         >
-          <div className="border-4 border-[#ed3039] rounded-lg sticky top-[120px] max-h-[calc(100vh-120px)] overflow-y-auto z-10">
-            <div className="border-2 border-white rounded-lg h-full overflow-y-auto">
+          <div className="border-4 border-[#ed3039] rounded-lg overflow-hidden flex-1 flex flex-col z-10">
+            <div className="border-2 border-white rounded-lg flex-1 overflow-y-auto">
               <SitesTable
                 sites={filteredSites}
                 onSiteClick={onSiteClick}
@@ -184,63 +184,58 @@ export function DesktopLayout({
         </aside>
 
         {/* Center & Right - Maps side by side + Timeline below */}
-        <div className="flex-1 min-w-0 pr-6 pt-3">
-          <div className="w-full sticky top-[120px]">
-            <StatusLegend />
+        <div className="flex-1 min-w-0 pr-6 pt-3 pb-3 flex flex-col">
+          <StatusLegend />
 
-            {/* Two maps side by side */}
-            <div className="flex gap-4">
-              {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-              <div className="flex-1">
-                <Suspense
-                  fallback={
-                    <div className="h-[500px] bg-gray-100 rounded-lg flex items-center justify-center">
-                      <div className="text-gray-600 text-sm">Loading map...</div>
-                    </div>
-                  }
-                >
-                  <HeritageMap
-                    sites={filteredSites}
-                    onSiteClick={onSiteClick}
-                    highlightedSiteId={highlightedSiteId}
-                    onSiteHighlight={onSiteHighlight}
-                  />
-                </Suspense>
-              </div>
-
-              {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-              <div className="flex-1">
-                <Suspense
-                  fallback={
-                    <div className="h-[500px] bg-gray-100 rounded-lg flex items-center justify-center">
-                      <div className="text-gray-600 text-sm">Loading detail view...</div>
-                    </div>
-                  }
-                >
-                  <SiteDetailView
-                    sites={filteredSites}
-                    highlightedSiteId={highlightedSiteId}
-                  />
-                </Suspense>
-              </div>
-            </div>
-
-            {/* Timeline Scrubber - Below both maps */}
-            <div className="mt-4">
+          {/* Two maps side by side - Constrained height to leave room for timeline */}
+          <div className="flex gap-4 min-h-0 mt-2" style={{ height: 'calc(100% - 220px)' }}>
+            {/* Center - Heritage Map (Traditional/Satellite toggle) */}
+            <div className="flex-1 min-w-0 h-full">
               <Suspense
                 fallback={
-                  <div className="h-[80px] bg-gray-100 rounded-lg flex items-center justify-center">
-                    <div className="text-gray-600 text-sm">Loading timeline...</div>
+                  <div className="h-full bg-gray-100 rounded-lg flex items-center justify-center">
+                    <div className="text-gray-600 text-sm">Loading map...</div>
                   </div>
                 }
               >
-                <TimelineScrubber sites={filteredSites} />
+                <HeritageMap
+                  sites={filteredSites}
+                  onSiteClick={onSiteClick}
+                  highlightedSiteId={highlightedSiteId}
+                  onSiteHighlight={onSiteHighlight}
+                />
+              </Suspense>
+            </div>
+
+            {/* Right - Site Detail View (Satellite only, zooms on selection) */}
+            <div className="flex-1 min-w-0 h-full">
+              <Suspense
+                fallback={
+                  <div className="h-full bg-gray-100 rounded-lg flex items-center justify-center">
+                    <div className="text-gray-600 text-sm">Loading detail view...</div>
+                  </div>
+                }
+              >
+                <SiteDetailView
+                  sites={filteredSites}
+                  highlightedSiteId={highlightedSiteId}
+                />
               </Suspense>
             </div>
           </div>
 
-          {/* Spacer to allow table scrolling */}
-          <div className="h-[200px]"></div>
+          {/* Timeline Scrubber - Fixed height at bottom */}
+          <div className="mt-3 flex-shrink-0 h-[200px]">
+            <Suspense
+              fallback={
+                <div className="h-full bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="text-gray-600 text-sm">Loading timeline...</div>
+                </div>
+              }
+            >
+              <TimelineScrubber sites={filteredSites} />
+            </Suspense>
+          </div>
         </div>
       </div>
     </div>

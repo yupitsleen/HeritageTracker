@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 import { MapContainer, TileLayer, useMap, Marker } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { GAZA_CENTER } from "../../constants/map";
-import { components } from "../../styles/theme";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -86,7 +85,7 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
       <MapContainer
         center={center}
         zoom={zoom}
-        className={components.map.container}
+        className="h-full w-full rounded-lg shadow-md border border-[#e5e5e5]"
         scrollWheelZoom={false}
         zoomControl={true}
         attributionControl={true}
