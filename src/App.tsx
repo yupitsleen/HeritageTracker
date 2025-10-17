@@ -177,8 +177,8 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         onClose={() => appState.setIsFilterOpen(false)}
         zIndex={10001}
       >
-        <div className="bg-white rounded-lg p-6 max-w-5xl">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Filter Sites</h2>
+        <div className="bg-white rounded-xl p-6 max-w-5xl shadow-2xl">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Filter Sites</h2>
           <FilterBar
             selectedTypes={appState.tempFilters.tempSelectedTypes}
             selectedStatuses={appState.tempFilters.tempSelectedStatuses}

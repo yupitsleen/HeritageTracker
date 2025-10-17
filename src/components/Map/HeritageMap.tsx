@@ -52,7 +52,7 @@ export function HeritageMap({
       <MapContainer
         center={GAZA_CENTER}
         zoom={DEFAULT_ZOOM}
-        className="h-full w-full rounded-lg shadow-md border border-[#e5e5e5]"
+        className="h-full w-full rounded-xl shadow-lg border border-gray-200"
         scrollWheelZoom={false}
       >
         {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}

@@ -71,7 +71,7 @@ export function DesktopLayout({
   return (
     <div className="hidden md:flex md:flex-col md:h-[calc(100vh-140px)] md:overflow-hidden">
       {/* Filter bar - Horizontal component with proper padding */}
-      <div className="flex-shrink-0 px-6 pt-4 pb-3 bg-white border-b border-gray-200">
+      <div className="flex-shrink-0 px-6 py-6 bg-white border-b border-gray-200">
         <div className="flex items-start gap-4">
           {/* Left side - Filter controls */}
           <div className="flex-1 flex items-center gap-3 flex-wrap">
@@ -195,8 +195,8 @@ export function DesktopLayout({
           className="flex-shrink-0 pl-6 pt-3 pb-3 relative flex flex-col"
           style={{ width: `${tableWidth}px` }}
         >
-          <div className="border-4 border-[#ed3039] rounded-lg overflow-hidden flex-1 flex flex-col z-10">
-            <div className="border-2 border-white rounded-lg flex-1 overflow-y-auto">
+          <div className="border-4 border-[#ed3039] rounded-xl overflow-hidden flex-1 flex flex-col z-10 shadow-lg">
+            <div className="border-2 border-white rounded-xl flex-1 overflow-y-auto">
               <SitesTable
                 sites={filteredSites}
                 onSiteClick={onSiteClick}
