@@ -31,6 +31,14 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
+      {/* Skip to content link for keyboard navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10002] focus:bg-[#009639] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
+
       {/* Palestinian Flag Red Triangle - Background Element (Desktop only) */}
       {!isMobile && (
         <div
@@ -53,7 +61,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       />
 
       {/* Main Content */}
-      <main className="pb-24 md:pb-0 relative">
+      <main id="main-content" className="pb-24 md:pb-0 relative">
         {isMobile ? (
           <MobileLayout
             selectedTypes={appState.filters.selectedTypes}

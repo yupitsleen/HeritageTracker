@@ -30,3 +30,36 @@
 *::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8;
 }
+
+/* Accessibility: Visible focus rings for keyboard navigation */
+/* Palestinian flag green focus ring for all interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid #009639;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible for custom components */
+.focus-ring:focus-visible {
+  outline: 2px solid #009639;
+  outline-offset: 2px;
+}
