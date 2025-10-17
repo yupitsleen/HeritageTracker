@@ -131,9 +131,9 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white/95 backdrop-blur-sm">
       {/* Title section - sticky */}
-      <div className="sticky top-0 z-20 bg-white flex-shrink-0 shadow-sm">
+      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm flex-shrink-0 shadow-sm">
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
@@ -263,10 +263,10 @@ export function SitesTableDesktop({
                 key={site.id}
                 ref={highlightedSiteId === site.id ? highlightedRowRef : null}
                 className={`border-b border-gray-100
-                            hover:bg-gray-50 transition-colors duration-150
+                            hover:bg-gray-50/90 transition-colors duration-150
                             ${highlightedSiteId === site.id
-                              ? "bg-green-50 ring-2 ring-[#009639] ring-inset"
-                              : "bg-white"
+                              ? "bg-green-50/90 ring-2 ring-[#009639] ring-inset"
+                              : "bg-white/90"
                             }`}
                 onClick={() => {
                   onSiteHighlight?.(site.id);

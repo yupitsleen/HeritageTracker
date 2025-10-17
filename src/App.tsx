@@ -30,7 +30,21 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
   const tableResize = useTableResize();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Palestinian Flag Red Triangle - Background Element (Desktop only) */}
+      {!isMobile && (
+        <div
+          className="fixed top-[80px] left-0 pointer-events-none z-0"
+          style={{
+            width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
+            height: 'calc(100vh - 80px)', // From below header to bottom of viewport
+            background: '#ed3039',
+            clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
+          }}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Header with flag line */}
       <AppHeader
         onOpenDonate={() => appState.setIsDonateOpen(true)}
@@ -39,7 +53,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       />
 
       {/* Main Content */}
-      <main className="pb-24 md:pb-0">
+      <main className="pb-24 md:pb-0 relative z-10">
         {isMobile ? (
           <MobileLayout
             selectedTypes={appState.filters.selectedTypes}

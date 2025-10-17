@@ -13,7 +13,7 @@ interface AppFooterProps {
  */
 export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: AppFooterProps) {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-[#009639] text-[#fefefe] shadow-lg z-50">
+    <footer className="fixed bottom-0 left-0 right-0 bg-[#009639] text-[#fefefe] shadow-lg z-[5]">
       {/* Desktop footer - full text with more height */}
       {!isMobile && (
         <div className="py-4">
