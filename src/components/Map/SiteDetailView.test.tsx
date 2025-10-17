@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import { SiteDetailView } from "./SiteDetailView";
 import type { GazaSite } from "../../types";
 
@@ -39,6 +39,17 @@ vi.mock("./MapHelperComponents", () => ({
   ScrollWheelHandler: () => null,
 }));
 
+// Mock TimeToggle component
+vi.mock("./TimeToggle", () => ({
+  TimeToggle: ({ onPeriodChange }: { onPeriodChange: (period: string) => void }) => (
+    <div data-testid="time-toggle">
+      <button aria-label="Switch to 2014 Baseline satellite imagery" onClick={() => onPeriodChange("BASELINE_2014")}>2014</button>
+      <button aria-label="Switch to Aug 2023 (Pre-conflict) satellite imagery" onClick={() => onPeriodChange("PRE_CONFLICT_2023")}>Aug 2023</button>
+      <button aria-label="Switch to Current satellite imagery" onClick={() => onPeriodChange("CURRENT")}>Current</button>
+    </div>
+  ),
+}));
+
 const mockSites: GazaSite[] = [
   {
     id: "1",
@@ -71,6 +82,10 @@ const mockSites: GazaSite[] = [
 ];
 
 describe("SiteDetailView", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("renders without crashing", () => {
     render(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
     expect(screen.getByTestId("map-container")).toBeInTheDocument();
