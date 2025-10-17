@@ -30,7 +30,21 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
   const tableResize = useTableResize();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Palestinian Flag Red Triangle - Background Element (Desktop only) */}
+      {!isMobile && (
+        <div
+          className="fixed top-0 left-0 pointer-events-none z-[8]"
+          style={{
+            width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
+            height: '100vh', // Full viewport height
+            background: '#ed3039',
+            clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
+          }}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Header with flag line */}
       <AppHeader
         onOpenDonate={() => appState.setIsDonateOpen(true)}
@@ -39,7 +53,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       />
 
       {/* Main Content */}
-      <main className="pb-24 md:pb-0">
+      <main className="pb-24 md:pb-0 relative">
         {isMobile ? (
           <MobileLayout
             selectedTypes={appState.filters.selectedTypes}
@@ -177,8 +191,8 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         onClose={() => appState.setIsFilterOpen(false)}
         zIndex={10001}
       >
-        <div className="bg-white rounded-lg p-6 max-w-5xl">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Filter Sites</h2>
+        <div className="bg-white rounded-xl p-6 max-w-5xl shadow-2xl">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Filter Sites</h2>
           <FilterBar
             selectedTypes={appState.tempFilters.tempSelectedTypes}
             selectedStatuses={appState.tempFilters.tempSelectedStatuses}
@@ -196,13 +210,17 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
           <div className="mt-6 flex justify-end gap-3">
             <button
               onClick={appState.clearTempFilters}
-              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 text-gray-600 hover:bg-gray-100
+                         rounded-lg transition-colors duration-200 font-medium"
             >
               Clear All
             </button>
             <button
               onClick={appState.applyFilters}
-              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
+                         rounded-lg shadow-md hover:shadow-lg
+                         transition-all duration-200 font-semibold
+                         active:scale-95"
             >
               Apply Filters
             </button>

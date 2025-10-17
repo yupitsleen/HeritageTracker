@@ -64,7 +64,7 @@ export function DonateModal() {
           {DONATION_ORGANIZATIONS.map((org) => (
             <div
               key={org.name}
-              className="border border-gray-200 rounded-lg p-4 hover:border-[#009639] transition-colors"
+              className="border border-gray-200 rounded-xl p-4 hover:border-[#009639] hover:shadow-md transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
@@ -82,7 +82,7 @@ export function DonateModal() {
                   href={org.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-shrink-0 px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-md transition-colors text-sm font-medium whitespace-nowrap"
+                  className="flex-shrink-0 px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold whitespace-nowrap active:scale-95"
                   aria-label={`Donate to ${org.name}`}
                 >
                   Donate

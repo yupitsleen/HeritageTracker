@@ -60,7 +60,7 @@ export function Modal({ isOpen, onClose, children, title, zIndex = 9999 }: Modal
     >
       {/* Backdrop with blur effect */}
       <div
-        className="absolute inset-0 bg-white/30 backdrop-blur-sm transition-all"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-all"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -71,8 +71,8 @@ export function Modal({ isOpen, onClose, children, title, zIndex = 9999 }: Modal
         tabIndex={-1}
         className={cn(
           "relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto",
-          "bg-white rounded-lg shadow-2xl",
-          "transform transition-all"
+          "bg-white rounded-2xl shadow-2xl",
+          "transform transition-all border border-gray-100"
         )}
       >
         {/* Header with close button */}

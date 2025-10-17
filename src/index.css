@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Apply Inter font globally */
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
 /* Custom scrollbar styling for better visibility */
 * {
   scrollbar-width: thin;

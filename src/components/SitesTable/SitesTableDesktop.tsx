@@ -131,9 +131,9 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="flex flex-col bg-white/50 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl" style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
-      <div className="sticky top-0 z-20 bg-white flex-shrink-0 shadow-sm">
+      <div className="sticky top-0 z-20 bg-white/50 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg">
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
@@ -159,7 +159,11 @@ export function SitesTableDesktop({
             {variant === "expanded" && (
               <button
                 onClick={() => downloadCSV(sortedSites)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-[#009639] hover:bg-[#007b2f] text-white text-sm rounded transition-colors font-medium"
+                className="flex items-center gap-2
+                           px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
+                           rounded-lg shadow-md hover:shadow-lg
+                           transition-all duration-200 font-semibold
+                           active:scale-95 text-sm"
                 title="Export table data to CSV file"
                 aria-label="Export to CSV"
               >
@@ -179,13 +183,13 @@ export function SitesTableDesktop({
       </div>
 
       {/* Scrollable table with sticky headers */}
-      <div className="flex-1 overflow-y-auto" ref={tableContainerRef}>
+      <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
         <table className={components.table.base}>
-          <thead className="sticky top-0 z-10 bg-[#000000] text-[#fefefe]">
+          <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
             <tr>
               {isColumnVisible("name") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("name")}
                 >
                   Site Name
@@ -194,7 +198,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("type") && (
                 <th
-                  className="px-2 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm text-center"
+                  className="px-2 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm text-center transition-colors duration-200"
                   onClick={() => handleSort("type")}
                   style={{ width: `${TABLE_CONFIG.TYPE_COLUMN_WIDTH}px` }}
                 >
@@ -204,7 +208,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("status") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("status")}
                 >
                   Status
@@ -213,7 +217,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyed") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("dateDestroyed")}
                 >
                   {visibleColumns
@@ -226,7 +230,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyedIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("dateDestroyedIslamic")}
                 >
                   Destruction Date (Islamic)
@@ -235,7 +239,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuilt") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("yearBuilt")}
                 >
                   Built (Gregorian)
@@ -244,7 +248,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuiltIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm"
+                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
                   onClick={() => handleSort("yearBuiltIslamic")}
                 >
                   Built (Islamic)
@@ -254,14 +258,16 @@ export function SitesTableDesktop({
             </tr>
           </thead>
           <tbody>
-            {sortedSites.map((site, index) => (
+            {sortedSites.map((site) => (
               <tr
                 key={site.id}
                 ref={highlightedSiteId === site.id ? highlightedRowRef : null}
-                className={`border-b border-[#fecaca] hover:bg-[#fecaca] ${
-                  highlightedSiteId === site.id ? "ring-2 ring-black ring-inset" : ""
-                }`}
-                style={{ backgroundColor: index % 2 === 0 ? "#fee2e2" : "#ffffff" }}
+                className={`border-b border-gray-100
+                            hover:bg-gray-50/60 transition-colors duration-150
+                            ${highlightedSiteId === site.id
+                              ? "bg-green-50/60 ring-2 ring-[#009639] ring-inset"
+                              : "bg-white/50"
+                            }`}
                 onClick={() => {
                   onSiteHighlight?.(site.id);
                 }}

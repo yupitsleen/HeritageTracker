@@ -154,18 +154,18 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
   return (
     <div
       ref={containerRef}
-      className="bg-[#fefefe] border-2 border-[#000000] rounded-lg p-4 shadow-md"
+      className="bg-white/90 backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl"
       role="region"
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center justify-between mb-4 gap-4">
+      <div className="flex items-center justify-between mb-3 gap-4">
         {/* Left: Play/Pause/Reset */}
         <div className="flex items-center gap-2">
           {!isPlaying ? (
             <button
               onClick={play}
-              className="px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
               aria-label="Play timeline animation"
             >
               ▶ Play
@@ -173,7 +173,7 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
           ) : (
             <button
               onClick={pause}
-              className="px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
               aria-label="Pause timeline animation"
             >
               ❚❚ Pause

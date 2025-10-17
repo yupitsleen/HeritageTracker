@@ -88,7 +88,7 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
       <MapContainer
         center={center}
         zoom={zoom}
-        className="h-full w-full rounded-lg shadow-md border border-[#e5e5e5]"
+        className="h-full w-full"
         scrollWheelZoom={false}
         zoomControl={true}
         attributionControl={true}

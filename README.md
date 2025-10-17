@@ -1,3 +1,5 @@
+"Continue from Phase 3 in docs/UI_REFINEMENT_PROGRESS.md"
+
 # Heritage Tracker
 
 **Documenting the destruction of Palestinian cultural heritage through interactive visualization.**
@@ -173,6 +175,7 @@ vite.config.ts                  # Vite config with PWA plugin + code splitting
 ```
 
 **Architecture Notes:**
+
 - **870 lines** reduced from main components (App, SitesTable, StatsDashboard)
 - **7 new hooks** for reusable logic
 - **11 new components** for better separation of concerns
@@ -289,6 +292,7 @@ _Last updated: October 16, 2025 | Version: 1.5.1 | 🚀 Live in Production with 
 ## 📈 Recent Updates (v1.5.1)
 
 ### Code Architecture Refactoring (Oct 2025)
+
 - **Modular structure:** 870 lines reduced from main components
 - **7 new hooks:** Reusable logic (state, filtering, resizing, stats)
 - **11 new components:** Better separation of concerns
@@ -296,17 +300,20 @@ _Last updated: October 16, 2025 | Version: 1.5.1 | 🚀 Live in Production with 
 - **See:** [ARCHITECTURE_REVIEW.md](ARCHITECTURE_REVIEW.md) for full details
 
 ### Performance Optimizations (v1.5.0)
+
 - **Lazy Loading:** Map, Timeline, and Modal components load on-demand
 - **Code Splitting:** Main bundle reduced from 580KB to 287KB (50% reduction)
 - **PWA Support:** Offline functionality with map tile caching
 - **Service Worker:** 621KB total assets precached with 30-day tile expiration
 
 ### CI/CD Enhancements
+
 - Mobile smoke test pipeline integration
 - Automated bundle size monitoring and limits
 - GitHub Actions step summary reporting
 
 ### Bundle Analysis
+
 - Main: 287KB (83KB gzipped)
 - React vendor: 12KB (4KB gzipped)
 - Map vendor: 161KB (47KB gzipped)
