@@ -47,7 +47,7 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
     // Default: Gaza overview
     return {
       center: GAZA_CENTER,
-      zoom: 11,
+      zoom: 10.5, // Match DEFAULT_ZOOM for consistency
     };
   }, [highlightedSite]);
 

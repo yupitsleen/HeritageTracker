@@ -4,13 +4,15 @@
 
 /**
  * Gaza Strip center coordinates [latitude, longitude]
+ * Adjusted slightly north to better center the strip in the viewport
  */
-export const GAZA_CENTER: [number, number] = [31.5, 34.45] as const;
+export const GAZA_CENTER: [number, number] = [31.42, 34.38] as const;
 
 /**
  * Default zoom level for Gaza Strip view
+ * Zoom 10.5 provides balanced full-strip visibility in wide containers
  */
-export const DEFAULT_ZOOM = 11;
+export const DEFAULT_ZOOM = 10.5;
 
 /**
  * CDN URLs for Leaflet marker icons
