@@ -16,9 +16,10 @@ export const DEFAULT_ZOOM = 10.5;
 
 /**
  * Zoom level for satellite detail view of individual sites
- * Zoom 19 is one below maximum to ensure ESRI satellite tiles are available
+ * Zoom 17 ensures consistency across all historical imagery time periods
+ * (matched to the oldest imagery's maximum available resolution)
  */
-export const SITE_DETAIL_ZOOM = 19;
+export const SITE_DETAIL_ZOOM = 17;
 
 /**
  * CDN URLs for Leaflet marker icons
@@ -73,6 +74,7 @@ export const HISTORICAL_IMAGERY = {
     date: "2014-02-20",
     label: "2014 Baseline",
     url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
+    maxZoom: 17, // Older imagery has lower resolution
   },
   /** Pre-conflict - August 31, 2023 (last imagery before October 7, 2023) */
   PRE_CONFLICT_2023: {
@@ -80,6 +82,7 @@ export const HISTORICAL_IMAGERY = {
     date: "2023-08-31",
     label: "Aug 2023 (Pre-conflict)",
     url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/64776/{z}/{y}/{x}",
+    maxZoom: 18, // Recent imagery, but zoom 18 ensures tile availability
   },
   /** Current - Latest ESRI World Imagery */
   CURRENT: {
@@ -87,6 +90,7 @@ export const HISTORICAL_IMAGERY = {
     date: "current",
     label: "Current",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    maxZoom: 19, // Current imagery has high resolution
   },
 } as const;
 

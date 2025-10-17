@@ -28,9 +28,13 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
     return sites.find((site) => site.id === highlightedSiteId) || null;
   }, [sites, highlightedSiteId]);
 
-  // Get tile URL for selected time period
-  const tileUrl = useMemo(() => {
-    return HISTORICAL_IMAGERY[selectedPeriod].url;
+  // Get tile URL and maxZoom for selected time period
+  const { tileUrl, maxZoom: periodMaxZoom } = useMemo(() => {
+    const period = HISTORICAL_IMAGERY[selectedPeriod];
+    return {
+      tileUrl: period.url,
+      maxZoom: period.maxZoom,
+    };
   }, [selectedPeriod]);
 
   // Get label for selected time period
@@ -38,13 +42,13 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
     return HISTORICAL_IMAGERY[selectedPeriod].label;
   }, [selectedPeriod]);
 
-  // Determine map center and zoom level
+  // Determine map center and zoom level (clamped to period's max zoom)
   const { center, zoom } = useMemo(() => {
     if (highlightedSite) {
-      // Zoom in on selected site at maximum available detail
+      // Zoom in on selected site, but don't exceed the period's max zoom
       return {
         center: highlightedSite.coordinates,
-        zoom: SITE_DETAIL_ZOOM,
+        zoom: Math.min(SITE_DETAIL_ZOOM, periodMaxZoom),
       };
     }
     // Default: Gaza overview
@@ -52,7 +56,7 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
       center: GAZA_CENTER,
       zoom: DEFAULT_ZOOM,
     };
-  }, [highlightedSite]);
+  }, [highlightedSite, periodMaxZoom]);
 
   // Create a custom marker icon for the highlighted site
   const markerIcon = useMemo(() => {
@@ -100,7 +104,7 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
           key={selectedPeriod} // Force re-render when time period changes
           url={tileUrl}
           attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-          maxZoom={20}
+          maxZoom={periodMaxZoom}
           minZoom={1}
         />
 
