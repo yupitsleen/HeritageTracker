@@ -13,6 +13,7 @@ import { useTimelineData } from "../../hooks/useTimelineData";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
+  onSyncMapChange?: (isSynced: boolean) => void; // Optional callback for map sync toggle
 }
 
 /**
@@ -21,11 +22,12 @@ interface TimelineScrubberProps {
  * - Draggable scrubber handle
  * - Event markers for destruction dates
  * - Play/pause/reset controls
+ * - Sync Map toggle (syncs satellite imagery with timeline)
  * - Speed control dropdown
  * - Keyboard navigation (space, arrows, home/end)
  * - Responsive to container width changes
  */
-export function TimelineScrubber({ sites }: TimelineScrubberProps) {
+export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberProps) {
   const {
     currentTimestamp,
     isPlaying,
@@ -43,6 +45,19 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
+  const [syncMap, setSyncMap] = useState(false); // Map sync toggle state
+
+  // Notify parent when sync state changes
+  useEffect(() => {
+    onSyncMapChange?.(syncMap);
+
+    // When sync is enabled, pause and jump to 2014 baseline
+    if (syncMap) {
+      pause();
+      // Set to Feb 20, 2014 (BASELINE_2014 date) to show progression from 2014 → 2023 → Current
+      setTimestamp(new Date("2014-02-20"));
+    }
+  }, [syncMap, onSyncMapChange, pause, setTimestamp]);
 
   // Extract timeline data using custom hook
   const { events: destructionDates } = useTimelineData(sites);
@@ -193,6 +208,20 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
           >
             <ArrowPathIcon className="w-4 h-4" />
             <span>Reset</span>
+          </button>
+
+          {/* Sync Map toggle button */}
+          <button
+            onClick={() => setSyncMap(!syncMap)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${
+              syncMap
+                ? "bg-[#009639] text-[#fefefe] hover:bg-[#007b2f]"
+                : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+            }`}
+            aria-label={syncMap ? "Disable map sync with timeline" : "Enable map sync with timeline"}
+            title="Sync satellite imagery with timeline date"
+          >
+            <span>{syncMap ? "✓" : ""} Sync Map</span>
           </button>
         </div>
 

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import type { GazaSite } from "../../types";
 import { Input } from "../Form/Input";
 import { FilterTag } from "../FilterBar/FilterTag";
@@ -69,6 +69,9 @@ export function DesktopLayout({
   highlightedSiteId,
   onExpandTable,
 }: DesktopLayoutProps) {
+  // State for satellite map sync with timeline
+  const [syncMapToTimeline, setSyncMapToTimeline] = useState(false);
+
   return (
     <div className="hidden md:flex md:h-[calc(100vh-140px)] md:overflow-hidden relative">
       {/* Two-column layout - Fills remaining space */}
@@ -238,6 +241,7 @@ export function DesktopLayout({
                 <SiteDetailView
                   sites={filteredSites}
                   highlightedSiteId={highlightedSiteId}
+                  syncMapToTimeline={syncMapToTimeline}
                 />
               </Suspense>
             </div>
@@ -246,7 +250,10 @@ export function DesktopLayout({
           {/* Timeline Scrubber - Fixed height at bottom */}
           <div className="mt-3 flex-shrink-0 h-[200px] relative z-10">
             <Suspense fallback={<SkeletonMap />}>
-              <TimelineScrubber sites={filteredSites} />
+              <TimelineScrubber
+                sites={filteredSites}
+                onSyncMapChange={setSyncMapToTimeline}
+              />
             </Suspense>
           </div>
         </div>
