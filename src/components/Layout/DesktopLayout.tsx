@@ -191,23 +191,19 @@ export function DesktopLayout({
 
       {/* Three-column layout - Fills remaining space */}
       <div className="flex gap-4 flex-1 min-h-0">
-        {/* Left Column - Sites Table (Resizable, RED outline with white inner border) */}
+        {/* Left Column - Sites Table (Resizable, black border like timeline) */}
         <aside
-          className="flex-shrink-0 pl-6 pt-3 pb-3 relative flex flex-col"
+          className="flex-shrink-0 pl-6 pt-4 pb-4 relative flex flex-col z-10"
           style={{ width: `${tableWidth}px` }}
         >
-          <div className="border-4 border-[#ed3039] rounded-xl overflow-hidden flex-1 flex flex-col z-10 shadow-lg">
-            <div className="border-2 border-white rounded-xl flex-1 overflow-y-auto">
-              <SitesTable
-                sites={filteredSites}
-                onSiteClick={onSiteClick}
-                onSiteHighlight={onSiteHighlight}
-                highlightedSiteId={highlightedSiteId}
-                onExpandTable={onExpandTable}
-                visibleColumns={getVisibleColumns()}
-              />
-            </div>
-          </div>
+          <SitesTable
+            sites={filteredSites}
+            onSiteClick={onSiteClick}
+            onSiteHighlight={onSiteHighlight}
+            highlightedSiteId={highlightedSiteId}
+            onExpandTable={onExpandTable}
+            visibleColumns={getVisibleColumns()}
+          />
 
           {/* Resize handle */}
           <div

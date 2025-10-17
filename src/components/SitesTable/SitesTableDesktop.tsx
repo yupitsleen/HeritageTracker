@@ -131,9 +131,9 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className="h-full flex flex-col bg-white/95 backdrop-blur-sm">
+    <div className="flex flex-col bg-white/95 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-md" style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
-      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm flex-shrink-0 shadow-sm">
+      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg">
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
@@ -183,7 +183,7 @@ export function SitesTableDesktop({
       </div>
 
       {/* Scrollable table with sticky headers */}
-      <div className="flex-1 overflow-y-auto" ref={tableContainerRef}>
+      <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
         <table className={components.table.base}>
           <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
             <tr>
