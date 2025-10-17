@@ -30,7 +30,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
   const tableResize = useTableResize();
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gray-200 relative">
       {/* Skip to content link for keyboard navigation */}
       <a
         href="#main-content"
@@ -42,7 +42,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       {/* Palestinian Flag Red Triangle - Background Element (Desktop only) */}
       {!isMobile && (
         <div
-          className="fixed top-0 left-0 pointer-events-none z-[8]"
+          className="fixed top-0 left-0 pointer-events-none z-[8] opacity-50"
           style={{
             width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
             height: '100vh', // Full viewport height
