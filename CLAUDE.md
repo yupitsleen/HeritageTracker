@@ -35,11 +35,13 @@ AI assistant guidance for developing Heritage Tracker.
 ## Development Commands
 
 ```bash
-npm run dev     # Dev server (localhost:5173) - keep running
-npm test        # Run 184 tests - must pass before commit
+npm run dev     # Dev server (localhost:5173) - ASSUME ALWAYS RUNNING
+npm test        # Run 194 tests - must pass before commit
 npm run lint    # Code quality check
 npm run build   # Production build
 ```
+
+**Note:** The dev server is typically already running. Do not attempt to start it unless explicitly asked.
 
 ## Critical Rules
 
@@ -78,7 +80,7 @@ npm run lint && npm test
 
 ### Layout
 
-**Desktop:** Map (left, ~60%, includes satellite toggle + markers as dots) + Timeline Scrubber (below map, hidden by default) | Resizable Table (right, 480px default, can expand to show more columns)
+**Desktop:** Resizable Table (left, 480px default) | HeritageMap (center, traditional/satellite toggle + markers) | SiteDetailView (right, satellite aerial view, zooms on selected site) | Timeline Scrubber (below both maps)
 
 **Mobile:** FilterBar (with deferred filter application) → Accordion Table (Type column removed) - Map and Timeline not rendered on mobile to prevent AnimationProvider errors
 

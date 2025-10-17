@@ -11,6 +11,9 @@ import { StatusLegend } from "../Map/StatusLegend";
 const HeritageMap = lazy(() =>
   import("../Map/HeritageMap").then((m) => ({ default: m.HeritageMap }))
 );
+const SiteDetailView = lazy(() =>
+  import("../Map/SiteDetailView").then((m) => ({ default: m.SiteDetailView }))
+);
 const TimelineScrubber = lazy(() =>
   import("../Timeline/TimelineScrubber").then((m) => ({ default: m.TimelineScrubber }))
 );
@@ -43,8 +46,8 @@ interface DesktopLayoutProps {
 }
 
 /**
- * Desktop layout with filter bar, resizable table, map, and timeline
- * Two-column layout: Table (left, resizable) | Map + Timeline (right)
+ * Desktop layout with filter bar, resizable table, dual maps, and timeline
+ * Three-column layout: Table (left, resizable) | HeritageMap (center) | SiteDetailView (right) | Timeline (below both maps)
  */
 export function DesktopLayout({
   selectedTypes,
@@ -149,9 +152,9 @@ export function DesktopLayout({
         </div>
       </div>
 
-      {/* Two-column layout below FilterBar - Table on Left, Map on Right */}
-      <div className="flex gap-6">
-        {/* Left Sidebar - Sites Table (Resizable, RED outline with white inner border) */}
+      {/* Three-column layout below FilterBar - Table | Heritage Map | Detail View */}
+      <div className="flex gap-4">
+        {/* Left Column - Sites Table (Resizable, RED outline with white inner border) */}
         <aside
           className="flex-shrink-0 pl-6 pt-3 relative"
           style={{ width: `${tableWidth}px` }}
@@ -180,28 +183,49 @@ export function DesktopLayout({
           />
         </aside>
 
-        {/* Right - Map + Timeline (Expanded to fill space) */}
+        {/* Center & Right - Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-6 pt-3">
           <div className="w-full sticky top-[120px]">
             <StatusLegend />
 
-            {/* Map without height wrapper - sizes to content */}
-            <Suspense
-              fallback={
-                <div className="h-[500px] bg-gray-100 rounded-lg flex items-center justify-center">
-                  <div className="text-gray-600 text-sm">Loading map...</div>
-                </div>
-              }
-            >
-              <HeritageMap
-                sites={filteredSites}
-                onSiteClick={onSiteClick}
-                highlightedSiteId={highlightedSiteId}
-                onSiteHighlight={onSiteHighlight}
-              />
-            </Suspense>
+            {/* Two maps side by side */}
+            <div className="flex gap-4">
+              {/* Center - Heritage Map (Traditional/Satellite toggle) */}
+              <div className="flex-1">
+                <Suspense
+                  fallback={
+                    <div className="h-[500px] bg-gray-100 rounded-lg flex items-center justify-center">
+                      <div className="text-gray-600 text-sm">Loading map...</div>
+                    </div>
+                  }
+                >
+                  <HeritageMap
+                    sites={filteredSites}
+                    onSiteClick={onSiteClick}
+                    highlightedSiteId={highlightedSiteId}
+                    onSiteHighlight={onSiteHighlight}
+                  />
+                </Suspense>
+              </div>
 
-            {/* Timeline Scrubber - Directly below map */}
+              {/* Right - Site Detail View (Satellite only, zooms on selection) */}
+              <div className="flex-1">
+                <Suspense
+                  fallback={
+                    <div className="h-[500px] bg-gray-100 rounded-lg flex items-center justify-center">
+                      <div className="text-gray-600 text-sm">Loading detail view...</div>
+                    </div>
+                  }
+                >
+                  <SiteDetailView
+                    sites={filteredSites}
+                    highlightedSiteId={highlightedSiteId}
+                  />
+                </Suspense>
+              </div>
+            </div>
+
+            {/* Timeline Scrubber - Below both maps */}
             <div className="mt-4">
               <Suspense
                 fallback={
