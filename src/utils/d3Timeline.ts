@@ -4,6 +4,7 @@ export interface TimelineEvent {
   date: Date;
   siteName: string;
   siteId: string;
+  status?: "destroyed" | "heavily-damaged" | "damaged";
 }
 
 export interface TimelineConfig {
@@ -26,13 +27,13 @@ export interface TimelineConfig {
 export const DEFAULT_TIMELINE_CONFIG: TimelineConfig = {
   height: 80,
   margin: 50,
-  eventMarkerRadius: 4,
-  scrubberRadius: 10,
+  eventMarkerRadius: 6, // Increased from 4 to 6 for better visibility
+  scrubberRadius: 12, // Increased from 10 to 12 for larger grab area
   colors: {
     axis: "#525252",
     axisLine: "#d4d4d4",
     axisDomain: "#a3a3a3",
-    eventMarker: "#ed3039", // Palestinian flag red
+    eventMarker: "#ed3039", // Palestinian flag red (default)
     eventMarkerStroke: "#000000",
     scrubberLine: "#009639", // Palestinian flag green
     scrubberHandle: "#009639",
@@ -118,12 +119,29 @@ export class D3TimelineRenderer {
   }
 
   /**
+   * Get color for event marker based on status
+   */
+  private getMarkerColor(status?: string): string {
+    switch (status) {
+      case "destroyed":
+        return "#dc2626"; // red-600 (most severe)
+      case "heavily-damaged":
+        return "#ea580c"; // orange-600 (moderate)
+      case "damaged":
+        return "#ca8a04"; // yellow-600 (minor)
+      default:
+        return this.config.colors.eventMarker; // Default red
+    }
+  }
+
+  /**
    * Render event markers (destruction dates)
+   * Enhanced with color-coding by status, hover effects, and better tooltips
    */
   private renderEventMarkers(events: TimelineEvent[]) {
     const { height, eventMarkerRadius, colors } = this.config;
 
-    this.svg
+    const markers = this.svg
       .selectAll("circle.event-marker")
       .data(events)
       .enter()
@@ -132,16 +150,37 @@ export class D3TimelineRenderer {
       .attr("cx", (d) => this.timeScale(d.date))
       .attr("cy", height / 2)
       .attr("r", eventMarkerRadius)
-      .attr("fill", colors.eventMarker)
+      .attr("fill", (d) => this.getMarkerColor(d.status))
       .attr("stroke", colors.eventMarkerStroke)
-      .attr("stroke-width", 1)
+      .attr("stroke-width", 1.5)
       .style("cursor", "pointer")
+      .style("transition", "all 0.2s")
+      .on("mouseenter", function () {
+        d3.select(this)
+          .transition()
+          .duration(150)
+          .attr("r", eventMarkerRadius + 2)
+          .attr("stroke-width", 2);
+      })
+      .on("mouseleave", function () {
+        d3.select(this)
+          .transition()
+          .duration(150)
+          .attr("r", eventMarkerRadius)
+          .attr("stroke-width", 1.5);
+      })
       .on("click", (_event, d) => {
         this.onTimestampChange(d.date);
         this.onPause();
-      })
+      });
+
+    // Add tooltips
+    markers
       .append("title")
-      .text((d) => `${d.siteName}\n${d3.timeFormat("%B %d, %Y")(d.date)}`);
+      .text(
+        (d) =>
+          `${d.siteName}\n${d3.timeFormat("%B %d, %Y")(d.date)}${d.status ? `\nStatus: ${d.status.replace("-", " ")}` : ""}`
+      );
   }
 
   /**
@@ -175,11 +214,17 @@ export class D3TimelineRenderer {
       .attr("stroke-width", 2)
       .style("cursor", "grab");
 
-    // Drag behavior
+    // Drag behavior with visual feedback
     const drag = d3
       .drag<SVGCircleElement, unknown>()
       .on("start", function () {
-        d3.select(this).style("cursor", "grabbing");
+        d3.select(this)
+          .style("cursor", "grabbing")
+          .transition()
+          .duration(100)
+          .attr("r", scrubberRadius + 2)
+          .attr("stroke-width", 3)
+          .style("filter", "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))");
         // onPause is called in the parent callback
       })
       .on("drag", (event) => {
@@ -191,7 +236,13 @@ export class D3TimelineRenderer {
         this.onTimestampChange(newDate);
       })
       .on("end", function () {
-        d3.select(this).style("cursor", "grab");
+        d3.select(this)
+          .style("cursor", "grab")
+          .transition()
+          .duration(200)
+          .attr("r", scrubberRadius)
+          .attr("stroke-width", 2)
+          .style("filter", "none");
       });
 
     // Pause when drag starts

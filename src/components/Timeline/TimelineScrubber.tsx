@@ -1,5 +1,10 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 import * as d3 from "d3";
+import {
+  PlayIcon,
+  PauseIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
 import { components } from "../../styles/theme";
@@ -165,26 +170,29 @@ export function TimelineScrubber({ sites }: TimelineScrubberProps) {
           {!isPlaying ? (
             <button
               onClick={play}
-              className="px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
               aria-label="Play timeline animation"
             >
-              ▶ Play
+              <PlayIcon className="w-4 h-4" />
+              <span>Play</span>
             </button>
           ) : (
             <button
               onClick={pause}
-              className="px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
               aria-label="Pause timeline animation"
             >
-              ❚❚ Pause
+              <PauseIcon className="w-4 h-4" />
+              <span>Pause</span>
             </button>
           )}
           <button
             onClick={reset}
-            className={components.button.reset}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-[#fefefe] hover:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
             aria-label="Reset timeline to start"
           >
-            ↻ Reset
+            <ArrowPathIcon className="w-4 h-4" />
+            <span>Reset</span>
           </button>
         </div>
 
