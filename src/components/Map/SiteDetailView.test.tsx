@@ -16,7 +16,14 @@ vi.mock("react-leaflet", () => ({
   ),
   useMap: () => ({
     setView: vi.fn(),
+    getContainer: () => ({
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }),
+    getZoom: () => 10,
+    setZoom: vi.fn(),
   }),
+  useMapEvents: () => ({}),
 }));
 
 // Mock Leaflet library
@@ -24,6 +31,12 @@ vi.mock("leaflet", () => ({
   default: {
     divIcon: vi.fn(() => ({})),
   },
+}));
+
+// Mock MapHelperComponents
+vi.mock("./MapHelperComponents", () => ({
+  MapUpdater: () => null,
+  ScrollWheelHandler: () => null,
 }));
 
 const mockSites: GazaSite[] = [
@@ -124,5 +137,27 @@ describe("SiteDetailView", () => {
 
     rerender(<SiteDetailView sites={mockSites} highlightedSiteId="2" />);
     expect(screen.getByText("Al-Saqqa Mosque")).toBeInTheDocument();
+  });
+
+  it("renders TimeToggle component", () => {
+    render(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+    // TimeToggle renders with 3 buttons
+    expect(screen.getByLabelText("Switch to 2014 Baseline satellite imagery")).toBeInTheDocument();
+    expect(screen.getByLabelText("Switch to Aug 2023 (Pre-conflict) satellite imagery")).toBeInTheDocument();
+    expect(screen.getByLabelText("Switch to Current satellite imagery")).toBeInTheDocument();
+  });
+
+  it("displays time period label when no site is highlighted", () => {
+    render(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+    // The label should show the period label (Aug 2023 (Pre-conflict))
+    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
+    expect(screen.getByText("Aug 2023 (Pre-conflict)")).toBeInTheDocument();
+  });
+
+  it("shows site name instead of period label when site is highlighted", () => {
+    render(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
+    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    // Period label not shown when site is highlighted
+    expect(screen.queryByText("Aug 2023 (Pre-conflict)")).not.toBeInTheDocument();
   });
 });

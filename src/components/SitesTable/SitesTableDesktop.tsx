@@ -4,6 +4,7 @@ import { components, getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard } from "../../utils/format";
 import { downloadCSV } from "../../utils/csvExport";
 import { Tooltip } from "../Tooltip";
+import { TABLE_CONFIG } from "../../constants/layout";
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -195,7 +196,7 @@ export function SitesTableDesktop({
                 <th
                   className="px-2 py-3 font-semibold cursor-pointer hover:bg-gray-800 select-none text-sm text-center"
                   onClick={() => handleSort("type")}
-                  style={{ width: "60px" }}
+                  style={{ width: `${TABLE_CONFIG.TYPE_COLUMN_WIDTH}px` }}
                 >
                   Type
                   <SortIcon field="type" />
