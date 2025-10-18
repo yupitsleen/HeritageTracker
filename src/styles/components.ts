@@ -13,11 +13,11 @@ export const components = {
 
   // Button styles
   button: {
-    base: "px-4 py-2 rounded-lg font-semibold transition-colors",
-    primary: "bg-[#009639] text-[#fefefe] hover:bg-[#007b2f]",        // Palestine flag green
-    secondary: "bg-[#f5f5f5] text-[#404040] hover:bg-[#e5e5e5]",      // Palestine grays
-    reset: "px-4 py-2 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-sm",  // Palestine flag red
-    toggle: "px-3 py-1.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-sm font-medium text-gray-700 transition-colors",
+    base: "px-4 py-2 rounded-lg font-semibold transition-colors border border-[#000000]",
+    primary: "bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] border border-[#000000]",        // Palestine flag green
+    secondary: "bg-[#f5f5f5] text-[#404040] hover:bg-[#e5e5e5] border border-[#000000]",      // Palestine grays
+    reset: "px-4 py-2 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-sm border border-[#000000]",  // Palestine flag red
+    toggle: "px-3 py-1.5 bg-gray-100 hover:bg-gray-200 border border-[#000000] rounded-md text-sm font-medium text-gray-700 transition-colors",
   },
 
   // Form styles

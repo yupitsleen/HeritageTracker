@@ -240,7 +240,7 @@ export function TimelineScrubber({
           {!isPlaying ? (
             <button
               onClick={play}
-              className="flex items-center gap-2 px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
               aria-label="Play timeline animation"
             >
               <PlayIcon className="w-4 h-4" />
@@ -249,7 +249,7 @@ export function TimelineScrubber({
           ) : (
             <button
               onClick={pause}
-              className="flex items-center gap-2 px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
               aria-label="Pause timeline animation"
             >
               <PauseIcon className="w-4 h-4" />
@@ -258,7 +258,7 @@ export function TimelineScrubber({
           )}
           <button
             onClick={reset}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000] ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`}
             aria-label="Reset timeline to start"
           >
             <ArrowPathIcon className="w-4 h-4" />
@@ -268,7 +268,7 @@ export function TimelineScrubber({
           {/* Sync Map toggle button */}
           <button
             onClick={() => setSyncMap(!syncMap)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000] ${
               syncMap
                 ? `${t.flag.greenBg} text-[#fefefe] ${t.flag.greenHover}`
                 : `${t.bg.active} ${t.text.body} ${t.bg.hover}`
@@ -337,7 +337,7 @@ export function TimelineScrubber({
               onDestructionDateStartChange(null);
               onDestructionDateEndChange(null);
             }}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 border border-[#000000] ${
               destructionDateStart || destructionDateEnd
                 ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
                 : "invisible"

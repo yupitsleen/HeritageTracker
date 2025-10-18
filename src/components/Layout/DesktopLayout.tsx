@@ -128,7 +128,7 @@ export function DesktopLayout({
                     className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
                                rounded-lg shadow-md hover:shadow-lg
                                transition-all duration-200 font-semibold
-                               active:scale-95 text-sm"
+                               active:scale-95 text-sm border border-[#000000]"
                   >
                     Filters
                   </button>
@@ -172,7 +172,7 @@ export function DesktopLayout({
                       className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white
                                  rounded-lg shadow-md hover:shadow-lg
                                  transition-all duration-200 font-semibold
-                                 active:scale-95 text-xs"
+                                 active:scale-95 text-xs border border-[#000000]"
                     >
                       Clear
                     </button>
