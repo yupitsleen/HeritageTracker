@@ -63,11 +63,6 @@ export function SiteDetailView({ sites, highlightedSiteId, syncMapToTimeline = f
     };
   }, [selectedPeriod]);
 
-  // Get label for selected time period
-  const periodLabel = useMemo(() => {
-    return HISTORICAL_IMAGERY[selectedPeriod].label;
-  }, [selectedPeriod]);
-
   // Determine map center and zoom level (clamped to period's max zoom)
   const { center, zoom } = useMemo(() => {
     if (highlightedSite) {
@@ -100,16 +95,6 @@ export function SiteDetailView({ sites, highlightedSiteId, syncMapToTimeline = f
     <div className="relative h-full">
       {/* Time period toggle */}
       <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
-
-      {/* Label for the detail view */}
-      <div className="absolute top-2 left-2 z-[1000] bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md pointer-events-none">
-        <div className="text-xs font-semibold text-gray-900">
-          {highlightedSite ? "Site Detail (Satellite)" : "Gaza Overview (Satellite)"}
-        </div>
-        <div className="text-[10px] text-gray-600 mt-0.5">
-          {highlightedSite ? highlightedSite.name : periodLabel}
-        </div>
-      </div>
 
       <MapContainer
         center={center}
