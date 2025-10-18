@@ -13,24 +13,24 @@ export const components = {
 
   // Button styles
   button: {
-    base: "px-4 py-2 rounded-lg font-semibold transition-colors",
-    primary: "bg-[#009639] text-[#fefefe] hover:bg-[#007b2f]",        // Palestine flag green
-    secondary: "bg-[#f5f5f5] text-[#404040] hover:bg-[#e5e5e5]",      // Palestine grays
-    reset: "px-4 py-2 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-sm",  // Palestine flag red
-    toggle: "px-3 py-1.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-sm font-medium text-gray-700 transition-colors",
+    base: "px-4 py-2 rounded-lg font-semibold transition-colors border border-[#000000]",
+    primary: "bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] border border-[#000000]",        // Palestine flag green
+    secondary: "bg-[#f5f5f5] text-[#404040] hover:bg-[#e5e5e5] border border-[#000000]",      // Palestine grays
+    reset: "px-4 py-2 bg-[#ed3039] text-[#fefefe] rounded-md hover:bg-[#d4202a] transition-colors text-sm border border-[#000000]",  // Palestine flag red
+    toggle: "px-3 py-1.5 bg-gray-100 hover:bg-gray-200 border border-[#000000] rounded-md text-sm font-medium text-gray-700 transition-colors",
   },
 
   // Form styles
   input: {
-    base: "px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 bg-white transition-all duration-200 placeholder:text-gray-400",
+    base: "px-3 py-2 border border-[#000000] rounded-lg text-sm text-gray-900 bg-white transition-all duration-200 placeholder:text-gray-400",
     focus: "focus:outline-none focus:ring-2 focus:ring-[#009639] focus:border-transparent",
     number: "w-20",
     date: "",
   },
 
   select: {
-    base: "w-full px-4 py-2 border border-[#d4d4d4] rounded-md text-gray-900 bg-white focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",  // Palestine flag green focus
-    small: "px-2 py-2 border border-gray-300 rounded-md text-sm text-gray-900 bg-white focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
+    base: "w-full px-4 py-2 border border-[#000000] rounded-md text-gray-900 bg-white focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",  // Palestine flag green focus
+    small: "px-2 py-2 border border-[#000000] rounded-md text-sm text-gray-900 bg-white focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
   },
 
   label: {
@@ -40,9 +40,9 @@ export const components = {
 
   // Tag/Chip styles (for removable filter tags)
   tag: {
-    base: "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full",
-    default: "bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium border border-gray-200 transition-colors duration-200",
-    removeButton: "ml-0.5 text-gray-500 hover:text-[#ed3039] transition-colors",  // Palestine flag red
+    base: "inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs rounded",
+    default: "bg-gray-500 hover:bg-gray-600 text-white font-medium border border-gray-600 transition-colors duration-200",
+    removeButton: "ml-0.5 text-gray-200 hover:text-[#ed3039] transition-colors text-sm font-bold leading-none",  // Palestine flag red
   },
 
   // Badge styles
@@ -83,7 +83,7 @@ export const components = {
     base: "w-full text-sm text-left",
     header: "bg-[#000000] text-[#fefefe] sticky top-0 z-10",  // Palestine flag black and white
     th: "px-4 py-3 font-semibold",
-    row: "border-b border-[#e5e5e5] hover:bg-[#fafafa] cursor-pointer transition-all",
+    row: "border-b border-[#404040] hover:bg-[#fafafa] cursor-pointer transition-all",
     td: "px-4 py-3",
   },
 

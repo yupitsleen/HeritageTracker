@@ -14,7 +14,7 @@ export default defineConfig({
         singleThread: true,
       },
     },
-    isolate: false,
+    isolate: true, // Changed to true to prevent mock interference between test files
     // Reduce transform overhead
     deps: {
       optimizer: {

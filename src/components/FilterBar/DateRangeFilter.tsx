@@ -9,11 +9,14 @@ interface DateRangeFilterProps {
   onEndChange: (date: Date | null) => void;
   label: string;
   tooltip?: string;
+  defaultStartDate?: Date;
+  defaultEndDate?: Date;
 }
 
 /**
  * DateRangeFilter - Reusable date range picker with optional tooltip
  * Handles date input validation and formatting
+ * Shows default values when startDate/endDate are null
  */
 export function DateRangeFilter({
   startDate,
@@ -22,6 +25,8 @@ export function DateRangeFilter({
   onEndChange,
   label,
   tooltip = "Date filters use Gregorian calendar only",
+  defaultStartDate,
+  defaultEndDate,
 }: DateRangeFilterProps) {
   const t = useThemeClasses();
 
@@ -44,7 +49,7 @@ export function DateRangeFilter({
       <div className="flex items-center gap-2">
         <Input
           variant="date"
-          value={startDate ? startDate.toISOString().split("T")[0] : ""}
+          value={(startDate || defaultStartDate)?.toISOString().split("T")[0] || ""}
           onChange={(e) => {
             onStartChange(e.target.value ? new Date(e.target.value) : null);
           }}
@@ -54,7 +59,7 @@ export function DateRangeFilter({
         <span className={`text-sm font-medium ${t.text.body}`}>to</span>
         <Input
           variant="date"
-          value={endDate ? endDate.toISOString().split("T")[0] : ""}
+          value={(endDate || defaultEndDate)?.toISOString().split("T")[0] || ""}
           onChange={(e) => {
             onEndChange(e.target.value ? new Date(e.target.value) : null);
           }}

@@ -136,9 +136,9 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className={`flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/50" : "bg-white/50"}`} style={{ height: 'calc(100% - 4px)' }}>
+    <div className={`flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-2xl-dark transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`} style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
-      <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/50" : "bg-white/50"}`}>
+      <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
@@ -168,7 +168,7 @@ export function SitesTableDesktop({
                            px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
                            rounded-lg shadow-md hover:shadow-lg
                            transition-all duration-200 font-semibold
-                           active:scale-95 text-sm"
+                           active:scale-95 text-sm border border-[#000000] mr-12"
                 title="Export table data to CSV file"
                 aria-label="Export to CSV"
               >
@@ -287,7 +287,7 @@ export function SitesTableDesktop({
                       }}
                       className="text-left w-full hover:underline"
                     >
-                      <div className="font-semibold text-[#009639] hover:text-[#007b2f]">{site.name}</div>
+                      <div className="font-semibold text-base text-[#009639] hover:text-[#007b2f]">{site.name}</div>
                       {site.nameArabic && (
                         <div
                           className={`${
@@ -304,8 +304,8 @@ export function SitesTableDesktop({
                 {isColumnVisible("type") && (
                   <td className={`${components.table.td} text-center`}>
                     <Tooltip content={getSiteTypeLabel(site.type)}>
-                      <span className={`inline-flex items-center justify-center px-2 py-1.5 text-xs font-medium rounded ${t.bg.secondary} ${t.text.body}`}>
-                        <SiteTypeIcon type={site.type} className="w-5 h-5" />
+                      <span className="inline-flex items-center justify-center">
+                        <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
                       </span>
                     </Tooltip>
                   </td>

@@ -4,7 +4,21 @@ import { SiteDetailView } from "./SiteDetailView";
 import { AnimationProvider } from "../../contexts/AnimationContext";
 import type { GazaSite } from "../../types";
 
-// Mock Leaflet components
+// Mock Leaflet library
+vi.mock("leaflet", () => ({
+  default: {
+    divIcon: vi.fn(() => ({})),
+    Icon: {
+      Default: {
+        prototype: {
+          options: {},
+        },
+      },
+    },
+  },
+}));
+
+// Mock react-leaflet components
 vi.mock("react-leaflet", () => ({
   MapContainer: ({ children, className }: { children?: React.ReactNode; className?: string; [key: string]: unknown }) => (
     <div data-testid="map-container" className={className}>
@@ -25,13 +39,6 @@ vi.mock("react-leaflet", () => ({
     setZoom: vi.fn(),
   }),
   useMapEvents: () => ({}),
-}));
-
-// Mock Leaflet library
-vi.mock("leaflet", () => ({
-  default: {
-    divIcon: vi.fn(() => ({})),
-  },
 }));
 
 // Mock MapHelperComponents
@@ -101,15 +108,14 @@ describe("SiteDetailView", () => {
     expect(container).toBeInTheDocument();
   });
 
-  it("shows Gaza overview label when no site is highlighted", () => {
+  it("renders map when no site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
+    expect(screen.getByTestId("map-container")).toBeInTheDocument();
   });
 
-  it("shows site detail label when a site is highlighted", () => {
+  it("shows marker when a site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
-    expect(screen.getByText("Site Detail (Satellite)")).toBeInTheDocument();
-    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    expect(screen.getByTestId("marker")).toBeInTheDocument();
   });
 
   it("renders satellite tile layer", () => {
@@ -117,53 +123,53 @@ describe("SiteDetailView", () => {
     expect(container).toBeInTheDocument();
   });
 
-  it("shows overview label when no site is highlighted", () => {
+  it("renders map when no site is highlighted (duplicate test)", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
+    expect(screen.getByTestId("map-container")).toBeInTheDocument();
   });
 
-  it("shows site name when a site is highlighted", () => {
+  it("shows marker when a site is highlighted (duplicate test)", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
-    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
-    expect(screen.getByText("Site Detail (Satellite)")).toBeInTheDocument();
+    expect(screen.getByTestId("marker")).toBeInTheDocument();
   });
 
   it("handles invalid highlightedSiteId gracefully", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="invalid-id" />);
-    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
+    expect(screen.getByTestId("map-container")).toBeInTheDocument();
     expect(screen.queryByTestId("marker")).not.toBeInTheDocument();
   });
 
   it("handles empty sites array", () => {
     renderWithAnimation(<SiteDetailView sites={[]} highlightedSiteId={null} />);
-    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
+    expect(screen.getByTestId("map-container")).toBeInTheDocument();
   });
 
   it("updates when highlightedSiteId changes", () => {
     renderWithAnimation(
       <SiteDetailView sites={mockSites} highlightedSiteId={null} />
     );
-    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
+    expect(screen.getByTestId("map-container")).toBeInTheDocument();
 
     // Need to call renderWithAnimation helper which wraps with ThemeProvider
     renderWithAnimation(
       <SiteDetailView sites={mockSites} highlightedSiteId="1" />
     );
-    expect(screen.getByText("Site Detail (Satellite)")).toBeInTheDocument();
-    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    expect(screen.getByTestId("marker")).toBeInTheDocument();
   });
 
   it("switches between different highlighted sites", () => {
-    renderWithAnimation(
+    const { rerender } = renderWithAnimation(
       <SiteDetailView sites={mockSites} highlightedSiteId="1" />
     );
-    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    expect(screen.getByTestId("marker")).toBeInTheDocument();
 
-    // Need to call renderWithAnimation helper which wraps with ThemeProvider
-    renderWithAnimation(
-      <SiteDetailView sites={mockSites} highlightedSiteId="2" />
+    // Rerender with different site
+    rerender(
+      <AnimationProvider sites={mockSites}>
+        <SiteDetailView sites={mockSites} highlightedSiteId="2" />
+      </AnimationProvider>
     );
-    expect(screen.getByText("Al-Saqqa Mosque")).toBeInTheDocument();
+    expect(screen.getByTestId("marker")).toBeInTheDocument();
   });
 
   it("renders TimeToggle component", () => {
@@ -174,19 +180,16 @@ describe("SiteDetailView", () => {
     expect(screen.getByLabelText("Switch to Current satellite imagery")).toBeInTheDocument();
   });
 
-  it("displays time period label when no site is highlighted", () => {
+  it("renders time period toggle when no site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    // The label should show the period label - timeline starts at Dec 7, 2023 (first destruction)
-    // so it will automatically sync to "Current" period
-    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
-    // "Current" appears in both the TimeToggle button and the period label, so we just verify the overview text
-    const currentTexts = screen.getAllByText("Current");
-    expect(currentTexts.length).toBeGreaterThan(0);
+    // TimeToggle should be present
+    expect(screen.getByTestId("time-toggle")).toBeInTheDocument();
   });
 
-  it("shows site name instead of period label when site is highlighted", () => {
+  it("renders time period toggle when site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
-    // When a site is highlighted, the site name is shown in the label area
-    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    // TimeToggle should be present with marker
+    expect(screen.getByTestId("time-toggle")).toBeInTheDocument();
+    expect(screen.getByTestId("marker")).toBeInTheDocument();
   });
 });

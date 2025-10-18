@@ -1,7 +1,8 @@
 import {
   BuildingLibraryIcon,
-  BuildingOffice2Icon,
-} from "@heroicons/react/24/outline";
+  MagnifyingGlassIcon,
+  HomeModernIcon,
+} from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
 
 interface SiteTypeIconProps {
@@ -10,8 +11,37 @@ interface SiteTypeIconProps {
 }
 
 /**
- * Professional SVG icon component for site types
- * Replaces emoji icons for consistent cross-browser rendering
+ * Unicode icon wrapper component for text-based symbols
+ */
+function UnicodeIcon({
+  symbol,
+  className,
+  ...props
+}: {
+  symbol: string;
+  className?: string;
+  "aria-label"?: string;
+  role?: string;
+}) {
+  return (
+    <span
+      className={className}
+      style={{
+        fontSize: '20px',
+        lineHeight: 1,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      {...props}
+    >
+      {symbol}
+    </span>
+  );
+}
+
+/**
+ * Icon component for site types with distinct symbols
  */
 export function SiteTypeIcon({
   type,
@@ -19,34 +49,36 @@ export function SiteTypeIcon({
 }: SiteTypeIconProps) {
   switch (type) {
     case "mosque":
-      // Using BuildingLibraryIcon for mosque (dome-like structure)
+      // Unicode Star and Crescent symbol (Islamic symbol)
       return (
-        <BuildingLibraryIcon
+        <UnicodeIcon
+          symbol="☪"
           className={className}
           aria-label="Mosque"
           role="img"
         />
       );
     case "church":
-      // Using BuildingLibraryIcon for church (religious building)
+      // Unicode Latin Cross symbol
       return (
-        <BuildingLibraryIcon
+        <UnicodeIcon
+          symbol="✝"
           className={className}
           aria-label="Church"
           role="img"
         />
       );
     case "archaeological":
-      // Using BuildingLibraryIcon for archaeological site (classical building)
+      // Magnifying glass (research/discovery)
       return (
-        <BuildingLibraryIcon
+        <MagnifyingGlassIcon
           className={className}
           aria-label="Archaeological site"
           role="img"
         />
       );
     case "museum":
-      // Using BuildingLibraryIcon for museum (institutional building)
+      // Classical building with columns
       return (
         <BuildingLibraryIcon
           className={className}
@@ -55,9 +87,9 @@ export function SiteTypeIcon({
         />
       );
     case "historic-building":
-      // Using HomeModernIcon for historic building
+      // Modern building icon (represents historic architecture)
       return (
-        <BuildingOffice2Icon
+        <HomeModernIcon
           className={className}
           aria-label="Historic building"
           role="img"

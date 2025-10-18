@@ -56,7 +56,7 @@ export function useThemeClasses() {
      */
     border: {
       /** Default border color */
-      default: isDark ? "border-gray-700" : "border-gray-200",
+      default: isDark ? "border-gray-700" : "border-[#404040]",
       /** Subtle border */
       subtle: isDark ? "border-gray-600" : "border-gray-300",
       /** Strong/emphasis border */
@@ -82,7 +82,7 @@ export function useThemeClasses() {
       /** Base input styling */
       base: isDark
         ? "bg-gray-700 border-gray-600 text-gray-100 placeholder:text-gray-400"
-        : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400",
+        : "bg-white border-[#000000] text-gray-900 placeholder:text-gray-400",
     },
 
     /**

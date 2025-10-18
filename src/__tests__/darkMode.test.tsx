@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
@@ -50,9 +50,14 @@ describe("Dark Mode - Component Rendering", () => {
   const testSite = mockSites[0];
   const noop = () => {};
 
-  // Clean up localStorage before each test to prevent cross-test pollution
+  // Clean up localStorage and DOM before each test to prevent cross-test pollution
   beforeEach(() => {
     localStorage.clear();
+  });
+
+  // Clean up DOM after each test
+  afterEach(() => {
+    cleanup();
   });
 
   describe("About Modal", () => {

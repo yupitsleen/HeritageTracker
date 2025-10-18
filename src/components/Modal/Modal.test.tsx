@@ -7,21 +7,21 @@ describe("Modal", () => {
     const mockOnClose = vi.fn();
 
     renderWithTheme(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen={true} onClose={mockOnClose}>
         <div>Test content</div>
       </Modal>
     );
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(screen.getByText("Test Modal")).toBeInTheDocument();
     expect(screen.getByText("Test content")).toBeInTheDocument();
+    expect(screen.getByLabelText("Close modal")).toBeInTheDocument();
   });
 
   it("does not render when closed", () => {
     const mockOnClose = vi.fn();
 
     const { container } = renderWithTheme(
-      <Modal isOpen={false} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen={false} onClose={mockOnClose}>
         <div>Test content</div>
       </Modal>
     );

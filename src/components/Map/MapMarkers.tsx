@@ -8,6 +8,7 @@ interface MapMarkersProps {
   highlightedSiteId?: string | null;
   onSiteClick?: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
+  currentTimestamp?: Date;
 }
 
 // Map color names to hex values
@@ -22,18 +23,30 @@ const COLOR_MAP: Record<string, string> = {
  * - Highlighted sites: Teardrop marker (Marker component)
  * - Default sites: Circle marker (CircleMarker component)
  * - Color-coded by status (destroyed/heavily-damaged/damaged)
+ * - Animates markers when timeline passes their destruction date
  */
 export function MapMarkers({
   sites,
   highlightedSiteId,
   onSiteClick,
   onSiteHighlight,
+  currentTimestamp,
 }: MapMarkersProps) {
+  /**
+   * Check if a site has been "destroyed" in the timeline
+   * (timeline has passed its destruction date)
+   */
+  const isDestroyed = (site: GazaSite): boolean => {
+    if (!currentTimestamp || !site.dateDestroyed) return false;
+    return currentTimestamp >= new Date(site.dateDestroyed);
+  };
+
   return (
     <>
       {sites.map((site) => {
         const isHighlighted = site.id === highlightedSiteId;
         const color = getMarkerColor(site.status);
+        const destroyed = isDestroyed(site);
 
         // If highlighted, show teardrop marker; otherwise show circle
         if (isHighlighted) {
@@ -54,14 +67,15 @@ export function MapMarkers({
         }
 
         // Default: show circle marker (dot)
+        // When destroyed: turn black and shrink to a tiny point
         return (
           <CircleMarker
             key={site.id}
             center={site.coordinates}
-            radius={6}
+            radius={destroyed ? 2 : 6} // Shrink from 6 to 2 when destroyed
             pathOptions={{
-              fillColor: COLOR_MAP[color],
-              fillOpacity: 0.8,
+              fillColor: destroyed ? "#000000" : COLOR_MAP[color], // Turn black when destroyed
+              fillOpacity: destroyed ? 1 : 0.8, // Full opacity when black
               color: "#000000",
               weight: 1,
             }}

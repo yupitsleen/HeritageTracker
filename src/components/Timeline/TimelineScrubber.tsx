@@ -11,10 +11,15 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
+import { Input } from "../Form/Input";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
   onSyncMapChange?: (isSynced: boolean) => void; // Optional callback for map sync toggle
+  destructionDateStart: Date | null;
+  destructionDateEnd: Date | null;
+  onDestructionDateStartChange: (date: Date | null) => void;
+  onDestructionDateEndChange: (date: Date | null) => void;
 }
 
 /**
@@ -28,7 +33,14 @@ interface TimelineScrubberProps {
  * - Keyboard navigation (space, arrows, home/end)
  * - Responsive to container width changes
  */
-export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberProps) {
+export function TimelineScrubber({
+  sites,
+  onSyncMapChange,
+  destructionDateStart,
+  destructionDateEnd,
+  onDestructionDateStartChange,
+  onDestructionDateEndChange,
+}: TimelineScrubberProps) {
   const {
     currentTimestamp,
     isPlaying,
@@ -50,6 +62,21 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
   const [syncMap, setSyncMap] = useState(false); // Map sync toggle state
 
+  // Extract timeline data using custom hook
+  const { events: allDestructionDates } = useTimelineData(sites);
+
+  // Calculate default date range from dataset (oldest and newest destruction dates)
+  const { defaultStartDate, defaultEndDate } = useMemo(() => {
+    if (allDestructionDates.length === 0) {
+      return { defaultStartDate: startDate, defaultEndDate: endDate };
+    }
+    const dates = allDestructionDates.map((event) => event.date);
+    return {
+      defaultStartDate: new Date(Math.min(...dates.map((d) => d.getTime()))),
+      defaultEndDate: new Date(Math.max(...dates.map((d) => d.getTime()))),
+    };
+  }, [allDestructionDates, startDate, endDate]);
+
   // Notify parent when sync state changes
   useEffect(() => {
     onSyncMapChange?.(syncMap);
@@ -62,8 +89,33 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     }
   }, [syncMap, onSyncMapChange, pause, setTimestamp]);
 
-  // Extract timeline data using custom hook
-  const { events: destructionDates } = useTimelineData(sites);
+  // Filter destruction dates based on date filter
+  const destructionDates = useMemo(() => {
+    if (!destructionDateStart && !destructionDateEnd) {
+      return allDestructionDates;
+    }
+    return allDestructionDates.filter((event) => {
+      if (destructionDateStart && event.date < destructionDateStart) return false;
+      if (destructionDateEnd && event.date > destructionDateEnd) return false;
+      return true;
+    });
+  }, [allDestructionDates, destructionDateStart, destructionDateEnd]);
+
+  // Calculate adjusted timeline range based on filtered dates
+  const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
+    if (destructionDates.length === 0) {
+      return { adjustedStartDate: startDate, adjustedEndDate: endDate };
+    }
+
+    // Find min and max from filtered destruction dates
+    const minDate = new Date(Math.min(...destructionDates.map((event) => event.date.getTime())));
+    const maxDate = new Date(Math.max(...destructionDates.map((event) => event.date.getTime())));
+
+    return {
+      adjustedStartDate: destructionDateStart || destructionDateEnd ? minDate : startDate,
+      adjustedEndDate: destructionDateStart || destructionDateEnd ? maxDate : endDate,
+    };
+  }, [destructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
 
   // Observe container width changes
   useEffect(() => {
@@ -81,14 +133,14 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     return () => resizeObserver.disconnect();
   }, []);
 
-  // D3 time scale (responsive to container width)
+  // D3 time scale (responsive to container width, uses adjusted dates when filtered)
   const timeScale = useMemo(() => {
     const margin = 50; // Leave space for handles
     return d3
       .scaleTime()
-      .domain([startDate, endDate])
+      .domain([adjustedStartDate, adjustedEndDate])
       .range([margin, containerWidth - margin]);
-  }, [startDate, endDate, containerWidth]);
+  }, [adjustedStartDate, adjustedEndDate, containerWidth]);
 
   // Initialize D3 renderer
   useEffect(() => {
@@ -174,21 +226,24 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
   // Speed options
   const speedOptions: AnimationSpeed[] = [0.5, 1, 2, 4];
 
+  // Check if timeline is at the start position
+  const isAtStart = currentTimestamp.getTime() === startDate.getTime();
+
   return (
     <div
       ref={containerRef}
-      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}
+      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
       role="region"
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center justify-between mb-3 gap-4">
-        {/* Left: Play/Pause/Reset */}
-        <div className="flex items-center gap-2">
+      <div className="flex items-center mb-3 gap-4">
+        {/* Left: Play/Pause/Reset/Sync Map/Speed */}
+        <div className="flex items-center gap-2 flex-1">
           {!isPlaying ? (
             <button
               onClick={play}
-              className="flex items-center gap-2 px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
               aria-label="Play timeline animation"
             >
               <PlayIcon className="w-4 h-4" />
@@ -197,7 +252,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           ) : (
             <button
               onClick={pause}
-              className="flex items-center gap-2 px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
               aria-label="Pause timeline animation"
             >
               <PauseIcon className="w-4 h-4" />
@@ -206,7 +261,12 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           )}
           <button
             onClick={reset}
-            className={`flex items-center gap-2 px-4 py-2 text-[#fefefe] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${t.bg.secondary} ${t.bg.hover}`}
+            disabled={isAtStart}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-semibold border border-[#000000] ${
+              isAtStart
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
+                : `shadow-md hover:shadow-lg active:scale-95 ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`
+            }`}
             aria-label="Reset timeline to start"
           >
             <ArrowPathIcon className="w-4 h-4" />
@@ -216,7 +276,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           {/* Sync Map toggle button */}
           <button
             onClick={() => setSyncMap(!syncMap)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000] ${
               syncMap
                 ? `${t.flag.greenBg} text-[#fefefe] ${t.flag.greenHover}`
                 : `${t.bg.active} ${t.text.body} ${t.bg.hover}`
@@ -226,32 +286,75 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           >
             <span>{syncMap ? "✓" : ""} Sync Map</span>
           </button>
+
+          {/* Speed control */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="speed-control" className={`text-sm font-medium ${t.text.body}`}>
+              Speed:
+            </label>
+            <select
+              id="speed-control"
+              value={speed}
+              onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
+              className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
+              aria-label="Animation speed control"
+            >
+              {speedOptions.map((s) => (
+                <option key={s} value={s}>
+                  {s}x
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Center: Current date display */}
-        <div className={`text-sm font-semibold ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
+        <div className={`text-sm font-semibold text-center flex-1 ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
           <span className={t.text.muted}>Current:</span>{" "}
           {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
 
-        {/* Right: Speed control */}
-        <div className="flex items-center gap-2">
-          <label htmlFor="speed-control" className={`text-sm font-medium ${t.text.body}`}>
-            Speed:
+        {/* Right: Date Filter */}
+        <div className="flex items-center gap-2 flex-1 justify-end">
+          <label className={`text-xs font-semibold ${t.text.heading}`}>
+            Destruction Date:
           </label>
-          <select
-            id="speed-control"
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-            className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
-            aria-label="Animation speed control"
+          <Input
+            variant="date"
+            value={(destructionDateStart || defaultStartDate).toISOString().split("T")[0]}
+            onChange={(e) => {
+              onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
+            }}
+            placeholder="From"
+            className="flex-none w-32 text-xs py-1.5 px-2"
+          />
+          <span className={`text-xs font-medium ${t.text.body}`}>to</span>
+          <Input
+            variant="date"
+            value={(destructionDateEnd || defaultEndDate).toISOString().split("T")[0]}
+            onChange={(e) => {
+              onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
+            }}
+            placeholder="To"
+            className="flex-none w-32 text-xs py-1.5 px-2"
+          />
+
+          {/* Clear Date Filter button - always reserve space, only visible when filter is active */}
+          <button
+            onClick={() => {
+              onDestructionDateStartChange(null);
+              onDestructionDateEndChange(null);
+            }}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 border border-[#000000] ${
+              destructionDateStart || destructionDateEnd
+                ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
+                : "invisible"
+            }`}
+            aria-label="Clear date filter"
+            disabled={!destructionDateStart && !destructionDateEnd}
           >
-            {speedOptions.map((s) => (
-              <option key={s} value={s}>
-                {s}x
-              </option>
-            ))}
-          </select>
+            Clear Date Filter
+          </button>
         </div>
       </div>
 

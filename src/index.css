@@ -101,6 +101,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Custom darker shadow for main components (2x darker than shadow-xl) */
+.shadow-2xl-dark {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+}
+
+/* Timeline marker animation - smooth transition when destroyed */
+.leaflet-interactive {
+  transition: r 1000ms ease-out, fill 1000ms ease-out, fill-opacity 1000ms ease-out;
+}
+
 /* Respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -116,5 +126,10 @@ html {
   button:hover,
   button:active {
     will-change: auto;
+  }
+
+  /* Disable marker transitions for reduced motion */
+  .leaflet-interactive {
+    transition: none !important;
   }
 }
