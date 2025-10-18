@@ -1,5 +1,5 @@
 import { components, cn } from "../../styles/theme";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "text" | "number" | "date";
@@ -11,14 +11,14 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
  * Supports dark mode
  */
 export function Input({ variant = "text", className, ...props }: InputProps) {
-  const { isDark } = useTheme();
+  const t = useThemeClasses();
 
   const baseClasses = cn(
     components.input.base,
     components.input.focus,
     variant === "number" && components.input.number,
     variant === "date" && components.input.date,
-    isDark && "bg-gray-700 border-gray-600 text-gray-100 placeholder:text-gray-400",
+    t.input.base,
     className
   );
 

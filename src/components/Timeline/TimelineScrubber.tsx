@@ -8,6 +8,7 @@ import {
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 
@@ -42,6 +43,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
   } = useAnimation();
 
   const { isDark } = useTheme();
+  const t = useThemeClasses();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
@@ -175,9 +177,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
   return (
     <div
       ref={containerRef}
-      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl transition-colors duration-200 ${
-        isDark ? "bg-[#000000]/90" : "bg-white/90"
-      }`}
+      className="backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl transition-colors duration-200 bg-white/90 dark:bg-[#000000]/90"
       role="region"
       aria-label="Timeline Scrubber"
     >
@@ -218,10 +218,8 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
             onClick={() => setSyncMap(!syncMap)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${
               syncMap
-                ? "bg-[#009639] text-[#fefefe] hover:bg-[#007b2f]"
-                : isDark
-                ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                ? `${t.flag.greenBg} text-[#fefefe] ${t.flag.greenHover}`
+                : `${t.bg.active} ${t.text.body} ${t.bg.hover}`
             }`}
             aria-label={syncMap ? "Disable map sync with timeline" : "Enable map sync with timeline"}
             title="Sync satellite imagery with timeline date"
@@ -231,25 +229,21 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
         </div>
 
         {/* Center: Current date display */}
-        <div className={`text-sm font-semibold ${isDark ? "text-[#fefefe]" : "text-[#000000]"}`}>
-          <span className={isDark ? "text-gray-400" : "text-gray-600"}>Current:</span>{" "}
+        <div className={`text-sm font-semibold ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
+          <span className={t.text.muted}>Current:</span>{" "}
           {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
 
         {/* Right: Speed control */}
         <div className="flex items-center gap-2">
-          <label htmlFor="speed-control" className={`text-sm font-medium ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+          <label htmlFor="speed-control" className={`text-sm font-medium ${t.text.body}`}>
             Speed:
           </label>
           <select
             id="speed-control"
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-            className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${
-              isDark
-                ? "border-gray-600 bg-gray-800 text-gray-200"
-                : "border-gray-300 bg-white text-gray-900"
-            }`}
+            className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
             aria-label="Animation speed control"
           >
             {speedOptions.map((s) => (
@@ -265,12 +259,12 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
       <svg ref={svgRef} width="100%" height="80" aria-hidden="true" />
 
       {/* Keyboard shortcuts hint */}
-      <div className={`mt-2 text-xs text-center ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-        Keyboard: <kbd className={`px-1 py-0.5 border rounded ${isDark ? "bg-gray-800 border-gray-600 text-gray-300" : "bg-gray-100 border-gray-300 text-gray-700"}`}>Space</kbd> Play/Pause
+      <div className={`mt-2 text-xs text-center ${t.text.muted}`}>
+        Keyboard: <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
         {" • "}
-        <kbd className={`px-1 py-0.5 border rounded ${isDark ? "bg-gray-800 border-gray-600 text-gray-300" : "bg-gray-100 border-gray-300 text-gray-700"}`}>←/→</kbd> Step
+        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step
         {" • "}
-        <kbd className={`px-1 py-0.5 border rounded ${isDark ? "bg-gray-800 border-gray-600 text-gray-300" : "bg-gray-100 border-gray-300 text-gray-700"}`}>Home/End</kbd> Jump
+        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> Jump
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { cn, components } from "../../styles/theme";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface AppFooterProps {
   onOpenDonate: () => void;
@@ -14,12 +14,10 @@ interface AppFooterProps {
  * Muted in dark mode
  */
 export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: AppFooterProps) {
-  const { isDark } = useTheme();
+  const t = useThemeClasses();
 
   return (
-    <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg z-[5] opacity-50 transition-colors duration-200 ${
-      isDark ? "bg-[#2d5a38]" : "bg-[#009639]"
-    }`}>
+    <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg z-[5] opacity-50 transition-colors duration-200 ${t.flag.greenBg}`}>
       {/* Desktop footer - full text with more height */}
       {!isMobile && (
         <div className="py-4">

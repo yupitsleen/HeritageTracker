@@ -1,11 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { render } from "@testing-library/react";
+import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { About } from "./About";
-import { ThemeProvider } from "../../contexts/ThemeContext";
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
 
 describe("About", () => {
   it("renders without crashing", () => {

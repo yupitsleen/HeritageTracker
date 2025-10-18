@@ -1,6 +1,7 @@
 import { components, cn } from "../../styles/theme";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface AppHeaderProps {
   onOpenDonate: () => void;
@@ -15,6 +16,7 @@ interface AppHeaderProps {
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
+  const t = useThemeClasses();
 
   return (
     <div className={`sticky top-0 z-[5] transition-colors duration-200 ${
@@ -23,12 +25,8 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
       {/* Header - BLACK background */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-3")}>
-          <h1 className={`text-xl md:text-3xl font-bold text-center ${
-            isDark ? "text-gray-100" : "text-white"
-          }`}>Heritage Tracker</h1>
-          <p className={`mt-1 md:mt-2 text-center text-xs md:text-base ${
-            isDark ? "text-gray-300" : "text-[#f5f5f5]"
-          }`}>
+          <h1 className={`text-xl md:text-3xl font-bold text-center ${isDark ? t.text.heading : "text-white"}`}>Heritage Tracker</h1>
+          <p className={`mt-1 md:mt-2 text-center text-xs md:text-base ${isDark ? t.text.body : "text-[#f5f5f5]"}`}>
             Documenting the destruction of cultural heritage in Gaza (2023-2024)
           </p>
         </div>
@@ -55,33 +53,21 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
 
           <button
             onClick={onOpenDonate}
-            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
-              isDark
-                ? "bg-[#b8282f] hover:bg-[#a01f25]"
-                : "bg-[#ed3039] hover:bg-[#d4202a]"
-            }`}
+            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${t.flag.redBg} ${isDark ? "hover:bg-[#a01f25]" : "hover:bg-[#d4202a]"}`}
             aria-label="Help Palestine - Donate to relief efforts"
           >
             Help Palestine
           </button>
           <button
             onClick={onOpenStats}
-            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
-              isDark
-                ? "bg-[#2d5a38] hover:bg-[#244a2e]"
-                : "bg-[#009639] hover:bg-[#007b2f]"
-            }`}
+            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${t.flag.greenBg} ${t.flag.greenHover}`}
             aria-label="View Statistics"
           >
             Statistics
           </button>
           <button
             onClick={onOpenAbout}
-            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
-              isDark
-                ? "bg-[#2d5a38] hover:bg-[#244a2e]"
-                : "bg-[#009639] hover:bg-[#007b2f]"
-            }`}
+            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${t.flag.greenBg} ${t.flag.greenHover}`}
             aria-label="About Heritage Tracker"
           >
             About

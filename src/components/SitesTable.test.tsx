@@ -1,23 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { renderWithTheme, screen } from "../test-utils/renderWithTheme";
 import userEvent from "@testing-library/user-event";
 import { SitesTable } from "./SitesTable/index";
 import type { GazaSite } from "../types";
 import { CalendarProvider } from "../contexts/CalendarContext";
-import { ThemeProvider } from "../contexts/ThemeContext";
-
-// Helper to wrap component with all required providers
-// Keeping for consistency with other test files, may be used in future tests
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const renderWithProviders = (ui: React.ReactElement) => {
-  return render(
-    <ThemeProvider>
-      <CalendarProvider>
-        {ui}
-      </CalendarProvider>
-    </ThemeProvider>
-  );
-};
 
 const mockSites: GazaSite[] = [
   {
@@ -88,25 +74,25 @@ const mockSites: GazaSite[] = [
 
 describe("SitesTable", () => {
   it("renders without crashing", () => {
-    const { container } = render(
-      <ThemeProvider><CalendarProvider>
+    const { container } = renderWithTheme(
+      <CalendarProvider>
         <SitesTable
           sites={mockSites}
           onSiteClick={vi.fn()}
         />
-      </CalendarProvider></ThemeProvider>
+      </CalendarProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   it("displays sortable table headers", () => {
-    render(
-      <ThemeProvider><CalendarProvider>
+    renderWithTheme(
+      <CalendarProvider>
         <SitesTable
           sites={mockSites}
           onSiteClick={vi.fn()}
         />
-      </CalendarProvider></ThemeProvider>
+      </CalendarProvider>
     );
     // Check that sort indicators are present (↕ ↑ ↓)
     const sortIndicators = ["↕", "↑", "↓"];
@@ -116,91 +102,91 @@ describe("SitesTable", () => {
   });
 
   it("displays site data in table rows", () => {
-    render(
-      <ThemeProvider><CalendarProvider>
+    renderWithTheme(
+      <CalendarProvider>
         <SitesTable
           sites={mockSites}
           onSiteClick={vi.fn()}
         />
-      </CalendarProvider></ThemeProvider>
+      </CalendarProvider>
     );
     const bodyText = document.body.textContent || "";
     expect(bodyText.length).toBeGreaterThan(50);
   });
 
   it("renders clickable site names", () => {
-    const { container } = render(
-      <ThemeProvider><CalendarProvider>
+    const { container } = renderWithTheme(
+      <CalendarProvider>
         <SitesTable
           sites={mockSites}
           onSiteClick={vi.fn()}
         />
-      </CalendarProvider></ThemeProvider>
+      </CalendarProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   it("renders expand table button when onExpandTable is provided", () => {
-    const { container } = render(
-      <ThemeProvider><CalendarProvider>
+    const { container } = renderWithTheme(
+      <CalendarProvider>
         <SitesTable
           sites={mockSites}
           onSiteClick={vi.fn()}
           onExpandTable={vi.fn()}
         />
-      </CalendarProvider></ThemeProvider>
+      </CalendarProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   it("does not render expand button when onExpandTable is not provided", () => {
-    const { container } = render(
-      <ThemeProvider><CalendarProvider>
+    const { container } = renderWithTheme(
+      <CalendarProvider>
         <SitesTable
           sites={mockSites}
           onSiteClick={vi.fn()}
         />
-      </CalendarProvider></ThemeProvider>
+      </CalendarProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   it("displays Arabic name when available", () => {
-    const { container } = render(
-      <ThemeProvider><CalendarProvider>
+    const { container } = renderWithTheme(
+      <CalendarProvider>
         <SitesTable
           sites={mockSites}
           onSiteClick={vi.fn()}
         />
-      </CalendarProvider></ThemeProvider>
+      </CalendarProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   describe("Mobile variant smoke tests", () => {
     it("renders mobile accordion layout with header and site count", () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("displays column headers without Type column", () => {
-      render(
-        <ThemeProvider><CalendarProvider>
+      renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       // Type column removed from mobile view
@@ -211,70 +197,70 @@ describe("SitesTable", () => {
     });
 
     it("displays all sites in collapsed accordion rows", () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("shows site type in expanded details only (not in collapsed rows)", () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("displays chevron icon that rotates on expand", async () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("expands accordion to show full site details on click", async () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("collapses accordion on second click", async () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
@@ -283,14 +269,14 @@ describe("SitesTable", () => {
     it("sorts sites by name when clicking name header", async () => {
       const user = userEvent.setup();
 
-      render(
-        <ThemeProvider><CalendarProvider>
+      renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       // Find first header with sort indicator
@@ -305,14 +291,14 @@ describe("SitesTable", () => {
     });
 
     it("does not display Type column in mobile view", () => {
-      render(
-        <ThemeProvider><CalendarProvider>
+      renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       // Type header and column removed from mobile view
@@ -320,42 +306,42 @@ describe("SitesTable", () => {
     });
 
     it("sorts sites by toggling between ascending and descending", async () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("displays Arabic names with proper lang attribute (left-aligned in mobile)", () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("displays site names with status-based colors", () => {
-      render(
-        <ThemeProvider><CalendarProvider>
+      renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       // Find site name elements - there may be multiple instances
@@ -378,28 +364,28 @@ describe("SitesTable", () => {
     });
 
     it("shows sources with clickable links in expanded view", async () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("displays verified by information in expanded view", async () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="mobile"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
@@ -408,42 +394,42 @@ describe("SitesTable", () => {
 
   describe("Expanded variant", () => {
     it("displays Export CSV button in expanded variant", () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="expanded"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("does not display Export CSV button in compact variant", () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="compact"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();
     });
 
     it("Export CSV button is clickable without errors", async () => {
-      const { container } = render(
-        <ThemeProvider><CalendarProvider>
+      const { container } = renderWithTheme(
+        <CalendarProvider>
           <SitesTable
             sites={mockSites}
             onSiteClick={vi.fn()}
             variant="expanded"
           />
-        </CalendarProvider></ThemeProvider>
+        </CalendarProvider>
       );
 
       expect(container).toBeInTheDocument();

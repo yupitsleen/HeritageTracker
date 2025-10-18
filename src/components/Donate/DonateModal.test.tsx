@@ -1,11 +1,6 @@
-import { render } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { DonateModal } from "./DonateModal";
-import { ThemeProvider } from "../../contexts/ThemeContext";
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
 
 describe("DonateModal", () => {
   it("renders without crashing", () => {

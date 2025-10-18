@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { ThemeProvider } from "../contexts/ThemeContext";
-import { render } from "@testing-library/react";
+import { renderWithTheme } from "../test-utils/renderWithTheme";
 import { TimelineScrubber } from "../components/Timeline/TimelineScrubber";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
@@ -67,10 +66,10 @@ const mockSites: GazaSite[] = [
 describe("TimelineScrubber", () => {
   // Smoke test
   it("renders without crashing", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -78,10 +77,10 @@ describe("TimelineScrubber", () => {
 
   // Play/Pause functionality
   it("toggles between play and pause states", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -89,10 +88,10 @@ describe("TimelineScrubber", () => {
 
   // Reset functionality
   it("resets timeline to start date when reset button is clicked", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -100,10 +99,10 @@ describe("TimelineScrubber", () => {
 
   // Speed control
   it("changes animation speed when speed dropdown is changed", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -111,10 +110,10 @@ describe("TimelineScrubber", () => {
 
   // Keyboard controls - Space
   it("pauses timeline when space key is pressed while playing", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -122,10 +121,10 @@ describe("TimelineScrubber", () => {
 
   // Keyboard controls - Home/End
   it("jumps to start when Home key is pressed", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -133,10 +132,10 @@ describe("TimelineScrubber", () => {
 
   // Event markers
   it("displays event markers for destruction dates", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     // SVG should be present
@@ -146,10 +145,10 @@ describe("TimelineScrubber", () => {
 
   // Accessibility - ARIA labels
   it("has proper ARIA labels for accessibility", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -157,10 +156,10 @@ describe("TimelineScrubber", () => {
 
   // Edge case - empty sites array
   it("handles empty sites array without crashing", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={[]} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -184,10 +183,10 @@ describe("TimelineScrubber", () => {
       },
     ];
 
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={sitesWithoutDates} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -195,10 +194,10 @@ describe("TimelineScrubber", () => {
 
   // Visual elements
   it("displays current date", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();
@@ -206,10 +205,10 @@ describe("TimelineScrubber", () => {
 
   // Keyboard shortcuts hint
   it("displays keyboard shortcuts hint", () => {
-    const { container } = render(
-      <ThemeProvider><AnimationProvider>
+    const { container } = renderWithTheme(
+      <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
-      </AnimationProvider></ThemeProvider>
+      </AnimationProvider>
     );
 
     expect(container).toBeInTheDocument();

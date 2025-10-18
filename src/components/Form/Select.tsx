@@ -1,5 +1,5 @@
 import { components, cn } from "../../styles/theme";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size"> {
   size?: "default" | "small";
@@ -11,11 +11,11 @@ interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>
  * Supports dark mode
  */
 export function Select({ size = "default", className, children, ...props }: SelectProps) {
-  const { isDark } = useTheme();
+  const t = useThemeClasses();
 
   const baseClasses = cn(
     size === "default" ? components.select.base : components.select.small,
-    isDark && "bg-gray-700 border-gray-600 text-gray-100",
+    t.input.base,
     className
   );
 

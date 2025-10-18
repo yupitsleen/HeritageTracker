@@ -1,4 +1,4 @@
-import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AboutHeader } from "./sections/AboutHeader";
 import { MissionSection } from "./sections/MissionSection";
 import { MethodologySection } from "./sections/MethodologySection";
@@ -16,10 +16,10 @@ import { AttributionSection } from "./sections/AttributionSection";
  * Supports dark mode
  */
 export function About() {
-  const { isDark } = useTheme();
+  const t = useThemeClasses();
 
   return (
-    <div className={`max-h-[80vh] overflow-y-auto ${isDark ? "bg-gray-800" : "bg-white"}`}>
+    <div className={`max-h-[80vh] overflow-y-auto ${t.bg.primary}`}>
       <div className="p-4 md:p-8 max-w-4xl mx-auto">
         <AboutHeader />
         <MissionSection />

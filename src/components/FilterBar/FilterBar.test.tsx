@@ -1,8 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { FilterBar } from "./FilterBar";
 import { CalendarProvider } from "../../contexts/CalendarContext";
-import { ThemeProvider } from "../../contexts/ThemeContext";
 
 describe("FilterBar", () => {
   const mockProps = {
@@ -23,23 +22,19 @@ describe("FilterBar", () => {
   };
 
   it("renders without crashing", () => {
-    const { container } = render(
-      <ThemeProvider>
-        <CalendarProvider>
-          <FilterBar {...mockProps} />
-        </CalendarProvider>
-      </ThemeProvider>
+    const { container } = renderWithTheme(
+      <CalendarProvider>
+        <FilterBar {...mockProps} />
+      </CalendarProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   it("displays filter controls", () => {
-    render(
-      <ThemeProvider>
-        <CalendarProvider>
-          <FilterBar {...mockProps} />
-        </CalendarProvider>
-      </ThemeProvider>
+    renderWithTheme(
+      <CalendarProvider>
+        <FilterBar {...mockProps} />
+      </CalendarProvider>
     );
     const bodyText = document.body.textContent || "";
     expect(bodyText.length).toBeGreaterThan(20);

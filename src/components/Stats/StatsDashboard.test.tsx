@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { render } from "@testing-library/react";
+import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { StatsDashboard } from "./StatsDashboard";
-import { ThemeProvider } from "../../contexts/ThemeContext";
 import type { GazaSite } from "../../types";
 
 // Mock sites data for testing
@@ -55,22 +54,14 @@ const mockSites: GazaSite[] = [
 
 describe("StatsDashboard", () => {
   it("renders without crashing and shows substantive content", () => {
-    render(
-      <ThemeProvider>
-        <StatsDashboard sites={mockSites} />
-      </ThemeProvider>
-    );
+    renderWithTheme(<StatsDashboard sites={mockSites} />);
     // Verify that statistics dashboard has meaningful content
     const bodyText = document.body.textContent || "";
     expect(bodyText.length).toBeGreaterThan(1000); // Has substantive content
   });
 
   it("displays calculated statistics from site data", () => {
-    render(
-      <ThemeProvider>
-        <StatsDashboard sites={mockSites} />
-      </ThemeProvider>
-    );
+    renderWithTheme(<StatsDashboard sites={mockSites} />);
     // Should display some numeric statistics
     const bodyText = document.body.textContent || "";
     const hasNumbers = /\d+/.test(bodyText);
@@ -78,11 +69,7 @@ describe("StatsDashboard", () => {
   });
 
   it("displays narrative content sections", () => {
-    render(
-      <ThemeProvider>
-        <StatsDashboard sites={mockSites} />
-      </ThemeProvider>
-    );
+    renderWithTheme(<StatsDashboard sites={mockSites} />);
     // Check that key narrative sections exist
     const bodyText = document.body.textContent || "";
     expect(bodyText.length).toBeGreaterThan(500);
@@ -92,21 +79,13 @@ describe("StatsDashboard", () => {
   });
 
   it("is scrollable", () => {
-    const { container } = render(
-      <ThemeProvider>
-        <StatsDashboard sites={mockSites} />
-      </ThemeProvider>
-    );
+    const { container } = renderWithTheme(<StatsDashboard sites={mockSites} />);
     const scrollableDiv = container.querySelector('[class*="overflow"]');
     expect(scrollableDiv).toBeInTheDocument();
   });
 
   it("handles empty sites array gracefully", () => {
-    render(
-      <ThemeProvider>
-        <StatsDashboard sites={[]} />
-      </ThemeProvider>
-    );
+    renderWithTheme(<StatsDashboard sites={[]} />);
     // Should still render without crashing
     const bodyText = document.body.textContent || "";
     expect(bodyText.length).toBeGreaterThan(100); // Has some content even with no sites
