@@ -16,6 +16,10 @@ import { Input } from "../Form/Input";
 interface TimelineScrubberProps {
   sites: GazaSite[];
   onSyncMapChange?: (isSynced: boolean) => void; // Optional callback for map sync toggle
+  destructionDateStart: Date | null;
+  destructionDateEnd: Date | null;
+  onDestructionDateStartChange: (date: Date | null) => void;
+  onDestructionDateEndChange: (date: Date | null) => void;
 }
 
 /**
@@ -29,7 +33,14 @@ interface TimelineScrubberProps {
  * - Keyboard navigation (space, arrows, home/end)
  * - Responsive to container width changes
  */
-export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberProps) {
+export function TimelineScrubber({
+  sites,
+  onSyncMapChange,
+  destructionDateStart,
+  destructionDateEnd,
+  onDestructionDateStartChange,
+  onDestructionDateEndChange,
+}: TimelineScrubberProps) {
   const {
     currentTimestamp,
     isPlaying,
@@ -66,10 +77,6 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     };
   }, [allDestructionDates, startDate, endDate]);
 
-  // Date filter state for timeline - null means use default range
-  const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
-  const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
-
   // Notify parent when sync state changes
   useEffect(() => {
     onSyncMapChange?.(syncMap);
@@ -84,15 +91,15 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
 
   // Filter destruction dates based on date filter
   const destructionDates = useMemo(() => {
-    if (!filterStartDate && !filterEndDate) {
+    if (!destructionDateStart && !destructionDateEnd) {
       return allDestructionDates;
     }
     return allDestructionDates.filter((event) => {
-      if (filterStartDate && event.date < filterStartDate) return false;
-      if (filterEndDate && event.date > filterEndDate) return false;
+      if (destructionDateStart && event.date < destructionDateStart) return false;
+      if (destructionDateEnd && event.date > destructionDateEnd) return false;
       return true;
     });
-  }, [allDestructionDates, filterStartDate, filterEndDate]);
+  }, [allDestructionDates, destructionDateStart, destructionDateEnd]);
 
   // Calculate adjusted timeline range based on filtered dates
   const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
@@ -105,10 +112,10 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     const maxDate = new Date(Math.max(...destructionDates.map((event) => event.date.getTime())));
 
     return {
-      adjustedStartDate: filterStartDate || filterEndDate ? minDate : startDate,
-      adjustedEndDate: filterStartDate || filterEndDate ? maxDate : endDate,
+      adjustedStartDate: destructionDateStart || destructionDateEnd ? minDate : startDate,
+      adjustedEndDate: destructionDateStart || destructionDateEnd ? maxDate : endDate,
     };
-  }, [destructionDates, startDate, endDate, filterStartDate, filterEndDate]);
+  }, [destructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
 
   // Observe container width changes
   useEffect(() => {
@@ -306,9 +313,9 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           </label>
           <Input
             variant="date"
-            value={(filterStartDate || defaultStartDate).toISOString().split("T")[0]}
+            value={(destructionDateStart || defaultStartDate).toISOString().split("T")[0]}
             onChange={(e) => {
-              setFilterStartDate(e.target.value ? new Date(e.target.value) : null);
+              onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
             }}
             placeholder="From"
             className="flex-none w-32 text-xs py-1.5 px-2"
@@ -316,9 +323,9 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           <span className={`text-xs font-medium ${t.text.body}`}>to</span>
           <Input
             variant="date"
-            value={(filterEndDate || defaultEndDate).toISOString().split("T")[0]}
+            value={(destructionDateEnd || defaultEndDate).toISOString().split("T")[0]}
             onChange={(e) => {
-              setFilterEndDate(e.target.value ? new Date(e.target.value) : null);
+              onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
             }}
             placeholder="To"
             className="flex-none w-32 text-xs py-1.5 px-2"
@@ -327,16 +334,16 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           {/* Clear Date Filter button - always reserve space, only visible when filter is active */}
           <button
             onClick={() => {
-              setFilterStartDate(null);
-              setFilterEndDate(null);
+              onDestructionDateStartChange(null);
+              onDestructionDateEndChange(null);
             }}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 ${
-              filterStartDate || filterEndDate
+              destructionDateStart || destructionDateEnd
                 ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
                 : "invisible"
             }`}
             aria-label="Clear date filter"
-            disabled={!filterStartDate && !filterEndDate}
+            disabled={!destructionDateStart && !destructionDateEnd}
           >
             Clear Date Filter
           </button>

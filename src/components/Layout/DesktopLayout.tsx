@@ -24,9 +24,13 @@ interface DesktopLayoutProps {
   selectedTypes: Array<GazaSite["type"]>;
   selectedStatuses: Array<GazaSite["status"]>;
   searchTerm: string;
+  destructionDateStart: Date | null;
+  destructionDateEnd: Date | null;
   setSelectedTypes: (types: Array<GazaSite["type"]>) => void;
   setSelectedStatuses: (statuses: Array<GazaSite["status"]>) => void;
   setSearchTerm: (term: string) => void;
+  setDestructionDateStart: (date: Date | null) => void;
+  setDestructionDateEnd: (date: Date | null) => void;
   hasActiveFilters: boolean;
   clearAllFilters: () => void;
   openFilterModal: () => void;
@@ -54,9 +58,13 @@ export function DesktopLayout({
   selectedTypes,
   selectedStatuses,
   searchTerm,
+  destructionDateStart,
+  destructionDateEnd,
   setSelectedTypes,
   setSelectedStatuses,
   setSearchTerm,
+  setDestructionDateStart,
+  setDestructionDateEnd,
   hasActiveFilters,
   clearAllFilters,
   openFilterModal,
@@ -257,6 +265,10 @@ export function DesktopLayout({
               <TimelineScrubber
                 sites={filteredSites}
                 onSyncMapChange={setSyncMapToTimeline}
+                destructionDateStart={destructionDateStart}
+                destructionDateEnd={destructionDateEnd}
+                onDestructionDateStartChange={setDestructionDateStart}
+                onDestructionDateEndChange={setDestructionDateEnd}
               />
             </Suspense>
           </div>

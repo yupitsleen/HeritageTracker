@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import type { GazaSite } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
@@ -20,6 +21,7 @@ interface FilterBarProps {
   onCreationYearStartChange: (year: number | null) => void;
   onCreationYearEndChange: (year: number | null) => void;
   onSearchChange: (term: string) => void;
+  sites?: GazaSite[]; // Optional for calculating default dates
 }
 
 /**
@@ -39,8 +41,28 @@ export function FilterBar({
   onCreationYearStartChange,
   onCreationYearEndChange,
   onSearchChange,
+  sites = [],
 }: FilterBarProps) {
   const t = useThemeClasses();
+
+  // Calculate default date range from all sites' destruction dates
+  const { defaultStartDate, defaultEndDate } = useMemo(() => {
+    const destructionDates = sites
+      .filter(site => site.dateDestroyed)
+      .map(site => new Date(site.dateDestroyed!));
+
+    if (destructionDates.length === 0) {
+      const fallbackStart = new Date("2023-10-07"); // Conflict start date
+      const fallbackEnd = new Date();
+      return { defaultStartDate: fallbackStart, defaultEndDate: fallbackEnd };
+    }
+
+    const timestamps = destructionDates.map(d => d.getTime());
+    return {
+      defaultStartDate: new Date(Math.min(...timestamps)),
+      defaultEndDate: new Date(Math.max(...timestamps)),
+    };
+  }, [sites]);
 
   return (
     <div className="text-white">
@@ -96,6 +118,8 @@ export function FilterBar({
             endDate={destructionDateEnd}
             onStartChange={onDestructionDateStartChange}
             onEndChange={onDestructionDateEndChange}
+            defaultStartDate={defaultStartDate}
+            defaultEndDate={defaultEndDate}
           />
         </div>
 

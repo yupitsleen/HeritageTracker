@@ -92,9 +92,13 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
             selectedTypes={appState.filters.selectedTypes}
             selectedStatuses={appState.filters.selectedStatuses}
             searchTerm={appState.filters.searchTerm}
+            destructionDateStart={appState.filters.destructionDateStart}
+            destructionDateEnd={appState.filters.destructionDateEnd}
             setSelectedTypes={appState.setSelectedTypes}
             setSelectedStatuses={appState.setSelectedStatuses}
             setSearchTerm={appState.setSearchTerm}
+            setDestructionDateStart={appState.setDestructionDateStart}
+            setDestructionDateEnd={appState.setDestructionDateEnd}
             hasActiveFilters={appState.hasActiveFilters}
             clearAllFilters={appState.clearAllFilters}
             openFilterModal={appState.openFilterModal}
@@ -219,6 +223,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
           onCreationYearStartChange={appState.setTempCreationYearStart}
           onCreationYearEndChange={appState.setTempCreationYearEnd}
           onSearchChange={appState.setSearchTerm}
+          sites={mockSites}
         />
         <div className="mt-6 flex justify-end gap-3">
           <button
