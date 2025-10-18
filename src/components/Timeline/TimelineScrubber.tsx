@@ -226,6 +226,9 @@ export function TimelineScrubber({
   // Speed options
   const speedOptions: AnimationSpeed[] = [0.5, 1, 2, 4];
 
+  // Check if timeline is at the start position
+  const isAtStart = currentTimestamp.getTime() === startDate.getTime();
+
   return (
     <div
       ref={containerRef}
@@ -258,7 +261,12 @@ export function TimelineScrubber({
           )}
           <button
             onClick={reset}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000] ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`}
+            disabled={isAtStart}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-semibold border border-[#000000] ${
+              isAtStart
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
+                : `shadow-md hover:shadow-lg active:scale-95 ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`
+            }`}
             aria-label="Reset timeline to start"
           >
             <ArrowPathIcon className="w-4 h-4" />
