@@ -101,6 +101,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Timeline marker animation - smooth transition when destroyed */
+.leaflet-interactive {
+  transition: r 1000ms ease-out, fill 1000ms ease-out, fill-opacity 1000ms ease-out;
+}
+
 /* Respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -116,5 +121,10 @@ html {
   button:hover,
   button:active {
     will-change: auto;
+  }
+
+  /* Disable marker transitions for reduced motion */
+  .leaflet-interactive {
+    transition: none !important;
   }
 }

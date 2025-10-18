@@ -70,6 +70,7 @@ export function HeritageMap({
           highlightedSiteId={highlightedSiteId}
           onSiteClick={onSiteClick}
           onSiteHighlight={onSiteHighlight}
+          currentTimestamp={currentTimestamp}
         />
       </MapContainer>
     </div>
