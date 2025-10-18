@@ -279,7 +279,7 @@ export function DesktopLayout({
           </div>
 
           {/* Timeline Scrubber - Fixed height at bottom */}
-          <div className="mt-3 flex-shrink-0 h-[200px] relative z-10">
+          <div className="mt-3 mb-4 flex-shrink-0 h-[200px] relative z-10">
             <Suspense fallback={<SkeletonMap />}>
               <TimelineScrubber
                 sites={filteredSites}
