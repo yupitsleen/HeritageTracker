@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 
 /**
@@ -17,7 +18,7 @@ import { useTheme } from "../contexts/ThemeContext";
 export function useThemeClasses() {
   const { isDark } = useTheme();
 
-  return {
+  return useMemo(() => ({
     /**
      * Text color classes
      */
@@ -103,5 +104,5 @@ export function useThemeClasses() {
         ? "bg-gray-800 border-gray-700"
         : "bg-white border-gray-200",
     },
-  };
+  }), [isDark]);
 }

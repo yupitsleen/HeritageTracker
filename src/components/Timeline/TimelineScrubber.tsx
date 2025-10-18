@@ -177,7 +177,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
   return (
     <div
       ref={containerRef}
-      className="backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl transition-colors duration-200 bg-white/90 dark:bg-[#000000]/90"
+      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}
       role="region"
       aria-label="Timeline Scrubber"
     >
@@ -206,7 +206,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           )}
           <button
             onClick={reset}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-[#fefefe] hover:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+            className={`flex items-center gap-2 px-4 py-2 text-[#fefefe] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${t.bg.secondary} ${t.bg.hover}`}
             aria-label="Reset timeline to start"
           >
             <ArrowPathIcon className="w-4 h-4" />

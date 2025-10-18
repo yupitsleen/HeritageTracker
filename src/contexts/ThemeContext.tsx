@@ -70,6 +70,7 @@ interface ThemeProviderProps {
 /**
  * Theme provider for managing light/dark mode
  * Persists theme preference to localStorage
+ * Applies data-theme attribute to document root for CSS selectors
  */
 export function ThemeProvider({ children }: ThemeProviderProps) {
   // Initialize from localStorage or default to light
@@ -78,9 +79,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     return (stored === "dark" || stored === "light") ? stored : "light";
   });
 
-  // Persist theme changes to localStorage
+  // Persist theme changes to localStorage and apply to document root
   useEffect(() => {
     localStorage.setItem("heritage-tracker-theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {

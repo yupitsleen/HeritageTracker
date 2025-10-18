@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface MultiSelectDropdownProps<T extends string> {
   label: string;
@@ -44,16 +45,18 @@ export function MultiSelectDropdown<T extends string>({
     }
   };
 
+  const t = useThemeClasses();
+
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-lg text-[10px] bg-white hover:bg-gray-50 focus:ring-2 focus:ring-[#009639] focus:border-transparent transition-all duration-200"
+        className={`flex items-center gap-1 px-2 py-1 border rounded-lg text-[10px] focus:ring-2 focus:ring-[#009639] focus:border-transparent transition-all duration-200 ${t.bg.primary} ${t.border.subtle} ${t.bg.hover}`}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className="font-medium text-gray-700">
+        <span className={`font-medium ${t.text.body}`}>
           {label}
           {/* Always reserve space for count to prevent layout shift */}
           <span className={`ml-0.5 font-semibold inline-block min-w-[20px] ${selectedValues.length > 0 ? 'text-[#009639]' : 'opacity-0'}`}>
@@ -62,7 +65,7 @@ export function MultiSelectDropdown<T extends string>({
         </span>
         {/* Chevron icon */}
         <svg
-          className={`w-3 h-3 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""} ${t.icon.muted}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -73,7 +76,7 @@ export function MultiSelectDropdown<T extends string>({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="fixed z-[9999] mt-1 w-44 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
+        <div className={`fixed z-[9999] mt-1 w-44 border rounded-md shadow-lg max-h-48 overflow-y-auto ${t.bg.primary} ${t.border.subtle}`}
           style={{
             top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 4 : 0,
             left: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().left : 0,
@@ -85,7 +88,7 @@ export function MultiSelectDropdown<T extends string>({
               return (
                 <li
                   key={option}
-                  className="px-2 py-1 hover:bg-gray-50 cursor-pointer flex items-center gap-1.5"
+                  className={`px-2 py-1 cursor-pointer flex items-center gap-1.5 ${t.bg.hover}`}
                   onClick={() => toggleOption(option)}
                   role="option"
                   aria-selected={isSelected}
@@ -95,7 +98,7 @@ export function MultiSelectDropdown<T extends string>({
                     className={`w-3 h-3 border-2 rounded flex items-center justify-center ${
                       isSelected
                         ? "bg-[#009639] border-[#009639]"
-                        : "border-gray-300 bg-white"
+                        : `${t.border.subtle} ${t.bg.primary}`
                     }`}
                   >
                     {isSelected && (
@@ -114,7 +117,7 @@ export function MultiSelectDropdown<T extends string>({
                       </svg>
                     )}
                   </div>
-                  <span className="text-[10px] text-gray-700">{formatLabel(option)}</span>
+                  <span className={`text-[10px] ${t.text.body}`}>{formatLabel(option)}</span>
                 </li>
               );
             })}

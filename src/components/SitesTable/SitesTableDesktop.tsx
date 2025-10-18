@@ -106,7 +106,7 @@ export function SitesTableDesktop({
 
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) {
-      return <span className="text-gray-400 ml-1">↕</span>;
+      return <span className={`ml-1 ${t.icon.default}`}>↕</span>;
     }
     return <span className="text-[#009639] ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>;
   };
@@ -136,9 +136,9 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className="flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl transition-colors duration-200 bg-white/50 dark:bg-[#000000]/50" style={{ height: 'calc(100% - 4px)' }}>
+    <div className={`flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/50" : "bg-white/50"}`} style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
-      <div className="sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 bg-white/50 dark:bg-[#000000]/50">
+      <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/50" : "bg-white/50"}`}>
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
@@ -194,7 +194,7 @@ export function SitesTableDesktop({
             <tr>
               {isColumnVisible("name") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
+                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
                   onClick={() => handleSort("name")}
                 >
                   Site Name
@@ -203,7 +203,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("type") && (
                 <th
-                  className="px-2 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm text-center transition-colors duration-200"
+                  className="px-2 py-3 font-semibold cursor-pointer select-none text-sm text-center transition-colors duration-200 hover:bg-gray-700/30"
                   onClick={() => handleSort("type")}
                   style={{ width: `${TABLE_CONFIG.TYPE_COLUMN_WIDTH}px` }}
                 >
@@ -213,7 +213,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("status") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
+                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
                   onClick={() => handleSort("status")}
                 >
                   Status
@@ -222,7 +222,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyed") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
+                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
                   onClick={() => handleSort("dateDestroyed")}
                 >
                   {visibleColumns
@@ -235,7 +235,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyedIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
+                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
                   onClick={() => handleSort("dateDestroyedIslamic")}
                 >
                   Destruction Date (Islamic)
@@ -244,7 +244,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuilt") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
+                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
                   onClick={() => handleSort("yearBuilt")}
                 >
                   Built (Gregorian)
@@ -253,7 +253,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuiltIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer hover:bg-gray-700/50 select-none text-sm transition-colors duration-200"
+                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
                   onClick={() => handleSort("yearBuiltIslamic")}
                 >
                   Built (Islamic)
@@ -272,9 +272,7 @@ export function SitesTableDesktop({
                     ? isDark
                       ? "bg-green-900/40 ring-2 ring-[#009639] ring-inset"
                       : "bg-green-50/60 ring-2 ring-[#009639] ring-inset"
-                    : isDark
-                      ? "bg-[#000000]/30 hover:bg-gray-800/60"
-                      : "bg-white/50 hover:bg-gray-50/60"
+                    : `${t.bg.primary}/50 ${t.bg.hover}`
                 }`}
                 onClick={() => {
                   onSiteHighlight?.(site.id);
