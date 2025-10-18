@@ -168,7 +168,7 @@ export function SitesTableDesktop({
                            px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
                            rounded-lg shadow-md hover:shadow-lg
                            transition-all duration-200 font-semibold
-                           active:scale-95 text-sm mr-12"
+                           active:scale-95 text-sm border border-[#000000] mr-12"
                 title="Export table data to CSV file"
                 aria-label="Export to CSV"
               >
