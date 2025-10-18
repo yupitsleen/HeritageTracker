@@ -79,6 +79,15 @@ export function useAppState() {
     tempCreationYearStart !== creationYearStart ||
     tempCreationYearEnd !== creationYearEnd;
 
+  // Check if temp filters are empty (for Clear All button state)
+  const hasTempFilters =
+    tempSelectedTypes.length > 0 ||
+    tempSelectedStatuses.length > 0 ||
+    tempDestructionDateStart !== null ||
+    tempDestructionDateEnd !== null ||
+    tempCreationYearStart !== null ||
+    tempCreationYearEnd !== null;
+
   // Clear all filters
   const clearAllFilters = useCallback(() => {
     setSelectedTypes([]);
@@ -162,6 +171,7 @@ export function useAppState() {
     setSearchTerm,
     hasActiveFilters,
     hasUnappliedChanges,
+    hasTempFilters,
     clearAllFilters,
 
     // Temp filters (for modal)
