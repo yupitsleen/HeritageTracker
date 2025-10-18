@@ -82,7 +82,7 @@ export function useThemeClasses() {
       /** Base input styling */
       base: isDark
         ? "bg-gray-700 border-gray-600 text-gray-100 placeholder:text-gray-400"
-        : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400",
+        : "bg-white border-[#000000] text-gray-900 placeholder:text-gray-400",
     },
 
     /**
