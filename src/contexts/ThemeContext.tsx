@@ -71,12 +71,27 @@ interface ThemeProviderProps {
  * Theme provider for managing light/dark mode
  * Persists theme preference to localStorage
  * Applies data-theme attribute to document root for CSS selectors
+ * Respects system preference on first visit (prefers-color-scheme)
  */
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  // Initialize from localStorage or default to light
+  // Initialize from localStorage, system preference, or default to light
   const [theme, setTheme] = useState<Theme>(() => {
+    // Check if user has previously set a preference
     const stored = localStorage.getItem("heritage-tracker-theme");
-    return (stored === "dark" || stored === "light") ? stored : "light";
+    if (stored === "dark" || stored === "light") {
+      return stored;
+    }
+
+    // No stored preference - check system preference
+    if (typeof window !== "undefined" && window.matchMedia) {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (prefersDark) {
+        return "dark";
+      }
+    }
+
+    // Default to light if no preference found
+    return "light";
   });
 
   // Persist theme changes to localStorage and apply to document root
