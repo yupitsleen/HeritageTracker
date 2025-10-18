@@ -3,6 +3,7 @@ import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateCompact, formatDateLong } from "../../utils/format";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface SitesTableMobileProps {
   sites: GazaSite[];
@@ -17,6 +18,7 @@ type SortDirection = "asc" | "desc";
  */
 export function SitesTableMobile({ sites }: SitesTableMobileProps) {
   const t = useThemeClasses();
+  const { isDark } = useTheme();
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
@@ -98,12 +100,23 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
         {sortedSites.map((site, index) => (
           <div
             key={site.id}
-            className="border-2 border-[#fecaca] rounded-lg overflow-hidden"
-            style={{ backgroundColor: index % 2 === 0 ? "#fee2e2" : "#ffffff" }}
+            className={`border-2 rounded-lg overflow-hidden ${
+              isDark ? "border-gray-700" : "border-[#fecaca]"
+            } ${
+              index % 2 === 0
+                ? isDark
+                  ? "bg-gray-800/50"
+                  : "bg-[#fee2e2]"
+                : isDark
+                ? "bg-gray-900/50"
+                : "bg-white"
+            }`}
           >
             {/* Collapsed row - clickable to expand */}
             <div
-              className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-[#fecaca]"
+              className={`grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer transition-colors ${
+                isDark ? "hover:bg-gray-700/50" : "hover:bg-[#fecaca]"
+              }`}
               onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
             >
               {/* Site Name - color-coded by status */}
