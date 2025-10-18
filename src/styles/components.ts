@@ -83,7 +83,7 @@ export const components = {
     base: "w-full text-sm text-left",
     header: "bg-[#000000] text-[#fefefe] sticky top-0 z-10",  // Palestine flag black and white
     th: "px-4 py-3 font-semibold",
-    row: "border-b border-[#e5e5e5] hover:bg-[#fafafa] cursor-pointer transition-all",
+    row: "border-b border-[#404040] hover:bg-[#fafafa] cursor-pointer transition-all",
     td: "px-4 py-3",
   },
 
