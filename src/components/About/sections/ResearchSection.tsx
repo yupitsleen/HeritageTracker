@@ -14,7 +14,7 @@ export function ResearchSection() {
         data from multiple authoritative sources to create an evidence-based documentation
         platform.
       </p>
-      <div className="bg-blue-50 border border-blue-300 rounded-lg p-4 mb-4">
+      <div className={`rounded-lg p-4 mb-4 ${t.bg.tertiary} ${t.border.default} border`}>
         <p className={`text-sm ${t.text.subheading} font-medium mb-2`}>
           <strong>Research conducted by:</strong> Claude (Anthropic) in collaboration with
           project team
