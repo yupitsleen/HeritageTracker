@@ -70,6 +70,15 @@ export function useAppState() {
     creationYearEnd !== null ||
     searchTerm.trim().length > 0;
 
+  // Check if temp filters have unapplied changes
+  const hasUnappliedChanges =
+    JSON.stringify(tempSelectedTypes.sort()) !== JSON.stringify(selectedTypes.sort()) ||
+    JSON.stringify(tempSelectedStatuses.sort()) !== JSON.stringify(selectedStatuses.sort()) ||
+    tempDestructionDateStart?.getTime() !== destructionDateStart?.getTime() ||
+    tempDestructionDateEnd?.getTime() !== destructionDateEnd?.getTime() ||
+    tempCreationYearStart !== creationYearStart ||
+    tempCreationYearEnd !== creationYearEnd;
+
   // Clear all filters
   const clearAllFilters = useCallback(() => {
     setSelectedTypes([]);
@@ -152,6 +161,7 @@ export function useAppState() {
     setCreationYearEnd,
     setSearchTerm,
     hasActiveFilters,
+    hasUnappliedChanges,
     clearAllFilters,
 
     // Temp filters (for modal)

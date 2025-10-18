@@ -239,6 +239,8 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
           <button
             onClick={appState.applyFilters}
             className={`px-4 py-2 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
+              appState.hasUnappliedChanges ? "animate-pulse ring-2 ring-white/50" : ""
+            } ${
               isDark
                 ? "bg-[#2d5a38] hover:bg-[#244a2e]"
                 : "bg-[#009639] hover:bg-[#007b2f]"
