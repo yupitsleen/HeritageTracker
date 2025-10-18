@@ -137,7 +137,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         onClose={() => appState.setIsTableExpanded(false)}
         zIndex={9999}
       >
-        <div className="max-h-[80vh] overflow-auto">
+        <div className="h-[80vh]">
           <SitesTable
             sites={filteredSites}
             onSiteClick={appState.setSelectedSite}

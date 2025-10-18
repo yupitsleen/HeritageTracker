@@ -168,7 +168,7 @@ export function SitesTableDesktop({
                            px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
                            rounded-lg shadow-md hover:shadow-lg
                            transition-all duration-200 font-semibold
-                           active:scale-95 text-sm"
+                           active:scale-95 text-sm mr-12"
                 title="Export table data to CSV file"
                 aria-label="Export to CSV"
               >
@@ -304,8 +304,8 @@ export function SitesTableDesktop({
                 {isColumnVisible("type") && (
                   <td className={`${components.table.td} text-center`}>
                     <Tooltip content={getSiteTypeLabel(site.type)}>
-                      <span className={`inline-flex items-center justify-center px-2 py-1.5 text-xs font-medium rounded ${t.bg.secondary} ${t.text.body}`}>
-                        <SiteTypeIcon type={site.type} className="w-5 h-5" />
+                      <span className="inline-flex items-center justify-center">
+                        <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
                       </span>
                     </Tooltip>
                   </td>

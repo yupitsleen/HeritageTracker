@@ -183,7 +183,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     >
       {/* Controls */}
       <div className="flex items-center justify-between mb-3 gap-4">
-        {/* Left: Play/Pause/Reset */}
+        {/* Left: Play/Pause/Reset/Sync Map/Speed */}
         <div className="flex items-center gap-2">
           {!isPlaying ? (
             <button
@@ -226,32 +226,32 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           >
             <span>{syncMap ? "✓" : ""} Sync Map</span>
           </button>
+
+          {/* Speed control */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="speed-control" className={`text-sm font-medium ${t.text.body}`}>
+              Speed:
+            </label>
+            <select
+              id="speed-control"
+              value={speed}
+              onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
+              className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
+              aria-label="Animation speed control"
+            >
+              {speedOptions.map((s) => (
+                <option key={s} value={s}>
+                  {s}x
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        {/* Center: Current date display */}
+        {/* Right: Current date display */}
         <div className={`text-sm font-semibold ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
           <span className={t.text.muted}>Current:</span>{" "}
           {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
-        </div>
-
-        {/* Right: Speed control */}
-        <div className="flex items-center gap-2">
-          <label htmlFor="speed-control" className={`text-sm font-medium ${t.text.body}`}>
-            Speed:
-          </label>
-          <select
-            id="speed-control"
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-            className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
-            aria-label="Animation speed control"
-          >
-            {speedOptions.map((s) => (
-              <option key={s} value={s}>
-                {s}x
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 
