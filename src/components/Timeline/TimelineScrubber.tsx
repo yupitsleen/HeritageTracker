@@ -258,7 +258,7 @@ export function TimelineScrubber({
           )}
           <button
             onClick={reset}
-            className={`flex items-center gap-2 px-4 py-2 text-[#fefefe] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${t.bg.secondary} ${t.bg.hover}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`}
             aria-label="Reset timeline to start"
           >
             <ArrowPathIcon className="w-4 h-4" />
