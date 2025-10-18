@@ -136,9 +136,9 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className={`flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/50" : "bg-white/50"}`} style={{ height: 'calc(100% - 4px)' }}>
+    <div className={`flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`} style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
-      <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/50" : "bg-white/50"}`}>
+      <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">

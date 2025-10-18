@@ -108,7 +108,7 @@ export function DesktopLayout({
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-6 flex flex-col">
           {/* Filter bar - Horizontal component with compact padding */}
-          <div className={`flex-shrink-0 mt-4 py-3 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}>
+          <div className={`flex-shrink-0 mt-4 py-3 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
             <div className="flex items-start gap-4 px-3">
               {/* Left side - Filter controls */}
               <div className="flex-1 flex items-center gap-3 flex-wrap">
