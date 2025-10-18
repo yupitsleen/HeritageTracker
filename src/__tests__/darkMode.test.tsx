@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { CalendarProvider } from "../contexts/CalendarContext";
@@ -49,6 +49,11 @@ function renderWithProviders(ui: React.ReactElement, theme: "light" | "dark" = "
 describe("Dark Mode - Component Rendering", () => {
   const testSite = mockSites[0];
   const noop = () => {};
+
+  // Clean up localStorage before each test to prevent cross-test pollution
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
   describe("About Modal", () => {
     it("renders in light mode", () => {
