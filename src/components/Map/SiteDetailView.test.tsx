@@ -117,18 +117,15 @@ describe("SiteDetailView", () => {
     expect(container).toBeInTheDocument();
   });
 
-  it("does not render marker when no site is highlighted", () => {
+  it("shows overview label when no site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    expect(screen.queryByTestId("marker")).not.toBeInTheDocument();
+    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
   });
 
-  it("renders marker when a site is highlighted", () => {
+  it("shows site name when a site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
-    const marker = screen.getByTestId("marker");
-    expect(marker).toBeInTheDocument();
-    expect(marker.getAttribute("data-position")).toBe(
-      JSON.stringify(mockSites[0].coordinates)
-    );
+    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    expect(screen.getByText("Site Detail (Satellite)")).toBeInTheDocument();
   });
 
   it("handles invalid highlightedSiteId gracefully", () => {
