@@ -2,6 +2,8 @@ import { useState, useMemo } from "react";
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateCompact, formatDateLong } from "../../utils/format";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface SitesTableMobileProps {
   sites: GazaSite[];
@@ -15,6 +17,8 @@ type SortDirection = "asc" | "desc";
  * Features: Collapsible rows, status-colored names, sortable columns
  */
 export function SitesTableMobile({ sites }: SitesTableMobileProps) {
+  const t = useThemeClasses();
+  const { isDark } = useTheme();
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
@@ -56,7 +60,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
 
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) {
-      return <span className="text-gray-400 ml-1">↕</span>;
+      return <span className={`${t.icon.default} ml-1`}>↕</span>;
     }
     return <span className="text-[#009639] ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>;
   };
@@ -64,25 +68,25 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
   return (
     <div className="flex flex-col">
       {/* Non-sticky header - centered */}
-      <div className="pb-3 mb-3 border-b-2 border-gray-300">
-        <h2 className="text-lg font-bold text-gray-800 text-center">Heritage Sites</h2>
-        <p className="text-xs text-gray-600 text-center">
+      <div className={`pb-3 mb-3 border-b-2 ${t.border.subtle}`}>
+        <h2 className={`text-lg font-bold ${t.text.subheading} text-center`}>Heritage Sites</h2>
+        <p className={`text-xs ${t.text.muted} text-center`}>
           Showing {sortedSites.length} site{sortedSites.length !== 1 ? "s" : ""}
         </p>
       </div>
 
       {/* Sticky column headers with sorting */}
-      <div className="sticky top-[85px] bg-white z-40 border-b-2 border-gray-300 pb-2 mb-2 shadow-sm">
+      <div className={`sticky top-[85px] ${t.bg.primary} z-40 border-b-2 ${t.border.subtle} pb-2 mb-2 shadow-sm`}>
         <div className="grid grid-cols-[1fr_auto] gap-3 px-3 py-2">
           <div
-            className="text-xs font-bold text-gray-700 uppercase cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
+            className={`text-xs font-bold ${t.text.body} uppercase cursor-pointer hover:${t.text.heading} select-none flex items-center gap-1`}
             onClick={() => handleSort("name")}
           >
             Site Name
             <SortIcon field="name" />
           </div>
           <div
-            className="text-xs font-bold text-gray-700 uppercase whitespace-nowrap cursor-pointer hover:text-gray-900 select-none flex items-center gap-1"
+            className={`text-xs font-bold ${t.text.body} uppercase whitespace-nowrap cursor-pointer hover:${t.text.heading} select-none flex items-center gap-1`}
             onClick={() => handleSort("dateDestroyed")}
           >
             Destruction Date
@@ -96,12 +100,23 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
         {sortedSites.map((site, index) => (
           <div
             key={site.id}
-            className="border-2 border-[#fecaca] rounded-lg overflow-hidden"
-            style={{ backgroundColor: index % 2 === 0 ? "#fee2e2" : "#ffffff" }}
+            className={`border-2 rounded-lg overflow-hidden ${
+              isDark ? "border-gray-700" : "border-[#fecaca]"
+            } ${
+              index % 2 === 0
+                ? isDark
+                  ? "bg-gray-800/50"
+                  : "bg-[#fee2e2]"
+                : isDark
+                ? "bg-gray-900/50"
+                : "bg-white"
+            }`}
           >
             {/* Collapsed row - clickable to expand */}
             <div
-              className="grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer hover:bg-[#fecaca]"
+              className={`grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer transition-colors ${
+                isDark ? "hover:bg-gray-700/50" : "hover:bg-[#fecaca]"
+              }`}
               onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
             >
               {/* Site Name - color-coded by status */}
@@ -113,19 +128,19 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                   {site.name}
                 </div>
                 {site.nameArabic && (
-                  <div className="text-xs text-gray-600 truncate text-left" lang="ar">
+                  <div className={`text-xs ${t.text.muted} truncate text-left`} lang="ar">
                     {site.nameArabic}
                   </div>
                 )}
               </div>
 
               {/* Date */}
-              <div className="text-xs text-gray-700 whitespace-nowrap">
+              <div className={`text-xs ${t.text.body} whitespace-nowrap`}>
                 {formatDateCompact(site.dateDestroyed)}
               </div>
 
               {/* Chevron indicator */}
-              <div className="text-gray-400">
+              <div className={t.icon.default}>
                 <svg
                   className={`w-4 h-4 transition-transform ${
                     expandedRowId === site.id ? "rotate-180" : ""
@@ -146,26 +161,26 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
 
             {/* Expanded details - full site information */}
             {expandedRowId === site.id && (
-              <div className="border-t-2 border-gray-200 p-4 bg-gray-50 space-y-3">
+              <div className={`border-t-2 ${t.border.default} p-4 ${t.bg.secondary} space-y-3`}>
                 {/* Site Name (Full) */}
                 <div className="text-center">
-                  <h3 className="font-bold text-base text-gray-900">{site.name}</h3>
+                  <h3 className={`font-bold text-base ${t.text.heading}`}>{site.name}</h3>
                   {site.nameArabic && (
-                    <p className="text-sm text-gray-700 mt-1">{site.nameArabic}</p>
+                    <p className={`text-sm ${t.text.body} mt-1`}>{site.nameArabic}</p>
                   )}
                 </div>
 
                 {/* Type */}
                 <div>
-                  <span className="text-xs font-semibold text-gray-600 uppercase">Type:</span>
-                  <p className="text-sm text-gray-900 capitalize">
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>Type:</span>
+                  <p className={`text-sm ${t.text.heading} capitalize`}>
                     {site.type.replace("-", " ")}
                   </p>
                 </div>
 
                 {/* Status */}
                 <div>
-                  <span className="text-xs font-semibold text-gray-600 uppercase">Status:</span>
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>Status:</span>
                   <p
                     className="text-sm font-semibold capitalize"
                     style={{ color: getStatusHexColor(site.status) }}
@@ -176,40 +191,40 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
 
                 {/* Year Built */}
                 <div>
-                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                     Year Built:
                   </span>
-                  <p className="text-sm text-gray-900">{site.yearBuilt}</p>
+                  <p className={`text-sm ${t.text.heading}`}>{site.yearBuilt}</p>
                   {site.yearBuiltIslamic && (
-                    <p className="text-xs text-gray-600">Islamic: {site.yearBuiltIslamic}</p>
+                    <p className={`text-xs ${t.text.muted}`}>Islamic: {site.yearBuiltIslamic}</p>
                   )}
                 </div>
 
                 {/* Date Destroyed */}
                 <div>
-                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                     Date Destroyed:
                   </span>
-                  <p className="text-sm text-gray-900">{formatDateLong(site.dateDestroyed)}</p>
+                  <p className={`text-sm ${t.text.heading}`}>{formatDateLong(site.dateDestroyed)}</p>
                   {site.dateDestroyedIslamic && (
-                    <p className="text-xs text-gray-600">Islamic: {site.dateDestroyedIslamic}</p>
+                    <p className={`text-xs ${t.text.muted}`}>Islamic: {site.dateDestroyedIslamic}</p>
                   )}
                 </div>
 
                 {/* Description */}
                 <div>
-                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                     Description:
                   </span>
-                  <p className="text-sm text-gray-900 mt-1">{site.description}</p>
+                  <p className={`text-sm ${t.text.heading} mt-1`}>{site.description}</p>
                 </div>
 
                 {/* Coordinates */}
                 <div>
-                  <span className="text-xs font-semibold text-gray-600 uppercase">
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                     Coordinates:
                   </span>
-                  <p className="text-sm text-gray-900">
+                  <p className={`text-sm ${t.text.heading}`}>
                     {site.coordinates[0].toFixed(6)}, {site.coordinates[1].toFixed(6)}
                   </p>
                 </div>
@@ -217,7 +232,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                 {/* Sources */}
                 {site.sources && site.sources.length > 0 && (
                   <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">
+                    <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                       Sources:
                     </span>
                     <ul className="mt-1 space-y-1">
@@ -232,7 +247,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                             {source.title}
                           </a>
                           {source.date && (
-                            <span className="text-xs text-gray-600 ml-2">
+                            <span className={`text-xs ${t.text.muted} ml-2`}>
                               ({new Date(source.date).toLocaleDateString()})
                             </span>
                           )}
@@ -245,10 +260,10 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                 {/* Verified By */}
                 {site.verifiedBy && site.verifiedBy.length > 0 && (
                   <div>
-                    <span className="text-xs font-semibold text-gray-600 uppercase">
+                    <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                       Verified By:
                     </span>
-                    <p className="text-sm text-gray-900">{site.verifiedBy.join(", ")}</p>
+                    <p className={`text-sm ${t.text.heading}`}>{site.verifiedBy.join(", ")}</p>
                   </div>
                 )}
               </div>

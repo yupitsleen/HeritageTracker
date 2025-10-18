@@ -1,15 +1,19 @@
+import { useThemeClasses } from "../../../hooks/useThemeClasses";
+
 /**
  * MethodologySection - Research methodology and verification criteria (desktop only)
  */
 export function MethodologySection() {
+  const t = useThemeClasses();
+
   return (
     <section className="hidden md:block mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Methodology</h2>
-      <p className="text-gray-700 leading-relaxed mb-4">
+      <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Methodology</h2>
+      <p className={`${t.text.body} leading-relaxed mb-4`}>
         Every site in this database has been verified by multiple authoritative sources. We only
         include sites with:
       </p>
-      <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
+      <ul className={`list-disc list-inside ${t.text.body} space-y-2 mb-4`}>
         <li>
           <strong>Multiple independent verifications</strong> from UNESCO, Forensic
           Architecture, or Heritage for Peace

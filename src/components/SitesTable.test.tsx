@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { renderWithTheme, screen } from "../test-utils/renderWithTheme";
 import userEvent from "@testing-library/user-event";
 import { SitesTable } from "./SitesTable/index";
 import type { GazaSite } from "../types";
@@ -74,7 +74,7 @@ const mockSites: GazaSite[] = [
 
 describe("SitesTable", () => {
   it("renders without crashing", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <CalendarProvider>
         <SitesTable
           sites={mockSites}
@@ -86,7 +86,7 @@ describe("SitesTable", () => {
   });
 
   it("displays sortable table headers", () => {
-    render(
+    renderWithTheme(
       <CalendarProvider>
         <SitesTable
           sites={mockSites}
@@ -102,7 +102,7 @@ describe("SitesTable", () => {
   });
 
   it("displays site data in table rows", () => {
-    render(
+    renderWithTheme(
       <CalendarProvider>
         <SitesTable
           sites={mockSites}
@@ -115,7 +115,7 @@ describe("SitesTable", () => {
   });
 
   it("renders clickable site names", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <CalendarProvider>
         <SitesTable
           sites={mockSites}
@@ -127,7 +127,7 @@ describe("SitesTable", () => {
   });
 
   it("renders expand table button when onExpandTable is provided", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <CalendarProvider>
         <SitesTable
           sites={mockSites}
@@ -140,7 +140,7 @@ describe("SitesTable", () => {
   });
 
   it("does not render expand button when onExpandTable is not provided", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <CalendarProvider>
         <SitesTable
           sites={mockSites}
@@ -152,7 +152,7 @@ describe("SitesTable", () => {
   });
 
   it("displays Arabic name when available", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <CalendarProvider>
         <SitesTable
           sites={mockSites}
@@ -165,7 +165,7 @@ describe("SitesTable", () => {
 
   describe("Mobile variant smoke tests", () => {
     it("renders mobile accordion layout with header and site count", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -179,7 +179,7 @@ describe("SitesTable", () => {
     });
 
     it("displays column headers without Type column", () => {
-      render(
+      renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -197,7 +197,7 @@ describe("SitesTable", () => {
     });
 
     it("displays all sites in collapsed accordion rows", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -211,7 +211,7 @@ describe("SitesTable", () => {
     });
 
     it("shows site type in expanded details only (not in collapsed rows)", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -225,7 +225,7 @@ describe("SitesTable", () => {
     });
 
     it("displays chevron icon that rotates on expand", async () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -239,7 +239,7 @@ describe("SitesTable", () => {
     });
 
     it("expands accordion to show full site details on click", async () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -253,7 +253,7 @@ describe("SitesTable", () => {
     });
 
     it("collapses accordion on second click", async () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -269,7 +269,7 @@ describe("SitesTable", () => {
     it("sorts sites by name when clicking name header", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -291,7 +291,7 @@ describe("SitesTable", () => {
     });
 
     it("does not display Type column in mobile view", () => {
-      render(
+      renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -306,7 +306,7 @@ describe("SitesTable", () => {
     });
 
     it("sorts sites by toggling between ascending and descending", async () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -320,7 +320,7 @@ describe("SitesTable", () => {
     });
 
     it("displays Arabic names with proper lang attribute (left-aligned in mobile)", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -334,7 +334,7 @@ describe("SitesTable", () => {
     });
 
     it("displays site names with status-based colors", () => {
-      render(
+      renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -364,7 +364,7 @@ describe("SitesTable", () => {
     });
 
     it("shows sources with clickable links in expanded view", async () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -378,7 +378,7 @@ describe("SitesTable", () => {
     });
 
     it("displays verified by information in expanded view", async () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -394,7 +394,7 @@ describe("SitesTable", () => {
 
   describe("Expanded variant", () => {
     it("displays Export CSV button in expanded variant", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -408,7 +408,7 @@ describe("SitesTable", () => {
     });
 
     it("does not display Export CSV button in compact variant", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}
@@ -422,7 +422,7 @@ describe("SitesTable", () => {
     });
 
     it("Export CSV button is clickable without errors", async () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites}

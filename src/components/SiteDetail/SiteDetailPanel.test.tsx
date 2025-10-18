@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { renderWithTheme, screen } from "../../test-utils/renderWithTheme";
 import { SiteDetailPanel } from "./SiteDetailPanel";
 import type { GazaSite } from "../../types";
 
@@ -43,7 +43,7 @@ describe("SiteDetailPanel", () => {
       },
     };
 
-    render(<SiteDetailPanel site={mockSite} />);
+    renderWithTheme(<SiteDetailPanel site={mockSite} />);
 
     // Check that key elements are rendered
     expect(screen.getByText("Test Heritage Site")).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe("SiteDetailPanel", () => {
       sources: [],
     };
 
-    render(<SiteDetailPanel site={minimalSite} />);
+    renderWithTheme(<SiteDetailPanel site={minimalSite} />);
 
     expect(screen.getByText("Minimal Site")).toBeInTheDocument();
     expect(screen.getByText("A minimal site")).toBeInTheDocument();

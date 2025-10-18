@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { FilterBar } from "./FilterBar";
 import { CalendarProvider } from "../../contexts/CalendarContext";
 
@@ -22,7 +22,7 @@ describe("FilterBar", () => {
   };
 
   it("renders without crashing", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <CalendarProvider>
         <FilterBar {...mockProps} />
       </CalendarProvider>
@@ -31,7 +31,7 @@ describe("FilterBar", () => {
   });
 
   it("displays filter controls", () => {
-    render(
+    renderWithTheme(
       <CalendarProvider>
         <FilterBar {...mockProps} />
       </CalendarProvider>

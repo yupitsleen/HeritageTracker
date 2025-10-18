@@ -1,15 +1,15 @@
-import { render } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { DonateModal } from "./DonateModal";
 
 describe("DonateModal", () => {
   it("renders without crashing", () => {
-    const { container } = render(<DonateModal />);
+    const { container } = renderWithTheme(<DonateModal />);
     expect(container).toBeInTheDocument();
   });
 
   it("displays content", () => {
-    render(<DonateModal />);
+    renderWithTheme(<DonateModal />);
     const bodyText = document.body.textContent || "";
     expect(bodyText.length).toBeGreaterThan(50);
   });

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { renderWithTheme, screen } from "../test-utils/renderWithTheme";
 import { HeritageMap } from "./Map/HeritageMap";
 import { SitesTable } from "./SitesTable/index";
 import { CalendarProvider } from "../contexts/CalendarContext";
@@ -64,7 +64,7 @@ describe("Performance Tests (25+ Sites)", () => {
 
   describe("Map Component Performance", () => {
     it("renders map with 25 sites without crashing", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <AnimationProvider>
           <HeritageMap
             sites={mockSites25}
@@ -81,7 +81,7 @@ describe("Performance Tests (25+ Sites)", () => {
     it("map renders within acceptable time", () => {
       const startTime = performance.now();
 
-      render(
+      renderWithTheme(
         <AnimationProvider>
           <HeritageMap
             sites={mockSites25}
@@ -105,7 +105,7 @@ describe("Performance Tests (25+ Sites)", () => {
 
   describe("Table Component Performance", () => {
     it("renders table with 25 sites without crashing", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites25}
@@ -123,7 +123,7 @@ describe("Performance Tests (25+ Sites)", () => {
     it("table renders within acceptable time", () => {
       const startTime = performance.now();
 
-      render(
+      renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites25}
@@ -145,7 +145,7 @@ describe("Performance Tests (25+ Sites)", () => {
     });
 
     it("table displays all 25 sites", () => {
-      render(
+      renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites25}
@@ -206,7 +206,7 @@ describe("Performance Tests (25+ Sites)", () => {
     const mockSites50 = generateMockSites(50);
 
     it("handles 50 sites in map", () => {
-      const { container } = render(
+      const { container } = renderWithTheme(
         <AnimationProvider>
           <HeritageMap
             sites={mockSites50}
@@ -222,7 +222,7 @@ describe("Performance Tests (25+ Sites)", () => {
 
 
     it("handles 50 sites in table", () => {
-      render(
+      renderWithTheme(
         <CalendarProvider>
           <SitesTable
             sites={mockSites50}

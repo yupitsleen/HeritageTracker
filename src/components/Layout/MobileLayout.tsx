@@ -2,6 +2,8 @@ import type { GazaSite } from "../../types";
 import { cn, components } from "../../styles/theme";
 import { FilterBar } from "../FilterBar/FilterBar";
 import { SitesTable } from "../SitesTable";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface MobileLayoutProps {
   // Filter state
@@ -47,10 +49,30 @@ export function MobileLayout({
   onSiteHighlight,
   highlightedSiteId,
 }: MobileLayoutProps) {
+  const { isDark, toggleTheme } = useTheme();
+
   return (
     <div className="md:hidden">
-      {/* Filter Bar */}
-      <div className={cn(components.container.base, "py-2")}>
+      {/* Filter Bar with Theme Toggle */}
+      <div className={cn(components.container.base, "py-2 relative")}>
+        {/* Dark Mode Toggle - Mobile only, top right */}
+        <button
+          onClick={toggleTheme}
+          className={`absolute top-2 right-2 p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 z-50 ${
+            isDark
+              ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
+              : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
+          }`}
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          {isDark ? (
+            <SunIcon className="w-5 h-5" />
+          ) : (
+            <MoonIcon className="w-5 h-5" />
+          )}
+        </button>
+
         <FilterBar
           selectedTypes={selectedTypes}
           selectedStatuses={selectedStatuses}

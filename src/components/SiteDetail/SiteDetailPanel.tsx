@@ -3,6 +3,7 @@ import { StatusBadge } from "../StatusBadge";
 import { formatLabel } from "../../utils/format";
 import { cn } from "../../styles/theme";
 import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface SiteDetailPanelProps {
   site: GazaSite;
@@ -13,6 +14,7 @@ interface SiteDetailPanelProps {
  * Displays full information, images, and sources
  */
 export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
+  const t = useThemeClasses();
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -21,9 +23,9 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
 
         {/* Site Names */}
         <div className="text-center">
-          <h3 className="text-3xl font-bold text-gray-900">{site.name}</h3>
+          <h3 className={`text-3xl font-bold ${t.text.heading}`}>{site.name}</h3>
           {site.nameArabic && (
-            <p className="text-xl text-gray-600 mt-2">
+            <p className={`text-xl mt-2 ${t.text.muted}`}>
               {site.nameArabic}
             </p>
           )}
@@ -31,22 +33,22 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       </div>
 
       {/* Key Information Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-lg p-4">
-        <InfoItem label="Site Type" value={formatLabel(site.type)} />
+      <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg p-4 ${t.bg.tertiary}`}>
+        <InfoItem label="Site Type" value={formatLabel(site.type)} t={t} />
         <div>
-          <span className="text-sm font-semibold text-gray-700">Year Built:</span>
-          <p className="text-gray-900 mt-1">{site.yearBuilt}</p>
+          <span className={`text-sm font-semibold ${t.text.body}`}>Year Built:</span>
+          <p className={`mt-1 ${t.text.heading}`}>{site.yearBuilt}</p>
           {site.yearBuiltIslamic && (
-            <p className="text-gray-600 text-sm mt-1">{site.yearBuiltIslamic}</p>
+            <p className={`text-sm mt-1 ${t.text.muted}`}>{site.yearBuiltIslamic}</p>
           )}
         </div>
-        <InfoItem label="Status" value={formatLabel(site.status)} />
+        <InfoItem label="Status" value={formatLabel(site.status)} t={t} />
         {site.dateDestroyed && (
           <div>
-            <span className="text-sm font-semibold text-gray-700">Date Destroyed/Damaged:</span>
-            <p className="text-gray-900 mt-1">{site.dateDestroyed}</p>
+            <span className={`text-sm font-semibold ${t.text.body}`}>Date Destroyed/Damaged:</span>
+            <p className={`mt-1 ${t.text.heading}`}>{site.dateDestroyed}</p>
             {site.dateDestroyedIslamic && (
-              <p className="text-gray-600 text-sm mt-1">{site.dateDestroyedIslamic}</p>
+              <p className={`text-sm mt-1 ${t.text.muted}`}>{site.dateDestroyedIslamic}</p>
             )}
           </div>
         )}
@@ -54,31 +56,31 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
 
       {/* Description */}
       <section>
-        <h4 className="text-lg font-semibold text-gray-900 mb-2">Description</h4>
-        <p className="text-gray-700 leading-relaxed">{site.description}</p>
+        <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>Description</h4>
+        <p className={`leading-relaxed ${t.text.body}`}>{site.description}</p>
       </section>
 
       {/* Historical Significance */}
       {site.historicalSignificance && (
         <section>
-          <h4 className="text-lg font-semibold text-gray-900 mb-2">
+          <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>
             Historical Significance
           </h4>
-          <p className="text-gray-700 leading-relaxed">{site.historicalSignificance}</p>
+          <p className={`leading-relaxed ${t.text.body}`}>{site.historicalSignificance}</p>
         </section>
       )}
 
       {/* Cultural Value / What Was Lost */}
       {site.culturalValue && (
         <section>
-          <h4 className="text-lg font-semibold text-gray-900 mb-2">What Was Lost</h4>
-          <p className="text-gray-700 leading-relaxed">{site.culturalValue}</p>
+          <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>What Was Lost</h4>
+          <p className={`leading-relaxed ${t.text.body}`}>{site.culturalValue}</p>
         </section>
       )}
 
       {/* Images Section */}
       <section>
-        <h4 className="text-lg font-semibold text-gray-900 mb-3">Images</h4>
+        <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>Images</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Before image */}
           {site.images?.before ? (
@@ -116,19 +118,19 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       {/* Sources Section */}
       {site.sources && site.sources.length > 0 && (
         <section>
-          <h4 className="text-lg font-semibold text-gray-900 mb-3">Sources</h4>
+          <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>Sources</h4>
           <div className="space-y-3">
             {site.sources.map((source, index) => (
               <div
                 key={index}
-                className="border-l-4 border-blue-500 pl-4 py-2 bg-gray-50 rounded-r"
+                className={`border-l-4 border-blue-500 pl-4 py-2 rounded-r ${t.bg.tertiary}`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">{source.title}</p>
-                    <p className="text-sm text-gray-600 mt-1">{source.organization}</p>
+                    <p className={`font-medium ${t.text.heading}`}>{source.title}</p>
+                    <p className={`text-sm mt-1 ${t.text.muted}`}>{source.organization}</p>
                     {source.date && (
-                      <p className="text-sm text-gray-500 mt-1">{source.date}</p>
+                      <p className={`text-sm mt-1 ${t.text.subtle}`}>{source.date}</p>
                     )}
                   </div>
                   {source.url && (
@@ -149,7 +151,8 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
                 <span
                   className={cn(
                     "inline-block mt-2 px-2 py-1 text-xs font-medium rounded",
-                    "bg-gray-200 text-gray-700"
+                    t.bg.secondary,
+                    t.text.body
                   )}
                 >
                   {formatLabel(source.type)}
@@ -161,7 +164,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       )}
 
       {/* Coordinates (for reference) */}
-      <section className="text-sm text-gray-500 border-t pt-4">
+      <section className={`text-sm border-t pt-4 ${t.text.subtle} ${t.border.default}`}>
         <p>
           <span className="font-medium">Coordinates:</span> {site.coordinates[0]},{" "}
           {site.coordinates[1]}
@@ -174,11 +177,11 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
 /**
  * Helper component for displaying key-value information
  */
-function InfoItem({ label, value }: { label: string; value: string }) {
+function InfoItem({ label, value, t }: { label: string; value: string; t: ReturnType<typeof useThemeClasses> }) {
   return (
     <div>
-      <span className="text-sm font-semibold text-gray-700">{label}:</span>
-      <p className="text-gray-900 mt-1">{value}</p>
+      <span className={`text-sm font-semibold ${t.text.body}`}>{label}:</span>
+      <p className={`mt-1 ${t.text.heading}`}>{value}</p>
     </div>
   );
 }

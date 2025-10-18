@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { renderWithTheme, screen } from "../../test-utils/renderWithTheme";
 import { Modal } from "./Modal";
 
 describe("Modal", () => {
   it("renders without crashing when open", () => {
     const mockOnClose = vi.fn();
 
-    render(
+    renderWithTheme(
       <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
         <div>Test content</div>
       </Modal>
@@ -20,7 +20,7 @@ describe("Modal", () => {
   it("does not render when closed", () => {
     const mockOnClose = vi.fn();
 
-    const { container } = render(
+    const { container } = renderWithTheme(
       <Modal isOpen={false} onClose={mockOnClose} title="Test Modal">
         <div>Test content</div>
       </Modal>

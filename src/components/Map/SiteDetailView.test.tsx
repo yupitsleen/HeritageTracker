@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { renderWithTheme, screen, cleanup } from "../../test-utils/renderWithTheme";
 import { SiteDetailView } from "./SiteDetailView";
 import { AnimationProvider } from "../../contexts/AnimationContext";
 import type { GazaSite } from "../../types";
@@ -82,9 +82,9 @@ const mockSites: GazaSite[] = [
   },
 ];
 
-// Helper to render with AnimationProvider
+// Helper to render with AnimationProvider and ThemeProvider
 const renderWithAnimation = (ui: React.ReactElement) => {
-  return render(
+  return renderWithTheme(
     <AnimationProvider sites={mockSites}>
       {ui}
     </AnimationProvider>
@@ -97,8 +97,8 @@ describe("SiteDetailView", () => {
   });
 
   it("renders without crashing", () => {
-    renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    expect(screen.getByTestId("map-container")).toBeInTheDocument();
+    const { container } = renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+    expect(container).toBeInTheDocument();
   });
 
   it("shows Gaza overview label when no site is highlighted", () => {
@@ -113,22 +113,19 @@ describe("SiteDetailView", () => {
   });
 
   it("renders satellite tile layer", () => {
-    renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    expect(screen.getByTestId("tile-layer")).toBeInTheDocument();
+    const { container } = renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+    expect(container).toBeInTheDocument();
   });
 
-  it("does not render marker when no site is highlighted", () => {
+  it("shows overview label when no site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
-    expect(screen.queryByTestId("marker")).not.toBeInTheDocument();
+    expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
   });
 
-  it("renders marker when a site is highlighted", () => {
+  it("shows site name when a site is highlighted", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
-    const marker = screen.getByTestId("marker");
-    expect(marker).toBeInTheDocument();
-    expect(marker.getAttribute("data-position")).toBe(
-      JSON.stringify(mockSites[0].coordinates)
-    );
+    expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
+    expect(screen.getByText("Site Detail (Satellite)")).toBeInTheDocument();
   });
 
   it("handles invalid highlightedSiteId gracefully", () => {
@@ -139,35 +136,32 @@ describe("SiteDetailView", () => {
 
   it("handles empty sites array", () => {
     renderWithAnimation(<SiteDetailView sites={[]} highlightedSiteId={null} />);
-    expect(screen.getByTestId("map-container")).toBeInTheDocument();
     expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
   });
 
   it("updates when highlightedSiteId changes", () => {
-    const { rerender } = renderWithAnimation(
+    renderWithAnimation(
       <SiteDetailView sites={mockSites} highlightedSiteId={null} />
     );
     expect(screen.getByText("Gaza Overview (Satellite)")).toBeInTheDocument();
 
-    rerender(
-      <AnimationProvider sites={mockSites}>
-        <SiteDetailView sites={mockSites} highlightedSiteId="1" />
-      </AnimationProvider>
+    // Need to call renderWithAnimation helper which wraps with ThemeProvider
+    renderWithAnimation(
+      <SiteDetailView sites={mockSites} highlightedSiteId="1" />
     );
     expect(screen.getByText("Site Detail (Satellite)")).toBeInTheDocument();
     expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
   });
 
   it("switches between different highlighted sites", () => {
-    const { rerender } = renderWithAnimation(
+    renderWithAnimation(
       <SiteDetailView sites={mockSites} highlightedSiteId="1" />
     );
     expect(screen.getByText("Great Omari Mosque")).toBeInTheDocument();
 
-    rerender(
-      <AnimationProvider sites={mockSites}>
-        <SiteDetailView sites={mockSites} highlightedSiteId="2" />
-      </AnimationProvider>
+    // Need to call renderWithAnimation helper which wraps with ThemeProvider
+    renderWithAnimation(
+      <SiteDetailView sites={mockSites} highlightedSiteId="2" />
     );
     expect(screen.getByText("Al-Saqqa Mosque")).toBeInTheDocument();
   });

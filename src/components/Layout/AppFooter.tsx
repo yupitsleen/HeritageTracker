@@ -1,4 +1,5 @@
 import { cn, components } from "../../styles/theme";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface AppFooterProps {
   onOpenDonate: () => void;
@@ -10,10 +11,13 @@ interface AppFooterProps {
 /**
  * Application footer with attribution and navigation
  * Green background with Palestinian flag colors
+ * Muted in dark mode
  */
 export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: AppFooterProps) {
+  const t = useThemeClasses();
+
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-[#009639] text-[#fefefe] shadow-lg z-[5] opacity-50">
+    <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg z-[5] opacity-50 transition-colors duration-200 ${t.flag.greenBg}`}>
       {/* Desktop footer - full text with more height */}
       {!isMobile && (
         <div className="py-4">

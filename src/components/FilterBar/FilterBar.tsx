@@ -5,6 +5,7 @@ import { MultiSelectDropdown } from "./MultiSelectDropdown";
 import { DateRangeFilter } from "./DateRangeFilter";
 import { YearRangeFilter } from "./YearRangeFilter";
 import { Input } from "../Form/Input";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface FilterBarProps {
   selectedTypes: Array<GazaSite["type"]>;
@@ -39,6 +40,8 @@ export function FilterBar({
   onCreationYearEndChange,
   onSearchChange,
 }: FilterBarProps) {
+  const t = useThemeClasses();
+
   return (
     <div className="text-white">
       {/* Mobile Search bar */}
@@ -76,7 +79,7 @@ export function FilterBar({
         <div className="space-y-4">
           {/* Type Filter */}
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">Site Type</label>
+            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>Site Type</label>
             <MultiSelectDropdown
               label="Select types..."
               options={SITE_TYPES}
@@ -100,7 +103,7 @@ export function FilterBar({
         <div className="space-y-4">
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">Status</label>
+            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>Status</label>
             <MultiSelectDropdown
               label="Select status..."
               options={STATUS_OPTIONS}

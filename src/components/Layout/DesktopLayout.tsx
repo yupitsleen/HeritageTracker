@@ -5,6 +5,8 @@ import { FilterTag } from "../FilterBar/FilterTag";
 import { formatLabel } from "../../utils/format";
 import { SitesTable } from "../SitesTable";
 import { SkeletonMap } from "../Loading/Skeleton";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTheme } from "../../contexts/ThemeContext";
 
 // Lazy load heavy components
 const HeritageMap = lazy(() =>
@@ -69,6 +71,8 @@ export function DesktopLayout({
   highlightedSiteId,
   onExpandTable,
 }: DesktopLayoutProps) {
+  const t = useThemeClasses();
+  const { isDark } = useTheme();
   // State for satellite map sync with timeline
   const [syncMapToTimeline, setSyncMapToTimeline] = useState(false);
 
@@ -104,7 +108,7 @@ export function DesktopLayout({
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-6 flex flex-col">
           {/* Filter bar - Horizontal component with compact padding */}
-          <div className="flex-shrink-0 mt-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl relative z-[5]">
+          <div className={`flex-shrink-0 mt-4 py-3 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}>
             <div className="flex items-start gap-4 px-3">
               {/* Left side - Filter controls */}
               <div className="flex-1 flex items-center gap-3 flex-wrap">
@@ -188,33 +192,33 @@ export function DesktopLayout({
               {/* Right side - Status legend and site count */}
               <div className="flex items-center gap-4">
                 {/* Site count */}
-                <span className="text-xs font-medium text-gray-600 whitespace-nowrap">
+                <span className={`text-xs font-medium whitespace-nowrap ${t.text.muted}`}>
                   Showing {filteredSites.length} of {totalSites} sites
                 </span>
 
                 {/* Status Legend (Color Key) */}
-                <div className="flex items-center gap-3 px-3 py-1.5 bg-gray-50 rounded-md border border-[#000000]">
-                  <span className="text-xs font-semibold text-gray-700">Color Key:</span>
+                <div className={`flex items-center gap-3 px-3 py-1.5 rounded-md border border-[#000000] ${t.bg.secondary}`}>
+                  <span className={`text-xs font-semibold ${t.text.body}`}>Color Key:</span>
                   <div className="flex items-center gap-1.5">
                     <div
                       className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
                       style={{ backgroundColor: "#b91c1c" }}
                     />
-                    <span className="text-xs text-gray-700">Destroyed</span>
+                    <span className={`text-xs ${t.text.body}`}>Destroyed</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <div
                       className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
                       style={{ backgroundColor: "#d97706" }}
                     />
-                    <span className="text-xs text-gray-700">Heavily Damaged</span>
+                    <span className={`text-xs ${t.text.body}`}>Heavily Damaged</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <div
                       className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
                       style={{ backgroundColor: "#ca8a04" }}
                     />
-                    <span className="text-xs text-gray-700">Damaged</span>
+                    <span className={`text-xs ${t.text.body}`}>Damaged</span>
                   </div>
                 </div>
               </div>

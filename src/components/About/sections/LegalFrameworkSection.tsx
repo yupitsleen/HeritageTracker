@@ -1,11 +1,15 @@
+import { useThemeClasses } from "../../../hooks/useThemeClasses";
+
 /**
  * LegalFrameworkSection - Legal and ethical framework (desktop only)
  */
 export function LegalFrameworkSection() {
+  const t = useThemeClasses();
+
   return (
     <section className="hidden md:block mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Legal & Ethical Framework</h2>
-      <div className="space-y-3 text-gray-700 text-sm leading-relaxed">
+      <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Legal & Ethical Framework</h2>
+      <div className={`space-y-3 ${t.text.body} text-sm leading-relaxed`}>
         <p>
           <strong>Documentation:</strong> This project presents factual information from
           verified sources.

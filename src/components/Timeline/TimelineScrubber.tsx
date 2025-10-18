@@ -7,7 +7,8 @@ import {
 } from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
-import { components } from "../../styles/theme";
+import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 
@@ -41,6 +42,8 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     setSpeed,
   } = useAnimation();
 
+  const { isDark } = useTheme();
+  const t = useThemeClasses();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
@@ -174,7 +177,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
   return (
     <div
       ref={containerRef}
-      className="bg-white/90 backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl"
+      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}
       role="region"
       aria-label="Timeline Scrubber"
     >
@@ -203,7 +206,7 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           )}
           <button
             onClick={reset}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-[#fefefe] hover:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95"
+            className={`flex items-center gap-2 px-4 py-2 text-[#fefefe] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${t.bg.secondary} ${t.bg.hover}`}
             aria-label="Reset timeline to start"
           >
             <ArrowPathIcon className="w-4 h-4" />
@@ -215,8 +218,8 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
             onClick={() => setSyncMap(!syncMap)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 ${
               syncMap
-                ? "bg-[#009639] text-[#fefefe] hover:bg-[#007b2f]"
-                : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                ? `${t.flag.greenBg} text-[#fefefe] ${t.flag.greenHover}`
+                : `${t.bg.active} ${t.text.body} ${t.bg.hover}`
             }`}
             aria-label={syncMap ? "Disable map sync with timeline" : "Enable map sync with timeline"}
             title="Sync satellite imagery with timeline date"
@@ -226,21 +229,21 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
         </div>
 
         {/* Center: Current date display */}
-        <div className="text-sm font-semibold text-[#000000]">
-          <span className="text-gray-600">Current:</span>{" "}
+        <div className={`text-sm font-semibold ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
+          <span className={t.text.muted}>Current:</span>{" "}
           {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
 
         {/* Right: Speed control */}
         <div className="flex items-center gap-2">
-          <label htmlFor="speed-control" className="text-sm font-medium text-gray-700">
+          <label htmlFor="speed-control" className={`text-sm font-medium ${t.text.body}`}>
             Speed:
           </label>
           <select
             id="speed-control"
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-            className={components.select.small}
+            className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
             aria-label="Animation speed control"
           >
             {speedOptions.map((s) => (
@@ -256,12 +259,12 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
       <svg ref={svgRef} width="100%" height="80" aria-hidden="true" />
 
       {/* Keyboard shortcuts hint */}
-      <div className="mt-2 text-xs text-gray-500 text-center">
-        Keyboard: <kbd className="px-1 py-0.5 bg-gray-100 border border-gray-300 rounded">Space</kbd> Play/Pause
+      <div className={`mt-2 text-xs text-center ${t.text.muted}`}>
+        Keyboard: <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
         {" • "}
-        <kbd className="px-1 py-0.5 bg-gray-100 border border-gray-300 rounded">←/→</kbd> Step
+        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step
         {" • "}
-        <kbd className="px-1 py-0.5 bg-gray-100 border border-gray-300 rounded">Home/End</kbd> Jump
+        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> Jump
       </div>
     </div>
   );

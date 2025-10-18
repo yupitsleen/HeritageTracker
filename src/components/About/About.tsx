@@ -1,3 +1,4 @@
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AboutHeader } from "./sections/AboutHeader";
 import { MissionSection } from "./sections/MissionSection";
 import { MethodologySection } from "./sections/MethodologySection";
@@ -12,10 +13,13 @@ import { AttributionSection } from "./sections/AttributionSection";
 /**
  * About/Methodology page explaining the project's purpose, data sources, and verification process
  * Establishes credibility and transparency for the Heritage Tracker project
+ * Supports dark mode
  */
 export function About() {
+  const t = useThemeClasses();
+
   return (
-    <div className="max-h-[80vh] overflow-y-auto bg-white">
+    <div className={`max-h-[80vh] overflow-y-auto ${t.bg.primary}`}>
       <div className="p-4 md:p-8 max-w-4xl mx-auto">
         <AboutHeader />
         <MissionSection />

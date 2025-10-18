@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { renderWithTheme } from "../test-utils/renderWithTheme";
 import { TimelineScrubber } from "../components/Timeline/TimelineScrubber";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
@@ -66,7 +66,7 @@ const mockSites: GazaSite[] = [
 describe("TimelineScrubber", () => {
   // Smoke test
   it("renders without crashing", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -77,7 +77,7 @@ describe("TimelineScrubber", () => {
 
   // Play/Pause functionality
   it("toggles between play and pause states", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -88,7 +88,7 @@ describe("TimelineScrubber", () => {
 
   // Reset functionality
   it("resets timeline to start date when reset button is clicked", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -99,7 +99,7 @@ describe("TimelineScrubber", () => {
 
   // Speed control
   it("changes animation speed when speed dropdown is changed", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -110,7 +110,7 @@ describe("TimelineScrubber", () => {
 
   // Keyboard controls - Space
   it("pauses timeline when space key is pressed while playing", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -121,7 +121,7 @@ describe("TimelineScrubber", () => {
 
   // Keyboard controls - Home/End
   it("jumps to start when Home key is pressed", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -132,7 +132,7 @@ describe("TimelineScrubber", () => {
 
   // Event markers
   it("displays event markers for destruction dates", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -145,7 +145,7 @@ describe("TimelineScrubber", () => {
 
   // Accessibility - ARIA labels
   it("has proper ARIA labels for accessibility", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -156,7 +156,7 @@ describe("TimelineScrubber", () => {
 
   // Edge case - empty sites array
   it("handles empty sites array without crashing", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={[]} />
       </AnimationProvider>
@@ -183,7 +183,7 @@ describe("TimelineScrubber", () => {
       },
     ];
 
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={sitesWithoutDates} />
       </AnimationProvider>
@@ -194,7 +194,7 @@ describe("TimelineScrubber", () => {
 
   // Visual elements
   it("displays current date", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
@@ -205,7 +205,7 @@ describe("TimelineScrubber", () => {
 
   // Keyboard shortcuts hint
   it("displays keyboard shortcuts hint", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnimationProvider>
         <TimelineScrubber sites={mockSites} />
       </AnimationProvider>
