@@ -205,46 +205,42 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         onClose={() => appState.setIsFilterOpen(false)}
         zIndex={10001}
       >
-        <div className={`rounded-xl p-6 max-w-5xl shadow-2xl transition-colors duration-200 ${
-          isDark ? "bg-gray-800" : "bg-white"
-        }`}>
-          <h2 className={`text-2xl font-bold mb-6 ${isDark ? "text-gray-100" : "text-gray-900"}`}>Filter Sites</h2>
-          <FilterBar
-            selectedTypes={appState.tempFilters.tempSelectedTypes}
-            selectedStatuses={appState.tempFilters.tempSelectedStatuses}
-            destructionDateStart={appState.tempFilters.tempDestructionDateStart}
-            destructionDateEnd={appState.tempFilters.tempDestructionDateEnd}
-            searchTerm={appState.filters.searchTerm}
-            onTypeChange={appState.setTempSelectedTypes}
-            onStatusChange={appState.setTempSelectedStatuses}
-            onDestructionDateStartChange={appState.setTempDestructionDateStart}
-            onDestructionDateEndChange={appState.setTempDestructionDateEnd}
-            onCreationYearStartChange={appState.setTempCreationYearStart}
-            onCreationYearEndChange={appState.setTempCreationYearEnd}
-            onSearchChange={appState.setSearchTerm}
-          />
-          <div className="mt-6 flex justify-end gap-3">
-            <button
-              onClick={appState.clearTempFilters}
-              className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${
-                isDark
-                  ? "text-gray-300 hover:bg-gray-700"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
-            >
-              Clear All
-            </button>
-            <button
-              onClick={appState.applyFilters}
-              className={`px-4 py-2 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
-                isDark
-                  ? "bg-[#2d5a38] hover:bg-[#244a2e]"
-                  : "bg-[#009639] hover:bg-[#007b2f]"
-              }`}
-            >
-              Apply Filters
-            </button>
-          </div>
+        <h2 className={`text-2xl font-bold mb-6 ${isDark ? "text-gray-100" : "text-gray-900"}`}>Filter Sites</h2>
+        <FilterBar
+          selectedTypes={appState.tempFilters.tempSelectedTypes}
+          selectedStatuses={appState.tempFilters.tempSelectedStatuses}
+          destructionDateStart={appState.tempFilters.tempDestructionDateStart}
+          destructionDateEnd={appState.tempFilters.tempDestructionDateEnd}
+          searchTerm={appState.filters.searchTerm}
+          onTypeChange={appState.setTempSelectedTypes}
+          onStatusChange={appState.setTempSelectedStatuses}
+          onDestructionDateStartChange={appState.setTempDestructionDateStart}
+          onDestructionDateEndChange={appState.setTempDestructionDateEnd}
+          onCreationYearStartChange={appState.setTempCreationYearStart}
+          onCreationYearEndChange={appState.setTempCreationYearEnd}
+          onSearchChange={appState.setSearchTerm}
+        />
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            onClick={appState.clearTempFilters}
+            className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${
+              isDark
+                ? "text-gray-300 hover:bg-gray-700"
+                : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            Clear All
+          </button>
+          <button
+            onClick={appState.applyFilters}
+            className={`px-4 py-2 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
+              isDark
+                ? "bg-[#2d5a38] hover:bg-[#244a2e]"
+                : "bg-[#009639] hover:bg-[#007b2f]"
+            }`}
+          >
+            Apply Filters
+          </button>
         </div>
       </Modal>
 
