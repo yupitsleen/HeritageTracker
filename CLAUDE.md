@@ -7,13 +7,13 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 204 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** fetaure/cleaningUp-prepping (docs updates) | feature/UI-refinement (PR #19) | main (production)
+**Current:** 45 sites | 232 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/darkmode (dark mode + system preference) | main (production)
 
 ### Essential Commands
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 204 tests - MUST pass before commit
+npm test        # 232 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -70,8 +70,12 @@ src/
 │   ├── SitesTable.tsx                # 3 variants: compact/expanded/mobile
 │   └── FilterBar/FilterBar.tsx       # Deferred filter application
 ├── constants/map.ts                  # GAZA_CENTER, HISTORICAL_IMAGERY
-├── contexts/AnimationContext.tsx     # Global timeline state
-├── hooks/useMapGlow.ts               # Glow calculations
+├── contexts/
+│   ├── AnimationContext.tsx          # Global timeline state
+│   └── ThemeContext.tsx              # Dark mode + system preference detection
+├── hooks/
+│   ├── useMapGlow.ts                 # Glow calculations
+│   └── useThemeClasses.ts            # Dark mode utility classes
 ├── utils/
 │   ├── heritageCalculations.ts       # Site value/glow formulas
 │   └── siteFilters.ts                # Filter logic + BCE parsing
@@ -82,7 +86,50 @@ src/
 
 ## 🎯 Critical Patterns
 
-### Historical Satellite Imagery (NEW)
+### Dark Mode & Theme System
+**ThemeContext** - React Context-based theming with system preference detection:
+
+```typescript
+// contexts/ThemeContext.tsx
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  // Priority: localStorage → system preference → default (light)
+  const [theme, setTheme] = useState<Theme>(() => {
+    const stored = localStorage.getItem("heritage-tracker-theme");
+    if (stored === "dark" || stored === "light") return stored;
+
+    // Check system preference
+    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  });
+}
+```
+
+**IMPORTANT - DO NOT use Tailwind `dark:` modifiers:**
+- ❌ `className="bg-white dark:bg-black"` - Does NOT work with context-based theming
+- ✅ `className={isDark ? "bg-black" : "bg-white"}` - Use conditional expressions
+
+**Pattern:**
+```tsx
+import { useTheme } from "../../contexts/ThemeContext";
+
+function MyComponent() {
+  const { isDark } = useTheme();
+  return (
+    <div className={`${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}>
+      {/* Content */}
+    </div>
+  );
+}
+```
+
+**Testing:**
+- `darkMode.test.tsx` - Component dark mode rendering (19 tests)
+- `darkModeAutomated.test.tsx` - Automated validation (scans codebase for `dark:` modifiers)
+- `ThemeContext.test.tsx` - System preference detection (6 tests)
+
+### Historical Satellite Imagery
 **SiteDetailView** - Right side satellite map with 3 time periods:
 
 ```typescript
@@ -149,10 +196,11 @@ interface GazaSite {
 
 **BEFORE EVERY COMMIT:**
 - [ ] `npm run lint` - clean
-- [ ] `npm test` - all 204 tests pass
+- [ ] `npm test` - all 232 tests pass
 - [ ] Visual check in browser (dev server running)
 - [ ] No console errors
 - [ ] Mobile view renders (no AnimationProvider errors)
+- [ ] Both light and dark modes render correctly
 
 **Performance:**
 - Desktop: 60fps minimum
@@ -164,17 +212,22 @@ interface GazaSite {
 ## 🧪 Testing
 
 **Framework:** Vitest + React Testing Library
-**Coverage:** 204 tests across 21 files
+**Coverage:** 232 tests across 23 files
 **Test Files:**
-- `SiteDetailView.test.tsx` (13 tests) - includes historical imagery tests
+- `darkMode.test.tsx` (19 tests) - Component dark mode rendering
+- `darkModeAutomated.test.tsx` (3 tests) - Automated validation, scans for `dark:` modifiers
+- `ThemeContext.test.tsx` (6 tests) - System preference detection
+- `SitesTable.test.tsx` (24 tests) - Table variants and CSV export
+- `SiteDetailView.test.tsx` (13 tests) - Historical imagery tests
 - `TimeToggle.test.tsx` (7 tests) - ARIA labels, period switching
 - `TimelineScrubber.test.tsx` (12 tests)
 - `AnimationContext.test.tsx` (10 tests)
 - `heritageCalculations.test.ts` (42 tests)
 - `useMapGlow.test.ts` (24 tests)
 - `MapGlowLayer.test.tsx` (7 tests)
-- `App.mobile.test.tsx` (3 tests)
-- Performance tests (25+ sites, 50 site stress test)
+- `performance.test.tsx` (9 tests) - 25+ sites, 50 site stress test
+- `validateSites.test.ts` (20 tests) - Data integrity
+- Plus 10 more test files
 
 **Test Setup:**
 - ResizeObserver mock (TimelineScrubber)
@@ -187,6 +240,7 @@ interface GazaSite {
 ## 🚫 Known Issues & Gotchas
 
 ### ❌ DO NOT
+- Use Tailwind `dark:` modifiers (use conditional expressions with `isDark` instead)
 - Use text inputs for BC/BCE dates (parsing fragile)
 - Forget `z-[9999]` on dropdowns above Leaflet maps
 - Use `Date.now()` for animation timing (use `performance.now()`)
@@ -344,7 +398,22 @@ useEffect(() => {
 
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feature/UI-refinement - PR #19):**
+**Completed (feat/darkmode - Current Branch):**
+- [x] **Dark Mode Implementation** ✅
+  - **Full dark mode support**: All components support light/dark themes
+  - **System preference detection**: Auto-detects OS color scheme on first visit
+  - **ThemeContext**: React Context-based theming (not Tailwind `darkMode` config)
+  - **Priority order**: localStorage → system preference → default (light)
+  - **Theme toggle**: Header button with smooth transitions
+  - **Comprehensive testing**: 28 new tests (19 + 3 + 6)
+    - `darkMode.test.tsx` - Component rendering in both modes
+    - `darkModeAutomated.test.tsx` - Automated `dark:` modifier detection
+    - `ThemeContext.test.tsx` - System preference detection
+  - **Code review**: A+ grade (see CODE_REVIEW_DARK_MODE_FINAL.md)
+  - All 232 tests passing, linting clean
+  - **Key files**: ThemeContext.tsx, useThemeClasses.ts, darkMode tests
+
+**Completed (feature/UI-refinement - Merged):**
 - [x] **Complete UI Refinement** ✅
   - **Design System**: Unified button styling, shadows, transitions, active states
   - **Palestinian Flag Theme**: Red triangle background with semi-transparent components (50-90% opacity)
@@ -354,9 +423,8 @@ useEffect(() => {
   - **Component Polish**: Table gradient header, modal enhancements, improved inputs
   - **Typography**: Inter font, skeleton loading states
   - **Compact Spacing**: Reduced vertical space by ~34px in filter bar and timeline
-  - All 204 tests passing, production build successful
 
-**Completed (feature/secondMapfixes-viewImprovements - merged):**
+**Completed (feature/secondMapfixes-viewImprovements - Merged):**
 - [x] Satellite detail view map (right side)
 - [x] Historical satellite imagery toggle (2014/Aug 2023/Current)
 - [x] Consistent zoom levels (zoom 17 for all periods)
@@ -367,7 +435,7 @@ useEffect(() => {
 - [x] Ctrl+scroll zoom fix for SiteDetailView
 
 **Next:**
-- [ ] Merge PR #19 (UI refinement) to main
+- [ ] Merge feat/darkmode to main
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
 
@@ -379,6 +447,6 @@ useEffect(() => {
 
 ---
 
-**Last Updated:** October 17, 2025
-**Version:** 1.8.0-dev
-**Branch:** feature/UI-refinement (PR #19 ready) | main (production)
+**Last Updated:** October 18, 2025
+**Version:** 1.9.0-dev
+**Branch:** feat/darkmode (ready for merge) | main (production)
