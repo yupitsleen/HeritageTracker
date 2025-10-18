@@ -91,10 +91,11 @@ export function FilterBar({
       return year.toString();
     };
 
+    const defaultStartEra = minYear < 0 ? ("BCE" as const) : ("CE" as const);
     return {
       defaultStartYear: formatYear(minYear),
       defaultEndYear: formatYear(maxYear),
-      defaultStartEra: (minYear < 0 ? "BCE" : "CE") as const,
+      defaultStartEra,
     };
   }, [sites]);
 
