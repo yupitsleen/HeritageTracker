@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { GazaSite } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
+import { parseYearBuilt } from "../../utils/siteFilters";
 import { MultiSelectDropdown } from "./MultiSelectDropdown";
 import { DateRangeFilter } from "./DateRangeFilter";
 import { YearRangeFilter } from "./YearRangeFilter";
@@ -61,6 +62,39 @@ export function FilterBar({
     return {
       defaultStartDate: new Date(Math.min(...timestamps)),
       defaultEndDate: new Date(Math.max(...timestamps)),
+    };
+  }, [sites]);
+
+  // Calculate default year range from all sites' creation years
+  const { defaultStartYear, defaultEndYear, defaultStartEra } = useMemo(() => {
+    const creationYears = sites
+      .filter(site => site.yearBuilt)
+      .map(site => parseYearBuilt(site.yearBuilt))
+      .filter((year): year is number => year !== null);
+
+    if (creationYears.length === 0) {
+      return {
+        defaultStartYear: "",
+        defaultEndYear: new Date().getFullYear().toString(),
+        defaultStartEra: "CE" as const
+      };
+    }
+
+    const minYear = Math.min(...creationYears);
+    const maxYear = Math.max(...creationYears);
+
+    // Format the years for display
+    const formatYear = (year: number): string => {
+      if (year < 0) {
+        return Math.abs(year).toString(); // Will be shown with BCE dropdown
+      }
+      return year.toString();
+    };
+
+    return {
+      defaultStartYear: formatYear(minYear),
+      defaultEndYear: formatYear(maxYear),
+      defaultStartEra: (minYear < 0 ? "BCE" : "CE") as const,
     };
   }, [sites]);
 
@@ -143,6 +177,9 @@ export function FilterBar({
             onStartChange={onCreationYearStartChange}
             onEndChange={onCreationYearEndChange}
             supportBCE={true}
+            startYearDefault={defaultStartYear}
+            endYearDefault={defaultEndYear}
+            startEraDefault={defaultStartEra}
           />
         </div>
       </div>

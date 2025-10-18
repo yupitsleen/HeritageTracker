@@ -12,6 +12,7 @@ interface YearRangeFilterProps {
   supportBCE?: boolean;
   startYearDefault?: string;
   endYearDefault?: string;
+  startEraDefault?: "CE" | "BCE";
 }
 
 /**
@@ -27,12 +28,13 @@ export function YearRangeFilter({
   supportBCE = true,
   startYearDefault = "",
   endYearDefault = new Date().getFullYear().toString(),
+  startEraDefault = "CE",
 }: YearRangeFilterProps) {
   const t = useThemeClasses();
 
   // Local state for year input and era selection
   const [startYearInput, setStartYearInput] = React.useState(startYearDefault);
-  const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">("CE");
+  const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">(startEraDefault);
   const [endYearInput, setEndYearInput] = React.useState(endYearDefault);
   const [endYearEra, setEndYearEra] = React.useState<"CE" | "BCE">("CE");
 
