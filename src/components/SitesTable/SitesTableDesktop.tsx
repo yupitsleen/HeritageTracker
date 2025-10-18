@@ -287,7 +287,7 @@ export function SitesTableDesktop({
                       }}
                       className="text-left w-full hover:underline"
                     >
-                      <div className="font-semibold text-[#009639] hover:text-[#007b2f]">{site.name}</div>
+                      <div className="font-semibold text-base text-[#009639] hover:text-[#007b2f]">{site.name}</div>
                       {site.nameArabic && (
                         <div
                           className={`${
