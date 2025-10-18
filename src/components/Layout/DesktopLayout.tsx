@@ -255,7 +255,7 @@ export function DesktopLayout({
           {/* Two maps side by side - Constrained height to leave room for timeline */}
           <div className="flex gap-4 min-h-0 pt-3" style={{ height: 'calc(100% - 270px)' }}>
             {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-            <div className="flex-1 min-w-0 h-full border-4 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <HeritageMap
                   sites={filteredSites}
@@ -267,7 +267,7 @@ export function DesktopLayout({
             </div>
 
             {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-            <div className="flex-1 min-w-0 h-full border-4 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
                   sites={filteredSites}
