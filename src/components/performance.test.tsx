@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { ThemeProvider } from "../contexts/ThemeContext";
 import { render, screen } from "@testing-library/react";
 import { HeritageMap } from "./Map/HeritageMap";
 import { SitesTable } from "./SitesTable/index";
@@ -106,7 +107,7 @@ describe("Performance Tests (25+ Sites)", () => {
   describe("Table Component Performance", () => {
     it("renders table with 25 sites without crashing", () => {
       const { container } = render(
-        <CalendarProvider>
+        <ThemeProvider><CalendarProvider>
           <SitesTable
             sites={mockSites25}
             onSiteClick={() => {}}
@@ -114,7 +115,7 @@ describe("Performance Tests (25+ Sites)", () => {
             highlightedSiteId={null}
             onExpandTable={() => {}}
           />
-        </CalendarProvider>
+        </CalendarProvider></ThemeProvider>
       );
 
       expect(container).toBeInTheDocument();
@@ -124,7 +125,7 @@ describe("Performance Tests (25+ Sites)", () => {
       const startTime = performance.now();
 
       render(
-        <CalendarProvider>
+        <ThemeProvider><CalendarProvider>
           <SitesTable
             sites={mockSites25}
             onSiteClick={() => {}}
@@ -132,7 +133,7 @@ describe("Performance Tests (25+ Sites)", () => {
             highlightedSiteId={null}
             onExpandTable={() => {}}
           />
-        </CalendarProvider>
+        </CalendarProvider></ThemeProvider>
       );
 
       const endTime = performance.now();
@@ -146,7 +147,7 @@ describe("Performance Tests (25+ Sites)", () => {
 
     it("table displays all 25 sites", () => {
       render(
-        <CalendarProvider>
+        <ThemeProvider><CalendarProvider>
           <SitesTable
             sites={mockSites25}
             onSiteClick={() => {}}
@@ -154,7 +155,7 @@ describe("Performance Tests (25+ Sites)", () => {
             highlightedSiteId={null}
             onExpandTable={() => {}}
           />
-        </CalendarProvider>
+        </CalendarProvider></ThemeProvider>
       );
 
       // Check that first and last sites are rendered (use getAllByText for duplicates)
@@ -223,7 +224,7 @@ describe("Performance Tests (25+ Sites)", () => {
 
     it("handles 50 sites in table", () => {
       render(
-        <CalendarProvider>
+        <ThemeProvider><CalendarProvider>
           <SitesTable
             sites={mockSites50}
             onSiteClick={() => {}}
@@ -231,7 +232,7 @@ describe("Performance Tests (25+ Sites)", () => {
             highlightedSiteId={null}
             onExpandTable={() => {}}
           />
-        </CalendarProvider>
+        </CalendarProvider></ThemeProvider>
       );
 
       const headingElements = screen.getAllByText("Heritage Sites");

@@ -2,6 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { SiteDetailView } from "./SiteDetailView";
 import { AnimationProvider } from "../../contexts/AnimationContext";
+import { ThemeProvider } from "../../contexts/ThemeContext";
 import type { GazaSite } from "../../types";
 
 // Mock Leaflet components
@@ -82,12 +83,14 @@ const mockSites: GazaSite[] = [
   },
 ];
 
-// Helper to render with AnimationProvider
+// Helper to render with AnimationProvider and ThemeProvider
 const renderWithAnimation = (ui: React.ReactElement) => {
   return render(
-    <AnimationProvider sites={mockSites}>
-      {ui}
-    </AnimationProvider>
+    <ThemeProvider>
+      <AnimationProvider sites={mockSites}>
+        {ui}
+      </AnimationProvider>
+    </ThemeProvider>
   );
 };
 

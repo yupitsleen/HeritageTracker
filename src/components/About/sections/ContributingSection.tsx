@@ -1,17 +1,21 @@
+import { useTheme } from "../../../contexts/ThemeContext";
+
 /**
  * ContributingSection - How to contribute to the project
  */
 export function ContributingSection() {
+  const { isDark } = useTheme();
+
   return (
     <section className="mb-6 md:mb-8">
-      <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
+      <h2 className={`text-xl md:text-2xl font-bold ${isDark ? "text-gray-100" : "text-gray-900"} mb-3 md:mb-4`}>
         How to Contribute
       </h2>
-      <p className="text-xs md:text-base text-gray-700 leading-relaxed mb-3 md:mb-4">
+      <p className={`text-xs md:text-base ${isDark ? "text-gray-300" : "text-gray-700"} leading-relaxed mb-3 md:mb-4`}>
         We welcome contributions from researchers, cultural heritage experts, software
         developers, and community members:
       </p>
-      <ul className="list-disc list-inside text-xs md:text-base text-gray-700 space-y-1 md:space-y-2">
+      <ul className={`list-disc list-inside text-xs md:text-base ${isDark ? "text-gray-300" : "text-gray-700"} space-y-1 md:space-y-2`}>
         <li>
           <strong>Verify information:</strong> Help us cross-reference data with additional
           sources
@@ -29,7 +33,7 @@ export function ContributingSection() {
           supporting evidence
         </li>
       </ul>
-      <p className="text-xs md:text-sm text-gray-600 mt-3 md:mt-4">
+      <p className={`text-xs md:text-sm ${isDark ? "text-gray-400" : "text-gray-600"} mt-3 md:mt-4`}>
         Contact:{" "}
         <a
           href="https://github.com/yupitsleen/HeritageTracker"

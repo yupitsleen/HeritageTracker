@@ -77,6 +77,16 @@ button:active {
   transform: translateZ(0); /* Force GPU acceleration */
 }
 
+/* Dark mode support for Leaflet popups */
+[data-theme="dark"] .leaflet-popup-content-wrapper {
+  background-color: #1f2937; /* gray-800 */
+  color: #f3f4f6; /* gray-100 */
+}
+
+[data-theme="dark"] .leaflet-popup-tip {
+  background-color: #1f2937; /* gray-800 */
+}
+
 /* Optimize SVG timeline rendering */
 svg {
   transform: translateZ(0); /* Force GPU acceleration */

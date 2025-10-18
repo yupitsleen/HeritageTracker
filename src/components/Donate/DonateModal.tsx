@@ -1,5 +1,8 @@
+import { useTheme } from "../../contexts/ThemeContext";
+
 /**
  * DonateModal - Modal containing links to reputable Palestinian relief organizations
+ * Supports dark mode
  */
 
 interface DonationOrg {
@@ -49,12 +52,18 @@ const DONATION_ORGANIZATIONS: DonationOrg[] = [
 ];
 
 export function DonateModal() {
-  return (
-    <div className="bg-white rounded-lg max-w-4xl max-h-[80vh] overflow-y-auto">
-      <div className="px-6 py-4">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Help Palestine</h2>
+  const { isDark } = useTheme();
 
-        <p className="text-sm text-gray-700 mb-6">
+  return (
+    <div className={`rounded-lg max-w-4xl max-h-[80vh] overflow-y-auto ${
+      isDark ? "bg-gray-800" : "bg-white"
+    }`}>
+      <div className="px-6 py-4">
+        <h2 className={`text-2xl font-bold mb-4 ${isDark ? "text-gray-100" : "text-gray-900"}`}>
+          Help Palestine
+        </h2>
+
+        <p className={`text-sm mb-6 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
           Support humanitarian relief efforts in Palestine through these reputable organizations.
           All organizations listed below are established, transparent charities working to provide
           essential aid to Palestinians affected by the ongoing crisis.
@@ -64,17 +73,23 @@ export function DonateModal() {
           {DONATION_ORGANIZATIONS.map((org) => (
             <div
               key={org.name}
-              className="border border-gray-200 rounded-xl p-4 hover:border-[#009639] hover:shadow-md transition-all duration-200"
+              className={`rounded-xl p-4 hover:border-[#009639] hover:shadow-md transition-all duration-200 ${
+                isDark
+                  ? "border border-gray-700 bg-gray-700/50"
+                  : "border border-gray-200 bg-white"
+              }`}
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 text-base mb-1">
+                  <h3 className={`font-semibold text-base mb-1 ${
+                    isDark ? "text-gray-100" : "text-gray-900"
+                  }`}>
                     {org.name}
                   </h3>
-                  <p className="text-xs text-gray-600 mb-2">
+                  <p className={`text-xs mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                     <span className="font-medium">Focus:</span> {org.focus}
                   </p>
-                  <p className="text-sm text-gray-700 mb-3">
+                  <p className={`text-sm mb-3 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
                     {org.description}
                   </p>
                 </div>
@@ -82,7 +97,11 @@ export function DonateModal() {
                   href={org.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-shrink-0 px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold whitespace-nowrap active:scale-95"
+                  className={`flex-shrink-0 px-4 py-2 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold whitespace-nowrap active:scale-95 ${
+                    isDark
+                      ? "bg-[#2d5a38] hover:bg-[#244a2e]"
+                      : "bg-[#009639] hover:bg-[#007b2f]"
+                  }`}
                   aria-label={`Donate to ${org.name}`}
                 >
                   Donate
@@ -92,8 +111,12 @@ export function DonateModal() {
           ))}
         </div>
 
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <p className="text-xs text-gray-600">
+        <div className={`mt-6 p-4 rounded-lg ${
+          isDark
+            ? "bg-gray-700/50 border border-gray-700"
+            : "bg-gray-50 border border-gray-200"
+        }`}>
+          <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-600"}`}>
             <strong>Note:</strong> Heritage Tracker is not affiliated with any of these organizations.
             We have compiled this list to help users find reputable charities supporting Palestinian
             humanitarian relief. Please conduct your own research before donating. All donations go

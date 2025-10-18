@@ -1,4 +1,6 @@
 import { components, cn } from "../../styles/theme";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface AppHeaderProps {
   onOpenDonate: () => void;
@@ -9,47 +11,77 @@ interface AppHeaderProps {
 /**
  * Application header with title, description, and action buttons
  * Black background with Palestinian flag colors
+ * Includes dark mode toggle
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderProps) {
+  const { isDark, toggleTheme } = useTheme();
+
   return (
-    <div className="sticky top-0 z-[5] bg-[#000000] opacity-90">
+    <div className={`sticky top-0 z-[5] transition-colors duration-200 ${
+      isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
+    }`}>
       {/* Header - BLACK background */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-3")}>
-          <h1 className="text-xl md:text-3xl font-bold text-center">Heritage Tracker</h1>
-          <p className="text-[#f5f5f5] mt-1 md:mt-2 text-center text-xs md:text-base">
+          <h1 className={`text-xl md:text-3xl font-bold text-center ${
+            isDark ? "text-gray-100" : "text-white"
+          }`}>Heritage Tracker</h1>
+          <p className={`mt-1 md:mt-2 text-center text-xs md:text-base ${
+            isDark ? "text-gray-300" : "text-[#f5f5f5]"
+          }`}>
             Documenting the destruction of cultural heritage in Gaza (2023-2024)
           </p>
         </div>
 
         {/* All buttons - desktop only, right-aligned in top right, positioned relative to header */}
-        <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-3">
+        <div className="hidden md:flex absolute top-3 right-4 md:top-6 md:right-6 gap-3 items-center">
+          {/* Dark Mode Toggle - Discrete icon button */}
+          <button
+            onClick={toggleTheme}
+            className={`p-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 ${
+              isDark
+                ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
+                : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
+            }`}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDark ? (
+              <SunIcon className="w-5 h-5" />
+            ) : (
+              <MoonIcon className="w-5 h-5" />
+            )}
+          </button>
+
           <button
             onClick={onOpenDonate}
-            className="px-4 py-2 bg-[#ed3039] hover:bg-[#d4202a] text-white
-                       text-sm rounded-lg shadow-md hover:shadow-lg
-                       transition-all duration-200 font-semibold
-                       active:scale-95"
+            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
+              isDark
+                ? "bg-[#b8282f] hover:bg-[#a01f25]"
+                : "bg-[#ed3039] hover:bg-[#d4202a]"
+            }`}
             aria-label="Help Palestine - Donate to relief efforts"
           >
             Help Palestine
           </button>
           <button
             onClick={onOpenStats}
-            className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
-                       text-sm rounded-lg shadow-md hover:shadow-lg
-                       transition-all duration-200 font-semibold
-                       active:scale-95"
+            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
+              isDark
+                ? "bg-[#2d5a38] hover:bg-[#244a2e]"
+                : "bg-[#009639] hover:bg-[#007b2f]"
+            }`}
             aria-label="View Statistics"
           >
             Statistics
           </button>
           <button
             onClick={onOpenAbout}
-            className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
-                       text-sm rounded-lg shadow-md hover:shadow-lg
-                       transition-all duration-200 font-semibold
-                       active:scale-95"
+            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${
+              isDark
+                ? "bg-[#2d5a38] hover:bg-[#244a2e]"
+                : "bg-[#009639] hover:bg-[#007b2f]"
+            }`}
             aria-label="About Heritage Tracker"
           >
             About

@@ -1,15 +1,18 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Modal } from "./Modal";
+import { ThemeProvider } from "../../contexts/ThemeContext";
 
 describe("Modal", () => {
   it("renders without crashing when open", () => {
     const mockOnClose = vi.fn();
 
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
-        <div>Test content</div>
-      </Modal>
+      <ThemeProvider>
+        <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+          <div>Test content</div>
+        </Modal>
+      </ThemeProvider>
     );
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -21,9 +24,11 @@ describe("Modal", () => {
     const mockOnClose = vi.fn();
 
     const { container } = render(
-      <Modal isOpen={false} onClose={mockOnClose} title="Test Modal">
-        <div>Test content</div>
-      </Modal>
+      <ThemeProvider>
+        <Modal isOpen={false} onClose={mockOnClose} title="Test Modal">
+          <div>Test content</div>
+        </Modal>
+      </ThemeProvider>
     );
 
     expect(container.firstChild).toBeNull();

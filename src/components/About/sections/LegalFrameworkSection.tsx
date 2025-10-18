@@ -1,11 +1,15 @@
+import { useTheme } from "../../../contexts/ThemeContext";
+
 /**
  * LegalFrameworkSection - Legal and ethical framework (desktop only)
  */
 export function LegalFrameworkSection() {
+  const { isDark } = useTheme();
+
   return (
     <section className="hidden md:block mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Legal & Ethical Framework</h2>
-      <div className="space-y-3 text-gray-700 text-sm leading-relaxed">
+      <h2 className={`text-2xl font-bold ${isDark ? "text-gray-100" : "text-gray-900"} mb-4`}>Legal & Ethical Framework</h2>
+      <div className={`space-y-3 ${isDark ? "text-gray-300" : "text-gray-700"} text-sm leading-relaxed`}>
         <p>
           <strong>Documentation:</strong> This project presents factual information from
           verified sources.

@@ -1,10 +1,14 @@
+import { useTheme } from "../../../contexts/ThemeContext";
+
 /**
  * AttributionSection - Content attribution, methodology, and disclaimer
  */
 export function AttributionSection() {
+  const { isDark } = useTheme();
+
   return (
-    <section className="border-t border-gray-200 pt-4 md:pt-6">
-      <p className="text-[10px] md:text-xs text-gray-500 leading-relaxed mb-3">
+    <section className={`border-t ${isDark ? "border-gray-700" : "border-gray-200"} pt-4 md:pt-6`}>
+      <p className={`text-[10px] md:text-xs ${isDark ? "text-gray-400" : "text-gray-500"} leading-relaxed mb-3`}>
         <strong>Content Attribution & Methodology:</strong> Site descriptions and historical
         information are original syntheses created by combining factual data from multiple
         verified sources. Research was conducted using publicly available reports from UNESCO,
@@ -14,7 +18,7 @@ export function AttributionSection() {
         are original summaries of publicly available information, not direct quotations.
         Research assistance provided by Claude (Anthropic).
       </p>
-      <p className="text-[10px] md:text-xs text-gray-500 leading-relaxed">
+      <p className={`text-[10px] md:text-xs ${isDark ? "text-gray-400" : "text-gray-500"} leading-relaxed`}>
         <strong>Disclaimer:</strong> Heritage Tracker is an independent documentation project.
         All information is sourced from publicly available reports by UNESCO, Forensic
         Architecture, Heritage for Peace, and other reputable cultural heritage organizations.

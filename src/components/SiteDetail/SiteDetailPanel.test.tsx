@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { SiteDetailPanel } from "./SiteDetailPanel";
+import { ThemeProvider } from "../../contexts/ThemeContext";
 import type { GazaSite } from "../../types";
 
 describe("SiteDetailPanel", () => {
@@ -43,7 +44,11 @@ describe("SiteDetailPanel", () => {
       },
     };
 
-    render(<SiteDetailPanel site={mockSite} />);
+    render(
+      <ThemeProvider>
+        <SiteDetailPanel site={mockSite} />
+      </ThemeProvider>
+    );
 
     // Check that key elements are rendered
     expect(screen.getByText("Test Heritage Site")).toBeInTheDocument();
@@ -68,7 +73,11 @@ describe("SiteDetailPanel", () => {
       sources: [],
     };
 
-    render(<SiteDetailPanel site={minimalSite} />);
+    render(
+      <ThemeProvider>
+        <SiteDetailPanel site={minimalSite} />
+      </ThemeProvider>
+    );
 
     expect(screen.getByText("Minimal Site")).toBeInTheDocument();
     expect(screen.getByText("A minimal site")).toBeInTheDocument();

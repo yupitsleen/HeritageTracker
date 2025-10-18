@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { cn } from "../../styles/theme";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,9 +13,11 @@ interface ModalProps {
 /**
  * Accessible modal component with backdrop, escape key support, and focus trapping
  * Supports custom z-index for modal stacking (e.g., detail modal over table modal)
+ * Supports dark mode
  */
 export function Modal({ isOpen, onClose, children, title, zIndex = 9999 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const { isDark } = useTheme();
 
   // Handle escape key press
   useEffect(() => {
@@ -71,22 +74,34 @@ export function Modal({ isOpen, onClose, children, title, zIndex = 9999 }: Modal
         tabIndex={-1}
         className={cn(
           "relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto",
-          "bg-white rounded-2xl shadow-2xl",
-          "transform transition-all border border-gray-100"
+          "rounded-2xl shadow-2xl transform transition-all",
+          isDark
+            ? "bg-gray-800 border border-gray-700"
+            : "bg-white border border-gray-100"
         )}
       >
         {/* Header with close button */}
-        <div className="sticky top-0 z-20 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+        <div className={cn(
+          "sticky top-0 z-20 px-6 py-4 flex items-center justify-between",
+          isDark
+            ? "bg-gray-800 border-b border-gray-700"
+            : "bg-white border-b border-gray-200"
+        )}>
           {title && (
-            <h2 id="modal-title" className="text-2xl font-bold text-gray-900">
+            <h2 id="modal-title" className={cn(
+              "text-2xl font-bold",
+              isDark ? "text-gray-100" : "text-gray-900"
+            )}>
               {title}
             </h2>
           )}
           <button
             onClick={onClose}
             className={cn(
-              "ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors",
-              "text-gray-500 hover:text-gray-700"
+              "ml-auto p-2 rounded-lg transition-colors",
+              isDark
+                ? "hover:bg-gray-700 text-gray-400 hover:text-gray-200"
+                : "hover:bg-gray-100 text-gray-500 hover:text-gray-700"
             )}
             aria-label="Close modal"
           >

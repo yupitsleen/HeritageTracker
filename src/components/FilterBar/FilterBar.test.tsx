@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import { FilterBar } from "./FilterBar";
 import { CalendarProvider } from "../../contexts/CalendarContext";
+import { ThemeProvider } from "../../contexts/ThemeContext";
 
 describe("FilterBar", () => {
   const mockProps = {
@@ -23,18 +24,22 @@ describe("FilterBar", () => {
 
   it("renders without crashing", () => {
     const { container } = render(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
+      <ThemeProvider>
+        <CalendarProvider>
+          <FilterBar {...mockProps} />
+        </CalendarProvider>
+      </ThemeProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   it("displays filter controls", () => {
     render(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
+      <ThemeProvider>
+        <CalendarProvider>
+          <FilterBar {...mockProps} />
+        </CalendarProvider>
+      </ThemeProvider>
     );
     const bodyText = document.body.textContent || "";
     expect(bodyText.length).toBeGreaterThan(20);

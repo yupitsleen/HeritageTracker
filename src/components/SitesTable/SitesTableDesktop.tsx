@@ -6,6 +6,7 @@ import { downloadCSV } from "../../utils/csvExport";
 import { Tooltip } from "../Tooltip";
 import { TABLE_CONFIG } from "../../constants/layout";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -40,6 +41,7 @@ export function SitesTableDesktop({
   variant,
   visibleColumns,
 }: SitesTableDesktopProps) {
+  const { isDark } = useTheme();
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -132,13 +134,17 @@ export function SitesTableDesktop({
   }, [highlightedSiteId]);
 
   return (
-    <div className="flex flex-col bg-white/50 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl" style={{ height: 'calc(100% - 4px)' }}>
+    <div className={`flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl transition-colors duration-200 ${
+      isDark ? "bg-[#000000]/50" : "bg-white/50"
+    }`} style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
-      <div className="sticky top-0 z-20 bg-white/50 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg">
+      <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${
+        isDark ? "bg-[#000000]/50" : "bg-white/50"
+      }`}>
         <div className="px-2 pt-4 pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
-              <h2 className="text-xl font-bold text-gray-800">Heritage Sites</h2>
+              <h2 className={`text-xl font-bold ${isDark ? "text-gray-200" : "text-gray-800"}`}>Heritage Sites</h2>
               {onExpandTable && (
                 <button
                   onClick={onExpandTable}
@@ -263,12 +269,19 @@ export function SitesTableDesktop({
               <tr
                 key={site.id}
                 ref={highlightedSiteId === site.id ? highlightedRowRef : null}
-                className={`border-b border-gray-100
-                            hover:bg-gray-50/60 transition-colors duration-150
-                            ${highlightedSiteId === site.id
-                              ? "bg-green-50/60 ring-2 ring-[#009639] ring-inset"
-                              : "bg-white/50"
-                            }`}
+                className={`transition-colors duration-150 ${
+                  isDark
+                    ? `border-b border-gray-700 hover:bg-gray-800/60 ${
+                        highlightedSiteId === site.id
+                          ? "bg-green-900/40 ring-2 ring-[#009639] ring-inset"
+                          : "bg-[#000000]/30"
+                      }`
+                    : `border-b border-gray-100 hover:bg-gray-50/60 ${
+                        highlightedSiteId === site.id
+                          ? "bg-green-50/60 ring-2 ring-[#009639] ring-inset"
+                          : "bg-white/50"
+                      }`
+                }`}
                 onClick={() => {
                   onSiteHighlight?.(site.id);
                 }}
@@ -287,7 +300,7 @@ export function SitesTableDesktop({
                         <div
                           className={`${
                             variant === "compact" ? "text-xs" : "text-sm"
-                          } text-gray-600 mt-1`}
+                          } ${isDark ? "text-gray-400" : "text-gray-600"} mt-1`}
                           dir="rtl"
                         >
                           {site.nameArabic}
@@ -299,7 +312,9 @@ export function SitesTableDesktop({
                 {isColumnVisible("type") && (
                   <td className={`${components.table.td} text-center`}>
                     <Tooltip content={getSiteTypeLabel(site.type)}>
-                      <span className="inline-flex items-center justify-center px-2 py-1.5 text-xs font-medium rounded bg-gray-100 text-gray-700">
+                      <span className={`inline-flex items-center justify-center px-2 py-1.5 text-xs font-medium rounded ${
+                        isDark ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-700"
+                      }`}>
                         <SiteTypeIcon type={site.type} className="w-5 h-5" />
                       </span>
                     </Tooltip>
@@ -316,20 +331,20 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("dateDestroyed") && (
-                  <td className={`${components.table.td} text-sm`}>
+                  <td className={`${components.table.td} text-sm ${isDark ? "text-gray-200" : ""}`}>
                     {formatDateStandard(site.dateDestroyed)}
                   </td>
                 )}
                 {isColumnVisible("dateDestroyedIslamic") && (
-                  <td className={`${components.table.td} text-sm`}>
+                  <td className={`${components.table.td} text-sm ${isDark ? "text-gray-200" : ""}`}>
                     {site.dateDestroyedIslamic || "N/A"}
                   </td>
                 )}
                 {isColumnVisible("yearBuilt") && (
-                  <td className={`${components.table.td} text-sm`}>{site.yearBuilt}</td>
+                  <td className={`${components.table.td} text-sm ${isDark ? "text-gray-200" : ""}`}>{site.yearBuilt}</td>
                 )}
                 {isColumnVisible("yearBuiltIslamic") && (
-                  <td className={`${components.table.td} text-sm`}>
+                  <td className={`${components.table.td} text-sm ${isDark ? "text-gray-200" : ""}`}>
                     {site.yearBuiltIslamic || "N/A"}
                   </td>
                 )}
