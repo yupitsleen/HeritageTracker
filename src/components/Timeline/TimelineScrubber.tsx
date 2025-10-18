@@ -11,6 +11,7 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
+import { Input } from "../Form/Input";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
@@ -50,6 +51,25 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
   const [syncMap, setSyncMap] = useState(false); // Map sync toggle state
 
+  // Extract timeline data using custom hook
+  const { events: allDestructionDates } = useTimelineData(sites);
+
+  // Calculate default date range from dataset (oldest and newest destruction dates)
+  const { defaultStartDate, defaultEndDate } = useMemo(() => {
+    if (allDestructionDates.length === 0) {
+      return { defaultStartDate: startDate, defaultEndDate: endDate };
+    }
+    const dates = allDestructionDates.map((event) => event.date);
+    return {
+      defaultStartDate: new Date(Math.min(...dates.map((d) => d.getTime()))),
+      defaultEndDate: new Date(Math.max(...dates.map((d) => d.getTime()))),
+    };
+  }, [allDestructionDates, startDate, endDate]);
+
+  // Date filter state for timeline - null means use default range
+  const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
+  const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
+
   // Notify parent when sync state changes
   useEffect(() => {
     onSyncMapChange?.(syncMap);
@@ -62,8 +82,33 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     }
   }, [syncMap, onSyncMapChange, pause, setTimestamp]);
 
-  // Extract timeline data using custom hook
-  const { events: destructionDates } = useTimelineData(sites);
+  // Filter destruction dates based on date filter
+  const destructionDates = useMemo(() => {
+    if (!filterStartDate && !filterEndDate) {
+      return allDestructionDates;
+    }
+    return allDestructionDates.filter((event) => {
+      if (filterStartDate && event.date < filterStartDate) return false;
+      if (filterEndDate && event.date > filterEndDate) return false;
+      return true;
+    });
+  }, [allDestructionDates, filterStartDate, filterEndDate]);
+
+  // Calculate adjusted timeline range based on filtered dates
+  const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
+    if (destructionDates.length === 0) {
+      return { adjustedStartDate: startDate, adjustedEndDate: endDate };
+    }
+
+    // Find min and max from filtered destruction dates
+    const minDate = new Date(Math.min(...destructionDates.map((event) => event.date.getTime())));
+    const maxDate = new Date(Math.max(...destructionDates.map((event) => event.date.getTime())));
+
+    return {
+      adjustedStartDate: filterStartDate || filterEndDate ? minDate : startDate,
+      adjustedEndDate: filterStartDate || filterEndDate ? maxDate : endDate,
+    };
+  }, [destructionDates, startDate, endDate, filterStartDate, filterEndDate]);
 
   // Observe container width changes
   useEffect(() => {
@@ -81,14 +126,14 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
     return () => resizeObserver.disconnect();
   }, []);
 
-  // D3 time scale (responsive to container width)
+  // D3 time scale (responsive to container width, uses adjusted dates when filtered)
   const timeScale = useMemo(() => {
     const margin = 50; // Leave space for handles
     return d3
       .scaleTime()
-      .domain([startDate, endDate])
+      .domain([adjustedStartDate, adjustedEndDate])
       .range([margin, containerWidth - margin]);
-  }, [startDate, endDate, containerWidth]);
+  }, [adjustedStartDate, adjustedEndDate, containerWidth]);
 
   // Initialize D3 renderer
   useEffect(() => {
@@ -254,8 +299,48 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
 
-        {/* Right: Empty spacer for balance */}
-        <div className="flex-1"></div>
+        {/* Right: Date Filter */}
+        <div className="flex items-center gap-2 flex-1 justify-end">
+          <label className={`text-xs font-semibold ${t.text.heading}`}>
+            Destruction Date:
+          </label>
+          <Input
+            variant="date"
+            value={(filterStartDate || defaultStartDate).toISOString().split("T")[0]}
+            onChange={(e) => {
+              setFilterStartDate(e.target.value ? new Date(e.target.value) : null);
+            }}
+            placeholder="From"
+            className="flex-none w-32 text-xs py-1.5 px-2"
+          />
+          <span className={`text-xs font-medium ${t.text.body}`}>to</span>
+          <Input
+            variant="date"
+            value={(filterEndDate || defaultEndDate).toISOString().split("T")[0]}
+            onChange={(e) => {
+              setFilterEndDate(e.target.value ? new Date(e.target.value) : null);
+            }}
+            placeholder="To"
+            className="flex-none w-32 text-xs py-1.5 px-2"
+          />
+
+          {/* Clear Date Filter button - always reserve space, only visible when filter is active */}
+          <button
+            onClick={() => {
+              setFilterStartDate(null);
+              setFilterEndDate(null);
+            }}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 ${
+              filterStartDate || filterEndDate
+                ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
+                : "invisible"
+            }`}
+            aria-label="Clear date filter"
+            disabled={!filterStartDate && !filterEndDate}
+          >
+            Clear Date Filter
+          </button>
+        </div>
       </div>
 
       {/* D3 Timeline SVG */}
