@@ -4,7 +4,21 @@ import { SiteDetailView } from "./SiteDetailView";
 import { AnimationProvider } from "../../contexts/AnimationContext";
 import type { GazaSite } from "../../types";
 
-// Mock Leaflet components
+// Mock Leaflet library
+vi.mock("leaflet", () => ({
+  default: {
+    divIcon: vi.fn(() => ({})),
+    Icon: {
+      Default: {
+        prototype: {
+          options: {},
+        },
+      },
+    },
+  },
+}));
+
+// Mock react-leaflet components
 vi.mock("react-leaflet", () => ({
   MapContainer: ({ children, className }: { children?: React.ReactNode; className?: string; [key: string]: unknown }) => (
     <div data-testid="map-container" className={className}>
@@ -25,13 +39,6 @@ vi.mock("react-leaflet", () => ({
     setZoom: vi.fn(),
   }),
   useMapEvents: () => ({}),
-}));
-
-// Mock Leaflet library
-vi.mock("leaflet", () => ({
-  default: {
-    divIcon: vi.fn(() => ({})),
-  },
 }));
 
 // Mock MapHelperComponents
