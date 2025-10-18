@@ -182,9 +182,9 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center justify-between mb-3 gap-4">
+      <div className="flex items-center mb-3 gap-4">
         {/* Left: Play/Pause/Reset/Sync Map/Speed */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-1">
           {!isPlaying ? (
             <button
               onClick={play}
@@ -248,11 +248,14 @@ export function TimelineScrubber({ sites, onSyncMapChange }: TimelineScrubberPro
           </div>
         </div>
 
-        {/* Right: Current date display */}
-        <div className={`text-sm font-semibold ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
+        {/* Center: Current date display */}
+        <div className={`text-sm font-semibold text-center flex-1 ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
           <span className={t.text.muted}>Current:</span>{" "}
           {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
+
+        {/* Right: Empty spacer for balance */}
+        <div className="flex-1"></div>
       </div>
 
       {/* D3 Timeline SVG */}
