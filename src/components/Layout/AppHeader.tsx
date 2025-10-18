@@ -25,8 +25,8 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
       {/* Header - BLACK background */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-3")}>
-          <h1 className={`text-xl md:text-3xl font-bold text-center ${isDark ? t.text.heading : "text-white"}`}>Heritage Tracker</h1>
-          <p className={`mt-1 md:mt-2 text-center text-xs md:text-base ${isDark ? t.text.body : "text-[#f5f5f5]"}`}>
+          <h1 className="text-xl md:text-3xl font-bold text-center text-[#fefefe]">Heritage Tracker</h1>
+          <p className="mt-1 md:mt-2 text-center text-xs md:text-base text-[#f5f5f5]">
             Documenting the destruction of cultural heritage in Gaza (2023-2024)
           </p>
         </div>
