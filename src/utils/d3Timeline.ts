@@ -141,10 +141,16 @@ export class D3TimelineRenderer {
   private renderEventMarkers(events: TimelineEvent[]) {
     const { height, eventMarkerRadius, colors } = this.config;
 
-    const markers = this.svg
-      .selectAll("circle.event-marker")
+    // Create a group for each event marker so we can add text labels
+    const markerGroups = this.svg
+      .selectAll("g.event-marker-group")
       .data(events)
       .enter()
+      .append("g")
+      .attr("class", "event-marker-group");
+
+    // Add circles
+    const markers = markerGroups
       .append("circle")
       .attr("class", "event-marker")
       .attr("cx", (d) => this.timeScale(d.date))
@@ -154,27 +160,58 @@ export class D3TimelineRenderer {
       .attr("stroke", colors.eventMarkerStroke)
       .attr("stroke-width", 1.5)
       .style("cursor", "pointer")
-      .style("transition", "all 0.2s")
+      .style("transition", "all 0.2s");
+
+    // Add hover date labels (initially hidden)
+    markerGroups
+      .append("text")
+      .attr("class", "event-date-label")
+      .attr("x", (d) => this.timeScale(d.date))
+      .attr("y", height / 2 - eventMarkerRadius - 8) // Position above the circle
+      .attr("text-anchor", "middle")
+      .attr("font-size", "10px")
+      .attr("font-weight", "500")
+      .attr("fill", "#9ca3af") // Light gray color
+      .attr("opacity", 0) // Start hidden
+      .style("pointer-events", "none") // Don't interfere with mouse events
+      .text((d) => d3.timeFormat("%b %d, %Y")(d.date));
+
+    // Hover effects on the group
+    markerGroups
       .on("mouseenter", function () {
-        d3.select(this)
+        const group = d3.select(this);
+        group.select("circle")
           .transition()
           .duration(150)
           .attr("r", eventMarkerRadius + 2)
           .attr("stroke-width", 2);
+
+        // Show date label
+        group.select("text")
+          .transition()
+          .duration(150)
+          .attr("opacity", 1);
       })
       .on("mouseleave", function () {
-        d3.select(this)
+        const group = d3.select(this);
+        group.select("circle")
           .transition()
           .duration(150)
           .attr("r", eventMarkerRadius)
           .attr("stroke-width", 1.5);
+
+        // Hide date label
+        group.select("text")
+          .transition()
+          .duration(150)
+          .attr("opacity", 0);
       })
       .on("click", (_event, d) => {
         this.onTimestampChange(d.date);
         this.onPause();
       });
 
-    // Add tooltips
+    // Add tooltips (keep for additional info on hover)
     markers
       .append("title")
       .text(
