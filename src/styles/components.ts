@@ -40,9 +40,9 @@ export const components = {
 
   // Tag/Chip styles (for removable filter tags)
   tag: {
-    base: "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full",
-    default: "bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium border border-gray-200 transition-colors duration-200",
-    removeButton: "ml-0.5 text-gray-500 hover:text-[#ed3039] transition-colors",  // Palestine flag red
+    base: "inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs rounded",
+    default: "bg-gray-500 hover:bg-gray-600 text-white font-medium border border-gray-600 transition-colors duration-200",
+    removeButton: "ml-0.5 text-gray-200 hover:text-[#ed3039] transition-colors text-sm font-bold leading-none",  // Palestine flag red
   },
 
   // Badge styles

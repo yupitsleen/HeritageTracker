@@ -117,119 +117,138 @@ export function DesktopLayout({
         <div className="flex-1 min-w-0 pr-6 flex flex-col">
           {/* Filter bar - Horizontal component with compact padding */}
           <div className={`flex-shrink-0 mt-4 py-3 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
-            <div className="flex items-start gap-4 px-3">
-              {/* Left side - Filter controls */}
-              <div className="flex-1 flex items-center gap-3 flex-wrap">
-                {/* Filter Button */}
-                <button
-                  onClick={openFilterModal}
-                  className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
-                             rounded-lg shadow-md hover:shadow-lg
-                             transition-all duration-200 font-semibold
-                             active:scale-95 text-sm"
-                >
-                  Filters
-                </button>
+            <div className="flex flex-col gap-2">
+              {/* Top row - Filter controls and legend */}
+              <div className="flex items-start gap-4 px-3">
+                {/* Left side - Filter controls */}
+                <div className="flex-1 flex items-center gap-3">
+                  {/* Filter Button */}
+                  <button
+                    onClick={openFilterModal}
+                    className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
+                               rounded-lg shadow-md hover:shadow-lg
+                               transition-all duration-200 font-semibold
+                               active:scale-95 text-sm"
+                  >
+                    Filters
+                  </button>
 
-                {/* Search bar - inline */}
-                <div className="relative flex-1 max-w-xs border border-[#000000] rounded-lg">
-                  <Input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search sites..."
-                    className="w-full pr-8 text-xs py-1 px-2 border-0"
-                  />
-                  {searchTerm.trim().length > 0 && (
-                    <button
-                      onClick={() => setSearchTerm("")}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                      aria-label="Clear search"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                  {/* Search bar - inline */}
+                  <div className="relative flex-1 max-w-xs border border-[#000000] rounded-lg">
+                    <Input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Search sites..."
+                      className="w-full pr-8 text-xs py-1 px-2 border-0"
+                    />
+                    {searchTerm.trim().length > 0 && (
+                      <button
+                        onClick={() => setSearchTerm("")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Clear search"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Clear button */}
+                  {hasActiveFilters && (
+                    <button
+                      onClick={clearAllFilters}
+                      className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white
+                                 rounded-lg shadow-md hover:shadow-lg
+                                 transition-all duration-200 font-semibold
+                                 active:scale-95 text-xs"
+                    >
+                      Clear
                     </button>
                   )}
                 </div>
 
-                {/* Active filter tags */}
-                {selectedTypes.map((type) => (
-                  <FilterTag
-                    key={type}
-                    label={formatLabel(type)}
-                    onRemove={() => setSelectedTypes(selectedTypes.filter((t) => t !== type))}
-                    ariaLabel={`Remove ${type} filter`}
-                  />
-                ))}
-                {selectedStatuses.map((status) => (
-                  <FilterTag
-                    key={status}
-                    label={formatLabel(status)}
-                    onRemove={() =>
-                      setSelectedStatuses(selectedStatuses.filter((s) => s !== status))
-                    }
-                    ariaLabel={`Remove ${status} filter`}
-                  />
-                ))}
+                {/* Right side - Status legend and site count */}
+                <div className="flex items-center gap-4">
+                  {/* Site count */}
+                  <span className={`text-xs font-medium whitespace-nowrap ${t.text.muted}`}>
+                    Showing {filteredSites.length} of {totalSites} sites
+                  </span>
 
-                {/* Clear button */}
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearAllFilters}
-                    className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white
-                               rounded-lg shadow-md hover:shadow-lg
-                               transition-all duration-200 font-semibold
-                               active:scale-95 text-xs"
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
-
-              {/* Right side - Status legend and site count */}
-              <div className="flex items-center gap-4">
-                {/* Site count */}
-                <span className={`text-xs font-medium whitespace-nowrap ${t.text.muted}`}>
-                  Showing {filteredSites.length} of {totalSites} sites
-                </span>
-
-                {/* Status Legend (Color Key) */}
-                <div className={`flex items-center gap-3 px-3 py-1.5 rounded-md border border-[#000000] ${t.bg.secondary}`}>
-                  <span className={`text-xs font-semibold ${t.text.body}`}>Color Key:</span>
-                  <div className="flex items-center gap-1.5">
-                    <div
-                      className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
-                      style={{ backgroundColor: "#b91c1c" }}
-                    />
-                    <span className={`text-xs ${t.text.body}`}>Destroyed</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div
-                      className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
-                      style={{ backgroundColor: "#d97706" }}
-                    />
-                    <span className={`text-xs ${t.text.body}`}>Heavily Damaged</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div
-                      className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
-                      style={{ backgroundColor: "#ca8a04" }}
-                    />
-                    <span className={`text-xs ${t.text.body}`}>Damaged</span>
+                  {/* Status Legend (Color Key) */}
+                  <div className={`flex items-center gap-3 px-3 py-1.5 rounded-md border border-[#000000] ${t.bg.secondary}`}>
+                    <span className={`text-xs font-semibold ${t.text.body}`}>Color Key:</span>
+                    <div className="flex items-center gap-1.5">
+                      <div
+                        className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                        style={{ backgroundColor: "#b91c1c" }}
+                      />
+                      <span className={`text-xs ${t.text.body}`}>Destroyed</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div
+                        className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                        style={{ backgroundColor: "#d97706" }}
+                      />
+                      <span className={`text-xs ${t.text.body}`}>Heavily Damaged</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div
+                        className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                        style={{ backgroundColor: "#ca8a04" }}
+                      />
+                      <span className={`text-xs ${t.text.body}`}>Damaged</span>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Bottom row - Active filter tags */}
+              {hasActiveFilters && (
+                <div className="flex items-center gap-2 px-3 flex-wrap">
+                  {selectedTypes.map((type) => (
+                    <FilterTag
+                      key={type}
+                      label={formatLabel(type)}
+                      onRemove={() => setSelectedTypes(selectedTypes.filter((t) => t !== type))}
+                      ariaLabel={`Remove ${type} filter`}
+                    />
+                  ))}
+                  {selectedStatuses.map((status) => (
+                    <FilterTag
+                      key={status}
+                      label={formatLabel(status)}
+                      onRemove={() =>
+                        setSelectedStatuses(selectedStatuses.filter((s) => s !== status))
+                      }
+                      ariaLabel={`Remove ${status} filter`}
+                    />
+                  ))}
+                  {/* Destruction date filter tag */}
+                  {(destructionDateStart || destructionDateEnd) && (
+                    <FilterTag
+                      key="destruction-date"
+                      label={`Date Range: ${destructionDateStart?.toLocaleDateString() || '...'} - ${destructionDateEnd?.toLocaleDateString() || '...'}`}
+                      onRemove={() => {
+                        setDestructionDateStart(null);
+                        setDestructionDateEnd(null);
+                      }}
+                      ariaLabel="Remove destruction date filter"
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
