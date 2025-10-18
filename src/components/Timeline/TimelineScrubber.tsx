@@ -229,7 +229,7 @@ export function TimelineScrubber({
   return (
     <div
       ref={containerRef}
-      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-xl transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
       role="region"
       aria-label="Timeline Scrubber"
     >

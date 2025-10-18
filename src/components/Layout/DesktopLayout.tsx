@@ -116,7 +116,7 @@ export function DesktopLayout({
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-6 flex flex-col">
           {/* Filter bar - Horizontal component with compact padding */}
-          <div className={`flex-shrink-0 mt-4 py-3 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-xl relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+          <div className={`flex-shrink-0 mt-4 py-3 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-2xl-dark relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
             <div className="flex flex-col gap-2">
               {/* Top row - Filter controls and legend */}
               <div className="flex items-start gap-4 px-3">
@@ -255,7 +255,7 @@ export function DesktopLayout({
           {/* Two maps side by side - Constrained height to leave room for timeline */}
           <div className="flex gap-4 min-h-0 pt-3" style={{ height: 'calc(100% - 270px)' }}>
             {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-2xl-dark overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <HeritageMap
                   sites={filteredSites}
@@ -267,7 +267,7 @@ export function DesktopLayout({
             </div>
 
             {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-xl overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-2xl-dark overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
                   sites={filteredSites}
