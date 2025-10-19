@@ -111,5 +111,49 @@ export function useThemeClasses() {
         ? "bg-gray-800 border-gray-700"
         : "bg-white border-gray-200",
     },
+
+    /**
+     * Table classes
+     */
+    table: {
+      /** Base table styling */
+      base: "w-full text-sm text-left",
+      /** Table cell padding */
+      td: "px-4 py-3",
+    },
+
+    /**
+     * Layout/container classes
+     */
+    layout: {
+      /** Main app background */
+      appBackground: isDark ? "bg-gray-800" : "bg-gray-200",
+      /** Loading/fallback text */
+      loadingText: isDark ? "text-gray-300" : "text-gray-600",
+      /** Modal heading */
+      modalHeading: isDark ? "text-gray-100" : "text-gray-900",
+      /** Skip to content link focus state */
+      skipLink: "sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10002] focus:bg-[#009639] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg",
+    },
+
+    /**
+     * Timeline component classes
+     */
+    timeline: {
+      /** Timeline container */
+      container: isDark
+        ? "backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 bg-[#000000]/95"
+        : "backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 bg-white/95",
+      /** Current date display */
+      currentDate: isDark ? "text-sm font-semibold text-center flex-1 text-[#fefefe]" : "text-sm font-semibold text-center flex-1",
+      /** Clear date filter button (visible state) */
+      clearFilterVisible: "flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 border border-[#000000]",
+      /** Clear date filter button (invisible/disabled state) */
+      clearFilterInvisible: "invisible",
+      /** Speed control select */
+      speedSelect: "px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
+      /** Keyboard hint kbd element */
+      kbdKey: "px-1 py-0.5 border rounded",
+    },
   }), [isDark]);
 }

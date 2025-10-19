@@ -7,7 +7,6 @@ import {
 } from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
-import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
@@ -55,7 +54,6 @@ export function TimelineScrubber({
     setSpeed,
   } = useAnimation();
 
-  const { isDark } = useTheme();
   const t = useThemeClasses();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -233,7 +231,7 @@ export function TimelineScrubber({
   return (
     <div
       ref={containerRef}
-      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+      className={t.timeline.container}
       role="region"
       aria-label="Timeline Scrubber"
     >
@@ -293,7 +291,7 @@ export function TimelineScrubber({
               id="speed-control"
               value={speed}
               onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-              className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
+              className={`${t.timeline.speedSelect} ${t.input.base}`}
               aria-label="Animation speed control"
             >
               {speedOptions.map((s) => (
@@ -306,7 +304,7 @@ export function TimelineScrubber({
         </div>
 
         {/* Center: Current date display */}
-        <div className={`text-sm font-semibold text-center flex-1 ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
+        <div className={t.timeline.currentDate}>
           <span className={t.text.muted}>Current:</span>{" "}
           {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
@@ -342,10 +340,10 @@ export function TimelineScrubber({
               onDestructionDateStartChange(null);
               onDestructionDateEndChange(null);
             }}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 border border-[#000000] ${
+            className={`${t.timeline.clearFilterVisible} ${
               destructionDateStart || destructionDateEnd
                 ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
-                : "invisible"
+                : t.timeline.clearFilterInvisible
             }`}
             aria-label="Clear date filter"
             disabled={!destructionDateStart && !destructionDateEnd}
@@ -360,11 +358,11 @@ export function TimelineScrubber({
 
       {/* Keyboard shortcuts hint */}
       <div className={`mt-2 text-xs text-center ${t.text.muted}`}>
-        Keyboard: <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
+        Keyboard: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
         {" • "}
-        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step
         {" • "}
-        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> Jump
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> Jump
       </div>
     </div>
   );

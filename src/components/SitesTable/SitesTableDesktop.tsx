@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import type { GazaSite } from "../../types";
-import { components, getStatusHexColor } from "../../styles/theme";
+import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard } from "../../utils/format";
 import { downloadCSV } from "../../utils/csvExport";
 import { Tooltip } from "../Tooltip";
@@ -190,7 +190,7 @@ export function SitesTableDesktop({
 
       {/* Scrollable table with sticky headers */}
       <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
-        <table className={components.table.base}>
+        <table className={t.table.base}>
           <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
             <tr>
               {isColumnVisible("name") && (
@@ -280,7 +280,7 @@ export function SitesTableDesktop({
                 }}
               >
                 {isColumnVisible("name") && (
-                  <td className={components.table.td}>
+                  <td className={t.table.td}>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -303,7 +303,7 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("type") && (
-                  <td className={`${components.table.td} text-center`}>
+                  <td className={`${t.table.td} text-center`}>
                     <Tooltip content={getSiteTypeLabel(site.type)}>
                       <span className="inline-flex items-center justify-center">
                         <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
@@ -312,7 +312,7 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("status") && (
-                  <td className={components.table.td}>
+                  <td className={t.table.td}>
                     <span
                       className="font-semibold capitalize text-sm"
                       style={{ color: getStatusHexColor(site.status) }}
@@ -322,20 +322,20 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("dateDestroyed") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
                     {formatDateStandard(site.dateDestroyed)}
                   </td>
                 )}
                 {isColumnVisible("dateDestroyedIslamic") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
                     {site.dateDestroyedIslamic || "N/A"}
                   </td>
                 )}
                 {isColumnVisible("yearBuilt") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>{site.yearBuilt}</td>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>{site.yearBuilt}</td>
                 )}
                 {isColumnVisible("yearBuiltIslamic") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
                     {site.yearBuiltIslamic || "N/A"}
                   </td>
                 )}

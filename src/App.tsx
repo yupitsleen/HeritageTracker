@@ -8,6 +8,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { useAppState } from "./hooks/useAppState";
 import { useFilteredSites } from "./hooks/useFilteredSites";
 import { useTableResize } from "./hooks/useTableResize";
+import { useThemeClasses } from "./hooks/useThemeClasses";
 import { AppHeader } from "./components/Layout/AppHeader";
 import { AppFooter } from "./components/Layout/AppFooter";
 import { DesktopLayout } from "./components/Layout/DesktopLayout";
@@ -32,16 +33,16 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
   const tableResize = useTableResize();
   const { isDark } = useTheme();
 
+  const t = useThemeClasses();
+
   return (
     <div
       data-theme={isDark ? "dark" : "light"}
-      className={`min-h-screen relative transition-colors duration-200 ${
-        isDark ? "bg-gray-800" : "bg-gray-200"
-      }`}>
+      className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}>
       {/* Skip to content link for keyboard navigation */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10002] focus:bg-[#009639] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+        className={t.layout.skipLink}
       >
         Skip to main content
       </a>
@@ -126,7 +127,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         {appState.selectedSite && (
           <Suspense
             fallback={
-              <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+              <div className={`p-8 text-center ${t.layout.loadingText}`}>
                 <div>Loading site details...</div>
               </div>
             }
@@ -161,7 +162,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       >
         <Suspense
           fallback={
-            <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
               <div>Loading statistics...</div>
             </div>
           }
@@ -178,7 +179,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       >
         <Suspense
           fallback={
-            <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
               <div>Loading about...</div>
             </div>
           }
@@ -195,7 +196,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       >
         <Suspense
           fallback={
-            <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
               <div>Loading...</div>
             </div>
           }
@@ -210,7 +211,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         onClose={() => appState.setIsFilterOpen(false)}
         zIndex={10001}
       >
-        <h2 className={`text-2xl font-bold mb-6 ${isDark ? "text-gray-100" : "text-gray-900"}`}>Filter Sites</h2>
+        <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
         <FilterBar
           selectedTypes={appState.tempFilters.tempSelectedTypes}
           selectedStatuses={appState.tempFilters.tempSelectedStatuses}

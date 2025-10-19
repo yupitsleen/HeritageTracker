@@ -103,4 +103,4 @@ export const components = {
     count: "mt-2 text-sm text-gray-600 text-center",
     countNumber: "font-semibold text-gray-900",
   },
-} as const;
+};
