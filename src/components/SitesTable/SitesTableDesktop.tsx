@@ -8,6 +8,7 @@ import { TABLE_CONFIG } from "../../constants/layout";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Button } from "../Button";
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -162,26 +163,26 @@ export function SitesTableDesktop({
               )}
             </div>
             {variant === "expanded" && (
-              <button
+              <Button
                 onClick={() => downloadCSV(sortedSites)}
-                className="flex items-center gap-2
-                           px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
-                           rounded-lg shadow-md hover:shadow-lg
-                           transition-all duration-200 font-semibold
-                           active:scale-95 text-sm border border-[#000000] mr-12"
+                variant="primary"
+                size="sm"
+                className="mr-12"
                 title="Export table data to CSV file"
                 aria-label="Export to CSV"
+                icon={
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                }
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
                 Export CSV
-              </button>
+              </Button>
             )}
           </div>
         </div>

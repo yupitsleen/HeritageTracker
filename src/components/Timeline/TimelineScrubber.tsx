@@ -12,6 +12,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 import { Input } from "../Form/Input";
+import { Button } from "../Button";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
@@ -241,51 +242,47 @@ export function TimelineScrubber({
         {/* Left: Play/Pause/Reset/Sync Map/Speed */}
         <div className="flex items-center gap-2 flex-1">
           {!isPlaying ? (
-            <button
+            <Button
               onClick={play}
-              className="flex items-center gap-2 px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
+              variant="primary"
+              size="sm"
+              icon={<PlayIcon className="w-4 h-4" />}
               aria-label="Play timeline animation"
             >
-              <PlayIcon className="w-4 h-4" />
-              <span>Play</span>
-            </button>
+              Play
+            </Button>
           ) : (
-            <button
+            <Button
               onClick={pause}
-              className="flex items-center gap-2 px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
+              variant="danger"
+              size="sm"
+              icon={<PauseIcon className="w-4 h-4" />}
               aria-label="Pause timeline animation"
             >
-              <PauseIcon className="w-4 h-4" />
-              <span>Pause</span>
-            </button>
+              Pause
+            </Button>
           )}
-          <button
+          <Button
             onClick={reset}
             disabled={isAtStart}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-semibold border border-[#000000] ${
-              isAtStart
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
-                : `shadow-md hover:shadow-lg active:scale-95 ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`
-            }`}
+            variant="secondary"
+            size="sm"
+            icon={<ArrowPathIcon className="w-4 h-4" />}
             aria-label="Reset timeline to start"
           >
-            <ArrowPathIcon className="w-4 h-4" />
-            <span>Reset</span>
-          </button>
+            Reset
+          </Button>
 
           {/* Sync Map toggle button */}
-          <button
+          <Button
             onClick={() => setSyncMap(!syncMap)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000] ${
-              syncMap
-                ? `${t.flag.greenBg} text-[#fefefe] ${t.flag.greenHover}`
-                : `${t.bg.active} ${t.text.body} ${t.bg.hover}`
-            }`}
+            variant={syncMap ? "primary" : "secondary"}
+            size="sm"
             aria-label={syncMap ? "Disable map sync with timeline" : "Enable map sync with timeline"}
             title="Sync satellite imagery with timeline date"
           >
-            <span>{syncMap ? "✓" : ""} Sync Map</span>
-          </button>
+            {syncMap ? "✓" : ""} Sync Map
+          </Button>
 
           {/* Speed control */}
           <div className="flex items-center gap-2">

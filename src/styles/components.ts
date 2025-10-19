@@ -1,6 +1,13 @@
 /**
  * Component-level style configurations
  * Reusable Tailwind class combinations for common UI patterns
+ *
+ * @deprecated This file is being phased out in favor of:
+ * - useThemeClasses hook for theme-aware styles
+ * - Button component for button styling
+ * - Color constants in src/constants/colors.ts
+ *
+ * Use this file only for legacy components not yet refactored.
  */
 
 export const components = {

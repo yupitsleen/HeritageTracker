@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTheme } from "../contexts/ThemeContext";
+import { COLORS } from "../constants/colors";
 
 /**
  * Theme-aware CSS class utility hook
@@ -56,11 +57,13 @@ export function useThemeClasses() {
      */
     border: {
       /** Default border color */
-      default: isDark ? "border-gray-700" : "border-[#404040]",
+      default: isDark ? "border-gray-700" : `border-[${COLORS.BORDER_DEFAULT_LIGHT}]`,
       /** Subtle border */
       subtle: isDark ? "border-gray-600" : "border-gray-300",
       /** Strong/emphasis border */
       strong: isDark ? "border-gray-500" : "border-gray-400",
+      /** Black border (consistent across themes) */
+      black: `border-[${COLORS.BORDER_BLACK}]`,
     },
 
     /**
@@ -82,7 +85,11 @@ export function useThemeClasses() {
       /** Base input styling */
       base: isDark
         ? "bg-gray-700 border-gray-600 text-gray-100 placeholder:text-gray-400"
-        : "bg-white border-[#000000] text-gray-900 placeholder:text-gray-400",
+        : `bg-white border-[${COLORS.BORDER_BLACK}] text-gray-900 placeholder:text-gray-400`,
+      /** Focus state */
+      focus: `focus:outline-none focus:ring-2 focus:ring-[${COLORS.FLAG_GREEN}] focus:border-transparent`,
+      /** Number input width */
+      number: "w-20",
     },
 
     /**

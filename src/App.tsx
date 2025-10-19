@@ -14,6 +14,7 @@ import { DesktopLayout } from "./components/Layout/DesktopLayout";
 import { MobileLayout } from "./components/Layout/MobileLayout";
 import { SitesTable } from "./components/SitesTable";
 import { FilterBar } from "./components/FilterBar/FilterBar";
+import { Button } from "./components/Button";
 
 // Lazy load heavy components for better initial load performance
 const SiteDetailPanel = lazy(() => import("./components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
@@ -226,36 +227,21 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
           sites={mockSites}
         />
         <div className="mt-6 flex justify-end gap-3">
-          <button
+          <Button
             onClick={appState.clearTempFilters}
             disabled={!appState.hasTempFilters}
-            className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium border border-[#000000] ${
-              !appState.hasTempFilters
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : isDark
-                  ? "text-gray-300 hover:bg-gray-700"
-                  : "text-gray-600 hover:bg-gray-100"
-            }`}
+            variant="ghost"
           >
             Clear All
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={appState.applyFilters}
             disabled={!appState.hasUnappliedChanges}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 font-semibold border border-[#000000] ${
-              !appState.hasUnappliedChanges
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
-                : `text-white shadow-md hover:shadow-lg active:scale-95 ${
-                    appState.hasUnappliedChanges ? "animate-pulse ring-2 ring-white/50" : ""
-                  } ${
-                    isDark
-                      ? "bg-[#2d5a38] hover:bg-[#244a2e]"
-                      : "bg-[#009639] hover:bg-[#007b2f]"
-                  }`
-            }`}
+            variant="primary"
+            className={appState.hasUnappliedChanges ? "animate-pulse ring-2 ring-white/50" : ""}
           >
             Apply Filters
-          </button>
+          </Button>
         </div>
       </Modal>
 
