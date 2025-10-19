@@ -8,12 +8,14 @@ import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { useAppState } from "./hooks/useAppState";
 import { useFilteredSites } from "./hooks/useFilteredSites";
 import { useTableResize } from "./hooks/useTableResize";
+import { useThemeClasses } from "./hooks/useThemeClasses";
 import { AppHeader } from "./components/Layout/AppHeader";
 import { AppFooter } from "./components/Layout/AppFooter";
 import { DesktopLayout } from "./components/Layout/DesktopLayout";
 import { MobileLayout } from "./components/Layout/MobileLayout";
 import { SitesTable } from "./components/SitesTable";
 import { FilterBar } from "./components/FilterBar/FilterBar";
+import { Button } from "./components/Button";
 
 // Lazy load heavy components for better initial load performance
 const SiteDetailPanel = lazy(() => import("./components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
@@ -31,16 +33,16 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
   const tableResize = useTableResize();
   const { isDark } = useTheme();
 
+  const t = useThemeClasses();
+
   return (
     <div
       data-theme={isDark ? "dark" : "light"}
-      className={`min-h-screen relative transition-colors duration-200 ${
-        isDark ? "bg-gray-800" : "bg-gray-200"
-      }`}>
+      className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}>
       {/* Skip to content link for keyboard navigation */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10002] focus:bg-[#009639] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+        className={t.layout.skipLink}
       >
         Skip to main content
       </a>
@@ -125,7 +127,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         {appState.selectedSite && (
           <Suspense
             fallback={
-              <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+              <div className={`p-8 text-center ${t.layout.loadingText}`}>
                 <div>Loading site details...</div>
               </div>
             }
@@ -160,7 +162,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       >
         <Suspense
           fallback={
-            <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
               <div>Loading statistics...</div>
             </div>
           }
@@ -177,7 +179,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       >
         <Suspense
           fallback={
-            <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
               <div>Loading about...</div>
             </div>
           }
@@ -194,7 +196,7 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       >
         <Suspense
           fallback={
-            <div className={`p-8 text-center ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
               <div>Loading...</div>
             </div>
           }
@@ -209,12 +211,12 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
         onClose={() => appState.setIsFilterOpen(false)}
         zIndex={10001}
       >
-        <h2 className={`text-2xl font-bold mb-6 ${isDark ? "text-gray-100" : "text-gray-900"}`}>Filter Sites</h2>
+        <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
         <FilterBar
-          selectedTypes={appState.tempFilters.tempSelectedTypes}
-          selectedStatuses={appState.tempFilters.tempSelectedStatuses}
-          destructionDateStart={appState.tempFilters.tempDestructionDateStart}
-          destructionDateEnd={appState.tempFilters.tempDestructionDateEnd}
+          selectedTypes={appState.tempFilters.selectedTypes}
+          selectedStatuses={appState.tempFilters.selectedStatuses}
+          destructionDateStart={appState.tempFilters.destructionDateStart}
+          destructionDateEnd={appState.tempFilters.destructionDateEnd}
           searchTerm={appState.filters.searchTerm}
           onTypeChange={appState.setTempSelectedTypes}
           onStatusChange={appState.setTempSelectedStatuses}
@@ -226,36 +228,21 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
           sites={mockSites}
         />
         <div className="mt-6 flex justify-end gap-3">
-          <button
+          <Button
             onClick={appState.clearTempFilters}
             disabled={!appState.hasTempFilters}
-            className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium border border-[#000000] ${
-              !appState.hasTempFilters
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : isDark
-                  ? "text-gray-300 hover:bg-gray-700"
-                  : "text-gray-600 hover:bg-gray-100"
-            }`}
+            variant="ghost"
           >
             Clear All
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={appState.applyFilters}
             disabled={!appState.hasUnappliedChanges}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 font-semibold border border-[#000000] ${
-              !appState.hasUnappliedChanges
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
-                : `text-white shadow-md hover:shadow-lg active:scale-95 ${
-                    appState.hasUnappliedChanges ? "animate-pulse ring-2 ring-white/50" : ""
-                  } ${
-                    isDark
-                      ? "bg-[#2d5a38] hover:bg-[#244a2e]"
-                      : "bg-[#009639] hover:bg-[#007b2f]"
-                  }`
-            }`}
+            variant="primary"
+            className={appState.hasUnappliedChanges ? "animate-pulse ring-2 ring-white/50" : ""}
           >
             Apply Filters
-          </button>
+          </Button>
         </div>
       </Modal>
 

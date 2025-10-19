@@ -1,7 +1,7 @@
 import { components, cn } from "../../styles/theme";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
-import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Button } from "../Button";
 
 interface AppHeaderProps {
   onOpenDonate: () => void;
@@ -16,7 +16,6 @@ interface AppHeaderProps {
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
-  const t = useThemeClasses();
 
   return (
     <div className={`sticky top-0 z-[5] transition-colors duration-200 ${
@@ -51,27 +50,30 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
             )}
           </button>
 
-          <button
+          <Button
             onClick={onOpenDonate}
-            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${t.flag.redBg} ${isDark ? "hover:bg-[#a01f25]" : "hover:bg-[#d4202a]"}`}
+            variant="danger"
+            size="sm"
             aria-label="Help Palestine - Donate to relief efforts"
           >
             Help Palestine
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onOpenStats}
-            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${t.flag.greenBg} ${t.flag.greenHover}`}
+            variant="primary"
+            size="sm"
             aria-label="View Statistics"
           >
             Statistics
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onOpenAbout}
-            className={`px-4 py-2 text-white text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${t.flag.greenBg} ${t.flag.greenHover}`}
+            variant="primary"
+            size="sm"
             aria-label="About Heritage Tracker"
           >
             About
-          </button>
+          </Button>
         </div>
       </header>
 

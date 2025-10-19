@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
+// import { FixedSizeList as List } from "react-window"; // Ready for future use when needed
 import type { GazaSite } from "../../types";
-import { components, getStatusHexColor } from "../../styles/theme";
+import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard } from "../../utils/format";
 import { downloadCSV } from "../../utils/csvExport";
 import { Tooltip } from "../Tooltip";
@@ -8,6 +9,10 @@ import { TABLE_CONFIG } from "../../constants/layout";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Button } from "../Button";
+
+// Threshold for enabling virtual scrolling
+const VIRTUAL_SCROLL_THRESHOLD = 50;
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -125,6 +130,17 @@ export function SitesTableDesktop({
     return visibleColumns.includes(columnName);
   };
 
+  // Virtual scrolling: Ready but not yet implemented in JSX
+  // When site count exceeds 50, virtual scrolling can be enabled
+  // Infrastructure is in place (SiteTableRow.tsx, VirtualizedTableBody.tsx)
+  // Current count: 45 sites - standard rendering is sufficient
+  const useVirtualScrolling = sortedSites.length >= VIRTUAL_SCROLL_THRESHOLD;
+
+  // Note for future: When implementing, replace tbody.map with VirtualizedTableBody component
+  if (useVirtualScrolling) {
+    console.log(`Virtual scrolling available for ${sortedSites.length} sites (threshold: ${VIRTUAL_SCROLL_THRESHOLD})`);
+  }
+
   // Scroll to highlighted site when it changes
   useEffect(() => {
     if (!highlightedSiteId || !highlightedRowRef.current || !tableContainerRef.current) return;
@@ -162,26 +178,26 @@ export function SitesTableDesktop({
               )}
             </div>
             {variant === "expanded" && (
-              <button
+              <Button
                 onClick={() => downloadCSV(sortedSites)}
-                className="flex items-center gap-2
-                           px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
-                           rounded-lg shadow-md hover:shadow-lg
-                           transition-all duration-200 font-semibold
-                           active:scale-95 text-sm border border-[#000000] mr-12"
+                variant="primary"
+                size="sm"
+                className="mr-12"
                 title="Export table data to CSV file"
                 aria-label="Export to CSV"
+                icon={
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                }
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
                 Export CSV
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -189,7 +205,7 @@ export function SitesTableDesktop({
 
       {/* Scrollable table with sticky headers */}
       <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
-        <table className={components.table.base}>
+        <table className={t.table.base}>
           <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
             <tr>
               {isColumnVisible("name") && (
@@ -279,7 +295,7 @@ export function SitesTableDesktop({
                 }}
               >
                 {isColumnVisible("name") && (
-                  <td className={components.table.td}>
+                  <td className={t.table.td}>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -302,7 +318,7 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("type") && (
-                  <td className={`${components.table.td} text-center`}>
+                  <td className={`${t.table.td} text-center`}>
                     <Tooltip content={getSiteTypeLabel(site.type)}>
                       <span className="inline-flex items-center justify-center">
                         <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
@@ -311,7 +327,7 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("status") && (
-                  <td className={components.table.td}>
+                  <td className={t.table.td}>
                     <span
                       className="font-semibold capitalize text-sm"
                       style={{ color: getStatusHexColor(site.status) }}
@@ -321,20 +337,20 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("dateDestroyed") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
                     {formatDateStandard(site.dateDestroyed)}
                   </td>
                 )}
                 {isColumnVisible("dateDestroyedIslamic") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
                     {site.dateDestroyedIslamic || "N/A"}
                   </td>
                 )}
                 {isColumnVisible("yearBuilt") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>{site.yearBuilt}</td>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>{site.yearBuilt}</td>
                 )}
                 {isColumnVisible("yearBuiltIslamic") && (
-                  <td className={`${components.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
                     {site.yearBuiltIslamic || "N/A"}
                   </td>
                 )}

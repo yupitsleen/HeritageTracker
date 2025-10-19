@@ -5,7 +5,7 @@
 **Documenting the destruction of Palestinian cultural heritage through interactive visualization.**
 
 ![Project Status](https://img.shields.io/badge/status-production-brightgreen)
-![Tests](https://img.shields.io/badge/tests-184%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-292%20passing-brightgreen)
 ![Deployment](https://img.shields.io/badge/deployment-live-success)
 ![PWA](https://img.shields.io/badge/PWA-enabled-blue)
 ![License](https://img.shields.io/badge/license-TBD-lightgrey)
@@ -46,9 +46,10 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **Responsive design** with Palestinian flag-inspired theme (red/white striped table rows)
 - **PWA support** with offline map tile caching (30-day expiration)
 - **Lazy loading** for Map, Timeline, and Modal components
-- **Code splitting** (287KB main bundle, 621KB total precached)
+- **Code splitting** (310KB main bundle, 669KB total precached)
+- **Performance optimizations** (O(n) algorithms, React.memo, granular D3 imports)
 - **CI/CD Pipeline** with automated testing, mobile smoke tests, and bundle monitoring
-- **Comprehensive test suite** (184 tests including mobile variants, performance tests)
+- **Comprehensive test suite** (292 tests including performance regression tests for 1000+ sites)
 
 ### 🚧 In Progress
 
@@ -62,7 +63,7 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **Leaflet** + **Leaflet.heat** - Interactive mapping with heatmap support
 - **D3.js** - Timeline visualization with time scales
 - **vite-plugin-pwa** + **Workbox** - Progressive Web App with offline support
-- **Vitest** - Testing framework (184 tests passing)
+- **Vitest** - Testing framework (292 tests passing)
 - **React Testing Library** - Component testing
 - **GitHub Actions** - CI/CD automation with mobile smoke tests and bundle monitoring
 - **GitHub Pages** - Production hosting with auto-deployment
@@ -91,7 +92,7 @@ npm run dev
 
 ```bash
 npm run dev          # Dev server with HMR (localhost:5173)
-npm test            # Run test suite (184 tests)
+npm test            # Run test suite (292 tests)
 npm run lint        # ESLint code quality check
 npm run build       # Production build (with PWA manifest + service worker)
 npm run preview     # Preview production build locally
@@ -207,9 +208,10 @@ vite.config.ts                  # Vite config with PWA plugin + code splitting
 - [x] Statistics dashboard with impact metrics
 - [x] About/Methodology page
 - [x] **45 Gaza heritage sites documented** ✅
-- [x] Comprehensive test suite (184 tests including mobile smoke tests)
+- [x] Comprehensive test suite (292 tests including performance regression tests)
 - [x] CI/CD pipeline with mobile tests + bundle monitoring
-- [x] **Performance optimizations:** Lazy loading, code splitting, PWA
+- [x] **Performance optimizations:** Lazy loading, code splitting, PWA, O(n) algorithms
+- [x] **1000+ site scaling validated** with performance regression tests
 - [x] **DEPLOYED TO PRODUCTION:** https://yupitsleen.github.io/HeritageTracker/
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
@@ -255,7 +257,7 @@ We welcome contributions! Ways to help:
 - Write tests for new features (minimum 5+ tests per component)
 - Include mobile-specific tests when applicable
 - Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-- Ensure all 184 tests pass before committing
+- Ensure all 292 tests pass before committing
 - Run `npm run lint && npm test` before every commit
 - All changes automatically tested and deployed via CI/CD
 - Mobile smoke tests and bundle size monitoring in CI pipeline
@@ -285,13 +287,32 @@ This project builds on documentation by UNESCO, Forensic Architecture, Heritage 
 
 ---
 
-_Last updated: October 16, 2025 | Version: 1.5.1 | 🚀 Live in Production with PWA | 45 sites documented | 184 tests passing | Bundle optimized (287KB main, 621KB total precached) | Offline support enabled | **Codebase refactored for maintainability**_
+_Last updated: October 19, 2025 | Version: 1.11.0 | 🚀 Live in Production with PWA | 45 sites documented | 292 tests passing | Bundle optimized (310KB main, 669KB total) | Performance validated for 1000+ sites | **Production-ready with comprehensive optimizations**_
 
 **Live Site:** https://yupitsleen.github.io/HeritageTracker/
 
-## 📈 Recent Updates (v1.5.1)
+## 📈 Recent Updates (v1.11.0 - Oct 19, 2025)
 
-### Code Architecture Refactoring (Oct 2025)
+### Performance Regression Tests (NEW)
+
+- **Added 9 new performance tests** (292 total, up from 283)
+- **1000+ site scaling validated**:
+  - Filter performance: 0.3-4.4ms for 1000 sites
+  - MapMarkers render: 67-195ms for 100 sites
+  - Table render: 1826-2275ms for 1000 sites
+- **React.memo effectiveness**: Re-renders prevented in 4-11ms
+- **Memory leak testing**: 10 mount/unmount cycles validated
+
+### Algorithmic Performance Optimizations
+
+- **MapMarkers O(n²) → O(n)**: Memoized destroyed sites Set
+- **React.memo**: HeritageMap and MapMarkers prevent re-renders
+- **D3 granular imports**: Tree-shaking optimization (62.29 → 61.46 KiB)
+- **useCallback handlers**: Stable filter handler references
+- **Build time**: 18.30s → 13.25s (27.6% faster)
+- **Code cleanup**: Removed 21+ unnecessary comments
+
+### Code Architecture Refactoring
 
 - **Modular structure:** 870 lines reduced from main components
 - **7 new hooks:** Reusable logic (state, filtering, resizing, stats)
@@ -299,23 +320,19 @@ _Last updated: October 16, 2025 | Version: 1.5.1 | 🚀 Live in Production with 
 - **SOLID principles:** Single responsibility per module
 - **See:** [ARCHITECTURE_REVIEW.md](ARCHITECTURE_REVIEW.md) for full details
 
-### Performance Optimizations (v1.5.0)
+### Component Performance Optimizations
 
 - **Lazy Loading:** Map, Timeline, and Modal components load on-demand
-- **Code Splitting:** Main bundle reduced from 580KB to 287KB (50% reduction)
+- **Code Splitting:** Main bundle 310KB (89KB gzipped)
 - **PWA Support:** Offline functionality with map tile caching
-- **Service Worker:** 621KB total assets precached with 30-day tile expiration
-
-### CI/CD Enhancements
-
-- Mobile smoke test pipeline integration
-- Automated bundle size monitoring and limits
-- GitHub Actions step summary reporting
+- **Service Worker:** 669KB total assets precached with 30-day tile expiration
+- **Progressive Loading:** Intersection Observer for off-screen content
+- **StatsDashboard**: 60% fewer mobile DOM nodes
 
 ### Bundle Analysis
 
-- Main: 287KB (83KB gzipped)
+- Main: 310KB (89KB gzipped)
 - React vendor: 12KB (4KB gzipped)
 - Map vendor: 161KB (47KB gzipped)
-- D3 vendor: 62KB (21KB gzipped)
+- D3 vendor: 61KB (21KB gzipped) - optimized
 - Lazy chunks: ~60KB total

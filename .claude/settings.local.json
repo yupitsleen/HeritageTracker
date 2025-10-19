@@ -11,7 +11,10 @@
       "Bash(git log:*)",
       "WebFetch(domain:s3-us-west-2.amazonaws.com)",
       "Bash(curl:*)",
-      "Bash(/dev/null)"
+      "Bash(/dev/null)",
+      "Bash(gh pr list --state merged --limit 1 --json number,title,url)",
+      "Bash(gh pr view 22 --json files --jq '.files[].path')",
+      "Bash(git add -A)"
     ]
   },
   "outputStyle": "default"

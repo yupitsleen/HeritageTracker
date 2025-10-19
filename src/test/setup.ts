@@ -16,6 +16,40 @@ global.ResizeObserver = class ResizeObserver {
   }
 };
 
+// Mock IntersectionObserver for LazySection
+// IntersectionObserver is not available in JSDOM test environment
+global.IntersectionObserver = class IntersectionObserver {
+  constructor(private callback: IntersectionObserverCallback) {
+    // Immediately trigger callback with isIntersecting = true for testing
+    // This ensures lazy-loaded content renders immediately in tests
+    setTimeout(() => {
+      this.callback(
+        [
+          {
+            isIntersecting: true,
+            target: {} as Element,
+            intersectionRatio: 1,
+            boundingClientRect: {} as DOMRectReadOnly,
+            intersectionRect: {} as DOMRectReadOnly,
+            rootBounds: null,
+            time: Date.now(),
+          },
+        ],
+        this as unknown as IntersectionObserver
+      );
+    }, 0);
+  }
+  observe() {
+    // Mock implementation - do nothing
+  }
+  unobserve() {
+    // Mock implementation - do nothing
+  }
+  disconnect() {
+    // Mock implementation - do nothing
+  }
+};
+
 // Mock HTMLCanvasElement for leaflet.heat
 // The heat map library requires canvas context, which isn't available in JSDOM
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

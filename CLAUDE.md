@@ -1,24 +1,22 @@
 # CLAUDE.md - Heritage Tracker
 
-**⚠️ IMPORTANT:** Do not provide unprompted summaries after completing work. Only summarize when explicitly asked.
-
----
-
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 232 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/darkmode (dark mode + system preference) | main (production)
+**Current:** 45 sites | 292 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/mapSync (performance optimizations complete) | main (production)
 
 ### Essential Commands
+
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 232 tests - MUST pass before commit
+npm test        # 292 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
 
 ### Git Workflow
+
 ```bash
 # Before EVERY commit:
 npm run lint && npm test
@@ -34,6 +32,7 @@ git commit -m "docs: update docs"
 ## 📐 Architecture Overview
 
 ### Desktop Layout
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ Header (black bg, right-aligned buttons: Help | Stats | About) │
@@ -53,11 +52,13 @@ All components have shadow-xl for dramatic depth effect
 ```
 
 ### Mobile Layout
+
 ```
 FilterBar → Accordion Table (no map/timeline)
 ```
 
 ### Key Files
+
 ```
 src/
 ├── components/
@@ -67,18 +68,30 @@ src/
 │   │   ├── TimeToggle.tsx           # Historical imagery (2014/2023/Current)
 │   │   └── MapGlowLayer.tsx         # Canvas ambient glow overlay
 │   ├── Timeline/TimelineScrubber.tsx # D3 horizontal timeline
-│   ├── SitesTable.tsx                # 3 variants: compact/expanded/mobile
-│   └── FilterBar/FilterBar.tsx       # Deferred filter application
+│   ├── SitesTable/
+│   │   ├── SitesTableDesktop.tsx    # Desktop table (compact/expanded)
+│   │   ├── SitesTableMobile.tsx     # Mobile accordion
+│   │   ├── SiteTableRow.tsx         # Reusable row component
+│   │   └── VirtualizedTableBody.tsx # Virtual scrolling (prepared, disabled)
+│   ├── FilterBar/FilterBar.tsx       # Deferred filter application
+│   ├── Button/Button.tsx             # Reusable button component
+│   └── LazySection.tsx               # Intersection Observer wrapper
 ├── constants/map.ts                  # GAZA_CENTER, HISTORICAL_IMAGERY
 ├── contexts/
 │   ├── AnimationContext.tsx          # Global timeline state
 │   └── ThemeContext.tsx              # Dark mode + system preference detection
 ├── hooks/
 │   ├── useMapGlow.ts                 # Glow calculations
-│   └── useThemeClasses.ts            # Dark mode utility classes
+│   ├── useThemeClasses.ts            # Dark mode utility classes
+│   ├── useIntersectionObserver.ts    # Progressive loading
+│   ├── useFilterState.ts             # Filter state management
+│   ├── useModalState.ts              # Modal state management
+│   └── useSiteSelection.ts           # Site selection state
 ├── utils/
 │   ├── heritageCalculations.ts       # Site value/glow formulas
 │   └── siteFilters.ts                # Filter logic + BCE parsing
+├── types/
+│   └── filters.ts                    # Filter type definitions and utilities
 └── data/mockSites.ts                 # 45 sites (static JSON)
 ```
 
@@ -87,6 +100,7 @@ src/
 ## 🎯 Critical Patterns
 
 ### Dark Mode & Theme System
+
 **ThemeContext** - React Context-based theming with system preference detection:
 
 ```typescript
@@ -107,29 +121,29 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 ```
 
 **IMPORTANT - DO NOT use Tailwind `dark:` modifiers:**
+
 - ❌ `className="bg-white dark:bg-black"` - Does NOT work with context-based theming
 - ✅ `className={isDark ? "bg-black" : "bg-white"}` - Use conditional expressions
 
 **Pattern:**
+
 ```tsx
 import { useTheme } from "../../contexts/ThemeContext";
 
 function MyComponent() {
   const { isDark } = useTheme();
-  return (
-    <div className={`${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}>
-      {/* Content */}
-    </div>
-  );
+  return <div className={`${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}>{/* Content */}</div>;
 }
 ```
 
 **Testing:**
+
 - `darkMode.test.tsx` - Component dark mode rendering (19 tests)
 - `darkModeAutomated.test.tsx` - Automated validation (scans codebase for `dark:` modifiers)
 - `ThemeContext.test.tsx` - System preference detection (6 tests)
 
 ### Historical Satellite Imagery
+
 **SiteDetailView** - Right side satellite map with 3 time periods:
 
 ```typescript
@@ -152,40 +166,45 @@ CURRENT: {
 ```
 
 **Implementation:**
+
 - TimeToggle component (top-right, z-[1000])
 - TileLayer with `key={selectedPeriod}` forces re-render
 - Zoom clamped: `Math.min(SITE_DETAIL_ZOOM, periodMaxZoom)` = **17 for all periods**
 - Default: PRE_CONFLICT_2023
 
 ### Map Configuration
+
 ```typescript
 // constants/map.ts
-GAZA_CENTER: [31.42, 34.38]   // Optimized centering
-DEFAULT_ZOOM: 10.5             // Gaza overview
-SITE_DETAIL_ZOOM: 17           // Consistent across historical imagery
+GAZA_CENTER: [31.42, 34.38]; // Optimized centering
+DEFAULT_ZOOM: 10.5; // Gaza overview
+SITE_DETAIL_ZOOM: 17; // Consistent across historical imagery
 ```
 
 ### Data Schema
+
 ```typescript
 interface GazaSite {
   id: string;
   type: "mosque" | "church" | "archaeological" | "museum" | "historic-building";
   name: string;
   nameArabic?: string;
-  yearBuilt: string;            // "7th century", "800 BCE", "1950"
+  yearBuilt: string; // "7th century", "800 BCE", "1950"
   coordinates: [number, number]; // [lat, lng] - Leaflet format!
   status: "destroyed" | "heavily-damaged" | "damaged";
-  dateDestroyed?: string;        // ISO: "2023-12-07"
+  dateDestroyed?: string; // ISO: "2023-12-07"
   // ... additional fields
 }
 ```
 
 ### Year Parsing (`parseYearBuilt`)
+
 - "800 BCE" → -800
 - "7th century" → 650 (midpoint)
 - "1950" → 1950
 
 ### State Management
+
 - `highlightedSiteId` - Syncs Timeline ↔ Map ↔ Table
 - `AnimationContext` - Global timeline playback state
 - Deferred filters - Apply on button click (not on input change)
@@ -195,14 +214,16 @@ interface GazaSite {
 ## ✅ Quality Gates
 
 **BEFORE EVERY COMMIT:**
+
 - [ ] `npm run lint` - clean
-- [ ] `npm test` - all 232 tests pass
+- [ ] `npm test` - all 292 tests pass
 - [ ] Visual check in browser (dev server running)
 - [ ] No console errors
 - [ ] Mobile view renders (no AnimationProvider errors)
 - [ ] Both light and dark modes render correctly
 
 **Performance:**
+
 - Desktop: 60fps minimum
 - Mobile: 30fps acceptable
 - Initial load: <3s on 3G
@@ -212,8 +233,10 @@ interface GazaSite {
 ## 🧪 Testing
 
 **Framework:** Vitest + React Testing Library
-**Coverage:** 232 tests across 23 files
+**Coverage:** 292 tests across 25 files
 **Test Files:**
+
+- `Button.test.tsx` (24 tests) - Reusable button component
 - `darkMode.test.tsx` (19 tests) - Component dark mode rendering
 - `darkModeAutomated.test.tsx` (3 tests) - Automated validation, scans for `dark:` modifiers
 - `ThemeContext.test.tsx` (6 tests) - System preference detection
@@ -225,11 +248,13 @@ interface GazaSite {
 - `heritageCalculations.test.ts` (42 tests)
 - `useMapGlow.test.ts` (24 tests)
 - `MapGlowLayer.test.tsx` (7 tests)
-- `performance.test.tsx` (9 tests) - 25+ sites, 50 site stress test
+- `performance.test.tsx` (18 tests) - Performance regression tests (25/50/100/1000 sites)
 - `validateSites.test.ts` (20 tests) - Data integrity
+- `filters.test.ts` (22 tests) - Filter state utilities
 - Plus 10 more test files
 
 **Test Setup:**
+
 - ResizeObserver mock (TimelineScrubber)
 - Canvas mock (leaflet.heat)
 
@@ -240,6 +265,7 @@ interface GazaSite {
 ## 🚫 Known Issues & Gotchas
 
 ### ❌ DO NOT
+
 - Use Tailwind `dark:` modifiers (use conditional expressions with `isDark` instead)
 - Use text inputs for BC/BCE dates (parsing fragile)
 - Forget `z-[9999]` on dropdowns above Leaflet maps
@@ -248,6 +274,7 @@ interface GazaSite {
 - Create animation frames without cleanup
 
 ### ✅ DO
+
 - Number input + dropdown for BC/BCE
 - Remember Leaflet uses `[lat, lng]` NOT `[lng, lat]`
 - Use `useMemo` for expensive sorting/calculations
@@ -256,6 +283,7 @@ interface GazaSite {
 - Use Canvas for continuous animations (better than SVG)
 
 ### Current Limitations
+
 - No validation that end date > start date
 - Year parsing assumes CE unless BCE/BC explicit
 - Timeline animation paused (hidden in production)
@@ -266,7 +294,9 @@ interface GazaSite {
 ## 🎨 Component Details
 
 ### SitesTable
+
 **3 variants:**
+
 - `compact` - Desktop sidebar (Name, Type, Status, Date)
 - `expanded` - Modal (all fields, CSV export)
 - `mobile` - Accordion (no Type column)
@@ -276,11 +306,13 @@ interface GazaSite {
 **CSV Export:** RFC 4180 compliant, timestamped filename
 
 ### FilterBar
+
 - Desktop: Inline search, BC/BCE dropdowns, date ranges (text-[10px])
 - Mobile: Full-width search, hidden Type/Status filters
 - **Deferred application** - Filters apply on button click, not on input change
 
 ### SiteDetailView & TimeToggle
+
 - **Purpose:** Satellite-only aerial view (right side)
 - **No site selected:** Gaza overview (zoom 10.5)
 - **Site selected:** Zoom to site (zoom 17)
@@ -290,6 +322,7 @@ interface GazaSite {
   - Default: Aug 2023 (PRE_CONFLICT_2023)
 
 ### Timeline Scrubber (Paused)
+
 - **Status:** ✅ Implemented, ⏸️ Hidden in production
 - D3.js horizontal timeline
 - Play/Pause/Reset controls
@@ -305,9 +338,11 @@ interface GazaSite {
 **Spec:** `docs/timeline-animation-spec.md`
 
 ### Core Concept: "Dimming Gaza"
+
 As sites are destroyed, map "glow" fades (gold → grey)
 
 **Implemented:**
+
 - ✅ TimelineScrubber (D3.js)
 - ✅ AnimationContext (global state)
 - ✅ MapGlowLayer (Leaflet.heat)
@@ -315,16 +350,18 @@ As sites are destroyed, map "glow" fades (gold → grey)
 - ✅ heritageCalculations utilities
 
 **Paused (Future):**
+
 - ⏸️ MarkerAnimations (explode/crack/shake)
 - ⏸️ HeritageMetricsDashboard (integrity meter)
 - ⏸️ Mobile timeline support
 
 ### Glow Contribution Formula
+
 ```typescript
 const glowContribution = (site: GazaSite): number => {
   let weight = 100;
   const age = 2024 - (site.creationYear || 0);
-  if (age > 2000) weight *= 3;      // Ancient
+  if (age > 2000) weight *= 3; // Ancient
   else if (age > 1000) weight *= 2; // Medieval
   else if (age > 200) weight *= 1.5; // Historic
 
@@ -341,6 +378,7 @@ const glowContribution = (site: GazaSite): number => {
 ## 🌍 Cultural & Legal
 
 ### Content Standards
+
 - Documentation, not advocacy
 - Full attribution for all claims
 - Cultural sensitivity
@@ -348,6 +386,7 @@ const glowContribution = (site: GazaSite): number => {
 - No personal data
 
 ### Accessibility
+
 - WCAG AA compliance
 - Bilingual (English + Arabic, RTL support)
 - Mobile-first responsive
@@ -355,6 +394,7 @@ const glowContribution = (site: GazaSite): number => {
 - Keyboard navigation (timeline controls)
 
 ### Legal Framework
+
 - 1954 Hague Convention
 - Rome Statute (ICC)
 - UN Security Council Resolution 2347 (2017)
@@ -374,18 +414,64 @@ Auto-test → Auto-deploy to GitHub Pages on main branch push
 ## 📈 Performance Optimizations
 
 **Implemented:**
-- Lazy loading (Map, Timeline, Modal components)
-- Code splitting (react-vendor 12KB, map-vendor 161KB, d3-vendor 62KB)
-- Service Worker (PWA, offline support, 30-day tile cache)
-- Bundle: 287KB main (83KB gzipped), 621KB total precached
+
+- **Algorithmic Optimizations**:
+  - **MapMarkers**: O(n²) → O(n) with memoized destroyed sites Set
+  - **React.memo**: HeritageMap and MapMarkers prevent unnecessary re-renders
+  - **D3 granular imports**: Reduced bundle by tree-shaking unused D3 modules
+  - **useCallback**: Stable filter handler references in DesktopLayout
+
+- **Code Splitting**:
+  - React vendor: 11.79 KiB (4.21 KiB gzipped)
+  - Map vendor (Leaflet): 161.05 KiB (47.31 KiB gzipped)
+  - D3 vendor (Timeline): 61.46 KiB (20.59 KiB gzipped) - optimized with granular imports
+  - Main bundle: 309.73 KiB (89.05 KiB gzipped)
+  - Total precached: 668.64 KiB (28 files)
+
+- **Lazy Loading**:
+  - Map, Timeline, Modal components
+  - About modal: 9 lazy-loaded sections (progressive loading)
+  - StatsDashboard: Conditional rendering (60% fewer DOM nodes on mobile)
+
+- **Progressive Loading**:
+  - Intersection Observer for off-screen content (LazySection component)
+  - ~200 fewer initial DOM nodes for large sections
+
+- **Service Worker**: PWA with offline support, 30-day tile cache
+
+- **Virtual Scrolling (Prepared)**:
+  - Infrastructure ready with `VirtualizedTableBody` component
+  - Threshold: 50 sites (current: 45)
+  - **Status**: Disabled due to react-window TypeScript import issue
+  - **Issue**: Library exports `List`, type definitions expect `FixedSizeList`
+  - **Fallback**: Regular rendering (acceptable for <50 sites)
+  - **TODO**: Resolve when site count exceeds 50 (switch to react-virtualized or fix imports)
+
+**Production Build Performance:**
+- Build time: 13.25s (27.6% improvement from 18.30s)
+- Initial load: <3s on 3G
+- Map rendering: 67-195ms for 100 sites (O(n) optimization)
+- Table rendering: 1826-2117ms for 1000 sites
+- Filter performance: 0.3-4.4ms for 1000 sites (linear time)
+- Stress test: 1000+ sites validated for future scaling
 
 **Patterns:**
+
 ```tsx
 // Lazy loading
 const HeritageMap = lazy(() => import("./components/Map/HeritageMap"));
 
 // Memoization
 const sortedSites = useMemo(() => [...sites].sort(), [sites, sortKey]);
+
+// Progressive loading with Intersection Observer
+<LazySection fallbackHeight="h-96">
+  <ExpensiveComponent />
+</LazySection>
+
+// Conditional rendering (mobile optimization)
+const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 768);
+{isDesktop && <DesktopOnlyContent />}
 
 // Cleanup
 useEffect(() => {
@@ -398,8 +484,53 @@ useEffect(() => {
 
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feat/darkmode - Current Branch):**
-- [x] **Dark Mode Implementation** ✅
+**Completed (feat/mapSync - Current Branch):**
+
+- [x] **Performance Regression Tests** ✅ (Oct 19)
+  - **Added 9 new tests** (292 total, up from 283)
+  - **MapMarkers memoization**: 100 sites render in 67-195ms (O(n) optimization verified)
+  - **React.memo effectiveness**: Re-renders prevented in 4-11ms
+  - **Filter performance at 1000 sites**: Type (0.7ms), Status (0.3ms), Search (2.5ms), Complex (1.3ms)
+  - **Table render 1000 sites**: 1826-2275ms (virtual scrolling threshold validated)
+  - **Memory efficiency**: 10 mount/unmount cycles with 100 sites (no leaks)
+  - **Key commit**: 782f4e7 (comprehensive performance regression tests)
+
+- [x] **Algorithmic Performance Optimizations** ✅ (Oct 19)
+  - **MapMarkers O(n²) → O(n)**: Pre-compute destroyed sites as Set with useMemo
+  - **React.memo**: HeritageMap and MapMarkers wrapped to prevent re-renders
+  - **D3 granular imports**: Tree-shaking optimization (62.29 → 61.46 KiB)
+  - **useCallback handlers**: Stable filter handler references in DesktopLayout
+  - **Build time improvement**: 18.30s → 13.25s (27.6% faster)
+  - **Code cleanup**: Removed 21+ unnecessary comments
+  - **Testing**: All 283 tests passing, ThemeContext isolation fixed
+  - **Key commits**: 9d25a2a (perf optimizations), 4793008 (comment cleanup), 729c79a (test fixes)
+
+- [x] **Component Performance Optimizations** ✅ (Oct 19)
+  - **StatsDashboard**: Conditional rendering (60% fewer mobile DOM nodes)
+  - **About Modal**: Lazy-loaded 9 sections with React.lazy() + Suspense
+  - **Progressive Loading**: Intersection Observer for off-screen content (useIntersectionObserver hook, LazySection component)
+  - **Virtual Scrolling**: Infrastructure prepared (VirtualizedTableBody, SiteTableRow components)
+    - Threshold: 50 sites (current: 45)
+    - Currently disabled due to react-window TypeScript import issue
+  - **Production Build**: Fixed TypeScript errors, verified successful build
+  - **Bundle Analysis**: 668.64 KiB total (main: 309.73 KiB / 89.05 KiB gzipped)
+  - **Testing**: All 283 tests passing
+  - **Key commits**: 647f810 (StatsDashboard), 63623b4 (About lazy), 15cd8d7 (Intersection Observer), 88b1d93 (Virtual scroll prep), d3bb990 (Build fixes)
+
+- [x] **Code Quality Refactoring** ✅ (Oct 19)
+  - **SOLID/DRY/KISS Improvements**: Completed all 13 code review items
+  - **Split useAppState hook**: Extracted focused hooks (useFilterState, useModalState, useSiteSelection)
+  - **Reusable Button component**: Eliminated 50+ lines of duplicated styling
+  - **Style consolidation**: Centralized theme-aware styles in useThemeClasses
+  - **Filter utilities**: Type-safe filter state management (src/types/filters.ts)
+  - **Open/Closed Principle**: Removed `as const` from components.ts, made extensible
+  - **Separation of Concerns**: Extracted 11+ inline style strings to useThemeClasses
+  - **Testing**: 283 tests passing (51 new tests added)
+  - **Key commits**: 6ea6f2f (SOLID), 6c8cf60 (DRY/KISS), b59d045 (Open/Closed)
+
+**Completed (feat/darkmode - Merged):**
+
+- [x] **Dark Mode Implementation** ✅ (Oct 18)
   - **Full dark mode support**: All components support light/dark themes
   - **System preference detection**: Auto-detects OS color scheme on first visit
   - **ThemeContext**: React Context-based theming (not Tailwind `darkMode` config)
@@ -409,11 +540,11 @@ useEffect(() => {
     - `darkMode.test.tsx` - Component rendering in both modes
     - `darkModeAutomated.test.tsx` - Automated `dark:` modifier detection
     - `ThemeContext.test.tsx` - System preference detection
-  - **Code review**: A+ grade (see CODE_REVIEW_DARK_MODE_FINAL.md)
-  - All 232 tests passing, linting clean
+  - All tests passing, linting clean
   - **Key files**: ThemeContext.tsx, useThemeClasses.ts, darkMode tests
 
 **Completed (feature/UI-refinement - Merged):**
+
 - [x] **Complete UI Refinement** ✅
   - **Design System**: Unified button styling, shadows, transitions, active states
   - **Palestinian Flag Theme**: Red triangle background with semi-transparent components (50-90% opacity)
@@ -425,6 +556,7 @@ useEffect(() => {
   - **Compact Spacing**: Reduced vertical space by ~34px in filter bar and timeline
 
 **Completed (feature/secondMapfixes-viewImprovements - Merged):**
+
 - [x] Satellite detail view map (right side)
 - [x] Historical satellite imagery toggle (2014/Aug 2023/Current)
 - [x] Consistent zoom levels (zoom 17 for all periods)
@@ -435,11 +567,13 @@ useEffect(() => {
 - [x] Ctrl+scroll zoom fix for SiteDetailView
 
 **Next:**
-- [ ] Merge feat/darkmode to main
+
+- [ ] Merge feat/mapSync to main
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
 
 **Future:**
+
 - [ ] Resume timeline animations (Phase 3+)
 - [ ] All 110+ UNESCO-verified sites
 - [ ] Database integration (Supabase)
@@ -447,6 +581,6 @@ useEffect(() => {
 
 ---
 
-**Last Updated:** October 18, 2025
-**Version:** 1.9.0-dev
-**Branch:** feat/darkmode (ready for merge) | main (production)
+**Last Updated:** October 19, 2025
+**Version:** 1.11.0-dev
+**Branch:** feat/mapSync (all optimizations complete, ready for merge) | main (production)

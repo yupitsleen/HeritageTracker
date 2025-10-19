@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { About } from "./About";
+import { waitFor } from "@testing-library/react";
 
 describe("About", () => {
   it("renders without crashing", () => {
@@ -8,11 +9,14 @@ describe("About", () => {
     expect(container).toBeInTheDocument();
   });
 
-  it("displays content", () => {
+  it("displays content", async () => {
     renderWithTheme(<About />);
-    // Check that page has substantive content
-    const bodyText = document.body.textContent || "";
-    expect(bodyText.length).toBeGreaterThan(100); // Has meaningful content
+
+    // Wait for lazy-loaded sections to render
+    await waitFor(() => {
+      const bodyText = document.body.textContent || "";
+      expect(bodyText.length).toBeGreaterThan(100); // Has meaningful content
+    });
   });
 
   it("is scrollable", () => {

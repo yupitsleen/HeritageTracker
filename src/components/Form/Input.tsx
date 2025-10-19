@@ -1,4 +1,4 @@
-import { components, cn } from "../../styles/theme";
+import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -14,11 +14,10 @@ export function Input({ variant = "text", className, ...props }: InputProps) {
   const t = useThemeClasses();
 
   const baseClasses = cn(
-    components.input.base,
-    components.input.focus,
-    variant === "number" && components.input.number,
-    variant === "date" && components.input.date,
+    "px-3 py-2 border rounded-lg text-sm transition-all duration-200",
     t.input.base,
+    t.input.focus,
+    variant === "number" && t.input.number,
     className
   );
 

@@ -1,8 +1,8 @@
 # Timeline Animation Feature Specification
 
-**Status:** Phase 1-2 Complete ✅ | Phase 3+ Paused ⏸️ | UI Refinement Complete ✅
-**Branch:** feature/UI-refinement (PR #19 - Ready for merge)
-**Previous Branch:** feature/timelineImprovements (MERGED to main)
+**Status:** Phase 1-2 Complete ✅ | Phase 3+ Paused ⏸️ | Performance Optimizations Complete ✅
+**Branch:** feat/mapSync (All optimizations complete - Ready for merge)
+**Previous Branches:** feature/UI-refinement (MERGED), feature/timelineImprovements (MERGED to main)
 **Related Docs:** `../CLAUDE.md`, `UI_REFINEMENT_PROGRESS.md`, `UI_DESIGN_IMPROVEMENTS.md`
 
 ---
@@ -23,22 +23,32 @@ Phase 5: Polish & Testing            ⏸️ PAUSED
 
 ### Recent Updates (Oct 2025)
 
-1. **UI Refinement Complete** (PR #19 - feature/UI-refinement)
+1. **Performance Optimizations Complete** (Oct 19 - feat/mapSync)
+   - **Algorithmic optimizations**: MapMarkers O(n²) → O(n) with memoized destroyed sites Set
+   - **React.memo**: HeritageMap and MapMarkers prevent unnecessary re-renders
+   - **D3 granular imports**: Tree-shaking optimization (bundle reduction)
+   - **useCallback handlers**: Stable filter handler references
+   - **Build time**: 18.30s → 13.25s (27.6% faster)
+   - **Performance regression tests**: 9 new tests added (292 total)
+   - **1000+ site scaling validated**: Filters 0.3-4.4ms, MapMarkers 67-195ms for 100 sites
+   - **Code cleanup**: Removed 21+ unnecessary comments
+
+2. **UI Refinement Complete** (Oct 17 - feature/UI-refinement, MERGED)
    - Palestinian flag theme integration (red triangle background)
    - Black border system across all components (2px borders)
    - Visual depth enhancement (shadow-xl for dramatic floating effect)
    - Timeline made compact (py-3, mb-3 spacing)
    - Semi-transparent timeline (bg-white/90 with backdrop-blur-sm)
    - Design system applied consistently
-   - All 204 tests passing
 
-2. **Historical satellite imagery** - SiteDetailView supports 3 time periods:
+3. **Historical satellite imagery** (Oct 16 - MERGED)
+   - SiteDetailView supports 3 time periods
    - 2014 Baseline (Feb 20, 2014 - earliest ESRI Wayback)
    - Aug 2023 Pre-conflict (Aug 31, 2023 - last before Oct 7)
    - Current (latest ESRI World Imagery)
    - Zoom standardized to 17 for consistent comparison
 
-3. **Major refactoring** - Modular architecture improvements (previous work)
+4. **Major refactoring** - Modular architecture improvements (previous work)
 
 ---
 
@@ -220,19 +230,43 @@ Creates ambient "heritage glow" effect (metaphor for extinguishing light/memory)
 
 ## ⚡ Performance
 
-### Current Metrics
+### Current Metrics (Oct 19, 2025)
+- MapMarkers render: 67-195ms for 100 sites (O(n) optimization) ✅
+- MapMarkers re-render: 4-11ms (React.memo effectiveness) ✅
 - MapGlowLayer render: 19-26ms for 25 sites ✅
-- Full app render: 105ms for 25 sites ✅
+- Table render: 1826-2275ms for 1000 sites ✅
+- Filter performance: 0.3-4.4ms for 1000 sites (linear time) ✅
+- Build time: 13.25s (27.6% improvement) ✅
 - Timeline scrubbing: 60fps ✅
-- Test suite: 204 tests in ~6-7s ✅
+- Test suite: 292 tests in ~27s (25 files) ✅
 
 ### Optimization Patterns
 ```tsx
-// Pre-calculate expensive operations
+// Pre-calculate expensive operations with useMemo
 const glowContributions = useMemo(
   () => sites.map(s => ({ id: s.id, glow: glowContribution(s) })),
   [sites]
 );
+
+// O(n) optimization: Pre-compute destroyed sites as Set
+const destroyedSiteIds = useMemo(() => {
+  if (!currentTimestamp) return new Set<string>();
+  return new Set(
+    sites
+      .filter(site => site.dateDestroyed && currentTimestamp >= new Date(site.dateDestroyed))
+      .map(site => site.id)
+  );
+}, [sites, currentTimestamp]);
+
+// React.memo to prevent unnecessary re-renders
+export const HeritageMap = memo(function HeritageMap({ sites, ... }) {
+  // Component implementation
+});
+
+// Stable callbacks with useCallback
+const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
+  setSelectedTypes(selectedTypes.filter((t) => t !== typeToRemove));
+}, [selectedTypes, setSelectedTypes]);
 
 // Throttle updates to 60fps
 const throttledUpdate = useCallback(
@@ -245,6 +279,12 @@ useEffect(() => {
   const frameId = requestAnimationFrame(renderGlow);
   return () => cancelAnimationFrame(frameId);
 }, [deps]);
+
+// D3 granular imports for tree-shaking
+import { select, type Selection } from "d3-selection";
+import type { ScaleTime } from "d3-scale";
+import { axisBottom } from "d3-axis";
+// Instead of: import * as d3 from "d3";
 
 // Object pooling for particles (Phase 3)
 const particlePool = useMemo(() => createParticlePool(100), []);
@@ -260,7 +300,7 @@ const particlePool = useMemo(() => createParticlePool(100), []);
 
 ## 🧪 Testing
 
-**Total:** 204 tests across 21 files
+**Total:** 292 tests across 25 files
 
 **Key Test Files:**
 - TimelineScrubber: 12 tests
@@ -270,7 +310,12 @@ const particlePool = useMemo(() => createParticlePool(100), []);
 - useMapGlow: 24 tests
 - SiteDetailView: 13 tests (includes historical imagery)
 - TimeToggle: 7 tests
-- Performance: 9 tests (25+ sites, 50 site stress test)
+- Performance: 18 tests (25/50/100/1000 sites, regression tests)
+- SitesTable: 24 tests
+- Button: 24 tests
+- darkMode: 19 tests
+- validateSites: 20 tests
+- filters: 22 tests
 
 **Test Setup:**
 - Canvas mock (leaflet.heat compatibility)
@@ -317,17 +362,22 @@ const particlePool = useMemo(() => createParticlePool(100), []);
 **Commit:** `bf5e504`
 
 ### Phase 2: Visual States ✅
-**Completed:** Sessions 3-13 + UX improvements
+**Completed:** Sessions 3-13 + UX improvements + Performance optimizations (Oct 19, 2025)
 - [x] Leaflet.heat glow system (MapGlowLayer)
 - [x] Glow contribution calculations (useMapGlow)
 - [x] heritageCalculations utilities
-- [x] Performance: 19-26ms for 25 sites
+- [x] Performance: MapGlowLayer 19-26ms for 25 sites
+- [x] **Performance optimizations**: MapMarkers O(n²) → O(n), React.memo, D3 granular imports
+- [x] **Build time**: 18.30s → 13.25s (27.6% improvement)
+- [x] **1000+ site scaling**: Filters 0.3-4.4ms, MapMarkers 67-195ms for 100 sites
+- [x] **Performance regression tests**: 9 new tests added
 - [x] Resizable table, satellite map toggle
 - [x] Deferred filter application
 - [x] Mobile fixes
 - [x] 45 site dataset expansion
-- [x] All 184 tests passing
+- [x] All 292 tests passing
 **Merged:** PR #14 - feature/timelineImprovements
+**Current:** feat/mapSync (performance optimizations - ready for merge)
 
 ### Phase 3: Animations ⏸️
 **Paused** - May be deprioritized (glow effect provides strong visual impact)
@@ -355,11 +405,12 @@ const particlePool = useMemo(() => createParticlePool(100), []);
 
 ### MUST Maintain
 - ✅ Palestinian flag colors (#ed3039, #009639, #000000, #fefefe)
-- ✅ All 204 tests passing
+- ✅ All 292 tests passing
 - ✅ 60fps desktop / 30fps mobile
 - ✅ Leaflet `[lat, lng]` coordinate format
 - ✅ Tailwind-only styling
 - ✅ Site highlight syncing (Timeline ↔ Map ↔ Table)
+- ✅ Performance optimizations (O(n) algorithms, React.memo, useMemo, useCallback)
 
 ### MUST NOT
 - ❌ Break map interactions (zoom, pan, click)
@@ -434,7 +485,7 @@ const particlePool = useMemo(() => createParticlePool(100), []);
 
 ---
 
-**Last Updated:** October 17, 2025
-**Current Branch:** feature/UI-refinement (PR #19 - ready for merge)
-**Previous Branch:** feature/secondMapfixes-viewImprovements (merged to main)
-**Spec Version:** 2.1 (includes UI refinement updates)
+**Last Updated:** October 19, 2025
+**Current Branch:** feat/mapSync (all performance optimizations complete - ready for merge)
+**Previous Branches:** feature/UI-refinement (MERGED), feature/secondMapfixes-viewImprovements (MERGED)
+**Spec Version:** 2.2 (includes performance optimization updates)

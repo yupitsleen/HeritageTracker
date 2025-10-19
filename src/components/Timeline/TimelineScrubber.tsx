@@ -1,5 +1,7 @@
 import { useEffect, useRef, useMemo, useState } from "react";
-import * as d3 from "d3";
+// Optimized D3 imports - only import what we need
+import { scaleTime } from "d3-scale";
+import { timeFormat } from "d3-time-format";
 import {
   PlayIcon,
   PauseIcon,
@@ -7,11 +9,11 @@ import {
 } from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
-import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 import { Input } from "../Form/Input";
+import { Button } from "../Button";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
@@ -54,7 +56,6 @@ export function TimelineScrubber({
     setSpeed,
   } = useAnimation();
 
-  const { isDark } = useTheme();
   const t = useThemeClasses();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -136,8 +137,7 @@ export function TimelineScrubber({
   // D3 time scale (responsive to container width, uses adjusted dates when filtered)
   const timeScale = useMemo(() => {
     const margin = 50; // Leave space for handles
-    return d3
-      .scaleTime()
+    return scaleTime()
       .domain([adjustedStartDate, adjustedEndDate])
       .range([margin, containerWidth - margin]);
   }, [adjustedStartDate, adjustedEndDate, containerWidth]);
@@ -232,7 +232,7 @@ export function TimelineScrubber({
   return (
     <div
       ref={containerRef}
-      className={`backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+      className={t.timeline.container}
       role="region"
       aria-label="Timeline Scrubber"
     >
@@ -241,51 +241,47 @@ export function TimelineScrubber({
         {/* Left: Play/Pause/Reset/Sync Map/Speed */}
         <div className="flex items-center gap-2 flex-1">
           {!isPlaying ? (
-            <button
+            <Button
               onClick={play}
-              className="flex items-center gap-2 px-4 py-2 bg-[#009639] text-[#fefefe] hover:bg-[#007b2f] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
+              variant="primary"
+              size="sm"
+              icon={<PlayIcon className="w-4 h-4" />}
               aria-label="Play timeline animation"
             >
-              <PlayIcon className="w-4 h-4" />
-              <span>Play</span>
-            </button>
+              Play
+            </Button>
           ) : (
-            <button
+            <Button
               onClick={pause}
-              className="flex items-center gap-2 px-4 py-2 bg-[#ed3039] text-[#fefefe] hover:bg-[#d4202a] rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000]"
+              variant="danger"
+              size="sm"
+              icon={<PauseIcon className="w-4 h-4" />}
               aria-label="Pause timeline animation"
             >
-              <PauseIcon className="w-4 h-4" />
-              <span>Pause</span>
-            </button>
+              Pause
+            </Button>
           )}
-          <button
+          <Button
             onClick={reset}
             disabled={isAtStart}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-semibold border border-[#000000] ${
-              isAtStart
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
-                : `shadow-md hover:shadow-lg active:scale-95 ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`
-            }`}
+            variant="secondary"
+            size="sm"
+            icon={<ArrowPathIcon className="w-4 h-4" />}
             aria-label="Reset timeline to start"
           >
-            <ArrowPathIcon className="w-4 h-4" />
-            <span>Reset</span>
-          </button>
+            Reset
+          </Button>
 
           {/* Sync Map toggle button */}
-          <button
+          <Button
             onClick={() => setSyncMap(!syncMap)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold active:scale-95 border border-[#000000] ${
-              syncMap
-                ? `${t.flag.greenBg} text-[#fefefe] ${t.flag.greenHover}`
-                : `${t.bg.active} ${t.text.body} ${t.bg.hover}`
-            }`}
+            variant={syncMap ? "primary" : "secondary"}
+            size="sm"
             aria-label={syncMap ? "Disable map sync with timeline" : "Enable map sync with timeline"}
             title="Sync satellite imagery with timeline date"
           >
-            <span>{syncMap ? "✓" : ""} Sync Map</span>
-          </button>
+            {syncMap ? "✓" : ""} Sync Map
+          </Button>
 
           {/* Speed control */}
           <div className="flex items-center gap-2">
@@ -296,7 +292,7 @@ export function TimelineScrubber({
               id="speed-control"
               value={speed}
               onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-              className={`px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639] ${t.input.base}`}
+              className={`${t.timeline.speedSelect} ${t.input.base}`}
               aria-label="Animation speed control"
             >
               {speedOptions.map((s) => (
@@ -309,9 +305,9 @@ export function TimelineScrubber({
         </div>
 
         {/* Center: Current date display */}
-        <div className={`text-sm font-semibold text-center flex-1 ${isDark ? "text-[#fefefe]" : t.text.heading}`}>
+        <div className={t.timeline.currentDate}>
           <span className={t.text.muted}>Current:</span>{" "}
-          {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
+          {timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
 
         {/* Right: Date Filter */}
@@ -345,10 +341,10 @@ export function TimelineScrubber({
               onDestructionDateStartChange(null);
               onDestructionDateEndChange(null);
             }}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 border border-[#000000] ${
+            className={`${t.timeline.clearFilterVisible} ${
               destructionDateStart || destructionDateEnd
                 ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
-                : "invisible"
+                : t.timeline.clearFilterInvisible
             }`}
             aria-label="Clear date filter"
             disabled={!destructionDateStart && !destructionDateEnd}
@@ -363,11 +359,11 @@ export function TimelineScrubber({
 
       {/* Keyboard shortcuts hint */}
       <div className={`mt-2 text-xs text-center ${t.text.muted}`}>
-        Keyboard: <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
+        Keyboard: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
         {" • "}
-        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step
         {" • "}
-        <kbd className={`px-1 py-0.5 border rounded ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> Jump
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> Jump
       </div>
     </div>
   );
