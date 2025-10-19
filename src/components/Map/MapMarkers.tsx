@@ -12,7 +12,6 @@ interface MapMarkersProps {
   currentTimestamp?: Date;
 }
 
-// Map color names to hex values
 const COLOR_MAP: Record<string, string> = {
   red: "#ed3039",
   orange: "#D97706",
@@ -57,9 +56,8 @@ export const MapMarkers = memo(function MapMarkers({
       {sites.map((site) => {
         const isHighlighted = site.id === highlightedSiteId;
         const color = getMarkerColor(site.status);
-        const destroyed = destroyedSiteIds.has(site.id); // O(1) lookup instead of O(n) function call
+        const destroyed = destroyedSiteIds.has(site.id);
 
-        // If highlighted, show teardrop marker; otherwise show circle
         if (isHighlighted) {
           return (
             <Marker
@@ -77,16 +75,14 @@ export const MapMarkers = memo(function MapMarkers({
           );
         }
 
-        // Default: show circle marker (dot)
-        // When destroyed: turn black and shrink to a tiny point
         return (
           <CircleMarker
             key={site.id}
             center={site.coordinates}
-            radius={destroyed ? 2 : 6} // Shrink from 6 to 2 when destroyed
+            radius={destroyed ? 2 : 6}
             pathOptions={{
-              fillColor: destroyed ? "#000000" : COLOR_MAP[color], // Turn black when destroyed
-              fillOpacity: destroyed ? 1 : 0.8, // Full opacity when black
+              fillColor: destroyed ? "#000000" : COLOR_MAP[color],
+              fillOpacity: destroyed ? 1 : 0.8,
               color: "#000000",
               weight: 1,
             }}

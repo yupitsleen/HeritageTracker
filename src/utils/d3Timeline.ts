@@ -1,12 +1,10 @@
-// Optimized D3 imports - only import what we need for better tree-shaking
 import { select, type Selection } from "d3-selection";
 import type { ScaleTime } from "d3-scale";
 import { axisBottom } from "d3-axis";
 import { timeFormat } from "d3-time-format";
 import { drag } from "d3-drag";
-import "d3-transition"; // Side-effect import for .transition() method
+import "d3-transition";
 
-// Re-export types for convenience
 export type { Selection, ScaleTime };
 
 export interface TimelineEvent {
@@ -88,10 +86,7 @@ export class D3TimelineRenderer {
    * Render the complete timeline (axis, events, scrubber)
    */
   render(events: TimelineEvent[], currentTimestamp: Date) {
-    // Clear previous content
     this.svg.selectAll("*").remove();
-
-    // Render components in order
     this.renderAxis();
     this.renderEventMarkers(events);
     this.renderScrubber(currentTimestamp);
@@ -113,7 +108,6 @@ export class D3TimelineRenderer {
       .attr("transform", `translate(0, ${height / 2})`)
       .call(xAxis);
 
-    // Style axis
     axisGroup.selectAll("text").attr("fill", colors.axis).attr("font-size", "12px");
 
     axisGroup
@@ -158,7 +152,6 @@ export class D3TimelineRenderer {
       .append("g")
       .attr("class", "event-marker-group");
 
-    // Add circles
     const markers = markerGroups
       .append("circle")
       .attr("class", "event-marker")
@@ -171,21 +164,19 @@ export class D3TimelineRenderer {
       .style("cursor", "pointer")
       .style("transition", "all 0.2s");
 
-    // Add hover date labels (initially hidden)
     markerGroups
       .append("text")
       .attr("class", "event-date-label")
       .attr("x", (d) => this.timeScale(d.date))
-      .attr("y", height / 2 - eventMarkerRadius - 8) // Position above the circle
+      .attr("y", height / 2 - eventMarkerRadius - 8)
       .attr("text-anchor", "middle")
       .attr("font-size", "10px")
       .attr("font-weight", "500")
-      .attr("fill", "#9ca3af") // Light gray color
-      .attr("opacity", 0) // Start hidden
-      .style("pointer-events", "none") // Don't interfere with mouse events
+      .attr("fill", "#9ca3af")
+      .attr("opacity", 0)
+      .style("pointer-events", "none")
       .text((d) => timeFormat("%b %d, %Y")(d.date));
 
-    // Hover effects on the group
     markerGroups
       .on("mouseenter", function () {
         const group = select(this);
@@ -195,7 +186,6 @@ export class D3TimelineRenderer {
           .attr("r", eventMarkerRadius + 2)
           .attr("stroke-width", 2);
 
-        // Show date label
         group.select("text")
           .transition()
           .duration(150)
@@ -209,7 +199,6 @@ export class D3TimelineRenderer {
           .attr("r", eventMarkerRadius)
           .attr("stroke-width", 1.5);
 
-        // Hide date label
         group.select("text")
           .transition()
           .duration(150)
@@ -220,7 +209,6 @@ export class D3TimelineRenderer {
         this.onPause();
       });
 
-    // Add tooltips (keep for additional info on hover)
     markers
       .append("title")
       .text(
@@ -237,7 +225,6 @@ export class D3TimelineRenderer {
 
     const scrubberGroup = this.svg.append("g").attr("class", "scrubber-group");
 
-    // Vertical line
     scrubberGroup
       .append("line")
       .attr("class", "scrubber-line")
@@ -248,7 +235,6 @@ export class D3TimelineRenderer {
       .attr("stroke", colors.scrubberLine)
       .attr("stroke-width", 3);
 
-    // Draggable handle
     const handle = scrubberGroup
       .append("circle")
       .attr("class", "scrubber-handle")
@@ -260,7 +246,6 @@ export class D3TimelineRenderer {
       .attr("stroke-width", 2)
       .style("cursor", "grab");
 
-    // Drag behavior with visual feedback
     const dragBehavior = drag<SVGCircleElement, unknown>()
       .on("start", function () {
         select(this)
@@ -270,7 +255,6 @@ export class D3TimelineRenderer {
           .attr("r", scrubberRadius + 2)
           .attr("stroke-width", 3)
           .style("filter", "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))");
-        // onPause is called in the parent callback
       })
       .on("drag", (event) => {
         const x = Math.max(
@@ -290,7 +274,6 @@ export class D3TimelineRenderer {
           .style("filter", "none");
       });
 
-    // Pause when drag starts
     handle.on("mousedown", () => {
       this.onPause();
     });
