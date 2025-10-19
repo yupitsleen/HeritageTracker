@@ -213,10 +213,10 @@ function AppContent({ isMobile }: { isMobile: boolean }) {
       >
         <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
         <FilterBar
-          selectedTypes={appState.tempFilters.tempSelectedTypes}
-          selectedStatuses={appState.tempFilters.tempSelectedStatuses}
-          destructionDateStart={appState.tempFilters.tempDestructionDateStart}
-          destructionDateEnd={appState.tempFilters.tempDestructionDateEnd}
+          selectedTypes={appState.tempFilters.selectedTypes}
+          selectedStatuses={appState.tempFilters.selectedStatuses}
+          destructionDateStart={appState.tempFilters.destructionDateStart}
+          destructionDateEnd={appState.tempFilters.destructionDateEnd}
           searchTerm={appState.filters.searchTerm}
           onTypeChange={appState.setTempSelectedTypes}
           onStatusChange={appState.setTempSelectedStatuses}

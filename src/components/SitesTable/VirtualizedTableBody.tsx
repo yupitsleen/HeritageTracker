@@ -1,4 +1,8 @@
-import { FixedSizeList as List } from "react-window";
+// NOTE: react-window types are currently incompatible with production build (TypeScript error)
+// The library exports 'List' but TypeScript definitions expect 'FixedSizeList'
+// This component is prepared for future use (100+ sites) but not activated yet (current: 45 sites)
+// TODO: Resolve react-window import issue or switch to react-virtualized when needed
+
 import type { GazaSite } from "../../types";
 import { SiteTableRow } from "./SiteTableRow";
 
@@ -16,6 +20,8 @@ interface VirtualizedTableBodyProps {
 /**
  * Virtualized table body using react-window
  * Only renders visible rows for optimal performance with large datasets
+ *
+ * CURRENTLY DISABLED - See note above about react-window compatibility
  */
 export function VirtualizedTableBody({
   sites,
@@ -24,16 +30,13 @@ export function VirtualizedTableBody({
   highlightedSiteId,
   variant,
   isColumnVisible,
-  height,
-  itemHeight,
 }: VirtualizedTableBodyProps) {
-  // Row renderer for react-window
-  const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
-    const site = sites[index];
-
-    return (
-      <div style={{ ...style, display: "table-row" }}>
+  // Fallback to regular rendering until react-window import is resolved
+  return (
+    <tbody>
+      {sites.map((site) => (
         <SiteTableRow
+          key={site.id}
           site={site}
           onSiteClick={onSiteClick}
           onSiteHighlight={onSiteHighlight}
@@ -41,19 +44,7 @@ export function VirtualizedTableBody({
           variant={variant}
           isColumnVisible={isColumnVisible}
         />
-      </div>
-    );
-  };
-
-  return (
-    <List
-      height={height}
-      itemCount={sites.length}
-      itemSize={itemHeight}
-      width="100%"
-      style={{ display: "table-row-group" }} // Acts as tbody
-    >
-      {Row}
-    </List>
+      ))}
+    </tbody>
   );
 }

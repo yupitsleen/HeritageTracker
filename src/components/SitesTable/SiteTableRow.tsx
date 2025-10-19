@@ -5,7 +5,7 @@ import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
 interface SiteTableRowProps {
   site: GazaSite;
