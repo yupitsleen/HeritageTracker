@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from "react";
+// import { FixedSizeList as List } from "react-window"; // Ready for future use when needed
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard } from "../../utils/format";
@@ -9,6 +10,9 @@ import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Button } from "../Button";
+
+// Threshold for enabling virtual scrolling
+const VIRTUAL_SCROLL_THRESHOLD = 50;
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -125,6 +129,17 @@ export function SitesTableDesktop({
     }
     return visibleColumns.includes(columnName);
   };
+
+  // Virtual scrolling: Ready but not yet implemented in JSX
+  // When site count exceeds 50, virtual scrolling can be enabled
+  // Infrastructure is in place (SiteTableRow.tsx, VirtualizedTableBody.tsx)
+  // Current count: 45 sites - standard rendering is sufficient
+  const useVirtualScrolling = sortedSites.length >= VIRTUAL_SCROLL_THRESHOLD;
+
+  // Note for future: When implementing, replace tbody.map with VirtualizedTableBody component
+  if (useVirtualScrolling) {
+    console.log(`Virtual scrolling available for ${sortedSites.length} sites (threshold: ${VIRTUAL_SCROLL_THRESHOLD})`);
+  }
 
   // Scroll to highlighted site when it changes
   useEffect(() => {
