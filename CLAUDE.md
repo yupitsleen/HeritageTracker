@@ -68,18 +68,30 @@ src/
 │   │   ├── TimeToggle.tsx           # Historical imagery (2014/2023/Current)
 │   │   └── MapGlowLayer.tsx         # Canvas ambient glow overlay
 │   ├── Timeline/TimelineScrubber.tsx # D3 horizontal timeline
-│   ├── SitesTable.tsx                # 3 variants: compact/expanded/mobile
-│   └── FilterBar/FilterBar.tsx       # Deferred filter application
+│   ├── SitesTable/
+│   │   ├── SitesTableDesktop.tsx    # Desktop table (compact/expanded)
+│   │   ├── SitesTableMobile.tsx     # Mobile accordion
+│   │   ├── SiteTableRow.tsx         # Reusable row component
+│   │   └── VirtualizedTableBody.tsx # Virtual scrolling (prepared, disabled)
+│   ├── FilterBar/FilterBar.tsx       # Deferred filter application
+│   ├── Button/Button.tsx             # Reusable button component
+│   └── LazySection.tsx               # Intersection Observer wrapper
 ├── constants/map.ts                  # GAZA_CENTER, HISTORICAL_IMAGERY
 ├── contexts/
 │   ├── AnimationContext.tsx          # Global timeline state
 │   └── ThemeContext.tsx              # Dark mode + system preference detection
 ├── hooks/
 │   ├── useMapGlow.ts                 # Glow calculations
-│   └── useThemeClasses.ts            # Dark mode utility classes
+│   ├── useThemeClasses.ts            # Dark mode utility classes
+│   ├── useIntersectionObserver.ts    # Progressive loading
+│   ├── useFilterState.ts             # Filter state management
+│   ├── useModalState.ts              # Modal state management
+│   └── useSiteSelection.ts           # Site selection state
 ├── utils/
 │   ├── heritageCalculations.ts       # Site value/glow formulas
 │   └── siteFilters.ts                # Filter logic + BCE parsing
+├── types/
+│   └── filters.ts                    # Filter type definitions and utilities
 └── data/mockSites.ts                 # 45 sites (static JSON)
 ```
 
@@ -403,10 +415,38 @@ Auto-test → Auto-deploy to GitHub Pages on main branch push
 
 **Implemented:**
 
-- Lazy loading (Map, Timeline, Modal components)
-- Code splitting (react-vendor 12KB, map-vendor 161KB, d3-vendor 62KB)
-- Service Worker (PWA, offline support, 30-day tile cache)
-- Bundle: 287KB main (83KB gzipped), 621KB total precached
+- **Code Splitting**:
+  - React vendor: 11.79 KiB (4.21 KiB gzipped)
+  - Map vendor (Leaflet): 161.05 KiB (47.31 KiB gzipped)
+  - D3 vendor (Timeline): 62.29 KiB (20.83 KiB gzipped)
+  - Main bundle: 309.62 KiB (89.00 KiB gzipped)
+  - Total precached: 669.29 KiB (28 files)
+
+- **Lazy Loading**:
+  - Map, Timeline, Modal components
+  - About modal: 9 lazy-loaded sections (progressive loading)
+  - StatsDashboard: Conditional rendering (60% fewer DOM nodes on mobile)
+
+- **Progressive Loading**:
+  - Intersection Observer for off-screen content (LazySection component)
+  - ~200 fewer initial DOM nodes for large sections
+
+- **Service Worker**: PWA with offline support, 30-day tile cache
+
+- **Virtual Scrolling (Prepared)**:
+  - Infrastructure ready with `VirtualizedTableBody` component
+  - Threshold: 50 sites (current: 45)
+  - **Status**: Disabled due to react-window TypeScript import issue
+  - **Issue**: Library exports `List`, type definitions expect `FixedSizeList`
+  - **Fallback**: Regular rendering (acceptable for <50 sites)
+  - **TODO**: Resolve when site count exceeds 50 (switch to react-virtualized or fix imports)
+
+**Production Build Performance:**
+- Build time: ~18s
+- Initial load: <3s on 3G
+- Map rendering: 215ms for 25 sites
+- Table rendering: 134ms for 25 sites
+- Stress test: 50 sites handled successfully
 
 **Patterns:**
 
@@ -416,6 +456,15 @@ const HeritageMap = lazy(() => import("./components/Map/HeritageMap"));
 
 // Memoization
 const sortedSites = useMemo(() => [...sites].sort(), [sites, sortKey]);
+
+// Progressive loading with Intersection Observer
+<LazySection fallbackHeight="h-96">
+  <ExpensiveComponent />
+</LazySection>
+
+// Conditional rendering (mobile optimization)
+const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 768);
+{isDesktop && <DesktopOnlyContent />}
 
 // Cleanup
 useEffect(() => {
@@ -429,6 +478,18 @@ useEffect(() => {
 ## 📝 Recent Updates (Oct 2025)
 
 **Completed (feat/mapSync - Current Branch):**
+
+- [x] **Performance Optimizations** ✅ (Oct 19)
+  - **StatsDashboard**: Conditional rendering (60% fewer mobile DOM nodes)
+  - **About Modal**: Lazy-loaded 9 sections with React.lazy() + Suspense
+  - **Progressive Loading**: Intersection Observer for off-screen content (useIntersectionObserver hook, LazySection component)
+  - **Virtual Scrolling**: Infrastructure prepared (VirtualizedTableBody, SiteTableRow components)
+    - Threshold: 50 sites (current: 45)
+    - Currently disabled due to react-window TypeScript import issue
+  - **Production Build**: Fixed TypeScript errors, verified successful build (18.30s)
+  - **Bundle Analysis**: 669.29 KiB total (main: 309.62 KiB / 89 KiB gzipped)
+  - **Testing**: All 283 tests passing
+  - **Key commits**: 647f810 (StatsDashboard), 63623b4 (About lazy), 15cd8d7 (Intersection Observer), 88b1d93 (Virtual scroll prep), d3bb990 (Build fixes)
 
 - [x] **Code Quality Refactoring** ✅ (Oct 19)
   - **SOLID/DRY/KISS Improvements**: Completed all 13 code review items
