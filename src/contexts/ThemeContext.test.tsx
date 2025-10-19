@@ -21,6 +21,8 @@ describe("ThemeContext", () => {
   beforeEach(() => {
     // Clear all storage and DOM state
     localStorage.clear();
+    // Also remove the specific key to be extra sure
+    localStorage.removeItem("heritage-tracker-theme");
     document.documentElement.removeAttribute("data-theme");
 
     // Reset matchMedia to default (returns false for prefers-color-scheme: dark)
@@ -57,7 +59,14 @@ describe("ThemeContext", () => {
     });
 
     it("respects stored localStorage preference", () => {
+      // Clear first to ensure clean state
+      localStorage.clear();
+      // Set the preference
       localStorage.setItem("heritage-tracker-theme", "dark");
+
+      // Verify it was actually set (debugging aid)
+      const stored = localStorage.getItem("heritage-tracker-theme");
+      expect(stored).toBe("dark");
 
       render(
         <ThemeProvider>
@@ -70,7 +79,11 @@ describe("ThemeContext", () => {
     });
 
     it("respects system dark mode preference when no localStorage value", () => {
-      // Mock matchMedia to return dark mode preference
+      // Ensure localStorage is truly empty
+      localStorage.clear();
+      localStorage.removeItem("heritage-tracker-theme");
+
+      // Mock matchMedia to return dark mode preference BEFORE component renders
       const mockMatchMedia = vi.fn().mockImplementation((query) => ({
         matches: query === "(prefers-color-scheme: dark)",
         media: query,
@@ -82,10 +95,8 @@ describe("ThemeContext", () => {
         dispatchEvent: vi.fn(),
       }));
 
-      Object.defineProperty(window, "matchMedia", {
-        writable: true,
-        value: mockMatchMedia,
-      });
+      // Override window.matchMedia before rendering
+      window.matchMedia = mockMatchMedia;
 
       render(
         <ThemeProvider>
