@@ -1,11 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { ThemeProvider, useTheme } from "./ThemeContext";
 
-// Store original matchMedia
 const originalMatchMedia = window.matchMedia;
 
-// Test component that displays theme state
 function ThemeDisplay() {
   const { theme, isDark, toggleTheme } = useTheme();
   return (
@@ -18,14 +16,17 @@ function ThemeDisplay() {
 }
 
 describe("ThemeContext", () => {
-  beforeEach(() => {
-    // Clear all storage and DOM state
+  beforeAll(() => {
     localStorage.clear();
-    // Also remove the specific key to be extra sure
+    localStorage.removeItem("heritage-tracker-theme");
+    document.documentElement.removeAttribute("data-theme");
+  });
+
+  beforeEach(() => {
+    localStorage.clear();
     localStorage.removeItem("heritage-tracker-theme");
     document.documentElement.removeAttribute("data-theme");
 
-    // Reset matchMedia to default (returns false for prefers-color-scheme: dark)
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
@@ -59,14 +60,16 @@ describe("ThemeContext", () => {
     });
 
     it("respects stored localStorage preference", () => {
-      // Clear first to ensure clean state
-      localStorage.clear();
-      // Set the preference
-      localStorage.setItem("heritage-tracker-theme", "dark");
+      const mockStorage: Record<string, string> = { "heritage-tracker-theme": "dark" };
 
-      // Verify it was actually set (debugging aid)
-      const stored = localStorage.getItem("heritage-tracker-theme");
-      expect(stored).toBe("dark");
+      vi.stubGlobal("localStorage", {
+        getItem: (key: string) => mockStorage[key] || null,
+        setItem: (key: string, value: string) => { mockStorage[key] = value; },
+        removeItem: (key: string) => { delete mockStorage[key]; },
+        clear: () => { Object.keys(mockStorage).forEach(key => delete mockStorage[key]); },
+        length: Object.keys(mockStorage).length,
+        key: (index: number) => Object.keys(mockStorage)[index] || null,
+      });
 
       render(
         <ThemeProvider>
@@ -76,14 +79,22 @@ describe("ThemeContext", () => {
 
       expect(screen.getByTestId("theme")).toHaveTextContent("dark");
       expect(screen.getByTestId("isDark")).toHaveTextContent("true");
+
+      vi.unstubAllGlobals();
     });
 
     it("respects system dark mode preference when no localStorage value", () => {
-      // Ensure localStorage is truly empty
-      localStorage.clear();
-      localStorage.removeItem("heritage-tracker-theme");
+      const mockStorage: Record<string, string> = {};
 
-      // Mock matchMedia to return dark mode preference BEFORE component renders
+      vi.stubGlobal("localStorage", {
+        getItem: (key: string) => mockStorage[key] || null,
+        setItem: (key: string, value: string) => { mockStorage[key] = value; },
+        removeItem: (key: string) => { delete mockStorage[key]; },
+        clear: () => { Object.keys(mockStorage).forEach(key => delete mockStorage[key]); },
+        length: Object.keys(mockStorage).length,
+        key: (index: number) => Object.keys(mockStorage)[index] || null,
+      });
+
       const mockMatchMedia = vi.fn().mockImplementation((query) => ({
         matches: query === "(prefers-color-scheme: dark)",
         media: query,
@@ -95,7 +106,6 @@ describe("ThemeContext", () => {
         dispatchEvent: vi.fn(),
       }));
 
-      // Override window.matchMedia before rendering
       window.matchMedia = mockMatchMedia;
 
       render(
@@ -107,6 +117,8 @@ describe("ThemeContext", () => {
       expect(mockMatchMedia).toHaveBeenCalledWith("(prefers-color-scheme: dark)");
       expect(screen.getByTestId("theme")).toHaveTextContent("dark");
       expect(screen.getByTestId("isDark")).toHaveTextContent("true");
+
+      vi.unstubAllGlobals();
     });
 
     it("prefers localStorage over system preference", () => {
