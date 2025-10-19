@@ -283,7 +283,6 @@ describe("Performance Tests (25+ Sites)", () => {
   describe("MapMarkers Memoization Performance", () => {
     it("verifies destroyed sites Set is computed efficiently", () => {
       const mockSites100 = generateMockSites(100);
-      const currentTimestamp = new Date("2023-12-31");
 
       const startTime = performance.now();
 
