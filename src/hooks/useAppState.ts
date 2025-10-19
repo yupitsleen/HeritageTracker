@@ -1,210 +1,81 @@
-import { useState, useCallback } from "react";
-import type { GazaSite } from "../types";
+import { useCallback } from "react";
+import { useFilterState } from "./useFilterState";
+import { useModalState, type ModalState } from "./useModalState";
+import { useSiteSelection } from "./useSiteSelection";
 
-/**
- * Interface for filter state
- */
-export interface FilterState {
-  selectedTypes: Array<GazaSite["type"]>;
-  selectedStatuses: Array<GazaSite["status"]>;
-  destructionDateStart: Date | null;
-  destructionDateEnd: Date | null;
-  creationYearStart: number | null;
-  creationYearEnd: number | null;
-  searchTerm: string;
-}
-
-/**
- * Interface for modal state
- */
-export interface ModalState {
-  isTableExpanded: boolean;
-  isAboutOpen: boolean;
-  isStatsOpen: boolean;
-  isFilterOpen: boolean;
-  isDonateOpen: boolean;
-}
+// Re-export types for backward compatibility
+export type { ModalState };
+export type { FilterState } from "../types/filters";
 
 /**
  * Centralized application state management hook
- * Extracts all state declarations from App.tsx
+ *
+ * REFACTORED to follow Single Responsibility Principle:
+ * - Composes three focused hooks (useFilterState, useModalState, useSiteSelection)
+ * - Each hook manages one specific area of responsibility
+ * - Maintains backward compatibility with existing API
+ *
+ * @deprecated Consider using the focused hooks directly:
+ * - useFilterState() for filter management
+ * - useModalState() for modal visibility
+ * - useSiteSelection() for site selection/highlighting
  *
  * @returns State values and setter functions
  */
 export function useAppState() {
-  // Site selection state
-  const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
-  const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
+  // Compose focused hooks
+  const filterState = useFilterState();
+  const modalState = useModalState();
+  const siteSelection = useSiteSelection();
 
-  // Filter state
-  const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
-  const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
-  const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
-  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
-  const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
-  const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
-  // Temp filter state (for modal - not applied until "Apply Filters" clicked)
-  const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
-  const [tempSelectedStatuses, setTempSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
-  const [tempDestructionDateStart, setTempDestructionDateStart] = useState<Date | null>(null);
-  const [tempDestructionDateEnd, setTempDestructionDateEnd] = useState<Date | null>(null);
-  const [tempCreationYearStart, setTempCreationYearStart] = useState<number | null>(null);
-  const [tempCreationYearEnd, setTempCreationYearEnd] = useState<number | null>(null);
-
-  // Modal state
-  const [isTableExpanded, setIsTableExpanded] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const [isStatsOpen, setIsStatsOpen] = useState(false);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isDonateOpen, setIsDonateOpen] = useState(false);
-
-  // Check if any filters are active
-  const hasActiveFilters =
-    selectedTypes.length > 0 ||
-    selectedStatuses.length > 0 ||
-    destructionDateStart !== null ||
-    destructionDateEnd !== null ||
-    creationYearStart !== null ||
-    creationYearEnd !== null ||
-    searchTerm.trim().length > 0;
-
-  // Check if temp filters have unapplied changes
-  const hasUnappliedChanges =
-    JSON.stringify(tempSelectedTypes.sort()) !== JSON.stringify(selectedTypes.sort()) ||
-    JSON.stringify(tempSelectedStatuses.sort()) !== JSON.stringify(selectedStatuses.sort()) ||
-    tempDestructionDateStart?.getTime() !== destructionDateStart?.getTime() ||
-    tempDestructionDateEnd?.getTime() !== destructionDateEnd?.getTime() ||
-    tempCreationYearStart !== creationYearStart ||
-    tempCreationYearEnd !== creationYearEnd;
-
-  // Check if temp filters are empty (for Clear All button state)
-  const hasTempFilters =
-    tempSelectedTypes.length > 0 ||
-    tempSelectedStatuses.length > 0 ||
-    tempDestructionDateStart !== null ||
-    tempDestructionDateEnd !== null ||
-    tempCreationYearStart !== null ||
-    tempCreationYearEnd !== null;
-
-  // Clear all filters
-  const clearAllFilters = useCallback(() => {
-    setSelectedTypes([]);
-    setSelectedStatuses([]);
-    setDestructionDateStart(null);
-    setDestructionDateEnd(null);
-    setCreationYearStart(null);
-    setCreationYearEnd(null);
-    setSearchTerm("");
-  }, []);
-
-  // Open filter modal and initialize temp state with current filters
+  // Open filter modal and initialize temp state
   const openFilterModal = useCallback(() => {
-    setTempSelectedTypes(selectedTypes);
-    setTempSelectedStatuses(selectedStatuses);
-    setTempDestructionDateStart(destructionDateStart);
-    setTempDestructionDateEnd(destructionDateEnd);
-    setTempCreationYearStart(creationYearStart);
-    setTempCreationYearEnd(creationYearEnd);
-    setIsFilterOpen(true);
-  }, [
-    selectedTypes,
-    selectedStatuses,
-    destructionDateStart,
-    destructionDateEnd,
-    creationYearStart,
-    creationYearEnd,
-  ]);
+    filterState.initializeTempFilters();
+    modalState.setIsFilterOpen(true);
+  }, [filterState, modalState]);
 
-  // Apply filters from temp state to actual state
+  // Apply filters and close modal
   const applyFilters = useCallback(() => {
-    setSelectedTypes(tempSelectedTypes);
-    setSelectedStatuses(tempSelectedStatuses);
-    setDestructionDateStart(tempDestructionDateStart);
-    setDestructionDateEnd(tempDestructionDateEnd);
-    setCreationYearStart(tempCreationYearStart);
-    setCreationYearEnd(tempCreationYearEnd);
-    setIsFilterOpen(false);
-  }, [
-    tempSelectedTypes,
-    tempSelectedStatuses,
-    tempDestructionDateStart,
-    tempDestructionDateEnd,
-    tempCreationYearStart,
-    tempCreationYearEnd,
-  ]);
-
-  // Clear all temp filters in modal
-  const clearTempFilters = useCallback(() => {
-    setTempSelectedTypes([]);
-    setTempSelectedStatuses([]);
-    setTempDestructionDateStart(null);
-    setTempDestructionDateEnd(null);
-    setTempCreationYearStart(null);
-    setTempCreationYearEnd(null);
-  }, []);
+    filterState.applyFilters();
+    modalState.setIsFilterOpen(false);
+  }, [filterState, modalState]);
 
   return {
-    // Site selection
-    selectedSite,
-    setSelectedSite,
-    highlightedSiteId,
-    setHighlightedSiteId,
+    // Site selection (from useSiteSelection)
+    ...siteSelection,
 
-    // Filters (applied)
-    filters: {
-      selectedTypes,
-      selectedStatuses,
-      destructionDateStart,
-      destructionDateEnd,
-      creationYearStart,
-      creationYearEnd,
-      searchTerm,
-    },
-    setSelectedTypes,
-    setSelectedStatuses,
-    setDestructionDateStart,
-    setDestructionDateEnd,
-    setCreationYearStart,
-    setCreationYearEnd,
-    setSearchTerm,
-    hasActiveFilters,
-    hasUnappliedChanges,
-    hasTempFilters,
-    clearAllFilters,
+    // Filters (from useFilterState)
+    filters: filterState.filters,
+    setSelectedTypes: filterState.setSelectedTypes,
+    setSelectedStatuses: filterState.setSelectedStatuses,
+    setDestructionDateStart: filterState.setDestructionDateStart,
+    setDestructionDateEnd: filterState.setDestructionDateEnd,
+    setCreationYearStart: filterState.setCreationYearStart,
+    setCreationYearEnd: filterState.setCreationYearEnd,
+    setSearchTerm: filterState.setSearchTerm,
+    hasActiveFilters: filterState.hasActiveFilters,
+    hasUnappliedChanges: filterState.hasUnappliedChanges,
+    hasTempFilters: filterState.hasTempFilters,
+    clearAllFilters: filterState.clearAllFilters,
 
-    // Temp filters (for modal)
-    tempFilters: {
-      tempSelectedTypes,
-      tempSelectedStatuses,
-      tempDestructionDateStart,
-      tempDestructionDateEnd,
-      tempCreationYearStart,
-      tempCreationYearEnd,
-    },
-    setTempSelectedTypes,
-    setTempSelectedStatuses,
-    setTempDestructionDateStart,
-    setTempDestructionDateEnd,
-    setTempCreationYearStart,
-    setTempCreationYearEnd,
+    // Temp filters (from useFilterState)
+    tempFilters: filterState.tempFilters,
+    setTempSelectedTypes: filterState.setTempSelectedTypes,
+    setTempSelectedStatuses: filterState.setTempSelectedStatuses,
+    setTempDestructionDateStart: filterState.setTempDestructionDateStart,
+    setTempDestructionDateEnd: filterState.setTempDestructionDateEnd,
+    setTempCreationYearStart: filterState.setTempCreationYearStart,
+    setTempCreationYearEnd: filterState.setTempCreationYearEnd,
     openFilterModal,
     applyFilters,
-    clearTempFilters,
+    clearTempFilters: filterState.clearTempFilters,
 
-    // Modals
-    modals: {
-      isTableExpanded,
-      isAboutOpen,
-      isStatsOpen,
-      isFilterOpen,
-      isDonateOpen,
-    },
-    setIsTableExpanded,
-    setIsAboutOpen,
-    setIsStatsOpen,
-    setIsFilterOpen,
-    setIsDonateOpen,
+    // Modals (from useModalState)
+    modals: modalState.modals,
+    setIsTableExpanded: modalState.setIsTableExpanded,
+    setIsAboutOpen: modalState.setIsAboutOpen,
+    setIsStatsOpen: modalState.setIsStatsOpen,
+    setIsFilterOpen: modalState.setIsFilterOpen,
+    setIsDonateOpen: modalState.setIsDonateOpen,
   };
 }
