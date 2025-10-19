@@ -1,9 +1,5 @@
 # CLAUDE.md - Heritage Tracker
 
-**⚠️ IMPORTANT:** Do not provide unprompted summaries after completing work. Only summarize when explicitly asked.
-
----
-
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
@@ -11,6 +7,7 @@
 **Branch:** feat/darkmode (dark mode + system preference) | main (production)
 
 ### Essential Commands
+
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
 npm test        # 232 tests - MUST pass before commit
@@ -19,6 +16,7 @@ npm run build   # Production build
 ```
 
 ### Git Workflow
+
 ```bash
 # Before EVERY commit:
 npm run lint && npm test
@@ -34,6 +32,7 @@ git commit -m "docs: update docs"
 ## 📐 Architecture Overview
 
 ### Desktop Layout
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ Header (black bg, right-aligned buttons: Help | Stats | About) │
@@ -53,11 +52,13 @@ All components have shadow-xl for dramatic depth effect
 ```
 
 ### Mobile Layout
+
 ```
 FilterBar → Accordion Table (no map/timeline)
 ```
 
 ### Key Files
+
 ```
 src/
 ├── components/
@@ -87,6 +88,7 @@ src/
 ## 🎯 Critical Patterns
 
 ### Dark Mode & Theme System
+
 **ThemeContext** - React Context-based theming with system preference detection:
 
 ```typescript
@@ -107,29 +109,29 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 ```
 
 **IMPORTANT - DO NOT use Tailwind `dark:` modifiers:**
+
 - ❌ `className="bg-white dark:bg-black"` - Does NOT work with context-based theming
 - ✅ `className={isDark ? "bg-black" : "bg-white"}` - Use conditional expressions
 
 **Pattern:**
+
 ```tsx
 import { useTheme } from "../../contexts/ThemeContext";
 
 function MyComponent() {
   const { isDark } = useTheme();
-  return (
-    <div className={`${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}>
-      {/* Content */}
-    </div>
-  );
+  return <div className={`${isDark ? "bg-[#000000]/90" : "bg-white/90"}`}>{/* Content */}</div>;
 }
 ```
 
 **Testing:**
+
 - `darkMode.test.tsx` - Component dark mode rendering (19 tests)
 - `darkModeAutomated.test.tsx` - Automated validation (scans codebase for `dark:` modifiers)
 - `ThemeContext.test.tsx` - System preference detection (6 tests)
 
 ### Historical Satellite Imagery
+
 **SiteDetailView** - Right side satellite map with 3 time periods:
 
 ```typescript
@@ -152,40 +154,45 @@ CURRENT: {
 ```
 
 **Implementation:**
+
 - TimeToggle component (top-right, z-[1000])
 - TileLayer with `key={selectedPeriod}` forces re-render
 - Zoom clamped: `Math.min(SITE_DETAIL_ZOOM, periodMaxZoom)` = **17 for all periods**
 - Default: PRE_CONFLICT_2023
 
 ### Map Configuration
+
 ```typescript
 // constants/map.ts
-GAZA_CENTER: [31.42, 34.38]   // Optimized centering
-DEFAULT_ZOOM: 10.5             // Gaza overview
-SITE_DETAIL_ZOOM: 17           // Consistent across historical imagery
+GAZA_CENTER: [31.42, 34.38]; // Optimized centering
+DEFAULT_ZOOM: 10.5; // Gaza overview
+SITE_DETAIL_ZOOM: 17; // Consistent across historical imagery
 ```
 
 ### Data Schema
+
 ```typescript
 interface GazaSite {
   id: string;
   type: "mosque" | "church" | "archaeological" | "museum" | "historic-building";
   name: string;
   nameArabic?: string;
-  yearBuilt: string;            // "7th century", "800 BCE", "1950"
+  yearBuilt: string; // "7th century", "800 BCE", "1950"
   coordinates: [number, number]; // [lat, lng] - Leaflet format!
   status: "destroyed" | "heavily-damaged" | "damaged";
-  dateDestroyed?: string;        // ISO: "2023-12-07"
+  dateDestroyed?: string; // ISO: "2023-12-07"
   // ... additional fields
 }
 ```
 
 ### Year Parsing (`parseYearBuilt`)
+
 - "800 BCE" → -800
 - "7th century" → 650 (midpoint)
 - "1950" → 1950
 
 ### State Management
+
 - `highlightedSiteId` - Syncs Timeline ↔ Map ↔ Table
 - `AnimationContext` - Global timeline playback state
 - Deferred filters - Apply on button click (not on input change)
@@ -195,6 +202,7 @@ interface GazaSite {
 ## ✅ Quality Gates
 
 **BEFORE EVERY COMMIT:**
+
 - [ ] `npm run lint` - clean
 - [ ] `npm test` - all 232 tests pass
 - [ ] Visual check in browser (dev server running)
@@ -203,6 +211,7 @@ interface GazaSite {
 - [ ] Both light and dark modes render correctly
 
 **Performance:**
+
 - Desktop: 60fps minimum
 - Mobile: 30fps acceptable
 - Initial load: <3s on 3G
@@ -214,6 +223,7 @@ interface GazaSite {
 **Framework:** Vitest + React Testing Library
 **Coverage:** 232 tests across 23 files
 **Test Files:**
+
 - `darkMode.test.tsx` (19 tests) - Component dark mode rendering
 - `darkModeAutomated.test.tsx` (3 tests) - Automated validation, scans for `dark:` modifiers
 - `ThemeContext.test.tsx` (6 tests) - System preference detection
@@ -230,6 +240,7 @@ interface GazaSite {
 - Plus 10 more test files
 
 **Test Setup:**
+
 - ResizeObserver mock (TimelineScrubber)
 - Canvas mock (leaflet.heat)
 
@@ -240,6 +251,7 @@ interface GazaSite {
 ## 🚫 Known Issues & Gotchas
 
 ### ❌ DO NOT
+
 - Use Tailwind `dark:` modifiers (use conditional expressions with `isDark` instead)
 - Use text inputs for BC/BCE dates (parsing fragile)
 - Forget `z-[9999]` on dropdowns above Leaflet maps
@@ -248,6 +260,7 @@ interface GazaSite {
 - Create animation frames without cleanup
 
 ### ✅ DO
+
 - Number input + dropdown for BC/BCE
 - Remember Leaflet uses `[lat, lng]` NOT `[lng, lat]`
 - Use `useMemo` for expensive sorting/calculations
@@ -256,6 +269,7 @@ interface GazaSite {
 - Use Canvas for continuous animations (better than SVG)
 
 ### Current Limitations
+
 - No validation that end date > start date
 - Year parsing assumes CE unless BCE/BC explicit
 - Timeline animation paused (hidden in production)
@@ -266,7 +280,9 @@ interface GazaSite {
 ## 🎨 Component Details
 
 ### SitesTable
+
 **3 variants:**
+
 - `compact` - Desktop sidebar (Name, Type, Status, Date)
 - `expanded` - Modal (all fields, CSV export)
 - `mobile` - Accordion (no Type column)
@@ -276,11 +292,13 @@ interface GazaSite {
 **CSV Export:** RFC 4180 compliant, timestamped filename
 
 ### FilterBar
+
 - Desktop: Inline search, BC/BCE dropdowns, date ranges (text-[10px])
 - Mobile: Full-width search, hidden Type/Status filters
 - **Deferred application** - Filters apply on button click, not on input change
 
 ### SiteDetailView & TimeToggle
+
 - **Purpose:** Satellite-only aerial view (right side)
 - **No site selected:** Gaza overview (zoom 10.5)
 - **Site selected:** Zoom to site (zoom 17)
@@ -290,6 +308,7 @@ interface GazaSite {
   - Default: Aug 2023 (PRE_CONFLICT_2023)
 
 ### Timeline Scrubber (Paused)
+
 - **Status:** ✅ Implemented, ⏸️ Hidden in production
 - D3.js horizontal timeline
 - Play/Pause/Reset controls
@@ -305,9 +324,11 @@ interface GazaSite {
 **Spec:** `docs/timeline-animation-spec.md`
 
 ### Core Concept: "Dimming Gaza"
+
 As sites are destroyed, map "glow" fades (gold → grey)
 
 **Implemented:**
+
 - ✅ TimelineScrubber (D3.js)
 - ✅ AnimationContext (global state)
 - ✅ MapGlowLayer (Leaflet.heat)
@@ -315,16 +336,18 @@ As sites are destroyed, map "glow" fades (gold → grey)
 - ✅ heritageCalculations utilities
 
 **Paused (Future):**
+
 - ⏸️ MarkerAnimations (explode/crack/shake)
 - ⏸️ HeritageMetricsDashboard (integrity meter)
 - ⏸️ Mobile timeline support
 
 ### Glow Contribution Formula
+
 ```typescript
 const glowContribution = (site: GazaSite): number => {
   let weight = 100;
   const age = 2024 - (site.creationYear || 0);
-  if (age > 2000) weight *= 3;      // Ancient
+  if (age > 2000) weight *= 3; // Ancient
   else if (age > 1000) weight *= 2; // Medieval
   else if (age > 200) weight *= 1.5; // Historic
 
@@ -341,6 +364,7 @@ const glowContribution = (site: GazaSite): number => {
 ## 🌍 Cultural & Legal
 
 ### Content Standards
+
 - Documentation, not advocacy
 - Full attribution for all claims
 - Cultural sensitivity
@@ -348,6 +372,7 @@ const glowContribution = (site: GazaSite): number => {
 - No personal data
 
 ### Accessibility
+
 - WCAG AA compliance
 - Bilingual (English + Arabic, RTL support)
 - Mobile-first responsive
@@ -355,6 +380,7 @@ const glowContribution = (site: GazaSite): number => {
 - Keyboard navigation (timeline controls)
 
 ### Legal Framework
+
 - 1954 Hague Convention
 - Rome Statute (ICC)
 - UN Security Council Resolution 2347 (2017)
@@ -374,12 +400,14 @@ Auto-test → Auto-deploy to GitHub Pages on main branch push
 ## 📈 Performance Optimizations
 
 **Implemented:**
+
 - Lazy loading (Map, Timeline, Modal components)
 - Code splitting (react-vendor 12KB, map-vendor 161KB, d3-vendor 62KB)
 - Service Worker (PWA, offline support, 30-day tile cache)
 - Bundle: 287KB main (83KB gzipped), 621KB total precached
 
 **Patterns:**
+
 ```tsx
 // Lazy loading
 const HeritageMap = lazy(() => import("./components/Map/HeritageMap"));
@@ -399,6 +427,7 @@ useEffect(() => {
 ## 📝 Recent Updates (Oct 2025)
 
 **Completed (feat/darkmode - Current Branch):**
+
 - [x] **Dark Mode Implementation** ✅
   - **Full dark mode support**: All components support light/dark themes
   - **System preference detection**: Auto-detects OS color scheme on first visit
@@ -414,6 +443,7 @@ useEffect(() => {
   - **Key files**: ThemeContext.tsx, useThemeClasses.ts, darkMode tests
 
 **Completed (feature/UI-refinement - Merged):**
+
 - [x] **Complete UI Refinement** ✅
   - **Design System**: Unified button styling, shadows, transitions, active states
   - **Palestinian Flag Theme**: Red triangle background with semi-transparent components (50-90% opacity)
@@ -425,6 +455,7 @@ useEffect(() => {
   - **Compact Spacing**: Reduced vertical space by ~34px in filter bar and timeline
 
 **Completed (feature/secondMapfixes-viewImprovements - Merged):**
+
 - [x] Satellite detail view map (right side)
 - [x] Historical satellite imagery toggle (2014/Aug 2023/Current)
 - [x] Consistent zoom levels (zoom 17 for all periods)
@@ -435,11 +466,13 @@ useEffect(() => {
 - [x] Ctrl+scroll zoom fix for SiteDetailView
 
 **Next:**
+
 - [ ] Merge feat/darkmode to main
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
 
 **Future:**
+
 - [ ] Resume timeline animations (Phase 3+)
 - [ ] All 110+ UNESCO-verified sites
 - [ ] Database integration (Supabase)
