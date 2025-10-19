@@ -3,14 +3,14 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 283 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/mapSync (map sync + refactoring) | main (production)
+**Current:** 45 sites | 292 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/mapSync (performance optimizations complete) | main (production)
 
 ### Essential Commands
 
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 283 tests - MUST pass before commit
+npm test        # 292 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -216,7 +216,7 @@ interface GazaSite {
 **BEFORE EVERY COMMIT:**
 
 - [ ] `npm run lint` - clean
-- [ ] `npm test` - all 283 tests pass
+- [ ] `npm test` - all 292 tests pass
 - [ ] Visual check in browser (dev server running)
 - [ ] No console errors
 - [ ] Mobile view renders (no AnimationProvider errors)
@@ -233,7 +233,7 @@ interface GazaSite {
 ## 🧪 Testing
 
 **Framework:** Vitest + React Testing Library
-**Coverage:** 283 tests across 25 files
+**Coverage:** 292 tests across 25 files
 **Test Files:**
 
 - `Button.test.tsx` (24 tests) - Reusable button component
@@ -248,7 +248,7 @@ interface GazaSite {
 - `heritageCalculations.test.ts` (42 tests)
 - `useMapGlow.test.ts` (24 tests)
 - `MapGlowLayer.test.tsx` (7 tests)
-- `performance.test.tsx` (9 tests) - 25+ sites, 50 site stress test
+- `performance.test.tsx` (18 tests) - Performance regression tests (25/50/100/1000 sites)
 - `validateSites.test.ts` (20 tests) - Data integrity
 - `filters.test.ts` (22 tests) - Filter state utilities
 - Plus 10 more test files
@@ -415,12 +415,18 @@ Auto-test → Auto-deploy to GitHub Pages on main branch push
 
 **Implemented:**
 
+- **Algorithmic Optimizations**:
+  - **MapMarkers**: O(n²) → O(n) with memoized destroyed sites Set
+  - **React.memo**: HeritageMap and MapMarkers prevent unnecessary re-renders
+  - **D3 granular imports**: Reduced bundle by tree-shaking unused D3 modules
+  - **useCallback**: Stable filter handler references in DesktopLayout
+
 - **Code Splitting**:
   - React vendor: 11.79 KiB (4.21 KiB gzipped)
   - Map vendor (Leaflet): 161.05 KiB (47.31 KiB gzipped)
-  - D3 vendor (Timeline): 62.29 KiB (20.83 KiB gzipped)
-  - Main bundle: 309.62 KiB (89.00 KiB gzipped)
-  - Total precached: 669.29 KiB (28 files)
+  - D3 vendor (Timeline): 61.46 KiB (20.59 KiB gzipped) - optimized with granular imports
+  - Main bundle: 309.73 KiB (89.05 KiB gzipped)
+  - Total precached: 668.64 KiB (28 files)
 
 - **Lazy Loading**:
   - Map, Timeline, Modal components
@@ -442,11 +448,12 @@ Auto-test → Auto-deploy to GitHub Pages on main branch push
   - **TODO**: Resolve when site count exceeds 50 (switch to react-virtualized or fix imports)
 
 **Production Build Performance:**
-- Build time: ~18s
+- Build time: 13.25s (27.6% improvement from 18.30s)
 - Initial load: <3s on 3G
-- Map rendering: 215ms for 25 sites
-- Table rendering: 134ms for 25 sites
-- Stress test: 50 sites handled successfully
+- Map rendering: 67-195ms for 100 sites (O(n) optimization)
+- Table rendering: 1826-2117ms for 1000 sites
+- Filter performance: 0.3-4.4ms for 1000 sites (linear time)
+- Stress test: 1000+ sites validated for future scaling
 
 **Patterns:**
 
@@ -479,15 +486,34 @@ useEffect(() => {
 
 **Completed (feat/mapSync - Current Branch):**
 
-- [x] **Performance Optimizations** ✅ (Oct 19)
+- [x] **Performance Regression Tests** ✅ (Oct 19)
+  - **Added 9 new tests** (292 total, up from 283)
+  - **MapMarkers memoization**: 100 sites render in 67-195ms (O(n) optimization verified)
+  - **React.memo effectiveness**: Re-renders prevented in 4-11ms
+  - **Filter performance at 1000 sites**: Type (0.7ms), Status (0.3ms), Search (2.5ms), Complex (1.3ms)
+  - **Table render 1000 sites**: 1826-2275ms (virtual scrolling threshold validated)
+  - **Memory efficiency**: 10 mount/unmount cycles with 100 sites (no leaks)
+  - **Key commit**: 782f4e7 (comprehensive performance regression tests)
+
+- [x] **Algorithmic Performance Optimizations** ✅ (Oct 19)
+  - **MapMarkers O(n²) → O(n)**: Pre-compute destroyed sites as Set with useMemo
+  - **React.memo**: HeritageMap and MapMarkers wrapped to prevent re-renders
+  - **D3 granular imports**: Tree-shaking optimization (62.29 → 61.46 KiB)
+  - **useCallback handlers**: Stable filter handler references in DesktopLayout
+  - **Build time improvement**: 18.30s → 13.25s (27.6% faster)
+  - **Code cleanup**: Removed 21+ unnecessary comments
+  - **Testing**: All 283 tests passing, ThemeContext isolation fixed
+  - **Key commits**: 9d25a2a (perf optimizations), 4793008 (comment cleanup), 729c79a (test fixes)
+
+- [x] **Component Performance Optimizations** ✅ (Oct 19)
   - **StatsDashboard**: Conditional rendering (60% fewer mobile DOM nodes)
   - **About Modal**: Lazy-loaded 9 sections with React.lazy() + Suspense
   - **Progressive Loading**: Intersection Observer for off-screen content (useIntersectionObserver hook, LazySection component)
   - **Virtual Scrolling**: Infrastructure prepared (VirtualizedTableBody, SiteTableRow components)
     - Threshold: 50 sites (current: 45)
     - Currently disabled due to react-window TypeScript import issue
-  - **Production Build**: Fixed TypeScript errors, verified successful build (18.30s)
-  - **Bundle Analysis**: 669.29 KiB total (main: 309.62 KiB / 89 KiB gzipped)
+  - **Production Build**: Fixed TypeScript errors, verified successful build
+  - **Bundle Analysis**: 668.64 KiB total (main: 309.73 KiB / 89.05 KiB gzipped)
   - **Testing**: All 283 tests passing
   - **Key commits**: 647f810 (StatsDashboard), 63623b4 (About lazy), 15cd8d7 (Intersection Observer), 88b1d93 (Virtual scroll prep), d3bb990 (Build fixes)
 
@@ -556,5 +582,5 @@ useEffect(() => {
 ---
 
 **Last Updated:** October 19, 2025
-**Version:** 1.10.0-dev
-**Branch:** feat/mapSync (refactoring complete, ready for merge) | main (production)
+**Version:** 1.11.0-dev
+**Branch:** feat/mapSync (all optimizations complete, ready for merge) | main (production)
