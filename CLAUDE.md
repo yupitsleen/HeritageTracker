@@ -3,14 +3,14 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 232 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/darkmode (dark mode + system preference) | main (production)
+**Current:** 45 sites | 283 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/mapSync (map sync + refactoring) | main (production)
 
 ### Essential Commands
 
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 232 tests - MUST pass before commit
+npm test        # 283 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -204,7 +204,7 @@ interface GazaSite {
 **BEFORE EVERY COMMIT:**
 
 - [ ] `npm run lint` - clean
-- [ ] `npm test` - all 232 tests pass
+- [ ] `npm test` - all 283 tests pass
 - [ ] Visual check in browser (dev server running)
 - [ ] No console errors
 - [ ] Mobile view renders (no AnimationProvider errors)
@@ -221,9 +221,10 @@ interface GazaSite {
 ## 🧪 Testing
 
 **Framework:** Vitest + React Testing Library
-**Coverage:** 232 tests across 23 files
+**Coverage:** 283 tests across 25 files
 **Test Files:**
 
+- `Button.test.tsx` (24 tests) - Reusable button component
 - `darkMode.test.tsx` (19 tests) - Component dark mode rendering
 - `darkModeAutomated.test.tsx` (3 tests) - Automated validation, scans for `dark:` modifiers
 - `ThemeContext.test.tsx` (6 tests) - System preference detection
@@ -237,6 +238,7 @@ interface GazaSite {
 - `MapGlowLayer.test.tsx` (7 tests)
 - `performance.test.tsx` (9 tests) - 25+ sites, 50 site stress test
 - `validateSites.test.ts` (20 tests) - Data integrity
+- `filters.test.ts` (22 tests) - Filter state utilities
 - Plus 10 more test files
 
 **Test Setup:**
@@ -426,9 +428,22 @@ useEffect(() => {
 
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feat/darkmode - Current Branch):**
+**Completed (feat/mapSync - Current Branch):**
 
-- [x] **Dark Mode Implementation** ✅
+- [x] **Code Quality Refactoring** ✅ (Oct 19)
+  - **SOLID/DRY/KISS Improvements**: Completed all 13 code review items
+  - **Split useAppState hook**: Extracted focused hooks (useFilterState, useModalState, useSiteSelection)
+  - **Reusable Button component**: Eliminated 50+ lines of duplicated styling
+  - **Style consolidation**: Centralized theme-aware styles in useThemeClasses
+  - **Filter utilities**: Type-safe filter state management (src/types/filters.ts)
+  - **Open/Closed Principle**: Removed `as const` from components.ts, made extensible
+  - **Separation of Concerns**: Extracted 11+ inline style strings to useThemeClasses
+  - **Testing**: 283 tests passing (51 new tests added)
+  - **Key commits**: 6ea6f2f (SOLID), 6c8cf60 (DRY/KISS), b59d045 (Open/Closed)
+
+**Completed (feat/darkmode - Merged):**
+
+- [x] **Dark Mode Implementation** ✅ (Oct 18)
   - **Full dark mode support**: All components support light/dark themes
   - **System preference detection**: Auto-detects OS color scheme on first visit
   - **ThemeContext**: React Context-based theming (not Tailwind `darkMode` config)
@@ -438,8 +453,7 @@ useEffect(() => {
     - `darkMode.test.tsx` - Component rendering in both modes
     - `darkModeAutomated.test.tsx` - Automated `dark:` modifier detection
     - `ThemeContext.test.tsx` - System preference detection
-  - **Code review**: A+ grade (see CODE_REVIEW_DARK_MODE_FINAL.md)
-  - All 232 tests passing, linting clean
+  - All tests passing, linting clean
   - **Key files**: ThemeContext.tsx, useThemeClasses.ts, darkMode tests
 
 **Completed (feature/UI-refinement - Merged):**
@@ -467,7 +481,7 @@ useEffect(() => {
 
 **Next:**
 
-- [ ] Merge feat/darkmode to main
+- [ ] Merge feat/mapSync to main
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
 
@@ -480,6 +494,6 @@ useEffect(() => {
 
 ---
 
-**Last Updated:** October 18, 2025
-**Version:** 1.9.0-dev
-**Branch:** feat/darkmode (ready for merge) | main (production)
+**Last Updated:** October 19, 2025
+**Version:** 1.10.0-dev
+**Branch:** feat/mapSync (refactoring complete, ready for merge) | main (production)
