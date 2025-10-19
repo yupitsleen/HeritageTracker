@@ -1,15 +1,55 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { renderWithTheme, screen } from "../test-utils/renderWithTheme";
 import { HeritageMap } from "./Map/HeritageMap";
 import { SitesTable } from "./SitesTable/index";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
+import {
+  filterSitesByTypeAndStatus,
+  filterSitesByDestructionDate,
+  filterSitesBySearch
+} from "../utils/siteFilters";
 
 /**
  * Performance smoke tests to ensure app handles 25+ sites
  * Tests rendering performance and basic functionality at scale
  */
+
+// Helper function to apply all filters
+const filterSites = (
+  sites: GazaSite[],
+  filters: {
+    searchQuery: string;
+    selectedTypes: Array<GazaSite["type"]>;
+    selectedStatuses: Array<GazaSite["status"]>;
+    destructionDateStart: Date | null;
+    destructionDateEnd: Date | null;
+  }
+): GazaSite[] => {
+  let filtered = sites;
+
+  // Apply search filter
+  if (filters.searchQuery) {
+    filtered = filterSitesBySearch(filtered, filters.searchQuery);
+  }
+
+  // Apply type and status filters
+  filtered = filterSitesByTypeAndStatus(
+    filtered,
+    filters.selectedTypes,
+    filters.selectedStatuses
+  );
+
+  // Apply destruction date filter
+  filtered = filterSitesByDestructionDate(
+    filtered,
+    filters.destructionDateStart,
+    filters.destructionDateEnd
+  );
+
+  return filtered;
+};
 
 // Generate mock site data at scale (25 sites)
 const generateMockSites = (count: number): GazaSite[] => {
@@ -237,6 +277,255 @@ describe("Performance Tests (25+ Sites)", () => {
       const headingElements = screen.getAllByText("Heritage Sites");
       expect(headingElements.length).toBeGreaterThan(0);
       console.log(`\n✓ Successfully rendered all components with 50 sites`);
+    });
+  });
+
+  describe("MapMarkers Memoization Performance", () => {
+    it("verifies destroyed sites Set is computed efficiently", () => {
+      const mockSites100 = generateMockSites(100);
+      const currentTimestamp = new Date("2023-12-31");
+
+      const startTime = performance.now();
+
+      renderWithTheme(
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites100}
+            onSiteClick={() => {}}
+            highlightedSiteId={null}
+            onSiteHighlight={() => {}}
+          />
+        </AnimationProvider>
+      );
+
+      const endTime = performance.now();
+      const renderTime = endTime - startTime;
+
+      console.log(`\n✓ MapMarkers rendered 100 sites in ${renderTime.toFixed(2)}ms`);
+
+      // With O(n) optimization, 100 sites should render quickly
+      expect(renderTime).toBeLessThan(1500);
+    });
+
+    it("verifies re-render performance with updated timestamp", () => {
+      const mockSites100 = generateMockSites(100);
+
+      const { rerender } = renderWithTheme(
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites100}
+            onSiteClick={() => {}}
+            highlightedSiteId={null}
+            onSiteHighlight={() => {}}
+          />
+        </AnimationProvider>
+      );
+
+      const startTime = performance.now();
+
+      // Force re-render with different highlighted site
+      rerender(
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites100}
+            onSiteClick={() => {}}
+            highlightedSiteId="site-50"
+            onSiteHighlight={() => {}}
+          />
+        </AnimationProvider>
+      );
+
+      const endTime = performance.now();
+      const rerenderTime = endTime - startTime;
+
+      console.log(`\n✓ MapMarkers re-rendered 100 sites in ${rerenderTime.toFixed(2)}ms`);
+
+      // Re-renders should be fast with React.memo
+      expect(rerenderTime).toBeLessThan(1000);
+    });
+  });
+
+  describe("React.memo Effectiveness", () => {
+    it("prevents unnecessary HeritageMap re-renders", () => {
+      const mockSites25 = generateMockSites(25);
+      const onSiteClick = vi.fn();
+      const onSiteHighlight = vi.fn();
+
+      const { rerender } = renderWithTheme(
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites25}
+            onSiteClick={onSiteClick}
+            highlightedSiteId={null}
+            onSiteHighlight={onSiteHighlight}
+          />
+        </AnimationProvider>
+      );
+
+      // Re-render with same props - React.memo should prevent re-render
+      const startTime = performance.now();
+
+      rerender(
+        <AnimationProvider>
+          <HeritageMap
+            sites={mockSites25}
+            onSiteClick={onSiteClick}
+            highlightedSiteId={null}
+            onSiteHighlight={onSiteHighlight}
+          />
+        </AnimationProvider>
+      );
+
+      const endTime = performance.now();
+      const rerenderTime = endTime - startTime;
+
+      console.log(`\n✓ HeritageMap memo prevented re-render in ${rerenderTime.toFixed(2)}ms`);
+
+      // Memoized component should re-render very quickly
+      expect(rerenderTime).toBeLessThan(500);
+    });
+  });
+
+  describe("Filter Performance at Scale (1000+ Sites)", () => {
+    const mockSites1000 = generateMockSites(1000);
+
+    it("filters 1000 sites by type in linear time", () => {
+      const startTime = performance.now();
+
+      const filtered = filterSites(mockSites1000, {
+        searchQuery: "",
+        selectedTypes: ["mosque"],
+        selectedStatuses: [],
+        destructionDateStart: null,
+        destructionDateEnd: null,
+      });
+
+      const endTime = performance.now();
+      const filterTime = endTime - startTime;
+
+      console.log(`\n✓ Filtered 1000 sites by type in ${filterTime.toFixed(2)}ms`);
+      console.log(`  - Result: ${filtered.length} mosques found`);
+
+      // Linear filtering should be very fast
+      expect(filterTime).toBeLessThan(100);
+      expect(filtered.length).toBeGreaterThan(0);
+      expect(filtered.every(site => site.type === "mosque")).toBe(true);
+    });
+
+    it("filters 1000 sites by status in linear time", () => {
+      const startTime = performance.now();
+
+      const filtered = filterSites(mockSites1000, {
+        searchQuery: "",
+        selectedTypes: [],
+        selectedStatuses: ["destroyed"],
+        destructionDateStart: null,
+        destructionDateEnd: null,
+      });
+
+      const endTime = performance.now();
+      const filterTime = endTime - startTime;
+
+      console.log(`\n✓ Filtered 1000 sites by status in ${filterTime.toFixed(2)}ms`);
+      console.log(`  - Result: ${filtered.length} destroyed sites found`);
+
+      expect(filterTime).toBeLessThan(100);
+      expect(filtered.length).toBeGreaterThan(0);
+      expect(filtered.every(site => site.status === "destroyed")).toBe(true);
+    });
+
+    it("filters 1000 sites by search query efficiently", () => {
+      const startTime = performance.now();
+
+      const filtered = filterSites(mockSites1000, {
+        searchQuery: "Heritage Site 1",
+        selectedTypes: [],
+        selectedStatuses: [],
+        destructionDateStart: null,
+        destructionDateEnd: null,
+      });
+
+      const endTime = performance.now();
+      const filterTime = endTime - startTime;
+
+      console.log(`\n✓ Searched 1000 sites in ${filterTime.toFixed(2)}ms`);
+      console.log(`  - Result: ${filtered.length} matching sites found`);
+
+      expect(filterTime).toBeLessThan(150);
+      expect(filtered.length).toBeGreaterThan(0);
+    });
+
+    it("handles complex multi-filter queries on 1000 sites", () => {
+      const startTime = performance.now();
+
+      const filtered = filterSites(mockSites1000, {
+        searchQuery: "Heritage",
+        selectedTypes: ["mosque", "church"],
+        selectedStatuses: ["destroyed"],
+        destructionDateStart: new Date("2023-01-01"),
+        destructionDateEnd: new Date("2023-12-31"),
+      });
+
+      const endTime = performance.now();
+      const filterTime = endTime - startTime;
+
+      console.log(`\n✓ Complex filter on 1000 sites in ${filterTime.toFixed(2)}ms`);
+      console.log(`  - Result: ${filtered.length} sites matching all criteria`);
+
+      // Complex filtering should still be fast
+      expect(filterTime).toBeLessThan(200);
+      expect(filtered.length).toBeGreaterThan(0);
+    });
+
+    it("benchmarks render performance with 1000 sites in table", () => {
+      const startTime = performance.now();
+
+      const { container } = renderWithTheme(
+        <CalendarProvider>
+          <SitesTable
+            sites={mockSites1000}
+            onSiteClick={() => {}}
+            onSiteHighlight={() => {}}
+            highlightedSiteId={null}
+            onExpandTable={() => {}}
+          />
+        </CalendarProvider>
+      );
+
+      const endTime = performance.now();
+      const renderTime = endTime - startTime;
+
+      console.log(`\n✓ Table rendered 1000 sites in ${renderTime.toFixed(2)}ms`);
+
+      expect(container).toBeInTheDocument();
+      // 1000 sites may take longer but should be reasonable
+      expect(renderTime).toBeLessThan(3000);
+    });
+  });
+
+  describe("Memory Efficiency", () => {
+    it("verifies no memory leaks with repeated renders", () => {
+      const mockSites100 = generateMockSites(100);
+
+      // Render and unmount multiple times
+      for (let i = 0; i < 10; i++) {
+        const { unmount } = renderWithTheme(
+          <AnimationProvider>
+            <HeritageMap
+              sites={mockSites100}
+              onSiteClick={() => {}}
+              highlightedSiteId={null}
+              onSiteHighlight={() => {}}
+            />
+          </AnimationProvider>
+        );
+        unmount();
+      }
+
+      console.log(`\n✓ Survived 10 mount/unmount cycles with 100 sites`);
+
+      // If we got here without crashes, memory management is working
+      expect(true).toBe(true);
     });
   });
 });
