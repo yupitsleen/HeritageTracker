@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, useCallback } from "react";
 import type { GazaSite } from "../../types";
 import { Input } from "../Form/Input";
 import { FilterTag } from "../FilterBar/FilterTag";
@@ -83,6 +83,20 @@ export function DesktopLayout({
   const { isDark } = useTheme();
   // State for satellite map sync with timeline
   const [syncMapToTimeline, setSyncMapToTimeline] = useState(false);
+
+  // Memoized filter tag handlers to prevent unnecessary re-renders
+  const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
+    setSelectedTypes(selectedTypes.filter((t) => t !== typeToRemove));
+  }, [selectedTypes, setSelectedTypes]);
+
+  const handleRemoveStatus = useCallback((statusToRemove: GazaSite["status"]) => {
+    setSelectedStatuses(selectedStatuses.filter((s) => s !== statusToRemove));
+  }, [selectedStatuses, setSelectedStatuses]);
+
+  const handleRemoveDateRange = useCallback(() => {
+    setDestructionDateStart(null);
+    setDestructionDateEnd(null);
+  }, [setDestructionDateStart, setDestructionDateEnd]);
 
   return (
     <div className="hidden md:flex md:h-[calc(100vh-140px)] md:overflow-hidden relative">
@@ -221,7 +235,7 @@ export function DesktopLayout({
                     <FilterTag
                       key={type}
                       label={formatLabel(type)}
-                      onRemove={() => setSelectedTypes(selectedTypes.filter((t) => t !== type))}
+                      onRemove={() => handleRemoveType(type)}
                       ariaLabel={`Remove ${type} filter`}
                     />
                   ))}
@@ -229,9 +243,7 @@ export function DesktopLayout({
                     <FilterTag
                       key={status}
                       label={formatLabel(status)}
-                      onRemove={() =>
-                        setSelectedStatuses(selectedStatuses.filter((s) => s !== status))
-                      }
+                      onRemove={() => handleRemoveStatus(status)}
                       ariaLabel={`Remove ${status} filter`}
                     />
                   ))}
@@ -240,10 +252,7 @@ export function DesktopLayout({
                     <FilterTag
                       key="destruction-date"
                       label={`Date Range: ${destructionDateStart?.toLocaleDateString() || '...'} - ${destructionDateEnd?.toLocaleDateString() || '...'}`}
-                      onRemove={() => {
-                        setDestructionDateStart(null);
-                        setDestructionDateEnd(null);
-                      }}
+                      onRemove={handleRemoveDateRange}
                       ariaLabel="Remove destruction date filter"
                     />
                   )}

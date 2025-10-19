@@ -1,4 +1,13 @@
-import * as d3 from "d3";
+// Optimized D3 imports - only import what we need for better tree-shaking
+import { select, type Selection } from "d3-selection";
+import type { ScaleTime } from "d3-scale";
+import { axisBottom } from "d3-axis";
+import { timeFormat } from "d3-time-format";
+import { drag } from "d3-drag";
+import "d3-transition"; // Side-effect import for .transition() method
+
+// Re-export types for convenience
+export type { Selection, ScaleTime };
 
 export interface TimelineEvent {
   date: Date;
@@ -46,22 +55,22 @@ export const DEFAULT_TIMELINE_CONFIG: TimelineConfig = {
  * Separates D3 operations from React component lifecycle
  */
 export class D3TimelineRenderer {
-  private svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
+  private svg: Selection<SVGSVGElement, unknown, null, undefined>;
   private config: TimelineConfig;
-  private timeScale: d3.ScaleTime<number, number>;
+  private timeScale: ScaleTime<number, number>;
   private onTimestampChange: (date: Date) => void;
   private onPause: () => void;
 
   constructor(
     svgElement: SVGSVGElement,
-    timeScale: d3.ScaleTime<number, number>,
+    timeScale: ScaleTime<number, number>,
     config: Partial<TimelineConfig> = {},
     callbacks: {
       onTimestampChange: (date: Date) => void;
       onPause: () => void;
     }
   ) {
-    this.svg = d3.select(svgElement);
+    this.svg = select(svgElement);
     this.config = { ...DEFAULT_TIMELINE_CONFIG, ...config };
     this.timeScale = timeScale;
     this.onTimestampChange = callbacks.onTimestampChange;
@@ -71,7 +80,7 @@ export class D3TimelineRenderer {
   /**
    * Update the time scale (e.g., when container width changes)
    */
-  updateScale(timeScale: d3.ScaleTime<number, number>) {
+  updateScale(timeScale: ScaleTime<number, number>) {
     this.timeScale = timeScale;
   }
 
@@ -94,9 +103,9 @@ export class D3TimelineRenderer {
   private renderAxis() {
     const { height, colors } = this.config;
 
-    const xAxis = d3.axisBottom(this.timeScale).ticks(6).tickFormat((d) => {
+    const xAxis = axisBottom(this.timeScale).ticks(6).tickFormat((d) => {
       const date = d as Date;
-      return d3.timeFormat("%b %Y")(date);
+      return timeFormat("%b %Y")(date);
     });
 
     const axisGroup = this.svg
@@ -174,12 +183,12 @@ export class D3TimelineRenderer {
       .attr("fill", "#9ca3af") // Light gray color
       .attr("opacity", 0) // Start hidden
       .style("pointer-events", "none") // Don't interfere with mouse events
-      .text((d) => d3.timeFormat("%b %d, %Y")(d.date));
+      .text((d) => timeFormat("%b %d, %Y")(d.date));
 
     // Hover effects on the group
     markerGroups
       .on("mouseenter", function () {
-        const group = d3.select(this);
+        const group = select(this);
         group.select("circle")
           .transition()
           .duration(150)
@@ -193,7 +202,7 @@ export class D3TimelineRenderer {
           .attr("opacity", 1);
       })
       .on("mouseleave", function () {
-        const group = d3.select(this);
+        const group = select(this);
         group.select("circle")
           .transition()
           .duration(150)
@@ -216,7 +225,7 @@ export class D3TimelineRenderer {
       .append("title")
       .text(
         (d) =>
-          `${d.siteName}\n${d3.timeFormat("%B %d, %Y")(d.date)}${d.status ? `\nStatus: ${d.status.replace("-", " ")}` : ""}`
+          `${d.siteName}\n${timeFormat("%B %d, %Y")(d.date)}${d.status ? `\nStatus: ${d.status.replace("-", " ")}` : ""}`
       );
   }
 
@@ -252,10 +261,9 @@ export class D3TimelineRenderer {
       .style("cursor", "grab");
 
     // Drag behavior with visual feedback
-    const drag = d3
-      .drag<SVGCircleElement, unknown>()
+    const dragBehavior = drag<SVGCircleElement, unknown>()
       .on("start", function () {
-        d3.select(this)
+        select(this)
           .style("cursor", "grabbing")
           .transition()
           .duration(100)
@@ -273,7 +281,7 @@ export class D3TimelineRenderer {
         this.onTimestampChange(newDate);
       })
       .on("end", function () {
-        d3.select(this)
+        select(this)
           .style("cursor", "grab")
           .transition()
           .duration(200)
@@ -287,7 +295,7 @@ export class D3TimelineRenderer {
       this.onPause();
     });
 
-    handle.call(drag);
+    handle.call(dragBehavior);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import { MapContainer } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
@@ -21,8 +21,10 @@ interface HeritageMapProps {
  * Interactive map displaying heritage sites in Gaza
  * Automatically switches between English/Arabic tiles based on browser language
  * Phase 2: Includes MapGlowLayer for "Dimming Gaza" effect
+ *
+ * PERFORMANCE: Memoized to prevent re-renders when parent re-renders with same props
  */
-export function HeritageMap({
+export const HeritageMap = memo(function HeritageMap({
   sites,
   onSiteClick,
   highlightedSiteId,
@@ -75,4 +77,4 @@ export function HeritageMap({
       </MapContainer>
     </div>
   );
-}
+});

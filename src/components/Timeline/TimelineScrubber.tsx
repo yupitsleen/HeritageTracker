@@ -1,5 +1,7 @@
 import { useEffect, useRef, useMemo, useState } from "react";
-import * as d3 from "d3";
+// Optimized D3 imports - only import what we need
+import { scaleTime } from "d3-scale";
+import { timeFormat } from "d3-time-format";
 import {
   PlayIcon,
   PauseIcon,
@@ -135,8 +137,7 @@ export function TimelineScrubber({
   // D3 time scale (responsive to container width, uses adjusted dates when filtered)
   const timeScale = useMemo(() => {
     const margin = 50; // Leave space for handles
-    return d3
-      .scaleTime()
+    return scaleTime()
       .domain([adjustedStartDate, adjustedEndDate])
       .range([margin, containerWidth - margin]);
   }, [adjustedStartDate, adjustedEndDate, containerWidth]);
@@ -306,7 +307,7 @@ export function TimelineScrubber({
         {/* Center: Current date display */}
         <div className={t.timeline.currentDate}>
           <span className={t.text.muted}>Current:</span>{" "}
-          {d3.timeFormat("%B %d, %Y")(currentTimestamp)}
+          {timeFormat("%B %d, %Y")(currentTimestamp)}
         </div>
 
         {/* Right: Date Filter */}
