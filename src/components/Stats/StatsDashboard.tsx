@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import type { GazaSite } from "../../types";
 import { useHeritageStats } from "../../hooks/useHeritageStats";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -15,6 +16,19 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
   const t = useThemeClasses();
   // Calculate impactful statistics using extracted hook
   const stats = useHeritageStats(sites);
+
+  // Detect desktop vs mobile for conditional rendering (not just CSS hiding)
+  const [isDesktop, setIsDesktop] = useState(() => {
+    return typeof window !== 'undefined' && window.innerWidth >= 768;
+  });
+
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
   return (
     <div className={`max-h-[80vh] overflow-y-auto ${t.bg.primary}`}>
@@ -52,10 +66,12 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             <div className={`text-xs md:text-sm font-semibold ${t.text.heading} mb-2 md:mb-3`}>
               Sites Over 1,000 Years Old
             </div>
-            <p className={`text-xs ${t.text.muted} leading-relaxed hidden md:block`}>
-              Ancient mosques, churches, and archaeological sites that survived centuries of
-              history—destroyed in months.
-            </p>
+            {isDesktop && (
+              <p className={`text-xs ${t.text.muted} leading-relaxed`}>
+                Ancient mosques, churches, and archaeological sites that survived centuries of
+                history—destroyed in months.
+              </p>
+            )}
           </div>
 
           {/* Religious sites */}
@@ -66,10 +82,12 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             <div className={`text-xs md:text-sm font-semibold ${t.text.heading} mb-2 md:mb-3`}>
               Houses of Worship Destroyed
             </div>
-            <p className={`text-xs ${t.text.muted} leading-relaxed hidden md:block`}>
-              Active mosques and churches serving Muslim and Christian communities, including
-              pilgrimage sites with tombs of revered figures.
-            </p>
+            {isDesktop && (
+              <p className={`text-xs ${t.text.muted} leading-relaxed`}>
+                Active mosques and churches serving Muslim and Christian communities, including
+                pilgrimage sites with tombs of revered figures.
+              </p>
+            )}
           </div>
 
           {/* Museums */}
@@ -80,10 +98,12 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             <div className={`text-xs md:text-sm font-semibold ${t.text.heading} mb-2 md:mb-3`}>
               Museums & Cultural Centers
             </div>
-            <p className={`text-xs ${t.text.muted} leading-relaxed hidden md:block`}>
-              Including 3,000+ looted artifacts, tens of thousands of books burned, and 150 years
-              of archives deliberately destroyed.
-            </p>
+            {isDesktop && (
+              <p className={`text-xs ${t.text.muted} leading-relaxed`}>
+                Including 3,000+ looted artifacts, tens of thousands of books burned, and 150 years
+                of archives deliberately destroyed.
+              </p>
+            )}
           </div>
         </div>
 
@@ -102,16 +122,21 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
                   <strong>62 rare manuscripts destroyed</strong> including handwritten Qurans and
                   Islamic scholarly texts
                 </li>
-                <li className="hidden md:list-item">
-                  Continuous religious heritage from Byzantine, Islamic, Crusader, Mamluk, and
-                  Ottoman periods
-                </li>
-                <li className="hidden md:list-item">Architectural masterpiece blending multiple historical eras</li>
+                {isDesktop && (
+                  <>
+                    <li>
+                      Continuous religious heritage from Byzantine, Islamic, Crusader, Mamluk, and
+                      Ottoman periods
+                    </li>
+                    <li>Architectural masterpiece blending multiple historical eras</li>
+                  </>
+                )}
               </ul>
             </div>
 
             {/* Byzantine Church Jabaliya - Desktop only */}
-            <div className={`hidden md:block border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
+            {isDesktop && (
+              <div className={`border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
               <h3 className={`font-bold ${t.text.heading} mb-1`}>Byzantine Church of Jabaliya</h3>
               <p className={`text-sm ${t.text.body} mb-2`}>
                 <strong>1,580 years old (444 CE)</strong> • Just restored in January 2022
@@ -125,9 +150,11 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
                 <li>Completely destroyed 10 months after reopening to the public</li>
               </ul>
             </div>
+            )}
 
             {/* Ard-al-Moharbeen Cemetery - Desktop only */}
-            <div className={`hidden md:block border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
+            {isDesktop && (
+              <div className={`border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
               <h3 className={`font-bold ${t.text.heading} mb-1`}>
                 Ard-al-Moharbeen Roman Cemetery
               </h3>
@@ -147,9 +174,11 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
                 </li>
               </ul>
             </div>
+            )}
 
             {/* Al-Israa University Museum - Desktop only */}
-            <div className={`hidden md:block border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
+            {isDesktop && (
+            <div className={`border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
               <h3 className={`font-bold ${t.text.heading} mb-1`}>Al-Israa University Museum</h3>
               <p className={`text-sm ${t.text.body} mb-2`}>
                 <strong>Last remaining university</strong> in Gaza when destroyed
@@ -165,9 +194,11 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
                 </li>
               </ul>
             </div>
+            )}
 
             {/* Central Archives - Desktop only */}
-            <div className={`hidden md:block border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
+            {isDesktop && (
+            <div className={`border-l-4 border-[#ed3039] ${t.bg.tertiary} p-4 rounded-r-lg`}>
               <h3 className={`font-bold ${t.text.heading} mb-1`}>Central Archives of Gaza City</h3>
               <p className={`text-sm ${t.text.body} mb-2`}>
                 <strong>150 years of Palestinian records</strong> • Deliberately burned
@@ -182,6 +213,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
                 </li>
               </ul>
             </div>
+            )}
           </div>
         </section>
 
@@ -232,25 +264,30 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               <li>
                 <strong>Rome Statute Article 8(2)(b)(xvi):</strong> Pillaging constitutes a war crime
               </li>
-              <li className="hidden md:list-item">
-                University VP Ahmed Alhussaina: "Deliberate act aimed at erasing Palestinian cultural
-                memory and archaeological heritage"
-              </li>
+              {isDesktop && (
+                <li>
+                  University VP Ahmed Alhussaina: "Deliberate act aimed at erasing Palestinian cultural
+                  memory and archaeological heritage"
+                </li>
+              )}
             </ul>
           </div>
 
           {/* Note for future expansion */}
-          <div className={`mt-4 p-3 ${isDark ? "bg-yellow-900/20" : "bg-yellow-50"} border ${isDark ? "border-yellow-700" : "border-yellow-300"} rounded text-xs ${t.text.muted} hidden md:block`}>
+          {isDesktop && (
+          <div className={`mt-4 p-3 ${isDark ? "bg-yellow-900/20" : "bg-yellow-50"} border ${isDark ? "border-yellow-700" : "border-yellow-300"} rounded text-xs ${t.text.muted}`}>
             <p>
               <strong>Note:</strong> This data represents documented cases from verified sources.
               Additional looting incidents may exist but lack sufficient verification for inclusion.
               Research is ongoing to document the full scope of artifact theft and current whereabouts.
             </p>
           </div>
+          )}
         </section>
 
         {/* Lost Knowledge - Unsolved Mysteries - Desktop only */}
-        <section className="hidden md:block mb-8">
+        {isDesktop && (
+          <section className="mb-8">
           <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Lost Forever: Unsolved Mysteries</h2>
           <p className={`${t.text.body} mb-4`}>
             These sites held answers to questions we were still asking. Research that was underway,
@@ -368,9 +405,11 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </div>
           </div>
         </section>
+        )}
 
         {/* What Remains - Hope and Urgency - Desktop only */}
-        <section className="hidden md:block mb-8">
+        {isDesktop && (
+          <section className="mb-8">
           <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>What Remains: Still at Risk</h2>
           <p className={`${t.text.body} mb-4`}>
             Of the {stats.total} documented sites, {stats.surviving} are damaged but still standing.
@@ -478,9 +517,11 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </p>
           </div>
         </section>
+        )}
 
         {/* Comparison Context - Desktop only */}
-        <section className="hidden md:block mb-8">
+        {isDesktop && (
+          <section className="mb-8">
           <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Putting It in Perspective</h2>
           <div className="bg-[#009639]/10 border-l-4 border-[#009639] rounded-lg p-6 space-y-4">
             <p className={`${t.text.subheading}`}>
@@ -515,6 +556,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </p>
           </div>
         </section>
+        )}
 
         {/* Legal Context */}
         <section className="mb-6 md:mb-8">
@@ -529,11 +571,13 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               against buildings dedicated to religion, education, art, science, or historic
               monuments constitutes a <strong>war crime</strong>.
             </p>
-            <p className="hidden md:block">
-              <strong>UNESCO Enhanced Protection:</strong> Saint Hilarion Monastery was granted the
-              highest level of immunity in December 2023, then designated World Heritage in Danger
-              in July 2024—yet sustained damage to surrounding infrastructure.
-            </p>
+            {isDesktop && (
+              <p>
+                <strong>UNESCO Enhanced Protection:</strong> Saint Hilarion Monastery was granted the
+                highest level of immunity in December 2023, then designated World Heritage in Danger
+                in July 2024—yet sustained damage to surrounding infrastructure.
+              </p>
+            )}
           </div>
         </section>
 
