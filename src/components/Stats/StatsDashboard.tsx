@@ -3,6 +3,7 @@ import type { GazaSite } from "../../types";
 import { useHeritageStats } from "../../hooks/useHeritageStats";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { LazySection } from "../LazySection";
 
 interface StatsDashboardProps {
   sites: GazaSite[];
@@ -287,6 +288,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
 
         {/* Lost Knowledge - Unsolved Mysteries - Desktop only */}
         {isDesktop && (
+          <LazySection fallbackHeight="h-96">
           <section className="mb-8">
           <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Lost Forever: Unsolved Mysteries</h2>
           <p className={`${t.text.body} mb-4`}>
@@ -405,10 +407,12 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </div>
           </div>
         </section>
+          </LazySection>
         )}
 
         {/* What Remains - Hope and Urgency - Desktop only */}
         {isDesktop && (
+          <LazySection fallbackHeight="h-96">
           <section className="mb-8">
           <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>What Remains: Still at Risk</h2>
           <p className={`${t.text.body} mb-4`}>
@@ -517,10 +521,12 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </p>
           </div>
         </section>
+          </LazySection>
         )}
 
         {/* Comparison Context - Desktop only */}
         {isDesktop && (
+          <LazySection fallbackHeight="h-64">
           <section className="mb-8">
           <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Putting It in Perspective</h2>
           <div className="bg-[#009639]/10 border-l-4 border-[#009639] rounded-lg p-6 space-y-4">
@@ -556,6 +562,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </p>
           </div>
         </section>
+          </LazySection>
         )}
 
         {/* Legal Context */}
