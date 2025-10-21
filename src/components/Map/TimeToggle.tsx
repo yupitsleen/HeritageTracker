@@ -1,4 +1,5 @@
-import type { TimePeriod } from "../../constants/map";
+import { useMemo } from "react";
+import { HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
 import { useAnimation } from "../../contexts/AnimationContext";
 
 interface TimeToggleProps {
@@ -7,17 +8,48 @@ interface TimeToggleProps {
 }
 
 /**
+ * Format date string to short format (e.g., "Feb 20, 2014" or "Aug 31, 2023")
+ * Uses UTC to avoid timezone offset issues
+ */
+function formatShortDate(dateStr: string): string {
+  if (dateStr === "current") {
+    // For "current", use today's date
+    const today = new Date();
+    return today.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC"
+    });
+  }
+  const date = new Date(dateStr + "T00:00:00Z"); // Parse as UTC
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC"
+  });
+}
+
+/**
  * Toggle control for switching between historical satellite imagery time periods
- * Shows 3 options: 2014 Baseline, Aug 2023 (Pre-conflict), and Current
+ * Shows actual dates for each period (dynamically read from HISTORICAL_IMAGERY)
  * Manual period selection disables timeline sync temporarily (until timeline reset)
  */
 export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) {
   const { setSyncActive } = useAnimation();
-  const periods: Array<{ value: TimePeriod; label: string; shortLabel: string }> = [
-    { value: "BASELINE_2014", label: "2014 Baseline", shortLabel: "2014" },
-    { value: "PRE_CONFLICT_2023", label: "Aug 2023 (Pre-conflict)", shortLabel: "Aug 2023" },
-    { value: "CURRENT", label: "Current", shortLabel: "Current" },
-  ];
+
+  // Dynamically generate period buttons from HISTORICAL_IMAGERY constants
+  const periods = useMemo(() => {
+    return (Object.keys(HISTORICAL_IMAGERY) as TimePeriod[]).map((key) => {
+      const period = HISTORICAL_IMAGERY[key];
+      return {
+        value: key,
+        label: period.label,
+        shortLabel: formatShortDate(period.date),
+      };
+    });
+  }, []);
 
   return (
     <div className="absolute top-2 right-2 z-[1000] bg-white/90 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">

@@ -20,9 +20,10 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    expect(screen.getByText("2014")).toBeInTheDocument();
-    expect(screen.getByText("Aug 2023")).toBeInTheDocument();
-    expect(screen.getByText("Current")).toBeInTheDocument();
+    // Check for date-based labels (e.g., "Feb 20, 2014", "Aug 31, 2023", "Oct 20, 2025")
+    expect(screen.getByText(/2014/)).toBeInTheDocument();
+    expect(screen.getByText(/Aug.*2023/)).toBeInTheDocument();
+    expect(screen.getByText(/2025/)).toBeInTheDocument(); // Current year
   });
 
   it("highlights the selected period", () => {
@@ -31,7 +32,7 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const button2014 = screen.getByText("2014");
+    const button2014 = screen.getByText(/2014/);
     expect(button2014).toHaveClass("bg-[#009639]", "text-white");
   });
 
@@ -42,7 +43,7 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const currentButton = screen.getByText("Current");
+    const currentButton = screen.getByLabelText("Switch to Current satellite imagery");
     await user.click(currentButton);
 
     expect(mockOnChange).toHaveBeenCalledWith("CURRENT");
@@ -55,13 +56,13 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    await user.click(screen.getByText("2014"));
+    await user.click(screen.getByLabelText("Switch to 2014 Baseline satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("BASELINE_2014");
 
-    await user.click(screen.getByText("Aug 2023"));
+    await user.click(screen.getByLabelText("Switch to Aug 2023 (Pre-conflict) satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("PRE_CONFLICT_2023");
 
-    await user.click(screen.getByText("Current"));
+    await user.click(screen.getByLabelText("Switch to Current satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("CURRENT");
   });
 
@@ -100,8 +101,8 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const selected = screen.getByText("2014");
-    const unselected = screen.getByText("Current");
+    const selected = screen.getByText(/2014/);
+    const unselected = screen.getByLabelText("Switch to Current satellite imagery");
 
     expect(selected).toHaveClass("bg-[#009639]", "text-white");
     expect(unselected).toHaveClass("bg-white", "text-gray-700", "hover:bg-gray-100");
