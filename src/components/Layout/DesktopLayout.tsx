@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useCallback } from "react";
+import { lazy, Suspense, useCallback } from "react";
 import type { GazaSite } from "../../types";
 import { Input } from "../Form/Input";
 import { FilterTag } from "../FilterBar/FilterTag";
@@ -81,8 +81,6 @@ export function DesktopLayout({
 }: DesktopLayoutProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
-  // State for satellite map sync with timeline
-  const [syncMapToTimeline, setSyncMapToTimeline] = useState(false);
 
   // Memoized filter tag handlers to prevent unnecessary re-renders
   const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
@@ -281,7 +279,6 @@ export function DesktopLayout({
                 <SiteDetailView
                   sites={filteredSites}
                   highlightedSiteId={highlightedSiteId}
-                  syncMapToTimeline={syncMapToTimeline}
                 />
               </Suspense>
             </div>
@@ -292,7 +289,6 @@ export function DesktopLayout({
             <Suspense fallback={<SkeletonMap />}>
               <TimelineScrubber
                 sites={filteredSites}
-                onSyncMapChange={setSyncMapToTimeline}
                 destructionDateStart={destructionDateStart}
                 destructionDateEnd={destructionDateEnd}
                 onDestructionDateStartChange={setDestructionDateStart}

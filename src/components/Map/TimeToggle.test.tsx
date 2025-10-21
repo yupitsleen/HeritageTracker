@@ -2,6 +2,12 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TimeToggle } from "./TimeToggle";
+import { AnimationProvider } from "../../contexts/AnimationContext";
+
+// Wrapper component to provide AnimationContext
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  <AnimationProvider>{children}</AnimationProvider>
+);
 
 describe("TimeToggle", () => {
   afterEach(() => {
@@ -10,7 +16,9 @@ describe("TimeToggle", () => {
 
   it("renders all three time period buttons", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />);
+    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
 
     expect(screen.getByText("2014")).toBeInTheDocument();
     expect(screen.getByText("Aug 2023")).toBeInTheDocument();
@@ -19,7 +27,9 @@ describe("TimeToggle", () => {
 
   it("highlights the selected period", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />);
+    render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
 
     const button2014 = screen.getByText("2014");
     expect(button2014).toHaveClass("bg-[#009639]", "text-white");
@@ -28,7 +38,9 @@ describe("TimeToggle", () => {
   it("calls onPeriodChange when a button is clicked", async () => {
     const mockOnChange = vi.fn();
     const user = userEvent.setup();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />);
+    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
 
     const currentButton = screen.getByText("Current");
     await user.click(currentButton);
@@ -39,7 +51,9 @@ describe("TimeToggle", () => {
   it("calls onPeriodChange with correct period for each button", async () => {
     const mockOnChange = vi.fn();
     const user = userEvent.setup();
-    render(<TimeToggle selectedPeriod="CURRENT" onPeriodChange={mockOnChange} />);
+    render(<TimeToggle selectedPeriod="CURRENT" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
 
     await user.click(screen.getByText("2014"));
     expect(mockOnChange).toHaveBeenCalledWith("BASELINE_2014");
@@ -53,7 +67,9 @@ describe("TimeToggle", () => {
 
   it("has proper ARIA labels for accessibility", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />);
+    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
 
     const button2014 = screen.getByLabelText("Switch to 2014 Baseline satellite imagery");
     const buttonAug2023 = screen.getByLabelText(
@@ -68,7 +84,9 @@ describe("TimeToggle", () => {
 
   it("renders buttons with correct styling classes", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />);
+    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
 
     const buttons = screen.getAllByRole("button");
     buttons.forEach((button) => {
@@ -78,7 +96,9 @@ describe("TimeToggle", () => {
 
   it("applies different styles to selected and unselected buttons", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />);
+    render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
 
     const selected = screen.getByText("2014");
     const unselected = screen.getByText("Current");

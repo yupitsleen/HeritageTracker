@@ -17,7 +17,6 @@ import { Button } from "../Button";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
-  onSyncMapChange?: (isSynced: boolean) => void; // Optional callback for map sync toggle
   destructionDateStart: Date | null;
   destructionDateEnd: Date | null;
   onDestructionDateStartChange: (date: Date | null) => void;
@@ -37,7 +36,6 @@ interface TimelineScrubberProps {
  */
 export function TimelineScrubber({
   sites,
-  onSyncMapChange,
   destructionDateStart,
   destructionDateEnd,
   onDestructionDateStartChange,
@@ -49,11 +47,13 @@ export function TimelineScrubber({
     speed,
     startDate,
     endDate,
+    syncMapEnabled,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
+    setSyncMapEnabled,
   } = useAnimation();
 
   const t = useThemeClasses();
@@ -61,7 +61,6 @@ export function TimelineScrubber({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
-  const [syncMap, setSyncMap] = useState(false); // Map sync toggle state
 
   // Extract timeline data using custom hook
   const { events: allDestructionDates } = useTimelineData(sites);
@@ -78,17 +77,6 @@ export function TimelineScrubber({
     };
   }, [allDestructionDates, startDate, endDate]);
 
-  // Notify parent when sync state changes
-  useEffect(() => {
-    onSyncMapChange?.(syncMap);
-
-    // When sync is enabled, pause and jump to 2014 baseline
-    if (syncMap) {
-      pause();
-      // Set to Feb 20, 2014 (BASELINE_2014 date) to show progression from 2014 → 2023 → Current
-      setTimestamp(new Date("2014-02-20"));
-    }
-  }, [syncMap, onSyncMapChange, pause, setTimestamp]);
 
   // Filter destruction dates based on date filter
   const destructionDates = useMemo(() => {
@@ -274,13 +262,13 @@ export function TimelineScrubber({
 
           {/* Sync Map toggle button */}
           <Button
-            onClick={() => setSyncMap(!syncMap)}
-            variant={syncMap ? "primary" : "secondary"}
+            onClick={() => setSyncMapEnabled(!syncMapEnabled)}
+            variant={syncMapEnabled ? "primary" : "secondary"}
             size="sm"
-            aria-label={syncMap ? "Disable map sync with timeline" : "Enable map sync with timeline"}
-            title="Sync satellite imagery with timeline date"
+            aria-label={syncMapEnabled ? "Disable map sync with timeline" : "Enable map sync with timeline"}
+            title="When enabled, satellite imagery switches to match timeline date (2014 → Aug 2023 → Current)"
           >
-            {syncMap ? "✓" : ""} Sync Map
+            {syncMapEnabled ? "✓" : ""} Sync Map
           </Button>
 
           {/* Speed control */}

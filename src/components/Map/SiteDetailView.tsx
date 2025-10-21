@@ -5,13 +5,13 @@ import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, type T
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
 import { useAnimation } from "../../contexts/AnimationContext";
+import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 interface SiteDetailViewProps {
   sites: GazaSite[];
   highlightedSiteId: string | null;
-  syncMapToTimeline?: boolean; // Optional: sync satellite imagery with timeline
 }
 
 /**
@@ -19,34 +19,23 @@ interface SiteDetailViewProps {
  * Shows Gaza overview when no site is selected
  * Desktop only - always displays satellite imagery
  * Supports historical imagery comparison (2014, Aug 2023, Current)
- * Optional: Can sync imagery periods with timeline playback
+ * Can sync imagery periods with timeline playback when enabled
  */
-export function SiteDetailView({ sites, highlightedSiteId, syncMapToTimeline = false }: SiteDetailViewProps) {
-  // Get animation context for optional timeline sync
-  const { currentTimestamp } = useAnimation();
+export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps) {
+  // Get animation context for timeline sync
+  const { currentTimestamp, syncActive } = useAnimation();
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("PRE_CONFLICT_2023");
 
-  // Sync satellite imagery with timeline (only if enabled)
+  // Sync satellite imagery with timeline (only if syncActive is true)
   useEffect(() => {
-    if (!syncMapToTimeline) return; // Skip sync if not enabled
+    if (!syncActive) return; // Skip sync if not enabled or temporarily disabled
 
-    // Define the date boundaries for each period
-    const baseline2014End = new Date("2023-01-01"); // End of 2014 baseline period
-    const preConflict2023End = new Date("2023-10-07"); // Oct 7, 2023 - start of conflict
-
-    // Determine which imagery period to show based on current timeline position
-    if (currentTimestamp < baseline2014End) {
-      setSelectedPeriod("BASELINE_2014");
-    } else if (currentTimestamp < preConflict2023End) {
-      setSelectedPeriod("PRE_CONFLICT_2023");
-    } else {
-      setSelectedPeriod("CURRENT");
-    }
-  }, [currentTimestamp, syncMapToTimeline]);
-
-  // Note: Users can always manually override the period using TimeToggle
+    // Use dynamic period calculation utility
+    const period = getImageryPeriodForDate(currentTimestamp);
+    setSelectedPeriod(period);
+  }, [currentTimestamp, syncActive]);
 
   // Find the highlighted site
   const highlightedSite = useMemo(() => {
