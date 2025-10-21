@@ -20,10 +20,10 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    // Check for date-based labels (e.g., "Feb 20, 2014", "Aug 31, 2023", "Oct 20, 2025")
-    expect(screen.getByText(/2014/)).toBeInTheDocument();
-    expect(screen.getByText(/Aug.*2023/)).toBeInTheDocument();
-    expect(screen.getByText(/2025/)).toBeInTheDocument(); // Current year
+    // Check for year-only labels (e.g., "2014", "2023", "2025")
+    expect(screen.getByText("2014")).toBeInTheDocument();
+    expect(screen.getByText("2023")).toBeInTheDocument();
+    expect(screen.getByText("2025")).toBeInTheDocument(); // Current year
   });
 
   it("highlights the selected period", () => {
@@ -106,5 +106,19 @@ describe("TimeToggle", () => {
 
     expect(selected).toHaveClass("bg-[#009639]", "text-white");
     expect(unselected).toHaveClass("bg-white", "text-gray-700", "hover:bg-gray-100");
+  });
+
+  it("displays full date in tooltip on hover", () => {
+    const mockOnChange = vi.fn();
+    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+      wrapper: Wrapper,
+    });
+
+    const button2014 = screen.getByText("2014");
+    const button2023 = screen.getByText("2023");
+
+    // Check that tooltips contain full dates
+    expect(button2014).toHaveAttribute("title", "Feb 20, 2014");
+    expect(button2023).toHaveAttribute("title", "Aug 31, 2023");
   });
 });

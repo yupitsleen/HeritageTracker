@@ -8,10 +8,10 @@ interface TimeToggleProps {
 }
 
 /**
- * Format date string to short format (e.g., "Feb 20, 2014" or "Aug 31, 2023")
+ * Format date string to full format for tooltips (e.g., "Feb 20, 2014" or "Aug 31, 2023")
  * Uses UTC to avoid timezone offset issues
  */
-function formatShortDate(dateStr: string): string {
+function formatFullDate(dateStr: string): string {
   if (dateStr === "current") {
     // For "current", use today's date
     const today = new Date();
@@ -32,8 +32,21 @@ function formatShortDate(dateStr: string): string {
 }
 
 /**
+ * Extract year from date string (e.g., "2014" or "2025")
+ */
+function formatYear(dateStr: string): string {
+  if (dateStr === "current") {
+    // For "current", use current year
+    return new Date().getUTCFullYear().toString();
+  }
+  const date = new Date(dateStr + "T00:00:00Z"); // Parse as UTC
+  return date.getUTCFullYear().toString();
+}
+
+/**
  * Toggle control for switching between historical satellite imagery time periods
- * Shows actual dates for each period (dynamically read from HISTORICAL_IMAGERY)
+ * Shows year for each period (dynamically read from HISTORICAL_IMAGERY)
+ * Tooltips display full dates on hover
  * Manual period selection disables timeline sync temporarily (until timeline reset)
  */
 export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) {
@@ -46,7 +59,8 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
       return {
         value: key,
         label: period.label,
-        shortLabel: formatShortDate(period.date),
+        shortLabel: formatYear(period.date), // Just the year
+        tooltip: formatFullDate(period.date), // Full date for tooltip
       };
     });
   }, []);
@@ -67,7 +81,7 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
                 ? "bg-[#009639] text-white"
                 : "bg-white text-gray-700 hover:bg-gray-100"
             }`}
-            title={period.label}
+            title={period.tooltip}
             aria-label={`Switch to ${period.label} satellite imagery`}
           >
             {period.shortLabel}
