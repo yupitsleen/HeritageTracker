@@ -98,7 +98,7 @@ export function DesktopLayout({
   }, [setDestructionDateStart, setDestructionDateEnd]);
 
   return (
-    <div className="hidden md:flex md:h-[calc(100vh-100px)] md:overflow-hidden relative">
+    <div className="hidden md:flex md:h-[calc(100vh-65px)] md:overflow-hidden relative">
       {/* Two-column layout - Fills remaining space */}
       <div className="flex gap-2 flex-1 min-h-0">
         {/* Left Column - Sites Table (Resizable, black border like timeline) */}
@@ -254,10 +254,10 @@ export function DesktopLayout({
             </div>
           </div>
 
-          {/* Two maps side by side - Constrained height to leave room for timeline */}
-          <div className="flex gap-2 min-h-0 pt-2" style={{ height: 'calc(100% - 180px)' }}>
+          {/* Two maps side by side - Constrained height to leave room for timeline + footer */}
+          <div className="flex gap-2 min-h-0 pt-2" style={{ height: 'calc(100% - 185px)' }}>
             {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-2xl-dark overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border border-[#000000] rounded shadow-lg overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <HeritageMap
                   sites={filteredSites}
@@ -269,7 +269,7 @@ export function DesktopLayout({
             </div>
 
             {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-            <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-2xl-dark overflow-hidden relative z-10">
+            <div className="flex-1 min-w-0 h-full border border-[#000000] rounded shadow-lg overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
                   sites={filteredSites}
@@ -279,8 +279,8 @@ export function DesktopLayout({
             </div>
           </div>
 
-          {/* Timeline Scrubber - Fixed height at bottom */}
-          <div className="mt-2 mb-2 flex-shrink-0 h-[160px] relative z-10">
+          {/* Timeline Scrubber - Fixed height at bottom, mb-6 to clear fixed footer */}
+          <div className="mt-1.5 mb-6 flex-shrink-0 h-[100px] relative z-10">
             <Suspense fallback={<SkeletonMap />}>
               <TimelineScrubber
                 sites={filteredSites}

@@ -32,10 +32,10 @@ export interface TimelineConfig {
 }
 
 export const DEFAULT_TIMELINE_CONFIG: TimelineConfig = {
-  height: 80,
-  margin: 50,
-  eventMarkerRadius: 6, // Increased from 4 to 6 for better visibility
-  scrubberRadius: 12, // Increased from 10 to 12 for larger grab area
+  height: 40,
+  margin: 25,
+  eventMarkerRadius: 3, // Compact: reduced from 6 to 3
+  scrubberRadius: 7, // Compact: reduced from 12 to 7
   colors: {
     axis: "#525252",
     axisLine: "#d4d4d4",
@@ -108,7 +108,7 @@ export class D3TimelineRenderer {
       .attr("transform", `translate(0, ${height / 2})`)
       .call(xAxis);
 
-    axisGroup.selectAll("text").attr("fill", colors.axis).attr("font-size", "12px");
+    axisGroup.selectAll("text").attr("fill", colors.axis).attr("font-size", "9px");
 
     axisGroup
       .selectAll("line")

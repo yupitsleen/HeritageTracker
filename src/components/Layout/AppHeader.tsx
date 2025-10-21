@@ -27,17 +27,14 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
     <div className={`sticky top-0 z-[5] transition-colors duration-200 ${
       isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
     }`}>
-      {/* Header - BLACK background */}
+      {/* Header - BLACK background, ultra compact */}
       <header className={components.header.base}>
-        <div className={cn(components.container.base, COMPACT_HEADER.py)}>
-          <h1 className={`${COMPACT_HEADER.title} font-bold text-center text-[#fefefe]`}>Heritage Tracker</h1>
-          <p className={`mt-0.5 text-center ${COMPACT_HEADER.subtitle} text-[#f5f5f5]`}>
-            Documenting the destruction of cultural heritage in Gaza (2023-2024)
-          </p>
+        <div className={cn(components.container.base, "py-1.5")}>
+          <h1 className={`text-base md:text-lg font-bold text-center text-[#fefefe]`}>Heritage Tracker</h1>
         </div>
 
         {/* All buttons - desktop only, right-aligned in top right, positioned relative to header */}
-        <div className={`hidden md:flex absolute top-2 right-3 ${COMPACT_HEADER.buttonGap} items-center`}>
+        <div className={`hidden md:flex absolute top-1.5 right-2 ${COMPACT_HEADER.buttonGap} items-center`}>
           {/* Dark Mode Toggle - Discrete icon button */}
           <button
             onClick={toggleTheme}
