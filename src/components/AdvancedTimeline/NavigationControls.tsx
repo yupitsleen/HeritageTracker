@@ -1,21 +1,18 @@
-import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import { ArrowPathIcon, PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
 import { Button } from "../Button";
 import { useWayback } from "../../contexts/WaybackContext";
 
 /**
- * NavigationControls - Manual navigation for Wayback timeline
+ * NavigationControls - Navigation for Wayback timeline
  *
- * Auto-play removed due to tile loading performance issues:
- * - High-resolution satellite tiles load too slowly for smooth playback
- * - White flashes between tile loads create jarring experience
- * - Tiles don't load at all when zoomed in during auto-play
- *
- * Solution: Manual navigation allows users to explore at their own pace,
- * waiting for tiles to fully load before advancing. This matches the UX
- * pattern of Google Earth's historical imagery slider.
+ * Includes Play button that jumps through year markers (2014, 2015, etc.)
+ * instead of rendering every map version. This provides:
+ * - Better performance (12 jumps vs 150+ renders)
+ * - Clearer temporal progression
+ * - Time for tiles to load between jumps (1 second interval)
  */
 export function NavigationControls() {
-  const { currentIndex, releases, reset, next, previous } = useWayback();
+  const { currentIndex, releases, reset, next, previous, isPlaying, play, pause } = useWayback();
 
   const isAtStart = currentIndex === 0;
   const isAtEnd = currentIndex === releases.length - 1;
@@ -25,7 +22,7 @@ export function NavigationControls() {
       {/* Reset to first */}
       <Button
         onClick={reset}
-        disabled={isAtStart}
+        disabled={isAtStart || isPlaying}
         variant="secondary"
         size="sm"
         icon={<ArrowPathIcon className="w-4 h-4" />}
@@ -38,7 +35,7 @@ export function NavigationControls() {
       {/* Previous */}
       <Button
         onClick={previous}
-        disabled={isAtStart}
+        disabled={isAtStart || isPlaying}
         variant="secondary"
         size="sm"
         aria-label="Previous version"
@@ -47,11 +44,37 @@ export function NavigationControls() {
         ⏮ Previous
       </Button>
 
+      {/* Play/Pause */}
+      {!isPlaying ? (
+        <Button
+          onClick={play}
+          disabled={isAtEnd}
+          variant="primary"
+          size="sm"
+          icon={<PlayIcon className="w-4 h-4" />}
+          aria-label="Play through years"
+          title="Auto-play through year markers (1 year every 2 seconds)"
+        >
+          Play
+        </Button>
+      ) : (
+        <Button
+          onClick={pause}
+          variant="primary"
+          size="sm"
+          icon={<PauseIcon className="w-4 h-4" />}
+          aria-label="Pause playback"
+          title="Pause auto-play"
+        >
+          Pause
+        </Button>
+      )}
+
       {/* Next */}
       <Button
         onClick={next}
-        disabled={isAtEnd}
-        variant="primary"
+        disabled={isAtEnd || isPlaying}
+        variant="secondary"
         size="sm"
         aria-label="Next version"
         title="Go to next version (or press Right Arrow)"

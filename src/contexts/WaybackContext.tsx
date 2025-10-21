@@ -18,12 +18,16 @@ interface WaybackContextValue {
   isLoading: boolean;
   // Error state
   error: string | null;
+  // Playback state
+  isPlaying: boolean;
 
   // Actions
   reset: () => void;
   setIndex: (index: number) => void;
   next: () => void;
   previous: () => void;
+  play: () => void;
+  pause: () => void;
 }
 
 const WaybackContext = createContext<WaybackContextValue | undefined>(undefined);
@@ -37,6 +41,7 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Fetch Wayback releases on mount
   useEffect(() => {
@@ -78,16 +83,72 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
     setCurrentIndex((prev) => Math.max(0, prev - 1));
   }, []);
 
+  const play = useCallback(() => {
+    setIsPlaying(true);
+  }, []);
+
+  const pause = useCallback(() => {
+    setIsPlaying(false);
+  }, []);
+
+  // Auto-advance through year markers when playing
+  useEffect(() => {
+    if (!isPlaying || releases.length === 0) return;
+
+    // Calculate year marker indices (same logic as WaybackSlider)
+    const startDate = new Date(releases[0].releaseDate);
+    const endDate = new Date(releases[releases.length - 1].releaseDate);
+    const startYear = startDate.getFullYear();
+    const endYear = endDate.getFullYear();
+
+    const yearMarkerIndices: number[] = [];
+    for (let year = startYear; year <= endYear; year++) {
+      const targetTime = new Date(`${year}-01-01`).getTime();
+      let closestIndex = 0;
+      let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
+
+      for (let i = 1; i < releases.length; i++) {
+        const releaseTime = new Date(releases[i].releaseDate).getTime();
+        const diff = Math.abs(releaseTime - targetTime);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = i;
+        }
+      }
+      yearMarkerIndices.push(closestIndex);
+    }
+
+    // Find current position in year markers
+    const currentYearMarkerIndex = yearMarkerIndices.findIndex(idx => idx >= currentIndex);
+    const nextYearMarkerIndex = currentYearMarkerIndex + 1;
+
+    // Stop if we're at the end
+    if (nextYearMarkerIndex >= yearMarkerIndices.length) {
+      setIsPlaying(false);
+      return;
+    }
+
+    // Advance to next year marker after 2 seconds
+    const timer = setTimeout(() => {
+      setCurrentIndex(yearMarkerIndices[nextYearMarkerIndex]);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [isPlaying, currentIndex, releases]);
+
   const value: WaybackContextValue = {
     releases,
     currentIndex,
     currentRelease,
     isLoading,
     error,
+    isPlaying,
     reset,
     setIndex,
     next,
     previous,
+    play,
+    pause,
   };
 
   return (
