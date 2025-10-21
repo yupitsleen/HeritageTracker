@@ -2,15 +2,25 @@ import { useMemo } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
 import { MapUpdater, ScrollWheelHandler } from "../Map/MapHelperComponents";
+import { MapMarkers } from "../Map/MapMarkers";
 import { useWayback } from "../../contexts/WaybackContext";
+import type { GazaSite } from "../../types";
 import "leaflet/dist/leaflet.css";
+
+interface WaybackMapProps {
+  sites?: GazaSite[];
+  showSiteMarkers?: boolean;
+  onSiteClick?: (siteId: string) => void;
+}
 
 /**
  * WaybackMap - Satellite map displaying current Wayback imagery release
  * Manual navigation only - users can explore at their own pace
  * This allows tiles to fully load before advancing to next version
+ *
+ * Optional: Display heritage site markers on the map
  */
-export function WaybackMap() {
+export function WaybackMap({ sites = [], showSiteMarkers = false, onSiteClick }: WaybackMapProps = {}) {
   const { currentRelease } = useWayback();
 
   // Map configuration
@@ -66,6 +76,15 @@ export function WaybackMap() {
           maxZoom={maxZoom}
           minZoom={1}
         />
+
+        {/* Heritage site markers (optional) */}
+        {showSiteMarkers && sites.length > 0 && (
+          <MapMarkers
+            sites={sites}
+            onSiteClick={onSiteClick}
+            currentTimestamp={new Date().getTime()} // Show all sites regardless of timeline
+          />
+        )}
       </MapContainer>
     </div>
   );

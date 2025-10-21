@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
@@ -16,6 +17,7 @@ function AdvancedAnimationContent() {
   const t = useThemeClasses();
   const navigate = useNavigate();
   const { releases, currentRelease, isLoading, error } = useWayback();
+  const [showSiteMarkers, setShowSiteMarkers] = useState(true);
 
   return (
     <div
@@ -84,14 +86,28 @@ function AdvancedAnimationContent() {
         {/* Success State - Map View */}
         {!isLoading && !error && releases.length > 0 && (
           <div className="h-full flex flex-col gap-4">
-            {/* Info Panel */}
+            {/* Info Panel with site markers toggle */}
             <div className={`p-4 rounded-lg border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
               <div className="flex items-center justify-between">
-                <div>
+                <div className="flex items-center gap-4">
                   <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                     {releases.length} Releases • {releases[0]?.releaseDate} → {releases[releases.length - 1]?.releaseDate}
                   </div>
+
+                  {/* Site markers toggle */}
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showSiteMarkers}
+                      onChange={(e) => setShowSiteMarkers(e.target.checked)}
+                      className="w-4 h-4 cursor-pointer"
+                    />
+                    <span className={`text-sm ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                      Show site markers
+                    </span>
+                  </label>
                 </div>
+
                 {currentRelease && (
                   <div className="text-right">
                     <div className={`text-lg font-bold ${t.layout.modalHeading}`}>
@@ -105,9 +121,9 @@ function AdvancedAnimationContent() {
               </div>
             </div>
 
-            {/* Map */}
+            {/* Map with optional site markers */}
             <div className={`flex-1 rounded-lg border-2 ${isDark ? "border-white" : "border-black"} shadow-xl overflow-hidden`}>
-              <WaybackMap />
+              <WaybackMap sites={mockSites} showSiteMarkers={showSiteMarkers} />
             </div>
 
             {/* Timeline Slider with destruction event markers */}
