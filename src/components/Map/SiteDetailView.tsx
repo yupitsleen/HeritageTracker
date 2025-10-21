@@ -44,13 +44,8 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
   }, [sites, highlightedSiteId]);
 
   // Get tile URL and maxZoom for selected time period
-  const { tileUrl, maxZoom: periodMaxZoom } = useMemo(() => {
-    const period = HISTORICAL_IMAGERY[selectedPeriod];
-    return {
-      tileUrl: period.url,
-      maxZoom: period.maxZoom,
-    };
-  }, [selectedPeriod]);
+  // Direct constant lookup is faster than useMemo for static HISTORICAL_IMAGERY data
+  const { url: tileUrl, maxZoom: periodMaxZoom } = HISTORICAL_IMAGERY[selectedPeriod];
 
   // Determine map center and zoom level (clamped to period's max zoom)
   const { center, zoom } = useMemo(() => {
