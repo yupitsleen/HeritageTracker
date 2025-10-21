@@ -45,7 +45,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
 
   // Calculate positions for gray Wayback release markers
   const waybackReleaseMarkers = useMemo(() => {
-    if (releases.length === 0) return [];
+    if (releases.length === 0) return { majorMarkers: [], minorMarkers: [] };
 
     const majorMarkers: Array<{ releaseNum: number; date: string; label: string; position: number; isMajor: boolean }> = [];
     const minorMarkers: Array<{ releaseNum: number; date: string; label: string; position: number; isMajor: boolean }> = [];
@@ -83,7 +83,44 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
     return { majorMarkers, minorMarkers };
   }, [releases]);
 
-  // Calculate all destruction event markers (static, always visible)
+  // Calculate year markers for timeline scale
+  const yearMarkers = useMemo(() => {
+    if (releases.length === 0) return [];
+
+    // Get start and end years from releases
+    const startDate = new Date(releases[0].releaseDate);
+    const endDate = new Date(releases[releases.length - 1].releaseDate);
+    const startYear = startDate.getFullYear();
+    const endYear = endDate.getFullYear();
+
+    // Create marker for each year in range
+    const markers: Array<{ year: number; position: number }> = [];
+
+    for (let year = startYear; year <= endYear; year++) {
+      // Find the first release in this year (or closest to Jan 1)
+      const targetTime = new Date(`${year}-01-01`).getTime();
+
+      // Find closest release to this year's start
+      let closestIndex = 0;
+      let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
+
+      for (let i = 1; i < releases.length; i++) {
+        const releaseTime = new Date(releases[i].releaseDate).getTime();
+        const diff = Math.abs(releaseTime - targetTime);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = i;
+        }
+      }
+
+      const position = (closestIndex / (releases.length - 1)) * 100;
+      markers.push({ year, position });
+    }
+
+    return markers;
+  }, [releases]);
+
+  // Calculate all destruction event markers grouped by position (for stacking dots)
   const allEventMarkers = useMemo(() => {
     if (!showEventMarkers || sites.length === 0 || releases.length === 0) {
       return [];
@@ -99,7 +136,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
         status: site.status,
       }));
 
-    // Group events by their closest Wayback release to handle overlaps
+    // Group events by their closest Wayback release to handle stacking
     const eventsByRelease = new Map<number, typeof destructionEvents>();
 
     destructionEvents.forEach((event) => {
@@ -110,41 +147,21 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
       eventsByRelease.get(releaseIndex)!.push(event);
     });
 
-    // Convert to markers with even spacing for overlapping events
-    const markers: Array<{
-      siteId: string;
-      siteName: string;
-      date: string;
-      status: string;
+    // Convert to grouped markers (each group has position + array of sites to stack)
+    const markerGroups: Array<{
       position: number;
+      sites: Array<{ siteId: string; siteName: string; date: string; status: string }>;
     }> = [];
 
     eventsByRelease.forEach((events, releaseIndex) => {
-      const basePosition = (releaseIndex / (releases.length - 1)) * 100;
-
-      if (events.length === 1) {
-        // Single event at this release - show at exact position
-        markers.push({
-          ...events[0],
-          position: basePosition,
-        });
-      } else {
-        // Multiple events - space them evenly within ±1% range
-        const spreadRange = 2; // 2% total range
-        const step = events.length > 1 ? spreadRange / (events.length - 1) : 0;
-
-        events.forEach((event, index) => {
-          const offset = -spreadRange / 2 + step * index;
-          const position = Math.max(0, Math.min(100, basePosition + offset));
-          markers.push({
-            ...event,
-            position,
-          });
-        });
-      }
+      const position = (releaseIndex / (releases.length - 1)) * 100;
+      markerGroups.push({
+        position,
+        sites: events,
+      });
     });
 
-    return markers;
+    return markerGroups;
   }, [sites, releases, showEventMarkers]);
 
   // Keyboard navigation
@@ -209,6 +226,25 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
 
       {/* Slider with event markers */}
       <div className="relative">
+        {/* Year markers - below timeline for scale reference */}
+        <div className="absolute top-3 left-0 right-0 h-6 pointer-events-none">
+          {yearMarkers.map((marker) => (
+            <div
+              key={`year-${marker.year}`}
+              className="absolute"
+              style={{ left: `${marker.position}%` }}
+            >
+              {/* Small black vertical line (half size of minor gray markers) */}
+              <div className="absolute w-0.5 h-2 bg-black -translate-x-1/2 opacity-40" />
+
+              {/* Year label below the line */}
+              <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-medium text-black opacity-60 whitespace-nowrap">
+                {marker.year}
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* Markers layer - positioned above slider */}
         <div className="absolute -top-6 left-0 right-0 h-8 pointer-events-none">
           {/* Minor gray markers - all releases (smaller, subtle, positioned lower) */}
@@ -249,61 +285,86 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
             </div>
           ))}
 
-          {/* Red markers for all destroyed sites */}
-          {showEventMarkers && allEventMarkers.map((marker, i) => (
-              <div
-                key={`${marker.siteId}-${i}`}
-                className="absolute group pointer-events-auto z-20"
-                style={{ left: `${marker.position}%` }}
-                title={`${marker.siteName} - ${marker.date}`}
-              >
-                {/* Red vertical line */}
-                <div className="absolute w-0.5 h-6 bg-[#ed3039] -translate-x-1/2" />
+          {/* Red dot markers for destroyed sites - stacked vertically if multiple at same date */}
+          {showEventMarkers && allEventMarkers.map((markerGroup, groupIndex) => (
+            <div
+              key={`marker-group-${groupIndex}`}
+              className="absolute pointer-events-auto z-20"
+              style={{ left: `${markerGroup.position}%` }}
+            >
+              {/* Stack dots vertically */}
+              {markerGroup.sites.map((site, siteIndex) => (
+                <div
+                  key={`${site.siteId}-${siteIndex}`}
+                  className="group"
+                  style={{
+                    position: 'absolute',
+                    bottom: `${siteIndex * 6}px`, // Stack dots 6px apart
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                  }}
+                >
+                  {/* Red dot */}
+                  <div className="w-2 h-2 bg-[#ed3039] rounded-full" />
 
-                {/* Tooltip on hover */}
-                <div className={`absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
-                  isDark ? "bg-gray-900 text-white" : "bg-white text-black"
-                } px-2 py-1 rounded text-xs border-2 ${isDark ? "border-white" : "border-black"} shadow-xl`}>
-                  <div className="font-bold">{marker.siteName}</div>
-                  <div className={isDark ? "text-gray-400" : "text-gray-600"}>{marker.date}</div>
+                  {/* Tooltip on hover */}
+                  <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
+                    isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+                  } px-2 py-1 rounded text-xs border-2 ${isDark ? "border-white" : "border-black"} shadow-xl`}>
+                    <div className="font-bold">{site.siteName}</div>
+                    <div className={isDark ? "text-gray-400" : "text-gray-600"}>{site.date}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          ))}
         </div>
 
-        {/* Slider input */}
-        <input
-          type="range"
-          min={0}
-          max={releases.length - 1}
-          value={currentIndex}
-          onChange={handleSliderChange}
-          className={`w-full h-2 rounded-lg appearance-none cursor-pointer
-                     ${isDark ? "bg-gray-700" : "bg-gray-300"}
-                     [&::-webkit-slider-thumb]:appearance-none
-                     [&::-webkit-slider-thumb]:w-4
-                     [&::-webkit-slider-thumb]:h-4
-                     [&::-webkit-slider-thumb]:bg-[#009639]
-                     [&::-webkit-slider-thumb]:rounded-full
-                     [&::-webkit-slider-thumb]:cursor-pointer
-                     [&::-webkit-slider-thumb]:shadow-md
-                     [&::-moz-range-thumb]:w-4
-                     [&::-moz-range-thumb]:h-4
-                     [&::-moz-range-thumb]:bg-[#009639]
-                     [&::-moz-range-thumb]:rounded-full
-                     [&::-moz-range-thumb]:cursor-pointer
-                     [&::-moz-range-thumb]:border-0
-                     [&::-moz-range-thumb]:shadow-md`}
-          aria-label="Wayback imagery version slider"
-          aria-valuemin={0}
-          aria-valuemax={releases.length - 1}
-          aria-valuenow={currentIndex}
-          aria-valuetext={`${currentRelease?.label}, version ${currentIndex + 1} of ${releases.length}`}
-        />
+        {/* Slider input with tooltip */}
+        <div className="relative group">
+          <input
+            type="range"
+            min={0}
+            max={releases.length - 1}
+            value={currentIndex}
+            onChange={handleSliderChange}
+            className={`w-full h-2 rounded-lg appearance-none cursor-pointer
+                       ${isDark ? "bg-gray-700" : "bg-gray-300"}
+                       [&::-webkit-slider-thumb]:appearance-none
+                       [&::-webkit-slider-thumb]:w-4
+                       [&::-webkit-slider-thumb]:h-4
+                       [&::-webkit-slider-thumb]:bg-[#009639]
+                       [&::-webkit-slider-thumb]:rounded-full
+                       [&::-webkit-slider-thumb]:cursor-pointer
+                       [&::-webkit-slider-thumb]:shadow-md
+                       [&::-moz-range-thumb]:w-4
+                       [&::-moz-range-thumb]:h-4
+                       [&::-moz-range-thumb]:bg-[#009639]
+                       [&::-moz-range-thumb]:rounded-full
+                       [&::-moz-range-thumb]:cursor-pointer
+                       [&::-moz-range-thumb]:border-0
+                       [&::-moz-range-thumb]:shadow-md`}
+            aria-label="Wayback imagery version slider"
+            aria-valuemin={0}
+            aria-valuemax={releases.length - 1}
+            aria-valuenow={currentIndex}
+            aria-valuetext={`${currentRelease?.label}, version ${currentIndex + 1} of ${releases.length}`}
+          />
+
+          {/* Tooltip showing exact date under the scrubber - always visible */}
+          <div
+            className={`absolute top-8 transition-all duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
+              isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+            } px-2 py-1 rounded text-xs border-2 border-[#009639] shadow-xl`}
+            style={{ left: `${(currentIndex / (releases.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}
+          >
+            <div className="font-bold text-[#009639]">{currentRelease?.label}</div>
+          </div>
+        </div>
       </div>
 
-      {/* Navigation buttons */}
-      <div className="mt-4">
+      {/* Navigation buttons - centered */}
+      <div className="mt-8">
         <NavigationControls />
       </div>
 
@@ -317,7 +378,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
           </div>
           {showEventMarkers && (
             <div className="flex items-center gap-1.5">
-              <div className="w-0.5 h-4 bg-[#ed3039]" />
+              <div className="w-2 h-2 bg-[#ed3039] rounded-full" />
               <span className={isDark ? "text-gray-400" : "text-gray-600"}>Site destruction dates</span>
             </div>
           )}

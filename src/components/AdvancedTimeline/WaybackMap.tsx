@@ -10,7 +10,7 @@ import "leaflet/dist/leaflet.css";
 interface WaybackMapProps {
   sites?: GazaSite[];
   showSiteMarkers?: boolean;
-  onSiteClick?: (siteId: string) => void;
+  onSiteClick?: (site: GazaSite) => void;
 }
 
 /**
@@ -82,7 +82,7 @@ export function WaybackMap({ sites = [], showSiteMarkers = false, onSiteClick }:
           <MapMarkers
             sites={sites}
             onSiteClick={onSiteClick}
-            currentTimestamp={new Date().getTime()} // Show all sites regardless of timeline
+            currentTimestamp={new Date()} // Show all sites regardless of timeline
           />
         )}
       </MapContainer>
