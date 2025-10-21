@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { WaybackProvider, useWayback } from "../contexts/WaybackContext";
 import { WaybackMap } from "../components/AdvancedTimeline/WaybackMap";
 import { WaybackSlider } from "../components/AdvancedTimeline/WaybackSlider";
+import { mockSites } from "../data/mockSites";
 
 /**
  * Advanced Animation Page Content
@@ -109,9 +110,9 @@ function AdvancedAnimationContent() {
               <WaybackMap />
             </div>
 
-            {/* Timeline Slider */}
+            {/* Timeline Slider with destruction event markers */}
             <div className={`rounded-lg border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
-              <WaybackSlider />
+              <WaybackSlider sites={mockSites} showEventMarkers={true} />
             </div>
           </div>
         )}
