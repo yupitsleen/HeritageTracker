@@ -7,6 +7,7 @@ import { SitesTable } from "../SitesTable";
 import { SkeletonMap } from "../Loading/Skeleton";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
+import { COMPACT_FILTER_BAR } from "../../constants/compactDesign";
 
 // Lazy load heavy components
 const HeritageMap = lazy(() =>
@@ -97,12 +98,12 @@ export function DesktopLayout({
   }, [setDestructionDateStart, setDestructionDateEnd]);
 
   return (
-    <div className="hidden md:flex md:h-[calc(100vh-140px)] md:overflow-hidden relative">
+    <div className="hidden md:flex md:h-[calc(100vh-100px)] md:overflow-hidden relative">
       {/* Two-column layout - Fills remaining space */}
-      <div className="flex gap-4 flex-1 min-h-0">
+      <div className="flex gap-2 flex-1 min-h-0">
         {/* Left Column - Sites Table (Resizable, black border like timeline) */}
         <aside
-          className="flex-shrink-0 pl-6 pt-4 pb-4 relative flex flex-col z-10"
+          className="flex-shrink-0 pl-4 pt-2 pb-2 relative flex flex-col z-10"
           style={{ width: `${tableWidth}px` }}
         >
           <SitesTable
@@ -126,38 +127,35 @@ export function DesktopLayout({
         </aside>
 
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
-        <div className="flex-1 min-w-0 pr-6 flex flex-col">
-          {/* Filter bar - Horizontal component with compact padding */}
-          <div className={`flex-shrink-0 mt-4 py-3 backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-2xl-dark relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
-            <div className="flex flex-col gap-2">
-              {/* Top row - Filter controls and legend */}
-              <div className="flex items-start gap-4 px-3">
+        <div className="flex-1 min-w-0 pr-4 flex flex-col">
+          {/* Filter bar - Compact horizontal single-row layout */}
+          <div className={`flex-shrink-0 mt-2 ${COMPACT_FILTER_BAR.padding} backdrop-blur-sm border border-[#000000] rounded shadow-lg relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+            <div className="flex flex-col gap-1.5">
+              {/* Top row - Filter controls and legend (single horizontal row) */}
+              <div className="flex items-center gap-2">
                 {/* Left side - Filter controls */}
-                <div className="flex-1 flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   {/* Filter Button */}
                   <button
                     onClick={openFilterModal}
-                    className="px-4 py-2 bg-[#009639] hover:bg-[#007b2f] text-white
-                               rounded-lg shadow-md hover:shadow-lg
-                               transition-all duration-200 font-semibold
-                               active:scale-95 text-sm border border-[#000000]"
+                    className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#009639] hover:bg-[#007b2f] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border border-[#000000]`}
                   >
                     Filters
                   </button>
 
                   {/* Search bar - inline */}
-                  <div className="relative flex-1 max-w-xs border border-[#000000] rounded-lg">
+                  <div className={`relative flex-1 max-w-[200px] border border-[#000000] rounded ${COMPACT_FILTER_BAR.inputHeight}`}>
                     <Input
                       type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Search sites..."
-                      className="w-full pr-8 text-xs py-1 px-2 border-0"
+                      placeholder="Search..."
+                      className={`w-full pr-6 ${COMPACT_FILTER_BAR.inputText} ${COMPACT_FILTER_BAR.inputPadding} border-0 h-full`}
                     />
                     {searchTerm.trim().length > 0 && (
                       <button
                         onClick={() => setSearchTerm("")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                         aria-label="Clear search"
                       >
                         <svg
@@ -181,54 +179,51 @@ export function DesktopLayout({
                   {hasActiveFilters && (
                     <button
                       onClick={clearAllFilters}
-                      className="px-3 py-1.5 bg-[#ed3039] hover:bg-[#d4202a] text-white
-                                 rounded-lg shadow-md hover:shadow-lg
-                                 transition-all duration-200 font-semibold
-                                 active:scale-95 text-xs border border-[#000000]"
+                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#ed3039] hover:bg-[#d4202a] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border border-[#000000]`}
                     >
                       Clear
                     </button>
                   )}
                 </div>
 
-                {/* Right side - Status legend and site count */}
-                <div className="flex items-center gap-4">
+                {/* Center/Right - Site count and Status legend (Color Key) - All inline */}
+                <div className="flex items-center gap-3 ml-auto">
                   {/* Site count */}
-                  <span className={`text-xs font-medium whitespace-nowrap ${t.text.muted}`}>
-                    Showing {filteredSites.length} of {totalSites} sites
+                  <span className={`text-[10px] font-medium whitespace-nowrap ${t.text.muted}`}>
+                    {filteredSites.length} / {totalSites}
                   </span>
 
-                  {/* Status Legend (Color Key) */}
-                  <div className={`flex items-center gap-3 px-3 py-1.5 rounded-md border border-[#000000] ${t.bg.secondary}`}>
-                    <span className={`text-xs font-semibold ${t.text.body}`}>Color Key:</span>
-                    <div className="flex items-center gap-1.5">
+                  {/* Status Legend (Color Key) - Ultra compact */}
+                  <div className={`flex items-center gap-2 px-2 py-0.5 rounded border border-[#000000] ${t.bg.secondary}`}>
+                    <span className={`text-[10px] font-semibold ${t.text.body}`}>Key:</span>
+                    <div className="flex items-center gap-1">
                       <div
-                        className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                        className="w-2.5 h-2.5 rounded-full border border-white"
                         style={{ backgroundColor: "#b91c1c" }}
                       />
-                      <span className={`text-xs ${t.text.body}`}>Destroyed</span>
+                      <span className={`text-[10px] ${t.text.body}`}>Destroyed</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                       <div
-                        className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                        className="w-2.5 h-2.5 rounded-full border border-white"
                         style={{ backgroundColor: "#d97706" }}
                       />
-                      <span className={`text-xs ${t.text.body}`}>Heavily Damaged</span>
+                      <span className={`text-[10px] ${t.text.body}`}>Heavy</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                       <div
-                        className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                        className="w-2.5 h-2.5 rounded-full border border-white"
                         style={{ backgroundColor: "#ca8a04" }}
                       />
-                      <span className={`text-xs ${t.text.body}`}>Damaged</span>
+                      <span className={`text-[10px] ${t.text.body}`}>Damaged</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Bottom row - Active filter tags */}
+              {/* Bottom row - Active filter tags (only if filters active) */}
               {hasActiveFilters && (
-                <div className="flex items-center gap-2 px-3 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   {selectedTypes.map((type) => (
                     <FilterTag
                       key={type}
@@ -249,7 +244,7 @@ export function DesktopLayout({
                   {(destructionDateStart || destructionDateEnd) && (
                     <FilterTag
                       key="destruction-date"
-                      label={`Date Range: ${destructionDateStart?.toLocaleDateString() || '...'} - ${destructionDateEnd?.toLocaleDateString() || '...'}`}
+                      label={`Date: ${destructionDateStart?.toLocaleDateString() || '...'} - ${destructionDateEnd?.toLocaleDateString() || '...'}`}
                       onRemove={handleRemoveDateRange}
                       ariaLabel="Remove destruction date filter"
                     />
@@ -260,7 +255,7 @@ export function DesktopLayout({
           </div>
 
           {/* Two maps side by side - Constrained height to leave room for timeline */}
-          <div className="flex gap-4 min-h-0 pt-3" style={{ height: 'calc(100% - 270px)' }}>
+          <div className="flex gap-2 min-h-0 pt-2" style={{ height: 'calc(100% - 180px)' }}>
             {/* Center - Heritage Map (Traditional/Satellite toggle) */}
             <div className="flex-1 min-w-0 h-full border-2 border-[#000000] rounded-lg shadow-2xl-dark overflow-hidden relative z-10">
               <Suspense fallback={<SkeletonMap />}>
@@ -285,7 +280,7 @@ export function DesktopLayout({
           </div>
 
           {/* Timeline Scrubber - Fixed height at bottom */}
-          <div className="mt-3 mb-4 flex-shrink-0 h-[200px] relative z-10">
+          <div className="mt-2 mb-2 flex-shrink-0 h-[160px] relative z-10">
             <Suspense fallback={<SkeletonMap />}>
               <TimelineScrubber
                 sites={filteredSites}

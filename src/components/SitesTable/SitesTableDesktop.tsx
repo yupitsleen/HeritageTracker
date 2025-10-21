@@ -10,6 +10,7 @@ import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Button } from "../Button";
+import { COMPACT_TABLE } from "../../constants/compactDesign";
 
 // Threshold for enabling virtual scrolling
 const VIRTUAL_SCROLL_THRESHOLD = 50;
@@ -155,10 +156,10 @@ export function SitesTableDesktop({
     <div className={`flex flex-col backdrop-blur-sm border-2 border-[#000000] rounded-lg shadow-2xl-dark transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`} style={{ height: 'calc(100% - 4px)' }}>
       {/* Title section - sticky */}
       <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
-        <div className="px-2 pt-4 pb-2">
+        <div className="px-2 pt-2 pb-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
-              <h2 className={`text-xl font-bold ${t.text.subheading}`}>Heritage Sites</h2>
+              <h2 className={`text-sm font-bold ${t.text.subheading}`}>Heritage Sites</h2>
               {onExpandTable && (
                 <button
                   onClick={onExpandTable}
@@ -181,12 +182,12 @@ export function SitesTableDesktop({
               <Button
                 onClick={() => downloadCSV(sortedSites)}
                 variant="primary"
-                size="sm"
+                size="xs"
                 className="mr-12"
                 title="Export table data to CSV file"
                 aria-label="Export to CSV"
                 icon={
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -210,7 +211,7 @@ export function SitesTableDesktop({
             <tr>
               {isColumnVisible("name") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
+                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("name")}
                 >
                   Site Name
@@ -219,7 +220,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("type") && (
                 <th
-                  className="px-2 py-3 font-semibold cursor-pointer select-none text-sm text-center transition-colors duration-200 hover:bg-gray-700/30"
+                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none text-center transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("type")}
                   style={{ width: `${TABLE_CONFIG.TYPE_COLUMN_WIDTH}px` }}
                 >
@@ -229,7 +230,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("status") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
+                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("status")}
                 >
                   Status
@@ -238,7 +239,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyed") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
+                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("dateDestroyed")}
                 >
                   {visibleColumns
@@ -251,7 +252,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("dateDestroyedIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
+                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("dateDestroyedIslamic")}
                 >
                   Destruction Date (Islamic)
@@ -260,7 +261,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuilt") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
+                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("yearBuilt")}
                 >
                   Built (Gregorian)
@@ -269,7 +270,7 @@ export function SitesTableDesktop({
               )}
               {isColumnVisible("yearBuiltIslamic") && (
                 <th
-                  className="px-4 py-3 font-semibold cursor-pointer select-none text-sm transition-colors duration-200 hover:bg-gray-700/30"
+                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("yearBuiltIslamic")}
                 >
                   Built (Islamic)
@@ -295,7 +296,7 @@ export function SitesTableDesktop({
                 }}
               >
                 {isColumnVisible("name") && (
-                  <td className={t.table.td}>
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY}`}>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -303,12 +304,10 @@ export function SitesTableDesktop({
                       }}
                       className="text-left w-full hover:underline"
                     >
-                      <div className="font-semibold text-base text-[#009639] hover:text-[#007b2f]">{site.name}</div>
+                      <div className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}>{site.name}</div>
                       {site.nameArabic && (
                         <div
-                          className={`${
-                            variant === "compact" ? "text-xs" : "text-sm"
-                          } ${t.text.muted} mt-1`}
+                          className={`text-[10px] ${t.text.muted} mt-0.5`}
                           dir="rtl"
                         >
                           {site.nameArabic}
@@ -318,18 +317,18 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("type") && (
-                  <td className={`${t.table.td} text-center`}>
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} text-center`}>
                     <Tooltip content={getSiteTypeLabel(site.type)}>
                       <span className="inline-flex items-center justify-center">
-                        <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
+                        <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
                       </span>
                     </Tooltip>
                   </td>
                 )}
                 {isColumnVisible("status") && (
-                  <td className={t.table.td}>
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY}`}>
                     <span
-                      className="font-semibold capitalize text-sm"
+                      className={`font-semibold capitalize ${COMPACT_TABLE.text}`}
                       style={{ color: getStatusHexColor(site.status) }}
                     >
                       {site.status.replace("-", " ")}
@@ -337,20 +336,20 @@ export function SitesTableDesktop({
                   </td>
                 )}
                 {isColumnVisible("dateDestroyed") && (
-                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
                     {formatDateStandard(site.dateDestroyed)}
                   </td>
                 )}
                 {isColumnVisible("dateDestroyedIslamic") && (
-                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
                     {site.dateDestroyedIslamic || "N/A"}
                   </td>
                 )}
                 {isColumnVisible("yearBuilt") && (
-                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>{site.yearBuilt}</td>
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>{site.yearBuilt}</td>
                 )}
                 {isColumnVisible("yearBuiltIslamic") && (
-                  <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
                     {site.yearBuiltIslamic || "N/A"}
                   </td>
                 )}
