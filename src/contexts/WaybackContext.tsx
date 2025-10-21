@@ -1,13 +1,11 @@
-import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import { fetchWaybackReleases, type WaybackRelease } from "../services/waybackService";
 
 /**
- * Wayback imagery animation state management
- * Coordinates playback across WaybackSlider and WaybackMap components
- * Pattern copied from AnimationContext.tsx
+ * Wayback imagery state management
+ * Manages manual navigation through 150+ satellite imagery versions
+ * Auto-play removed due to tile loading performance issues
  */
-
-export type WaybackSpeed = 0.25 | 0.5 | 1 | 2 | 4 | 8;
 
 interface WaybackContextValue {
   // All available Wayback releases (150+)
@@ -16,21 +14,14 @@ interface WaybackContextValue {
   currentIndex: number;
   // Currently selected release
   currentRelease: WaybackRelease | null;
-  // Is the timeline currently playing?
-  isPlaying: boolean;
-  // Animation speed multiplier
-  speed: WaybackSpeed;
   // Loading state
   isLoading: boolean;
   // Error state
   error: string | null;
 
   // Actions
-  play: () => void;
-  pause: () => void;
   reset: () => void;
   setIndex: (index: number) => void;
-  setSpeed: (speed: WaybackSpeed) => void;
   next: () => void;
   previous: () => void;
 }
@@ -44,14 +35,8 @@ interface WaybackProviderProps {
 export function WaybackProvider({ children }: WaybackProviderProps) {
   const [releases, setReleases] = useState<WaybackRelease[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState<WaybackSpeed>(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Ref to store animation frame ID for cleanup
-  const animationFrameRef = useRef<number | null>(null);
-  const lastFrameTimeRef = useRef<number>(0);
 
   // Fetch Wayback releases on mount
   useEffect(() => {
@@ -75,16 +60,7 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
 
   const currentRelease = releases.length > 0 ? releases[currentIndex] : null;
 
-  const play = useCallback(() => {
-    setIsPlaying(true);
-  }, []);
-
-  const pause = useCallback(() => {
-    setIsPlaying(false);
-  }, []);
-
   const reset = useCallback(() => {
-    setIsPlaying(false);
     setCurrentIndex(0); // Reset to first release
   }, []);
 
@@ -102,71 +78,14 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
     setCurrentIndex((prev) => Math.max(0, prev - 1));
   }, []);
 
-  // Animation loop using requestAnimationFrame
-  useEffect(() => {
-    if (!isPlaying || releases.length === 0) {
-      // Cancel any ongoing animation when paused
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-      return;
-    }
-
-    const animate = (timestamp: number) => {
-      // Calculate time elapsed since last frame
-      // Base frame rate: ~500ms per version at 1x speed
-      const baseFrameTime = 500; // ms
-      const frameTime = baseFrameTime / speed;
-
-      if (timestamp - lastFrameTimeRef.current < frameTime) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-        return;
-      }
-
-      lastFrameTimeRef.current = timestamp;
-
-      setCurrentIndex((prevIndex) => {
-        // Advance to next release
-        const nextIndex = prevIndex + 1;
-
-        // If we've reached the end, pause
-        if (nextIndex >= releases.length) {
-          setIsPlaying(false);
-          return releases.length - 1;
-        }
-
-        return nextIndex;
-      });
-
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    // Start animation
-    animationFrameRef.current = requestAnimationFrame(animate);
-
-    // Cleanup on unmount or when playing state changes
-    return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-    };
-  }, [isPlaying, speed, releases.length]);
-
   const value: WaybackContextValue = {
     releases,
     currentIndex,
     currentRelease,
-    isPlaying,
-    speed,
     isLoading,
     error,
-    play,
-    pause,
     reset,
     setIndex,
-    setSpeed,
     next,
     previous,
   };

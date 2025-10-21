@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from "react";
 import { useWayback } from "../../contexts/WaybackContext";
 import { useTheme } from "../../contexts/ThemeContext";
+import { NavigationControls } from "./NavigationControls";
 
 /**
  * WaybackSlider - Timeline slider for scrubbing through Wayback releases
@@ -105,8 +106,13 @@ export function WaybackSlider() {
         aria-valuetext={`${currentRelease?.label}, version ${currentIndex + 1} of ${releases.length}`}
       />
 
+      {/* Navigation buttons */}
+      <div className="mt-4">
+        <NavigationControls />
+      </div>
+
       {/* Keyboard shortcuts hint */}
-      <div className={`text-xs text-center mt-2 ${isDark ? "text-gray-500" : "text-gray-600"}`}>
+      <div className={`text-xs text-center mt-3 ${isDark ? "text-gray-500" : "text-gray-600"}`}>
         <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>←/→</kbd> Navigate
         {' • '}
         <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>Home/End</kbd> Jump

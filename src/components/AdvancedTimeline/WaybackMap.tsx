@@ -7,8 +7,8 @@ import "leaflet/dist/leaflet.css";
 
 /**
  * WaybackMap - Satellite map displaying current Wayback imagery release
- * Reuses patterns from SiteDetailView.tsx
- * Simplified version without site markers or time period toggles
+ * Manual navigation only - users can explore at their own pace
+ * This allows tiles to fully load before advancing to next version
  */
 export function WaybackMap() {
   const { currentRelease } = useWayback();
@@ -61,7 +61,6 @@ export function WaybackMap() {
 
         {/* Wayback satellite tile layer */}
         <TileLayer
-          key={currentRelease.releaseNum} // Force re-render when release changes
           url={tileUrl}
           attribution='&copy; <a href="https://www.esri.com/">Esri</a> Wayback Imagery'
           maxZoom={maxZoom}
