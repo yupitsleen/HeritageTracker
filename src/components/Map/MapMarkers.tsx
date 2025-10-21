@@ -65,7 +65,10 @@ export const MapMarkers = memo(function MapMarkers({
               position={site.coordinates}
               icon={createMarkerIcon(site.status, isHighlighted)}
               eventHandlers={{
-                click: () => onSiteHighlight?.(site.id),
+                click: () => {
+                  onSiteClick?.(site);
+                  onSiteHighlight?.(site.id);
+                },
               }}
             >
               <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
@@ -87,7 +90,10 @@ export const MapMarkers = memo(function MapMarkers({
               weight: 1,
             }}
             eventHandlers={{
-              click: () => onSiteHighlight?.(site.id),
+              click: () => {
+                onSiteClick?.(site);
+                onSiteHighlight?.(site.id);
+              },
             }}
           >
             <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>

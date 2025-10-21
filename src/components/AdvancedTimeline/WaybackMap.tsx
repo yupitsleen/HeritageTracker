@@ -1,0 +1,91 @@
+import { useMemo } from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
+import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
+import { MapUpdater, ScrollWheelHandler } from "../Map/MapHelperComponents";
+import { MapMarkers } from "../Map/MapMarkers";
+import { useWayback } from "../../contexts/WaybackContext";
+import type { GazaSite } from "../../types";
+import "leaflet/dist/leaflet.css";
+
+interface WaybackMapProps {
+  sites?: GazaSite[];
+  showSiteMarkers?: boolean;
+  onSiteClick?: (site: GazaSite) => void;
+}
+
+/**
+ * WaybackMap - Satellite map displaying current Wayback imagery release
+ * Manual navigation only - users can explore at their own pace
+ * This allows tiles to fully load before advancing to next version
+ *
+ * Optional: Display heritage site markers on the map
+ */
+export function WaybackMap({ sites = [], showSiteMarkers = false, onSiteClick }: WaybackMapProps = {}) {
+  const { currentRelease } = useWayback();
+
+  // Map configuration
+  const { center, zoom, tileUrl, maxZoom } = useMemo(() => {
+    // Always center on Gaza
+    const mapCenter = GAZA_CENTER;
+    const mapZoom = DEFAULT_ZOOM;
+
+    // Use current release tile URL, or fallback to empty string if loading
+    const url = currentRelease?.tileUrl || "";
+    const maxZ = currentRelease?.maxZoom || 19;
+
+    return {
+      center: mapCenter,
+      zoom: mapZoom,
+      tileUrl: url,
+      maxZoom: maxZ,
+    };
+  }, [currentRelease]);
+
+  // Don't render map until we have a release
+  if (!currentRelease) {
+    return (
+      <div className="h-full w-full flex items-center justify-center bg-gray-900 text-white">
+        <div className="text-center">
+          <div className="text-xl mb-2">Loading map...</div>
+          <div className="text-sm text-gray-400">Waiting for Wayback release data</div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-full w-full">
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        className="h-full w-full"
+        scrollWheelZoom={false}
+        zoomControl={true}
+        attributionControl={true}
+      >
+        {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}
+        <ScrollWheelHandler />
+
+        {/* Map updater for smooth transitions */}
+        <MapUpdater center={center} zoom={zoom} />
+
+        {/* Wayback satellite tile layer */}
+        <TileLayer
+          url={tileUrl}
+          attribution='&copy; <a href="https://www.esri.com/">Esri</a> Wayback Imagery'
+          maxZoom={maxZoom}
+          minZoom={1}
+        />
+
+        {/* Heritage site markers (optional) */}
+        {showSiteMarkers && sites.length > 0 && (
+          <MapMarkers
+            sites={sites}
+            onSiteClick={onSiteClick}
+            currentTimestamp={new Date()} // Show all sites regardless of timeline
+          />
+        )}
+      </MapContainer>
+    </div>
+  );
+}

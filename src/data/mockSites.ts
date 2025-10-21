@@ -153,7 +153,7 @@ export const mockSites: GazaSite[] = [
     type: "museum",
     yearBuilt: "13th century (Mamluk period)",
     yearBuiltIslamic: "7th century AH",
-    coordinates: [31.5050, 34.4620], // Gaza City [lat, lng]
+    coordinates: [31.505, 34.462], // Gaza City [lat, lng]
     status: "heavily-damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
@@ -200,7 +200,7 @@ export const mockSites: GazaSite[] = [
     type: "historic-building",
     yearBuilt: "Ottoman period (16th century)",
     yearBuiltIslamic: "10th century AH",
-    coordinates: [31.5120, 34.4710], // Gaza City [lat, lng]
+    coordinates: [31.512, 34.471], // Gaza City [lat, lng]
     status: "damaged",
     dateDestroyed: "2024-02-10",
     dateDestroyedIslamic: "1 Sha'ban 1445 AH",
@@ -274,41 +274,42 @@ export const mockSites: GazaSite[] = [
       },
     ],
   },
-  {
-    id: "ibn-uthman-mosque",
-    name: "Ibn Uthman Mosque",
-    nameArabic: "مسجد ابن عثمان",
-    type: "mosque",
-    yearBuilt: "1399-1400 (14th century)",
-    yearBuiltIslamic: "802 AH",
-    coordinates: [31.5203, 34.4668],
-    status: "destroyed",
-    dateDestroyed: "2024-07-15", // Estimated July 2024
-    dateDestroyedIslamic: "9 Muharram 1446 AH", // Manually verified with Islamic calendar converter
-    description:
-      "The second largest archaeological mosque in the Gaza Strip, located along Suq Street in the Turukman Quarter of the Shuja'iyya district. The mosque covered 2,000 square meters with a 400 square meter main courtyard and featured two gates overlooking the Shuja'iyya market.",
-    historicalSignificance:
-      "Built between 1399-1400 CE during the Mamluk period, this mosque represented significant Islamic architectural heritage in Gaza. It was an important religious center in the Shuja'iyya neighborhood for over 600 years before its destruction.",
-    culturalValue:
-      "The Ibn Uthman Mosque was the second most important archaeological mosque in Gaza after the Great Omari Mosque. Its loss represents a significant blow to Gaza's Islamic architectural heritage and the cultural identity of the Shuja'iyya community.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
-    sources: [
-      {
-        organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2024-05-28",
-        type: "official",
-      },
-      {
-        organization: "Middle East Monitor",
-        title: "Israel destroys second largest historical mosque in Gaza",
-        url: "https://www.middleeastmonitor.com/20240704-israel-destroys-second-largest-historical-mosque-in-gaza/",
-        date: "2024-07-04",
-        type: "journalism",
-      },
-    ],
-  },
+  // commenting out because its an outler at this time and makes the timeline data harder to see
+  // {
+  //   id: "ibn-uthman-mosque",
+  //   name: "Ibn Uthman Mosque",
+  //   nameArabic: "مسجد ابن عثمان",
+  //   type: "mosque",
+  //   yearBuilt: "1399-1400 (14th century)",
+  //   yearBuiltIslamic: "802 AH",
+  //   coordinates: [31.5203, 34.4668],
+  //   status: "destroyed",
+  //   dateDestroyed: "2024-07-15", // Estimated July 2024
+  //   dateDestroyedIslamic: "9 Muharram 1446 AH", // Manually verified with Islamic calendar converter
+  //   description:
+  //     "The second largest archaeological mosque in the Gaza Strip, located along Suq Street in the Turukman Quarter of the Shuja'iyya district. The mosque covered 2,000 square meters with a 400 square meter main courtyard and featured two gates overlooking the Shuja'iyya market.",
+  //   historicalSignificance:
+  //     "Built between 1399-1400 CE during the Mamluk period, this mosque represented significant Islamic architectural heritage in Gaza. It was an important religious center in the Shuja'iyya neighborhood for over 600 years before its destruction.",
+  //   culturalValue:
+  //     "The Ibn Uthman Mosque was the second most important archaeological mosque in Gaza after the Great Omari Mosque. Its loss represents a significant blow to Gaza's Islamic architectural heritage and the cultural identity of the Shuja'iyya community.",
+  //   verifiedBy: ["UNESCO", "Heritage for Peace"],
+  //   sources: [
+  //     {
+  //       organization: "UNESCO",
+  //       title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+  //       url: "https://www.unesco.org/en/gaza/assessment",
+  //       date: "2024-05-28",
+  //       type: "official",
+  //     },
+  //     {
+  //       organization: "Middle East Monitor",
+  //       title: "Israel destroys second largest historical mosque in Gaza",
+  //       url: "https://www.middleeastmonitor.com/20240704-israel-destroys-second-largest-historical-mosque-in-gaza/",
+  //       date: "2024-07-04",
+  //       type: "journalism",
+  //     },
+  //   ],
+  // },
   {
     id: "ibn-marwan-mosque",
     name: "Ibn Marwan Mosque",
@@ -349,7 +350,7 @@ export const mockSites: GazaSite[] = [
     type: "church",
     yearBuilt: "444 CE (5th century)",
     yearBuiltIslamic: "183 BH (Before Hijra)",
-    coordinates: [31.5333, 34.5000],
+    coordinates: [31.5333, 34.5],
     status: "destroyed",
     dateDestroyed: "2023-11-20", // Estimated November 2023
     dateDestroyedIslamic: "7 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
@@ -630,7 +631,7 @@ export const mockSites: GazaSite[] = [
     type: "archaeological",
     yearBuilt: "1st century BCE - 2nd century CE",
     yearBuiltIslamic: "722 BH - 478 BH",
-    coordinates: [31.533, 34.500], // Jabaliya (approximate)
+    coordinates: [31.533, 34.5], // Jabaliya (approximate)
     status: "destroyed",
     dateDestroyed: "2023-10-08",
     dateDestroyedIslamic: "23 Rabi' al-Awwal 1445 AH",
@@ -640,7 +641,11 @@ export const mockSites: GazaSite[] = [
       "This cemetery was in use from the 1st century BCE to the 2nd century CE and represents Gaza's importance as a Roman-era city. The discovery in 2022 was considered one of the most significant archaeological finds in recent Palestinian history, providing crucial evidence of Roman burial practices and artistic traditions in the region.",
     culturalValue:
       "The site was almost completely destroyed just one day after the conflict began on October 8, 2023, when researchers found rocket damage. UNESCO confirmed the destruction in January 2024. A 2025 report documented severe damage from bombs and bulldozers. The loss of this recently discovered site, with its rare lead sarcophagi and extensive tomb collection, represents an irreplaceable loss to Roman-era archaeology.",
-    verifiedBy: ["UNESCO", "Ministry of Tourism and Antiquities", "Centre for Cultural Heritage Preservation"],
+    verifiedBy: [
+      "UNESCO",
+      "Ministry of Tourism and Antiquities",
+      "Centre for Cultural Heritage Preservation",
+    ],
     // Images need to be sourced with proper attribution
     // images: {
     //   before: {
@@ -677,7 +682,7 @@ export const mockSites: GazaSite[] = [
     nameArabic: "متحف جامعة الإسراء",
     type: "museum",
     yearBuilt: "2014",
-    coordinates: [31.480, 34.450], // South of Gaza City (approximate)
+    coordinates: [31.48, 34.45], // South of Gaza City (approximate)
     status: "destroyed",
     dateDestroyed: "2024-01-17",
     dateDestroyedIslamic: "6 Rajab 1445 AH",
@@ -826,7 +831,7 @@ export const mockSites: GazaSite[] = [
     type: "historic-building",
     yearBuilt: "1800s (19th century)",
     yearBuiltIslamic: "13th century AH",
-    coordinates: [31.5090, 34.4640], // Gaza City
+    coordinates: [31.509, 34.464], // Gaza City
     status: "damaged",
     dateDestroyed: "2023-11-10",
     dateDestroyedIslamic: "26 Rabi' al-Thani 1445 AH",
@@ -860,7 +865,7 @@ export const mockSites: GazaSite[] = [
     type: "historic-building",
     yearBuilt: "14th century (Mamluk period)",
     yearBuiltIslamic: "8th century AH",
-    coordinates: [31.5055, 34.4650], // Gaza City Old Market
+    coordinates: [31.5055, 34.465], // Gaza City Old Market
     status: "destroyed",
     dateDestroyed: "2023-12-05",
     dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
@@ -927,7 +932,7 @@ export const mockSites: GazaSite[] = [
     nameArabic: "متحف الفندق",
     type: "museum",
     yearBuilt: "2008",
-    coordinates: [31.5520, 34.5165], // Northern Gaza
+    coordinates: [31.552, 34.5165], // Northern Gaza
     status: "damaged",
     dateDestroyed: "2023-11-03",
     dateDestroyedIslamic: "19 Rabi' al-Thani 1445 AH",
@@ -994,7 +999,7 @@ export const mockSites: GazaSite[] = [
     type: "archaeological",
     yearBuilt: "1200-500 BCE (Iron Age)",
     yearBuiltIslamic: "2822 BH - 2122 BH",
-    coordinates: [31.3580, 34.3120], // Southern Gaza
+    coordinates: [31.358, 34.312], // Southern Gaza
     status: "damaged",
     dateDestroyed: "2023-12-10",
     dateDestroyedIslamic: "27 Jumada al-Ula 1445 AH",
@@ -1178,7 +1183,7 @@ export const mockSites: GazaSite[] = [
     nameArabic: "مخزن وزارة السياحة والآثار",
     type: "museum",
     yearBuilt: "Modern (20th century)",
-    coordinates: [31.5280, 34.4590], // Sheikh Radwan neighborhood
+    coordinates: [31.528, 34.459], // Sheikh Radwan neighborhood
     status: "destroyed",
     dateDestroyed: "2023-10-25",
     dateDestroyedIslamic: "10 Rabi' al-Thani 1445 AH",
@@ -1212,7 +1217,7 @@ export const mockSites: GazaSite[] = [
     type: "mosque",
     yearBuilt: "Mamluk period (13th-14th century)",
     yearBuiltIslamic: "7th-8th century AH",
-    coordinates: [31.5068, 34.4670], // Gaza City
+    coordinates: [31.5068, 34.467], // Gaza City
     status: "damaged",
     dateDestroyed: "2023-12-15",
     dateDestroyedIslamic: "2 Jumada al-Akhirah 1445 AH",
@@ -1305,7 +1310,7 @@ export const mockSites: GazaSite[] = [
     type: "historic-building",
     yearBuilt: "Early 20th century",
     yearBuiltIslamic: "14th century AH",
-    coordinates: [31.5100, 34.4680], // Gaza City
+    coordinates: [31.51, 34.468], // Gaza City
     status: "damaged",
     dateDestroyed: "2023-12-18",
     dateDestroyedIslamic: "5 Jumada al-Akhirah 1445 AH",
@@ -1365,7 +1370,7 @@ export const mockSites: GazaSite[] = [
     nameArabic: "مركز الزيتون الثقافي",
     type: "museum",
     yearBuilt: "1995",
-    coordinates: [31.4940, 34.4545], // Al-Zeitoun neighborhood
+    coordinates: [31.494, 34.4545], // Al-Zeitoun neighborhood
     status: "destroyed",
     dateDestroyed: "2023-10-20",
     dateDestroyedIslamic: "5 Rabi' al-Thani 1445 AH",
@@ -1419,7 +1424,7 @@ export const mockSites: GazaSite[] = [
     type: "historic-building",
     yearBuilt: "British Mandate period (1930s)",
     yearBuiltIslamic: "1350s AH",
-    coordinates: [31.5070, 34.4655], // Gaza City
+    coordinates: [31.507, 34.4655], // Gaza City
     status: "damaged",
     dateDestroyed: "2023-12-08",
     dateDestroyedIslamic: "25 Jumada al-Ula 1445 AH",
@@ -1473,7 +1478,7 @@ export const mockSites: GazaSite[] = [
     type: "historic-building",
     yearBuilt: "15th century onwards",
     yearBuiltIslamic: "9th century AH onwards",
-    coordinates: [31.5285, 34.4580], // Sheikh Radwan
+    coordinates: [31.5285, 34.458], // Sheikh Radwan
     status: "damaged",
     dateDestroyed: "2023-10-28",
     dateDestroyedIslamic: "13 Rabi' al-Thani 1445 AH",
@@ -1500,7 +1505,7 @@ export const mockSites: GazaSite[] = [
     type: "archaeological",
     yearBuilt: "Ancient origins, Napoleonic fortifications 1799",
     yearBuiltIslamic: "1213 AH (fortifications)",
-    coordinates: [31.5345, 34.5120], // Al-Muntar Hill, northeast Gaza
+    coordinates: [31.5345, 34.512], // Al-Muntar Hill, northeast Gaza
     status: "damaged",
     dateDestroyed: "2023-11-05",
     dateDestroyedIslamic: "21 Rabi' al-Thani 1445 AH",
@@ -1527,7 +1532,7 @@ export const mockSites: GazaSite[] = [
     type: "mosque",
     yearBuilt: "Mamluk period (13th century)",
     yearBuiltIslamic: "7th century AH",
-    coordinates: [31.5075, 34.4660], // Gaza City
+    coordinates: [31.5075, 34.466], // Gaza City
     status: "destroyed",
     dateDestroyed: "2023-12-03",
     dateDestroyedIslamic: "20 Jumada al-Ula 1445 AH",
