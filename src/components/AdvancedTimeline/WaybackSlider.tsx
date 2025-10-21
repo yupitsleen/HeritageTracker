@@ -26,6 +26,7 @@ function findClosestReleaseIndex(releases: Array<{ releaseDate: string }>, targe
 interface WaybackSliderProps {
   sites?: GazaSite[];
   showEventMarkers?: boolean;
+  highlightedSiteId?: string | null;
 }
 
 /**
@@ -35,7 +36,7 @@ interface WaybackSliderProps {
  *
  * Optional: Display destruction event markers on timeline
  */
-export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSliderProps = {}) {
+export function WaybackSlider({ sites = [], showEventMarkers = true, highlightedSiteId = null }: WaybackSliderProps = {}) {
   const { releases, currentIndex, setIndex } = useWayback();
   const { isDark } = useTheme();
 
@@ -293,29 +294,34 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
               style={{ left: `${markerGroup.position}%` }}
             >
               {/* Stack dots vertically */}
-              {markerGroup.sites.map((site, siteIndex) => (
-                <div
-                  key={`${site.siteId}-${siteIndex}`}
-                  className="group"
-                  style={{
-                    position: 'absolute',
-                    bottom: `${siteIndex * 6}px`, // Stack dots 6px apart
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                  }}
-                >
-                  {/* Red dot */}
-                  <div className="w-2 h-2 bg-[#ed3039] rounded-full" />
+              {markerGroup.sites.map((site, siteIndex) => {
+                const isHighlighted = highlightedSiteId === site.siteId;
+                return (
+                  <div
+                    key={`${site.siteId}-${siteIndex}`}
+                    className="group"
+                    style={{
+                      position: 'absolute',
+                      bottom: `${siteIndex * 6}px`, // Stack dots 6px apart
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                    }}
+                  >
+                    {/* Red dot - turns black when highlighted */}
+                    <div className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                      isHighlighted ? 'bg-black scale-150' : 'bg-[#ed3039]'
+                    }`} />
 
-                  {/* Tooltip on hover */}
-                  <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
-                    isDark ? "bg-gray-900 text-white" : "bg-white text-black"
-                  } px-2 py-1 rounded text-xs border-2 ${isDark ? "border-white" : "border-black"} shadow-xl`}>
-                    <div className="font-bold">{site.siteName}</div>
-                    <div className={isDark ? "text-gray-400" : "text-gray-600"}>{site.date}</div>
+                    {/* Tooltip on hover */}
+                    <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
+                      isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+                    } px-2 py-1 rounded text-xs border-2 ${isDark ? "border-white" : "border-black"} shadow-xl`}>
+                      <div className="font-bold">{site.siteName}</div>
+                      <div className={isDark ? "text-gray-400" : "text-gray-600"}>{site.date}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ))}
         </div>

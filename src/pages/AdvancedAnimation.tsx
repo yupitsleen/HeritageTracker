@@ -18,6 +18,7 @@ function AdvancedAnimationContent() {
   const navigate = useNavigate();
   const { releases, currentRelease, isLoading, error } = useWayback();
   const [showSiteMarkers, setShowSiteMarkers] = useState(true);
+  const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null);
 
   return (
     <div
@@ -123,12 +124,20 @@ function AdvancedAnimationContent() {
 
             {/* Map with optional site markers */}
             <div className={`flex-1 rounded-lg border-2 ${isDark ? "border-white" : "border-black"} shadow-xl overflow-hidden`}>
-              <WaybackMap sites={mockSites} showSiteMarkers={showSiteMarkers} />
+              <WaybackMap
+                sites={mockSites}
+                showSiteMarkers={showSiteMarkers}
+                onSiteClick={(site) => setSelectedSiteId(site.id)}
+              />
             </div>
 
             {/* Timeline Slider with destruction event markers */}
             <div className={`rounded-lg border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
-              <WaybackSlider sites={mockSites} showEventMarkers={true} />
+              <WaybackSlider
+                sites={mockSites}
+                showEventMarkers={true}
+                highlightedSiteId={selectedSiteId}
+              />
             </div>
           </div>
         )}
