@@ -4,6 +4,7 @@ import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { WaybackProvider, useWayback } from "../contexts/WaybackContext";
 import { WaybackMap } from "../components/AdvancedTimeline/WaybackMap";
+import { WaybackSlider } from "../components/AdvancedTimeline/WaybackSlider";
 
 /**
  * Advanced Animation Page Content
@@ -106,6 +107,11 @@ function AdvancedAnimationContent() {
             {/* Map */}
             <div className={`flex-1 rounded-lg border-2 ${isDark ? "border-white" : "border-black"} shadow-xl overflow-hidden`}>
               <WaybackMap />
+            </div>
+
+            {/* Timeline Slider */}
+            <div className={`rounded-lg border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+              <WaybackSlider />
             </div>
           </div>
         )}
