@@ -4,6 +4,7 @@ import { useHeritageStats } from "../../hooks/useHeritageStats";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { LazySection } from "../LazySection";
+import { UNESCO_VERIFIED_SITES, LAST_UPDATED } from "../../constants/statistics";
 
 interface StatsDashboardProps {
   sites: GazaSite[];
@@ -47,14 +48,14 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
         {/* Hero statistic - Years of history */}
         <div className="bg-gradient-to-br from-[#009639]/10 to-[#009639]/5 border-2 border-[#009639] rounded-lg p-4 md:p-8 mb-6 md:mb-8 text-center">
           <div className="text-5xl md:text-7xl font-bold text-[#ed3039] mb-2 md:mb-3">
-            {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) / 10}k` : "5.3k"}
+            {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) / 10}k` : "—"}
           </div>
           <div className={`text-lg md:text-2xl font-semibold ${t.text.heading} mb-1 md:mb-2`}>
             Years of Human History
           </div>
           <p className={`text-xs md:text-base ${t.text.body} max-w-2xl mx-auto`}>
             From Bronze Age Egyptian settlements to Ottoman architecture, Gaza's heritage spans
-            over 5,300 years of continuous civilization. Every destroyed site is an irreplaceable
+            over {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) * 100}` : '5,000'} years of continuous civilization. Every destroyed site is an irreplaceable
             loss to humanity.
           </p>
         </div>
@@ -101,8 +102,8 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </div>
             {isDesktop && (
               <p className={`text-xs ${t.text.muted} leading-relaxed`}>
-                Including 3,000+ looted artifacts, tens of thousands of books burned, and 150 years
-                of archives deliberately destroyed.
+                Including looted rare artifacts, burned library collections, and destroyed
+                archival records representing centuries of cultural documentation.
               </p>
             )}
           </div>
@@ -509,9 +510,9 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
           <div className="bg-[#009639]/10 border-2 border-[#009639] rounded-lg p-6 mt-6">
             <p className={`${t.text.subheading} font-semibold mb-2`}>Why This Matters Now:</p>
             <p className={`text-sm ${t.text.body} mb-3`}>
-              These surviving sites represent the last fragments of Gaza's 5,300-year cultural
+              These surviving sites represent the last fragments of Gaza's {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 1000)}k+` : '5,000+'}-year cultural
               heritage. Without immediate international intervention—ceasefire, protective measures,
-              and documentation—they risk the same fate as the 10 sites already completely
+              and documentation—they risk the same fate as the {stats.destroyed} sites already completely
               destroyed.
             </p>
             <p className={`text-sm ${t.text.body}`}>
@@ -557,7 +558,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               </li>
             </ul>
             <p className={`${t.text.subheading} pt-3 font-semibold`}>
-              These 18 sites are just the beginning—UNESCO has verified damage to 110+ cultural
+              These {stats.total} documented sites are just the beginning—UNESCO has verified damage to {UNESCO_VERIFIED_SITES}+ cultural
               sites in Gaza. The full scale of loss may never be fully documented.
             </p>
           </div>
@@ -592,7 +593,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
         <div className={`text-center text-xs ${t.text.subtle} pt-6 border-t ${t.border.default}`}>
           <p>
             All data verified by UNESCO, Forensic Architecture, and Heritage for Peace • Last
-            updated October 2025
+            updated {LAST_UPDATED}
           </p>
           <p className={`mt-2 ${t.text.muted} font-medium`}>
             "The deliberate destruction of cultural heritage is an attack on humanity itself." —
