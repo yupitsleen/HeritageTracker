@@ -77,12 +77,14 @@ describe("Navigation", () => {
   });
 
   describe("Advanced Animation Page", () => {
-    it("renders advanced animation page content", () => {
+    it("renders advanced animation page content", async () => {
       renderWithProviders(<AdvancedAnimation />);
 
       expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
       expect(screen.getByText("150+ Historical Imagery Versions")).toBeInTheDocument();
-      expect(screen.getByText("Advanced Animation Coming Soon")).toBeInTheDocument();
+
+      // Wait for data to load - should show "Wayback Archive Loaded Successfully"
+      await screen.findByText(/Wayback Archive Loaded Successfully/i);
     });
 
     it("renders back button with navigation", () => {
@@ -93,11 +95,12 @@ describe("Navigation", () => {
       expect(backButton).toHaveTextContent("←");
     });
 
-    it("displays all planned features", () => {
+    it("displays all planned features after loading", async () => {
       renderWithProviders(<AdvancedAnimation />);
 
-      expect(screen.getByText(/Full-screen split-screen map comparison/i)).toBeInTheDocument();
-      expect(screen.getByText(/150\+ ESRI Wayback satellite imagery versions/i)).toBeInTheDocument();
+      // Wait for loading to finish and content to appear
+      await screen.findByText(/Full-screen split-screen map comparison/i);
+
       expect(screen.getByText(/Advanced timeline slider with precise date selection/i)).toBeInTheDocument();
       expect(screen.getByText(/Play\/pause animation through all historical versions/i)).toBeInTheDocument();
       expect(screen.getByText(/Variable playback speed controls/i)).toBeInTheDocument();
