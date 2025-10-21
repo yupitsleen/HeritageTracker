@@ -20,7 +20,7 @@ interface WaybackMapProps {
  *
  * Optional: Display heritage site markers on the map
  */
-export function WaybackMap({ sites = [], showSiteMarkers = false, onSiteClick }: WaybackMapProps = {}) {
+export function WaybackMap({ sites = [], showSiteMarkers = false, onSiteClick }: WaybackMapProps) {
   const { currentRelease } = useWayback();
 
   // Map configuration

@@ -43,6 +43,9 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
     const releases: WaybackRelease[] = Object.entries(data).map(([releaseNum, item]) => {
       // Extract date from title (format: "World Imagery (Wayback 2025-09-25)")
       const dateMatch = item.itemTitle.match(/(\d{4}-\d{2}-\d{2})/);
+      if (!dateMatch) {
+        console.warn(`Failed to parse date from title: "${item.itemTitle}". Using current date as fallback.`);
+      }
       const releaseDate = dateMatch ? dateMatch[1] : new Date().toISOString().split("T")[0];
 
       // Convert {level}/{row}/{col} to {z}/{y}/{x} for Leaflet
@@ -63,53 +66,42 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
     return releases;
   } catch (error) {
     console.error("Error fetching Wayback releases:", error);
-    // Return fallback data with our current 3 periods
-    return [
-      {
-        releaseNum: 10,
-        releaseDate: "2014-02-20",
-        label: "2014-02-20",
-        tileUrl: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
-        maxZoom: 17,
-      },
-      {
-        releaseNum: 64776,
-        releaseDate: "2023-08-31",
-        label: "2023-08-31",
-        tileUrl: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/64776/{z}/{y}/{x}",
-        maxZoom: 18,
-      },
-      {
-        releaseNum: 99999,
-        releaseDate: new Date().toISOString().split("T")[0],
-        label: "Current",
-        tileUrl: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        maxZoom: 19,
-      },
-    ];
+    // Re-throw error to allow UI to handle it properly with error state
+    throw new Error(
+      "Unable to load Wayback satellite imagery. Please check your internet connection and try again."
+    );
   }
+}
+
+/**
+ * Finds the index of the Wayback release closest to a specific date
+ * Returns the index in the releases array
+ */
+export function findClosestReleaseIndex(
+  releases: WaybackRelease[],
+  targetDate: string | Date
+): number {
+  const targetTime = new Date(targetDate).getTime();
+  let closestIndex = 0;
+  let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
+
+  for (let i = 1; i < releases.length; i++) {
+    const releaseTime = new Date(releases[i].releaseDate).getTime();
+    const diff = Math.abs(releaseTime - targetTime);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closestIndex = i;
+    }
+  }
+
+  return closestIndex;
 }
 
 /**
  * Gets the Wayback release closest to a specific date
  */
 export function getClosestRelease(releases: WaybackRelease[], targetDate: Date): WaybackRelease {
-  const targetTime = targetDate.getTime();
-
-  let closest = releases[0];
-  let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
-
-  for (const release of releases) {
-    const releaseTime = new Date(release.releaseDate).getTime();
-    const diff = Math.abs(releaseTime - targetTime);
-
-    if (diff < minDiff) {
-      minDiff = diff;
-      closest = release;
-    }
-  }
-
-  return closest;
+  return releases[findClosestReleaseIndex(releases, targetDate)];
 }
 
 /**

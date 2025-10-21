@@ -2,26 +2,10 @@ import { useEffect, useCallback, useMemo } from "react";
 import { useWayback } from "../../contexts/WaybackContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { NavigationControls } from "./NavigationControls";
+import { findClosestReleaseIndex } from "../../services/waybackService";
+import { WAYBACK_TIMELINE } from "../../constants/wayback";
+import { useYearMarkers } from "../../hooks/useYearMarkers";
 import type { GazaSite } from "../../types";
-
-/**
- * Find the closest Wayback release index for a given date
- */
-function findClosestReleaseIndex(releases: Array<{ releaseDate: string }>, targetDate: string): number {
-  const targetTime = new Date(targetDate).getTime();
-  let closestIndex = 0;
-  let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
-
-  for (let i = 1; i < releases.length; i++) {
-    const diff = Math.abs(new Date(releases[i].releaseDate).getTime() - targetTime);
-    if (diff < minDiff) {
-      minDiff = diff;
-      closestIndex = i;
-    }
-  }
-
-  return closestIndex;
-}
 
 interface WaybackSliderProps {
   sites?: GazaSite[];
@@ -36,7 +20,7 @@ interface WaybackSliderProps {
  *
  * Optional: Display destruction event markers on timeline
  */
-export function WaybackSlider({ sites = [], showEventMarkers = true, highlightedSiteId = null }: WaybackSliderProps = {}) {
+export function WaybackSlider({ sites = [], showEventMarkers = true, highlightedSiteId = null }: WaybackSliderProps) {
   const { releases, currentIndex, setIndex } = useWayback();
   const { isDark } = useTheme();
 
@@ -58,7 +42,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true, highlighted
         date: releases[i].releaseDate,
         label: releases[i].label,
         position,
-        isMajor: i % 10 === 0, // Every 10th release is a major marker
+        isMajor: i % WAYBACK_TIMELINE.MAJOR_MARKER_INTERVAL === 0,
       };
 
       if (marker.isMajor) {
@@ -70,7 +54,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true, highlighted
 
     // Always make the last release a major marker if not already
     const lastIndex = releases.length - 1;
-    if (lastIndex % 10 !== 0) {
+    if (lastIndex % WAYBACK_TIMELINE.MAJOR_MARKER_INTERVAL !== 0) {
       const position = 100;
       majorMarkers.push({
         releaseNum: releases[lastIndex].releaseNum,
@@ -85,41 +69,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true, highlighted
   }, [releases]);
 
   // Calculate year markers for timeline scale
-  const yearMarkers = useMemo(() => {
-    if (releases.length === 0) return [];
-
-    // Get start and end years from releases
-    const startDate = new Date(releases[0].releaseDate);
-    const endDate = new Date(releases[releases.length - 1].releaseDate);
-    const startYear = startDate.getFullYear();
-    const endYear = endDate.getFullYear();
-
-    // Create marker for each year in range
-    const markers: Array<{ year: number; position: number }> = [];
-
-    for (let year = startYear; year <= endYear; year++) {
-      // Find the first release in this year (or closest to Jan 1)
-      const targetTime = new Date(`${year}-01-01`).getTime();
-
-      // Find closest release to this year's start
-      let closestIndex = 0;
-      let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
-
-      for (let i = 1; i < releases.length; i++) {
-        const releaseTime = new Date(releases[i].releaseDate).getTime();
-        const diff = Math.abs(releaseTime - targetTime);
-        if (diff < minDiff) {
-          minDiff = diff;
-          closestIndex = i;
-        }
-      }
-
-      const position = (closestIndex / (releases.length - 1)) * 100;
-      markers.push({ year, position });
-    }
-
-    return markers;
-  }, [releases]);
+  const yearMarkers = useYearMarkers(releases);
 
   // Calculate all destruction event markers grouped by position (for stacking dots)
   const allEventMarkers = useMemo(() => {
@@ -302,7 +252,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true, highlighted
                     className="group"
                     style={{
                       position: 'absolute',
-                      bottom: `${siteIndex * 6}px`, // Stack dots 6px apart
+                      bottom: `${siteIndex * WAYBACK_TIMELINE.EVENT_MARKER_STACK_SPACING}px`,
                       left: '50%',
                       transform: 'translateX(-50%)',
                     }}
@@ -355,6 +305,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true, highlighted
             aria-valuemax={releases.length - 1}
             aria-valuenow={currentIndex}
             aria-valuetext={`${currentRelease?.label}, version ${currentIndex + 1} of ${releases.length}`}
+            aria-keyshortcuts="ArrowLeft ArrowRight Home End"
           />
 
           {/* Tooltip showing exact date under the scrubber - always visible */}

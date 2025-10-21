@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import { fetchWaybackReleases, type WaybackRelease } from "../services/waybackService";
+import { WAYBACK_TIMELINE } from "../constants/wayback";
+import { useYearMarkers } from "../hooks/useYearMarkers";
 
 /**
  * Wayback imagery state management
@@ -42,6 +44,9 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Calculate year markers from releases
+  const yearMarkers = useYearMarkers(releases);
 
   // Fetch Wayback releases on mount
   useEffect(() => {
@@ -93,30 +98,10 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
 
   // Auto-advance through year markers when playing
   useEffect(() => {
-    if (!isPlaying || releases.length === 0) return;
+    if (!isPlaying || yearMarkers.length === 0) return;
 
-    // Calculate year marker indices (same logic as WaybackSlider)
-    const startDate = new Date(releases[0].releaseDate);
-    const endDate = new Date(releases[releases.length - 1].releaseDate);
-    const startYear = startDate.getFullYear();
-    const endYear = endDate.getFullYear();
-
-    const yearMarkerIndices: number[] = [];
-    for (let year = startYear; year <= endYear; year++) {
-      const targetTime = new Date(`${year}-01-01`).getTime();
-      let closestIndex = 0;
-      let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
-
-      for (let i = 1; i < releases.length; i++) {
-        const releaseTime = new Date(releases[i].releaseDate).getTime();
-        const diff = Math.abs(releaseTime - targetTime);
-        if (diff < minDiff) {
-          minDiff = diff;
-          closestIndex = i;
-        }
-      }
-      yearMarkerIndices.push(closestIndex);
-    }
+    // Get year marker indices from the hook
+    const yearMarkerIndices = yearMarkers.map(m => m.releaseIndex);
 
     // Find current position in year markers
     const currentYearMarkerIndex = yearMarkerIndices.findIndex(idx => idx >= currentIndex);
@@ -128,13 +113,13 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
       return;
     }
 
-    // Advance to next year marker after 2 seconds
+    // Advance to next year marker after configured interval
     const timer = setTimeout(() => {
       setCurrentIndex(yearMarkerIndices[nextYearMarkerIndex]);
-    }, 2000);
+    }, WAYBACK_TIMELINE.YEAR_ADVANCE_INTERVAL_MS);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, currentIndex, releases]);
+  }, [isPlaying, currentIndex, yearMarkers]);
 
   const value: WaybackContextValue = {
     releases,

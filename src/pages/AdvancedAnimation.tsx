@@ -4,8 +4,7 @@ import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { WaybackProvider, useWayback } from "../contexts/WaybackContext";
-import { WaybackMap } from "../components/AdvancedTimeline/WaybackMap";
-import { WaybackSlider } from "../components/AdvancedTimeline/WaybackSlider";
+import { WaybackMap, WaybackSlider } from "../components/AdvancedTimeline";
 import { mockSites } from "../data/mockSites";
 
 /**
