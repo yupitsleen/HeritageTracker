@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
@@ -36,13 +37,15 @@ function renderWithProviders(ui: React.ReactElement, theme: "light" | "dark" = "
   localStorage.setItem("heritage-tracker-theme", theme);
 
   return render(
-    <ThemeProvider>
-      <CalendarProvider>
-        <AnimationProvider sites={mockSites}>
-          {ui}
-        </AnimationProvider>
-      </CalendarProvider>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider>
+        <CalendarProvider>
+          <AnimationProvider sites={mockSites}>
+            {ui}
+          </AnimationProvider>
+        </CalendarProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

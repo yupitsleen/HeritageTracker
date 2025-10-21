@@ -1,6 +1,7 @@
 import { components, cn } from "../../styles/theme";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
 
 interface AppHeaderProps {
@@ -12,10 +13,14 @@ interface AppHeaderProps {
 /**
  * Application header with title, description, and action buttons
  * Black background with Palestinian flag colors
- * Includes dark mode toggle
+ * Includes dark mode toggle and navigation to advanced animation page
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isOnHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
 
   return (
     <div className={`sticky top-0 z-[5] transition-colors duration-200 ${
@@ -49,6 +54,19 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
               <MoonIcon className="w-5 h-5" />
             )}
           </button>
+
+          {/* Advanced Animation Navigation - Only show on home page */}
+          {isOnHomePage && (
+            <Button
+              onClick={() => navigate("/advanced-animation")}
+              variant="secondary"
+              size="sm"
+              aria-label="Open Advanced Animation Timeline"
+              title="View 150+ historical satellite imagery versions"
+            >
+              Advanced Timeline
+            </Button>
+          )}
 
           <Button
             onClick={onOpenDonate}
