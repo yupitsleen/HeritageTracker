@@ -985,9 +985,140 @@ const eventMarkers = useMemo(() => {
 
 ---
 
+## Component Reuse Strategy
+
+### ✅ Components to Reuse
+
+**Principle:** Leverage proven, tested code to reduce development time and maintain consistency.
+
+#### 1. Map Components (HIGH REUSE)
+- **`HeritageMap.tsx`** - Adapt base map structure (Leaflet setup, center, zoom)
+- **`SiteDetailView.tsx`** - Pattern for TileLayer switching and satellite imagery
+- **`TimeToggle.tsx`** - Pattern for discrete imagery period selection
+- **Benefits:** Same Leaflet infrastructure, consistent styling, proven satellite tile handling
+
+#### 2. Context Pattern (COPY & ADAPT)
+- **`AnimationContext.tsx`** → **`WaybackContext.tsx`**
+  - Copy state management pattern (playback, speed, currentTimestamp)
+  - Adapt for Wayback releases instead of destruction dates
+  - Reuse play/pause/reset logic
+- **Benefits:** Proven async state management, tested playback patterns
+
+#### 3. Timeline Components (EXTRACT & REUSE)
+- **`TimelineScrubber.tsx`** - Extract D3.js slider patterns
+  - Keep: D3 scale setup, axis rendering, keyboard navigation
+  - Replace: Data model (destruction dates → Wayback releases)
+  - Extract: Playback controls into shared component
+- **Benefits:** D3.js infrastructure already working, keyboard shortcuts tested
+
+#### 4. UI Components (100% REUSE)
+- **`Button.tsx`** - All playback controls (play/pause/speed/reset)
+- **`useTheme.tsx`** & **`useThemeClasses.tsx`** - Dark mode support
+- **Modal, LoadingSpinner, ErrorBoundary** - Standard UI patterns
+- **Benefits:** Consistent styling, accessibility built-in, tested
+
+### ❌ Components to Build New
+
+**Principle:** Don't force-fit existing components where new ones are clearer.
+
+#### 1. WaybackMap Component (NEW)
+- **Why:** Different from HeritageMap (no site markers, different interactions)
+- **Reuse:** Leaflet setup patterns, tile switching logic from SiteDetailView
+- **Structure:**
+  ```typescript
+  // NEW: src/components/AdvancedTimeline/WaybackMap.tsx
+  // REUSES: TileLayer pattern from SiteDetailView
+  // REUSES: Map container setup from HeritageMap
+  ```
+
+#### 2. Split-Screen Map (NEW)
+- **Why:** Completely new interaction model (two synchronized maps)
+- **Reuse:** WaybackMap component (2 instances side-by-side)
+- **Structure:**
+  ```typescript
+  // NEW: src/components/AdvancedTimeline/SplitScreenMap.tsx
+  // REUSES: WaybackMap (2x), sync logic from existing map interactions
+  ```
+
+#### 3. Advanced Timeline Slider (NEW, but borrow patterns)
+- **Why:** Different data structure (150+ discrete points vs. continuous date range)
+- **Reuse:** D3.js patterns from TimelineScrubber (scale, axis, keyboard nav)
+- **Structure:**
+  ```typescript
+  // NEW: src/components/AdvancedTimeline/WaybackSlider.tsx
+  // BORROWS: D3 patterns from TimelineScrubber
+  // BORROWS: Keyboard navigation from TimelineScrubber
+  ```
+
+### 📁 Proposed File Structure
+
+```
+src/
+├── contexts/
+│   ├── AnimationContext.tsx           (EXISTING - keep)
+│   └── WaybackContext.tsx             (NEW - copy pattern from AnimationContext)
+│
+├── services/
+│   └── waybackService.ts              (EXISTING - created in Phase 1)
+│
+├── components/
+│   ├── Map/
+│   │   ├── HeritageMap.tsx            (EXISTING - keep for main dashboard)
+│   │   ├── SiteDetailView.tsx         (EXISTING - reference for tile switching)
+│   │   └── MapMarkers.tsx             (EXISTING - may reuse for site markers)
+│   │
+│   ├── Timeline/
+│   │   └── TimelineScrubber.tsx       (EXISTING - extract patterns from this)
+│   │
+│   ├── Button/
+│   │   └── Button.tsx                 (EXISTING - reuse 100%)
+│   │
+│   └── AdvancedTimeline/              (NEW DIRECTORY)
+│       ├── WaybackMap.tsx             (NEW - single map for Wayback imagery)
+│       ├── SplitScreenMap.tsx         (NEW - two WaybackMap instances)
+│       ├── WaybackSlider.tsx          (NEW - timeline slider for 150+ versions)
+│       ├── PlaybackControls.tsx       (NEW - extracted from TimelineScrubber)
+│       └── ExportControls.tsx         (NEW - screenshot/GIF export)
+│
+└── pages/
+    ├── HomePage.tsx                   (EXISTING - main dashboard)
+    └── AdvancedAnimation.tsx          (EXISTING - basic page created in Phase 1)
+```
+
+### 🎯 Implementation Strategy
+
+**Phase 1 (Foundation):**
+1. ✅ Create WaybackContext (copy AnimationContext pattern)
+2. ✅ Use existing waybackService.ts
+3. ✅ Display fetched data in AdvancedAnimation page
+
+**Phase 2 (Core UI):**
+1. Extract playback controls from TimelineScrubber → PlaybackControls.tsx
+2. Create WaybackSlider (borrow D3 patterns from TimelineScrubber)
+3. Connect WaybackContext to new components
+
+**Phase 3 (Map Integration):**
+1. Create WaybackMap (reuse patterns from SiteDetailView)
+2. Connect WaybackSlider to WaybackMap tile switching
+3. Optional: Add site markers (reuse MapMarkers)
+
+**Phase 4 (Advanced Features):**
+1. Create SplitScreenMap (2x WaybackMap instances)
+2. Add ExportControls component
+3. Polish UI/UX
+
+**Benefits of This Approach:**
+- ✅ Proven patterns reduce bugs
+- ✅ Consistent UX across app
+- ✅ Faster development (copy > rewrite)
+- ✅ Each phase builds incrementally
+- ✅ Can refactor shared code later if needed
+
+---
+
 ## Implementation Phases
 
-### Phase 1: Foundation (Week 1)
+### Phase 1: Foundation (COMPLETED ✅)
 **Goal:** Set up routing and data layer
 
 - [ ] Install `react-router-dom` dependency
