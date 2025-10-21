@@ -65,46 +65,52 @@ export function TimelineScrubber({
   // Extract timeline data using custom hook
   const { events: allDestructionDates } = useTimelineData(sites);
 
-  // Calculate default date range from dataset (oldest and newest destruction dates)
-  const { defaultStartDate, defaultEndDate } = useMemo(() => {
-    if (allDestructionDates.length === 0) {
-      return { defaultStartDate: startDate, defaultEndDate: endDate };
-    }
-    const dates = allDestructionDates.map((event) => event.date);
+  // Combine related date calculations into single memoization for better performance
+  // Reduces dependency checking overhead and prevents cascading recalculations
+  const timelineData = useMemo(() => {
+    // Calculate default date range from dataset (oldest and newest destruction dates)
+    const defaults =
+      allDestructionDates.length === 0
+        ? { defaultStartDate: startDate, defaultEndDate: endDate }
+        : {
+            defaultStartDate: new Date(Math.min(...allDestructionDates.map((event) => event.date.getTime()))),
+            defaultEndDate: new Date(Math.max(...allDestructionDates.map((event) => event.date.getTime()))),
+          };
+
+    // Filter destruction dates based on date filter
+    const filtered =
+      !destructionDateStart && !destructionDateEnd
+        ? allDestructionDates
+        : allDestructionDates.filter((event) => {
+            if (destructionDateStart && event.date < destructionDateStart) return false;
+            if (destructionDateEnd && event.date > destructionDateEnd) return false;
+            return true;
+          });
+
+    // Calculate adjusted timeline range based on filtered dates
+    const adjusted =
+      filtered.length === 0
+        ? { adjustedStartDate: startDate, adjustedEndDate: endDate }
+        : {
+            adjustedStartDate:
+              destructionDateStart || destructionDateEnd
+                ? new Date(Math.min(...filtered.map((event) => event.date.getTime())))
+                : startDate,
+            adjustedEndDate:
+              destructionDateStart || destructionDateEnd
+                ? new Date(Math.max(...filtered.map((event) => event.date.getTime())))
+                : endDate,
+          };
+
     return {
-      defaultStartDate: new Date(Math.min(...dates.map((d) => d.getTime()))),
-      defaultEndDate: new Date(Math.max(...dates.map((d) => d.getTime()))),
+      ...defaults,
+      destructionDates: filtered,
+      ...adjusted,
     };
-  }, [allDestructionDates, startDate, endDate]);
+  }, [allDestructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
 
-
-  // Filter destruction dates based on date filter
-  const destructionDates = useMemo(() => {
-    if (!destructionDateStart && !destructionDateEnd) {
-      return allDestructionDates;
-    }
-    return allDestructionDates.filter((event) => {
-      if (destructionDateStart && event.date < destructionDateStart) return false;
-      if (destructionDateEnd && event.date > destructionDateEnd) return false;
-      return true;
-    });
-  }, [allDestructionDates, destructionDateStart, destructionDateEnd]);
-
-  // Calculate adjusted timeline range based on filtered dates
-  const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
-    if (destructionDates.length === 0) {
-      return { adjustedStartDate: startDate, adjustedEndDate: endDate };
-    }
-
-    // Find min and max from filtered destruction dates
-    const minDate = new Date(Math.min(...destructionDates.map((event) => event.date.getTime())));
-    const maxDate = new Date(Math.max(...destructionDates.map((event) => event.date.getTime())));
-
-    return {
-      adjustedStartDate: destructionDateStart || destructionDateEnd ? minDate : startDate,
-      adjustedEndDate: destructionDateStart || destructionDateEnd ? maxDate : endDate,
-    };
-  }, [destructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
+  // Destructure combined timeline data
+  const { defaultStartDate, defaultEndDate, destructionDates, adjustedStartDate, adjustedEndDate } = timelineData;
 
   // Observe container width changes
   useEffect(() => {
