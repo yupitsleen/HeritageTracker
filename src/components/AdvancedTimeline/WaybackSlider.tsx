@@ -215,12 +215,18 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
           {waybackReleaseMarkers.minorMarkers.map((marker) => (
             <div
               key={`wayback-minor-${marker.releaseNum}`}
-              className="absolute z-5 pointer-events-auto top-2"
+              className="absolute z-5 pointer-events-auto top-2 group"
               style={{ left: `${marker.position}%` }}
-              title={`Wayback imagery: ${marker.label}`}
             >
               {/* Small gray vertical line touching the slider bar */}
               <div className={`absolute w-0.5 h-4 ${isDark ? "bg-gray-700" : "bg-gray-400"} -translate-x-1/2 opacity-30`} />
+
+              {/* Tooltip on hover */}
+              <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
+                isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+              } px-2 py-1 rounded text-xs border ${isDark ? "border-gray-600" : "border-gray-300"} shadow-md`}>
+                <div className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}>{marker.label}</div>
+              </div>
             </div>
           ))}
 
@@ -228,12 +234,18 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
           {waybackReleaseMarkers.majorMarkers.map((marker) => (
             <div
               key={`wayback-major-${marker.releaseNum}`}
-              className="absolute z-10 pointer-events-auto"
+              className="absolute z-10 pointer-events-auto group"
               style={{ left: `${marker.position}%` }}
-              title={`Wayback imagery: ${marker.label}`}
             >
               {/* Taller gray vertical line extending through the slider */}
               <div className={`absolute w-0.5 h-8 ${isDark ? "bg-gray-600" : "bg-gray-300"} -translate-x-1/2 opacity-50`} />
+
+              {/* Tooltip on hover */}
+              <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
+                isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+              } px-2 py-1 rounded text-xs border ${isDark ? "border-gray-600" : "border-gray-300"} shadow-md`}>
+                <div className="font-semibold">{marker.label}</div>
+              </div>
             </div>
           ))}
 
@@ -295,11 +307,28 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
         <NavigationControls />
       </div>
 
-      {/* Keyboard shortcuts hint */}
-      <div className={`text-xs text-center mt-3 ${isDark ? "text-gray-500" : "text-gray-600"}`}>
-        <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>←/→</kbd> Navigate
-        {' • '}
-        <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>Home/End</kbd> Jump
+      {/* Color key and keyboard shortcuts */}
+      <div className="flex items-center justify-between mt-3">
+        {/* Color key */}
+        <div className="flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-1.5">
+            <div className={`w-0.5 h-4 ${isDark ? "bg-gray-600" : "bg-gray-300"} opacity-50`} />
+            <span className={isDark ? "text-gray-400" : "text-gray-600"}>Satellite imagery dates</span>
+          </div>
+          {showEventMarkers && (
+            <div className="flex items-center gap-1.5">
+              <div className="w-0.5 h-4 bg-[#ed3039]" />
+              <span className={isDark ? "text-gray-400" : "text-gray-600"}>Site destruction dates</span>
+            </div>
+          )}
+        </div>
+
+        {/* Keyboard shortcuts */}
+        <div className={`text-xs ${isDark ? "text-gray-500" : "text-gray-600"}`}>
+          <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>←/→</kbd> Navigate
+          {' • '}
+          <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>Home/End</kbd> Jump
+        </div>
       </div>
     </div>
   );
