@@ -78,6 +78,14 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
   const lastFrameTimeRef = useRef<number>(0);
   const pauseTimeoutRef = useRef<number | null>(null);
 
+  // Utility to clear pause timeout (DRY principle - used in multiple places)
+  const clearPauseTimeout = useCallback(() => {
+    if (pauseTimeoutRef.current !== null) {
+      clearTimeout(pauseTimeoutRef.current);
+      pauseTimeoutRef.current = null;
+    }
+  }, []);
+
   const play = useCallback(() => {
     // Activate sync if user has enabled it
     if (syncMapEnabled && !syncActive) {
@@ -94,21 +102,17 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
       pauseTimeoutRef.current = window.setTimeout(() => {
         setCurrentTimestamp(startDate); // Reset to actual timeline start
         setIsPlaying(true);
-        pauseTimeoutRef.current = null;
+        clearPauseTimeout();
       }, 1000);
     } else {
       setIsPlaying(true);
     }
-  }, [syncMapEnabled, syncActive, currentTimestamp, startDate]);
+  }, [syncMapEnabled, syncActive, currentTimestamp, startDate, clearPauseTimeout]);
 
   const pause = useCallback(() => {
     setIsPlaying(false);
-    // Clear any pending pause timeout
-    if (pauseTimeoutRef.current !== null) {
-      clearTimeout(pauseTimeoutRef.current);
-      pauseTimeoutRef.current = null;
-    }
-  }, []);
+    clearPauseTimeout();
+  }, [clearPauseTimeout]);
 
   const reset = useCallback(() => {
     setIsPlaying(false);
@@ -175,12 +179,9 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
         cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
       }
-      if (pauseTimeoutRef.current !== null) {
-        clearTimeout(pauseTimeoutRef.current);
-        pauseTimeoutRef.current = null;
-      }
+      clearPauseTimeout();
     };
-  }, [isPlaying, speed, endDate]);
+  }, [isPlaying, speed, endDate, clearPauseTimeout]);
 
   // Reset current timestamp if start date changes
   useEffect(() => {
