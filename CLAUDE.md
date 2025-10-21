@@ -3,14 +3,14 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 292 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/mapSync (performance optimizations complete) | main (production)
+**Current:** 45 sites | 328 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/UI-improvements (Advanced Animation page complete) | main (production)
 
 ### Essential Commands
 
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 292 tests - MUST pass before commit
+npm test        # 328 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -31,55 +31,93 @@ git commit -m "docs: update docs"
 
 ## 📐 Architecture Overview
 
-### Desktop Layout
+### Main Page (Home) - Desktop Layout
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ Header (black bg, right-aligned buttons: Help | Stats | About) │
-│ 🔺 Red Triangle Background (Palestinian flag theme)             │
-├──────────┬─────────────────────────────────────────────────────┤
-│ Table    │ FilterBar (black border, search + color key)        │
-│ (left,   ├────────────────────────┬─────────────────────────────┤
-│ resiz-   │ HeritageMap           │ SiteDetailView              │
-│ able,    │ (center, street/sat   │ (right, satellite only,     │
-│ semi-    │ toggle, dots, glow)   │ historical imagery toggle)  │
-│ trans-   │ (semi-transparent)    │ (fully opaque)              │
-│ parent)  ├────────────────────────┴─────────────────────────────┤
-│          │ TimelineScrubber (D3.js, play/pause/scrub)          │
-│          │ (semi-transparent, black border)                     │
-└──────────┴──────────────────────────────────────────────────────┘
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Header (black bg, right-aligned: Advanced Timeline | Help | Stats | About) │
+│ 🔺 Red Triangle Background (Palestinian flag theme)                         │
+├──────────┬─────────────────────────────────────────────────────────────────┤
+│ Table    │ FilterBar (black border, search + color key)                    │
+│ (left,   ├────────────────────────┬─────────────────────────────────────────┤
+│ resiz-   │ HeritageMap           │ SiteDetailView                          │
+│ able,    │ (center, street/sat   │ (right, satellite only,                 │
+│ semi-    │ toggle, dots, glow)   │ historical imagery toggle)              │
+│ trans-   │ (semi-transparent)    │ (fully opaque)                          │
+│ parent)  ├────────────────────────┴─────────────────────────────────────────┤
+│          │ TimelineScrubber (D3.js, play/pause/scrub)                      │
+│          │ (semi-transparent, black border)                                 │
+└──────────┴─────────────────────────────────────────────────────────────────┘
 All components have shadow-xl for dramatic depth effect
+```
+
+### Advanced Animation Page - Desktop Layout
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Header (black bg, "← Back to Main View" | "Advanced Satellite Timeline")   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Info Panel: 150+ Releases | 2014-2025 | [✓] Show site markers             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│                      WaybackMap (Satellite Only)                            │
+│                      150+ ESRI Wayback imagery versions                     │
+│                      Site markers (click to highlight timeline)             │
+│                      (fully opaque, no glow)                                │
+│                                                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Timeline Slider (HTML range input, semi-transparent)                        │
+│ ├─ Year markers (2014-2025) with labels                                    │
+│ ├─ Gray lines (150+ Wayback releases: major/minor)                         │
+│ ├─ Red dots (destruction events, stacked vertically)                       │
+│ ├─ Green scrubber with always-visible tooltip (current date)               │
+│ └─ Controls: [Reset] [⏮ Previous] [▶ Play/Pause] [Next ⏭]                 │
+│    Color Key: Gray lines = Satellite dates | Red dots = Site destruction   │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Mobile Layout
 
-```
-FilterBar → Accordion Table (no map/timeline)
+```text
+Main Page: FilterBar → Accordion Table (no map/timeline)
+Advanced Animation Page: Not yet optimized for mobile
 ```
 
 ### Key Files
 
-```
+```text
 src/
+├── pages/
+│   ├── HomePage.tsx                  # Main heritage tracker view
+│   └── AdvancedAnimation.tsx         # Wayback satellite timeline
 ├── components/
+│   ├── AdvancedTimeline/
+│   │   ├── WaybackMap.tsx            # Wayback satellite map (150+ versions)
+│   │   ├── WaybackSlider.tsx         # Timeline slider with markers
+│   │   └── NavigationControls.tsx    # Play/Pause/Previous/Next/Reset
 │   ├── Map/
-│   │   ├── HeritageMap.tsx          # Main map (Leaflet + glow)
-│   │   ├── SiteDetailView.tsx       # Satellite detail view
-│   │   ├── TimeToggle.tsx           # Historical imagery (2014/2023/Current)
-│   │   └── MapGlowLayer.tsx         # Canvas ambient glow overlay
+│   │   ├── HeritageMap.tsx           # Main map (Leaflet + glow)
+│   │   ├── SiteDetailView.tsx        # Satellite detail view
+│   │   ├── TimeToggle.tsx            # Historical imagery (2014/2023/Current)
+│   │   ├── MapGlowLayer.tsx          # Canvas ambient glow overlay
+│   │   └── MapMarkers.tsx            # Site markers with click handlers
 │   ├── Timeline/TimelineScrubber.tsx # D3 horizontal timeline
 │   ├── SitesTable/
-│   │   ├── SitesTableDesktop.tsx    # Desktop table (compact/expanded)
-│   │   ├── SitesTableMobile.tsx     # Mobile accordion
-│   │   ├── SiteTableRow.tsx         # Reusable row component
-│   │   └── VirtualizedTableBody.tsx # Virtual scrolling (prepared, disabled)
+│   │   ├── SitesTableDesktop.tsx     # Desktop table (compact/expanded)
+│   │   ├── SitesTableMobile.tsx      # Mobile accordion
+│   │   ├── SiteTableRow.tsx          # Reusable row component
+│   │   └── VirtualizedTableBody.tsx  # Virtual scrolling (prepared, disabled)
 │   ├── FilterBar/FilterBar.tsx       # Deferred filter application
 │   ├── Button/Button.tsx             # Reusable button component
+│   ├── Layout/AppHeader.tsx          # Header with navigation
 │   └── LazySection.tsx               # Intersection Observer wrapper
-├── constants/map.ts                  # GAZA_CENTER, HISTORICAL_IMAGERY
 ├── contexts/
-│   ├── AnimationContext.tsx          # Global timeline state
+│   ├── AnimationContext.tsx          # Global timeline state (main page)
+│   ├── WaybackContext.tsx            # Wayback playback state
 │   └── ThemeContext.tsx              # Dark mode + system preference detection
+├── services/
+│   └── waybackService.ts             # ESRI Wayback API integration
+├── constants/map.ts                  # GAZA_CENTER, HISTORICAL_IMAGERY
 ├── hooks/
 │   ├── useMapGlow.ts                 # Glow calculations
 │   ├── useThemeClasses.ts            # Dark mode utility classes
@@ -499,7 +537,31 @@ useEffect(() => {
 
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feat/mapSync - Current Branch):**
+**Completed (feat/UI-improvements - Current Branch):**
+
+- [x] **Advanced Animation Page** ✅ (Oct 21)
+  - **Wayback satellite timeline**: 150+ ESRI Wayback imagery versions (2014-2025)
+  - **WaybackMap component**: Full-screen satellite map with historical imagery
+  - **WaybackSlider**: HTML range input timeline with year markers and release indicators
+  - **NavigationControls**: Play/Pause/Previous/Next/Reset buttons
+  - **Year-based playback**: Advances through year markers (12 jumps, 2-second intervals)
+  - **Timeline markers**:
+    - Year markers (2014-2025) with labels for scale reference
+    - Gray lines for 150+ Wayback releases (major every 10th, minor for all)
+    - Red dots for site destruction events (stacked vertically)
+    - Always-visible green scrubber tooltip showing current date
+  - **Interactive features**:
+    - Click site markers on map → timeline dots turn black and scale 1.5x
+    - Hover over any marker for tooltip details
+    - Color key legend explaining marker types
+  - **Testing**: Added 11 new tests (328 total, up from 317)
+    - waybackService.test.ts (11 tests) - API integration
+    - navigation.test.tsx (9 tests) - Route rendering
+  - **Performance**: Year-based playback avoids 150+ map renders
+  - **Key files**: AdvancedAnimation.tsx, WaybackMap.tsx, WaybackSlider.tsx, NavigationControls.tsx, WaybackContext.tsx, waybackService.ts
+  - **PR**: #26 - Ready for review
+
+**Completed (feat/mapSync - Merged):**
 
 - [x] **Map Sync Feature** ✅ (Oct 20)
   - **Timeline-synced satellite imagery**: Satellite map auto-switches based on timeline playback
@@ -597,19 +659,21 @@ useEffect(() => {
 
 **Next:**
 
-- [ ] Merge feat/mapSync to main
+- [ ] Merge PR #26 (feat/UI-improvements) to main
+- [ ] Deploy Advanced Animation page to production
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
 
 **Future:**
 
-- [ ] Resume timeline animations (Phase 3+)
+- [ ] Advanced Animation mobile optimization
+- [ ] Resume timeline animations (Phase 3+) on main page
 - [ ] All 110+ UNESCO-verified sites
 - [ ] Database integration (Supabase)
 - [ ] Full Arabic translation
 
 ---
 
-**Last Updated:** October 20, 2025
-**Version:** 1.12.0-dev
-**Branch:** feat/mapSync (Map Sync feature complete, all tests passing) | main (production)
+**Last Updated:** October 21, 2025
+**Version:** 1.13.0-dev
+**Branch:** feat/UI-improvements (Advanced Animation page complete, PR #26 open) | main (production)
