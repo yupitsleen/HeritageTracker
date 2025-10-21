@@ -18,6 +18,10 @@ interface AnimationContextValue {
   // Timeline date range (calculated from site data)
   startDate: Date;
   endDate: Date;
+  // Map sync toggle - user's preference for syncing satellite imagery with timeline
+  syncMapEnabled: boolean;
+  // Map sync active state - whether sync is currently active (can be temporarily disabled by manual override)
+  syncActive: boolean;
 
   // Actions
   play: () => void;
@@ -25,6 +29,8 @@ interface AnimationContextValue {
   reset: () => void;
   setTimestamp: (timestamp: Date) => void;
   setSpeed: (speed: AnimationSpeed) => void;
+  setSyncMapEnabled: (enabled: boolean) => void;
+  setSyncActive: (active: boolean) => void;
 }
 
 const AnimationContext = createContext<AnimationContextValue | undefined>(undefined);
@@ -64,23 +70,56 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
   const [currentTimestamp, setCurrentTimestamp] = useState<Date>(startDate);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState<AnimationSpeed>(1);
+  const [syncMapEnabled, setSyncMapEnabled] = useState(false); // Default: OFF
+  const [syncActive, setSyncActive] = useState(false); // Tracks if sync is currently active
 
   // Ref to store animation frame ID for cleanup
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
+  const pauseTimeoutRef = useRef<number | null>(null);
+
+  // Utility to clear pause timeout (DRY principle - used in multiple places)
+  const clearPauseTimeout = useCallback(() => {
+    if (pauseTimeoutRef.current !== null) {
+      clearTimeout(pauseTimeoutRef.current);
+      pauseTimeoutRef.current = null;
+    }
+  }, []);
 
   const play = useCallback(() => {
-    setIsPlaying(true);
-  }, []);
+    // Activate sync if user has enabled it
+    if (syncMapEnabled && !syncActive) {
+      setSyncActive(true);
+    }
+
+    // If sync is enabled and we're at the start, show 2014 baseline for 1 second
+    if (syncMapEnabled && currentTimestamp.getTime() === startDate.getTime()) {
+      // Temporarily set timestamp to 2014 baseline (just for map sync visual)
+      const baseline2014Date = new Date("2014-02-20");
+      setCurrentTimestamp(baseline2014Date);
+
+      // Wait 1 second, then reset to actual startDate and start playing
+      pauseTimeoutRef.current = window.setTimeout(() => {
+        setCurrentTimestamp(startDate); // Reset to actual timeline start
+        setIsPlaying(true);
+        clearPauseTimeout();
+      }, 1000);
+    } else {
+      setIsPlaying(true);
+    }
+  }, [syncMapEnabled, syncActive, currentTimestamp, startDate, clearPauseTimeout]);
 
   const pause = useCallback(() => {
     setIsPlaying(false);
-  }, []);
+    clearPauseTimeout();
+  }, [clearPauseTimeout]);
 
   const reset = useCallback(() => {
     setIsPlaying(false);
     setCurrentTimestamp(startDate);
-  }, [startDate]);
+    // Restore sync state to user's preference when resetting
+    setSyncActive(syncMapEnabled);
+  }, [startDate, syncMapEnabled]);
 
   const setTimestamp = useCallback((timestamp: Date) => {
     // Clamp timestamp to valid range
@@ -140,13 +179,24 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
         cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
       }
+      clearPauseTimeout();
     };
-  }, [isPlaying, speed, endDate]);
+  }, [isPlaying, speed, endDate, clearPauseTimeout]);
 
   // Reset current timestamp if start date changes
   useEffect(() => {
     setCurrentTimestamp(startDate);
   }, [startDate]);
+
+  // Sync syncActive with syncMapEnabled when user toggles
+  // BUT don't activate immediately - only activate when playing or resetting
+  useEffect(() => {
+    if (!syncMapEnabled) {
+      // If user disables sync, immediately deactivate
+      setSyncActive(false);
+    }
+    // If enabling sync, don't activate until play() is called
+  }, [syncMapEnabled]);
 
   const value: AnimationContextValue = {
     currentTimestamp,
@@ -154,11 +204,15 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     speed,
     startDate,
     endDate,
+    syncMapEnabled,
+    syncActive,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
+    setSyncMapEnabled,
+    setSyncActive,
   };
 
   return (

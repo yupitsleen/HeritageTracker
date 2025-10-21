@@ -17,7 +17,6 @@ import { Button } from "../Button";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
-  onSyncMapChange?: (isSynced: boolean) => void; // Optional callback for map sync toggle
   destructionDateStart: Date | null;
   destructionDateEnd: Date | null;
   onDestructionDateStartChange: (date: Date | null) => void;
@@ -37,7 +36,6 @@ interface TimelineScrubberProps {
  */
 export function TimelineScrubber({
   sites,
-  onSyncMapChange,
   destructionDateStart,
   destructionDateEnd,
   onDestructionDateStartChange,
@@ -49,11 +47,13 @@ export function TimelineScrubber({
     speed,
     startDate,
     endDate,
+    syncMapEnabled,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
+    setSyncMapEnabled,
   } = useAnimation();
 
   const t = useThemeClasses();
@@ -61,62 +61,56 @@ export function TimelineScrubber({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
-  const [syncMap, setSyncMap] = useState(false); // Map sync toggle state
 
   // Extract timeline data using custom hook
   const { events: allDestructionDates } = useTimelineData(sites);
 
-  // Calculate default date range from dataset (oldest and newest destruction dates)
-  const { defaultStartDate, defaultEndDate } = useMemo(() => {
-    if (allDestructionDates.length === 0) {
-      return { defaultStartDate: startDate, defaultEndDate: endDate };
-    }
-    const dates = allDestructionDates.map((event) => event.date);
-    return {
-      defaultStartDate: new Date(Math.min(...dates.map((d) => d.getTime()))),
-      defaultEndDate: new Date(Math.max(...dates.map((d) => d.getTime()))),
-    };
-  }, [allDestructionDates, startDate, endDate]);
+  // Combine related date calculations into single memoization for better performance
+  // Reduces dependency checking overhead and prevents cascading recalculations
+  const timelineData = useMemo(() => {
+    // Calculate default date range from dataset (oldest and newest destruction dates)
+    const defaults =
+      allDestructionDates.length === 0
+        ? { defaultStartDate: startDate, defaultEndDate: endDate }
+        : {
+            defaultStartDate: new Date(Math.min(...allDestructionDates.map((event) => event.date.getTime()))),
+            defaultEndDate: new Date(Math.max(...allDestructionDates.map((event) => event.date.getTime()))),
+          };
 
-  // Notify parent when sync state changes
-  useEffect(() => {
-    onSyncMapChange?.(syncMap);
+    // Filter destruction dates based on date filter
+    const filtered =
+      !destructionDateStart && !destructionDateEnd
+        ? allDestructionDates
+        : allDestructionDates.filter((event) => {
+            if (destructionDateStart && event.date < destructionDateStart) return false;
+            if (destructionDateEnd && event.date > destructionDateEnd) return false;
+            return true;
+          });
 
-    // When sync is enabled, pause and jump to 2014 baseline
-    if (syncMap) {
-      pause();
-      // Set to Feb 20, 2014 (BASELINE_2014 date) to show progression from 2014 → 2023 → Current
-      setTimestamp(new Date("2014-02-20"));
-    }
-  }, [syncMap, onSyncMapChange, pause, setTimestamp]);
-
-  // Filter destruction dates based on date filter
-  const destructionDates = useMemo(() => {
-    if (!destructionDateStart && !destructionDateEnd) {
-      return allDestructionDates;
-    }
-    return allDestructionDates.filter((event) => {
-      if (destructionDateStart && event.date < destructionDateStart) return false;
-      if (destructionDateEnd && event.date > destructionDateEnd) return false;
-      return true;
-    });
-  }, [allDestructionDates, destructionDateStart, destructionDateEnd]);
-
-  // Calculate adjusted timeline range based on filtered dates
-  const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
-    if (destructionDates.length === 0) {
-      return { adjustedStartDate: startDate, adjustedEndDate: endDate };
-    }
-
-    // Find min and max from filtered destruction dates
-    const minDate = new Date(Math.min(...destructionDates.map((event) => event.date.getTime())));
-    const maxDate = new Date(Math.max(...destructionDates.map((event) => event.date.getTime())));
+    // Calculate adjusted timeline range based on filtered dates
+    const adjusted =
+      filtered.length === 0
+        ? { adjustedStartDate: startDate, adjustedEndDate: endDate }
+        : {
+            adjustedStartDate:
+              destructionDateStart || destructionDateEnd
+                ? new Date(Math.min(...filtered.map((event) => event.date.getTime())))
+                : startDate,
+            adjustedEndDate:
+              destructionDateStart || destructionDateEnd
+                ? new Date(Math.max(...filtered.map((event) => event.date.getTime())))
+                : endDate,
+          };
 
     return {
-      adjustedStartDate: destructionDateStart || destructionDateEnd ? minDate : startDate,
-      adjustedEndDate: destructionDateStart || destructionDateEnd ? maxDate : endDate,
+      ...defaults,
+      destructionDates: filtered,
+      ...adjusted,
     };
-  }, [destructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
+  }, [allDestructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
+
+  // Destructure combined timeline data
+  const { defaultStartDate, defaultEndDate, destructionDates, adjustedStartDate, adjustedEndDate } = timelineData;
 
   // Observe container width changes
   useEffect(() => {
@@ -274,13 +268,13 @@ export function TimelineScrubber({
 
           {/* Sync Map toggle button */}
           <Button
-            onClick={() => setSyncMap(!syncMap)}
-            variant={syncMap ? "primary" : "secondary"}
+            onClick={() => setSyncMapEnabled(!syncMapEnabled)}
+            variant={syncMapEnabled ? "primary" : "secondary"}
             size="sm"
-            aria-label={syncMap ? "Disable map sync with timeline" : "Enable map sync with timeline"}
-            title="Sync satellite imagery with timeline date"
+            aria-label={syncMapEnabled ? "Disable map sync with timeline" : "Enable map sync with timeline"}
+            title="When enabled, satellite imagery switches to match timeline date (2014 → Aug 2023 → Current)"
           >
-            {syncMap ? "✓" : ""} Sync Map
+            {syncMapEnabled ? "✓" : ""} Sync Map
           </Button>
 
           {/* Speed control */}

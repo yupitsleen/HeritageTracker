@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act, waitFor } from "@testing-library/react";
 import { AnimationProvider, useAnimation } from "../contexts/AnimationContext";
 
 describe("AnimationContext", () => {
@@ -160,5 +160,151 @@ describe("AnimationContext", () => {
     expect(result.current.endDate.getTime()).toBeGreaterThan(
       result.current.startDate.getTime()
     );
+  });
+
+  // Sync Map functionality
+  describe("Map Sync", () => {
+    it("initializes with sync disabled", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      expect(result.current.syncMapEnabled).toBe(false);
+      expect(result.current.syncActive).toBe(false);
+    });
+
+    it("enables sync when setSyncMapEnabled is called and play is triggered", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      act(() => {
+        result.current.setSyncMapEnabled(true);
+      });
+
+      expect(result.current.syncMapEnabled).toBe(true);
+      expect(result.current.syncActive).toBe(false); // Not active until play
+
+      // Trigger play to activate sync
+      act(() => {
+        result.current.play();
+      });
+
+      expect(result.current.syncActive).toBe(true);
+    });
+
+    it("disables sync temporarily when setSyncActive is called", async () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Enable sync
+      act(() => {
+        result.current.setSyncMapEnabled(true);
+      });
+
+      // Start playing (this will activate sync)
+      act(() => {
+        result.current.play();
+      });
+
+      // Wait for sync to activate
+      await waitFor(() => {
+        expect(result.current.syncActive).toBe(true);
+      });
+
+      // Temporarily disable
+      act(() => {
+        result.current.setSyncActive(false);
+      });
+      expect(result.current.syncMapEnabled).toBe(true); // User preference unchanged
+      expect(result.current.syncActive).toBe(false); // Temporarily disabled
+    });
+
+    it("restores syncActive to syncMapEnabled on reset", async () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Enable sync
+      act(() => {
+        result.current.setSyncMapEnabled(true);
+      });
+
+      // Play to activate
+      act(() => {
+        result.current.play();
+      });
+
+      // Wait for sync to activate
+      await waitFor(() => {
+        expect(result.current.syncActive).toBe(true);
+      });
+
+      // Temporarily disable via manual override
+      act(() => {
+        result.current.setSyncActive(false);
+      });
+      expect(result.current.syncActive).toBe(false);
+
+      // Reset should restore sync
+      act(() => {
+        result.current.reset();
+      });
+      expect(result.current.syncActive).toBe(true);
+      expect(result.current.syncMapEnabled).toBe(true);
+    });
+
+    it("does not restore syncActive if syncMapEnabled is false", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Sync disabled
+      expect(result.current.syncMapEnabled).toBe(false);
+      expect(result.current.syncActive).toBe(false);
+
+      // Reset should keep sync disabled
+      act(() => {
+        result.current.reset();
+      });
+      expect(result.current.syncActive).toBe(false);
+    });
+
+    it("syncs syncActive with syncMapEnabled when toggled", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Enable sync (not active until play)
+      act(() => {
+        result.current.setSyncMapEnabled(true);
+      });
+      expect(result.current.syncActive).toBe(false); // Not active until play
+
+      // Start playing to activate
+      act(() => {
+        result.current.play();
+      });
+      expect(result.current.syncActive).toBe(true);
+
+      // Disable sync (immediately deactivates)
+      act(() => {
+        result.current.setSyncMapEnabled(false);
+      });
+      expect(result.current.syncActive).toBe(false);
+
+      // Re-enable sync (not active until play again)
+      act(() => {
+        result.current.setSyncMapEnabled(true);
+      });
+      expect(result.current.syncActive).toBe(false);
+
+      // Play again to reactivate
+      act(() => {
+        result.current.play();
+      });
+      expect(result.current.syncActive).toBe(true);
+    });
   });
 });

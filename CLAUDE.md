@@ -89,7 +89,8 @@ src/
 │   └── useSiteSelection.ts           # Site selection state
 ├── utils/
 │   ├── heritageCalculations.ts       # Site value/glow formulas
-│   └── siteFilters.ts                # Filter logic + BCE parsing
+│   ├── siteFilters.ts                # Filter logic + BCE parsing
+│   └── imageryPeriods.ts             # Dynamic imagery period calculation
 ├── types/
 │   └── filters.ts                    # Filter type definitions and utilities
 └── data/mockSites.ts                 # 45 sites (static JSON)
@@ -171,6 +172,10 @@ CURRENT: {
 - TileLayer with `key={selectedPeriod}` forces re-render
 - Zoom clamped: `Math.min(SITE_DETAIL_ZOOM, periodMaxZoom)` = **17 for all periods**
 - Default: PRE_CONFLICT_2023
+- **Map Sync**: Imagery auto-switches based on timeline position when enabled
+  - `getImageryPeriodForDate()` utility dynamically matches dates to periods
+  - Dates <= 2023-08-31 → show period they fall in
+  - Dates > 2023-08-31 → CURRENT (extensible for future periods)
 
 ### Map Configuration
 
@@ -216,7 +221,7 @@ interface GazaSite {
 **BEFORE EVERY COMMIT:**
 
 - [ ] `npm run lint` - clean
-- [ ] `npm test` - all 292 tests pass
+- [ ] `npm test` - all 307 tests pass
 - [ ] Visual check in browser (dev server running)
 - [ ] No console errors
 - [ ] Mobile view renders (no AnimationProvider errors)
@@ -233,7 +238,7 @@ interface GazaSite {
 ## 🧪 Testing
 
 **Framework:** Vitest + React Testing Library
-**Coverage:** 292 tests across 25 files
+**Coverage:** 307 tests across 26 files
 **Test Files:**
 
 - `Button.test.tsx` (24 tests) - Reusable button component
@@ -244,13 +249,14 @@ interface GazaSite {
 - `SiteDetailView.test.tsx` (13 tests) - Historical imagery tests
 - `TimeToggle.test.tsx` (7 tests) - ARIA labels, period switching
 - `TimelineScrubber.test.tsx` (12 tests)
-- `AnimationContext.test.tsx` (10 tests)
+- `AnimationContext.test.tsx` (16 tests) - **Updated**: Added 6 Map Sync tests
 - `heritageCalculations.test.ts` (42 tests)
 - `useMapGlow.test.ts` (24 tests)
 - `MapGlowLayer.test.tsx` (7 tests)
 - `performance.test.tsx` (18 tests) - Performance regression tests (25/50/100/1000 sites)
 - `validateSites.test.ts` (20 tests) - Data integrity
 - `filters.test.ts` (22 tests) - Filter state utilities
+- `imageryPeriods.test.ts` (9 tests) - **New**: Dynamic period calculation tests
 - Plus 10 more test files
 
 **Test Setup:**
@@ -320,15 +326,24 @@ interface GazaSite {
   - 2014 | Aug 2023 | Current
   - Green highlight for selected (#009639)
   - Default: Aug 2023 (PRE_CONFLICT_2023)
+  - Manual click disables sync temporarily (until reset)
+- **Map Sync Feature:** Syncs satellite imagery with timeline playback
+  - Toggle button in TimelineScrubber (default: OFF)
+  - When enabled: imagery switches based on timeline date
+  - Dynamic period matching using `getImageryPeriodForDate()` utility
+  - 1-second pause at start (shows 2014 baseline before playing)
+  - User override: TimeToggle click disables sync for current session
+  - Reset re-enables sync if toggle still ON
 
 ### Timeline Scrubber (Paused)
 
 - **Status:** ✅ Implemented, ⏸️ Hidden in production
 - D3.js horizontal timeline
-- Play/Pause/Reset controls
+- Play/Pause/Reset/Sync Map controls
 - Speed: 0.5x, 1x, 2x, 4x
 - Keyboard: Space (play/pause), Arrows (step), Home/End (jump)
 - Filters map by currentTimestamp
+- **Sync Map toggle:** Syncs SiteDetailView imagery with timeline position
 
 ---
 
@@ -486,6 +501,20 @@ useEffect(() => {
 
 **Completed (feat/mapSync - Current Branch):**
 
+- [x] **Map Sync Feature** ✅ (Oct 20)
+  - **Timeline-synced satellite imagery**: Satellite map auto-switches based on timeline playback
+  - **Sync Map toggle**: Button in TimelineScrubber (default: OFF)
+  - **Dynamic period matching**: `getImageryPeriodForDate()` utility extensible for future periods
+  - **User override**: TimeToggle manual click disables sync temporarily
+  - **Reset behavior**: Timeline reset re-enables sync if toggle still ON
+  - **1-second pause**: Shows 2014 baseline for 1s before playing with sync enabled
+  - **Testing**: Added 15 new tests (307 total, up from 292)
+    - 6 Map Sync tests in AnimationContext.test.tsx
+    - 9 dynamic period calculation tests in imageryPeriods.test.ts
+  - **State management**: Two-tier sync state (syncMapEnabled + syncActive)
+  - All tests passing, build verified (669.24 KiB total precached)
+  - **Key files**: AnimationContext.tsx, imageryPeriods.ts, TimeToggle.tsx, SiteDetailView.tsx
+
 - [x] **Performance Regression Tests** ✅ (Oct 19)
   - **Added 9 new tests** (292 total, up from 283)
   - **MapMarkers memoization**: 100 sites render in 67-195ms (O(n) optimization verified)
@@ -581,6 +610,6 @@ useEffect(() => {
 
 ---
 
-**Last Updated:** October 19, 2025
-**Version:** 1.11.0-dev
-**Branch:** feat/mapSync (all optimizations complete, ready for merge) | main (production)
+**Last Updated:** October 20, 2025
+**Version:** 1.12.0-dev
+**Branch:** feat/mapSync (Map Sync feature complete, all tests passing) | main (production)
