@@ -7,9 +7,9 @@ import { useWayback } from "../../contexts/WaybackContext";
  *
  * Includes Play button that jumps through year markers (2014, 2015, etc.)
  * instead of rendering every map version. This provides:
- * - Better performance (12 jumps vs 150+ renders)
+ * - Better performance (year-based jumps vs rendering all releases)
  * - Clearer temporal progression
- * - Time for tiles to load between jumps (1 second interval)
+ * - Time for tiles to load between jumps (configurable interval)
  */
 export function NavigationControls() {
   const { currentIndex, releases, reset, next, previous, isPlaying, play, pause } = useWayback();

@@ -16,7 +16,7 @@ interface WaybackSliderProps {
 /**
  * WaybackSlider - Timeline slider for scrubbing through Wayback releases
  * Simpler than TimelineScrubber - uses HTML range input instead of D3
- * Better suited for discrete releases (150+) vs continuous date range
+ * Better suited for discrete releases (many versions) vs continuous date range
  *
  * Optional: Display destruction event markers on timeline
  */

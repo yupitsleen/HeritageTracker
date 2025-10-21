@@ -41,7 +41,7 @@ function AdvancedAnimationContent() {
             </h1>
           </div>
           <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-            150+ Historical Imagery Versions
+            {releases.length > 0 ? `${releases.length} Historical Imagery Versions` : 'Historical Imagery Archive'}
           </div>
         </div>
       </header>
@@ -56,7 +56,7 @@ function AdvancedAnimationContent() {
                 Loading Wayback Archive...
               </div>
               <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                Fetching 150+ historical imagery versions
+                Fetching historical imagery versions...
               </div>
             </div>
           </div>

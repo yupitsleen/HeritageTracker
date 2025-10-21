@@ -62,7 +62,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
               variant="secondary"
               size="sm"
               aria-label="Open Advanced Animation Timeline"
-              title="View 150+ historical satellite imagery versions"
+              title="View historical satellite imagery timeline with destruction events"
             >
               Advanced Timeline
             </Button>

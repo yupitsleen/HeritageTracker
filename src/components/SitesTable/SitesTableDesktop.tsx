@@ -131,9 +131,9 @@ export function SitesTableDesktop({
   };
 
   // Virtual scrolling: Ready but not yet implemented in JSX
-  // When site count exceeds 50, virtual scrolling can be enabled
   // Infrastructure is in place (SiteTableRow.tsx, VirtualizedTableBody.tsx)
-  // Current count: 45 sites - standard rendering is sufficient
+  // When site count exceeds VIRTUAL_SCROLL_THRESHOLD (50), virtual scrolling can be enabled
+  // Standard rendering is used when site count < threshold for optimal performance
   const useVirtualScrolling = sortedSites.length >= VIRTUAL_SCROLL_THRESHOLD;
 
   // Note for future: When implementing, replace tbody.map with VirtualizedTableBody component

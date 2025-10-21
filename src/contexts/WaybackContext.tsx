@@ -5,12 +5,12 @@ import { useYearMarkers } from "../hooks/useYearMarkers";
 
 /**
  * Wayback imagery state management
- * Manages manual navigation through 150+ satellite imagery versions
+ * Manages manual navigation through historical satellite imagery versions
  * Auto-play removed due to tile loading performance issues
  */
 
 interface WaybackContextValue {
-  // All available Wayback releases (150+)
+  // All available Wayback releases (dynamically loaded from ESRI API)
   releases: WaybackRelease[];
   // Currently selected release index
   currentIndex: number;

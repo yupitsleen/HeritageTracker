@@ -81,7 +81,8 @@ describe("Navigation", () => {
       renderWithProviders(<AdvancedAnimation />);
 
       expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
-      expect(screen.getByText("150+ Historical Imagery Versions")).toBeInTheDocument();
+      // Check for dynamic release count (e.g., "180 Historical Imagery Versions")
+      expect(screen.getByText(/\d+ Historical Imagery Versions|Historical Imagery Archive/i)).toBeInTheDocument();
 
       // Wait for data to load - should show release info
       await screen.findByText(/Releases/i);
