@@ -43,13 +43,53 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
   const startRelease = releases[0];
   const endRelease = releases[releases.length - 1];
 
-  // Calculate event marker positions
-  const eventMarkers = useMemo(() => {
+  // Calculate positions for gray Wayback release markers
+  const waybackReleaseMarkers = useMemo(() => {
+    if (releases.length === 0) return [];
+
+    const majorMarkers: Array<{ releaseNum: number; date: string; label: string; position: number; isMajor: boolean }> = [];
+    const minorMarkers: Array<{ releaseNum: number; date: string; label: string; position: number; isMajor: boolean }> = [];
+
+    for (let i = 0; i < releases.length; i++) {
+      const position = (i / (releases.length - 1)) * 100;
+      const marker = {
+        releaseNum: releases[i].releaseNum,
+        date: releases[i].releaseDate,
+        label: releases[i].label,
+        position,
+        isMajor: i % 10 === 0, // Every 10th release is a major marker
+      };
+
+      if (marker.isMajor) {
+        majorMarkers.push(marker);
+      } else {
+        minorMarkers.push(marker);
+      }
+    }
+
+    // Always make the last release a major marker if not already
+    const lastIndex = releases.length - 1;
+    if (lastIndex % 10 !== 0) {
+      const position = 100;
+      majorMarkers.push({
+        releaseNum: releases[lastIndex].releaseNum,
+        date: releases[lastIndex].releaseDate,
+        label: releases[lastIndex].label,
+        position,
+        isMajor: true,
+      });
+    }
+
+    return { majorMarkers, minorMarkers };
+  }, [releases]);
+
+  // Calculate all destruction event markers (static, always visible)
+  const allEventMarkers = useMemo(() => {
     if (!showEventMarkers || sites.length === 0 || releases.length === 0) {
       return [];
     }
 
-    // Get all destruction events
+    // Get all sites with destruction dates
     const destructionEvents = sites
       .filter((site) => site.dateDestroyed)
       .map((site) => ({
@@ -59,17 +99,52 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
         status: site.status,
       }));
 
-    // Map each event to a timeline position
-    return destructionEvents.map((event) => {
-      const releaseIndex = findClosestReleaseIndex(releases, event.date);
-      const position = (releaseIndex / (releases.length - 1)) * 100;
+    // Group events by their closest Wayback release to handle overlaps
+    const eventsByRelease = new Map<number, typeof destructionEvents>();
 
-      return {
-        ...event,
-        releaseIndex,
-        position,
-      };
+    destructionEvents.forEach((event) => {
+      const releaseIndex = findClosestReleaseIndex(releases, event.date);
+      if (!eventsByRelease.has(releaseIndex)) {
+        eventsByRelease.set(releaseIndex, []);
+      }
+      eventsByRelease.get(releaseIndex)!.push(event);
     });
+
+    // Convert to markers with even spacing for overlapping events
+    const markers: Array<{
+      siteId: string;
+      siteName: string;
+      date: string;
+      status: string;
+      position: number;
+    }> = [];
+
+    eventsByRelease.forEach((events, releaseIndex) => {
+      const basePosition = (releaseIndex / (releases.length - 1)) * 100;
+
+      if (events.length === 1) {
+        // Single event at this release - show at exact position
+        markers.push({
+          ...events[0],
+          position: basePosition,
+        });
+      } else {
+        // Multiple events - space them evenly within ±1% range
+        const spreadRange = 2; // 2% total range
+        const step = events.length > 1 ? spreadRange / (events.length - 1) : 0;
+
+        events.forEach((event, index) => {
+          const offset = -spreadRange / 2 + step * index;
+          const position = Math.max(0, Math.min(100, basePosition + offset));
+          markers.push({
+            ...event,
+            position,
+          });
+        });
+      }
+    });
+
+    return markers;
   }, [sites, releases, showEventMarkers]);
 
   // Keyboard navigation
@@ -134,17 +209,43 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
 
       {/* Slider with event markers */}
       <div className="relative">
-        {/* Event markers layer - positioned above slider */}
-        {showEventMarkers && eventMarkers.length > 0 && (
-          <div className="absolute -top-6 left-0 right-0 h-6 pointer-events-none">
-            {eventMarkers.map((marker, i) => (
+        {/* Markers layer - positioned above slider */}
+        <div className="absolute -top-6 left-0 right-0 h-8 pointer-events-none">
+          {/* Minor gray markers - all releases (smaller, subtle, positioned lower) */}
+          {waybackReleaseMarkers.minorMarkers.map((marker) => (
+            <div
+              key={`wayback-minor-${marker.releaseNum}`}
+              className="absolute z-5 pointer-events-auto top-2"
+              style={{ left: `${marker.position}%` }}
+              title={`Wayback imagery: ${marker.label}`}
+            >
+              {/* Small gray vertical line touching the slider bar */}
+              <div className={`absolute w-0.5 h-4 ${isDark ? "bg-gray-700" : "bg-gray-400"} -translate-x-1/2 opacity-30`} />
+            </div>
+          ))}
+
+          {/* Major gray markers - every 10th release (taller, more visible) */}
+          {waybackReleaseMarkers.majorMarkers.map((marker) => (
+            <div
+              key={`wayback-major-${marker.releaseNum}`}
+              className="absolute z-10 pointer-events-auto"
+              style={{ left: `${marker.position}%` }}
+              title={`Wayback imagery: ${marker.label}`}
+            >
+              {/* Taller gray vertical line extending through the slider */}
+              <div className={`absolute w-0.5 h-8 ${isDark ? "bg-gray-600" : "bg-gray-300"} -translate-x-1/2 opacity-50`} />
+            </div>
+          ))}
+
+          {/* Red markers for all destroyed sites */}
+          {showEventMarkers && allEventMarkers.map((marker, i) => (
               <div
                 key={`${marker.siteId}-${i}`}
-                className="absolute group pointer-events-auto"
+                className="absolute group pointer-events-auto z-20"
                 style={{ left: `${marker.position}%` }}
                 title={`${marker.siteName} - ${marker.date}`}
               >
-                {/* Vertical line */}
+                {/* Red vertical line */}
                 <div className="absolute w-0.5 h-6 bg-[#ed3039] -translate-x-1/2" />
 
                 {/* Tooltip on hover */}
@@ -156,8 +257,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true }: WaybackSl
                 </div>
               </div>
             ))}
-          </div>
-        )}
+        </div>
 
         {/* Slider input */}
         <input
