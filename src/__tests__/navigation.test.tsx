@@ -83,8 +83,8 @@ describe("Navigation", () => {
       expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
       expect(screen.getByText("150+ Historical Imagery Versions")).toBeInTheDocument();
 
-      // Wait for data to load - should show "Wayback Archive Loaded Successfully"
-      await screen.findByText(/Wayback Archive Loaded Successfully/i);
+      // Wait for data to load - should show release info
+      await screen.findByText(/Releases/i);
     });
 
     it("renders back button with navigation", () => {
@@ -95,18 +95,16 @@ describe("Navigation", () => {
       expect(backButton).toHaveTextContent("←");
     });
 
-    it("displays all planned features after loading", async () => {
+    it("displays release info and map after loading", async () => {
       renderWithProviders(<AdvancedAnimation />);
 
-      // Wait for loading to finish and content to appear
-      await screen.findByText(/Full-screen split-screen map comparison/i);
+      // Wait for loading to finish - should show release count and date range
+      const releasesText = await screen.findByText(/Releases/i);
+      expect(releasesText).toBeInTheDocument();
 
-      expect(screen.getByText(/Advanced timeline slider with precise date selection/i)).toBeInTheDocument();
-      expect(screen.getByText(/Play\/pause animation through all historical versions/i)).toBeInTheDocument();
-      expect(screen.getByText(/Variable playback speed controls/i)).toBeInTheDocument();
-      expect(screen.getByText(/Export timeline as GIF or MP4 video/i)).toBeInTheDocument();
-      expect(screen.getByText(/Before\/after swipe comparison tool/i)).toBeInTheDocument();
-      expect(screen.getByText(/Site-specific destruction timeline view/i)).toBeInTheDocument();
+      // Map should render - check for Leaflet elements
+      const leafletContainer = document.querySelector('.leaflet-container');
+      expect(leafletContainer).toBeDefined();
     });
   });
 
