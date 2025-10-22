@@ -84,8 +84,8 @@ describe("Navigation", () => {
       // Check for dynamic release count (e.g., "180 Historical Imagery Versions")
       expect(screen.getByText(/\d+ Historical Imagery Versions|Historical Imagery Archive/i)).toBeInTheDocument();
 
-      // Wait for data to load - should show release info
-      await screen.findByText(/Releases/i);
+      // Wait for data to load - should show color key
+      await screen.findByText(/Satellite imagery dates/i);
     });
 
     it("renders back button with navigation", () => {
@@ -96,12 +96,12 @@ describe("Navigation", () => {
       expect(backButton).toHaveTextContent("←");
     });
 
-    it("displays release info and map after loading", async () => {
+    it("displays timeline controls and map after loading", async () => {
       renderWithProviders(<AdvancedAnimation />);
 
-      // Wait for loading to finish - should show release count and date range
-      const releasesText = await screen.findByText(/Releases/i);
-      expect(releasesText).toBeInTheDocument();
+      // Wait for loading to finish - should show site markers toggle
+      const toggleLabel = await screen.findByText(/Show site markers/i);
+      expect(toggleLabel).toBeInTheDocument();
 
       // Map should render - check for Leaflet elements
       const leafletContainer = document.querySelector('.leaflet-container');

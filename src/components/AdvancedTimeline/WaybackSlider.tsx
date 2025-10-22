@@ -11,6 +11,8 @@ interface WaybackSliderProps {
   sites?: GazaSite[];
   showEventMarkers?: boolean;
   highlightedSiteId?: string | null;
+  showSiteMarkers?: boolean;
+  onToggleSiteMarkers?: (show: boolean) => void;
 }
 
 /**
@@ -20,7 +22,13 @@ interface WaybackSliderProps {
  *
  * Optional: Display destruction event markers on timeline
  */
-export function WaybackSlider({ sites = [], showEventMarkers = true, highlightedSiteId = null }: WaybackSliderProps) {
+export function WaybackSlider({
+  sites = [],
+  showEventMarkers = true,
+  highlightedSiteId = null,
+  showSiteMarkers = true,
+  onToggleSiteMarkers
+}: WaybackSliderProps) {
   const { releases, currentIndex, setIndex } = useWayback();
   const { isDark } = useTheme();
 
@@ -325,7 +333,7 @@ export function WaybackSlider({ sites = [], showEventMarkers = true, highlighted
         <NavigationControls />
       </div>
 
-      {/* Color key and keyboard shortcuts */}
+      {/* Color key, site markers toggle, and keyboard shortcuts */}
       <div className="flex items-center justify-between mt-3">
         {/* Color key */}
         <div className="flex items-center gap-4 text-xs">
@@ -338,6 +346,21 @@ export function WaybackSlider({ sites = [], showEventMarkers = true, highlighted
               <div className="w-2 h-2 bg-[#ed3039] rounded-full" />
               <span className={isDark ? "text-gray-400" : "text-gray-600"}>Site destruction dates</span>
             </div>
+          )}
+          {/* Site markers toggle */}
+          {onToggleSiteMarkers && (
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showSiteMarkers}
+                onChange={(e) => onToggleSiteMarkers(e.target.checked)}
+                className="w-4 h-4 cursor-pointer"
+                aria-label="Toggle site markers on map"
+              />
+              <span className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                Show site markers
+              </span>
+            </label>
           )}
         </div>
 
