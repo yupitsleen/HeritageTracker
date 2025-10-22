@@ -203,37 +203,26 @@ export function AdvancedAnimation() {
               />
             </div>
 
-            {/* Timeline Scrubber - Site filtering with Sync Map toggle */}
-            <div className="flex-shrink-0">
-              {/* Sync Map toggle for Advanced Animation page */}
-              <div className="mb-1 flex items-center justify-end">
-                <Button
-                  onClick={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
-                  variant={syncMapOnDotClick ? "primary" : "secondary"}
-                  size="xs"
-                  aria-label={syncMapOnDotClick ? "Disable map sync on dot click" : "Enable map sync on dot click"}
-                  title="When enabled, clicking timeline dots syncs satellite map to nearest Wayback release"
-                >
-                  {syncMapOnDotClick ? "✓" : ""} Sync Map
-                </Button>
-              </div>
-
-              <div className="h-[100px]">
-                {/* Wrap in AnimationProvider outside Suspense to prevent remounting */}
-                <AnimationProvider sites={mockSites}>
-                  <Suspense fallback={<SkeletonMap />}>
-                    <TimelineScrubber
-                      sites={mockSites}
-                      destructionDateStart={destructionDateStart}
-                      destructionDateEnd={destructionDateEnd}
-                      onDestructionDateStartChange={setDestructionDateStart}
-                      onDestructionDateEndChange={setDestructionDateEnd}
-                      highlightedSiteId={highlightedSiteId}
-                      onSiteHighlight={handleSiteHighlight}
-                    />
-                  </Suspense>
-                </AnimationProvider>
-              </div>
+            {/* Timeline Scrubber - Site filtering with advanced mode sync */}
+            <div className="flex-shrink-0 h-[100px]">
+              {/* Wrap in AnimationProvider outside Suspense to prevent remounting */}
+              <AnimationProvider sites={mockSites}>
+                <Suspense fallback={<SkeletonMap />}>
+                  <TimelineScrubber
+                    sites={mockSites}
+                    destructionDateStart={destructionDateStart}
+                    destructionDateEnd={destructionDateEnd}
+                    onDestructionDateStartChange={setDestructionDateStart}
+                    onDestructionDateEndChange={setDestructionDateEnd}
+                    highlightedSiteId={highlightedSiteId}
+                    onSiteHighlight={handleSiteHighlight}
+                    advancedMode={{
+                      syncMapOnDotClick,
+                      onSyncMapToggle: () => setSyncMapOnDotClick(!syncMapOnDotClick),
+                    }}
+                  />
+                </Suspense>
+              </AnimationProvider>
             </div>
           </>
         )}

@@ -23,6 +23,11 @@ interface TimelineScrubberProps {
   onDestructionDateEndChange: (date: Date | null) => void;
   highlightedSiteId?: string | null;
   onSiteHighlight?: (siteId: string | null) => void;
+  // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
+  advancedMode?: {
+    syncMapOnDotClick: boolean;
+    onSyncMapToggle: () => void;
+  };
 }
 
 /**
@@ -31,7 +36,7 @@ interface TimelineScrubberProps {
  * - Draggable scrubber handle
  * - Event markers for destruction dates
  * - Play/pause/reset controls
- * - Sync Map toggle (syncs satellite imagery with timeline)
+ * - Sync Map toggle (syncs satellite imagery with timeline OR on dot click in advanced mode)
  * - Speed control dropdown
  * - Keyboard navigation (space, arrows, home/end)
  * - Responsive to container width changes
@@ -44,6 +49,7 @@ export function TimelineScrubber({
   onDestructionDateEndChange,
   highlightedSiteId,
   onSiteHighlight,
+  advancedMode,
 }: TimelineScrubberProps) {
   const {
     currentTimestamp,
@@ -276,13 +282,34 @@ export function TimelineScrubber({
 
           {/* Sync Map toggle button */}
           <Button
-            onClick={() => setSyncMapEnabled(!syncMapEnabled)}
-            variant={syncMapEnabled ? "primary" : "secondary"}
+            onClick={() => {
+              if (advancedMode) {
+                advancedMode.onSyncMapToggle();
+              } else {
+                setSyncMapEnabled(!syncMapEnabled);
+              }
+            }}
+            variant={
+              advancedMode
+                ? advancedMode.syncMapOnDotClick ? "primary" : "secondary"
+                : syncMapEnabled ? "primary" : "secondary"
+            }
             size="xs"
-            aria-label={syncMapEnabled ? "Disable map sync with timeline" : "Enable map sync with timeline"}
-            title="When enabled, satellite imagery switches to match timeline date (2014 → Aug 2023 → Current)"
+            aria-label={
+              advancedMode
+                ? advancedMode.syncMapOnDotClick ? "Disable sync on dot click" : "Enable sync on dot click"
+                : syncMapEnabled ? "Disable map sync with timeline" : "Enable map sync with timeline"
+            }
+            title={
+              advancedMode
+                ? "When enabled, clicking timeline dots syncs satellite imagery to show the site before destruction"
+                : "When enabled, satellite imagery switches to match timeline date (2014 → Aug 2023 → Current)"
+            }
           >
-            {syncMapEnabled ? "✓" : ""} Sync Map
+            {advancedMode
+              ? advancedMode.syncMapOnDotClick ? "✓" : ""
+              : syncMapEnabled ? "✓" : ""}{" "}
+            Sync Map
           </Button>
 
           {/* Speed control */}
