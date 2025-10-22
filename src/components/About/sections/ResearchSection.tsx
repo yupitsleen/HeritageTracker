@@ -7,36 +7,28 @@ export function ResearchSection() {
   const t = useThemeClasses();
 
   return (
-    <section className="hidden md:block mb-8">
-      <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Research & Data Collection</h2>
-      <p className={`${t.text.body} leading-relaxed mb-4`}>
-        This project is built on comprehensive research conducted in October 2025, synthesizing
-        data from multiple authoritative sources to create an evidence-based documentation
-        platform.
+    <section className="hidden md:block mb-6">
+      <h2 className={`text-lg font-bold ${t.text.heading} mb-3`}>Research & Data Collection</h2>
+      <p className={`text-xs ${t.text.body} leading-relaxed mb-2`}>
+        Comprehensive research (Oct 2025) synthesizing data from multiple authoritative sources.
       </p>
-      <div className={`rounded-lg p-4 mb-4 ${t.bg.tertiary} ${t.border.default} border`}>
-        <p className={`text-sm ${t.text.subheading} font-medium mb-2`}>
-          <strong>Research conducted by:</strong> Claude (Anthropic) in collaboration with
-          project team
+      <div className={`rounded-lg p-3 mb-3 ${t.bg.tertiary} ${t.border.default} border`}>
+        <p className={`text-xs ${t.text.subheading} font-medium mb-1`}>
+          <strong>Research:</strong> Claude (Anthropic) with project team
         </p>
-        <p className={`text-sm ${t.text.body}`}>
-          All site descriptions are original syntheses combining factual data from multiple
-          verified sources. Narrative descriptions are original summaries of publicly available
-          information, not direct quotations.
+        <p className={`text-xs ${t.text.body}`}>
+          Site descriptions are original syntheses of verified source data.
         </p>
       </div>
-      <div className={`space-y-3 text-sm ${t.text.body} leading-relaxed`}>
+      <div className={`space-y-1.5 text-xs ${t.text.body} leading-relaxed`}>
         <p>
-          <strong>MVP Focus:</strong> 110 sites officially verified by UNESCO (as of May 2025),
-          with 64.7% of Gaza's 320 archaeological sites damaged or destroyed.
+          <strong>Focus:</strong> 110 UNESCO-verified sites (May 2025). 64.7% of Gaza's 320 archaeological sites damaged or destroyed.
         </p>
         <p>
-          <strong>Legal Framework:</strong> Documentation aligns with the 1954 Hague Convention,
-          Rome Statute (ICC), and UN Security Council Resolution 2347 (2017).
+          <strong>Legal alignment:</strong> 1954 Hague Convention, Rome Statute (ICC), UN Resolution 2347.
         </p>
         <p>
-          <strong>Full Research Study:</strong> For complete methodology, historical context,
-          legal frameworks, and future expansion plans, see the{" "}
+          <strong>Full study:</strong> See{" "}
           <a
             href="https://github.com/yupitsleen/HeritageTracker/blob/main/docs/research/research_document.md"
             target="_blank"

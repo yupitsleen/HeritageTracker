@@ -14,40 +14,28 @@ interface DonationOrg {
 
 const DONATION_ORGANIZATIONS: DonationOrg[] = [
   {
-    name: "UNRWA (United Nations Relief and Works Agency)",
-    description: "Provides education, healthcare, and emergency aid to Palestinian refugees across the Middle East.",
+    name: "UNRWA",
+    description: "UN agency providing education, healthcare, and emergency aid to Palestinian refugees.",
     url: "https://donate.unrwa.org/",
-    focus: "Humanitarian aid, education, healthcare",
+    focus: "Humanitarian aid, healthcare",
   },
   {
-    name: "Medical Aid for Palestinians (MAP)",
-    description: "Delivers medical services and supplies to Palestinians in the occupied territories and refugee camps.",
+    name: "Medical Aid for Palestinians",
+    description: "Medical services and supplies for Palestinians in occupied territories.",
     url: "https://www.map.org.uk/donate",
-    focus: "Medical care, health services",
+    focus: "Medical care",
   },
   {
-    name: "Palestine Children's Relief Fund (PCRF)",
-    description: "Provides free medical care to injured and sick children, and humanitarian relief in Palestine and Lebanon.",
+    name: "Palestine Children's Relief Fund",
+    description: "Free medical care for injured and sick children in Palestine.",
     url: "https://www.pcrf.net/donate.html",
-    focus: "Children's healthcare, medical aid",
+    focus: "Children's healthcare",
   },
   {
-    name: "Islamic Relief Worldwide - Gaza Emergency",
-    description: "Provides emergency food, medical aid, and shelter assistance to families in Gaza.",
-    url: "https://islamic-relief.org/appeals/palestine-emergency-appeal/",
-    focus: "Emergency relief, food aid, shelter",
-  },
-  {
-    name: "Doctors Without Borders / MSF",
-    description: "Provides emergency medical care and surgical services in Gaza and the West Bank.",
+    name: "Doctors Without Borders",
+    description: "Emergency medical care and surgical services in Gaza and West Bank.",
     url: "https://www.doctorswithoutborders.org/",
-    focus: "Emergency medical care, surgery",
-  },
-  {
-    name: "Middle East Children's Alliance (MECA)",
-    description: "Supports Palestinian children's welfare, health, and education programs.",
-    url: "https://www.mecaforpeace.org/donate",
-    focus: "Children's welfare, education",
+    focus: "Emergency medical care",
   },
 ];
 
@@ -62,9 +50,7 @@ export function DonateModal() {
         </h2>
 
         <p className={`text-xs mb-4 ${t.text.body}`}>
-          Support humanitarian relief efforts in Palestine through these reputable organizations.
-          All organizations listed below are established, transparent charities working to provide
-          essential aid to Palestinians affected by the ongoing crisis.
+          Reputable organizations providing essential humanitarian aid to Palestinians.
         </p>
 
         <div className="space-y-3">
@@ -101,10 +87,7 @@ export function DonateModal() {
 
         <div className={`mt-4 p-3 rounded-lg ${t.bg.tertiary} border ${t.border.default}`}>
           <p className={`text-[10px] ${t.text.muted}`}>
-            <strong>Note:</strong> Heritage Tracker is not affiliated with any of these organizations.
-            We have compiled this list to help users find reputable charities supporting Palestinian
-            humanitarian relief. Please conduct your own research before donating. All donations go
-            directly to the organizations listed.
+            <strong>Note:</strong> Not affiliated with these organizations. Please research before donating.
           </p>
         </div>
       </div>
