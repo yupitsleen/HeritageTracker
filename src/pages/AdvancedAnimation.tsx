@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
+import { Modal } from "../components/Modal/Modal";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
@@ -10,12 +11,15 @@ import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
 
-// Lazy load the map and timeline components
+// Lazy load the map, timeline, and modal components
 const SiteDetailView = lazy(() =>
   import("../components/Map/SiteDetailView").then((m) => ({ default: m.SiteDetailView }))
 );
 const TimelineScrubber = lazy(() =>
   import("../components/Timeline/TimelineScrubber").then((m) => ({ default: m.TimelineScrubber }))
+);
+const SiteDetailPanel = lazy(() =>
+  import("../components/SiteDetail/SiteDetailPanel").then((m) => ({ default: m.SiteDetailPanel }))
 );
 
 /**
@@ -39,6 +43,7 @@ export function AdvancedAnimation() {
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
   const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
+  const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
   const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(false);
@@ -190,6 +195,7 @@ export function AdvancedAnimation() {
                   highlightedSiteId={highlightedSiteId}
                   customTileUrl={currentRelease?.tileUrl}
                   customMaxZoom={currentRelease?.maxZoom}
+                  onSiteClick={setSelectedSite}
                 />
               </Suspense>
             </div>
@@ -225,6 +231,25 @@ export function AdvancedAnimation() {
           </AnimationProvider>
         )}
       </main>
+
+      {/* Site Detail Modal */}
+      <Modal
+        isOpen={selectedSite !== null}
+        onClose={() => setSelectedSite(null)}
+        zIndex={10000}
+      >
+        {selectedSite && (
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center p-8">
+                <div className={`text-lg ${t.text.muted}`}>Loading site details...</div>
+              </div>
+            }
+          >
+            <SiteDetailPanel site={selectedSite} />
+          </Suspense>
+        )}
+      </Modal>
     </div>
   );
 }

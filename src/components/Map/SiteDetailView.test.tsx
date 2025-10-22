@@ -26,8 +26,13 @@ vi.mock("react-leaflet", () => ({
     </div>
   ),
   TileLayer: () => <div data-testid="tile-layer" />,
-  Marker: ({ position }: { position: [number, number] }) => (
-    <div data-testid="marker" data-position={JSON.stringify(position)} />
+  Marker: ({ children, position }: { children?: React.ReactNode; position: [number, number] }) => (
+    <div data-testid="marker" data-position={JSON.stringify(position)}>
+      {children}
+    </div>
+  ),
+  Popup: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="popup">{children}</div>
   ),
   useMap: () => ({
     setView: vi.fn(),

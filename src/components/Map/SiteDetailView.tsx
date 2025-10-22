@@ -1,9 +1,10 @@
 import { useMemo, useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
+import { SitePopup } from "./SitePopup";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import L from "leaflet";
@@ -16,6 +17,8 @@ interface SiteDetailViewProps {
   customTileUrl?: string;
   // Optional custom max zoom for custom tiles
   customMaxZoom?: number;
+  // Optional callback for when user clicks "See More" in popup
+  onSiteClick?: (site: GazaSite) => void;
 }
 
 /**
@@ -25,7 +28,7 @@ interface SiteDetailViewProps {
  * Supports historical imagery comparison (2014, Aug 2023, Current)
  * Can sync imagery periods with timeline playback when enabled
  */
-export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, customMaxZoom }: SiteDetailViewProps) {
+export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, customMaxZoom, onSiteClick }: SiteDetailViewProps) {
   // Get animation context for timeline sync and zoom toggle
   const { currentTimestamp, syncActive, zoomToSiteEnabled } = useAnimation();
 
@@ -119,9 +122,13 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
           minZoom={1}
         />
 
-        {/* Show marker for highlighted site */}
+        {/* Show marker for highlighted site with popup */}
         {highlightedSite && (
-          <Marker position={highlightedSite.coordinates} icon={markerIcon} />
+          <Marker position={highlightedSite.coordinates} icon={markerIcon}>
+            <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
+              <SitePopup site={highlightedSite} onViewMore={() => onSiteClick?.(highlightedSite)} />
+            </Popup>
+          </Marker>
         )}
       </MapContainer>
     </div>
