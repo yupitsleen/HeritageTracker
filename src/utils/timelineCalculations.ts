@@ -3,10 +3,7 @@
  * Extracted from TimelineScrubber for better testability and maintainability
  */
 
-interface TimelineEvent {
-  date: Date;
-  siteId: string;
-}
+import type { TimelineEvent } from "./d3Timeline";
 
 /**
  * Calculate default date range from destruction events
