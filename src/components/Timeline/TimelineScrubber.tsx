@@ -21,6 +21,8 @@ interface TimelineScrubberProps {
   destructionDateEnd: Date | null;
   onDestructionDateStartChange: (date: Date | null) => void;
   onDestructionDateEndChange: (date: Date | null) => void;
+  highlightedSiteId?: string | null;
+  onSiteHighlight?: (siteId: string | null) => void;
 }
 
 /**
@@ -40,6 +42,8 @@ export function TimelineScrubber({
   destructionDateEnd,
   onDestructionDateStartChange,
   onDestructionDateEndChange,
+  highlightedSiteId,
+  onSiteHighlight,
 }: TimelineScrubberProps) {
   const {
     currentTimestamp,
@@ -147,13 +151,17 @@ export function TimelineScrubber({
       {
         onTimestampChange: setTimestamp,
         onPause: pause,
+        onSiteHighlight: onSiteHighlight ? (event) => {
+          // Highlight the site when timeline dot is clicked
+          onSiteHighlight(event.siteId);
+        } : undefined,
       }
     );
 
     return () => {
       rendererRef.current?.cleanup();
     };
-  }, [timeScale, setTimestamp, pause]);
+  }, [timeScale, setTimestamp, pause, onSiteHighlight]);
 
   // Update timeline rendering when data or timestamp changes
   useEffect(() => {
@@ -162,9 +170,9 @@ export function TimelineScrubber({
     // Update scale in case container width changed
     rendererRef.current.updateScale(timeScale);
 
-    // Render timeline with current state
-    rendererRef.current.render(destructionDates, currentTimestamp);
-  }, [timeScale, destructionDates, currentTimestamp]);
+    // Render timeline with current state and highlighted site
+    rendererRef.current.render(destructionDates, currentTimestamp, highlightedSiteId);
+  }, [timeScale, destructionDates, currentTimestamp, highlightedSiteId]);
 
   // Keyboard controls
   useEffect(() => {

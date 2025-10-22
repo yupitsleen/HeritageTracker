@@ -288,6 +288,8 @@ export function DesktopLayout({
                 destructionDateEnd={destructionDateEnd}
                 onDestructionDateStartChange={setDestructionDateStart}
                 onDestructionDateEndChange={setDestructionDateEnd}
+                highlightedSiteId={highlightedSiteId}
+                onSiteHighlight={onSiteHighlight}
               />
             </Suspense>
           </div>

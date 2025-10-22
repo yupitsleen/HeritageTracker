@@ -58,6 +58,8 @@ export class D3TimelineRenderer {
   private timeScale: ScaleTime<number, number>;
   private onTimestampChange: (date: Date) => void;
   private onPause: () => void;
+  private onSiteHighlight?: (event: TimelineEvent) => void;
+  private highlightedSiteId: string | null = null;
 
   constructor(
     svgElement: SVGSVGElement,
@@ -66,6 +68,7 @@ export class D3TimelineRenderer {
     callbacks: {
       onTimestampChange: (date: Date) => void;
       onPause: () => void;
+      onSiteHighlight?: (event: TimelineEvent) => void;
     }
   ) {
     this.svg = select(svgElement);
@@ -73,6 +76,7 @@ export class D3TimelineRenderer {
     this.timeScale = timeScale;
     this.onTimestampChange = callbacks.onTimestampChange;
     this.onPause = callbacks.onPause;
+    this.onSiteHighlight = callbacks.onSiteHighlight;
   }
 
   /**
@@ -85,7 +89,8 @@ export class D3TimelineRenderer {
   /**
    * Render the complete timeline (axis, events, scrubber)
    */
-  render(events: TimelineEvent[], currentTimestamp: Date) {
+  render(events: TimelineEvent[], currentTimestamp: Date, highlightedSiteId: string | null = null) {
+    this.highlightedSiteId = highlightedSiteId;
     this.svg.selectAll("*").remove();
     this.renderAxis();
     this.renderEventMarkers(events);
@@ -157,10 +162,10 @@ export class D3TimelineRenderer {
       .attr("class", "event-marker")
       .attr("cx", (d) => this.timeScale(d.date))
       .attr("cy", height / 2)
-      .attr("r", eventMarkerRadius)
+      .attr("r", (d) => d.siteId === this.highlightedSiteId ? eventMarkerRadius + 2 : eventMarkerRadius)
       .attr("fill", (d) => this.getMarkerColor(d.status))
-      .attr("stroke", colors.eventMarkerStroke)
-      .attr("stroke-width", 1.5)
+      .attr("stroke", (d) => d.siteId === this.highlightedSiteId ? "#009639" : colors.eventMarkerStroke) // Green for highlighted
+      .attr("stroke-width", (d) => d.siteId === this.highlightedSiteId ? 3 : 1.5)
       .style("cursor", "pointer")
       .style("transition", "all 0.2s");
 
@@ -207,6 +212,10 @@ export class D3TimelineRenderer {
       .on("click", (_event, d) => {
         this.onTimestampChange(d.date);
         this.onPause();
+        // Highlight site when timeline dot is clicked (doesn't open modal)
+        if (this.onSiteHighlight) {
+          this.onSiteHighlight(d);
+        }
       });
 
     markers
