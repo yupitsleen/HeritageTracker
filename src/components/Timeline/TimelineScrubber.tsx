@@ -162,11 +162,8 @@ export function TimelineScrubber({
   // Initialize D3 renderer and render timeline
   useEffect(() => {
     if (!svgRef.current || !svgMounted) {
-      console.log('Timeline SVG not ready:', { svgRef: !!svgRef.current, svgMounted });
       return;
     }
-
-    console.log('Initializing timeline renderer');
 
     // Initialize renderer if not exists
     if (!rendererRef.current) {
@@ -191,11 +188,9 @@ export function TimelineScrubber({
 
     // Render timeline with current state and highlighted site
     rendererRef.current.render(destructionDates, currentTimestamp, highlightedSiteId);
-    console.log('Timeline rendered with', destructionDates.length, 'events');
 
     return () => {
       // Cleanup on unmount only
-      console.log('Timeline cleanup');
       rendererRef.current?.cleanup();
       rendererRef.current = null;
     };
@@ -267,29 +262,34 @@ export function TimelineScrubber({
     >
       {/* Controls */}
       <div className="flex items-center mb-2 gap-2">
-        {/* Left: Play/Pause/Reset/Sync Map/Speed */}
+        {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
         <div className="flex items-center gap-1.5 flex-1">
-          {!isPlaying ? (
-            <Button
-              onClick={play}
-              variant="primary"
-              size="xs"
-              icon={<PlayIcon className="w-3 h-3" />}
-              aria-label="Play timeline animation"
-            >
-              Play
-            </Button>
-          ) : (
-            <Button
-              onClick={pause}
-              variant="danger"
-              size="xs"
-              icon={<PauseIcon className="w-3 h-3" />}
-              aria-label="Pause timeline animation"
-            >
-              Pause
-            </Button>
+          {!advancedMode && (
+            <>
+              {!isPlaying ? (
+                <Button
+                  onClick={play}
+                  variant="primary"
+                  size="xs"
+                  icon={<PlayIcon className="w-3 h-3" />}
+                  aria-label="Play timeline animation"
+                >
+                  Play
+                </Button>
+              ) : (
+                <Button
+                  onClick={pause}
+                  variant="danger"
+                  size="xs"
+                  icon={<PauseIcon className="w-3 h-3" />}
+                  aria-label="Pause timeline animation"
+                >
+                  Pause
+                </Button>
+              )}
+            </>
           )}
+
           <Button
             onClick={reset}
             disabled={isAtStart}
@@ -344,25 +344,27 @@ export function TimelineScrubber({
             {zoomToSiteEnabled ? "✓" : ""} Zoom to Site
           </Button>
 
-          {/* Speed control */}
-          <div className="flex items-center gap-1.5">
-            <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
-              Speed:
-            </label>
-            <select
-              id="speed-control"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-              className={`${t.timeline.speedSelect} ${t.input.base}`}
-              aria-label="Animation speed control"
-            >
-              {speedOptions.map((s) => (
-                <option key={s} value={s}>
-                  {s}x
-                </option>
-              ))}
-            </select>
-          </div>
+          {!advancedMode && (
+            /* Speed control - hidden in advanced mode */
+            <div className="flex items-center gap-1.5">
+              <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
+                Speed:
+              </label>
+              <select
+                id="speed-control"
+                value={speed}
+                onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
+                className={`${t.timeline.speedSelect} ${t.input.base}`}
+                aria-label="Animation speed control"
+              >
+                {speedOptions.map((s) => (
+                  <option key={s} value={s}>
+                    {s}x
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         {/* Center: Current date display */}
