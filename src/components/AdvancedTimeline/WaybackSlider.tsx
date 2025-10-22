@@ -173,9 +173,9 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
           {/* Background track */}
           <div className={`absolute inset-0 rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
 
-          {/* Green progress fill */}
+          {/* Green progress fill - pointer-events-none allows hover on tick marks beneath */}
           <div
-            className="absolute inset-y-0 left-0 bg-[#009639] rounded-l"
+            className="absolute inset-y-0 left-0 bg-[#009639] rounded-l pointer-events-none"
             style={{ width: `${currentPositionPercent}%` }}
           />
 
