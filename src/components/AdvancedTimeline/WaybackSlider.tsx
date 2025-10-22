@@ -179,13 +179,13 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
             style={{ width: `${currentPositionPercent}%` }}
           />
 
-          {/* Release tick marks */}
-          {releasePositions.map(({ index, position }) => {
+          {/* Release tick marks with tooltips */}
+          {releasePositions.map(({ index, position, date }) => {
             const isCurrentRelease = index === currentIndex;
             return (
               <div
                 key={index}
-                className="absolute top-0 bottom-0 -translate-x-1/2"
+                className="absolute top-0 bottom-0 -translate-x-1/2 group"
                 style={{ left: `${position}%` }}
               >
                 <div
@@ -197,6 +197,10 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
                       : "bg-gray-500"
                   }`}
                 />
+                {/* Tooltip */}
+                <div className={`absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none ${isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"} shadow-md z-10`}>
+                  {date}
+                </div>
               </div>
             );
           })}
