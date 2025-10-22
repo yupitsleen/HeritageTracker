@@ -204,9 +204,10 @@ export function AdvancedAnimation() {
             </div>
 
             {/* Timeline Scrubber - Site filtering with advanced mode sync */}
-            <div className="flex-shrink-0 h-[100px]">
+            <div className="flex-shrink-0 min-h-[100px]">
               <Suspense fallback={<SkeletonMap />}>
                 <TimelineScrubber
+                  key="advanced-timeline-scrubber"
                   sites={mockSites}
                   destructionDateStart={destructionDateStart}
                   destructionDateEnd={destructionDateEnd}

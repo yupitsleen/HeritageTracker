@@ -149,40 +149,57 @@ export function TimelineScrubber({
       .range([margin, containerWidth - margin]);
   }, [adjustedStartDate, adjustedEndDate, containerWidth]);
 
-  // Initialize D3 renderer
+  // Track if SVG is mounted
+  const [svgMounted, setSvgMounted] = useState(false);
+
+  // Detect when SVG ref becomes available
   useEffect(() => {
-    if (!svgRef.current) return;
+    if (svgRef.current && !svgMounted) {
+      setSvgMounted(true);
+    }
+  }, [svgMounted]);
 
-    rendererRef.current = new D3TimelineRenderer(
-      svgRef.current,
-      timeScale,
-      {}, // Use default config
-      {
-        onTimestampChange: setTimestamp,
-        onPause: pause,
-        onSiteHighlight: onSiteHighlight ? (event) => {
-          // Highlight the site when timeline dot is clicked
-          onSiteHighlight(event.siteId);
-        } : undefined,
-        onScrubberPositionChange: setScrubberPosition,
-      }
-    );
-
-    return () => {
-      rendererRef.current?.cleanup();
-    };
-  }, [timeScale, setTimestamp, pause, onSiteHighlight]);
-
-  // Update timeline rendering when data or timestamp changes
+  // Initialize D3 renderer and render timeline
   useEffect(() => {
-    if (!rendererRef.current) return;
+    if (!svgRef.current || !svgMounted) {
+      console.log('Timeline SVG not ready:', { svgRef: !!svgRef.current, svgMounted });
+      return;
+    }
+
+    console.log('Initializing timeline renderer');
+
+    // Initialize renderer if not exists
+    if (!rendererRef.current) {
+      rendererRef.current = new D3TimelineRenderer(
+        svgRef.current,
+        timeScale,
+        {}, // Use default config
+        {
+          onTimestampChange: setTimestamp,
+          onPause: pause,
+          onSiteHighlight: onSiteHighlight ? (event) => {
+            // Highlight the site when timeline dot is clicked
+            onSiteHighlight(event.siteId);
+          } : undefined,
+          onScrubberPositionChange: setScrubberPosition,
+        }
+      );
+    }
 
     // Update scale in case container width changed
     rendererRef.current.updateScale(timeScale);
 
     // Render timeline with current state and highlighted site
     rendererRef.current.render(destructionDates, currentTimestamp, highlightedSiteId);
-  }, [timeScale, destructionDates, currentTimestamp, highlightedSiteId]);
+    console.log('Timeline rendered with', destructionDates.length, 'events');
+
+    return () => {
+      // Cleanup on unmount only
+      console.log('Timeline cleanup');
+      rendererRef.current?.cleanup();
+      rendererRef.current = null;
+    };
+  }, [svgMounted, timeScale, destructionDates, currentTimestamp, highlightedSiteId, setTimestamp, pause, onSiteHighlight]);
 
   // Keyboard controls
   useEffect(() => {
@@ -399,8 +416,20 @@ export function TimelineScrubber({
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
-      <div className="relative overflow-visible">
-        <svg ref={svgRef} width="100%" height="40" className="mt-1" aria-hidden="true" />
+      <div className="relative overflow-visible" style={{ minHeight: '40px' }}>
+        <svg
+          ref={(node) => {
+            if (node && node !== svgRef.current) {
+              svgRef.current = node;
+              setSvgMounted(true);
+            }
+          }}
+          key={`timeline-${containerWidth}-${startDate.getTime()}`}
+          width="100%"
+          height="40"
+          className="mt-1"
+          aria-hidden="true"
+        />
         {/* Floating scrubber date tooltip - positioned below timeline */}
         {scrubberPosition !== null && (
           <div
