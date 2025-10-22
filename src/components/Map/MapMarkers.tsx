@@ -66,7 +66,6 @@ export const MapMarkers = memo(function MapMarkers({
               icon={createMarkerIcon(site.status, isHighlighted)}
               eventHandlers={{
                 click: () => {
-                  onSiteClick?.(site);
                   onSiteHighlight?.(site.id);
                 },
               }}
@@ -91,7 +90,6 @@ export const MapMarkers = memo(function MapMarkers({
             }}
             eventHandlers={{
               click: () => {
-                onSiteClick?.(site);
                 onSiteHighlight?.(site.id);
               },
             }}
