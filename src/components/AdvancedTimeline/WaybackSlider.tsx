@@ -205,11 +205,18 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
             );
           })}
 
-          {/* Current position scrubber indicator */}
+          {/* Current position scrubber indicator with floating date tooltip */}
           <div
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
             style={{ left: `${currentPositionPercent}%` }}
           >
+            {/* Floating date tooltip - positioned above scrubber */}
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 pointer-events-none">
+              <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
+                {currentRelease?.releaseDate || "Unknown"}
+              </div>
+            </div>
+            {/* Scrubber indicator */}
             <div className="w-3 h-3 bg-white border-2 border-[#009639] rounded-full shadow-md" />
           </div>
         </div>
