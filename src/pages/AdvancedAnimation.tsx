@@ -24,30 +24,31 @@ function AdvancedAnimationContent() {
       data-theme={isDark ? "dark" : "light"}
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
-      {/* Header with back button */}
+      {/* Header with back button - compact design */}
       <header className={`${isDark ? "bg-black" : "bg-white"} shadow-xl border-b-2 ${isDark ? "border-white" : "border-black"}`}>
-        <div className="max-w-full px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="max-w-full px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <Button
               onClick={() => navigate("/")}
               variant="ghost"
-              className="flex items-center gap-2"
+              size="sm"
+              className="flex items-center gap-1.5"
             >
-              <span className="text-lg">&larr;</span>
+              <span className="text-base">&larr;</span>
               Back to Main View
             </Button>
-            <h1 className={`text-2xl font-bold ${t.layout.modalHeading}`}>
+            <h1 className={`text-lg font-bold ${t.layout.modalHeading}`}>
               Advanced Satellite Timeline
             </h1>
           </div>
-          <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+          <div className={`text-xs ${isDark ? "text-gray-400" : "text-gray-600"}`}>
             {releases.length > 0 ? `${releases.length} Historical Imagery Versions` : 'Historical Imagery Archive'}
           </div>
         </div>
       </header>
 
-      {/* Main content area */}
-      <main className="h-[calc(100vh-80px)] p-6">
+      {/* Main content area - compact padding */}
+      <main className="h-[calc(100vh-58px)] p-3">
         {/* Loading State */}
         {isLoading && (
           <div className={`h-full rounded-lg border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl flex items-center justify-center`}>
@@ -85,7 +86,7 @@ function AdvancedAnimationContent() {
 
         {/* Success State - Map View */}
         {!isLoading && !error && releases.length > 0 && (
-          <div className="h-full flex flex-col gap-4">
+          <div className="h-full flex flex-col gap-2">
             {/* Map with optional site markers */}
             <div className={`flex-1 rounded-lg border-2 ${isDark ? "border-white" : "border-black"} shadow-xl overflow-hidden`}>
               <WaybackMap
