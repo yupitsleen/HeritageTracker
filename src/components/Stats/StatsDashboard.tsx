@@ -37,26 +37,26 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
 
   return (
     <div className={`max-h-[80vh] overflow-y-auto ${t.bg.primary}`}>
-      <div className="p-4 md:p-8 max-w-6xl mx-auto">
+      <div className="p-3 md:p-6 max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-6 md:mb-8 text-center">
-          <h1 className={`text-2xl md:text-4xl font-bold ${t.text.heading} mb-2`}>
+        <div className="mb-4 md:mb-6 text-center">
+          <h1 className={`text-xl md:text-3xl font-bold ${t.text.heading} mb-1.5`}>
             The Scale of Destruction
           </h1>
-          <p className={`text-sm md:text-lg ${t.text.muted}`}>
+          <p className={`text-xs md:text-base ${t.text.muted}`}>
             Understanding what has been lost to humanity
           </p>
         </div>
 
         {/* Hero statistic - Years of history */}
-        <div className="bg-gradient-to-br from-[#009639]/10 to-[#009639]/5 border-2 border-[#009639] rounded-lg p-4 md:p-8 mb-6 md:mb-8 text-center">
-          <div className="text-5xl md:text-7xl font-bold text-[#ed3039] mb-2 md:mb-3">
+        <div className="bg-gradient-to-br from-[#009639]/10 to-[#009639]/5 border-2 border-[#009639] rounded-lg p-3 md:p-6 mb-4 md:mb-6 text-center">
+          <div className="text-4xl md:text-6xl font-bold text-[#ed3039] mb-1.5 md:mb-2">
             {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) / 10}k` : "—"}
           </div>
-          <div className={`text-lg md:text-2xl font-semibold ${t.text.heading} mb-1 md:mb-2`}>
+          <div className={`text-base md:text-xl font-semibold ${t.text.heading} mb-1`}>
             Years of Human History
           </div>
-          <p className={`text-xs md:text-base ${t.text.body} max-w-2xl mx-auto`}>
+          <p className={`text-[10px] md:text-sm ${t.text.body} max-w-2xl mx-auto`}>
             From Bronze Age Egyptian settlements to Ottoman architecture, Gaza's heritage spans
             over {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) * 100}` : '5,000'} years of continuous civilization. Every destroyed site is an irreplaceable
             loss to humanity.
@@ -64,15 +64,15 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
         </div>
 
         {/* Key impact metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
           {/* Sites over 1000 years old */}
-          <div className={`${t.bg.tertiary} border-2 ${t.border.subtle} rounded-lg p-4 md:p-6`}>
-            <div className="text-3xl md:text-4xl font-bold text-[#009639] mb-1 md:mb-2">{stats.ancientSites}</div>
-            <div className={`text-xs md:text-sm font-semibold ${t.text.heading} mb-2 md:mb-3`}>
+          <div className={`${t.bg.tertiary} border-2 ${t.border.subtle} rounded-lg p-3 md:p-4`}>
+            <div className="text-2xl md:text-3xl font-bold text-[#009639] mb-1">{stats.ancientSites}</div>
+            <div className={`text-[10px] md:text-xs font-semibold ${t.text.heading} mb-1.5 md:mb-2`}>
               Sites Over 1,000 Years Old
             </div>
             {isDesktop && (
-              <p className={`text-xs ${t.text.muted} leading-relaxed`}>
+              <p className={`text-[10px] ${t.text.muted} leading-relaxed`}>
                 Ancient mosques, churches, and archaeological sites that survived centuries of
                 history—destroyed in months.
               </p>
@@ -80,15 +80,15 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
           </div>
 
           {/* Religious sites */}
-          <div className={`${isDark ? "bg-red-900/20" : "bg-red-50"} border-2 border-[#ed3039] rounded-lg p-4 md:p-6`}>
-            <div className="text-3xl md:text-4xl font-bold text-[#ed3039] mb-1 md:mb-2">
+          <div className={`${isDark ? "bg-red-900/20" : "bg-red-50"} border-2 border-[#ed3039] rounded-lg p-3 md:p-4`}>
+            <div className="text-2xl md:text-3xl font-bold text-[#ed3039] mb-1">
               {stats.religiousDestroyed}/{stats.religiousSites}
             </div>
-            <div className={`text-xs md:text-sm font-semibold ${t.text.heading} mb-2 md:mb-3`}>
+            <div className={`text-[10px] md:text-xs font-semibold ${t.text.heading} mb-1.5 md:mb-2`}>
               Houses of Worship Destroyed
             </div>
             {isDesktop && (
-              <p className={`text-xs ${t.text.muted} leading-relaxed`}>
+              <p className={`text-[10px] ${t.text.muted} leading-relaxed`}>
                 Active mosques and churches serving Muslim and Christian communities, including
                 pilgrimage sites with tombs of revered figures.
               </p>
@@ -96,15 +96,15 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
           </div>
 
           {/* Museums */}
-          <div className={`${isDark ? "bg-orange-900/20" : "bg-orange-50"} border-2 border-orange-400 rounded-lg p-4 md:p-6`}>
-            <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-1 md:mb-2">
+          <div className={`${isDark ? "bg-orange-900/20" : "bg-orange-50"} border-2 border-orange-400 rounded-lg p-3 md:p-4`}>
+            <div className="text-2xl md:text-3xl font-bold text-orange-600 mb-1">
               {stats.museumsDestroyed}/{stats.museums}
             </div>
-            <div className={`text-xs md:text-sm font-semibold ${t.text.heading} mb-2 md:mb-3`}>
+            <div className={`text-[10px] md:text-xs font-semibold ${t.text.heading} mb-1.5 md:mb-2`}>
               Museums & Cultural Centers
             </div>
             {isDesktop && (
-              <p className={`text-xs ${t.text.muted} leading-relaxed`}>
+              <p className={`text-[10px] ${t.text.muted} leading-relaxed`}>
                 Including looted rare artifacts, burned library collections, and destroyed
                 archival records representing centuries of cultural documentation.
               </p>

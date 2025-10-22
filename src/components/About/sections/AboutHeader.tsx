@@ -7,11 +7,11 @@ export function AboutHeader() {
   const t = useThemeClasses();
 
   return (
-    <div className="mb-6 md:mb-8 text-center">
-      <h1 className={`text-2xl md:text-4xl font-bold ${t.text.heading} mb-2`}>
+    <div className="mb-4 md:mb-6 text-center">
+      <h1 className={`text-xl md:text-3xl font-bold ${t.text.heading} mb-1.5`}>
         About Heritage Tracker
       </h1>
-      <p className={`text-sm md:text-lg ${t.text.muted}`}>
+      <p className={`text-xs md:text-base ${t.text.muted}`}>
         Evidence-based documentation of Palestinian cultural heritage destruction
       </p>
     </div>

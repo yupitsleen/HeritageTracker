@@ -24,10 +24,11 @@ function AdvancedAnimationContent() {
       data-theme={isDark ? "dark" : "light"}
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
-      {/* Header with back button - compact design */}
+      {/* Header with back button - compact design, centered title */}
       <header className={`${isDark ? "bg-black" : "bg-white"} shadow-xl border-b-2 ${isDark ? "border-white" : "border-black"}`}>
-        <div className="max-w-full px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-full px-4 py-2 relative">
+          {/* Left: Back button */}
+          <div className="absolute left-4 top-1/2 -translate-y-1/2">
             <Button
               onClick={() => navigate("/")}
               variant="ghost"
@@ -37,11 +38,15 @@ function AdvancedAnimationContent() {
               <span className="text-base">&larr;</span>
               Back to Main View
             </Button>
-            <h1 className={`text-lg font-bold ${t.layout.modalHeading}`}>
-              Advanced Satellite Timeline
-            </h1>
           </div>
-          <div className={`text-xs ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+
+          {/* Center: Title */}
+          <h1 className={`text-lg font-bold ${t.layout.modalHeading} text-center`}>
+            Advanced Satellite Timeline
+          </h1>
+
+          {/* Right: Version count */}
+          <div className={`absolute right-4 top-1/2 -translate-y-1/2 text-xs ${isDark ? "text-gray-400" : "text-gray-600"}`}>
             {releases.length > 0 ? `${releases.length} Historical Imagery Versions` : 'Historical Imagery Archive'}
           </div>
         </div>
