@@ -7,19 +7,17 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
-    // Performance optimizations - balanced approach
-    pool: 'forks', // Use forks instead of threads for better isolation
+    // Aggressive performance optimizations - maximize parallel execution
+    pool: 'forks',
     poolOptions: {
       forks: {
-        singleFork: false, // Enable parallel execution
-        minForks: 1,
-        maxForks: 4, // Parallel test files execution
+        singleFork: false,
+        minForks: 2,
+        maxForks: 8, // Run up to 8 test files in parallel
       },
     },
-    isolate: true, // Keep isolation to prevent test interference
-    // Only run tests that changed (during watch mode)
-    changed: false,
-    // Reduce transform overhead
+    isolate: true, // Keep isolation to prevent test failures
+    // Reduce overhead
     deps: {
       optimizer: {
         web: {
