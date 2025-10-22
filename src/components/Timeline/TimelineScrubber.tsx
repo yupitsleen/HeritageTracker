@@ -386,14 +386,15 @@ export function TimelineScrubber({
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
-      <div className="relative">
-        {/* Floating scrubber date tooltip */}
+      <div className="relative overflow-visible">
+        <svg ref={svgRef} width="100%" height="40" className="mt-1" aria-hidden="true" />
+        {/* Floating scrubber date tooltip - positioned below timeline */}
         {scrubberPosition !== null && (
           <div
             className="absolute z-[9999] pointer-events-none"
             style={{
               left: `${scrubberPosition}px`,
-              top: "-20px",
+              top: "45px",
               transform: "translateX(-50%)",
             }}
           >
@@ -406,7 +407,6 @@ export function TimelineScrubber({
             </div>
           </div>
         )}
-        <svg ref={svgRef} width="100%" height="40" className="mt-1" aria-hidden="true" />
       </div>
 
       {/* Keyboard shortcuts hint */}
