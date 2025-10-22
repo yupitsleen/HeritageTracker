@@ -1,5 +1,5 @@
 import { components, cn } from "../../styles/theme";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
@@ -9,6 +9,7 @@ interface AppHeaderProps {
   onOpenDonate: () => void;
   onOpenStats: () => void;
   onOpenAbout: () => void;
+  onOpenHelp?: () => void;
 }
 
 /**
@@ -16,7 +17,7 @@ interface AppHeaderProps {
  * Black background with Palestinian flag colors
  * Includes dark mode toggle and navigation to advanced animation page
  */
-export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderProps) {
+export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,6 +36,22 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
 
         {/* All buttons - desktop only, right-aligned in top right, positioned relative to header */}
         <div className={`hidden md:flex absolute top-1.5 right-2 ${COMPACT_HEADER.buttonGap} items-center`}>
+          {/* Help Button - Question mark icon */}
+          {onOpenHelp && (
+            <button
+              onClick={onOpenHelp}
+              className={`p-1.5 rounded shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 ${
+                isDark
+                  ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
+                  : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
+              }`}
+              aria-label="How to use this page"
+              title="How to use this page"
+            >
+              <QuestionMarkCircleIcon className="w-4 h-4" />
+            </button>
+          )}
+
           {/* Dark Mode Toggle - Discrete icon button */}
           <button
             onClick={toggleTheme}

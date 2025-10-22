@@ -9,6 +9,7 @@ export interface ModalState {
   isStatsOpen: boolean;
   isFilterOpen: boolean;
   isDonateOpen: boolean;
+  isHelpOpen: boolean;
 }
 
 /**
@@ -22,6 +23,7 @@ export function useModalState() {
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   return {
     modals: {
@@ -30,11 +32,13 @@ export function useModalState() {
       isStatsOpen,
       isFilterOpen,
       isDonateOpen,
+      isHelpOpen,
     },
     setIsTableExpanded,
     setIsAboutOpen,
     setIsStatsOpen,
     setIsFilterOpen,
     setIsDonateOpen,
+    setIsHelpOpen,
   };
 }
