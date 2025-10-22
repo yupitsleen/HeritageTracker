@@ -313,7 +313,7 @@ export function TimelineScrubber({
             {advancedMode
               ? advancedMode.syncMapOnDotClick ? "✓" : ""
               : syncMapEnabled ? "✓" : ""}{" "}
-            Sync Map
+            Sync map version
           </Button>
 
           {/* Zoom to Site toggle button */}
