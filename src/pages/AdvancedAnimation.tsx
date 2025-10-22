@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
@@ -7,6 +7,8 @@ import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
 import { WaybackSlider } from "../components/AdvancedTimeline";
+import { AnimationProvider } from "../contexts/AnimationContext";
+import type { GazaSite } from "../types";
 
 // Lazy load the map and timeline components
 const SiteDetailView = lazy(() =>
@@ -38,8 +40,70 @@ export function AdvancedAnimation() {
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
   const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
 
+  // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
+  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(false);
+
   // Get current release
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
+
+  /**
+   * Find the nearest Wayback release that occurred before or on the given date
+   * Used when syncing map to site destruction dates
+   */
+  const findNearestWaybackRelease = useCallback(
+    (targetDate: Date): number => {
+      if (releases.length === 0) return 0;
+
+      const targetTime = targetDate.getTime();
+      let nearestIndex = 0;
+      let smallestDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
+
+      // Find the release closest to (and ideally before) the target date
+      for (let i = 1; i < releases.length; i++) {
+        const releaseTime = new Date(releases[i].releaseDate).getTime();
+
+        // Prefer releases before or on the target date
+        if (releaseTime <= targetTime) {
+          const diff = targetTime - releaseTime;
+          if (diff < smallestDiff || releaseTime > new Date(releases[nearestIndex].releaseDate).getTime()) {
+            nearestIndex = i;
+            smallestDiff = diff;
+          }
+        } else {
+          // If we've gone past the target date, check if this is closer than our current best
+          const diff = releaseTime - targetTime;
+          if (diff < smallestDiff) {
+            nearestIndex = i;
+            smallestDiff = diff;
+          }
+          break; // No need to check further as releases are sorted
+        }
+      }
+
+      return nearestIndex;
+    },
+    [releases]
+  );
+
+  /**
+   * Handle timeline dot click - highlight site and optionally sync map
+   */
+  const handleSiteHighlight = useCallback(
+    (siteId: string | null) => {
+      setHighlightedSiteId(siteId);
+
+      // If sync is enabled and a site is selected, find and show the nearest Wayback release
+      if (syncMapOnDotClick && siteId) {
+        const site = mockSites.find((s: GazaSite) => s.id === siteId);
+        if (site?.dateDestroyed) {
+          const destructionDate = new Date(site.dateDestroyed);
+          const nearestReleaseIndex = findNearestWaybackRelease(destructionDate);
+          setCurrentReleaseIndex(nearestReleaseIndex);
+        }
+      }
+    },
+    [syncMapOnDotClick, findNearestWaybackRelease]
+  );
 
   return (
     <div
@@ -141,19 +205,37 @@ export function AdvancedAnimation() {
               />
             </div>
 
-            {/* Timeline Scrubber - Site filtering */}
-            <div className="flex-shrink-0 h-[100px]">
-              <Suspense fallback={<SkeletonMap />}>
-                <TimelineScrubber
-                  sites={mockSites}
-                  destructionDateStart={destructionDateStart}
-                  destructionDateEnd={destructionDateEnd}
-                  onDestructionDateStartChange={setDestructionDateStart}
-                  onDestructionDateEndChange={setDestructionDateEnd}
-                  highlightedSiteId={highlightedSiteId}
-                  onSiteHighlight={setHighlightedSiteId}
-                />
-              </Suspense>
+            {/* Timeline Scrubber - Site filtering with Sync Map toggle */}
+            <div className="flex-shrink-0">
+              {/* Sync Map toggle for Advanced Animation page */}
+              <div className="mb-1 flex items-center justify-end">
+                <Button
+                  onClick={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
+                  variant={syncMapOnDotClick ? "primary" : "secondary"}
+                  size="xs"
+                  aria-label={syncMapOnDotClick ? "Disable map sync on dot click" : "Enable map sync on dot click"}
+                  title="When enabled, clicking timeline dots syncs satellite map to nearest Wayback release"
+                >
+                  {syncMapOnDotClick ? "✓" : ""} Sync Map
+                </Button>
+              </div>
+
+              <div className="h-[100px]">
+                <Suspense fallback={<SkeletonMap />}>
+                  {/* Wrap TimelineScrubber in AnimationProvider since it uses AnimationContext */}
+                  <AnimationProvider sites={mockSites}>
+                    <TimelineScrubber
+                      sites={mockSites}
+                      destructionDateStart={destructionDateStart}
+                      destructionDateEnd={destructionDateEnd}
+                      onDestructionDateStartChange={setDestructionDateStart}
+                      onDestructionDateEndChange={setDestructionDateEnd}
+                      highlightedSiteId={highlightedSiteId}
+                      onSiteHighlight={handleSiteHighlight}
+                    />
+                  </AnimationProvider>
+                </Suspense>
+              </div>
             </div>
           </>
         )}
