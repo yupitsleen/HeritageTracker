@@ -134,6 +134,20 @@ export function AdvancedAnimation() {
     [findNearestWaybackRelease]
   );
 
+  /**
+   * Navigate back to home page
+   */
+  const handleBackClick = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
+  /**
+   * Reload page to retry loading Wayback releases
+   */
+  const handleRetryClick = useCallback(() => {
+    window.location.reload();
+  }, []);
+
   return (
     <div
       data-theme={isDark ? "dark" : "light"}
@@ -149,7 +163,7 @@ export function AdvancedAnimation() {
           {/* Left: Back button */}
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
             <Button
-              onClick={() => navigate("/")}
+              onClick={handleBackClick}
               variant="ghost"
               size="sm"
               className="flex items-center gap-1.5"
@@ -199,7 +213,7 @@ export function AdvancedAnimation() {
             <div className="text-center">
               <div className="text-xl font-bold mb-2 text-red-600">Error Loading Archive</div>
               <div className={`text-sm mb-4 ${t.text.muted}`}>{error}</div>
-              <Button onClick={() => window.location.reload()} variant="primary" size="sm">
+              <Button onClick={handleRetryClick} variant="primary" size="sm">
                 Retry
               </Button>
             </div>
