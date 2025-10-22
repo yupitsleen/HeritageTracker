@@ -56,7 +56,7 @@ export function Button({
 
   // Base classes (always applied)
   const baseClasses = `
-    rounded-lg font-semibold border border-[#000000]
+    rounded-lg font-semibold border ${isDark ? 'border-white' : 'border-black'}
     transition-all duration-200
     inline-flex items-center justify-center gap-2
     ${fullWidth ? 'w-full' : ''}

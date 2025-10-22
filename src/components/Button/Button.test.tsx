@@ -189,10 +189,11 @@ describe('Button', () => {
   });
 
   describe('Style consistency', () => {
-    it('always includes border-[#000000]', () => {
+    it('includes theme-aware border (black in light mode, white in dark mode)', () => {
       renderWithTheme(<Button variant="primary">Button</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).toContain('border-[#000000]');
+      // Check that it has either border-black or border-white depending on theme
+      expect(button.className).toMatch(/border-(black|white)/);
     });
 
     it('includes transition classes', () => {

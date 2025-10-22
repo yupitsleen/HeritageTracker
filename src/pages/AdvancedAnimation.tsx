@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
@@ -29,7 +30,7 @@ const SiteDetailPanel = lazy(() =>
  * Reuses SiteDetailView and TimelineScrubber from home page
  */
 export function AdvancedAnimation() {
-  const { isDark } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
   const t = useThemeClasses();
   const navigate = useNavigate();
 
@@ -178,11 +179,32 @@ export function AdvancedAnimation() {
             Advanced Satellite Timeline
           </h1>
 
-          {/* Right: Info */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-400">
-            {isLoading && "Loading..."}
-            {error && "Error"}
-            {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Sites`}
+          {/* Right: Dark mode toggle + Info */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className={`p-1.5 rounded shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 ${
+                isDark
+                  ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
+                  : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
+              }`}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? (
+                <SunIcon className="w-4 h-4" />
+              ) : (
+                <MoonIcon className="w-4 h-4" />
+              )}
+            </button>
+
+            {/* Info text */}
+            <div className="text-xs text-gray-400">
+              {isLoading && "Loading..."}
+              {error && "Error"}
+              {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Sites`}
+            </div>
           </div>
         </div>
 
@@ -199,7 +221,7 @@ export function AdvancedAnimation() {
       <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2">
         {/* Loading state */}
         {isLoading && (
-          <div className={`flex-1 flex items-center justify-center rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+          <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
             <div className="text-center">
               <div className={`text-xl mb-2 ${t.text.heading}`}>Loading Wayback Archive...</div>
               <div className={`text-sm ${t.text.muted}`}>Fetching 186 historical imagery versions...</div>
@@ -209,7 +231,7 @@ export function AdvancedAnimation() {
 
         {/* Error state */}
         {error && (
-          <div className={`flex-1 flex items-center justify-center rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+          <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
             <div className="text-center">
               <div className="text-xl font-bold mb-2 text-red-600">Error Loading Archive</div>
               <div className={`text-sm mb-4 ${t.text.muted}`}>{error}</div>
@@ -225,9 +247,7 @@ export function AdvancedAnimation() {
           <AnimationProvider sites={mockSites}>
             {/* Full-screen satellite map with Wayback imagery */}
             <div
-              className={`flex-1 min-h-0 border-2 ${
-                isDark ? "border-white" : "border-black"
-              } rounded shadow-xl overflow-hidden`}
+              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden`}
             >
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView

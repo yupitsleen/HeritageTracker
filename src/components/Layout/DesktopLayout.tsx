@@ -129,7 +129,7 @@ export function DesktopLayout({
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-4 flex flex-col">
           {/* Filter bar - Compact horizontal single-row layout */}
-          <div className={`flex-shrink-0 mt-2 ${COMPACT_FILTER_BAR.padding} backdrop-blur-sm border border-[#000000] rounded shadow-lg relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+          <div className={`flex-shrink-0 mt-2 ${COMPACT_FILTER_BAR.padding} backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
             <div className="flex flex-col gap-1.5">
               {/* Top row - Filter controls and legend (single horizontal row) */}
               <div className="flex items-center gap-2">
@@ -138,13 +138,13 @@ export function DesktopLayout({
                   {/* Filter Button */}
                   <button
                     onClick={openFilterModal}
-                    className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#009639] hover:bg-[#007b2f] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border border-[#000000]`}
+                    className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#009639] hover:bg-[#007b2f] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
                   >
                     Filters
                   </button>
 
                   {/* Search bar - inline */}
-                  <div className={`relative flex-1 max-w-[200px] border border-[#000000] rounded ${COMPACT_FILTER_BAR.inputHeight}`}>
+                  <div className={`relative flex-1 max-w-[200px] border ${t.border.primary} rounded ${COMPACT_FILTER_BAR.inputHeight}`}>
                     <Input
                       type="text"
                       value={searchTerm}
@@ -179,7 +179,7 @@ export function DesktopLayout({
                   {hasActiveFilters && (
                     <button
                       onClick={clearAllFilters}
-                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#ed3039] hover:bg-[#d4202a] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border border-[#000000]`}
+                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#ed3039] hover:bg-[#d4202a] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
                     >
                       Clear
                     </button>
@@ -194,7 +194,7 @@ export function DesktopLayout({
                   </span>
 
                   {/* Status Legend (Color Key) - Ultra compact */}
-                  <div className={`flex items-center gap-2 px-2 py-0.5 rounded border border-[#000000] ${t.bg.secondary}`}>
+                  <div className={`flex items-center gap-2 px-2 py-0.5 rounded border ${t.border.primary} ${t.bg.secondary}`}>
                     <span className={`text-[10px] font-semibold ${t.text.body}`}>Key:</span>
                     <div className="flex items-center gap-1">
                       <div
@@ -257,7 +257,7 @@ export function DesktopLayout({
           {/* Two maps side by side - Constrained height to leave room for timeline + footer */}
           <div className="flex gap-2 min-h-0 pt-2" style={{ height: 'calc(100% - 185px)' }}>
             {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-            <div className="flex-1 min-w-0 h-full border border-[#000000] rounded shadow-lg overflow-hidden relative z-10">
+            <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
               <Suspense fallback={<SkeletonMap />}>
                 <HeritageMap
                   sites={filteredSites}
@@ -269,7 +269,7 @@ export function DesktopLayout({
             </div>
 
             {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-            <div className="flex-1 min-w-0 h-full border border-[#000000] rounded shadow-lg overflow-hidden relative z-10">
+            <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
                   sites={filteredSites}
