@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useCallback } from "react";
+import { lazy, Suspense, useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
@@ -47,8 +47,8 @@ export function AdvancedAnimation() {
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
 
   /**
-   * Find the nearest Wayback release that occurred before or on the given date
-   * Used when syncing map to site destruction dates
+   * Find the latest Wayback release that occurred BEFORE (or on) the destruction date
+   * This shows the satellite imagery from right before the site was destroyed
    */
   const findNearestWaybackRelease = useCallback(
     (targetDate: Date): number => {
@@ -56,27 +56,18 @@ export function AdvancedAnimation() {
 
       const targetTime = targetDate.getTime();
       let nearestIndex = 0;
-      let smallestDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
 
-      // Find the release closest to (and ideally before) the target date
-      for (let i = 1; i < releases.length; i++) {
+      // Find the LATEST release that occurred BEFORE or ON the target date
+      // We iterate through all releases and keep updating to the latest one that's still before/on target
+      for (let i = 0; i < releases.length; i++) {
         const releaseTime = new Date(releases[i].releaseDate).getTime();
 
-        // Prefer releases before or on the target date
+        // Only consider releases that are before or on the target date
         if (releaseTime <= targetTime) {
-          const diff = targetTime - releaseTime;
-          if (diff < smallestDiff || releaseTime > new Date(releases[nearestIndex].releaseDate).getTime()) {
-            nearestIndex = i;
-            smallestDiff = diff;
-          }
+          nearestIndex = i; // This is valid, keep it
         } else {
-          // If we've gone past the target date, check if this is closer than our current best
-          const diff = releaseTime - targetTime;
-          if (diff < smallestDiff) {
-            nearestIndex = i;
-            smallestDiff = diff;
-          }
-          break; // No need to check further as releases are sorted
+          // We've passed the target date, stop looking
+          break;
         }
       }
 
@@ -87,13 +78,20 @@ export function AdvancedAnimation() {
 
   /**
    * Handle timeline dot click - highlight site and optionally sync map
+   * Using useRef to avoid recreating this callback when syncMapOnDotClick changes
    */
+  const syncMapOnDotClickRef = useRef(syncMapOnDotClick);
+  useEffect(() => {
+    syncMapOnDotClickRef.current = syncMapOnDotClick;
+  }, [syncMapOnDotClick]);
+
   const handleSiteHighlight = useCallback(
     (siteId: string | null) => {
       setHighlightedSiteId(siteId);
 
       // If sync is enabled and a site is selected, find and show the nearest Wayback release
-      if (syncMapOnDotClick && siteId) {
+      // Use ref to get current value without recreating callback
+      if (syncMapOnDotClickRef.current && siteId) {
         const site = mockSites.find((s: GazaSite) => s.id === siteId);
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
@@ -102,7 +100,7 @@ export function AdvancedAnimation() {
         }
       }
     },
-    [syncMapOnDotClick, findNearestWaybackRelease]
+    [findNearestWaybackRelease]
   );
 
   return (
@@ -221,9 +219,9 @@ export function AdvancedAnimation() {
               </div>
 
               <div className="h-[100px]">
-                <Suspense fallback={<SkeletonMap />}>
-                  {/* Wrap TimelineScrubber in AnimationProvider since it uses AnimationContext */}
-                  <AnimationProvider sites={mockSites}>
+                {/* Wrap in AnimationProvider outside Suspense to prevent remounting */}
+                <AnimationProvider sites={mockSites}>
+                  <Suspense fallback={<SkeletonMap />}>
                     <TimelineScrubber
                       sites={mockSites}
                       destructionDateStart={destructionDateStart}
@@ -233,8 +231,8 @@ export function AdvancedAnimation() {
                       highlightedSiteId={highlightedSiteId}
                       onSiteHighlight={handleSiteHighlight}
                     />
-                  </AnimationProvider>
-                </Suspense>
+                  </Suspense>
+                </AnimationProvider>
               </div>
             </div>
           </>
