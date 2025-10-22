@@ -386,4 +386,107 @@ describe("WaybackSlider", () => {
       localStorage.removeItem("heritage-tracker-theme");
     });
   });
+
+  // NEW FEATURE TESTS
+
+  describe("Tick Mark Hover Improvements", () => {
+    it("green progress fill has pointer-events-none to allow tick mark hover", () => {
+      const onIndexChange = vi.fn();
+      const { container } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
+      );
+
+      // Green progress fill should have pointer-events-none class
+      const greenFill = container.querySelector(".bg-\\[\\#009639\\]");
+      expect(greenFill).toHaveClass("pointer-events-none");
+    });
+
+    it("renders wider invisible hitbox for tick marks", () => {
+      const onIndexChange = vi.fn();
+      const { container } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
+      );
+
+      // Tick marks should have 8px-wide hitbox (w-2 class = 8px)
+      // Each tick mark container has a child div with w-2 class for wider hover area
+      const hitboxes = container.querySelectorAll(".w-2");
+      expect(hitboxes.length).toBeGreaterThan(0);
+    });
+
+    it("tick marks are wrapped in group for hover effects", () => {
+      const onIndexChange = vi.fn();
+      const { container } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
+      );
+
+      // Each tick mark should be in a .group container for hover
+      const groups = container.querySelectorAll(".group");
+      expect(groups.length).toBe(mockReleases.length);
+    });
+
+    it("tooltips appear on group hover", () => {
+      const onIndexChange = vi.fn();
+      const { container } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
+      );
+
+      // Tooltips should have group-hover:opacity-100 class
+      const tooltips = container.querySelectorAll(".group-hover\\:opacity-100");
+      expect(tooltips.length).toBe(mockReleases.length);
+    });
+  });
+
+  describe("Scrubber Tooltip", () => {
+    it("renders floating date tooltip above scrubber", () => {
+      const onIndexChange = vi.fn();
+      const { container } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
+      );
+
+      // Should have tooltip with current date positioned above scrubber
+      // Tooltip uses bottom-full mb-2 classes to appear above
+      const scrubberTooltip = container.querySelector(".bottom-full");
+      expect(scrubberTooltip).toBeTruthy();
+    });
+
+    it("scrubber tooltip displays current release date", () => {
+      const onIndexChange = vi.fn();
+      const { container, getAllByText } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
+      );
+
+      // Current date should appear in scrubber tooltip
+      const dateElements = getAllByText("2015-01-10");
+      // Should have at least 2: main display + scrubber tooltip
+      expect(dateElements.length).toBeGreaterThan(1);
+    });
+
+    it("scrubber tooltip has green background matching theme", () => {
+      const onIndexChange = vi.fn();
+      const { container } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
+      );
+
+      // Scrubber tooltip should have green background (bg-[#009639])
+      const greenTooltips = container.querySelectorAll(".bg-\\[\\#009639\\]");
+      // At least one should exist (the scrubber tooltip)
+      expect(greenTooltips.length).toBeGreaterThan(0);
+    });
+
+    it("scrubber tooltip is always visible (not just on hover)", () => {
+      const onIndexChange = vi.fn();
+      const { container } = renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
+      );
+
+      // Find the scrubber tooltip specifically (green background, not the gray tick mark tooltips)
+      const scrubberTooltips = container.querySelectorAll(".bg-\\[\\#009639\\]");
+      expect(scrubberTooltips.length).toBeGreaterThan(0);
+
+      // The scrubber tooltip should have bottom-full class for positioning above
+      const tooltipsAbove = container.querySelectorAll(".bottom-full");
+      // Should have multiple: tick mark tooltips (5) + scrubber tooltip (1) = 6 total
+      expect(tooltipsAbove.length).toBeGreaterThan(5);
+    });
+  });
 });

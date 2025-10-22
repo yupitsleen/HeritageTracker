@@ -307,4 +307,122 @@ describe("AnimationContext", () => {
       expect(result.current.syncActive).toBe(true);
     });
   });
+
+  // NEW FEATURE TESTS
+
+  describe("Zoom to Site Toggle", () => {
+    it("initializes with zoom enabled by default", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      expect(result.current.zoomToSiteEnabled).toBe(true);
+    });
+
+    it("toggles zoom to site when setZoomToSiteEnabled is called", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Initial state: enabled
+      expect(result.current.zoomToSiteEnabled).toBe(true);
+
+      // Disable zoom
+      act(() => {
+        result.current.setZoomToSiteEnabled(false);
+      });
+      expect(result.current.zoomToSiteEnabled).toBe(false);
+
+      // Re-enable zoom
+      act(() => {
+        result.current.setZoomToSiteEnabled(true);
+      });
+      expect(result.current.zoomToSiteEnabled).toBe(true);
+    });
+
+    it("maintains zoom state across play/pause cycles", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Disable zoom
+      act(() => {
+        result.current.setZoomToSiteEnabled(false);
+      });
+      expect(result.current.zoomToSiteEnabled).toBe(false);
+
+      // Play
+      act(() => {
+        result.current.play();
+      });
+      expect(result.current.zoomToSiteEnabled).toBe(false); // Should remain disabled
+
+      // Pause
+      act(() => {
+        result.current.pause();
+      });
+      expect(result.current.zoomToSiteEnabled).toBe(false); // Should remain disabled
+    });
+
+    it("maintains zoom state across timestamp changes", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Disable zoom
+      act(() => {
+        result.current.setZoomToSiteEnabled(false);
+      });
+
+      // Change timestamp
+      act(() => {
+        result.current.setTimestamp(new Date("2023-12-01"));
+      });
+
+      expect(result.current.zoomToSiteEnabled).toBe(false);
+    });
+
+    it("maintains zoom state across reset", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Disable zoom
+      act(() => {
+        result.current.setZoomToSiteEnabled(false);
+      });
+
+      // Reset
+      act(() => {
+        result.current.reset();
+      });
+
+      // Zoom state should be preserved (user preference)
+      expect(result.current.zoomToSiteEnabled).toBe(false);
+    });
+
+    it("zoom state is independent of sync map state", () => {
+      const { result } = renderHook(() => useAnimation(), {
+        wrapper: AnimationProvider,
+      });
+
+      // Enable sync, disable zoom
+      act(() => {
+        result.current.setSyncMapEnabled(true);
+        result.current.setZoomToSiteEnabled(false);
+      });
+
+      expect(result.current.syncMapEnabled).toBe(true);
+      expect(result.current.zoomToSiteEnabled).toBe(false);
+
+      // Disable sync, enable zoom
+      act(() => {
+        result.current.setSyncMapEnabled(false);
+        result.current.setZoomToSiteEnabled(true);
+      });
+
+      expect(result.current.syncMapEnabled).toBe(false);
+      expect(result.current.zoomToSiteEnabled).toBe(true);
+    });
+  });
 });
