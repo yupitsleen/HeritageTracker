@@ -377,4 +377,105 @@ describe("TimelineScrubber", () => {
       expect(overflowVisibleElements.length).toBeGreaterThan(0);
     });
   });
+
+  describe("Previous/Next Navigation (Advanced Mode)", () => {
+    it("renders Previous and Next buttons in advanced mode", () => {
+      const { getByText } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Should show Previous and Next buttons in center
+      expect(getByText(/⏮ Previous/i)).toBeInTheDocument();
+      expect(getByText(/Next ⏭/i)).toBeInTheDocument();
+    });
+
+    it("does not render Previous/Next buttons in normal mode", () => {
+      const { queryByText } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber sites={mockSites} />
+        </AnimationProvider>
+      );
+
+      // Should NOT show Previous/Next in normal mode
+      expect(queryByText(/⏮ Previous/i)).not.toBeInTheDocument();
+      expect(queryByText(/Next ⏭/i)).not.toBeInTheDocument();
+    });
+
+    it("shows current date display in normal mode instead of Previous/Next", () => {
+      const { getByText } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber sites={mockSites} />
+        </AnimationProvider>
+      );
+
+      // Should show "Current:" date display
+      expect(getByText(/Current:/i)).toBeInTheDocument();
+    });
+
+    it("does not show current date display in advanced mode", () => {
+      const { queryByText } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Should NOT show "Current:" in advanced mode (replaced by Previous/Next)
+      expect(queryByText(/Current:/i)).not.toBeInTheDocument();
+    });
+
+    it("has proper ARIA labels for Previous/Next buttons", () => {
+      const { container } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Find buttons by aria-label
+      const prevButton = container.querySelector('[aria-label*="previous destruction event"]');
+      const nextButton = container.querySelector('[aria-label*="next destruction event"]');
+
+      expect(prevButton).toBeInTheDocument();
+      expect(nextButton).toBeInTheDocument();
+    });
+
+    it("Previous/Next buttons have descriptive title tooltips", () => {
+      const { container } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      const prevButton = container.querySelector('[title*="Navigate to previous"]');
+      const nextButton = container.querySelector('[title*="Navigate to next"]');
+
+      expect(prevButton).toBeInTheDocument();
+      expect(nextButton).toBeInTheDocument();
+    });
+  });
 });

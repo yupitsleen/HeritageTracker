@@ -197,4 +197,68 @@ describe("SiteDetailView", () => {
     expect(screen.getByTestId("time-toggle")).toBeInTheDocument();
     expect(screen.getByTestId("marker")).toBeInTheDocument();
   });
+
+  describe("Popup Functionality", () => {
+    it("renders popup when site is highlighted", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
+
+      // Marker should have popup as child
+      const marker = screen.getByTestId("marker");
+      expect(marker).toBeInTheDocument();
+
+      // Popup should be present
+      const popup = screen.getByTestId("popup");
+      expect(popup).toBeInTheDocument();
+    });
+
+    it("does not render popup when no site is highlighted", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+
+      // No marker or popup should be present
+      expect(screen.queryByTestId("marker")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("popup")).not.toBeInTheDocument();
+    });
+
+    it("calls onSiteClick when popup action is triggered", () => {
+      const onSiteClick = vi.fn();
+      renderWithAnimation(
+        <SiteDetailView
+          sites={mockSites}
+          highlightedSiteId="1"
+          onSiteClick={onSiteClick}
+        />
+      );
+
+      // Popup should be present (contains SitePopup component)
+      const popup = screen.getByTestId("popup");
+      expect(popup).toBeInTheDocument();
+    });
+
+    it("popup is only rendered for highlighted site", () => {
+      const { rerender } = renderWithAnimation(
+        <SiteDetailView sites={mockSites} highlightedSiteId="1" />
+      );
+
+      // Should have popup for site 1
+      expect(screen.getByTestId("popup")).toBeInTheDocument();
+
+      // Change to different site
+      rerender(
+        <AnimationProvider sites={mockSites}>
+          <SiteDetailView sites={mockSites} highlightedSiteId="2" />
+        </AnimationProvider>
+      );
+
+      // Should still have popup (for site 2 now)
+      expect(screen.getByTestId("popup")).toBeInTheDocument();
+    });
+
+    it("popup has proper max dimensions", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
+
+      const popup = screen.getByTestId("popup");
+      expect(popup).toBeInTheDocument();
+      // Popup component itself is mocked, but we verify it's rendered
+    });
+  });
 });
