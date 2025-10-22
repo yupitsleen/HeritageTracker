@@ -14,6 +14,12 @@ import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 import { Input } from "../Form/Input";
 import { Button } from "../Button";
+import { TIMELINE_CONFIG, TOOLTIP_CONFIG } from "../../constants/timeline";
+import {
+  calculateDefaultDateRange,
+  filterEventsByDateRange,
+  calculateAdjustedDateRange,
+} from "../../utils/timelineCalculations";
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
@@ -57,14 +63,12 @@ export function TimelineScrubber({
     speed,
     startDate,
     endDate,
-    syncMapEnabled,
     zoomToSiteEnabled,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
-    setSyncMapEnabled,
     setZoomToSiteEnabled,
   } = useAnimation();
 
@@ -82,38 +86,14 @@ export function TimelineScrubber({
   // Reduces dependency checking overhead and prevents cascading recalculations
   const timelineData = useMemo(() => {
     // Calculate default date range from dataset (oldest and newest destruction dates)
-    const defaults =
-      allDestructionDates.length === 0
-        ? { defaultStartDate: startDate, defaultEndDate: endDate }
-        : {
-            defaultStartDate: new Date(Math.min(...allDestructionDates.map((event) => event.date.getTime()))),
-            defaultEndDate: new Date(Math.max(...allDestructionDates.map((event) => event.date.getTime()))),
-          };
+    const defaults = calculateDefaultDateRange(allDestructionDates, startDate, endDate);
 
     // Filter destruction dates based on date filter
-    const filtered =
-      !destructionDateStart && !destructionDateEnd
-        ? allDestructionDates
-        : allDestructionDates.filter((event) => {
-            if (destructionDateStart && event.date < destructionDateStart) return false;
-            if (destructionDateEnd && event.date > destructionDateEnd) return false;
-            return true;
-          });
+    const filtered = filterEventsByDateRange(allDestructionDates, destructionDateStart, destructionDateEnd);
 
     // Calculate adjusted timeline range based on filtered dates
-    const adjusted =
-      filtered.length === 0
-        ? { adjustedStartDate: startDate, adjustedEndDate: endDate }
-        : {
-            adjustedStartDate:
-              destructionDateStart || destructionDateEnd
-                ? new Date(Math.min(...filtered.map((event) => event.date.getTime())))
-                : startDate,
-            adjustedEndDate:
-              destructionDateStart || destructionDateEnd
-                ? new Date(Math.max(...filtered.map((event) => event.date.getTime())))
-                : endDate,
-          };
+    const hasActiveFilter = Boolean(destructionDateStart || destructionDateEnd);
+    const adjusted = calculateAdjustedDateRange(filtered, hasActiveFilter, startDate, endDate);
 
     return {
       ...defaults,
@@ -143,10 +123,9 @@ export function TimelineScrubber({
 
   // D3 time scale (responsive to container width, uses adjusted dates when filtered)
   const timeScale = useMemo(() => {
-    const margin = 50; // Leave space for handles
     return scaleTime()
       .domain([adjustedStartDate, adjustedEndDate])
-      .range([margin, containerWidth - margin]);
+      .range([TIMELINE_CONFIG.MARGIN, containerWidth - TIMELINE_CONFIG.MARGIN]);
   }, [adjustedStartDate, adjustedEndDate, containerWidth]);
 
   // Track if SVG is mounted
@@ -457,7 +436,7 @@ export function TimelineScrubber({
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
-      <div className="relative overflow-visible" style={{ minHeight: '40px' }}>
+      <div className="relative overflow-visible" style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}>
         <svg
           ref={(node) => {
             if (node && node !== svgRef.current) {
@@ -467,7 +446,7 @@ export function TimelineScrubber({
           }}
           key={`timeline-${containerWidth}-${startDate.getTime()}`}
           width="100%"
-          height="40"
+          height={TIMELINE_CONFIG.HEIGHT}
           className="mt-1"
           aria-hidden="true"
         />
@@ -477,8 +456,8 @@ export function TimelineScrubber({
             className="absolute z-[9999] pointer-events-none"
             style={{
               left: `${scrubberPosition}px`,
-              top: "45px",
-              transform: "translateX(-50%)",
+              top: `${TOOLTIP_CONFIG.VERTICAL_OFFSET}px`,
+              transform: `translateX(${TOOLTIP_CONFIG.HORIZONTAL_TRANSFORM})`,
             }}
           >
             <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">

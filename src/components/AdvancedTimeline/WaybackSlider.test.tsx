@@ -451,7 +451,7 @@ describe("WaybackSlider", () => {
 
     it("scrubber tooltip displays current release date", () => {
       const onIndexChange = vi.fn();
-      const { container, getAllByText } = renderWithTheme(
+      const { getAllByText } = renderWithTheme(
         <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 

@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
+import { SITE_MARKER_CONFIG } from "../../constants/timeline";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
 import { SitePopup } from "./SitePopup";
@@ -87,8 +88,8 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
       html: `
         <div class="w-5 h-5 bg-[#ed3039] border-[3px] border-white rounded-full shadow-md"></div>
       `,
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
+      iconSize: SITE_MARKER_CONFIG.ICON_SIZE,
+      iconAnchor: SITE_MARKER_CONFIG.ICON_ANCHOR,
     });
   }, []);
 

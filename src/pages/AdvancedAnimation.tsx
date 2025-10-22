@@ -54,10 +54,21 @@ export function AdvancedAnimation() {
   /**
    * Find the latest Wayback release that occurred BEFORE (or on) the destruction date
    * This shows the satellite imagery from right before the site was destroyed
+   *
+   * @param targetDate - The destruction date to search for
+   * @returns Index of the nearest release, or 0 if no releases available
+   * @throws Never throws - returns 0 for invalid inputs
    */
   const findNearestWaybackRelease = useCallback(
     (targetDate: Date): number => {
+      // Guard: Empty releases array
       if (releases.length === 0) return 0;
+
+      // Guard: Invalid date
+      if (!targetDate || isNaN(targetDate.getTime())) {
+        console.warn('findNearestWaybackRelease: Invalid target date provided, using first release');
+        return 0;
+      }
 
       const targetTime = targetDate.getTime();
       let nearestIndex = 0;
@@ -65,7 +76,15 @@ export function AdvancedAnimation() {
       // Find the LATEST release that occurred BEFORE or ON the target date
       // We iterate through all releases and keep updating to the latest one that's still before/on target
       for (let i = 0; i < releases.length; i++) {
-        const releaseTime = new Date(releases[i].releaseDate).getTime();
+        const releaseDate = new Date(releases[i].releaseDate);
+
+        // Guard: Invalid release date
+        if (isNaN(releaseDate.getTime())) {
+          console.warn(`findNearestWaybackRelease: Invalid release date at index ${i}, skipping`);
+          continue;
+        }
+
+        const releaseTime = releaseDate.getTime();
 
         // Only consider releases that are before or on the target date
         if (releaseTime <= targetTime) {

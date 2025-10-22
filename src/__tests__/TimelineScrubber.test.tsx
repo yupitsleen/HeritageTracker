@@ -241,7 +241,6 @@ describe("TimelineScrubber", () => {
       );
 
       // Check for tooltip positioning style (top: 45px means below timeline)
-      const tooltips = container.querySelectorAll('[style*="45px"]');
       // Tooltip may or may not be visible depending on scrubber position state
       // Just verify container exists
       expect(container).toBeInTheDocument();
@@ -255,7 +254,6 @@ describe("TimelineScrubber", () => {
       );
 
       // Tooltip should have z-[9999] class when present
-      const highZIndexElements = container.querySelectorAll(".z-\\[9999\\]");
       // May or may not be present depending on state, just check container renders
       expect(container).toBeInTheDocument();
     });
