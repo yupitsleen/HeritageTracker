@@ -226,7 +226,8 @@ describe("Dark Mode - Component Rendering", () => {
         />,
         "light"
       );
-      expect(screen.getByText(/Evidence-based documentation/i)).toBeInTheDocument();
+      expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
+      expect(screen.getByText(/UNESCO, Forensic Architecture, Heritage for Peace/i)).toBeInTheDocument();
     });
 
     it("renders in dark mode", () => {
@@ -239,7 +240,8 @@ describe("Dark Mode - Component Rendering", () => {
         />,
         "dark"
       );
-      expect(screen.getByText(/Evidence-based documentation/i)).toBeInTheDocument();
+      expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
+      expect(screen.getByText(/UNESCO, Forensic Architecture, Heritage for Peace/i)).toBeInTheDocument();
     });
   });
 });

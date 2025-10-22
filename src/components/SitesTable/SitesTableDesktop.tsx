@@ -211,8 +211,9 @@ export function SitesTableDesktop({
             <tr>
               {isColumnVisible("name") && (
                 <th
-                  className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+                  className={`pl-2 pr-1 ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("name")}
+                  style={{ width: variant === "compact" ? "200px" : "auto", maxWidth: variant === "compact" ? "200px" : "none" }}
                 >
                   Site Name
                   <SortIcon field="name" />
@@ -296,7 +297,7 @@ export function SitesTableDesktop({
                 }}
               >
                 {isColumnVisible("name") && (
-                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY}`}>
+                  <td className={`pl-2 pr-1 ${COMPACT_TABLE.cellY}`}>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

@@ -50,11 +50,11 @@ export const COMPACT_BUTTON = {
 
 export const COMPACT_TABLE = {
   /** Cell padding - horizontal */
-  cellX: "px-2",
+  cellX: "px-1",
   /** Cell padding - vertical */
   cellY: "py-1.5",
   /** Header padding - horizontal */
-  headerX: "px-2",
+  headerX: "px-1",
   /** Header padding - vertical */
   headerY: "py-2",
   /** Text size */
