@@ -209,16 +209,6 @@ export function SitesTableDesktop({
         <table className={t.table.base}>
           <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
             <tr>
-              {isColumnVisible("name") && (
-                <th
-                  className={`pl-2 pr-1 ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
-                  onClick={() => handleSort("name")}
-                  style={{ width: variant === "compact" ? "200px" : "auto", maxWidth: variant === "compact" ? "200px" : "none" }}
-                >
-                  Site Name
-                  <SortIcon field="name" />
-                </th>
-              )}
               {isColumnVisible("type") && (
                 <th
                   className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none text-center transition-colors duration-200 hover:bg-gray-700/30`}
@@ -227,6 +217,16 @@ export function SitesTableDesktop({
                 >
                   Type
                   <SortIcon field="type" />
+                </th>
+              )}
+              {isColumnVisible("name") && (
+                <th
+                  className={`pl-2 pr-1 ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+                  onClick={() => handleSort("name")}
+                  style={{ width: variant === "compact" ? "200px" : "auto", maxWidth: variant === "compact" ? "200px" : "none" }}
+                >
+                  Site Name
+                  <SortIcon field="name" />
                 </th>
               )}
               {isColumnVisible("status") && (
@@ -296,6 +296,15 @@ export function SitesTableDesktop({
                   onSiteHighlight?.(site.id);
                 }}
               >
+                {isColumnVisible("type") && (
+                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} text-center`}>
+                    <Tooltip content={getSiteTypeLabel(site.type)}>
+                      <span className="inline-flex items-center justify-center">
+                        <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
+                      </span>
+                    </Tooltip>
+                  </td>
+                )}
                 {isColumnVisible("name") && (
                   <td className={`pl-2 pr-1 ${COMPACT_TABLE.cellY}`}>
                     <button
@@ -315,15 +324,6 @@ export function SitesTableDesktop({
                         </div>
                       )}
                     </button>
-                  </td>
-                )}
-                {isColumnVisible("type") && (
-                  <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} text-center`}>
-                    <Tooltip content={getSiteTypeLabel(site.type)}>
-                      <span className="inline-flex items-center justify-center">
-                        <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
-                      </span>
-                    </Tooltip>
                   </td>
                 )}
                 {isColumnVisible("status") && (
