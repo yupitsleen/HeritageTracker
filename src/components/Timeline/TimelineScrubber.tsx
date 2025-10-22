@@ -71,6 +71,7 @@ export function TimelineScrubber({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
+  const [scrubberPosition, setScrubberPosition] = useState<number | null>(null);
 
   // Extract timeline data using custom hook
   const { events: allDestructionDates } = useTimelineData(sites);
@@ -161,6 +162,7 @@ export function TimelineScrubber({
           // Highlight the site when timeline dot is clicked
           onSiteHighlight(event.siteId);
         } : undefined,
+        onScrubberPositionChange: setScrubberPosition,
       }
     );
 
@@ -384,7 +386,28 @@ export function TimelineScrubber({
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
-      <svg ref={svgRef} width="100%" height="40" className="mt-1" aria-hidden="true" />
+      <div className="relative">
+        {/* Floating scrubber date tooltip */}
+        {scrubberPosition !== null && (
+          <div
+            className="absolute z-[9999] pointer-events-none"
+            style={{
+              left: `${scrubberPosition}px`,
+              top: "-20px",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
+              {currentTimestamp.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </div>
+          </div>
+        )}
+        <svg ref={svgRef} width="100%" height="40" className="mt-1" aria-hidden="true" />
+      </div>
 
       {/* Keyboard shortcuts hint */}
       <div className={`mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>

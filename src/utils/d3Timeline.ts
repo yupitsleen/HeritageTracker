@@ -59,6 +59,7 @@ export class D3TimelineRenderer {
   private onTimestampChange: (date: Date) => void;
   private onPause: () => void;
   private onSiteHighlight?: (event: TimelineEvent) => void;
+  private onScrubberPositionChange?: (position: number) => void;
   private highlightedSiteId: string | null = null;
 
   constructor(
@@ -69,6 +70,7 @@ export class D3TimelineRenderer {
       onTimestampChange: (date: Date) => void;
       onPause: () => void;
       onSiteHighlight?: (event: TimelineEvent) => void;
+      onScrubberPositionChange?: (position: number) => void;
     }
   ) {
     this.svg = select(svgElement);
@@ -77,6 +79,7 @@ export class D3TimelineRenderer {
     this.onTimestampChange = callbacks.onTimestampChange;
     this.onPause = callbacks.onPause;
     this.onSiteHighlight = callbacks.onSiteHighlight;
+    this.onScrubberPositionChange = callbacks.onScrubberPositionChange;
   }
 
   /**
@@ -234,12 +237,19 @@ export class D3TimelineRenderer {
 
     const scrubberGroup = this.svg.append("g").attr("class", "scrubber-group");
 
+    const xPosition = this.timeScale(currentTimestamp);
+
+    // Notify React component of scrubber position for floating tooltip
+    if (this.onScrubberPositionChange) {
+      this.onScrubberPositionChange(xPosition);
+    }
+
     scrubberGroup
       .append("line")
       .attr("class", "scrubber-line")
-      .attr("x1", this.timeScale(currentTimestamp))
+      .attr("x1", xPosition)
       .attr("y1", 10)
-      .attr("x2", this.timeScale(currentTimestamp))
+      .attr("x2", xPosition)
       .attr("y2", height - 10)
       .attr("stroke", colors.scrubberLine)
       .attr("stroke-width", 3);
@@ -247,7 +257,7 @@ export class D3TimelineRenderer {
     const handle = scrubberGroup
       .append("circle")
       .attr("class", "scrubber-handle")
-      .attr("cx", this.timeScale(currentTimestamp))
+      .attr("cx", xPosition)
       .attr("cy", height / 2)
       .attr("r", scrubberRadius)
       .attr("fill", colors.scrubberHandle)
@@ -271,6 +281,12 @@ export class D3TimelineRenderer {
           Math.min(this.timeScale.range()[1], event.x)
         );
         const newDate = this.timeScale.invert(x);
+
+        // Update scrubber position for React tooltip
+        if (this.onScrubberPositionChange) {
+          this.onScrubberPositionChange(x);
+        }
+
         this.onTimestampChange(newDate);
       })
       .on("end", function () {
