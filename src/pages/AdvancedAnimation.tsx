@@ -41,8 +41,16 @@ export function AdvancedAnimation() {
   // Fetch Wayback releases
   const { releases, isLoading, error } = useWaybackReleases();
 
-  // Wayback state
+  // Wayback state - will be set to most recent release once loaded
   const [currentReleaseIndex, setCurrentReleaseIndex] = useState(0);
+
+  // Set initial release to most recent (last in array) when releases are loaded
+  useEffect(() => {
+    if (releases.length > 0 && currentReleaseIndex === 0) {
+      // Only set on initial load (when still at index 0)
+      setCurrentReleaseIndex(releases.length - 1);
+    }
+  }, [releases, currentReleaseIndex]);
 
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
