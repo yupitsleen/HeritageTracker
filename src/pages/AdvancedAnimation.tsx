@@ -5,6 +5,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
 import { Modal } from "../components/Modal/Modal";
+import { AppFooter } from "../components/Layout/AppFooter";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
@@ -22,6 +23,9 @@ const TimelineScrubber = lazy(() =>
 const SiteDetailPanel = lazy(() =>
   import("../components/SiteDetail/SiteDetailPanel").then((m) => ({ default: m.SiteDetailPanel }))
 );
+const About = lazy(() => import("../components/About/About").then(m => ({ default: m.About })));
+const StatsDashboard = lazy(() => import("../components/Stats/StatsDashboard").then(m => ({ default: m.StatsDashboard })));
+const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 /**
  * Advanced Animation Page
@@ -48,6 +52,11 @@ export function AdvancedAnimation() {
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
   const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(false);
+
+  // Modal states for footer
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   // Get current release
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
@@ -310,6 +319,65 @@ export function AdvancedAnimation() {
           </Suspense>
         )}
       </Modal>
+
+      {/* Statistics Modal */}
+      <Modal
+        isOpen={isStatsOpen}
+        onClose={() => setIsStatsOpen(false)}
+        zIndex={10001}
+      >
+        <Suspense
+          fallback={
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
+              <div>Loading statistics...</div>
+            </div>
+          }
+        >
+          <StatsDashboard sites={mockSites} />
+        </Suspense>
+      </Modal>
+
+      {/* About Modal */}
+      <Modal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
+        zIndex={10001}
+      >
+        <Suspense
+          fallback={
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
+              <div>Loading about...</div>
+            </div>
+          }
+        >
+          <About />
+        </Suspense>
+      </Modal>
+
+      {/* Donate Modal */}
+      <Modal
+        isOpen={isDonateOpen}
+        onClose={() => setIsDonateOpen(false)}
+        zIndex={10001}
+      >
+        <Suspense
+          fallback={
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
+              <div>Loading...</div>
+            </div>
+          }
+        >
+          <DonateModal />
+        </Suspense>
+      </Modal>
+
+      {/* Footer - Desktop only */}
+      <AppFooter
+        onOpenDonate={() => setIsDonateOpen(true)}
+        onOpenStats={() => setIsStatsOpen(true)}
+        onOpenAbout={() => setIsAboutOpen(true)}
+        isMobile={false}
+      />
     </div>
   );
 }
