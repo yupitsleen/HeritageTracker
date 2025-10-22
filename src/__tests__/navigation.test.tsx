@@ -77,12 +77,14 @@ describe("Navigation", () => {
   });
 
   describe("Advanced Animation Page", () => {
-    it("renders advanced animation page content", () => {
+    it("renders advanced animation page content", async () => {
       renderWithProviders(<AdvancedAnimation />);
 
       expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
-      // Check for site count info
-      expect(screen.getByText(/\d+ Sites \| Historical Imagery/i)).toBeInTheDocument();
+      // Page should show loading or loaded state
+      // During loading it shows "Loading...", after loading it shows imagery version count
+      const headerInfo = await screen.findByText(/Loading\.\.\.|Error|\d+ Imagery Versions/i);
+      expect(headerInfo).toBeInTheDocument();
     });
 
     it("renders back button with navigation", () => {

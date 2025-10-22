@@ -5,6 +5,7 @@ import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
+import { useWaybackReleases } from "../hooks/useWaybackReleases";
 
 // Lazy load the map and timeline components
 const SiteDetailView = lazy(() =>
@@ -16,18 +17,28 @@ const TimelineScrubber = lazy(() =>
 
 /**
  * Advanced Animation Page
- * Full-screen satellite map with timeline scrubber
- * Reuses the same components as the home page for consistency
+ * Full-screen satellite map with Wayback imagery (186 historical versions)
+ * Timeline scrubber for site filtering
+ * Reuses SiteDetailView and TimelineScrubber from home page
  */
 export function AdvancedAnimation() {
   const { isDark } = useTheme();
   const t = useThemeClasses();
   const navigate = useNavigate();
 
-  // Local state for filtering and selection
+  // Fetch Wayback releases
+  const { releases, isLoading, error } = useWaybackReleases();
+
+  // Wayback state
+  const [currentReleaseIndex, setCurrentReleaseIndex] = useState(0);
+
+  // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
   const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
+
+  // Get current release
+  const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
 
   return (
     <div
@@ -61,7 +72,9 @@ export function AdvancedAnimation() {
 
           {/* Right: Info */}
           <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-400">
-            {mockSites.length} Sites | Historical Imagery
+            {isLoading && "Loading..."}
+            {error && "Error"}
+            {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Sites`}
           </div>
         </div>
 
@@ -74,36 +87,89 @@ export function AdvancedAnimation() {
         </div>
       </header>
 
-      {/* Main content - Full screen satellite map + timeline */}
+      {/* Main content */}
       <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2">
-        {/* Full-screen satellite map */}
-        <div
-          className={`flex-1 min-h-0 border-2 ${
-            isDark ? "border-white" : "border-black"
-          } rounded shadow-xl overflow-hidden`}
-        >
-          <Suspense fallback={<SkeletonMap />}>
-            <SiteDetailView
-              sites={mockSites}
-              highlightedSiteId={highlightedSiteId}
-            />
-          </Suspense>
-        </div>
+        {/* Loading state */}
+        {isLoading && (
+          <div className={`flex-1 flex items-center justify-center rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+            <div className="text-center">
+              <div className={`text-xl mb-2 ${t.text.heading}`}>Loading Wayback Archive...</div>
+              <div className={`text-sm ${t.text.muted}`}>Fetching 186 historical imagery versions...</div>
+            </div>
+          </div>
+        )}
 
-        {/* Timeline Scrubber - Same as home page */}
-        <div className="flex-shrink-0 h-[100px]">
-          <Suspense fallback={<SkeletonMap />}>
-            <TimelineScrubber
-              sites={mockSites}
-              destructionDateStart={destructionDateStart}
-              destructionDateEnd={destructionDateEnd}
-              onDestructionDateStartChange={setDestructionDateStart}
-              onDestructionDateEndChange={setDestructionDateEnd}
-              highlightedSiteId={highlightedSiteId}
-              onSiteHighlight={setHighlightedSiteId}
-            />
-          </Suspense>
-        </div>
+        {/* Error state */}
+        {error && (
+          <div className={`flex-1 flex items-center justify-center rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+            <div className="text-center">
+              <div className="text-xl font-bold mb-2 text-red-600">Error Loading Archive</div>
+              <div className={`text-sm mb-4 ${t.text.muted}`}>{error}</div>
+              <Button onClick={() => window.location.reload()} variant="primary" size="sm">
+                Retry
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Success state - Map + Wayback controls */}
+        {!isLoading && !error && releases.length > 0 && (
+          <>
+            {/* Full-screen satellite map with Wayback imagery */}
+            <div
+              className={`flex-1 min-h-0 border-2 ${
+                isDark ? "border-white" : "border-black"
+              } rounded shadow-xl overflow-hidden`}
+            >
+              <Suspense fallback={<SkeletonMap />}>
+                <SiteDetailView
+                  sites={mockSites}
+                  highlightedSiteId={highlightedSiteId}
+                  customTileUrl={currentRelease?.tileUrl}
+                  customMaxZoom={currentRelease?.maxZoom}
+                />
+              </Suspense>
+            </div>
+
+            {/* Wayback Release Selector */}
+            <div className={`flex-shrink-0 px-4 py-2 rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+              <div className="flex items-center gap-4">
+                <span className={`text-sm font-semibold ${t.text.body}`}>
+                  Imagery Date:
+                </span>
+                <input
+                  type="range"
+                  min="0"
+                  max={releases.length - 1}
+                  value={currentReleaseIndex}
+                  onChange={(e) => setCurrentReleaseIndex(Number(e.target.value))}
+                  className="flex-1"
+                />
+                <span className={`text-sm font-mono ${t.text.body} min-w-[100px] text-right`}>
+                  {currentRelease?.releaseDate || "Unknown"}
+                </span>
+                <span className={`text-xs ${t.text.muted}`}>
+                  {currentReleaseIndex + 1} / {releases.length}
+                </span>
+              </div>
+            </div>
+
+            {/* Timeline Scrubber - Site filtering */}
+            <div className="flex-shrink-0 h-[100px]">
+              <Suspense fallback={<SkeletonMap />}>
+                <TimelineScrubber
+                  sites={mockSites}
+                  destructionDateStart={destructionDateStart}
+                  destructionDateEnd={destructionDateEnd}
+                  onDestructionDateStartChange={setDestructionDateStart}
+                  onDestructionDateEndChange={setDestructionDateEnd}
+                  highlightedSiteId={highlightedSiteId}
+                  onSiteHighlight={setHighlightedSiteId}
+                />
+              </Suspense>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

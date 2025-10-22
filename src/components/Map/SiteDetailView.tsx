@@ -12,6 +12,10 @@ import "leaflet/dist/leaflet.css";
 interface SiteDetailViewProps {
   sites: GazaSite[];
   highlightedSiteId: string | null;
+  // Optional custom tile URL (e.g., for Wayback imagery)
+  customTileUrl?: string;
+  // Optional custom max zoom for custom tiles
+  customMaxZoom?: number;
 }
 
 /**
@@ -21,7 +25,7 @@ interface SiteDetailViewProps {
  * Supports historical imagery comparison (2014, Aug 2023, Current)
  * Can sync imagery periods with timeline playback when enabled
  */
-export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps) {
+export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, customMaxZoom }: SiteDetailViewProps) {
   // Get animation context for timeline sync
   const { currentTimestamp, syncActive } = useAnimation();
 
@@ -43,9 +47,18 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
     return sites.find((site) => site.id === highlightedSiteId) || null;
   }, [sites, highlightedSiteId]);
 
-  // Get tile URL and maxZoom for selected time period
-  // Direct constant lookup is faster than useMemo for static HISTORICAL_IMAGERY data
-  const { url: tileUrl, maxZoom: periodMaxZoom } = HISTORICAL_IMAGERY[selectedPeriod];
+  // Get tile URL and maxZoom
+  // If custom URL provided (e.g., Wayback imagery), use that instead of period-based imagery
+  const { url: tileUrl, maxZoom: periodMaxZoom } = useMemo(() => {
+    if (customTileUrl) {
+      return {
+        url: customTileUrl,
+        maxZoom: customMaxZoom || 19,
+      };
+    }
+    // Otherwise use standard historical imagery periods
+    return HISTORICAL_IMAGERY[selectedPeriod];
+  }, [customTileUrl, customMaxZoom, selectedPeriod]);
 
   // Determine map center and zoom level (clamped to period's max zoom)
   const { center, zoom } = useMemo(() => {
@@ -77,8 +90,10 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
 
   return (
     <div className="relative h-full">
-      {/* Time period toggle */}
-      <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
+      {/* Time period toggle - hide when using custom Wayback imagery */}
+      {!customTileUrl && (
+        <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
+      )}
 
       <MapContainer
         center={center}
