@@ -3,14 +3,14 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 329 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/mapAnimationImprovements (Content reduction complete) | main (production)
+**Current:** 45 sites | 432 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/advancedMapFixes (Advanced Timeline features + code quality improvements) | main (production)
 
 ### Essential Commands
 
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 329 tests - MUST pass before commit
+npm test        # 432 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -537,7 +537,53 @@ useEffect(() => {
 
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feat/mapAnimationImprovements - Current Branch):**
+**Completed (feat/advancedMapFixes - Current Branch):**
+
+- [x] **Advanced Timeline Page Enhancements** ✅ (Oct 22)
+  - **Previous/Next Navigation**: Added buttons to navigate through timeline destruction events
+    - Positioned in center, replacing "Current: <date>" display in advanced mode
+    - Navigate through chronologically ordered destruction events
+    - Highlight site when clicking Previous/Next
+  - **Leaflet Popup on Map**: Click site markers to show popup with site details
+    - Same popup functionality as home page
+    - "View More" button opens detailed modal
+    - Integrated with SiteDetailPanel for full site information
+  - **Sync Map Removed from Home**: Simplified home page by removing "Sync map version" button
+    - Feature only available on Advanced Timeline page (better implementation)
+    - Reduces UI clutter on home page
+  - **Testing**: Added 16 new tests (432 total, up from 416)
+    - TimelineScrubber: 6 tests for Previous/Next navigation
+    - SiteDetailView: 5 tests for popup functionality
+    - AdvancedAnimation: 4 tests for modal integration
+    - Sync Map: 1 test to verify button only shows in advanced mode
+  - **Key commits**: Multiple commits for feature additions
+  - **Key files**: TimelineScrubber.tsx, SiteDetailView.tsx, AdvancedAnimation.tsx
+
+- [x] **Code Quality Improvements** ✅ (Oct 22)
+  - **Purpose**: Comprehensive code review and quality enhancements
+  - **High Priority Fixes**:
+    - Removed unused `syncMapEnabled` variables from TimelineScrubber
+    - Added error handling with guard clauses to `findNearestWaybackRelease`
+    - Extracted magic numbers to [src/constants/timeline.ts](src/constants/timeline.ts)
+      - TIMELINE_CONFIG (margin, height, min-height)
+      - TOOLTIP_CONFIG (positioning values)
+      - SITE_MARKER_CONFIG (icon dimensions)
+    - Refactored complex `timelineData` useMemo into testable utility functions
+      - Created [src/utils/timelineCalculations.ts](src/utils/timelineCalculations.ts)
+      - 3 functions: `calculateDefaultDateRange`, `filterEventsByDateRange`, `calculateAdjustedDateRange`
+  - **Medium Priority Fixes**:
+    - Added explicit TypeScript callback types
+      - `DateChangeHandler`, `SiteHighlightHandler`, `ToggleHandler`, `IndexChangeHandler`
+      - `AdvancedTimelineMode` interface
+    - Added JSDoc documentation to all public functions
+  - **Low Priority Fixes**:
+    - Removed debug console.log from production code
+    - Wrapped inline event handlers in useCallback (`handleBackClick`, `handleRetryClick`)
+  - **Testing**: All 432 tests passing, lint clean
+  - **Key commits**: c90412c (constants/utils), 1bfdba6 (types/JSDoc), bc1577d (console.log), 5438067 (useCallback)
+  - **Benefits**: Better maintainability, type safety, error handling, and performance
+
+**Completed (feat/mapAnimationImprovements - Merged):**
 
 - [x] **Modal Content Reduction** ✅ (Oct 22)
   - **Purpose**: Reduce information overload across Help Palestine, Statistics, and About modals
@@ -697,5 +743,5 @@ useEffect(() => {
 ---
 
 **Last Updated:** October 22, 2025
-**Version:** 1.14.0-dev
-**Branch:** feat/mapAnimationImprovements (Modal content reduction complete) | main (production)
+**Version:** 1.15.0-dev
+**Branch:** feat/advancedMapFixes (Advanced Timeline features + code quality improvements complete) | main (production)
