@@ -7,29 +7,14 @@ export function LegalFrameworkSection() {
   const t = useThemeClasses();
 
   return (
-    <section className="hidden md:block mb-8">
-      <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Legal & Ethical Framework</h2>
-      <div className={`space-y-3 ${t.text.body} text-sm leading-relaxed`}>
-        <p>
-          <strong>Documentation:</strong> This project presents factual information from
-          verified sources.
-        </p>
-        <p>
-          <strong>Full attribution:</strong> Every claim is sourced with citations, dates, and
-          URLs for independent verification.
-        </p>
-        <p>
-          <strong>Cultural sensitivity:</strong> We approach this documentation with respect for
-          Palestinian heritage and the communities affected by these losses.
-        </p>
-        <p>
-          <strong>Educational purpose:</strong> All content is used under fair use principles
-          for educational and historical documentation purposes.
-        </p>
-        <p>
-          <strong>No personal data:</strong> This project does not collect or store any personal
-          information about visitors.
-        </p>
+    <section className="hidden md:block mb-6">
+      <h2 className={`text-lg font-bold ${t.text.heading} mb-3`}>Legal & Ethical Framework</h2>
+      <div className={`space-y-1.5 ${t.text.body} text-xs leading-relaxed`}>
+        <p><strong>Documentation:</strong> Factual information from verified sources.</p>
+        <p><strong>Attribution:</strong> All claims sourced with citations, dates, and URLs.</p>
+        <p><strong>Cultural sensitivity:</strong> Respectful documentation of Palestinian heritage.</p>
+        <p><strong>Educational purpose:</strong> Fair use for educational and historical documentation.</p>
+        <p><strong>Privacy:</strong> No personal data collected or stored.</p>
       </div>
     </section>
   );

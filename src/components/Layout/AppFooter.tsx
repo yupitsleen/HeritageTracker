@@ -18,23 +18,22 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
 
   return (
     <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg z-[5] opacity-50 transition-colors duration-200 ${t.flag.greenBg}`}>
-      {/* Desktop footer - full text with more height */}
+      {/* Desktop footer - ultra compact */}
       {!isMobile && (
-        <div className="py-4">
+        <div className="py-1.5">
           <div className={cn(components.container.base)}>
-            <p className="text-sm text-center">
-              Heritage Tracker • Evidence-based documentation • All data verified by UNESCO,
-              Forensic Architecture, and Heritage for Peace
+            <p className="text-[10px] text-center">
+              Heritage Tracker • UNESCO, Forensic Architecture, Heritage for Peace
             </p>
           </div>
         </div>
       )}
 
-      {/* Mobile footer - site name with navigation links */}
+      {/* Mobile footer - compact */}
       {isMobile && (
-        <div className="py-2">
+        <div className="py-1.5">
           <div className={cn(components.container.base)}>
-            <p className="text-xs text-center font-semibold">
+            <p className="text-[10px] text-center font-semibold">
               Heritage Tracker •{" "}
               <button
                 onClick={onOpenDonate}

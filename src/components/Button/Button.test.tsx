@@ -94,28 +94,36 @@ describe('Button', () => {
   });
 
   describe('Sizes', () => {
+    it('renders extra small size', () => {
+      renderWithTheme(<Button size="xs">Extra Small</Button>);
+      const button = screen.getByRole('button');
+      expect(button.className).toContain('px-2');
+      expect(button.className).toContain('py-0.5');
+      expect(button.className).toContain('text-xs');
+    });
+
     it('renders small size', () => {
       renderWithTheme(<Button size="sm">Small</Button>);
       const button = screen.getByRole('button');
       expect(button.className).toContain('px-3');
-      expect(button.className).toContain('py-1.5');
-      expect(button.className).toContain('text-sm');
+      expect(button.className).toContain('py-1');
+      expect(button.className).toContain('text-xs');
     });
 
     it('renders medium size (default)', () => {
       renderWithTheme(<Button size="md">Medium</Button>);
       const button = screen.getByRole('button');
       expect(button.className).toContain('px-4');
-      expect(button.className).toContain('py-2');
-      expect(button.className).toContain('text-base');
+      expect(button.className).toContain('py-1.5');
+      expect(button.className).toContain('text-sm');
     });
 
     it('renders large size', () => {
       renderWithTheme(<Button size="lg">Large</Button>);
       const button = screen.getByRole('button');
       expect(button.className).toContain('px-6');
-      expect(button.className).toContain('py-3');
-      expect(button.className).toContain('text-lg');
+      expect(button.className).toContain('py-2');
+      expect(button.className).toContain('text-base');
     });
   });
 

@@ -1,6 +1,7 @@
 // NOTE: react-window types are currently incompatible with production build (TypeScript error)
 // The library exports 'List' but TypeScript definitions expect 'FixedSizeList'
-// This component is prepared for future use (100+ sites) but not activated yet (current: 45 sites)
+// This component is prepared for future use when site count exceeds VIRTUAL_SCROLL_THRESHOLD (50)
+// Currently not activated because standard rendering performs well for current dataset
 // TODO: Resolve react-window import issue or switch to react-virtualized when needed
 
 import type { GazaSite } from "../../types";

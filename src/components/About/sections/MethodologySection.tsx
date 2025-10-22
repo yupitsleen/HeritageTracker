@@ -7,29 +7,16 @@ export function MethodologySection() {
   const t = useThemeClasses();
 
   return (
-    <section className="hidden md:block mb-8">
-      <h2 className={`text-2xl font-bold ${t.text.heading} mb-4`}>Methodology</h2>
-      <p className={`${t.text.body} leading-relaxed mb-4`}>
-        Every site in this database has been verified by multiple authoritative sources. We only
-        include sites with:
+    <section className="hidden md:block mb-6">
+      <h2 className={`text-lg font-bold ${t.text.heading} mb-3`}>Methodology</h2>
+      <p className={`text-xs ${t.text.body} leading-relaxed mb-2`}>
+        Every site has been verified by authoritative sources. Requirements:
       </p>
-      <ul className={`list-disc list-inside ${t.text.body} space-y-2 mb-4`}>
-        <li>
-          <strong>Multiple independent verifications</strong> from UNESCO, Forensic
-          Architecture, or Heritage for Peace
-        </li>
-        <li>
-          <strong>Documented coordinates</strong> (satellite imagery or archaeological records)
-        </li>
-        <li>
-          <strong>Verified destruction dates</strong> with supporting evidence
-        </li>
-        <li>
-          <strong>Published sources</strong> with URLs and dates for full transparency
-        </li>
-        <li>
-          <strong>Historical significance</strong> documented by cultural heritage experts
-        </li>
+      <ul className={`list-disc list-inside text-xs ${t.text.body} space-y-1 mb-3`}>
+        <li><strong>Multiple verifications</strong> from UNESCO, Forensic Architecture, or Heritage for Peace</li>
+        <li><strong>Documented coordinates</strong> via satellite imagery or archaeological records</li>
+        <li><strong>Verified destruction dates</strong> with supporting evidence</li>
+        <li><strong>Published sources</strong> with URLs for transparency</li>
       </ul>
     </section>
   );

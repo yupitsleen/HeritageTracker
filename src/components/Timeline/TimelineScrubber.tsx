@@ -231,15 +231,15 @@ export function TimelineScrubber({
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center mb-3 gap-4">
+      <div className="flex items-center mb-2 gap-2">
         {/* Left: Play/Pause/Reset/Sync Map/Speed */}
-        <div className="flex items-center gap-2 flex-1">
+        <div className="flex items-center gap-1.5 flex-1">
           {!isPlaying ? (
             <Button
               onClick={play}
               variant="primary"
-              size="sm"
-              icon={<PlayIcon className="w-4 h-4" />}
+              size="xs"
+              icon={<PlayIcon className="w-3 h-3" />}
               aria-label="Play timeline animation"
             >
               Play
@@ -248,8 +248,8 @@ export function TimelineScrubber({
             <Button
               onClick={pause}
               variant="danger"
-              size="sm"
-              icon={<PauseIcon className="w-4 h-4" />}
+              size="xs"
+              icon={<PauseIcon className="w-3 h-3" />}
               aria-label="Pause timeline animation"
             >
               Pause
@@ -259,8 +259,8 @@ export function TimelineScrubber({
             onClick={reset}
             disabled={isAtStart}
             variant="secondary"
-            size="sm"
-            icon={<ArrowPathIcon className="w-4 h-4" />}
+            size="xs"
+            icon={<ArrowPathIcon className="w-3 h-3" />}
             aria-label="Reset timeline to start"
           >
             Reset
@@ -270,7 +270,7 @@ export function TimelineScrubber({
           <Button
             onClick={() => setSyncMapEnabled(!syncMapEnabled)}
             variant={syncMapEnabled ? "primary" : "secondary"}
-            size="sm"
+            size="xs"
             aria-label={syncMapEnabled ? "Disable map sync with timeline" : "Enable map sync with timeline"}
             title="When enabled, satellite imagery switches to match timeline date (2014 → Aug 2023 → Current)"
           >
@@ -278,8 +278,8 @@ export function TimelineScrubber({
           </Button>
 
           {/* Speed control */}
-          <div className="flex items-center gap-2">
-            <label htmlFor="speed-control" className={`text-sm font-medium ${t.text.body}`}>
+          <div className="flex items-center gap-1.5">
+            <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
               Speed:
             </label>
             <select
@@ -305,9 +305,9 @@ export function TimelineScrubber({
         </div>
 
         {/* Right: Date Filter */}
-        <div className="flex items-center gap-2 flex-1 justify-end">
-          <label className={`text-xs font-semibold ${t.text.heading}`}>
-            Destruction Date:
+        <div className="flex items-center gap-1.5 flex-1 justify-end">
+          <label className={`text-[10px] font-semibold ${t.text.heading}`}>
+            Date:
           </label>
           <Input
             variant="date"
@@ -316,9 +316,9 @@ export function TimelineScrubber({
               onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
             }}
             placeholder="From"
-            className="flex-none w-32 text-xs py-1.5 px-2"
+            className="flex-none w-28 text-[10px] py-0.5 px-1.5"
           />
-          <span className={`text-xs font-medium ${t.text.body}`}>to</span>
+          <span className={`text-[10px] font-medium ${t.text.body}`}>to</span>
           <Input
             variant="date"
             value={(destructionDateEnd || defaultEndDate).toISOString().split("T")[0]}
@@ -326,7 +326,7 @@ export function TimelineScrubber({
               onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
             }}
             placeholder="To"
-            className="flex-none w-32 text-xs py-1.5 px-2"
+            className="flex-none w-28 text-[10px] py-0.5 px-1.5"
           />
 
           {/* Clear Date Filter button - always reserve space, only visible when filter is active */}
@@ -343,16 +343,16 @@ export function TimelineScrubber({
             aria-label="Clear date filter"
             disabled={!destructionDateStart && !destructionDateEnd}
           >
-            Clear Date Filter
+            Clear
           </button>
         </div>
       </div>
 
-      {/* D3 Timeline SVG */}
-      <svg ref={svgRef} width="100%" height="80" aria-hidden="true" />
+      {/* D3 Timeline SVG - Ultra compact */}
+      <svg ref={svgRef} width="100%" height="40" className="mt-1" aria-hidden="true" />
 
       {/* Keyboard shortcuts hint */}
-      <div className={`mt-2 text-xs text-center ${t.text.muted}`}>
+      <div className={`mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
         Keyboard: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
         {" • "}
         <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step

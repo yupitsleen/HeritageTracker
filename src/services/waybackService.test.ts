@@ -14,7 +14,7 @@ describe("waybackService", () => {
       // Should return an array
       expect(Array.isArray(releases)).toBe(true);
 
-      // Should have multiple releases (fallback has 3, real API has 150+)
+      // Should have multiple releases (API provides many historical versions)
       expect(releases.length).toBeGreaterThanOrEqual(3);
     });
 

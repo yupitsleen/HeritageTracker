@@ -49,12 +49,15 @@ export function MapCenterHandler({
 }
 
 /**
- * ZoomLogger - Logs zoom level changes (for debugging)
+ * ZoomLogger - Logs zoom level changes (for debugging in development mode only)
  */
 export function ZoomLogger() {
   const map = useMap();
 
   useEffect(() => {
+    // Only log in development mode
+    if (!import.meta.env.DEV) return;
+
     const logZoom = () => {
       console.log('🔍 Current Zoom Level:', map.getZoom());
     };

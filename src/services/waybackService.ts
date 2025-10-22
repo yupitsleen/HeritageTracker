@@ -24,6 +24,9 @@ export interface WaybackRelease {
 // ESRI Wayback API endpoint
 const WAYBACK_API_URL = "https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json";
 
+// Fallback date when parsing fails - Unix epoch as clear "unknown" indicator
+const UNKNOWN_RELEASE_DATE = "1970-01-01";
+
 /**
  * Fetches all available Wayback imagery releases from ESRI
  * Returns sorted array from oldest to newest
@@ -33,7 +36,7 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
     const response = await fetch(WAYBACK_API_URL);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch Wayback releases: ${response.statusText}`);
+      throw new Error(`Wayback API request failed: ${response.status} ${response.statusText}`);
     }
 
     // API returns object keyed by releaseNum, not an array
@@ -43,7 +46,10 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
     const releases: WaybackRelease[] = Object.entries(data).map(([releaseNum, item]) => {
       // Extract date from title (format: "World Imagery (Wayback 2025-09-25)")
       const dateMatch = item.itemTitle.match(/(\d{4}-\d{2}-\d{2})/);
-      const releaseDate = dateMatch ? dateMatch[1] : new Date().toISOString().split("T")[0];
+      if (!dateMatch) {
+        console.error(`CRITICAL: Failed to parse Wayback release date from: "${item.itemTitle}". Using fallback date ${UNKNOWN_RELEASE_DATE}.`);
+      }
+      const releaseDate = dateMatch ? dateMatch[1] : UNKNOWN_RELEASE_DATE;
 
       // Convert {level}/{row}/{col} to {z}/{y}/{x} for Leaflet
       const tileUrl = item.itemURL.replace('{level}', '{z}').replace('{row}', '{y}').replace('{col}', '{x}');
@@ -62,54 +68,42 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
 
     return releases;
   } catch (error) {
-    console.error("Error fetching Wayback releases:", error);
-    // Return fallback data with our current 3 periods
-    return [
-      {
-        releaseNum: 10,
-        releaseDate: "2014-02-20",
-        label: "2014-02-20",
-        tileUrl: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
-        maxZoom: 17,
-      },
-      {
-        releaseNum: 64776,
-        releaseDate: "2023-08-31",
-        label: "2023-08-31",
-        tileUrl: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/64776/{z}/{y}/{x}",
-        maxZoom: 18,
-      },
-      {
-        releaseNum: 99999,
-        releaseDate: new Date().toISOString().split("T")[0],
-        label: "Current",
-        tileUrl: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        maxZoom: 19,
-      },
-    ];
+    // Log technical details for debugging
+    console.error("Wayback API error:", error);
+    // Re-throw technical error - context layer will transform to user-friendly message
+    throw error;
   }
+}
+
+/**
+ * Finds the index of the Wayback release closest to a specific date
+ * Returns the index in the releases array
+ */
+export function findClosestReleaseIndex(
+  releases: WaybackRelease[],
+  targetDate: string | Date
+): number {
+  const targetTime = new Date(targetDate).getTime();
+  let closestIndex = 0;
+  let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
+
+  for (let i = 1; i < releases.length; i++) {
+    const releaseTime = new Date(releases[i].releaseDate).getTime();
+    const diff = Math.abs(releaseTime - targetTime);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closestIndex = i;
+    }
+  }
+
+  return closestIndex;
 }
 
 /**
  * Gets the Wayback release closest to a specific date
  */
 export function getClosestRelease(releases: WaybackRelease[], targetDate: Date): WaybackRelease {
-  const targetTime = targetDate.getTime();
-
-  let closest = releases[0];
-  let minDiff = Math.abs(new Date(releases[0].releaseDate).getTime() - targetTime);
-
-  for (const release of releases) {
-    const releaseTime = new Date(release.releaseDate).getTime();
-    const diff = Math.abs(releaseTime - targetTime);
-
-    if (diff < minDiff) {
-      minDiff = diff;
-      closest = release;
-    }
-  }
-
-  return closest;
+  return releases[findClosestReleaseIndex(releases, targetDate)];
 }
 
 /**

@@ -140,20 +140,80 @@ export function useThemeClasses() {
      * Timeline component classes
      */
     timeline: {
-      /** Timeline container */
+      /** Timeline container - Ultra compact */
       container: isDark
-        ? "backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 bg-[#000000]/95"
-        : "backdrop-blur-sm border-2 border-[#000000] rounded-lg p-3 shadow-2xl-dark transition-colors duration-200 bg-white/95",
+        ? "backdrop-blur-sm border border-[#000000] rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-[#000000]/95"
+        : "backdrop-blur-sm border border-[#000000] rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-white/95",
       /** Current date display */
-      currentDate: isDark ? "text-sm font-semibold text-center flex-1 text-[#fefefe]" : "text-sm font-semibold text-center flex-1",
+      currentDate: isDark ? "text-xs font-semibold text-center flex-1 text-[#fefefe]" : "text-xs font-semibold text-center flex-1",
       /** Clear date filter button (visible state) */
-      clearFilterVisible: "flex items-center gap-2 px-3 py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold active:scale-95 border border-[#000000]",
+      clearFilterVisible: "flex items-center gap-1.5 px-2 py-1 rounded shadow-md hover:shadow-lg transition-all duration-200 text-[10px] font-semibold active:scale-95 border border-[#000000]",
       /** Clear date filter button (invisible/disabled state) */
       clearFilterInvisible: "invisible",
       /** Speed control select */
-      speedSelect: "px-2 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
+      speedSelect: "px-2 py-1 border rounded text-xs focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
       /** Keyboard hint kbd element */
-      kbdKey: "px-1 py-0.5 border rounded",
+      kbdKey: "px-0.5 py-0 border rounded text-[10px]",
+    },
+
+    /**
+     * Tooltip classes (for Wayback and other interactive components)
+     */
+    tooltip: {
+      /** Base tooltip styling with border and shadow */
+      base: isDark
+        ? "bg-gray-900 text-white border-gray-600"
+        : "bg-white text-black border-gray-300",
+      /** Tooltip border only */
+      border: isDark ? "border-gray-600" : "border-gray-300",
+      /** Tooltip text color */
+      text: isDark ? "text-white" : "text-black",
+    },
+
+    /**
+     * Wayback timeline marker classes
+     */
+    marker: {
+      /** Minor release marker (thin gray line) */
+      minor: isDark ? "bg-gray-700" : "bg-gray-400",
+      /** Major release marker (thicker gray line) */
+      major: isDark ? "bg-gray-600" : "bg-gray-300",
+      /** Opacity for minor markers */
+      minorOpacity: "opacity-50",
+      /** Opacity for major markers */
+      majorOpacity: "opacity-40",
+    },
+
+    /**
+     * Additional text utilities for common patterns
+     */
+    textUtil: {
+      /** Subtle text (400 gray) - common for labels */
+      subtle: isDark ? "text-gray-400" : "text-gray-600",
+      /** Muted text (500 gray) - less emphasized */
+      muted: isDark ? "text-gray-500" : "text-gray-600",
+      /** Light text (300 gray) - for dark mode emphasis */
+      light: isDark ? "text-gray-300" : "text-gray-700",
+    },
+
+    /**
+     * Container background patterns
+     */
+    containerBg: {
+      /** Semi-transparent container (50% opacity) */
+      semiTransparent: isDark ? "bg-black/50" : "bg-white/50",
+      /** More opaque container (90% opacity) */
+      opaque: isDark ? "bg-black/90" : "bg-white/90",
+      /** Fully opaque container */
+      solid: isDark ? "bg-black" : "bg-white",
+    },
+
+    /**
+     * Keyboard shortcut (kbd) styling
+     */
+    kbd: {
+      /** Keyboard key display */
+      base: isDark ? "bg-gray-700" : "bg-gray-200",
     },
   }), [isDark]);
 }
