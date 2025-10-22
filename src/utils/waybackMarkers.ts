@@ -1,5 +1,5 @@
 import type { GazaSite } from "../types";
-import type { WaybackRelease } from "../contexts/WaybackContext";
+import type { WaybackRelease } from "../services/waybackService";
 
 /**
  * Event marker interface for timeline visualization
