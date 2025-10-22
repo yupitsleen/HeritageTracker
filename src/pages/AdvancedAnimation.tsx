@@ -109,6 +109,13 @@ export function AdvancedAnimation() {
     syncMapOnDotClickRef.current = syncMapOnDotClick;
   }, [syncMapOnDotClick]);
 
+  /**
+   * Handle site selection from timeline
+   * When sync is enabled, automatically finds and displays the Wayback imagery
+   * from right before the site was destroyed
+   *
+   * @param siteId - ID of the selected site, or null to deselect
+   */
   const handleSiteHighlight = useCallback(
     (siteId: string | null) => {
       setHighlightedSiteId(siteId);

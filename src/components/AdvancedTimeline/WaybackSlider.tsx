@@ -3,10 +3,15 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import type { WaybackRelease } from "../../services/waybackService";
 
+/**
+ * Callback type for Wayback release index changes
+ */
+export type IndexChangeHandler = (index: number) => void;
+
 interface WaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
-  onIndexChange: (index: number) => void;
+  onIndexChange: IndexChangeHandler;
 }
 
 /**

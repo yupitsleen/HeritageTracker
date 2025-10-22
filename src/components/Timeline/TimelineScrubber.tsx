@@ -21,19 +21,39 @@ import {
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
 
+/**
+ * Callback type for date change handlers
+ */
+export type DateChangeHandler = (date: Date | null) => void;
+
+/**
+ * Callback type for site highlight handlers
+ */
+export type SiteHighlightHandler = (siteId: string | null) => void;
+
+/**
+ * Callback type for toggle handlers (no parameters)
+ */
+export type ToggleHandler = () => void;
+
+/**
+ * Advanced timeline mode configuration
+ */
+export interface AdvancedTimelineMode {
+  syncMapOnDotClick: boolean;
+  onSyncMapToggle: ToggleHandler;
+}
+
 interface TimelineScrubberProps {
   sites: GazaSite[];
   destructionDateStart: Date | null;
   destructionDateEnd: Date | null;
-  onDestructionDateStartChange: (date: Date | null) => void;
-  onDestructionDateEndChange: (date: Date | null) => void;
+  onDestructionDateStartChange: DateChangeHandler;
+  onDestructionDateEndChange: DateChangeHandler;
   highlightedSiteId?: string | null;
-  onSiteHighlight?: (siteId: string | null) => void;
+  onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
-  advancedMode?: {
-    syncMapOnDotClick: boolean;
-    onSyncMapToggle: () => void;
-  };
+  advancedMode?: AdvancedTimelineMode;
 }
 
 /**
