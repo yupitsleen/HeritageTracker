@@ -76,12 +76,12 @@ export const HISTORICAL_IMAGERY = {
     url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
     maxZoom: 17, // Older imagery has lower resolution
   },
-  /** Pre-conflict - August 31, 2023 (last imagery before October 7, 2023) */
-  PRE_CONFLICT_2023: {
-    releaseNum: 64776,
-    date: "2023-08-31",
-    label: "Aug 2023 (Pre-conflict)",
-    url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/64776/{z}/{y}/{x}",
+  /** Early 2024 - January 18, 2024 (earliest 2024 imagery) */
+  EARLY_2024: {
+    releaseNum: 41468,
+    date: "2024-01-18",
+    label: "Jan 2024",
+    url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/41468/{z}/{y}/{x}",
     maxZoom: 18, // Recent imagery, but zoom 18 ensures tile availability
   },
   /** Current - Latest ESRI World Imagery */
@@ -94,4 +94,4 @@ export const HISTORICAL_IMAGERY = {
   },
 } as const;
 
-export type TimePeriod = "BASELINE_2014" | "PRE_CONFLICT_2023" | "CURRENT";
+export type TimePeriod = "BASELINE_2014" | "EARLY_2024" | "CURRENT";

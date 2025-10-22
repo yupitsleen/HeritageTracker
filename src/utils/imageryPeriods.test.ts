@@ -14,25 +14,25 @@ describe("getImageryPeriodForDate", () => {
     });
   });
 
-  describe("dates between 2014 and Aug 2023", () => {
-    it("should return BASELINE_2014 for dates between 2014-02-20 and 2023-08-30", () => {
+  describe("dates between 2014 and Jan 2024", () => {
+    it("should return BASELINE_2014 for dates between 2014-02-20 and 2024-01-17", () => {
       expect(getImageryPeriodForDate(new Date("2014-06-15"))).toBe("BASELINE_2014");
       expect(getImageryPeriodForDate(new Date("2020-01-01"))).toBe("BASELINE_2014");
       expect(getImageryPeriodForDate(new Date("2023-08-30"))).toBe("BASELINE_2014");
+      expect(getImageryPeriodForDate(new Date("2024-01-17"))).toBe("BASELINE_2014");
     });
 
-    it("should return PRE_CONFLICT_2023 for date 2023-08-31, CURRENT for dates after", () => {
-      expect(getImageryPeriodForDate(new Date("2023-08-31"))).toBe("PRE_CONFLICT_2023");
-      expect(getImageryPeriodForDate(new Date("2023-09-15"))).toBe("CURRENT");
+    it("should return EARLY_2024 for date 2024-01-18, CURRENT for dates after", () => {
+      expect(getImageryPeriodForDate(new Date("2024-01-18"))).toBe("EARLY_2024");
+      expect(getImageryPeriodForDate(new Date("2024-01-19"))).toBe("CURRENT");
     });
   });
 
-  describe("dates after Aug 2023", () => {
-    it("should return CURRENT for all dates after 2023-08-31", () => {
-      expect(getImageryPeriodForDate(new Date("2023-10-01"))).toBe("CURRENT");
-      expect(getImageryPeriodForDate(new Date("2023-10-06"))).toBe("CURRENT");
-      expect(getImageryPeriodForDate(new Date("2023-10-07"))).toBe("CURRENT");
-      expect(getImageryPeriodForDate(new Date("2024-01-01"))).toBe("CURRENT");
+  describe("dates after Jan 2024", () => {
+    it("should return CURRENT for all dates after 2024-01-18", () => {
+      expect(getImageryPeriodForDate(new Date("2024-01-19"))).toBe("CURRENT");
+      expect(getImageryPeriodForDate(new Date("2024-02-01"))).toBe("CURRENT");
+      expect(getImageryPeriodForDate(new Date("2024-10-01"))).toBe("CURRENT");
       expect(getImageryPeriodForDate(new Date("2025-12-31"))).toBe("CURRENT");
     });
   });
@@ -61,11 +61,11 @@ describe("getImageryPeriodForDate", () => {
       // Test that the function doesn't hardcode periods but uses HISTORICAL_IMAGERY
       // This is validated by testing boundary dates for each period
       const baseline = getImageryPeriodForDate(new Date("2014-02-20"));
-      const preConflict = getImageryPeriodForDate(new Date("2023-08-31"));
-      const current = getImageryPeriodForDate(new Date("2024-01-01"));
+      const early2024 = getImageryPeriodForDate(new Date("2024-01-18"));
+      const current = getImageryPeriodForDate(new Date("2024-02-01"));
 
       expect(baseline).toBe("BASELINE_2014");
-      expect(preConflict).toBe("PRE_CONFLICT_2023");
+      expect(early2024).toBe("EARLY_2024");
       expect(current).toBe("CURRENT");
     });
   });
