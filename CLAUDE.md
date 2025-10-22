@@ -3,14 +3,14 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 328 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/UI-improvements (Advanced Animation page complete) | main (production)
+**Current:** 45 sites | 329 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/mapAnimationImprovements (Content reduction complete) | main (production)
 
 ### Essential Commands
 
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 328 tests - MUST pass before commit
+npm test        # 329 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -55,7 +55,7 @@ All components have shadow-xl for dramatic depth effect
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ Header (black bg, "← Back to Main View" | "Advanced Satellite Timeline")   │
+│ Header (black bg, centered: "← Back | Advanced Satellite Timeline | Info") │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Info Panel: 150+ Releases | 2014-2025 | [✓] Show site markers             │
 ├─────────────────────────────────────────────────────────────────────────────┤
@@ -537,7 +537,29 @@ useEffect(() => {
 
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feat/UI-improvements - Current Branch):**
+**Completed (feat/mapAnimationImprovements - Current Branch):**
+
+- [x] **Modal Content Reduction** ✅ (Oct 22)
+  - **Purpose**: Reduce information overload across Help Palestine, Statistics, and About modals
+  - **DonateModal**: Reduced from 6 to 4 organizations, condensed descriptions (50% reduction)
+  - **StatsDashboard**: Removed ~350 lines of verbose deep-dive sections
+    - Removed: "Looted Artifacts", "Lost Forever: Unsolved Mysteries", "What Remains: Still at Risk", "Comparison Context"
+    - Kept: Core metrics, Legal Framework, Notable Losses (2 examples)
+  - **About Modal Sections**: Compressed all 7 sections (50-70% text reduction)
+    - MissionSection, MethodologySection, LegalFrameworkSection, DataSourcesSection
+    - ResearchSection, ContributingSection, AcknowledgmentsSection
+  - **Design System**: Applied ultra-compact styling (text-[10px], p-2/p-3, mb-2/mb-3)
+  - **Bundle Impact**: Modal chunks now 0.66-6.70 KiB (significantly reduced)
+  - **Testing**: 329 tests passing (up from 328)
+  - **Production Build**: 698.06 KiB total precached, 17.94s build time
+  - **Key commits**: 26353ca (compact design), 4a3089c (content reduction), 703f48d (import fix)
+
+- [x] **Advanced Animation Header Centering** ✅ (Oct 22)
+  - **Centered header layout**: Title centered with back button (left) and version count (right)
+  - **Implementation**: Absolute positioning with relative parent container
+  - **Key file**: AdvancedAnimation.tsx
+
+**Completed (feat/UI-improvements - Merged):**
 
 - [x] **Advanced Animation Page** ✅ (Oct 21)
   - **Wayback satellite timeline**: 150+ ESRI Wayback imagery versions (2014-2025)
@@ -554,12 +576,12 @@ useEffect(() => {
     - Click site markers on map → timeline dots turn black and scale 1.5x
     - Hover over any marker for tooltip details
     - Color key legend explaining marker types
-  - **Testing**: Added 11 new tests (328 total, up from 317)
+  - **Testing**: Added 11 new tests (329 total, up from 317)
     - waybackService.test.ts (11 tests) - API integration
     - navigation.test.tsx (9 tests) - Route rendering
   - **Performance**: Year-based playback avoids 150+ map renders
   - **Key files**: AdvancedAnimation.tsx, WaybackMap.tsx, WaybackSlider.tsx, NavigationControls.tsx, WaybackContext.tsx, waybackService.ts
-  - **PR**: #26 - Ready for review
+  - **PR**: #26 - Merged to main
 
 **Completed (feat/mapSync - Merged):**
 
@@ -659,10 +681,10 @@ useEffect(() => {
 
 **Next:**
 
-- [ ] Merge PR #26 (feat/UI-improvements) to main
-- [ ] Deploy Advanced Animation page to production
+- [ ] Merge feat/mapAnimationImprovements to main (content reduction complete)
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
+- [ ] User testing and feedback collection
 
 **Future:**
 
@@ -674,6 +696,6 @@ useEffect(() => {
 
 ---
 
-**Last Updated:** October 21, 2025
-**Version:** 1.13.0-dev
-**Branch:** feat/UI-improvements (Advanced Animation page complete, PR #26 open) | main (production)
+**Last Updated:** October 22, 2025
+**Version:** 1.14.0-dev
+**Branch:** feat/mapAnimationImprovements (Modal content reduction complete) | main (production)
