@@ -99,3 +99,14 @@ export const COMPACT_MODAL = {
   /** Modal gap */
   gap: "gap-3",
 } as const;
+
+export const COMPACT_LAYOUT = {
+  /** Filter bar approximate height in pixels */
+  FILTER_BAR_HEIGHT: 80,
+  /** Timeline component height in pixels */
+  TIMELINE_HEIGHT: 100,
+  /** Footer margin bottom (mb-6 = 24px) */
+  FOOTER_CLEARANCE: 24,
+  /** Total offset for maps container height calculation (filter + timeline + spacing) */
+  MAPS_HEIGHT_OFFSET: 185,
+} as const;

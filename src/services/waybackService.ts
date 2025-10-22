@@ -24,6 +24,9 @@ export interface WaybackRelease {
 // ESRI Wayback API endpoint
 const WAYBACK_API_URL = "https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json";
 
+// Fallback date when parsing fails - Unix epoch as clear "unknown" indicator
+const UNKNOWN_RELEASE_DATE = "1970-01-01";
+
 /**
  * Fetches all available Wayback imagery releases from ESRI
  * Returns sorted array from oldest to newest
@@ -33,7 +36,7 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
     const response = await fetch(WAYBACK_API_URL);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch Wayback releases: ${response.statusText}`);
+      throw new Error(`Wayback API request failed: ${response.status} ${response.statusText}`);
     }
 
     // API returns object keyed by releaseNum, not an array
@@ -44,9 +47,9 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
       // Extract date from title (format: "World Imagery (Wayback 2025-09-25)")
       const dateMatch = item.itemTitle.match(/(\d{4}-\d{2}-\d{2})/);
       if (!dateMatch) {
-        console.warn(`Failed to parse date from title: "${item.itemTitle}". Using current date as fallback.`);
+        console.error(`CRITICAL: Failed to parse Wayback release date from: "${item.itemTitle}". Using fallback date ${UNKNOWN_RELEASE_DATE}.`);
       }
-      const releaseDate = dateMatch ? dateMatch[1] : new Date().toISOString().split("T")[0];
+      const releaseDate = dateMatch ? dateMatch[1] : UNKNOWN_RELEASE_DATE;
 
       // Convert {level}/{row}/{col} to {z}/{y}/{x} for Leaflet
       const tileUrl = item.itemURL.replace('{level}', '{z}').replace('{row}', '{y}').replace('{col}', '{x}');
@@ -65,11 +68,10 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
 
     return releases;
   } catch (error) {
-    console.error("Error fetching Wayback releases:", error);
-    // Re-throw error to allow UI to handle it properly with error state
-    throw new Error(
-      "Unable to load Wayback satellite imagery. Please check your internet connection and try again."
-    );
+    // Log technical details for debugging
+    console.error("Wayback API error:", error);
+    // Re-throw technical error - context layer will transform to user-friendly message
+    throw error;
   }
 }
 

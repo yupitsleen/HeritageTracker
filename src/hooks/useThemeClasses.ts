@@ -155,5 +155,65 @@ export function useThemeClasses() {
       /** Keyboard hint kbd element */
       kbdKey: "px-0.5 py-0 border rounded text-[10px]",
     },
+
+    /**
+     * Tooltip classes (for Wayback and other interactive components)
+     */
+    tooltip: {
+      /** Base tooltip styling with border and shadow */
+      base: isDark
+        ? "bg-gray-900 text-white border-gray-600"
+        : "bg-white text-black border-gray-300",
+      /** Tooltip border only */
+      border: isDark ? "border-gray-600" : "border-gray-300",
+      /** Tooltip text color */
+      text: isDark ? "text-white" : "text-black",
+    },
+
+    /**
+     * Wayback timeline marker classes
+     */
+    marker: {
+      /** Minor release marker (thin gray line) */
+      minor: isDark ? "bg-gray-700" : "bg-gray-400",
+      /** Major release marker (thicker gray line) */
+      major: isDark ? "bg-gray-600" : "bg-gray-300",
+      /** Opacity for minor markers */
+      minorOpacity: "opacity-50",
+      /** Opacity for major markers */
+      majorOpacity: "opacity-40",
+    },
+
+    /**
+     * Additional text utilities for common patterns
+     */
+    textUtil: {
+      /** Subtle text (400 gray) - common for labels */
+      subtle: isDark ? "text-gray-400" : "text-gray-600",
+      /** Muted text (500 gray) - less emphasized */
+      muted: isDark ? "text-gray-500" : "text-gray-600",
+      /** Light text (300 gray) - for dark mode emphasis */
+      light: isDark ? "text-gray-300" : "text-gray-700",
+    },
+
+    /**
+     * Container background patterns
+     */
+    containerBg: {
+      /** Semi-transparent container (50% opacity) */
+      semiTransparent: isDark ? "bg-black/50" : "bg-white/50",
+      /** More opaque container (90% opacity) */
+      opaque: isDark ? "bg-black/90" : "bg-white/90",
+      /** Fully opaque container */
+      solid: isDark ? "bg-black" : "bg-white",
+    },
+
+    /**
+     * Keyboard shortcut (kbd) styling
+     */
+    kbd: {
+      /** Keyboard key display */
+      base: isDark ? "bg-gray-700" : "bg-gray-200",
+    },
   }), [isDark]);
 }

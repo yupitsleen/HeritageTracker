@@ -58,8 +58,11 @@ export function WaybackProvider({ children }: WaybackProviderProps) {
         setReleases(data);
         setCurrentIndex(0); // Start at first release (oldest)
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load Wayback releases");
-        console.error("Error loading Wayback releases:", err);
+        // Transform technical error to user-friendly message
+        const userMessage = "Unable to load satellite imagery archive. Please check your connection and try again.";
+        setError(userMessage);
+        // Log technical details for debugging
+        console.error("Wayback Context - Failed to load releases:", err);
       } finally {
         setIsLoading(false);
       }

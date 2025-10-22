@@ -25,6 +25,9 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
   });
 
   useEffect(() => {
+    // SSR safety check - ensure window exists
+    if (typeof window === 'undefined') return;
+
     const checkDesktop = () => {
       setIsDesktop(window.innerWidth >= 768);
     };

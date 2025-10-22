@@ -2,7 +2,7 @@ import { useEffect, useCallback, useMemo } from "react";
 import { useWayback } from "../../contexts/WaybackContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { NavigationControls } from "./NavigationControls";
-import { findClosestReleaseIndex } from "../../services/waybackService";
+import { groupEventsByRelease } from "../../utils/waybackMarkers";
 import { WAYBACK_TIMELINE } from "../../constants/wayback";
 import { useYearMarkers } from "../../hooks/useYearMarkers";
 import type { GazaSite } from "../../types";
@@ -80,47 +80,12 @@ export function WaybackSlider({
   const yearMarkers = useYearMarkers(releases);
 
   // Calculate all destruction event markers grouped by position (for stacking dots)
+  // Group destruction events by Wayback release for timeline visualization
   const allEventMarkers = useMemo(() => {
-    if (!showEventMarkers || sites.length === 0 || releases.length === 0) {
+    if (!showEventMarkers) {
       return [];
     }
-
-    // Get all sites with destruction dates
-    const destructionEvents = sites
-      .filter((site) => site.dateDestroyed)
-      .map((site) => ({
-        siteId: site.id,
-        siteName: site.name,
-        date: site.dateDestroyed!,
-        status: site.status,
-      }));
-
-    // Group events by their closest Wayback release to handle stacking
-    const eventsByRelease = new Map<number, typeof destructionEvents>();
-
-    destructionEvents.forEach((event) => {
-      const releaseIndex = findClosestReleaseIndex(releases, event.date);
-      if (!eventsByRelease.has(releaseIndex)) {
-        eventsByRelease.set(releaseIndex, []);
-      }
-      eventsByRelease.get(releaseIndex)!.push(event);
-    });
-
-    // Convert to grouped markers (each group has position + array of sites to stack)
-    const markerGroups: Array<{
-      position: number;
-      sites: Array<{ siteId: string; siteName: string; date: string; status: string }>;
-    }> = [];
-
-    eventsByRelease.forEach((events, releaseIndex) => {
-      const position = (releaseIndex / (releases.length - 1)) * 100;
-      markerGroups.push({
-        position,
-        sites: events,
-      });
-    });
-
-    return markerGroups;
+    return groupEventsByRelease(sites, releases);
   }, [sites, releases, showEventMarkers]);
 
   // Keyboard navigation
