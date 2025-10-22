@@ -312,26 +312,49 @@ describe("TimelineScrubber", () => {
   });
 
   describe("Sync Map Version Toggle", () => {
-    it("renders Sync map version button", () => {
+    it("renders Sync map version button in advanced mode", () => {
       const { getByText } = renderWithTheme(
         <AnimationProvider>
-          <TimelineScrubber sites={mockSites} />
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
         </AnimationProvider>
       );
 
-      // Should show "Sync map version" button
+      // Should show "Sync map version" button in advanced mode
       const syncButton = getByText(/Sync map version/i);
       expect(syncButton).toBeInTheDocument();
     });
 
-    it("has proper ARIA label for Sync map version button", () => {
-      const { container } = renderWithTheme(
+    it("does not render Sync map version button in normal mode", () => {
+      const { queryByText } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber sites={mockSites} />
         </AnimationProvider>
       );
 
-      // Find button by aria-label
+      // Should NOT show "Sync map version" button in normal mode
+      expect(queryByText(/Sync map version/i)).not.toBeInTheDocument();
+    });
+
+    it("has proper ARIA label for Sync map version button in advanced mode", () => {
+      const { container } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Find button by aria-label (should contain "sync")
       const syncButton = container.querySelector('[aria-label*="sync"]');
       expect(syncButton).toBeInTheDocument();
     });

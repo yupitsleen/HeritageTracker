@@ -332,37 +332,20 @@ export function TimelineScrubber({
             Reset
           </Button>
 
-          {/* Sync Map toggle button */}
-          <Button
-            onClick={() => {
-              if (advancedMode) {
-                advancedMode.onSyncMapToggle();
-              } else {
-                setSyncMapEnabled(!syncMapEnabled);
+          {/* Sync Map toggle button - only show in advanced mode */}
+          {advancedMode && (
+            <Button
+              onClick={advancedMode.onSyncMapToggle}
+              variant={advancedMode.syncMapOnDotClick ? "primary" : "secondary"}
+              size="xs"
+              aria-label={
+                advancedMode.syncMapOnDotClick ? "Disable sync on dot click" : "Enable sync on dot click"
               }
-            }}
-            variant={
-              advancedMode
-                ? advancedMode.syncMapOnDotClick ? "primary" : "secondary"
-                : syncMapEnabled ? "primary" : "secondary"
-            }
-            size="xs"
-            aria-label={
-              advancedMode
-                ? advancedMode.syncMapOnDotClick ? "Disable sync on dot click" : "Enable sync on dot click"
-                : syncMapEnabled ? "Disable map sync with timeline" : "Enable map sync with timeline"
-            }
-            title={
-              advancedMode
-                ? "When enabled, clicking timeline dots syncs satellite imagery to show the site before destruction"
-                : "When enabled, satellite imagery switches to match timeline date (2014 → Aug 2023 → Current)"
-            }
-          >
-            {advancedMode
-              ? advancedMode.syncMapOnDotClick ? "✓" : ""
-              : syncMapEnabled ? "✓" : ""}{" "}
-            Sync map version
-          </Button>
+              title="When enabled, clicking timeline dots syncs satellite imagery to show the site before destruction"
+            >
+              {advancedMode.syncMapOnDotClick ? "✓" : ""} Sync map version
+            </Button>
+          )}
 
           {/* Zoom to Site toggle button */}
           <Button
