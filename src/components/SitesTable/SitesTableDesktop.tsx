@@ -12,9 +12,6 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Button } from "../Button";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
 
-// Threshold for enabling virtual scrolling
-const VIRTUAL_SCROLL_THRESHOLD = 50;
-
 interface SitesTableDesktopProps {
   sites: GazaSite[];
   onSiteClick: (site: GazaSite) => void;
@@ -133,14 +130,9 @@ export function SitesTableDesktop({
 
   // Virtual scrolling: Ready but not yet implemented in JSX
   // Infrastructure is in place (SiteTableRow.tsx, VirtualizedTableBody.tsx)
-  // When site count exceeds VIRTUAL_SCROLL_THRESHOLD (50), virtual scrolling can be enabled
+  // When site count exceeds 50, virtual scrolling can be enabled
   // Standard rendering is used when site count < threshold for optimal performance
-  const useVirtualScrolling = sortedSites.length >= VIRTUAL_SCROLL_THRESHOLD;
-
   // Note for future: When implementing, replace tbody.map with VirtualizedTableBody component
-  if (useVirtualScrolling) {
-    console.log(`Virtual scrolling available for ${sortedSites.length} sites (threshold: ${VIRTUAL_SCROLL_THRESHOLD})`);
-  }
 
   // Scroll to highlighted site when it changes
   useEffect(() => {

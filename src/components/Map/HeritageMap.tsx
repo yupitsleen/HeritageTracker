@@ -30,7 +30,7 @@ export const HeritageMap = memo(function HeritageMap({
   highlightedSiteId,
   onSiteHighlight,
 }: HeritageMapProps) {
-  const { currentTimestamp } = useAnimation();
+  const { currentTimestamp, zoomToSiteEnabled } = useAnimation();
 
   // Calculate glow contributions based on timeline position
   const { glowContributions } = useMapGlow(sites, currentTimestamp);
@@ -55,7 +55,7 @@ export const HeritageMap = memo(function HeritageMap({
         <ScrollWheelHandler />
 
         {/* Map center handler for highlighted sites */}
-        <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} />
+        <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} zoomToSiteEnabled={zoomToSiteEnabled} />
 
         {/* Zoom level logger for debugging */}
         <ZoomLogger />

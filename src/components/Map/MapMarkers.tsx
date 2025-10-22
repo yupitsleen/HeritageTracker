@@ -66,7 +66,6 @@ export const MapMarkers = memo(function MapMarkers({
               icon={createMarkerIcon(site.status, isHighlighted)}
               eventHandlers={{
                 click: () => {
-                  onSiteClick?.(site);
                   onSiteHighlight?.(site.id);
                 },
               }}
@@ -82,7 +81,7 @@ export const MapMarkers = memo(function MapMarkers({
           <CircleMarker
             key={site.id}
             center={site.coordinates}
-            radius={destroyed ? 2 : 6}
+            radius={destroyed ? 2 : 3} // Match timeline dot size (was 6, now 3)
             pathOptions={{
               fillColor: destroyed ? "#000000" : COLOR_MAP[color],
               fillOpacity: destroyed ? 1 : 0.8,
@@ -91,7 +90,6 @@ export const MapMarkers = memo(function MapMarkers({
             }}
             eventHandlers={{
               click: () => {
-                onSiteClick?.(site);
                 onSiteHighlight?.(site.id);
               },
             }}

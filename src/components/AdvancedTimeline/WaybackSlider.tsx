@@ -1,339 +1,234 @@
-import { useEffect, useCallback, useMemo } from "react";
-import { useWayback } from "../../contexts/WaybackContext";
+import { useMemo, useRef, useCallback } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
-import { NavigationControls } from "./NavigationControls";
-import { groupEventsByRelease } from "../../utils/waybackMarkers";
-import { WAYBACK_TIMELINE } from "../../constants/wayback";
-import { useYearMarkers } from "../../hooks/useYearMarkers";
-import type { GazaSite } from "../../types";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
+import type { WaybackRelease } from "../../services/waybackService";
+
+/**
+ * Callback type for Wayback release index changes
+ */
+export type IndexChangeHandler = (index: number) => void;
 
 interface WaybackSliderProps {
-  sites?: GazaSite[];
-  showEventMarkers?: boolean;
-  highlightedSiteId?: string | null;
-  showSiteMarkers?: boolean;
-  onToggleSiteMarkers?: (show: boolean) => void;
+  releases: WaybackRelease[];
+  currentIndex: number;
+  onIndexChange: IndexChangeHandler;
 }
 
 /**
- * WaybackSlider - Timeline slider for scrubbing through Wayback releases
- * Simpler than TimelineScrubber - uses HTML range input instead of D3
- * Better suited for discrete releases (many versions) vs continuous date range
+ * WaybackSlider - Interactive timeline for Wayback imagery releases
  *
- * Optional: Display destruction event markers on timeline
+ * Features:
+ * - Year labels (2014-2025) spaced by date
+ * - Tick marks for each of 186 releases positioned by date
+ * - Clickable timeline bar to jump to any release
+ * - Previous/Next step buttons
+ * - Visual scrubber showing current position
  */
-export function WaybackSlider({
-  sites = [],
-  showEventMarkers = true,
-  highlightedSiteId = null,
-  showSiteMarkers = true,
-  onToggleSiteMarkers
-}: WaybackSliderProps) {
-  const { releases, currentIndex, setIndex } = useWayback();
+export function WaybackSlider({ releases, currentIndex, onIndexChange }: WaybackSliderProps) {
   const { isDark } = useTheme();
+  const t = useThemeClasses();
+  const timelineRef = useRef<HTMLDivElement>(null);
 
   const currentRelease = releases[currentIndex];
-  const startRelease = releases[0];
-  const endRelease = releases[releases.length - 1];
 
-  // Calculate positions for gray Wayback release markers
-  const waybackReleaseMarkers = useMemo(() => {
-    if (releases.length === 0) return { majorMarkers: [], minorMarkers: [] };
+  // Calculate year markers and release positions
+  const { yearMarkers, releasePositions, currentPositionPercent } = useMemo(() => {
+    if (releases.length === 0) return { yearMarkers: [], releasePositions: [], currentPositionPercent: 0 };
 
-    const majorMarkers: Array<{ releaseNum: number; date: string; label: string; position: number; isMajor: boolean }> = [];
-    const minorMarkers: Array<{ releaseNum: number; date: string; label: string; position: number; isMajor: boolean }> = [];
+    const firstDate = new Date(releases[0].releaseDate);
+    const lastDate = new Date(releases[releases.length - 1].releaseDate);
+    const startYear = firstDate.getFullYear();
+    const endYear = lastDate.getFullYear();
 
-    for (let i = 0; i < releases.length; i++) {
-      const position = (i / (releases.length - 1)) * 100;
-      const marker = {
-        releaseNum: releases[i].releaseNum,
-        date: releases[i].releaseDate,
-        label: releases[i].label,
-        position,
-        isMajor: i % WAYBACK_TIMELINE.MAJOR_MARKER_INTERVAL === 0,
+    // Create year markers (positioned by actual date)
+    const years: Array<{ year: number; position: number }> = [];
+    for (let year = startYear; year <= endYear; year++) {
+      const yearStart = new Date(`${year}-01-01`).getTime();
+      const totalRange = lastDate.getTime() - firstDate.getTime();
+      const yearOffset = yearStart - firstDate.getTime();
+      const position = (yearOffset / totalRange) * 100;
+      years.push({ year, position: Math.max(0, Math.min(100, position)) });
+    }
+
+    // Calculate position for each release
+    const positions = releases.map((release, idx) => {
+      const releaseDate = new Date(release.releaseDate).getTime();
+      const totalRange = lastDate.getTime() - firstDate.getTime();
+      const releaseOffset = releaseDate - firstDate.getTime();
+      const position = (releaseOffset / totalRange) * 100;
+      return {
+        index: idx,
+        position: Math.max(0, Math.min(100, position)),
+        date: release.releaseDate,
       };
+    });
 
-      if (marker.isMajor) {
-        majorMarkers.push(marker);
-      } else {
-        minorMarkers.push(marker);
+    // Current release position
+    const currentPos = positions[currentIndex]?.position || 0;
+
+    return { yearMarkers: years, releasePositions: positions, currentPositionPercent: currentPos };
+  }, [releases, currentIndex]);
+
+  // Handle timeline click - find nearest release
+  const handleTimelineClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    if (!timelineRef.current) return;
+
+    const rect = timelineRef.current.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickPercent = (clickX / rect.width) * 100;
+
+    // Find the release closest to this position
+    let closestIndex = 0;
+    let closestDistance = Math.abs(releasePositions[0].position - clickPercent);
+
+    for (let i = 1; i < releasePositions.length; i++) {
+      const distance = Math.abs(releasePositions[i].position - clickPercent);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = i;
       }
     }
 
-    // Always make the last release a major marker if not already
-    const lastIndex = releases.length - 1;
-    if (lastIndex % WAYBACK_TIMELINE.MAJOR_MARKER_INTERVAL !== 0) {
-      const position = 100;
-      majorMarkers.push({
-        releaseNum: releases[lastIndex].releaseNum,
-        date: releases[lastIndex].releaseDate,
-        label: releases[lastIndex].label,
-        position,
-        isMajor: true,
-      });
+    onIndexChange(closestIndex);
+  }, [releasePositions, onIndexChange]);
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      onIndexChange(currentIndex - 1);
     }
+  };
 
-    return { majorMarkers, minorMarkers };
-  }, [releases]);
-
-  // Calculate year markers for timeline scale
-  const yearMarkers = useYearMarkers(releases);
-
-  // Calculate all destruction event markers grouped by position (for stacking dots)
-  // Group destruction events by Wayback release for timeline visualization
-  const allEventMarkers = useMemo(() => {
-    if (!showEventMarkers) {
-      return [];
+  const handleNext = () => {
+    if (currentIndex < releases.length - 1) {
+      onIndexChange(currentIndex + 1);
     }
-    return groupEventsByRelease(sites, releases);
-  }, [sites, releases, showEventMarkers]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't interfere with typing in input fields
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return;
-      }
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          setIndex(Math.max(0, currentIndex - 1));
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          setIndex(Math.min(releases.length - 1, currentIndex + 1));
-          break;
-        case 'Home':
-          e.preventDefault();
-          setIndex(0);
-          break;
-        case 'End':
-          e.preventDefault();
-          setIndex(releases.length - 1);
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, releases.length, setIndex]);
-
-  const handleSliderChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setIndex(Number(e.target.value));
-  }, [setIndex]);
+  };
 
   if (releases.length === 0) {
-    return null;
+    return (
+      <div className={`px-4 py-2 rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+        <div className={`text-sm ${t.text.muted}`}>No imagery releases available</div>
+      </div>
+    );
   }
 
   return (
-    <div className={`p-4 ${isDark ? "bg-black/70" : "bg-white/70"}`}>
-      {/* Date labels */}
-      <div className="flex justify-between items-center text-xs mb-2">
-        <span className={isDark ? "text-gray-400" : "text-gray-600"}>
-          {startRelease?.label}
+    <div className={`px-4 py-2 rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+      {/* Header - Current date and position with step controls - centered */}
+      <div className="flex items-center justify-center gap-3 mb-2">
+        {/* Previous button */}
+        <button
+          onClick={handlePrevious}
+          disabled={currentIndex === 0}
+          className={`px-2 py-0.5 text-xs font-semibold rounded transition-all ${
+            currentIndex === 0
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-[#009639] hover:text-white"
+          } ${isDark ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-700"}`}
+          aria-label="Previous imagery release"
+        >
+          ← Prev
+        </button>
+
+        <span className={`text-sm font-mono ${t.text.body}`}>
+          {currentRelease?.releaseDate || "Unknown"}
         </span>
-        <div className="text-center">
-          <div className={`text-lg font-bold ${isDark ? "text-white" : "text-black"}`}>
-            {currentRelease?.label}
-          </div>
-          <div className={isDark ? "text-gray-400" : "text-gray-600"}>
-            Version {currentIndex + 1} of {releases.length}
-          </div>
-        </div>
-        <span className={isDark ? "text-gray-400" : "text-gray-600"}>
-          {endRelease?.label}
+        <span className={`text-[10px] ${t.text.muted}`}>
+          {currentIndex + 1} / {releases.length}
         </span>
+
+        {/* Next button */}
+        <button
+          onClick={handleNext}
+          disabled={currentIndex === releases.length - 1}
+          className={`px-2 py-0.5 text-xs font-semibold rounded transition-all ${
+            currentIndex === releases.length - 1
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-[#009639] hover:text-white"
+          } ${isDark ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-700"}`}
+          aria-label="Next imagery release"
+        >
+          Next →
+        </button>
       </div>
 
-      {/* Slider with event markers */}
+      {/* Timeline visualization container */}
       <div className="relative">
-        {/* Year markers - below timeline for scale reference */}
-        <div className="absolute top-3 left-0 right-0 h-6 pointer-events-none">
-          {yearMarkers.map((marker) => (
+        {/* Year labels - positioned above the timeline */}
+        <div className="relative h-4 mb-0.5">
+          {yearMarkers.map(({ year, position }) => (
             <div
-              key={`year-${marker.year}`}
-              className="absolute"
-              style={{ left: `${marker.position}%` }}
+              key={year}
+              className="absolute -translate-x-1/2"
+              style={{ left: `${position}%` }}
             >
-              {/* Small black vertical line (half size of minor gray markers) */}
-              <div className="absolute w-0.5 h-2 bg-black -translate-x-1/2 opacity-40" />
-
-              {/* Year label below the line */}
-              <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-medium text-black opacity-60 whitespace-nowrap">
-                {marker.year}
-              </div>
+              <span className={`text-[9px] font-semibold ${t.text.body}`}>
+                {year}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Markers layer - positioned above slider */}
-        <div className="absolute -top-6 left-0 right-0 h-8 pointer-events-none">
-          {/* Minor gray markers - all releases (smaller, subtle, positioned lower) */}
-          {waybackReleaseMarkers.minorMarkers.map((marker) => (
-            <div
-              key={`wayback-minor-${marker.releaseNum}`}
-              className="absolute z-5 pointer-events-auto top-2 group"
-              style={{ left: `${marker.position}%` }}
-            >
-              {/* Small gray vertical line touching the slider bar */}
-              <div className={`absolute w-0.5 h-4 ${isDark ? "bg-gray-700" : "bg-gray-400"} -translate-x-1/2 opacity-30`} />
+        {/* Interactive timeline bar */}
+        <div
+          ref={timelineRef}
+          className="relative h-3 cursor-pointer"
+          onClick={handleTimelineClick}
+        >
+          {/* Background track */}
+          <div className={`absolute inset-0 rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
 
-              {/* Tooltip on hover */}
-              <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
-                isDark ? "bg-gray-900 text-white" : "bg-white text-black"
-              } px-2 py-1 rounded text-xs border ${isDark ? "border-gray-600" : "border-gray-300"} shadow-md`}>
-                <div className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}>{marker.label}</div>
-              </div>
-            </div>
-          ))}
-
-          {/* Major gray markers - every 10th release (taller, more visible) */}
-          {waybackReleaseMarkers.majorMarkers.map((marker) => (
-            <div
-              key={`wayback-major-${marker.releaseNum}`}
-              className="absolute z-10 pointer-events-auto group"
-              style={{ left: `${marker.position}%` }}
-            >
-              {/* Taller gray vertical line extending through the slider */}
-              <div className={`absolute w-0.5 h-8 ${isDark ? "bg-gray-600" : "bg-gray-300"} -translate-x-1/2 opacity-50`} />
-
-              {/* Tooltip on hover */}
-              <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
-                isDark ? "bg-gray-900 text-white" : "bg-white text-black"
-              } px-2 py-1 rounded text-xs border ${isDark ? "border-gray-600" : "border-gray-300"} shadow-md`}>
-                <div className="font-semibold">{marker.label}</div>
-              </div>
-            </div>
-          ))}
-
-          {/* Red dot markers for destroyed sites - stacked vertically if multiple at same date */}
-          {showEventMarkers && allEventMarkers.map((markerGroup, groupIndex) => (
-            <div
-              key={`marker-group-${groupIndex}`}
-              className="absolute pointer-events-auto z-20"
-              style={{ left: `${markerGroup.position}%` }}
-            >
-              {/* Stack dots vertically */}
-              {markerGroup.sites.map((site, siteIndex) => {
-                const isHighlighted = highlightedSiteId === site.siteId;
-                return (
-                  <div
-                    key={`${site.siteId}-${siteIndex}`}
-                    className="group"
-                    style={{
-                      position: 'absolute',
-                      bottom: `${siteIndex * WAYBACK_TIMELINE.EVENT_MARKER_STACK_SPACING}px`,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                    }}
-                  >
-                    {/* Red dot - turns black when highlighted */}
-                    <div className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      isHighlighted ? 'bg-black scale-150' : 'bg-[#ed3039]'
-                    }`} />
-
-                    {/* Tooltip on hover */}
-                    <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
-                      isDark ? "bg-gray-900 text-white" : "bg-white text-black"
-                    } px-2 py-1 rounded text-xs border-2 ${isDark ? "border-white" : "border-black"} shadow-xl`}>
-                      <div className="font-bold">{site.siteName}</div>
-                      <div className={isDark ? "text-gray-400" : "text-gray-600"}>{site.date}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-
-        {/* Slider input with tooltip */}
-        <div className="relative group">
-          <input
-            type="range"
-            min={0}
-            max={releases.length - 1}
-            value={currentIndex}
-            onChange={handleSliderChange}
-            className={`w-full h-2 rounded-lg appearance-none cursor-pointer
-                       ${isDark ? "bg-gray-700" : "bg-gray-300"}
-                       [&::-webkit-slider-thumb]:appearance-none
-                       [&::-webkit-slider-thumb]:w-4
-                       [&::-webkit-slider-thumb]:h-4
-                       [&::-webkit-slider-thumb]:bg-[#009639]
-                       [&::-webkit-slider-thumb]:rounded-full
-                       [&::-webkit-slider-thumb]:cursor-pointer
-                       [&::-webkit-slider-thumb]:shadow-md
-                       [&::-moz-range-thumb]:w-4
-                       [&::-moz-range-thumb]:h-4
-                       [&::-moz-range-thumb]:bg-[#009639]
-                       [&::-moz-range-thumb]:rounded-full
-                       [&::-moz-range-thumb]:cursor-pointer
-                       [&::-moz-range-thumb]:border-0
-                       [&::-moz-range-thumb]:shadow-md`}
-            aria-label="Wayback imagery version slider"
-            aria-valuemin={0}
-            aria-valuemax={releases.length - 1}
-            aria-valuenow={currentIndex}
-            aria-valuetext={`${currentRelease?.label}, version ${currentIndex + 1} of ${releases.length}`}
-            aria-keyshortcuts="ArrowLeft ArrowRight Home End"
+          {/* Green progress fill - pointer-events-none allows hover on tick marks beneath */}
+          <div
+            className="absolute inset-y-0 left-0 bg-[#009639] rounded-l pointer-events-none"
+            style={{ width: `${currentPositionPercent}%` }}
           />
 
-          {/* Tooltip showing exact date under the scrubber - always visible */}
+          {/* Release tick marks with tooltips - wider hover area for easier interaction */}
+          {releasePositions.map(({ index, position, date }) => {
+            const isCurrentRelease = index === currentIndex;
+            return (
+              <div
+                key={index}
+                className="absolute top-0 bottom-0 -translate-x-1/2 group cursor-pointer"
+                style={{ left: `${position}%` }}
+              >
+                {/* Invisible wider hitbox for easier hovering (8px wide) */}
+                <div className="absolute inset-0 w-2 -ml-1" />
+
+                {/* Visible tick mark line (1-2px) */}
+                <div
+                  className={`w-[1px] h-full ${
+                    isCurrentRelease
+                      ? "bg-white w-[2px]" // White and thicker for current
+                      : isDark
+                      ? "bg-gray-400"
+                      : "bg-gray-500"
+                  }`}
+                />
+
+                {/* Tooltip */}
+                <div className={`absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none ${isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"} shadow-md z-10`}>
+                  {date}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Current position scrubber indicator with floating date tooltip */}
           <div
-            className={`absolute top-8 transition-all duration-200 pointer-events-none z-[2000] whitespace-nowrap ${
-              isDark ? "bg-gray-900 text-white" : "bg-white text-black"
-            } px-2 py-1 rounded text-xs border-2 border-[#009639] shadow-xl`}
-            style={{ left: `${(currentIndex / (releases.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+            style={{ left: `${currentPositionPercent}%` }}
           >
-            <div className="font-bold text-[#009639]">{currentRelease?.label}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation buttons - centered */}
-      <div className="mt-8">
-        <NavigationControls />
-      </div>
-
-      {/* Color key, site markers toggle, and keyboard shortcuts */}
-      <div className="flex items-center justify-between mt-3">
-        {/* Color key */}
-        <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-1.5">
-            <div className={`w-0.5 h-4 ${isDark ? "bg-gray-600" : "bg-gray-300"} opacity-50`} />
-            <span className={isDark ? "text-gray-400" : "text-gray-600"}>Satellite imagery dates</span>
-          </div>
-          {showEventMarkers && (
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 bg-[#ed3039] rounded-full" />
-              <span className={isDark ? "text-gray-400" : "text-gray-600"}>Site destruction dates</span>
+            {/* Floating date tooltip - positioned above scrubber */}
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 pointer-events-none">
+              <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
+                {currentRelease?.releaseDate || "Unknown"}
+              </div>
             </div>
-          )}
-          {/* Site markers toggle */}
-          {onToggleSiteMarkers && (
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={showSiteMarkers}
-                onChange={(e) => onToggleSiteMarkers(e.target.checked)}
-                className="w-4 h-4 cursor-pointer"
-                aria-label="Toggle site markers on map"
-              />
-              <span className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}>
-                Show site markers
-              </span>
-            </label>
-          )}
-        </div>
-
-        {/* Keyboard shortcuts */}
-        <div className={`text-xs ${isDark ? "text-gray-500" : "text-gray-600"}`}>
-          <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>←/→</kbd> Navigate
-          {' • '}
-          <kbd className={`px-1.5 py-0.5 ${isDark ? "bg-gray-700" : "bg-gray-200"} rounded`}>Home/End</kbd> Jump
+            {/* Scrubber indicator */}
+            <div className="w-3 h-3 bg-white border-2 border-[#009639] rounded-full shadow-md" />
+          </div>
         </div>
       </div>
     </div>

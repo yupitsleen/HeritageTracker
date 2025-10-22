@@ -58,6 +58,9 @@ export class D3TimelineRenderer {
   private timeScale: ScaleTime<number, number>;
   private onTimestampChange: (date: Date) => void;
   private onPause: () => void;
+  private onSiteHighlight?: (event: TimelineEvent) => void;
+  private onScrubberPositionChange?: (position: number) => void;
+  private highlightedSiteId: string | null = null;
 
   constructor(
     svgElement: SVGSVGElement,
@@ -66,6 +69,8 @@ export class D3TimelineRenderer {
     callbacks: {
       onTimestampChange: (date: Date) => void;
       onPause: () => void;
+      onSiteHighlight?: (event: TimelineEvent) => void;
+      onScrubberPositionChange?: (position: number) => void;
     }
   ) {
     this.svg = select(svgElement);
@@ -73,6 +78,8 @@ export class D3TimelineRenderer {
     this.timeScale = timeScale;
     this.onTimestampChange = callbacks.onTimestampChange;
     this.onPause = callbacks.onPause;
+    this.onSiteHighlight = callbacks.onSiteHighlight;
+    this.onScrubberPositionChange = callbacks.onScrubberPositionChange;
   }
 
   /**
@@ -85,7 +92,8 @@ export class D3TimelineRenderer {
   /**
    * Render the complete timeline (axis, events, scrubber)
    */
-  render(events: TimelineEvent[], currentTimestamp: Date) {
+  render(events: TimelineEvent[], currentTimestamp: Date, highlightedSiteId: string | null = null) {
+    this.highlightedSiteId = highlightedSiteId;
     this.svg.selectAll("*").remove();
     this.renderAxis();
     this.renderEventMarkers(events);
@@ -157,10 +165,10 @@ export class D3TimelineRenderer {
       .attr("class", "event-marker")
       .attr("cx", (d) => this.timeScale(d.date))
       .attr("cy", height / 2)
-      .attr("r", eventMarkerRadius)
+      .attr("r", (d) => d.siteId === this.highlightedSiteId ? eventMarkerRadius + 2 : eventMarkerRadius)
       .attr("fill", (d) => this.getMarkerColor(d.status))
-      .attr("stroke", colors.eventMarkerStroke)
-      .attr("stroke-width", 1.5)
+      .attr("stroke", (d) => d.siteId === this.highlightedSiteId ? "#009639" : colors.eventMarkerStroke) // Green for highlighted
+      .attr("stroke-width", (d) => d.siteId === this.highlightedSiteId ? 3 : 1.5)
       .style("cursor", "pointer")
       .style("transition", "all 0.2s");
 
@@ -207,6 +215,10 @@ export class D3TimelineRenderer {
       .on("click", (_event, d) => {
         this.onTimestampChange(d.date);
         this.onPause();
+        // Highlight site when timeline dot is clicked (doesn't open modal)
+        if (this.onSiteHighlight) {
+          this.onSiteHighlight(d);
+        }
       });
 
     markers
@@ -225,12 +237,19 @@ export class D3TimelineRenderer {
 
     const scrubberGroup = this.svg.append("g").attr("class", "scrubber-group");
 
+    const xPosition = this.timeScale(currentTimestamp);
+
+    // Notify React component of scrubber position for floating tooltip
+    if (this.onScrubberPositionChange) {
+      this.onScrubberPositionChange(xPosition);
+    }
+
     scrubberGroup
       .append("line")
       .attr("class", "scrubber-line")
-      .attr("x1", this.timeScale(currentTimestamp))
+      .attr("x1", xPosition)
       .attr("y1", 10)
-      .attr("x2", this.timeScale(currentTimestamp))
+      .attr("x2", xPosition)
       .attr("y2", height - 10)
       .attr("stroke", colors.scrubberLine)
       .attr("stroke-width", 3);
@@ -238,7 +257,7 @@ export class D3TimelineRenderer {
     const handle = scrubberGroup
       .append("circle")
       .attr("class", "scrubber-handle")
-      .attr("cx", this.timeScale(currentTimestamp))
+      .attr("cx", xPosition)
       .attr("cy", height / 2)
       .attr("r", scrubberRadius)
       .attr("fill", colors.scrubberHandle)
@@ -262,6 +281,12 @@ export class D3TimelineRenderer {
           Math.min(this.timeScale.range()[1], event.x)
         );
         const newDate = this.timeScale.invert(x);
+
+        // Update scrubber position for React tooltip
+        if (this.onScrubberPositionChange) {
+          this.onScrubberPositionChange(x);
+        }
+
         this.onTimestampChange(newDate);
       })
       .on("end", function () {

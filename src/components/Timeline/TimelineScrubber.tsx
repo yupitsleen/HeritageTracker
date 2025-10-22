@@ -14,13 +14,46 @@ import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 import { Input } from "../Form/Input";
 import { Button } from "../Button";
+import { TIMELINE_CONFIG, TOOLTIP_CONFIG } from "../../constants/timeline";
+import {
+  calculateDefaultDateRange,
+  filterEventsByDateRange,
+  calculateAdjustedDateRange,
+} from "../../utils/timelineCalculations";
+
+/**
+ * Callback type for date change handlers
+ */
+export type DateChangeHandler = (date: Date | null) => void;
+
+/**
+ * Callback type for site highlight handlers
+ */
+export type SiteHighlightHandler = (siteId: string | null) => void;
+
+/**
+ * Callback type for toggle handlers (no parameters)
+ */
+export type ToggleHandler = () => void;
+
+/**
+ * Advanced timeline mode configuration
+ */
+export interface AdvancedTimelineMode {
+  syncMapOnDotClick: boolean;
+  onSyncMapToggle: ToggleHandler;
+}
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
   destructionDateStart: Date | null;
   destructionDateEnd: Date | null;
-  onDestructionDateStartChange: (date: Date | null) => void;
-  onDestructionDateEndChange: (date: Date | null) => void;
+  onDestructionDateStartChange: DateChangeHandler;
+  onDestructionDateEndChange: DateChangeHandler;
+  highlightedSiteId?: string | null;
+  onSiteHighlight?: SiteHighlightHandler;
+  // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
+  advancedMode?: AdvancedTimelineMode;
 }
 
 /**
@@ -29,7 +62,7 @@ interface TimelineScrubberProps {
  * - Draggable scrubber handle
  * - Event markers for destruction dates
  * - Play/pause/reset controls
- * - Sync Map toggle (syncs satellite imagery with timeline)
+ * - Sync Map toggle (syncs satellite imagery with timeline OR on dot click in advanced mode)
  * - Speed control dropdown
  * - Keyboard navigation (space, arrows, home/end)
  * - Responsive to container width changes
@@ -40,6 +73,9 @@ export function TimelineScrubber({
   destructionDateEnd,
   onDestructionDateStartChange,
   onDestructionDateEndChange,
+  highlightedSiteId,
+  onSiteHighlight,
+  advancedMode,
 }: TimelineScrubberProps) {
   const {
     currentTimestamp,
@@ -47,13 +83,13 @@ export function TimelineScrubber({
     speed,
     startDate,
     endDate,
-    syncMapEnabled,
+    zoomToSiteEnabled,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
-    setSyncMapEnabled,
+    setZoomToSiteEnabled,
   } = useAnimation();
 
   const t = useThemeClasses();
@@ -61,6 +97,7 @@ export function TimelineScrubber({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
+  const [scrubberPosition, setScrubberPosition] = useState<number | null>(null);
 
   // Extract timeline data using custom hook
   const { events: allDestructionDates } = useTimelineData(sites);
@@ -69,38 +106,14 @@ export function TimelineScrubber({
   // Reduces dependency checking overhead and prevents cascading recalculations
   const timelineData = useMemo(() => {
     // Calculate default date range from dataset (oldest and newest destruction dates)
-    const defaults =
-      allDestructionDates.length === 0
-        ? { defaultStartDate: startDate, defaultEndDate: endDate }
-        : {
-            defaultStartDate: new Date(Math.min(...allDestructionDates.map((event) => event.date.getTime()))),
-            defaultEndDate: new Date(Math.max(...allDestructionDates.map((event) => event.date.getTime()))),
-          };
+    const defaults = calculateDefaultDateRange(allDestructionDates, startDate, endDate);
 
     // Filter destruction dates based on date filter
-    const filtered =
-      !destructionDateStart && !destructionDateEnd
-        ? allDestructionDates
-        : allDestructionDates.filter((event) => {
-            if (destructionDateStart && event.date < destructionDateStart) return false;
-            if (destructionDateEnd && event.date > destructionDateEnd) return false;
-            return true;
-          });
+    const filtered = filterEventsByDateRange(allDestructionDates, destructionDateStart, destructionDateEnd);
 
     // Calculate adjusted timeline range based on filtered dates
-    const adjusted =
-      filtered.length === 0
-        ? { adjustedStartDate: startDate, adjustedEndDate: endDate }
-        : {
-            adjustedStartDate:
-              destructionDateStart || destructionDateEnd
-                ? new Date(Math.min(...filtered.map((event) => event.date.getTime())))
-                : startDate,
-            adjustedEndDate:
-              destructionDateStart || destructionDateEnd
-                ? new Date(Math.max(...filtered.map((event) => event.date.getTime())))
-                : endDate,
-          };
+    const hasActiveFilter = Boolean(destructionDateStart || destructionDateEnd);
+    const adjusted = calculateAdjustedDateRange(filtered, hasActiveFilter, startDate, endDate);
 
     return {
       ...defaults,
@@ -130,41 +143,57 @@ export function TimelineScrubber({
 
   // D3 time scale (responsive to container width, uses adjusted dates when filtered)
   const timeScale = useMemo(() => {
-    const margin = 50; // Leave space for handles
     return scaleTime()
       .domain([adjustedStartDate, adjustedEndDate])
-      .range([margin, containerWidth - margin]);
+      .range([TIMELINE_CONFIG.MARGIN, containerWidth - TIMELINE_CONFIG.MARGIN]);
   }, [adjustedStartDate, adjustedEndDate, containerWidth]);
 
-  // Initialize D3 renderer
+  // Track if SVG is mounted
+  const [svgMounted, setSvgMounted] = useState(false);
+
+  // Detect when SVG ref becomes available
   useEffect(() => {
-    if (!svgRef.current) return;
+    if (svgRef.current && !svgMounted) {
+      setSvgMounted(true);
+    }
+  }, [svgMounted]);
 
-    rendererRef.current = new D3TimelineRenderer(
-      svgRef.current,
-      timeScale,
-      {}, // Use default config
-      {
-        onTimestampChange: setTimestamp,
-        onPause: pause,
-      }
-    );
-
-    return () => {
-      rendererRef.current?.cleanup();
-    };
-  }, [timeScale, setTimestamp, pause]);
-
-  // Update timeline rendering when data or timestamp changes
+  // Initialize D3 renderer and render timeline
   useEffect(() => {
-    if (!rendererRef.current) return;
+    if (!svgRef.current || !svgMounted) {
+      return;
+    }
+
+    // Initialize renderer if not exists
+    if (!rendererRef.current) {
+      rendererRef.current = new D3TimelineRenderer(
+        svgRef.current,
+        timeScale,
+        {}, // Use default config
+        {
+          onTimestampChange: setTimestamp,
+          onPause: pause,
+          onSiteHighlight: onSiteHighlight ? (event) => {
+            // Highlight the site when timeline dot is clicked
+            onSiteHighlight(event.siteId);
+          } : undefined,
+          onScrubberPositionChange: setScrubberPosition,
+        }
+      );
+    }
 
     // Update scale in case container width changed
     rendererRef.current.updateScale(timeScale);
 
-    // Render timeline with current state
-    rendererRef.current.render(destructionDates, currentTimestamp);
-  }, [timeScale, destructionDates, currentTimestamp]);
+    // Render timeline with current state and highlighted site
+    rendererRef.current.render(destructionDates, currentTimestamp, highlightedSiteId);
+
+    return () => {
+      // Cleanup on unmount only
+      rendererRef.current?.cleanup();
+      rendererRef.current = null;
+    };
+  }, [svgMounted, timeScale, destructionDates, currentTimestamp, highlightedSiteId, setTimestamp, pause, onSiteHighlight]);
 
   // Keyboard controls
   useEffect(() => {
@@ -223,6 +252,37 @@ export function TimelineScrubber({
   // Check if timeline is at the start position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
 
+  // Previous/Next navigation for Advanced Timeline mode
+  const currentEventIndex = useMemo(() => {
+    if (!advancedMode || destructionDates.length === 0) return -1;
+    return destructionDates.findIndex(
+      (event) => event.date.getTime() === currentTimestamp.getTime()
+    );
+  }, [advancedMode, destructionDates, currentTimestamp]);
+
+  const canGoPrevious = advancedMode && currentEventIndex > 0;
+  const canGoNext = advancedMode && currentEventIndex < destructionDates.length - 1;
+
+  const goToPreviousEvent = () => {
+    if (canGoPrevious) {
+      const prevEvent = destructionDates[currentEventIndex - 1];
+      setTimestamp(prevEvent.date);
+      if (onSiteHighlight) {
+        onSiteHighlight(prevEvent.siteId);
+      }
+    }
+  };
+
+  const goToNextEvent = () => {
+    if (canGoNext) {
+      const nextEvent = destructionDates[currentEventIndex + 1];
+      setTimestamp(nextEvent.date);
+      if (onSiteHighlight) {
+        onSiteHighlight(nextEvent.siteId);
+      }
+    }
+  };
+
   return (
     <div
       ref={containerRef}
@@ -232,29 +292,34 @@ export function TimelineScrubber({
     >
       {/* Controls */}
       <div className="flex items-center mb-2 gap-2">
-        {/* Left: Play/Pause/Reset/Sync Map/Speed */}
+        {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
         <div className="flex items-center gap-1.5 flex-1">
-          {!isPlaying ? (
-            <Button
-              onClick={play}
-              variant="primary"
-              size="xs"
-              icon={<PlayIcon className="w-3 h-3" />}
-              aria-label="Play timeline animation"
-            >
-              Play
-            </Button>
-          ) : (
-            <Button
-              onClick={pause}
-              variant="danger"
-              size="xs"
-              icon={<PauseIcon className="w-3 h-3" />}
-              aria-label="Pause timeline animation"
-            >
-              Pause
-            </Button>
+          {!advancedMode && (
+            <>
+              {!isPlaying ? (
+                <Button
+                  onClick={play}
+                  variant="primary"
+                  size="xs"
+                  icon={<PlayIcon className="w-3 h-3" />}
+                  aria-label="Play timeline animation"
+                >
+                  Play
+                </Button>
+              ) : (
+                <Button
+                  onClick={pause}
+                  variant="danger"
+                  size="xs"
+                  icon={<PauseIcon className="w-3 h-3" />}
+                  aria-label="Pause timeline animation"
+                >
+                  Pause
+                </Button>
+              )}
+            </>
           )}
+
           <Button
             onClick={reset}
             disabled={isAtStart}
@@ -266,43 +331,85 @@ export function TimelineScrubber({
             Reset
           </Button>
 
-          {/* Sync Map toggle button */}
+          {/* Sync Map toggle button - only show in advanced mode */}
+          {advancedMode && (
+            <Button
+              onClick={advancedMode.onSyncMapToggle}
+              variant={advancedMode.syncMapOnDotClick ? "primary" : "secondary"}
+              size="xs"
+              aria-label={
+                advancedMode.syncMapOnDotClick ? "Disable sync on dot click" : "Enable sync on dot click"
+              }
+              title="When enabled, clicking timeline dots syncs satellite imagery to show the site before destruction"
+            >
+              {advancedMode.syncMapOnDotClick ? "✓" : ""} Sync map version
+            </Button>
+          )}
+
+          {/* Zoom to Site toggle button */}
           <Button
-            onClick={() => setSyncMapEnabled(!syncMapEnabled)}
-            variant={syncMapEnabled ? "primary" : "secondary"}
+            onClick={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
+            variant={zoomToSiteEnabled ? "primary" : "secondary"}
             size="xs"
-            aria-label={syncMapEnabled ? "Disable map sync with timeline" : "Enable map sync with timeline"}
-            title="When enabled, satellite imagery switches to match timeline date (2014 → Aug 2023 → Current)"
+            aria-label={zoomToSiteEnabled ? "Disable zoom to site" : "Enable zoom to site"}
+            title="When enabled, map zooms in when a site is highlighted. When disabled, only the marker is shown without zooming"
           >
-            {syncMapEnabled ? "✓" : ""} Sync Map
+            {zoomToSiteEnabled ? "✓" : ""} Zoom to Site
           </Button>
 
-          {/* Speed control */}
-          <div className="flex items-center gap-1.5">
-            <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
-              Speed:
-            </label>
-            <select
-              id="speed-control"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-              className={`${t.timeline.speedSelect} ${t.input.base}`}
-              aria-label="Animation speed control"
-            >
-              {speedOptions.map((s) => (
-                <option key={s} value={s}>
-                  {s}x
-                </option>
-              ))}
-            </select>
-          </div>
+          {!advancedMode && (
+            /* Speed control - hidden in advanced mode */
+            <div className="flex items-center gap-1.5">
+              <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
+                Speed:
+              </label>
+              <select
+                id="speed-control"
+                value={speed}
+                onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
+                className={`${t.timeline.speedSelect} ${t.input.base}`}
+                aria-label="Animation speed control"
+              >
+                {speedOptions.map((s) => (
+                  <option key={s} value={s}>
+                    {s}x
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
-        {/* Center: Current date display */}
-        <div className={t.timeline.currentDate}>
-          <span className={t.text.muted}>Current:</span>{" "}
-          {timeFormat("%B %d, %Y")(currentTimestamp)}
-        </div>
+        {/* Center: Previous/Next navigation (Advanced Timeline) or Current date display */}
+        {advancedMode ? (
+          <div className="flex items-center gap-1.5">
+            <Button
+              onClick={goToPreviousEvent}
+              disabled={!canGoPrevious}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to previous destruction event"
+              title="Navigate to previous site destruction event"
+            >
+              ⏮ Previous
+            </Button>
+            <Button
+              onClick={goToNextEvent}
+              disabled={!canGoNext}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to next destruction event"
+              title="Navigate to next site destruction event"
+            >
+              Next ⏭
+            </Button>
+          </div>
+        ) : (
+          <div className={t.timeline.currentDate}>
+            <span className={t.text.muted}>Current:</span>{" "}
+            {timeFormat("%B %d, %Y")(currentTimestamp)}
+          </div>
+        )}
 
         {/* Right: Date Filter */}
         <div className="flex items-center gap-1.5 flex-1 justify-end">
@@ -349,7 +456,40 @@ export function TimelineScrubber({
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
-      <svg ref={svgRef} width="100%" height="40" className="mt-1" aria-hidden="true" />
+      <div className="relative overflow-visible" style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}>
+        <svg
+          ref={(node) => {
+            if (node && node !== svgRef.current) {
+              svgRef.current = node;
+              setSvgMounted(true);
+            }
+          }}
+          key={`timeline-${containerWidth}-${startDate.getTime()}`}
+          width="100%"
+          height={TIMELINE_CONFIG.HEIGHT}
+          className="mt-1"
+          aria-hidden="true"
+        />
+        {/* Floating scrubber date tooltip - positioned below timeline */}
+        {scrubberPosition !== null && (
+          <div
+            className="absolute z-[9999] pointer-events-none"
+            style={{
+              left: `${scrubberPosition}px`,
+              top: `${TOOLTIP_CONFIG.VERTICAL_OFFSET}px`,
+              transform: `translateX(${TOOLTIP_CONFIG.HORIZONTAL_TRANSFORM})`,
+            }}
+          >
+            <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
+              {currentTimestamp.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Keyboard shortcuts hint */}
       <div className={`mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>

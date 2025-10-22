@@ -1,9 +1,11 @@
 import { useMemo, useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
+import { SITE_MARKER_CONFIG } from "../../constants/timeline";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
+import { SitePopup } from "./SitePopup";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import L from "leaflet";
@@ -12,6 +14,12 @@ import "leaflet/dist/leaflet.css";
 interface SiteDetailViewProps {
   sites: GazaSite[];
   highlightedSiteId: string | null;
+  // Optional custom tile URL (e.g., for Wayback imagery)
+  customTileUrl?: string;
+  // Optional custom max zoom for custom tiles
+  customMaxZoom?: number;
+  // Optional callback for when user clicks "See More" in popup
+  onSiteClick?: (site: GazaSite) => void;
 }
 
 /**
@@ -21,9 +29,9 @@ interface SiteDetailViewProps {
  * Supports historical imagery comparison (2014, Aug 2023, Current)
  * Can sync imagery periods with timeline playback when enabled
  */
-export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps) {
-  // Get animation context for timeline sync
-  const { currentTimestamp, syncActive } = useAnimation();
+export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, customMaxZoom, onSiteClick }: SiteDetailViewProps) {
+  // Get animation context for timeline sync and zoom toggle
+  const { currentTimestamp, syncActive, zoomToSiteEnabled } = useAnimation();
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("PRE_CONFLICT_2023");
@@ -43,25 +51,35 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
     return sites.find((site) => site.id === highlightedSiteId) || null;
   }, [sites, highlightedSiteId]);
 
-  // Get tile URL and maxZoom for selected time period
-  // Direct constant lookup is faster than useMemo for static HISTORICAL_IMAGERY data
-  const { url: tileUrl, maxZoom: periodMaxZoom } = HISTORICAL_IMAGERY[selectedPeriod];
+  // Get tile URL and maxZoom
+  // If custom URL provided (e.g., Wayback imagery), use that instead of period-based imagery
+  const { url: tileUrl, maxZoom: periodMaxZoom } = useMemo(() => {
+    if (customTileUrl) {
+      return {
+        url: customTileUrl,
+        maxZoom: customMaxZoom || 19,
+      };
+    }
+    // Otherwise use standard historical imagery periods
+    return HISTORICAL_IMAGERY[selectedPeriod];
+  }, [customTileUrl, customMaxZoom, selectedPeriod]);
 
   // Determine map center and zoom level (clamped to period's max zoom)
+  // When zoomToSiteEnabled is OFF, only show marker without zooming in
   const { center, zoom } = useMemo(() => {
-    if (highlightedSite) {
+    if (highlightedSite && zoomToSiteEnabled) {
       // Zoom in on selected site, but don't exceed the period's max zoom
       return {
         center: highlightedSite.coordinates,
         zoom: Math.min(SITE_DETAIL_ZOOM, periodMaxZoom),
       };
     }
-    // Default: Gaza overview
+    // Default: Gaza overview (or keep current position if zoomToSite is OFF)
     return {
       center: GAZA_CENTER,
       zoom: DEFAULT_ZOOM,
     };
-  }, [highlightedSite, periodMaxZoom]);
+  }, [highlightedSite, periodMaxZoom, zoomToSiteEnabled]);
 
   // Create a custom marker icon for the highlighted site
   const markerIcon = useMemo(() => {
@@ -70,15 +88,17 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
       html: `
         <div class="w-5 h-5 bg-[#ed3039] border-[3px] border-white rounded-full shadow-md"></div>
       `,
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
+      iconSize: SITE_MARKER_CONFIG.ICON_SIZE,
+      iconAnchor: SITE_MARKER_CONFIG.ICON_ANCHOR,
     });
   }, []);
 
   return (
     <div className="relative h-full">
-      {/* Time period toggle */}
-      <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
+      {/* Time period toggle - hide when using custom Wayback imagery */}
+      {!customTileUrl && (
+        <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
+      )}
 
       <MapContainer
         center={center}
@@ -103,9 +123,13 @@ export function SiteDetailView({ sites, highlightedSiteId }: SiteDetailViewProps
           minZoom={1}
         />
 
-        {/* Show marker for highlighted site */}
+        {/* Show marker for highlighted site with popup */}
         {highlightedSite && (
-          <Marker position={highlightedSite.coordinates} icon={markerIcon} />
+          <Marker position={highlightedSite.coordinates} icon={markerIcon}>
+            <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
+              <SitePopup site={highlightedSite} onViewMore={() => onSiteClick?.(highlightedSite)} />
+            </Popup>
+          </Marker>
         )}
       </MapContainer>
     </div>
