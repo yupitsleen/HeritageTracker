@@ -138,9 +138,7 @@ export function SitesTableDesktop({
   const useVirtualScrolling = sortedSites.length >= VIRTUAL_SCROLL_THRESHOLD;
 
   // Note for future: When implementing, replace tbody.map with VirtualizedTableBody component
-  if (useVirtualScrolling) {
-    console.log(`Virtual scrolling available for ${sortedSites.length} sites (threshold: ${VIRTUAL_SCROLL_THRESHOLD})`);
-  }
+  // Virtual scrolling threshold: useVirtualScrolling flag indicates when optimization is available
 
   // Scroll to highlighted site when it changes
   useEffect(() => {
