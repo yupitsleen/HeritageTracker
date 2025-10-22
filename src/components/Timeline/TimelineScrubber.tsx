@@ -253,6 +253,37 @@ export function TimelineScrubber({
   // Check if timeline is at the start position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
 
+  // Previous/Next navigation for Advanced Timeline mode
+  const currentEventIndex = useMemo(() => {
+    if (!advancedMode || destructionDates.length === 0) return -1;
+    return destructionDates.findIndex(
+      (event) => event.date.getTime() === currentTimestamp.getTime()
+    );
+  }, [advancedMode, destructionDates, currentTimestamp]);
+
+  const canGoPrevious = advancedMode && currentEventIndex > 0;
+  const canGoNext = advancedMode && currentEventIndex < destructionDates.length - 1;
+
+  const goToPreviousEvent = () => {
+    if (canGoPrevious) {
+      const prevEvent = destructionDates[currentEventIndex - 1];
+      setTimestamp(prevEvent.date);
+      if (onSiteHighlight) {
+        onSiteHighlight(prevEvent.siteId);
+      }
+    }
+  };
+
+  const goToNextEvent = () => {
+    if (canGoNext) {
+      const nextEvent = destructionDates[currentEventIndex + 1];
+      setTimestamp(nextEvent.date);
+      if (onSiteHighlight) {
+        onSiteHighlight(nextEvent.siteId);
+      }
+    }
+  };
+
   return (
     <div
       ref={containerRef}
@@ -367,11 +398,36 @@ export function TimelineScrubber({
           )}
         </div>
 
-        {/* Center: Current date display */}
-        <div className={t.timeline.currentDate}>
-          <span className={t.text.muted}>Current:</span>{" "}
-          {timeFormat("%B %d, %Y")(currentTimestamp)}
-        </div>
+        {/* Center: Previous/Next navigation (Advanced Timeline) or Current date display */}
+        {advancedMode ? (
+          <div className="flex items-center gap-1.5">
+            <Button
+              onClick={goToPreviousEvent}
+              disabled={!canGoPrevious}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to previous destruction event"
+              title="Navigate to previous site destruction event"
+            >
+              ⏮ Previous
+            </Button>
+            <Button
+              onClick={goToNextEvent}
+              disabled={!canGoNext}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to next destruction event"
+              title="Navigate to next site destruction event"
+            >
+              Next ⏭
+            </Button>
+          </div>
+        ) : (
+          <div className={t.timeline.currentDate}>
+            <span className={t.text.muted}>Current:</span>{" "}
+            {timeFormat("%B %d, %Y")(currentTimestamp)}
+          </div>
+        )}
 
         {/* Right: Date Filter */}
         <div className="flex items-center gap-1.5 flex-1 justify-end">
