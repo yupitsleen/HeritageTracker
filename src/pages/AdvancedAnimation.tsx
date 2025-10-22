@@ -6,6 +6,7 @@ import { Button } from "../components/Button";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
+import { WaybackSlider } from "../components/AdvancedTimeline";
 
 // Lazy load the map and timeline components
 const SiteDetailView = lazy(() =>
@@ -131,27 +132,13 @@ export function AdvancedAnimation() {
               </Suspense>
             </div>
 
-            {/* Wayback Release Selector */}
-            <div className={`flex-shrink-0 px-4 py-2 rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
-              <div className="flex items-center gap-4">
-                <span className={`text-sm font-semibold ${t.text.body}`}>
-                  Imagery Date:
-                </span>
-                <input
-                  type="range"
-                  min="0"
-                  max={releases.length - 1}
-                  value={currentReleaseIndex}
-                  onChange={(e) => setCurrentReleaseIndex(Number(e.target.value))}
-                  className="flex-1"
-                />
-                <span className={`text-sm font-mono ${t.text.body} min-w-[100px] text-right`}>
-                  {currentRelease?.releaseDate || "Unknown"}
-                </span>
-                <span className={`text-xs ${t.text.muted}`}>
-                  {currentReleaseIndex + 1} / {releases.length}
-                </span>
-              </div>
+            {/* Wayback Release Slider - Visual timeline with year markers */}
+            <div className="flex-shrink-0">
+              <WaybackSlider
+                releases={releases}
+                currentIndex={currentReleaseIndex}
+                onIndexChange={setCurrentReleaseIndex}
+              />
             </div>
 
             {/* Timeline Scrubber - Site filtering */}
