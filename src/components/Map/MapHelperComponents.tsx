@@ -18,19 +18,21 @@ export function MapUpdater({ center, zoom }: { center: [number, number]; zoom: n
 
 /**
  * MapCenterHandler - Handles map centering when a site is highlighted
- * Smoothly pans to the highlighted site
+ * Smoothly pans to the highlighted site (when zoom to site is enabled)
  */
 export function MapCenterHandler({
   sites,
   highlightedSiteId,
+  zoomToSiteEnabled = true,
 }: {
   sites: GazaSite[];
   highlightedSiteId?: string | null;
+  zoomToSiteEnabled?: boolean;
 }) {
   const map = useMap();
 
   useEffect(() => {
-    if (highlightedSiteId) {
+    if (highlightedSiteId && zoomToSiteEnabled) {
       const site = sites.find((s) => s.id === highlightedSiteId);
       if (site) {
         // Close any open popups
@@ -43,7 +45,7 @@ export function MapCenterHandler({
         });
       }
     }
-  }, [highlightedSiteId, sites, map]);
+  }, [highlightedSiteId, sites, map, zoomToSiteEnabled]);
 
   return null;
 }

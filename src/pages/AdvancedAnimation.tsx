@@ -177,7 +177,7 @@ export function AdvancedAnimation() {
 
         {/* Success state - Map + Wayback controls */}
         {!isLoading && !error && releases.length > 0 && (
-          <>
+          <AnimationProvider sites={mockSites}>
             {/* Full-screen satellite map with Wayback imagery */}
             <div
               className={`flex-1 min-h-0 border-2 ${
@@ -205,26 +205,23 @@ export function AdvancedAnimation() {
 
             {/* Timeline Scrubber - Site filtering with advanced mode sync */}
             <div className="flex-shrink-0 h-[100px]">
-              {/* Wrap in AnimationProvider outside Suspense to prevent remounting */}
-              <AnimationProvider sites={mockSites}>
-                <Suspense fallback={<SkeletonMap />}>
-                  <TimelineScrubber
-                    sites={mockSites}
-                    destructionDateStart={destructionDateStart}
-                    destructionDateEnd={destructionDateEnd}
-                    onDestructionDateStartChange={setDestructionDateStart}
-                    onDestructionDateEndChange={setDestructionDateEnd}
-                    highlightedSiteId={highlightedSiteId}
-                    onSiteHighlight={handleSiteHighlight}
-                    advancedMode={{
-                      syncMapOnDotClick,
-                      onSyncMapToggle: () => setSyncMapOnDotClick(!syncMapOnDotClick),
-                    }}
-                  />
-                </Suspense>
-              </AnimationProvider>
+              <Suspense fallback={<SkeletonMap />}>
+                <TimelineScrubber
+                  sites={mockSites}
+                  destructionDateStart={destructionDateStart}
+                  destructionDateEnd={destructionDateEnd}
+                  onDestructionDateStartChange={setDestructionDateStart}
+                  onDestructionDateEndChange={setDestructionDateEnd}
+                  highlightedSiteId={highlightedSiteId}
+                  onSiteHighlight={handleSiteHighlight}
+                  advancedMode={{
+                    syncMapOnDotClick,
+                    onSyncMapToggle: () => setSyncMapOnDotClick(!syncMapOnDotClick),
+                  }}
+                />
+              </Suspense>
             </div>
-          </>
+          </AnimationProvider>
         )}
       </main>
     </div>

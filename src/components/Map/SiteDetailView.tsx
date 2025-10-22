@@ -26,8 +26,8 @@ interface SiteDetailViewProps {
  * Can sync imagery periods with timeline playback when enabled
  */
 export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, customMaxZoom }: SiteDetailViewProps) {
-  // Get animation context for timeline sync
-  const { currentTimestamp, syncActive } = useAnimation();
+  // Get animation context for timeline sync and zoom toggle
+  const { currentTimestamp, syncActive, zoomToSiteEnabled } = useAnimation();
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("PRE_CONFLICT_2023");
@@ -61,20 +61,21 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
   }, [customTileUrl, customMaxZoom, selectedPeriod]);
 
   // Determine map center and zoom level (clamped to period's max zoom)
+  // When zoomToSiteEnabled is OFF, only show marker without zooming in
   const { center, zoom } = useMemo(() => {
-    if (highlightedSite) {
+    if (highlightedSite && zoomToSiteEnabled) {
       // Zoom in on selected site, but don't exceed the period's max zoom
       return {
         center: highlightedSite.coordinates,
         zoom: Math.min(SITE_DETAIL_ZOOM, periodMaxZoom),
       };
     }
-    // Default: Gaza overview
+    // Default: Gaza overview (or keep current position if zoomToSite is OFF)
     return {
       center: GAZA_CENTER,
       zoom: DEFAULT_ZOOM,
     };
-  }, [highlightedSite, periodMaxZoom]);
+  }, [highlightedSite, periodMaxZoom, zoomToSiteEnabled]);
 
   // Create a custom marker icon for the highlighted site
   const markerIcon = useMemo(() => {

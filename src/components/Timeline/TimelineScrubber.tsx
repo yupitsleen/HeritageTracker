@@ -58,12 +58,14 @@ export function TimelineScrubber({
     startDate,
     endDate,
     syncMapEnabled,
+    zoomToSiteEnabled,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
     setSyncMapEnabled,
+    setZoomToSiteEnabled,
   } = useAnimation();
 
   const t = useThemeClasses();
@@ -312,6 +314,17 @@ export function TimelineScrubber({
               ? advancedMode.syncMapOnDotClick ? "✓" : ""
               : syncMapEnabled ? "✓" : ""}{" "}
             Sync Map
+          </Button>
+
+          {/* Zoom to Site toggle button */}
+          <Button
+            onClick={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
+            variant={zoomToSiteEnabled ? "primary" : "secondary"}
+            size="xs"
+            aria-label={zoomToSiteEnabled ? "Disable zoom to site" : "Enable zoom to site"}
+            title="When enabled, map zooms in when a site is highlighted. When disabled, only the marker is shown without zooming"
+          >
+            {zoomToSiteEnabled ? "✓" : ""} Zoom to Site
           </Button>
 
           {/* Speed control */}

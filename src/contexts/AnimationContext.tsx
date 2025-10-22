@@ -22,6 +22,8 @@ interface AnimationContextValue {
   syncMapEnabled: boolean;
   // Map sync active state - whether sync is currently active (can be temporarily disabled by manual override)
   syncActive: boolean;
+  // Zoom to site toggle - whether to zoom in when highlighting a site
+  zoomToSiteEnabled: boolean;
 
   // Actions
   play: () => void;
@@ -31,6 +33,7 @@ interface AnimationContextValue {
   setSpeed: (speed: AnimationSpeed) => void;
   setSyncMapEnabled: (enabled: boolean) => void;
   setSyncActive: (active: boolean) => void;
+  setZoomToSiteEnabled: (enabled: boolean) => void;
 }
 
 const AnimationContext = createContext<AnimationContextValue | undefined>(undefined);
@@ -72,6 +75,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
   const [speed, setSpeed] = useState<AnimationSpeed>(1);
   const [syncMapEnabled, setSyncMapEnabled] = useState(false); // Default: OFF
   const [syncActive, setSyncActive] = useState(false); // Tracks if sync is currently active
+  const [zoomToSiteEnabled, setZoomToSiteEnabled] = useState(true); // Default: ON (current behavior)
 
   // Ref to store animation frame ID for cleanup
   const animationFrameRef = useRef<number | null>(null);
@@ -206,6 +210,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     endDate,
     syncMapEnabled,
     syncActive,
+    zoomToSiteEnabled,
     play,
     pause,
     reset,
@@ -213,6 +218,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     setSpeed,
     setSyncMapEnabled,
     setSyncActive,
+    setZoomToSiteEnabled,
   };
 
   return (
