@@ -206,7 +206,7 @@ export function AdvancedAnimation() {
               className={`p-2 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
                 isDark
                   ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
-                  : "bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
+                  : "bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
               }`}
               aria-label="How to use this page"
               title="How to use this page"
@@ -220,7 +220,7 @@ export function AdvancedAnimation() {
               className={`p-2 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
                 isDark
                   ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
-                  : "bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
+                  : "bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
               }`}
               aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
               title={isDark ? "Switch to light mode" : "Switch to dark mode"}

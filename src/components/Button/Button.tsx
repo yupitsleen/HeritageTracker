@@ -97,19 +97,19 @@ export function Button({
       {
         primary: isDark
           ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80'
-          : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80',
+          : 'bg-transparent text-white border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80',
 
         secondary: isDark
           ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
-          : 'bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80',
+          : 'bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80',
 
         danger: isDark
           ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80'
-          : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80',
+          : 'bg-transparent text-white border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80',
 
         ghost: isDark
           ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
-          : 'bg-transparent hover:bg-gray-100 text-gray-600 border-gray-300 hover:opacity-90',
+          : 'bg-transparent hover:bg-gray-100 text-white border-gray-300 hover:opacity-90',
       }[variant];
 
   return (
