@@ -5,7 +5,7 @@
 **Documenting the destruction of Palestinian cultural heritage through interactive visualization.**
 
 ![Project Status](https://img.shields.io/badge/status-production-brightgreen)
-![Tests](https://img.shields.io/badge/tests-292%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-432%20passing-brightgreen)
 ![Deployment](https://img.shields.io/badge/deployment-live-success)
 ![PWA](https://img.shields.io/badge/PWA-enabled-blue)
 ![License](https://img.shields.io/badge/license-TBD-lightgrey)
@@ -49,7 +49,10 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **Code splitting** (310KB main bundle, 669KB total precached)
 - **Performance optimizations** (O(n) algorithms, React.memo, granular D3 imports)
 - **CI/CD Pipeline** with automated testing, mobile smoke tests, and bundle monitoring
-- **Comprehensive test suite** (292 tests including performance regression tests for 1000+ sites)
+- **Dark mode support** with system preference detection and manual toggle
+- **Advanced Timeline page** with 150+ ESRI Wayback satellite imagery versions (2014-2025)
+- **GitHub repository link** in footer for easy access to source code
+- **Comprehensive test suite** (432 tests including performance regression tests for 1000+ sites)
 
 ### 🚧 In Progress
 
@@ -63,7 +66,7 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **Leaflet** + **Leaflet.heat** - Interactive mapping with heatmap support
 - **D3.js** - Timeline visualization with time scales
 - **vite-plugin-pwa** + **Workbox** - Progressive Web App with offline support
-- **Vitest** - Testing framework (292 tests passing)
+- **Vitest** - Testing framework (432 tests passing)
 - **React Testing Library** - Component testing
 - **GitHub Actions** - CI/CD automation with mobile smoke tests and bundle monitoring
 - **GitHub Pages** - Production hosting with auto-deployment
@@ -92,7 +95,7 @@ npm run dev
 
 ```bash
 npm run dev          # Dev server with HMR (localhost:5173)
-npm test            # Run test suite (292 tests)
+npm test            # Run test suite (432 tests)
 npm run lint        # ESLint code quality check
 npm run build       # Production build (with PWA manifest + service worker)
 npm run preview     # Preview production build locally
@@ -116,11 +119,18 @@ View deployment status: https://github.com/yupitsleen/HeritageTracker/actions
 src/
 ├── App.tsx                      # Main app (264 lines, was 593)
 ├── components/
-│   ├── Layout/                  # ✨ NEW - App layout components
-│   │   ├── AppHeader.tsx       # Header with navigation
-│   │   ├── AppFooter.tsx       # Footer with links
+│   ├── Button/                  # Reusable button components
+│   │   ├── Button.tsx          # Main button with variants
+│   │   └── IconButton.tsx      # Icon-only button (Help, Dark Mode)
+│   ├── Layout/                  # App layout components
+│   │   ├── AppHeader.tsx       # Header with navigation and dark mode toggle
+│   │   ├── AppFooter.tsx       # Footer with GitHub link
 │   │   ├── DesktopLayout.tsx   # Desktop: Table + Map + Timeline
 │   │   └── MobileLayout.tsx    # Mobile: FilterBar + Accordion
+│   ├── AdvancedTimeline/       # Wayback satellite timeline components
+│   │   ├── WaybackMap.tsx      # Map with 150+ historical imagery versions
+│   │   ├── WaybackSlider.tsx   # Timeline slider with year markers
+│   │   └── NavigationControls.tsx  # Play/Pause/Step controls
 │   ├── FilterBar/              # Deferred filter application with BC/BCE support
 │   ├── Map/                    # Leaflet map with satellite toggle, lazy loaded
 │   │   ├── HeritageMap.tsx
@@ -143,6 +153,8 @@ src/
 │   └── Modal/                  # Reusable modal component
 ├── contexts/
 │   ├── AnimationContext.tsx    # Global animation state (desktop only)
+│   ├── ThemeContext.tsx        # Dark mode state with system preference detection
+│   ├── WaybackContext.tsx      # Wayback timeline playback state
 │   └── CalendarContext.tsx     # Calendar type management
 ├── hooks/                      # ✨ EXPANDED - Reusable logic hooks
 │   ├── useAppState.ts          # Central app state management
@@ -208,7 +220,9 @@ vite.config.ts                  # Vite config with PWA plugin + code splitting
 - [x] Statistics dashboard with impact metrics
 - [x] About/Methodology page
 - [x] **45 Gaza heritage sites documented** ✅
-- [x] Comprehensive test suite (292 tests including performance regression tests)
+- [x] **Dark mode support** with system preference detection ✅
+- [x] **Advanced Timeline page** with 150+ ESRI Wayback imagery versions ✅
+- [x] Comprehensive test suite (432 tests including performance regression tests)
 - [x] CI/CD pipeline with mobile tests + bundle monitoring
 - [x] **Performance optimizations:** Lazy loading, code splitting, PWA, O(n) algorithms
 - [x] **1000+ site scaling validated** with performance regression tests
@@ -257,7 +271,7 @@ We welcome contributions! Ways to help:
 - Write tests for new features (minimum 5+ tests per component)
 - Include mobile-specific tests when applicable
 - Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-- Ensure all 292 tests pass before committing
+- Ensure all 432 tests pass before committing
 - Run `npm run lint && npm test` before every commit
 - All changes automatically tested and deployed via CI/CD
 - Mobile smoke tests and bundle size monitoring in CI pipeline
@@ -287,11 +301,39 @@ This project builds on documentation by UNESCO, Forensic Architecture, Heritage 
 
 ---
 
-_Last updated: October 19, 2025 | Version: 1.11.0 | 🚀 Live in Production with PWA | 45 sites documented | 292 tests passing | Bundle optimized (310KB main, 669KB total) | Performance validated for 1000+ sites | **Production-ready with comprehensive optimizations**_
+_Last updated: October 23, 2025 | Version: 1.15.0 | 🚀 Live in Production with PWA | 45 sites documented | 432 tests passing | Bundle optimized (310KB main, 669KB total) | Performance validated for 1000+ sites | **Production-ready with comprehensive optimizations**_
 
 **Live Site:** https://yupitsleen.github.io/HeritageTracker/
 
-## 📈 Recent Updates (v1.11.0 - Oct 19, 2025)
+## 📈 Recent Updates
+
+### v1.15.0 - UI Refinement & Advanced Timeline (Oct 21-23, 2025)
+
+**New Features:**
+
+- **Dark Mode Support**: System preference detection with manual toggle, theme-aware styling throughout
+- **Advanced Timeline Page**: 150+ ESRI Wayback satellite imagery versions (2014-2025) with interactive timeline
+- **GitHub Link**: Added to footer for easy access to source code
+- **Map Sync Feature**: Timeline-synced satellite imagery with dynamic period matching
+- **Previous/Next Navigation**: Step through destruction events on Advanced Timeline
+
+**UI Refinements:**
+
+- **Button Redesign**: Professional subtle-to-bold hover aesthetic with sharp corners
+- **Contrast Improvements**: Better separation between background and components (bg-gray-600 dark, bg-gray-500 light)
+- **Icon Button Component**: Eliminated 28 lines of duplicated code with new reusable component
+- **Input Refinement**: Thinner date pickers with reduced padding
+- **Header Layout**: Improved visual hierarchy with centered buttons
+- **Timeline Polish**: Refined controls, removed redundant text, improved responsive behavior
+
+**Code Quality:**
+
+- **IconButton Refactoring**: Extracted reusable component, eliminated duplication
+- **Test Coverage**: Expanded to 432 tests (up from 292)
+- **Accessibility**: Proper ARIA labels on all new components
+- **Type Safety**: Consistent TypeScript interfaces
+
+### v1.11.0 - Performance Optimizations (Oct 19, 2025)
 
 ### Performance Regression Tests (NEW)
 
