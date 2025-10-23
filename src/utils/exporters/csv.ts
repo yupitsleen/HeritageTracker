@@ -5,10 +5,14 @@
  * - Excel and spreadsheet applications
  * - Data analysis tools
  * - Database imports
+ *
+ * Now supports customizable column selection via CSV_COLUMN_REGISTRY.
  */
 
 import type { GazaSite } from "../../types";
 import type { ExportConfig, ExportFunction } from "../../types/export";
+import type { CSVColumnId, CSVExportOptions } from "../../types/csvColumns";
+import { getDefaultCSVColumns, getCSVColumnsByIds, getColumnIds } from "../../config/csvColumns";
 
 /**
  * Escape CSV field according to RFC 4180
@@ -26,42 +30,57 @@ function escapeCSV(value: string | undefined | null): string {
 }
 
 /**
- * Export sites as CSV
+ * Export sites as CSV (basic version - uses default columns)
  *
  * @param sites - Array of sites to export
  * @returns CSV string (RFC 4180 compliant)
  */
 export const exportCSV: ExportFunction = (sites: GazaSite[]): string => {
-  const headers = [
-    "Name",
-    "Name (Arabic)",
-    "Type",
-    "Status",
-    "Year Built",
-    "Year Built (Islamic)",
-    "Destruction Date",
-    "Destruction Date (Islamic)",
-    "Description",
-    "Coordinates (Lat, Lng)",
-    "Verified By",
-  ];
-
-  const rows = sites.map((site) => [
-    escapeCSV(site.name),
-    escapeCSV(site.nameArabic),
-    escapeCSV(site.type),
-    escapeCSV(site.status),
-    escapeCSV(site.yearBuilt),
-    escapeCSV(site.yearBuiltIslamic),
-    escapeCSV(site.dateDestroyed),
-    escapeCSV(site.dateDestroyedIslamic),
-    escapeCSV(site.description),
-    `"${site.coordinates[0]}, ${site.coordinates[1]}"`,
-    escapeCSV(site.verifiedBy?.join("; ")),
-  ]);
-
-  return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
+  return exportCSVWithOptions(sites, {});
 };
+
+/**
+ * Export sites as CSV with custom column selection
+ *
+ * @param sites - Array of sites to export
+ * @param options - Export options (column selection, headers)
+ * @returns CSV string (RFC 4180 compliant)
+ */
+export function exportCSVWithOptions(sites: GazaSite[], options: CSVExportOptions = {}): string {
+  const { columns: columnIds, includeHeaders = true } = options;
+
+  // Get column configurations (default or custom)
+  const columns = columnIds ? getCSVColumnsByIds(columnIds) : getDefaultCSVColumns();
+
+  // Generate headers
+  const headers = columns.map((col) => col.label);
+
+  // Generate rows
+  const rows = sites.map((site) =>
+    columns.map((col) => {
+      const value = col.getValue(site);
+      return escapeCSV(value);
+    })
+  );
+
+  // Combine headers and rows
+  const lines: string[] = [];
+  if (includeHeaders) {
+    lines.push(headers.join(","));
+  }
+  lines.push(...rows.map((row) => row.join(",")));
+
+  return lines.join("\n");
+}
+
+/**
+ * Get default column IDs for CSV export
+ *
+ * @returns Array of default column IDs
+ */
+export function getDefaultCSVColumnIds(): CSVColumnId[] {
+  return getColumnIds(getDefaultCSVColumns());
+}
 
 /**
  * CSV export configuration
