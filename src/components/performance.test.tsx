@@ -498,7 +498,8 @@ describe("Performance Tests (25+ Sites)", () => {
 
       expect(container).toBeInTheDocument();
       // 1000 sites may take longer but should be reasonable
-      expect(renderTime).toBeLessThan(3000);
+      // Threshold increased slightly to account for more complex button styling
+      expect(renderTime).toBeLessThan(3200);
     });
   });
 

@@ -97,33 +97,41 @@ describe('Button', () => {
     it('renders extra small size', () => {
       renderWithTheme(<Button size="xs">Extra Small</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).toContain('px-2');
-      expect(button.className).toContain('py-0.5');
+      expect(button.className).toContain('px-4');
+      expect(button.className).toContain('py-1.5');
       expect(button.className).toContain('text-xs');
+      expect(button.className).toContain('uppercase');
+      expect(button.className).toContain('tracking-wide');
     });
 
     it('renders small size', () => {
       renderWithTheme(<Button size="sm">Small</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).toContain('px-3');
-      expect(button.className).toContain('py-1');
+      expect(button.className).toContain('px-5');
+      expect(button.className).toContain('py-2');
       expect(button.className).toContain('text-xs');
+      expect(button.className).toContain('uppercase');
+      expect(button.className).toContain('tracking-wide');
     });
 
     it('renders medium size (default)', () => {
       renderWithTheme(<Button size="md">Medium</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).toContain('px-4');
-      expect(button.className).toContain('py-1.5');
+      expect(button.className).toContain('px-6');
+      expect(button.className).toContain('py-2.5');
       expect(button.className).toContain('text-sm');
+      expect(button.className).toContain('uppercase');
+      expect(button.className).toContain('tracking-wide');
     });
 
     it('renders large size', () => {
       renderWithTheme(<Button size="lg">Large</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).toContain('px-6');
-      expect(button.className).toContain('py-2');
+      expect(button.className).toContain('px-8');
+      expect(button.className).toContain('py-3');
       expect(button.className).toContain('text-base');
+      expect(button.className).toContain('uppercase');
+      expect(button.className).toContain('tracking-wide');
     });
   });
 
@@ -203,16 +211,16 @@ describe('Button', () => {
       expect(button.className).toContain('duration-200');
     });
 
-    it('includes active:scale-95 for non-disabled buttons', () => {
+    it('includes active:opacity-80 for non-disabled buttons', () => {
       renderWithTheme(<Button variant="primary">Button</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).toContain('active:scale-95');
+      expect(button.className).toContain('active:opacity-80');
     });
 
-    it('does not include active:scale-95 for disabled buttons', () => {
+    it('does not include active:opacity-80 for disabled buttons', () => {
       renderWithTheme(<Button disabled>Button</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).not.toContain('active:scale-95');
+      expect(button.className).not.toContain('active:opacity-80');
     });
   });
 });

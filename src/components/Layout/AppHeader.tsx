@@ -40,10 +40,10 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
           {onOpenHelp && (
             <button
               onClick={onOpenHelp}
-              className={`p-1.5 rounded shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 ${
+              className={`p-2 rounded-sm border-2 shadow-xl transition-all duration-200 hover:opacity-90 active:opacity-80 ${
                 isDark
-                  ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
-                  : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
+                  ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white border-white"
+                  : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-black"
               }`}
               aria-label="How to use this page"
               title="How to use this page"
@@ -55,10 +55,10 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
           {/* Dark Mode Toggle - Discrete icon button */}
           <button
             onClick={toggleTheme}
-            className={`p-1.5 rounded shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 ${
+            className={`p-2 rounded-sm border-2 shadow-xl transition-all duration-200 hover:opacity-90 active:opacity-80 ${
               isDark
-                ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
-                : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
+                ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white border-white"
+                : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-black"
             }`}
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             title={isDark ? "Switch to light mode" : "Switch to dark mode"}
