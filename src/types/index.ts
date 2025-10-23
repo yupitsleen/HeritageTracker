@@ -43,7 +43,7 @@ export interface GazaSite {
   yearBuilt: string;
   yearBuiltIslamic?: string; // Manually verified Islamic calendar date
   coordinates: [number, number]; // [latitude, longitude] - Leaflet format
-  status: "destroyed" | "heavily-damaged" | "damaged"; // TODO: Make extensible like type
+  status: string; // Now accepts any string - use STATUS_REGISTRY for valid statuses
   dateDestroyed?: string;
   dateDestroyedIslamic?: string; // Manually verified Islamic calendar date
   description: string;

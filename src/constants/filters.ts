@@ -3,8 +3,8 @@
  * Centralized to ensure consistency across components
  */
 
-import type { GazaSite } from "../types";
 import { getSiteTypes } from "../config/siteTypes";
+import { getStatuses } from "../config/siteStatus";
 
 /**
  * Available site types for filtering
@@ -19,9 +19,11 @@ export const SITE_TYPES: readonly string[] = getSiteTypeOptions();
 
 /**
  * Available damage status options for filtering
+ * Now dynamically generated from STATUS_REGISTRY
  */
-export const STATUS_OPTIONS: ReadonlyArray<GazaSite["status"]> = [
-  "destroyed",
-  "heavily-damaged",
-  "damaged",
-] as const;
+export const getStatusOptions = (): string[] => {
+  return getStatuses().map(status => status.id);
+};
+
+// Backward compatibility: export as constant for existing code
+export const STATUS_OPTIONS: readonly string[] = getStatusOptions();

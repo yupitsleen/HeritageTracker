@@ -1,5 +1,5 @@
 import { Icon } from "leaflet";
-import type { GazaSite } from "../types";
+import { getMarkerColor as getMarkerColorFromRegistry } from "../config/siteStatus";
 import {
   MARKER_ICON_BASE_URL,
   MARKER_SHADOW_URL,
@@ -7,24 +7,19 @@ import {
 } from "../constants/map";
 
 /**
- * Get marker color based on site status
+ * Get marker color based on site damage status
+ * Now uses STATUS_REGISTRY for extensibility
+ * Colors match leaflet-color-markers library
  */
-export const getMarkerColor = (status: GazaSite["status"]): string => {
-  switch (status) {
-    case "destroyed":
-      return "red";
-    case "heavily-damaged":
-      return "orange";
-    case "damaged":
-      return "yellow";
-  }
+export const getMarkerColor = (status: string): string => {
+  return getMarkerColorFromRegistry(status);
 };
 
 /**
  * Create a Leaflet marker icon based on status and highlight state
  */
 export const createMarkerIcon = (
-  status: GazaSite["status"],
+  status: string,
   isHighlighted: boolean
 ): Icon => {
   const color = getMarkerColor(status);
