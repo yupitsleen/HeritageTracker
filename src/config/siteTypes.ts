@@ -41,21 +41,21 @@ export const SITE_TYPE_REGISTRY: Record<string, SiteTypeConfig> = {
     id: "archaeological",
     label: "Archaeological Site",
     labelArabic: "موقع أثري",
-    icon: "🏛",
+    icon: "heroicon:MagnifyingGlassIcon",
     description: "Ancient ruins and historical excavation sites"
   },
   "museum": {
     id: "museum",
     label: "Museum",
     labelArabic: "متحف",
-    icon: "🏛️",
+    icon: "heroicon:BuildingLibraryIcon",
     description: "Cultural institution housing artifacts"
   },
   "historic-building": {
     id: "historic-building",
     label: "Historic Building",
     labelArabic: "مبنى تاريخي",
-    icon: "🏰",
+    icon: "heroicon:HomeModernIcon",
     description: "Architecturally or historically significant structure"
   },
 };
