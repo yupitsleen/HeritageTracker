@@ -15,6 +15,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   /** Icon to show before text (optional) */
   icon?: ReactNode;
+  /** Active/toggled state - shows subdued green background for toggles */
+  active?: boolean;
 }
 
 /**
@@ -41,6 +43,7 @@ export function Button({
   disabled = false,
   fullWidth = false,
   icon,
+  active = false,
   className = '',
   ...props
 }: ButtonProps) {
@@ -77,29 +80,42 @@ export function Button({
     );
   }
 
+  // Active state styling - subdued green for toggles
+  const activeClasses = active
+    ? isDark
+      ? 'bg-[#2d5a38] text-white border-[#2d5a38]'
+      : 'bg-[#4a7c59] text-white border-[#4a7c59]'
+    : '';
+
   // Variant-specific classes - subtle default, vibrant hover
-  const variantClasses = {
-    primary: isDark
-      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80'
-      : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80',
+  const variantClasses = active
+    ? // When active, maintain subdued green and allow hover to brighten
+      isDark
+      ? 'hover:bg-[#3a6b48] hover:shadow-lg'
+      : 'hover:bg-[#5a8c69] hover:shadow-lg'
+    : // When inactive, use normal variant styling
+      {
+        primary: isDark
+          ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80'
+          : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80',
 
-    secondary: isDark
-      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
-      : 'bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80',
+        secondary: isDark
+          ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
+          : 'bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80',
 
-    danger: isDark
-      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80'
-      : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80',
+        danger: isDark
+          ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80'
+          : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80',
 
-    ghost: isDark
-      ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
-      : 'bg-transparent hover:bg-gray-100 text-gray-600 border-gray-300 hover:opacity-90',
-  }[variant];
+        ghost: isDark
+          ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
+          : 'bg-transparent hover:bg-gray-100 text-gray-600 border-gray-300 hover:opacity-90',
+      }[variant];
 
   return (
     <button
       disabled={disabled}
-      className={`${baseClasses} ${variantClasses} ${className}`}
+      className={`${baseClasses} ${activeClasses} ${variantClasses} ${className}`}
       {...props}
     >
       {icon && <span className="flex-shrink-0">{icon}</span>}

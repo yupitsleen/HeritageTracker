@@ -335,7 +335,8 @@ export function TimelineScrubber({
           {advancedMode && (
             <Button
               onClick={advancedMode.onSyncMapToggle}
-              variant={advancedMode.syncMapOnDotClick ? "primary" : "secondary"}
+              variant="secondary"
+              active={advancedMode.syncMapOnDotClick}
               size="xs"
               aria-label={
                 advancedMode.syncMapOnDotClick ? "Disable sync on dot click" : "Enable sync on dot click"
@@ -349,7 +350,8 @@ export function TimelineScrubber({
           {/* Zoom to Site toggle button */}
           <Button
             onClick={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
-            variant={zoomToSiteEnabled ? "primary" : "secondary"}
+            variant="secondary"
+            active={zoomToSiteEnabled}
             size="xs"
             aria-label={zoomToSiteEnabled ? "Disable zoom to site" : "Enable zoom to site"}
             title="When enabled, map zooms in when a site is highlighted. When disabled, only the marker is shown without zooming"
