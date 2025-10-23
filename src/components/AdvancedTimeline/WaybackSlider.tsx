@@ -142,7 +142,7 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
       {/* Timeline visualization container */}
       <div className="relative">
         {/* Year labels - positioned above the timeline */}
-        <div className="relative h-4 mb-0.5">
+        <div className="relative h-4 mb-2">
           {yearMarkers.map(({ year, position }) => (
             <div
               key={year}
