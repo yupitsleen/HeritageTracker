@@ -1170,11 +1170,15 @@ export function calculateCredibilityScore(sources: Source[]): number {
 
 ---
 
-### Issue #9: Icon Mapping Hard-coded in Switch Statements
+### Issue #9: Icon Mapping Hard-coded in Switch Statements ✅ RESOLVED
+
+**Status:** ✅ **RESOLVED** in Issue #1 (Site Type Registry)
+**Commit:** ea6e9ba
+**Resolution Date:** October 23, 2025
 
 **Location:** `src/components/Icons/SiteTypeIcon.tsx:50-100`
 
-**Current Implementation:**
+**Original Implementation:**
 ```typescript
 export function SiteTypeIcon({ type, className }: SiteTypeIconProps) {
   switch (type) {
@@ -1259,11 +1263,15 @@ export const getSiteTypeLabel = (type: string, locale: string = 'en'): string =>
 
 ---
 
-### Issue #10: Marker Color Mapping Not Extensible
+### Issue #10: Marker Color Mapping Not Extensible ✅ RESOLVED
+
+**Status:** ✅ **RESOLVED** in Issue #2 (Status Registry)
+**Commit:** 519ab30
+**Resolution Date:** October 23, 2025
 
 **Location:** `src/utils/mapHelpers.ts:12-21`
 
-**Current Implementation:**
+**Original Implementation:**
 ```typescript
 export const getMarkerColor = (status: GazaSite["status"]): string => {
   switch (status) {
