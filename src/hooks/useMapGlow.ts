@@ -67,7 +67,7 @@ export function useMapGlow(sites: GazaSite[], currentDate: Date): MapGlowState {
           isDestroyed = true;
           // Set currentGlow to negative values to signal destruction state
           // This will be used to render grey/black instead of gold
-          const reductionPercent = getGlowReductionPercentage(site.status);
+          const reductionPercent = getGlowReductionPercentage(site.status as "destroyed" | "heavily-damaged" | "damaged");
           currentGlow = baseGlow * ((100 - reductionPercent) / 100);
         }
       }
@@ -78,7 +78,7 @@ export function useMapGlow(sites: GazaSite[], currentDate: Date): MapGlowState {
         baseGlow,
         currentGlow,
         coordinates: site.coordinates,
-        status: site.status,
+        status: site.status as "destroyed" | "heavily-damaged" | "damaged",
         dateDestroyed: site.dateDestroyed,
         isDestroyed, // Add flag to track destruction state
       };

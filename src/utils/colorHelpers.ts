@@ -17,7 +17,7 @@ export function getStatusColor(
     damaged: variant === "bg" ? "bg-[#ca8a04]" : "text-[#ca8a04]",
   };
 
-  return statusMap[status];
+  return statusMap[status as keyof typeof statusMap];
 }
 
 /**
@@ -32,5 +32,5 @@ export function getStatusHexColor(status: GazaSite["status"]): string {
     "heavily-damaged": "#d97706", // Warm amber
     damaged: "#ca8a04",           // Muted gold
   };
-  return colorMap[status];
+  return colorMap[status as keyof typeof colorMap];
 }

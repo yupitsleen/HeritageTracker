@@ -188,7 +188,7 @@ export function SitesTableDesktop({
                 <select
                   value={selectedExportFormat}
                   onChange={(e) => setSelectedExportFormat(e.target.value as ExportFormatId)}
-                  className={`px-2 py-1 text-[10px] rounded border ${t.border.input} ${t.bg.input} ${t.text.body} focus:outline-none focus:ring-1 focus:ring-[#009639] transition-colors duration-200`}
+                  className={`px-2 py-1 text-[10px] rounded border ${t.border.default} ${t.bg.primary} ${t.text.body} focus:outline-none focus:ring-1 focus:ring-[#009639] transition-colors duration-200`}
                   title="Select export format"
                   aria-label="Select export format"
                 >
