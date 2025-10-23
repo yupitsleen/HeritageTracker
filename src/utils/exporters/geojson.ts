@@ -85,13 +85,13 @@ function siteToGeoJSONFeature(site: GazaSite): GeoJSONFeature {
       yearBuilt: site.yearBuilt,
       status: site.status,
       dateDestroyed: site.dateDestroyed,
-      sourceUrl: site.sourceUrl,
+      // sourceUrl: site.sourceUrl, // Property does not exist on current GazaSite type
       unescoListed: site.unescoListed,
-      religiousSignificance: site.religiousSignificance,
-      architecturalStyle: site.architecturalStyle,
+      // religiousSignificance: site.religiousSignificance,
+      // architecturalStyle: site.architecturalStyle,
       artifactCount: site.artifactCount,
       isUnique: site.isUnique,
-      lastAssessmentDate: site.lastAssessmentDate,
+      // lastAssessmentDate: site.lastAssessmentDate,
     },
   };
 }

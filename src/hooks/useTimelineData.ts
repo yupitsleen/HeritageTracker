@@ -16,7 +16,7 @@ export function useTimelineData(sites: GazaSite[]) {
         date: new Date(site.dateDestroyed!),
         siteName: site.name,
         siteId: site.id,
-        status: site.status,
+        status: site.status as "destroyed" | "heavily-damaged" | "damaged" | undefined,
       }))
       .sort((a, b) => a.date.getTime() - b.date.getTime());
 
