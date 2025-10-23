@@ -175,7 +175,7 @@ export function AdvancedAnimation() {
     >
       {/* Header with back button */}
       <header
-        className={`sticky top-0 z-[5] transition-colors duration-200 ${
+        className={`sticky top-0 z-[10] transition-colors duration-200 ${
           isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
         }`}
       >
