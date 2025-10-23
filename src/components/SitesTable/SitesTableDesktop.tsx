@@ -3,7 +3,6 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard } from "../../utils/format";
-import { downloadCSV } from "../../utils/csvExport";
 import { Tooltip } from "../Tooltip";
 import { TABLE_CONFIG } from "../../constants/layout";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
@@ -11,6 +10,8 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Button } from "../Button";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
+import { exportSites, getExportConfigs } from "../../config/exportFormats";
+import type { ExportFormatId } from "../../types/export";
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -49,8 +50,20 @@ export function SitesTableDesktop({
   const t = useThemeClasses();
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [selectedExportFormat, setSelectedExportFormat] = useState<ExportFormatId>("csv");
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const highlightedRowRef = useRef<HTMLTableRowElement>(null);
+
+  // Get available export formats
+  const exportConfigs = useMemo(() => getExportConfigs(), []);
+
+  // Handle export with selected format
+  const handleExport = () => {
+    exportSites({
+      format: selectedExportFormat,
+      sites: sortedSites,
+    });
+  };
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -171,26 +184,40 @@ export function SitesTableDesktop({
               )}
             </div>
             {variant === "expanded" && (
-              <Button
-                onClick={() => downloadCSV(sortedSites)}
-                variant="primary"
-                size="xs"
-                className="mr-12"
-                title="Export table data to CSV file"
-                aria-label="Export to CSV"
-                icon={
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                }
-              >
-                Export CSV
-              </Button>
+              <div className="flex items-center gap-2 mr-12">
+                <select
+                  value={selectedExportFormat}
+                  onChange={(e) => setSelectedExportFormat(e.target.value as ExportFormatId)}
+                  className={`px-2 py-1 text-[10px] rounded border ${t.border.input} ${t.bg.input} ${t.text.body} focus:outline-none focus:ring-1 focus:ring-[#009639] transition-colors duration-200`}
+                  title="Select export format"
+                  aria-label="Select export format"
+                >
+                  {exportConfigs.map((config) => (
+                    <option key={config.id} value={config.id}>
+                      {config.icon} {config.label}
+                    </option>
+                  ))}
+                </select>
+                <Button
+                  onClick={handleExport}
+                  variant="primary"
+                  size="xs"
+                  title={`Export table data to ${exportConfigs.find(c => c.id === selectedExportFormat)?.label} file`}
+                  aria-label={`Export to ${exportConfigs.find(c => c.id === selectedExportFormat)?.label}`}
+                  icon={
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  }
+                >
+                  Export
+                </Button>
+              </div>
             )}
           </div>
         </div>
