@@ -1,7 +1,6 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 // Optimized D3 imports - only import what we need
 import { scaleTime } from "d3-scale";
-import { timeFormat } from "d3-time-format";
 import {
   PlayIcon,
   PauseIcon,
