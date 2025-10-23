@@ -39,11 +39,11 @@ export interface GazaSite {
   id: string;
   name: string;
   nameArabic?: string;
-  type: "mosque" | "church" | "archaeological" | "museum" | "historic-building";
+  type: string; // Now accepts any string - use SITE_TYPE_REGISTRY for valid types
   yearBuilt: string;
   yearBuiltIslamic?: string; // Manually verified Islamic calendar date
   coordinates: [number, number]; // [latitude, longitude] - Leaflet format
-  status: "destroyed" | "heavily-damaged" | "damaged";
+  status: "destroyed" | "heavily-damaged" | "damaged"; // TODO: Make extensible like type
   dateDestroyed?: string;
   dateDestroyedIslamic?: string; // Manually verified Islamic calendar date
   description: string;

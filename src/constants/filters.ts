@@ -4,17 +4,18 @@
  */
 
 import type { GazaSite } from "../types";
+import { getSiteTypes } from "../config/siteTypes";
 
 /**
  * Available site types for filtering
+ * Now dynamically generated from SITE_TYPE_REGISTRY
  */
-export const SITE_TYPES: ReadonlyArray<GazaSite["type"]> = [
-  "mosque",
-  "church",
-  "archaeological",
-  "museum",
-  "historic-building",
-] as const;
+export const getSiteTypeOptions = (): string[] => {
+  return getSiteTypes().map(type => type.id);
+};
+
+// Backward compatibility: export as constant for existing code
+export const SITE_TYPES: readonly string[] = getSiteTypeOptions();
 
 /**
  * Available damage status options for filtering
