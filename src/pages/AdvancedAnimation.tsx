@@ -59,7 +59,8 @@ export function AdvancedAnimation() {
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
-  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(false);
+  // Default to ON for better user experience on Advanced Timeline page
+  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
 
   // Modal states for footer and help
   const [isDonateOpen, setIsDonateOpen] = useState(false);
