@@ -30,83 +30,89 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
     }`}>
       {/* Header - BLACK background, ultra compact */}
       <header className={components.header.base}>
-        <div className={cn(components.container.base, "py-1.5")}>
-          <h1 className={`text-base md:text-lg font-bold text-center text-[#fefefe]`}>Heritage Tracker</h1>
-        </div>
+        <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
+          {/* Left: Title */}
+          <h1 className={`text-base md:text-lg font-bold text-[#fefefe] uppercase tracking-wide`}>
+            Heritage Tracker
+          </h1>
 
-        {/* All buttons - desktop only, right-aligned in top right, positioned relative to header */}
-        <div className={`hidden md:flex absolute top-1.5 right-2 ${COMPACT_HEADER.buttonGap} items-center`}>
-          {/* Help Button - Question mark icon */}
-          {onOpenHelp && (
+          {/* Center: Main action buttons - desktop only */}
+          <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
+            {/* Advanced Animation Navigation - Only show on home page */}
+            {isOnHomePage && (
+              <Button
+                onClick={() => navigate("/advanced-animation")}
+                variant="secondary"
+                size="xs"
+                aria-label="Open Advanced Animation Timeline"
+                title="View historical satellite imagery timeline with destruction events"
+              >
+                Advanced Timeline
+              </Button>
+            )}
+
+            <Button
+              onClick={onOpenDonate}
+              variant="danger"
+              size="xs"
+              aria-label="Help Palestine - Donate to relief efforts"
+            >
+              Help Palestine
+            </Button>
+            <Button
+              onClick={onOpenStats}
+              variant="primary"
+              size="xs"
+              aria-label="View Statistics"
+            >
+              Statistics
+            </Button>
+            <Button
+              onClick={onOpenAbout}
+              variant="primary"
+              size="xs"
+              aria-label="About Heritage Tracker"
+            >
+              About
+            </Button>
+          </div>
+
+          {/* Right: Icon buttons - desktop only */}
+          <div className={`hidden md:flex ${COMPACT_HEADER.buttonGap} items-center`}>
+            {/* Help Button - Question mark icon */}
+            {onOpenHelp && (
+              <button
+                onClick={onOpenHelp}
+                className={`p-2 rounded-sm border-2 shadow-xl transition-all duration-200 hover:opacity-90 active:opacity-80 ${
+                  isDark
+                    ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white border-white"
+                    : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-black"
+                }`}
+                aria-label="How to use this page"
+                title="How to use this page"
+              >
+                <QuestionMarkCircleIcon className="w-4 h-4" />
+              </button>
+            )}
+
+            {/* Dark Mode Toggle - Discrete icon button */}
             <button
-              onClick={onOpenHelp}
+              onClick={toggleTheme}
               className={`p-2 rounded-sm border-2 shadow-xl transition-all duration-200 hover:opacity-90 active:opacity-80 ${
                 isDark
                   ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white border-white"
                   : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-black"
               }`}
-              aria-label="How to use this page"
-              title="How to use this page"
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
             >
-              <QuestionMarkCircleIcon className="w-4 h-4" />
+              {isDark ? (
+                <SunIcon className="w-4 h-4" />
+              ) : (
+                <MoonIcon className="w-4 h-4" />
+              )}
             </button>
-          )}
-
-          {/* Dark Mode Toggle - Discrete icon button */}
-          <button
-            onClick={toggleTheme}
-            className={`p-2 rounded-sm border-2 shadow-xl transition-all duration-200 hover:opacity-90 active:opacity-80 ${
-              isDark
-                ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white border-white"
-                : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-black"
-            }`}
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDark ? (
-              <SunIcon className="w-4 h-4" />
-            ) : (
-              <MoonIcon className="w-4 h-4" />
-            )}
-          </button>
-
-          {/* Advanced Animation Navigation - Only show on home page */}
-          {isOnHomePage && (
-            <Button
-              onClick={() => navigate("/advanced-animation")}
-              variant="secondary"
-              size="xs"
-              aria-label="Open Advanced Animation Timeline"
-              title="View historical satellite imagery timeline with destruction events"
-            >
-              Advanced Timeline
-            </Button>
-          )}
-
-          <Button
-            onClick={onOpenDonate}
-            variant="danger"
-            size="xs"
-            aria-label="Help Palestine - Donate to relief efforts"
-          >
-            Help Palestine
-          </Button>
-          <Button
-            onClick={onOpenStats}
-            variant="primary"
-            size="xs"
-            aria-label="View Statistics"
-          >
-            Statistics
-          </Button>
-          <Button
-            onClick={onOpenAbout}
-            variant="primary"
-            size="xs"
-            aria-label="About Heritage Tracker"
-          >
-            About
-          </Button>
+          </div>
         </div>
       </header>
 
