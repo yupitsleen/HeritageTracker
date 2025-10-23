@@ -20,7 +20,7 @@
  */
 
 import type {
-  TileLayerConfig,
+  TileLayerConfig, // eslint-disable-line @typescript-eslint/no-unused-vars
   TileLayerId,
   ExtendedTileLayerConfig,
   TileLayerType,
