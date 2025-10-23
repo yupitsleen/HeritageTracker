@@ -4,6 +4,7 @@ import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/o
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
+import { IconButton } from "../components/Button/IconButton";
 import { Modal } from "../components/Modal/Modal";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { mockSites } from "../data/mockSites";
@@ -201,36 +202,20 @@ export function AdvancedAnimation() {
           {/* Right: Help + Dark mode toggle + Info */}
           <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
             {/* Help Button */}
-            <button
+            <IconButton
+              icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
               onClick={() => setIsHelpOpen(true)}
-              className={`p-2 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
-                isDark
-                  ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
-                  : "bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
-              }`}
-              aria-label="How to use this page"
+              ariaLabel="How to use this page"
               title="How to use this page"
-            >
-              <QuestionMarkCircleIcon className="w-4 h-4" />
-            </button>
+            />
 
             {/* Dark Mode Toggle */}
-            <button
+            <IconButton
+              icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
               onClick={toggleTheme}
-              className={`p-2 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
-                isDark
-                  ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
-                  : "bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
-              }`}
-              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
               title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {isDark ? (
-                <SunIcon className="w-4 h-4" />
-              ) : (
-                <MoonIcon className="w-4 h-4" />
-              )}
-            </button>
+            />
 
             {/* Info text */}
             <div className="text-xs text-gray-400">
