@@ -1,6 +1,7 @@
 import { useMemo, useRef, useCallback } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Button } from "../Button";
 import type { WaybackRelease } from "../../services/waybackService";
 
 /**
@@ -117,39 +118,25 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
       {/* Header - Current date and position with step controls - centered */}
       <div className="flex items-center justify-center gap-3 mb-2">
         {/* Previous button */}
-        <button
+        <Button
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          className={`px-2 py-0.5 text-xs font-semibold rounded transition-all ${
-            currentIndex === 0
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-[#009639] hover:text-white"
-          } ${isDark ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-700"}`}
+          variant="secondary"
+          size="xs"
           aria-label="Previous imagery release"
         >
-          ← Prev
-        </button>
+          ⏮ Previous
+        </Button>
 
-        <span className={`text-sm font-mono ${t.text.body}`}>
-          {currentRelease?.releaseDate || "Unknown"}
-        </span>
-        <span className={`text-[10px] ${t.text.muted}`}>
-          {currentIndex + 1} / {releases.length}
-        </span>
-
-        {/* Next button */}
-        <button
+        <Button
           onClick={handleNext}
           disabled={currentIndex === releases.length - 1}
-          className={`px-2 py-0.5 text-xs font-semibold rounded transition-all ${
-            currentIndex === releases.length - 1
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-[#009639] hover:text-white"
-          } ${isDark ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-700"}`}
+          variant="secondary"
+          size="xs"
           aria-label="Next imagery release"
         >
-          Next →
-        </button>
+          Next ⏭
+        </Button>
       </div>
 
       {/* Timeline visualization container */}

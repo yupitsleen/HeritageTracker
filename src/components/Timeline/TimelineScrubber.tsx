@@ -291,7 +291,7 @@ export function TimelineScrubber({
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center mb-2 gap-2 flex-wrap">
+      <div className="flex items-center mb-2 gap-2 flex-wrap relative">
         {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
         <div className="flex items-center gap-1.5">
           {!advancedMode && (
@@ -382,7 +382,7 @@ export function TimelineScrubber({
 
         {/* Center: Previous/Next navigation (Advanced Timeline only) */}
         {advancedMode && (
-          <div className="flex items-center gap-1.5">
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
             <Button
               onClick={goToPreviousEvent}
               disabled={!canGoPrevious}
