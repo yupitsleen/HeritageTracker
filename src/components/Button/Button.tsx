@@ -1,8 +1,63 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
+import { PALESTINIAN_FLAG, SUBDUED_COLORS } from './buttonColors';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
+
+/**
+ * Get active state classes for toggle buttons
+ */
+function getActiveClasses(isDark: boolean): string {
+  return isDark
+    ? `bg-[${SUBDUED_COLORS.GREEN_DARK}] text-white border-[${SUBDUED_COLORS.GREEN_DARK}]`
+    : `bg-[${SUBDUED_COLORS.GREEN_LIGHT}] text-white border-[${SUBDUED_COLORS.GREEN_LIGHT}]`;
+}
+
+/**
+ * Get active state hover classes
+ */
+function getActiveHoverClasses(isDark: boolean): string {
+  return isDark
+    ? `hover:bg-[${SUBDUED_COLORS.GREEN_DARK_HOVER}] hover:shadow-lg`
+    : `hover:bg-[${SUBDUED_COLORS.GREEN_LIGHT_HOVER}] hover:shadow-lg`;
+}
+
+/**
+ * Get text color based on theme and context
+ */
+function getTextColor(isDark: boolean, lightText: boolean): string {
+  return isDark ? 'text-gray-300' : (lightText ? 'text-white' : 'text-gray-800');
+}
+
+/**
+ * Get variant-specific classes for inactive state
+ */
+function getVariantClasses(
+  variant: ButtonVariant,
+  isDark: boolean,
+  textColor: string
+): string {
+  const variants: Record<ButtonVariant, string> = {
+    primary: isDark
+      ? `bg-transparent text-gray-300 border-gray-600 hover:bg-[${PALESTINIAN_FLAG.GREEN}] hover:text-white hover:border-[${PALESTINIAN_FLAG.GREEN}] hover:shadow-lg active:opacity-80`
+      : `bg-transparent ${textColor} border-gray-400 hover:bg-[${PALESTINIAN_FLAG.GREEN}] hover:text-white hover:border-[${PALESTINIAN_FLAG.GREEN}] hover:shadow-lg active:opacity-80`,
+
+    secondary: isDark
+      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
+      : `bg-transparent ${textColor} border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80`,
+
+    danger: isDark
+      ? `bg-transparent text-gray-300 border-gray-600 hover:bg-[${PALESTINIAN_FLAG.RED}] hover:text-white hover:border-[${PALESTINIAN_FLAG.RED}] hover:shadow-lg active:opacity-80`
+      : `bg-transparent ${textColor} border-gray-400 hover:bg-[${PALESTINIAN_FLAG.RED}] hover:text-white hover:border-[${PALESTINIAN_FLAG.RED}] hover:shadow-lg active:opacity-80`,
+
+    ghost: isDark
+      ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
+      : `bg-transparent hover:bg-gray-100 ${textColor} border-gray-300 hover:opacity-90`,
+  };
+
+  return variants[variant];
+}
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual variant of the button */
@@ -83,40 +138,12 @@ export function Button({
     );
   }
 
-  // Active state styling - subdued green for toggles
-  const activeClasses = active
-    ? isDark
-      ? 'bg-[#2d5a38] text-white border-[#2d5a38]'
-      : 'bg-[#4a7c59] text-white border-[#4a7c59]'
-    : '';
-
-  // Determine text color based on theme and lightText prop
-  const textColor = isDark ? 'text-gray-300' : (lightText ? 'text-white' : 'text-gray-800');
-
-  // Variant-specific classes - subtle default, vibrant hover
+  // Calculate classes using helper functions
+  const textColor = getTextColor(isDark, lightText);
+  const activeClasses = active ? getActiveClasses(isDark) : '';
   const variantClasses = active
-    ? // When active, maintain subdued green and allow hover to brighten
-      isDark
-      ? 'hover:bg-[#3a6b48] hover:shadow-lg'
-      : 'hover:bg-[#5a8c69] hover:shadow-lg'
-    : // When inactive, use normal variant styling
-      {
-        primary: isDark
-          ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80'
-          : `bg-transparent ${textColor} border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80`,
-
-        secondary: isDark
-          ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
-          : `bg-transparent ${textColor} border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80`,
-
-        danger: isDark
-          ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80'
-          : `bg-transparent ${textColor} border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80`,
-
-        ghost: isDark
-          ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
-          : `bg-transparent hover:bg-gray-100 ${textColor} border-gray-300 hover:opacity-90`,
-      }[variant];
+    ? getActiveHoverClasses(isDark)
+    : getVariantClasses(variant, isDark, textColor);
 
   return (
     <button
