@@ -11,7 +11,7 @@ export interface Source {
   title: string;
   url?: string;
   date?: string;
-  type: "official" | "academic" | "journalism" | "documentation";
+  type: string; // Now accepts any string - use SOURCE_TYPE_REGISTRY for valid types
 }
 
 /**
