@@ -107,14 +107,14 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
 
   if (releases.length === 0) {
     return (
-      <div className={`px-4 py-2 rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
+      <div className={t.timeline.container}>
         <div className={`text-sm ${t.text.muted}`}>No imagery releases available</div>
       </div>
     );
   }
 
   return (
-    <div className={`px-4 py-2 rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
+    <div className={t.timeline.container}>
       {/* Header - Current date and position with step controls - centered */}
       <div className="flex items-center justify-center gap-3 mb-2">
         {/* Previous button */}
