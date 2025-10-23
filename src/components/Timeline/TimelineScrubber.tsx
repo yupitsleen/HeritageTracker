@@ -291,9 +291,9 @@ export function TimelineScrubber({
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center mb-2 gap-2">
+      <div className="flex items-center mb-2 gap-2 flex-wrap">
         {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
-        <div className="flex items-center gap-1.5 flex-1">
+        <div className="flex items-center gap-1.5">
           {!advancedMode && (
             <>
               {!isPlaying ? (
@@ -380,8 +380,8 @@ export function TimelineScrubber({
           )}
         </div>
 
-        {/* Center: Previous/Next navigation (Advanced Timeline) or Current date display */}
-        {advancedMode ? (
+        {/* Center: Previous/Next navigation (Advanced Timeline only) */}
+        {advancedMode && (
           <div className="flex items-center gap-1.5">
             <Button
               onClick={goToPreviousEvent}
@@ -404,15 +404,10 @@ export function TimelineScrubber({
               Next ⏭
             </Button>
           </div>
-        ) : (
-          <div className={t.timeline.currentDate}>
-            <span className={t.text.muted}>Current:</span>{" "}
-            {timeFormat("%B %d, %Y")(currentTimestamp)}
-          </div>
         )}
 
         {/* Right: Date Filter */}
-        <div className="flex items-center gap-1.5 flex-1 justify-end">
+        <div className="flex items-center gap-1.5 ml-auto">
           <label className={`text-[10px] font-semibold ${t.text.heading}`}>
             Date:
           </label>
