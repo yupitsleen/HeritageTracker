@@ -52,7 +52,7 @@ describe('Button', () => {
       renderWithTheme(<Button variant="primary">Primary</Button>, 'light');
       const button = screen.getByRole('button');
       expect(button.className).toContain('bg-transparent');
-      expect(button.className).toContain('text-white');
+      expect(button.className).toContain('text-gray-800');
       expect(button.className).toContain('hover:bg-[#009639]');
     });
 

@@ -187,6 +187,7 @@ export function AdvancedAnimation() {
               onClick={handleBackClick}
               variant="ghost"
               size="sm"
+              lightText
               className="flex items-center gap-1.5"
             >
               <span className="text-base">&larr;</span>

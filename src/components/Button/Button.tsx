@@ -17,6 +17,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   /** Active/toggled state - shows subdued green background for toggles */
   active?: boolean;
+  /** Use light (white) text in light mode - for dark backgrounds like header */
+  lightText?: boolean;
 }
 
 /**
@@ -44,6 +46,7 @@ export function Button({
   fullWidth = false,
   icon,
   active = false,
+  lightText = false,
   className = '',
   ...props
 }: ButtonProps) {
@@ -87,6 +90,9 @@ export function Button({
       : 'bg-[#4a7c59] text-white border-[#4a7c59]'
     : '';
 
+  // Determine text color based on theme and lightText prop
+  const textColor = isDark ? 'text-gray-300' : (lightText ? 'text-white' : 'text-gray-800');
+
   // Variant-specific classes - subtle default, vibrant hover
   const variantClasses = active
     ? // When active, maintain subdued green and allow hover to brighten
@@ -97,19 +103,19 @@ export function Button({
       {
         primary: isDark
           ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80'
-          : 'bg-transparent text-white border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80',
+          : `bg-transparent ${textColor} border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80`,
 
         secondary: isDark
           ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
-          : 'bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80',
+          : `bg-transparent ${textColor} border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80`,
 
         danger: isDark
           ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80'
-          : 'bg-transparent text-white border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80',
+          : `bg-transparent ${textColor} border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80`,
 
         ghost: isDark
           ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
-          : 'bg-transparent hover:bg-gray-100 text-white border-gray-300 hover:opacity-90',
+          : `bg-transparent hover:bg-gray-100 ${textColor} border-gray-300 hover:opacity-90`,
       }[variant];
 
   return (

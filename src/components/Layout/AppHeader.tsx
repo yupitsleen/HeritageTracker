@@ -45,6 +45,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
                 onClick={() => navigate("/advanced-animation")}
                 variant="secondary"
                 size="xs"
+                lightText
                 aria-label="Open Advanced Animation Timeline"
                 title="View historical satellite imagery timeline with destruction events"
               >
@@ -56,6 +57,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               onClick={onOpenDonate}
               variant="danger"
               size="xs"
+              lightText
               aria-label="Help Palestine - Donate to relief efforts"
             >
               Help Palestine
@@ -64,6 +66,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               onClick={onOpenStats}
               variant="primary"
               size="xs"
+              lightText
               aria-label="View Statistics"
             >
               Statistics
@@ -72,6 +75,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               onClick={onOpenAbout}
               variant="primary"
               size="xs"
+              lightText
               aria-label="About Heritage Tracker"
             >
               About

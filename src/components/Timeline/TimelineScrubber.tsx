@@ -248,8 +248,20 @@ export function TimelineScrubber({
   // Speed options
   const speedOptions: AnimationSpeed[] = [0.5, 1, 2, 4];
 
-  // Check if timeline is at the start position
+  // Check if timeline is at the start or end position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
+  const isAtEnd = currentTimestamp.getTime() >= adjustedEndDate.getTime();
+
+  // Handle play button click - reset and play if at the end
+  const handlePlay = () => {
+    if (isAtEnd) {
+      reset();
+      // Small delay to let reset complete before playing
+      setTimeout(() => play(), 10);
+    } else {
+      play();
+    }
+  };
 
   // Previous/Next navigation for Advanced Timeline mode
   const currentEventIndex = useMemo(() => {
@@ -297,7 +309,7 @@ export function TimelineScrubber({
             <>
               {!isPlaying ? (
                 <Button
-                  onClick={play}
+                  onClick={handlePlay}
                   variant="primary"
                   size="xs"
                   icon={<PlayIcon className="w-3 h-3" />}
