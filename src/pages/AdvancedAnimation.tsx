@@ -203,10 +203,10 @@ export function AdvancedAnimation() {
             {/* Help Button */}
             <button
               onClick={() => setIsHelpOpen(true)}
-              className={`p-2 rounded-sm border-2 shadow-xl transition-all duration-200 hover:opacity-90 active:opacity-80 ${
+              className={`p-2 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
                 isDark
-                  ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white border-white"
-                  : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-black"
+                  ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
+                  : "bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
               }`}
               aria-label="How to use this page"
               title="How to use this page"
@@ -217,10 +217,10 @@ export function AdvancedAnimation() {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-sm border-2 shadow-xl transition-all duration-200 hover:opacity-90 active:opacity-80 ${
+              className={`p-2 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
                 isDark
-                  ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white border-white"
-                  : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-black"
+                  ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
+                  : "bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
               }`}
               aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
               title={isDark ? "Switch to light mode" : "Switch to dark mode"}
