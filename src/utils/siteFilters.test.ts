@@ -3,6 +3,7 @@ import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
   filterSitesByCreationYear,
+  parseYearBuilt,
 } from "./siteFilters";
 import type { GazaSite } from "../types";
 
@@ -163,5 +164,158 @@ describe("filterSitesByCreationYear", () => {
     const result = filterSitesByCreationYear(mockSites, 1900, 2000);
     expect(result).toHaveLength(1);
     expect(result[0].id).toBe("modern-site");
+  });
+});
+
+describe("parseYearBuilt", () => {
+  describe("explicit years", () => {
+    it("parses BCE years", () => {
+      expect(parseYearBuilt("800 BCE")).toBe(-800);
+      expect(parseYearBuilt("425 BC")).toBe(-425);
+      expect(parseYearBuilt("1200 bce")).toBe(-1200);
+    });
+
+    it("parses CE years", () => {
+      expect(parseYearBuilt("1200 CE")).toBe(1200);
+      expect(parseYearBuilt("425 AD")).toBe(425);
+      expect(parseYearBuilt("1950 ce")).toBe(1950);
+    });
+
+    it("parses standalone years", () => {
+      expect(parseYearBuilt("1950")).toBe(1950);
+      expect(parseYearBuilt("425")).toBe(425);
+      expect(parseYearBuilt("1200")).toBe(1200);
+    });
+  });
+
+  describe("date ranges", () => {
+    it("parses CE ranges and returns midpoint", () => {
+      expect(parseYearBuilt("800-900 CE")).toBe(850);
+      expect(parseYearBuilt("1200-1300 CE")).toBe(1250);
+      expect(parseYearBuilt("1400 - 1500 CE")).toBe(1450); // with spaces
+    });
+
+    it("parses BCE ranges and returns negative midpoint", () => {
+      expect(parseYearBuilt("800-900 BCE")).toBe(-850);
+      expect(parseYearBuilt("1200-1100 BC")).toBe(-1150);
+    });
+
+    it("parses ranges without era markers (assumes CE)", () => {
+      expect(parseYearBuilt("1400-1500")).toBe(1450);
+      expect(parseYearBuilt("800-900")).toBe(850);
+    });
+
+    it("handles ranges with no spacing", () => {
+      expect(parseYearBuilt("1400-1500")).toBe(1450);
+    });
+  });
+
+  describe("approximations", () => {
+    it("parses 'circa' prefix", () => {
+      expect(parseYearBuilt("circa 1200")).toBe(1200);
+      expect(parseYearBuilt("circa 800 BCE")).toBe(-800);
+      expect(parseYearBuilt("Circa 1500 CE")).toBe(1500);
+    });
+
+    it("parses 'ca.' prefix", () => {
+      expect(parseYearBuilt("ca. 1200")).toBe(1200);
+      expect(parseYearBuilt("ca. 800 BCE")).toBe(-800);
+    });
+
+    it("parses '~' prefix", () => {
+      expect(parseYearBuilt("~1200")).toBe(1200);
+      expect(parseYearBuilt("~ 1500 CE")).toBe(1500);
+      expect(parseYearBuilt("~800 BCE")).toBe(-800);
+    });
+
+    it("parses approximations with century format", () => {
+      expect(parseYearBuilt("circa 7th century")).toBe(650);
+      expect(parseYearBuilt("~16th century")).toBe(1550);
+    });
+  });
+
+  describe("Islamic calendar (AH)", () => {
+    it("converts AH to Gregorian", () => {
+      // AH 1 ≈ 622 CE
+      expect(parseYearBuilt("1 AH")).toBe(623);
+
+      // AH 100 ≈ 622 + (100 * 0.97) ≈ 719
+      expect(parseYearBuilt("100 AH")).toBe(719);
+
+      // AH 750 ≈ 622 + (750 * 0.97) ≈ 1350
+      expect(parseYearBuilt("750 AH")).toBe(1350);
+
+      // AH 1400 ≈ 622 + (1400 * 0.97) ≈ 1980
+      expect(parseYearBuilt("1400 AH")).toBe(1980);
+    });
+
+    it("handles lowercase 'ah'", () => {
+      expect(parseYearBuilt("750 ah")).toBe(1350);
+    });
+
+    it("handles AH with approximations", () => {
+      expect(parseYearBuilt("circa 750 AH")).toBe(1350);
+      expect(parseYearBuilt("~1000 AH")).toBe(1592);
+    });
+  });
+
+  describe("centuries", () => {
+    it("parses century format and returns midpoint", () => {
+      expect(parseYearBuilt("7th century")).toBe(650);
+      expect(parseYearBuilt("16th century")).toBe(1550);
+      expect(parseYearBuilt("1st century")).toBe(50);
+      expect(parseYearBuilt("21st century")).toBe(2050);
+    });
+
+    it("handles different ordinal suffixes", () => {
+      expect(parseYearBuilt("1st century")).toBe(50);
+      expect(parseYearBuilt("2nd century")).toBe(150);
+      expect(parseYearBuilt("3rd century")).toBe(250);
+      expect(parseYearBuilt("4th century")).toBe(350);
+    });
+  });
+
+  describe("edge cases and error handling", () => {
+    it("returns null for empty string", () => {
+      expect(parseYearBuilt("")).toBeNull();
+    });
+
+    it("returns null for null input", () => {
+      expect(parseYearBuilt(null as unknown as string)).toBeNull();
+    });
+
+    it("returns null for undefined input", () => {
+      expect(parseYearBuilt(undefined as unknown as string)).toBeNull();
+    });
+
+    it("returns null for unparseable strings", () => {
+      expect(parseYearBuilt("unknown")).toBeNull();
+      expect(parseYearBuilt("ancient times")).toBeNull();
+      expect(parseYearBuilt("???")).toBeNull();
+    });
+
+    it("handles whitespace correctly", () => {
+      expect(parseYearBuilt("  1200 CE  ")).toBe(1200);
+      expect(parseYearBuilt("   7th century   ")).toBe(650);
+    });
+
+    it("prioritizes ranges over standalone years", () => {
+      // "800-900 CE" should parse as range (850), not as standalone 800
+      expect(parseYearBuilt("800-900 CE")).toBe(850);
+    });
+
+    it("handles complex formats from existing data", () => {
+      // From mockSites: "800 BCE - 1100 CE"
+      expect(parseYearBuilt("800 BCE - 1100 CE")).toBe(-800); // Extracts first BCE match
+    });
+  });
+
+  describe("backward compatibility", () => {
+    it("maintains compatibility with existing test data", () => {
+      // From mockSites
+      expect(parseYearBuilt("800 BCE - 1100 CE")).toBe(-800);
+      expect(parseYearBuilt("7th century")).toBe(650);
+      expect(parseYearBuilt("1950")).toBe(1950);
+    });
   });
 });
