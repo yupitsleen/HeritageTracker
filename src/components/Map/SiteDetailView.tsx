@@ -34,7 +34,7 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
   const { currentTimestamp, syncActive, zoomToSiteEnabled } = useAnimation();
 
   // Time period state for historical imagery
-  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("PRE_CONFLICT_2023");
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("EARLY_2024");
 
   // Sync satellite imagery with timeline (only if syncActive is true)
   useEffect(() => {

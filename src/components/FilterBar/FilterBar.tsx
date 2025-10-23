@@ -28,6 +28,37 @@ interface FilterBarProps {
 /**
  * Unified filtering bar that controls all data displayed below
  * Shows active filters and provides clear indication of data scope
+ *
+ * **Filter Registry Integration:**
+ *
+ * This component uses the legacy FilterState interface for backward compatibility,
+ * but the underlying filter options (SITE_TYPES, STATUS_OPTIONS) are dynamically
+ * generated from the filter registry (src/config/filters.ts).
+ *
+ * To use the new filter registry system with this component:
+ *
+ * ```typescript
+ * import {
+ *   filterSitesWithLegacyState,
+ *   countActiveFiltersLegacy
+ * } from '../../utils/filterStateAdapter';
+ *
+ * // Filter sites using registry (with legacy state)
+ * const filtered = filterSitesWithLegacyState(sites, appState.filters);
+ *
+ * // Count active filters
+ * const activeCount = countActiveFiltersLegacy(appState.filters);
+ * ```
+ *
+ * **Future Migration:**
+ *
+ * The filter registry provides a more extensible system. Future versions
+ * may migrate to a registry-first approach:
+ * - Dynamic filter UI rendering based on filter type
+ * - Configurable filter labels (i18n support)
+ * - Extensible filter types without code changes
+ *
+ * See src/config/filters.ts for filter registry documentation.
  */
 export function FilterBar({
   selectedTypes,

@@ -16,13 +16,13 @@ describe("TimeToggle", () => {
 
   it("renders all three time period buttons", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+    render(<TimeToggle selectedPeriod="EARLY_2024" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
-    // Check for year-only labels (e.g., "2014", "2023", "2025")
+    // Check for year-only labels (e.g., "2014", "2024", "2025")
     expect(screen.getByText("2014")).toBeInTheDocument();
-    expect(screen.getByText("2023")).toBeInTheDocument();
+    expect(screen.getByText("2024")).toBeInTheDocument();
     expect(screen.getByText("2025")).toBeInTheDocument(); // Current year
   });
 
@@ -39,7 +39,7 @@ describe("TimeToggle", () => {
   it("calls onPeriodChange when a button is clicked", async () => {
     const mockOnChange = vi.fn();
     const user = userEvent.setup();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+    render(<TimeToggle selectedPeriod="EARLY_2024" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
@@ -59,8 +59,8 @@ describe("TimeToggle", () => {
     await user.click(screen.getByLabelText("Switch to 2014 Baseline satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("BASELINE_2014");
 
-    await user.click(screen.getByLabelText("Switch to Aug 2023 (Pre-conflict) satellite imagery"));
-    expect(mockOnChange).toHaveBeenCalledWith("PRE_CONFLICT_2023");
+    await user.click(screen.getByLabelText("Switch to Jan 2024 satellite imagery"));
+    expect(mockOnChange).toHaveBeenCalledWith("EARLY_2024");
 
     await user.click(screen.getByLabelText("Switch to Current satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("CURRENT");
@@ -68,24 +68,24 @@ describe("TimeToggle", () => {
 
   it("has proper ARIA labels for accessibility", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+    render(<TimeToggle selectedPeriod="EARLY_2024" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
     const button2014 = screen.getByLabelText("Switch to 2014 Baseline satellite imagery");
-    const buttonAug2023 = screen.getByLabelText(
-      "Switch to Aug 2023 (Pre-conflict) satellite imagery"
+    const buttonJan2024 = screen.getByLabelText(
+      "Switch to Jan 2024 satellite imagery"
     );
     const buttonCurrent = screen.getByLabelText("Switch to Current satellite imagery");
 
     expect(button2014).toBeInTheDocument();
-    expect(buttonAug2023).toBeInTheDocument();
+    expect(buttonJan2024).toBeInTheDocument();
     expect(buttonCurrent).toBeInTheDocument();
   });
 
   it("renders buttons with correct styling classes", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+    render(<TimeToggle selectedPeriod="EARLY_2024" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
@@ -110,15 +110,15 @@ describe("TimeToggle", () => {
 
   it("displays full date in tooltip on hover", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="PRE_CONFLICT_2023" onPeriodChange={mockOnChange} />, {
+    render(<TimeToggle selectedPeriod="EARLY_2024" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
     const button2014 = screen.getByText("2014");
-    const button2023 = screen.getByText("2023");
+    const button2024 = screen.getByText("2024");
 
     // Check that tooltips contain full dates
     expect(button2014).toHaveAttribute("title", "Feb 20, 2014");
-    expect(button2023).toHaveAttribute("title", "Aug 31, 2023");
+    expect(button2024).toHaveAttribute("title", "Jan 18, 2024");
   });
 });

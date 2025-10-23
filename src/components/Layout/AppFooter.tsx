@@ -23,7 +23,16 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
         <div className="py-1.5">
           <div className={cn(components.container.base)}>
             <p className="text-[10px] text-center">
-              Heritage Tracker • UNESCO, Forensic Architecture, Heritage for Peace
+              Heritage Tracker • UNESCO, Forensic Architecture, Heritage for Peace •{" "}
+              <a
+                href="https://github.com/yupitsleen/HeritageTracker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-[#fefefe]/80 transition-colors"
+                aria-label="View source code on GitHub"
+              >
+                Github
+              </a>
             </p>
           </div>
         </div>
@@ -58,6 +67,16 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
               >
                 About
               </button>
+              {" • "}
+              <a
+                href="https://github.com/yupitsleen/HeritageTracker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-[#fefefe]/80 transition-colors"
+                aria-label="View source code on GitHub"
+              >
+                Github
+              </a>
             </p>
           </div>
         </div>

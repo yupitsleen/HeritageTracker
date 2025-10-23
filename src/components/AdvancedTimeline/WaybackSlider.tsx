@@ -1,6 +1,7 @@
 import { useMemo, useRef, useCallback } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Button } from "../Button";
 import type { WaybackRelease } from "../../services/waybackService";
 
 /**
@@ -106,56 +107,42 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
 
   if (releases.length === 0) {
     return (
-      <div className={`px-4 py-2 rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+      <div className={t.timeline.container}>
         <div className={`text-sm ${t.text.muted}`}>No imagery releases available</div>
       </div>
     );
   }
 
   return (
-    <div className={`px-4 py-2 rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+    <div className={t.timeline.container}>
       {/* Header - Current date and position with step controls - centered */}
       <div className="flex items-center justify-center gap-3 mb-2">
         {/* Previous button */}
-        <button
+        <Button
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          className={`px-2 py-0.5 text-xs font-semibold rounded transition-all ${
-            currentIndex === 0
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-[#009639] hover:text-white"
-          } ${isDark ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-700"}`}
+          variant="secondary"
+          size="xs"
           aria-label="Previous imagery release"
         >
-          ← Prev
-        </button>
+          ⏮ Previous
+        </Button>
 
-        <span className={`text-sm font-mono ${t.text.body}`}>
-          {currentRelease?.releaseDate || "Unknown"}
-        </span>
-        <span className={`text-[10px] ${t.text.muted}`}>
-          {currentIndex + 1} / {releases.length}
-        </span>
-
-        {/* Next button */}
-        <button
+        <Button
           onClick={handleNext}
           disabled={currentIndex === releases.length - 1}
-          className={`px-2 py-0.5 text-xs font-semibold rounded transition-all ${
-            currentIndex === releases.length - 1
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-[#009639] hover:text-white"
-          } ${isDark ? "bg-gray-700 text-gray-300" : "bg-gray-200 text-gray-700"}`}
+          variant="secondary"
+          size="xs"
           aria-label="Next imagery release"
         >
-          Next →
-        </button>
+          Next ⏭
+        </Button>
       </div>
 
       {/* Timeline visualization container */}
       <div className="relative">
         {/* Year labels - positioned above the timeline */}
-        <div className="relative h-4 mb-0.5">
+        <div className="relative h-4 mb-2">
           {yearMarkers.map(({ year, position }) => (
             <div
               key={year}
@@ -178,9 +165,9 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
           {/* Background track */}
           <div className={`absolute inset-0 rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
 
-          {/* Green progress fill - pointer-events-none allows hover on tick marks beneath */}
+          {/* Green progress fill - thinner and more subtle */}
           <div
-            className="absolute inset-y-0 left-0 bg-[#009639] rounded-l pointer-events-none"
+            className="absolute top-1/2 -translate-y-1/2 left-0 h-1 bg-[#009639] rounded-l pointer-events-none"
             style={{ width: `${currentPositionPercent}%` }}
           />
 

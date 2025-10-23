@@ -1,7 +1,6 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 // Optimized D3 imports - only import what we need
 import { scaleTime } from "d3-scale";
-import { timeFormat } from "d3-time-format";
 import {
   PlayIcon,
   PauseIcon,
@@ -20,6 +19,7 @@ import {
   filterEventsByDateRange,
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
+import { getSpeedValues } from "../../config/animation";
 
 /**
  * Callback type for date change handlers
@@ -246,11 +246,25 @@ export function TimelineScrubber({
     endDate,
   ]);
 
-  // Speed options
-  const speedOptions: AnimationSpeed[] = [0.5, 1, 2, 4];
+  // Speed options from config
+  const speedOptions: AnimationSpeed[] = useMemo(() => {
+    return getSpeedValues();
+  }, []);
 
-  // Check if timeline is at the start position
+  // Check if timeline is at the start or end position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
+  const isAtEnd = currentTimestamp.getTime() >= adjustedEndDate.getTime();
+
+  // Handle play button click - reset and play if at the end
+  const handlePlay = () => {
+    if (isAtEnd) {
+      reset();
+      // Small delay to let reset complete before playing
+      setTimeout(() => play(), 10);
+    } else {
+      play();
+    }
+  };
 
   // Previous/Next navigation for Advanced Timeline mode
   const currentEventIndex = useMemo(() => {
@@ -291,14 +305,14 @@ export function TimelineScrubber({
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center mb-2 gap-2">
+      <div className="flex items-center mb-2 gap-2 flex-wrap relative">
         {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
-        <div className="flex items-center gap-1.5 flex-1">
+        <div className="flex items-center gap-1.5">
           {!advancedMode && (
             <>
               {!isPlaying ? (
                 <Button
-                  onClick={play}
+                  onClick={handlePlay}
                   variant="primary"
                   size="xs"
                   icon={<PlayIcon className="w-3 h-3" />}
@@ -335,7 +349,8 @@ export function TimelineScrubber({
           {advancedMode && (
             <Button
               onClick={advancedMode.onSyncMapToggle}
-              variant={advancedMode.syncMapOnDotClick ? "primary" : "secondary"}
+              variant="secondary"
+              active={advancedMode.syncMapOnDotClick}
               size="xs"
               aria-label={
                 advancedMode.syncMapOnDotClick ? "Disable sync on dot click" : "Enable sync on dot click"
@@ -349,7 +364,8 @@ export function TimelineScrubber({
           {/* Zoom to Site toggle button */}
           <Button
             onClick={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
-            variant={zoomToSiteEnabled ? "primary" : "secondary"}
+            variant="secondary"
+            active={zoomToSiteEnabled}
             size="xs"
             aria-label={zoomToSiteEnabled ? "Disable zoom to site" : "Enable zoom to site"}
             title="When enabled, map zooms in when a site is highlighted. When disabled, only the marker is shown without zooming"
@@ -380,9 +396,9 @@ export function TimelineScrubber({
           )}
         </div>
 
-        {/* Center: Previous/Next navigation (Advanced Timeline) or Current date display */}
-        {advancedMode ? (
-          <div className="flex items-center gap-1.5">
+        {/* Center: Previous/Next navigation (Advanced Timeline only) */}
+        {advancedMode && (
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
             <Button
               onClick={goToPreviousEvent}
               disabled={!canGoPrevious}
@@ -404,15 +420,10 @@ export function TimelineScrubber({
               Next ⏭
             </Button>
           </div>
-        ) : (
-          <div className={t.timeline.currentDate}>
-            <span className={t.text.muted}>Current:</span>{" "}
-            {timeFormat("%B %d, %Y")(currentTimestamp)}
-          </div>
         )}
 
         {/* Right: Date Filter */}
-        <div className="flex items-center gap-1.5 flex-1 justify-end">
+        <div className="flex items-center gap-1.5 ml-auto">
           <label className={`text-[10px] font-semibold ${t.text.heading}`}>
             Date:
           </label>

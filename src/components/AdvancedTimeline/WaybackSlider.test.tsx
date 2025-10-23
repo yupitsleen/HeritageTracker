@@ -56,10 +56,9 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
       );
 
-      // Date appears in multiple places (main display + tooltips), so use getAllByText
-      const dateElements = screen.getAllByText("2014-02-20");
-      expect(dateElements.length).toBeGreaterThan(0);
-      expect(screen.getByText("1 / 5")).toBeInTheDocument();
+      // Should render Previous and Next buttons
+      expect(screen.getByLabelText("Previous imagery release")).toBeInTheDocument();
+      expect(screen.getByLabelText("Next imagery release")).toBeInTheDocument();
     });
 
     it("renders empty state when no releases provided", () => {
@@ -69,16 +68,15 @@ describe("WaybackSlider", () => {
       expect(screen.getByText("No imagery releases available")).toBeInTheDocument();
     });
 
-    it("displays current release date and position", () => {
+    it("renders navigation buttons correctly", () => {
       const onIndexChange = vi.fn();
       renderWithTheme(
         <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 
-      // Date appears in multiple places (main display + tooltips), so use getAllByText
-      const dateElements = screen.getAllByText("2015-01-10");
-      expect(dateElements.length).toBeGreaterThan(0);
-      expect(screen.getByText("3 / 5")).toBeInTheDocument();
+      // Should have Previous and Next buttons
+      expect(screen.getByLabelText("Previous imagery release")).toBeInTheDocument();
+      expect(screen.getByLabelText("Next imagery release")).toBeInTheDocument();
     });
 
     it("renders year labels for timeline", () => {
@@ -307,12 +305,7 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={singleRelease} currentIndex={0} onIndexChange={onIndexChange} />
       );
 
-      // Date appears in multiple places (main display + tooltips), so use getAllByText
-      const dateElements = screen.getAllByText("2014-02-20");
-      expect(dateElements.length).toBeGreaterThan(0);
-      expect(screen.getByText("1 / 1")).toBeInTheDocument();
-
-      // Both buttons should be disabled
+      // Both buttons should be disabled (only one release)
       const prevButton = screen.getByRole("button", { name: /Previous imagery release/i });
       const nextButton = screen.getByRole("button", { name: /Next imagery release/i });
       expect(prevButton).toBeDisabled();

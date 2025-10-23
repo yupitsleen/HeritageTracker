@@ -57,7 +57,7 @@ vi.mock("./TimeToggle", () => ({
   TimeToggle: ({ onPeriodChange }: { onPeriodChange: (period: string) => void }) => (
     <div data-testid="time-toggle">
       <button aria-label="Switch to 2014 Baseline satellite imagery" onClick={() => onPeriodChange("BASELINE_2014")}>2014</button>
-      <button aria-label="Switch to Aug 2023 (Pre-conflict) satellite imagery" onClick={() => onPeriodChange("PRE_CONFLICT_2023")}>Aug 2023</button>
+      <button aria-label="Switch to Jan 2024 satellite imagery" onClick={() => onPeriodChange("EARLY_2024")}>Jan 2024</button>
       <button aria-label="Switch to Current satellite imagery" onClick={() => onPeriodChange("CURRENT")}>Current</button>
     </div>
   ),
@@ -181,7 +181,7 @@ describe("SiteDetailView", () => {
     renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
     // TimeToggle renders with 3 buttons
     expect(screen.getByLabelText("Switch to 2014 Baseline satellite imagery")).toBeInTheDocument();
-    expect(screen.getByLabelText("Switch to Aug 2023 (Pre-conflict) satellite imagery")).toBeInTheDocument();
+    expect(screen.getByLabelText("Switch to Jan 2024 satellite imagery")).toBeInTheDocument();
     expect(screen.getByLabelText("Switch to Current satellite imagery")).toBeInTheDocument();
   });
 

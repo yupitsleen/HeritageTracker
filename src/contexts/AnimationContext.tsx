@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef, useMemo, type ReactNode } from "react";
 import type { GazaSite } from "../types";
+import { ANIMATION_CONFIG, getDefaultSpeed, isValidSpeed } from "../config/animation";
 
 /**
  * Timeline animation state management
  * Coordinates playback across TimelineScrubber, Map, and Table components
  */
 
-export type AnimationSpeed = 0.5 | 1 | 2 | 4;
+export type AnimationSpeed = number;
 
 interface AnimationContextValue {
   // Current timestamp in the timeline
@@ -72,7 +73,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
 
   const [currentTimestamp, setCurrentTimestamp] = useState<Date>(startDate);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState<AnimationSpeed>(1);
+  const [speed, setSpeed] = useState<AnimationSpeed>(getDefaultSpeed().value);
   const [syncMapEnabled, setSyncMapEnabled] = useState(false); // Default: OFF
   const [syncActive, setSyncActive] = useState(false); // Tracks if sync is currently active
   const [zoomToSiteEnabled, setZoomToSiteEnabled] = useState(true); // Default: ON (current behavior)
@@ -96,18 +97,18 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
       setSyncActive(true);
     }
 
-    // If sync is enabled and we're at the start, show 2014 baseline for 1 second
-    if (syncMapEnabled && currentTimestamp.getTime() === startDate.getTime()) {
+    // If sync is enabled and we're at the start, show 2014 baseline for configured duration
+    if (ANIMATION_CONFIG.pauseAtStart && syncMapEnabled && currentTimestamp.getTime() === startDate.getTime()) {
       // Temporarily set timestamp to 2014 baseline (just for map sync visual)
       const baseline2014Date = new Date("2014-02-20");
       setCurrentTimestamp(baseline2014Date);
 
-      // Wait 1 second, then reset to actual startDate and start playing
+      // Wait for configured duration, then reset to actual startDate and start playing
       pauseTimeoutRef.current = window.setTimeout(() => {
         setCurrentTimestamp(startDate); // Reset to actual timeline start
         setIsPlaying(true);
         clearPauseTimeout();
-      }, 1000);
+      }, ANIMATION_CONFIG.pauseAtStartDuration);
     } else {
       setIsPlaying(true);
     }
@@ -136,6 +137,16 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     setCurrentTimestamp(clampedTimestamp);
   }, [startDate, endDate]);
 
+  const setSpeedValidated = useCallback((newSpeed: AnimationSpeed) => {
+    // Only accept valid speeds from config
+    if (isValidSpeed(newSpeed)) {
+      setSpeed(newSpeed);
+    } else {
+      console.warn(`Invalid speed: ${newSpeed}. Using default speed.`);
+      setSpeed(getDefaultSpeed().value);
+    }
+  }, []);
+
   // Animation loop using requestAnimationFrame
   useEffect(() => {
     if (!isPlaying) {
@@ -148,8 +159,8 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     }
 
     const animate = (timestamp: number) => {
-      // Calculate time elapsed since last frame (throttle to ~60fps)
-      if (timestamp - lastFrameTimeRef.current < 16.67) {
+      // Calculate time elapsed since last frame (throttle to frame interval from config)
+      if (timestamp - lastFrameTimeRef.current < ANIMATION_CONFIG.frameInterval) {
         animationFrameRef.current = requestAnimationFrame(animate);
         return;
       }
@@ -157,9 +168,8 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
       lastFrameTimeRef.current = timestamp;
 
       setCurrentTimestamp((prevTimestamp) => {
-        // Advance by 1 day per frame, scaled by speed multiplier
-        const millisecondsPerDay = 24 * 60 * 60 * 1000;
-        const advancement = millisecondsPerDay * speed;
+        // Advance by configured time increment per frame, scaled by speed multiplier
+        const advancement = ANIMATION_CONFIG.timeIncrementPerFrame * speed;
         const nextTimestamp = new Date(prevTimestamp.getTime() + advancement);
 
         // If we've reached the end, pause
@@ -215,7 +225,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     pause,
     reset,
     setTimestamp,
-    setSpeed,
+    setSpeed: setSpeedValidated,
     setSyncMapEnabled,
     setSyncActive,
     setZoomToSiteEnabled,

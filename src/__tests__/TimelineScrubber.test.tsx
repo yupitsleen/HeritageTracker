@@ -430,15 +430,18 @@ describe("TimelineScrubber", () => {
       expect(queryByText(/Next ⏭/i)).not.toBeInTheDocument();
     });
 
-    it("shows current date display in normal mode instead of Previous/Next", () => {
-      const { getByText } = renderWithTheme(
+    it("does not show Previous/Next or current date display in normal mode", () => {
+      const { queryByText } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber sites={mockSites} />
         </AnimationProvider>
       );
 
-      // Should show "Current:" date display
-      expect(getByText(/Current:/i)).toBeInTheDocument();
+      // Should NOT show Previous/Next in normal mode
+      expect(queryByText(/⏮ Previous/i)).not.toBeInTheDocument();
+      expect(queryByText(/Next ⏭/i)).not.toBeInTheDocument();
+      // Should NOT show "Current:" date display (removed for space)
+      expect(queryByText(/Current:/i)).not.toBeInTheDocument();
     });
 
     it("does not show current date display in advanced mode", () => {

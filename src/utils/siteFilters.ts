@@ -56,30 +56,72 @@ export const filterSitesByDestructionDate = (
 
 /**
  * Parse yearBuilt string to numeric year
- * Handles formats like: "7th century", "425 CE", "16th century", "5th century (425 CE)", "800 BCE - 1100 CE"
- * Exported for use in heritageCalculations.ts
+ *
+ * Supports multiple formats:
+ * - Explicit years: "800 BCE", "1200 CE", "1950"
+ * - Ranges: "800-900 CE" (returns midpoint)
+ * - Approximations: "circa 1200", "~1500", "ca. 1200"
+ * - Islamic calendar: "750 AH" (converts to Gregorian)
+ * - Centuries: "7th century" (returns midpoint)
+ *
+ * Exported for use in heritageCalculations.ts and filters
+ *
+ * @param yearBuilt - Year built string from site data
+ * @returns Numeric year (negative for BCE) or null if unparseable
  */
 export const parseYearBuilt = (yearBuilt: string): number | null => {
+  if (!yearBuilt || typeof yearBuilt !== 'string') {
+    return null;
+  }
+
+  const normalized = yearBuilt.trim();
+
+  // Handle date ranges (e.g., "800-900 CE", "1200-1300")
+  const rangeMatch = normalized.match(/(\d+)\s*-\s*(\d+)\s*(BCE|BC|CE|AD)?/i);
+  if (rangeMatch) {
+    const start = parseInt(rangeMatch[1]);
+    const end = parseInt(rangeMatch[2]);
+    const era = rangeMatch[3]?.toUpperCase();
+    const midpoint = Math.floor((start + end) / 2);
+
+    if (era === 'BCE' || era === 'BC') {
+      return -midpoint;
+    }
+    return midpoint;
+  }
+
+  // Handle approximations (circa, ~, ca.) - strip markers and continue parsing
+  const approximationMatch = normalized.match(/(?:circa|ca\.|~)\s*(.+)/i);
+  const parseString = approximationMatch ? approximationMatch[1] : normalized;
+
+  // Handle Islamic calendar (AH/Hijri) - approximate conversion
+  // AH year 1 ≈ 622 CE, Islamic year ≈ 0.97 Gregorian years
+  const ahMatch = parseString.match(/(\d+)\s*AH/i);
+  if (ahMatch) {
+    const hijriYear = parseInt(ahMatch[1]);
+    return Math.round(622 + (hijriYear * 0.97));
+  }
+
   // Try to extract explicit year with BCE/BC
-  const bceMatch = yearBuilt.match(/(\d+)\s*(BCE|BC)/i);
+  const bceMatch = parseString.match(/(\d+)\s*(BCE|BC)/i);
   if (bceMatch) {
     return -parseInt(bceMatch[1]);
   }
 
   // Try to extract explicit year with CE/AD
-  const ceMatch = yearBuilt.match(/(\d+)\s*(CE|AD)/i);
+  const ceMatch = parseString.match(/(\d+)\s*(CE|AD)/i);
   if (ceMatch) {
     return parseInt(ceMatch[1]);
   }
 
   // Try to extract standalone 3-4 digit year (e.g., "425" or "1200")
-  const yearMatch = yearBuilt.match(/\b(\d{3,4})\b/);
+  const yearMatch = parseString.match(/\b(\d{3,4})\b/);
   if (yearMatch) {
     return parseInt(yearMatch[1]);
   }
 
   // Handle century format (e.g., "7th century", "16th century")
-  const centuryMatch = yearBuilt.match(/(\d+)(st|nd|rd|th)\s+century/i);
+  const centuryMatch = parseString.match(/(\d+)(st|nd|rd|th)\s+century/i);
   if (centuryMatch) {
     const century = parseInt(centuryMatch[1]);
     // Convert century to approximate midpoint year

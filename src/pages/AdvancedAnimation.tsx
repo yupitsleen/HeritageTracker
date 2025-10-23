@@ -1,9 +1,12 @@
 import { lazy, Suspense, useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
+import { IconButton } from "../components/Button/IconButton";
 import { Modal } from "../components/Modal/Modal";
+import { AppFooter } from "../components/Layout/AppFooter";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
@@ -21,6 +24,9 @@ const TimelineScrubber = lazy(() =>
 const SiteDetailPanel = lazy(() =>
   import("../components/SiteDetail/SiteDetailPanel").then((m) => ({ default: m.SiteDetailPanel }))
 );
+const About = lazy(() => import("../components/About/About").then(m => ({ default: m.About })));
+const StatsDashboard = lazy(() => import("../components/Stats/StatsDashboard").then(m => ({ default: m.StatsDashboard })));
+const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 /**
  * Advanced Animation Page
@@ -29,15 +35,23 @@ const SiteDetailPanel = lazy(() =>
  * Reuses SiteDetailView and TimelineScrubber from home page
  */
 export function AdvancedAnimation() {
-  const { isDark } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
   const t = useThemeClasses();
   const navigate = useNavigate();
 
   // Fetch Wayback releases
   const { releases, isLoading, error } = useWaybackReleases();
 
-  // Wayback state
+  // Wayback state - will be set to most recent release once loaded
   const [currentReleaseIndex, setCurrentReleaseIndex] = useState(0);
+
+  // Set initial release to most recent (last in array) when releases are loaded
+  useEffect(() => {
+    if (releases.length > 0 && currentReleaseIndex === 0) {
+      // Only set on initial load (when still at index 0)
+      setCurrentReleaseIndex(releases.length - 1);
+    }
+  }, [releases, currentReleaseIndex]);
 
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
@@ -46,7 +60,14 @@ export function AdvancedAnimation() {
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
-  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(false);
+  // Default to ON for better user experience on Advanced Timeline page
+  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
+
+  // Modal states for footer and help
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   // Get current release
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
@@ -155,7 +176,7 @@ export function AdvancedAnimation() {
     >
       {/* Header with back button */}
       <header
-        className={`sticky top-0 z-[5] transition-colors duration-200 ${
+        className={`sticky top-0 z-[10] transition-colors duration-200 ${
           isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
         }`}
       >
@@ -166,6 +187,7 @@ export function AdvancedAnimation() {
               onClick={handleBackClick}
               variant="ghost"
               size="sm"
+              lightText
               className="flex items-center gap-1.5"
             >
               <span className="text-base">&larr;</span>
@@ -178,11 +200,30 @@ export function AdvancedAnimation() {
             Advanced Satellite Timeline
           </h1>
 
-          {/* Right: Info */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-400">
-            {isLoading && "Loading..."}
-            {error && "Error"}
-            {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Sites`}
+          {/* Right: Help + Dark mode toggle + Info */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            {/* Help Button */}
+            <IconButton
+              icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
+              onClick={() => setIsHelpOpen(true)}
+              ariaLabel="How to use this page"
+              title="How to use this page"
+            />
+
+            {/* Dark Mode Toggle */}
+            <IconButton
+              icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+              onClick={toggleTheme}
+              ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            />
+
+            {/* Info text */}
+            <div className="text-xs text-gray-400">
+              {isLoading && "Loading..."}
+              {error && "Error"}
+              {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Sites`}
+            </div>
           </div>
         </div>
 
@@ -199,7 +240,7 @@ export function AdvancedAnimation() {
       <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2">
         {/* Loading state */}
         {isLoading && (
-          <div className={`flex-1 flex items-center justify-center rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+          <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
             <div className="text-center">
               <div className={`text-xl mb-2 ${t.text.heading}`}>Loading Wayback Archive...</div>
               <div className={`text-sm ${t.text.muted}`}>Fetching 186 historical imagery versions...</div>
@@ -209,7 +250,7 @@ export function AdvancedAnimation() {
 
         {/* Error state */}
         {error && (
-          <div className={`flex-1 flex items-center justify-center rounded border-2 ${isDark ? "border-white bg-black/50" : "border-black bg-white/50"} shadow-xl`}>
+          <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
             <div className="text-center">
               <div className="text-xl font-bold mb-2 text-red-600">Error Loading Archive</div>
               <div className={`text-sm mb-4 ${t.text.muted}`}>{error}</div>
@@ -225,9 +266,7 @@ export function AdvancedAnimation() {
           <AnimationProvider sites={mockSites}>
             {/* Full-screen satellite map with Wayback imagery */}
             <div
-              className={`flex-1 min-h-0 border-2 ${
-                isDark ? "border-white" : "border-black"
-              } rounded shadow-xl overflow-hidden`}
+              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden`}
             >
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
@@ -290,6 +329,138 @@ export function AdvancedAnimation() {
           </Suspense>
         )}
       </Modal>
+
+      {/* Statistics Modal */}
+      <Modal
+        isOpen={isStatsOpen}
+        onClose={() => setIsStatsOpen(false)}
+        zIndex={10001}
+      >
+        <Suspense
+          fallback={
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
+              <div>Loading statistics...</div>
+            </div>
+          }
+        >
+          <StatsDashboard sites={mockSites} />
+        </Suspense>
+      </Modal>
+
+      {/* About Modal */}
+      <Modal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
+        zIndex={10001}
+      >
+        <Suspense
+          fallback={
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
+              <div>Loading about...</div>
+            </div>
+          }
+        >
+          <About />
+        </Suspense>
+      </Modal>
+
+      {/* Donate Modal */}
+      <Modal
+        isOpen={isDonateOpen}
+        onClose={() => setIsDonateOpen(false)}
+        zIndex={10001}
+      >
+        <Suspense
+          fallback={
+            <div className={`p-8 text-center ${t.layout.loadingText}`}>
+              <div>Loading...</div>
+            </div>
+          }
+        >
+          <DonateModal />
+        </Suspense>
+      </Modal>
+
+      {/* Help Modal */}
+      <Modal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+        zIndex={10001}
+      >
+        <div className="p-6">
+          <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Advanced Satellite Timeline</h2>
+
+          <div className={`space-y-4 ${t.text.body}`}>
+            <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
+              <p className="text-sm">
+                The Advanced Satellite Timeline provides access to 150+ historical satellite imagery versions from
+                ESRI Wayback (2014-2025). This specialized view lets you see how the landscape has changed over time,
+                with precise timestamps for each satellite image capture.
+              </p>
+            </section>
+
+            <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Satellite Map</h3>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li>Full-screen satellite view showing the entire region</li>
+                <li>Click on site markers to view detailed information</li>
+                <li>Markers update to match the currently selected satellite imagery date</li>
+                <li>Red markers indicate sites that were destroyed before or on the displayed date</li>
+              </ul>
+            </section>
+
+            <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Wayback Timeline Slider</h3>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li><strong>Year Markers:</strong> Vertical labels (2014-2025) mark each calendar year</li>
+                <li><strong>Gray Lines:</strong> Each line represents one satellite imagery capture date (150+ total)</li>
+                <li><strong>Red Dots:</strong> Show when sites were destroyed (vertically stacked for visibility)</li>
+                <li><strong>Green Scrubber:</strong> Drag to view different dates, tooltip shows current date</li>
+                <li>Click anywhere on the timeline to jump to that date</li>
+              </ul>
+            </section>
+
+            <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Navigation Controls</h3>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li><strong>Reset:</strong> Return to the first imagery version (2014)</li>
+                <li><strong>Previous (⏮):</strong> Go to the previous year marker</li>
+                <li><strong>Play/Pause (▶/⏸):</strong> Automatically advance through time</li>
+                <li><strong>Next (⏭):</strong> Jump to the next year marker</li>
+              </ul>
+            </section>
+
+            <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Site Timeline (Bottom)</h3>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li>Shows destruction events for all heritage sites</li>
+                <li>Click a red dot to highlight the site on the map</li>
+                <li>Highlighted sites show with a black dot and enlarged marker</li>
+                <li>Use the "Sync map on dot click" toggle to automatically jump to the destruction date in Wayback imagery</li>
+              </ul>
+            </section>
+
+            <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Tips</h3>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li>Compare satellite imagery before and after destruction events</li>
+                <li>Watch seasonal changes in the landscape over the years</li>
+                <li>Notice the density of gray lines - ESRI updates imagery more frequently in recent years</li>
+                <li>Use the footer links to access Statistics, About, and donation information</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Footer - Desktop only */}
+      <AppFooter
+        onOpenDonate={() => setIsDonateOpen(true)}
+        onOpenStats={() => setIsStatsOpen(true)}
+        onOpenAbout={() => setIsAboutOpen(true)}
+        isMobile={false}
+      />
     </div>
   );
 }

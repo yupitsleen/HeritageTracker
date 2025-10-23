@@ -1,14 +1,16 @@
 import { components, cn } from "../../styles/theme";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
+import { IconButton } from "../Button/IconButton";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
 
 interface AppHeaderProps {
   onOpenDonate: () => void;
   onOpenStats: () => void;
   onOpenAbout: () => void;
+  onOpenHelp?: () => void;
 }
 
 /**
@@ -16,7 +18,7 @@ interface AppHeaderProps {
  * Black background with Palestinian flag colors
  * Includes dark mode toggle and navigation to advanced animation page
  */
-export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderProps) {
+export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,72 +26,82 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout }: AppHeaderP
   const isOnHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
 
   return (
-    <div className={`sticky top-0 z-[5] transition-colors duration-200 ${
+    <div className={`sticky top-0 z-[10] transition-colors duration-200 ${
       isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
     }`}>
       {/* Header - BLACK background, ultra compact */}
       <header className={components.header.base}>
-        <div className={cn(components.container.base, "py-1.5")}>
-          <h1 className={`text-base md:text-lg font-bold text-center text-[#fefefe]`}>Heritage Tracker</h1>
-        </div>
+        <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
+          {/* Left: Title */}
+          <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
+            Heritage Tracker
+          </h1>
 
-        {/* All buttons - desktop only, right-aligned in top right, positioned relative to header */}
-        <div className={`hidden md:flex absolute top-1.5 right-2 ${COMPACT_HEADER.buttonGap} items-center`}>
-          {/* Dark Mode Toggle - Discrete icon button */}
-          <button
-            onClick={toggleTheme}
-            className={`p-1.5 rounded shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 ${
-              isDark
-                ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
-                : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
-            }`}
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDark ? (
-              <SunIcon className="w-4 h-4" />
-            ) : (
-              <MoonIcon className="w-4 h-4" />
+          {/* Center: Main action buttons - desktop only */}
+          <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
+            {/* Advanced Animation Navigation - Only show on home page */}
+            {isOnHomePage && (
+              <Button
+                onClick={() => navigate("/advanced-animation")}
+                variant="secondary"
+                size="xs"
+                lightText
+                aria-label="Open Advanced Animation Timeline"
+                title="View historical satellite imagery timeline with destruction events"
+              >
+                Advanced Timeline
+              </Button>
             )}
-          </button>
 
-          {/* Advanced Animation Navigation - Only show on home page */}
-          {isOnHomePage && (
             <Button
-              onClick={() => navigate("/advanced-animation")}
-              variant="secondary"
+              onClick={onOpenDonate}
+              variant="danger"
               size="xs"
-              aria-label="Open Advanced Animation Timeline"
-              title="View historical satellite imagery timeline with destruction events"
+              lightText
+              aria-label="Help Palestine - Donate to relief efforts"
             >
-              Advanced Timeline
+              Help Palestine
             </Button>
-          )}
+            <Button
+              onClick={onOpenStats}
+              variant="primary"
+              size="xs"
+              lightText
+              aria-label="View Statistics"
+            >
+              Statistics
+            </Button>
+            <Button
+              onClick={onOpenAbout}
+              variant="primary"
+              size="xs"
+              lightText
+              aria-label="About Heritage Tracker"
+            >
+              About
+            </Button>
+          </div>
 
-          <Button
-            onClick={onOpenDonate}
-            variant="danger"
-            size="xs"
-            aria-label="Help Palestine - Donate to relief efforts"
-          >
-            Help Palestine
-          </Button>
-          <Button
-            onClick={onOpenStats}
-            variant="primary"
-            size="xs"
-            aria-label="View Statistics"
-          >
-            Statistics
-          </Button>
-          <Button
-            onClick={onOpenAbout}
-            variant="primary"
-            size="xs"
-            aria-label="About Heritage Tracker"
-          >
-            About
-          </Button>
+          {/* Right: Icon buttons - desktop only */}
+          <div className={`hidden md:flex ${COMPACT_HEADER.buttonGap} items-center`}>
+            {/* Help Button - Question mark icon */}
+            {onOpenHelp && (
+              <IconButton
+                icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
+                onClick={onOpenHelp}
+                ariaLabel="How to use this page"
+                title="How to use this page"
+              />
+            )}
+
+            {/* Dark Mode Toggle - Discrete icon button */}
+            <IconButton
+              icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+              onClick={toggleTheme}
+              ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            />
+          </div>
         </div>
       </header>
 
