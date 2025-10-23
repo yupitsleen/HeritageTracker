@@ -54,9 +54,9 @@ export function Button({
     lg: 'px-8 py-3 text-base uppercase tracking-wide',
   }[size];
 
-  // Base classes (always applied) - sharp corners, dramatic shadow
+  // Base classes (always applied) - sharp corners, subtle default, vibrant hover
   const baseClasses = `
-    rounded-sm font-semibold border-2 ${isDark ? 'border-white' : 'border-black'}
+    rounded-sm font-semibold border
     transition-all duration-200
     inline-flex items-center justify-center gap-2
     ${fullWidth ? 'w-full' : ''}
@@ -77,19 +77,19 @@ export function Button({
     );
   }
 
-  // Variant-specific classes - shadow-xl for depth, opacity instead of scale
+  // Variant-specific classes - subtle default, vibrant hover
   const variantClasses = {
     primary: isDark
-      ? 'bg-[#2d5a38] hover:bg-[#244a2e] text-white shadow-xl hover:opacity-90 active:opacity-80'
-      : 'bg-[#009639] hover:bg-[#007b2f] text-white shadow-xl hover:opacity-90 active:opacity-80',
+      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80'
+      : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#009639] hover:text-white hover:border-[#009639] hover:shadow-lg active:opacity-80',
 
     secondary: isDark
-      ? 'bg-gray-700 hover:bg-gray-600 text-gray-300 shadow-xl hover:opacity-90 active:opacity-80'
-      : 'bg-[#f5f5f5] hover:bg-[#e5e5e5] text-[#404040] shadow-xl hover:opacity-90 active:opacity-80',
+      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
+      : 'bg-transparent text-gray-600 border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80',
 
     danger: isDark
-      ? 'bg-[#8b2a30] hover:bg-[#7a2429] text-white shadow-xl hover:opacity-90 active:opacity-80'
-      : 'bg-[#ed3039] hover:bg-[#d4202a] text-[#fefefe] shadow-xl hover:opacity-90 active:opacity-80',
+      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80'
+      : 'bg-transparent text-gray-600 border-gray-400 hover:bg-[#ed3039] hover:text-white hover:border-[#ed3039] hover:shadow-lg active:opacity-80',
 
     ghost: isDark
       ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'

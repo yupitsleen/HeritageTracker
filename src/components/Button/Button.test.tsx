@@ -51,39 +51,45 @@ describe('Button', () => {
     it('renders primary variant in light mode', () => {
       renderWithTheme(<Button variant="primary">Primary</Button>, 'light');
       const button = screen.getByRole('button');
-      expect(button.className).toContain('bg-[#009639]');
-      expect(button.className).toContain('text-white');
+      expect(button.className).toContain('bg-transparent');
+      expect(button.className).toContain('text-gray-600');
+      expect(button.className).toContain('hover:bg-[#009639]');
     });
 
     it('renders primary variant in dark mode', () => {
       renderWithTheme(<Button variant="primary">Primary</Button>, 'dark');
       const button = screen.getByRole('button');
-      expect(button.className).toContain('bg-[#2d5a38]');
-      expect(button.className).toContain('text-white');
+      expect(button.className).toContain('bg-transparent');
+      expect(button.className).toContain('text-gray-300');
+      expect(button.className).toContain('hover:bg-[#009639]');
     });
 
     it('renders secondary variant in light mode', () => {
       renderWithTheme(<Button variant="secondary">Secondary</Button>, 'light');
       const button = screen.getByRole('button');
-      expect(button.className).toContain('bg-[#f5f5f5]');
+      expect(button.className).toContain('bg-transparent');
+      expect(button.className).toContain('hover:bg-gray-700');
     });
 
     it('renders secondary variant in dark mode', () => {
       renderWithTheme(<Button variant="secondary">Secondary</Button>, 'dark');
       const button = screen.getByRole('button');
-      expect(button.className).toContain('bg-gray-700');
+      expect(button.className).toContain('bg-transparent');
+      expect(button.className).toContain('hover:bg-gray-600');
     });
 
     it('renders danger variant in light mode', () => {
       renderWithTheme(<Button variant="danger">Delete</Button>, 'light');
       const button = screen.getByRole('button');
-      expect(button.className).toContain('bg-[#ed3039]');
+      expect(button.className).toContain('bg-transparent');
+      expect(button.className).toContain('hover:bg-[#ed3039]');
     });
 
     it('renders danger variant in dark mode', () => {
       renderWithTheme(<Button variant="danger">Delete</Button>, 'dark');
       const button = screen.getByRole('button');
-      expect(button.className).toContain('bg-[#8b2a30]');
+      expect(button.className).toContain('bg-transparent');
+      expect(button.className).toContain('hover:bg-[#ed3039]');
     });
 
     it('renders ghost variant', () => {
@@ -197,11 +203,11 @@ describe('Button', () => {
   });
 
   describe('Style consistency', () => {
-    it('includes theme-aware border (black in light mode, white in dark mode)', () => {
+    it('includes subtle border styling', () => {
       renderWithTheme(<Button variant="primary">Button</Button>);
       const button = screen.getByRole('button');
-      // Check that it has either border-black or border-white depending on theme
-      expect(button.className).toMatch(/border-(black|white)/);
+      // Check that it has border styling (gray-400 or gray-600 depending on theme)
+      expect(button.className).toMatch(/border-gray-/);
     });
 
     it('includes transition classes', () => {

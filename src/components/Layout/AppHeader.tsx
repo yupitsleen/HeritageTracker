@@ -32,7 +32,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
           {/* Left: Title */}
-          <h1 className={`text-base md:text-lg font-bold text-[#fefefe] uppercase tracking-wide`}>
+          <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
             Heritage Tracker
           </h1>
 
