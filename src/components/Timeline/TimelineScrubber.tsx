@@ -19,6 +19,7 @@ import {
   filterEventsByDateRange,
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
+import { getSpeedValues } from "../../config/animation";
 
 /**
  * Callback type for date change handlers
@@ -245,8 +246,10 @@ export function TimelineScrubber({
     endDate,
   ]);
 
-  // Speed options
-  const speedOptions: AnimationSpeed[] = [0.5, 1, 2, 4];
+  // Speed options from config
+  const speedOptions: AnimationSpeed[] = useMemo(() => {
+    return getSpeedValues();
+  }, []);
 
   // Check if timeline is at the start or end position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
