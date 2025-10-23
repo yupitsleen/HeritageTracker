@@ -14,7 +14,7 @@ export function Input({ variant = "text", className, ...props }: InputProps) {
   const t = useThemeClasses();
 
   const baseClasses = cn(
-    "px-3 py-2 border rounded-lg text-sm transition-all duration-200",
+    "px-3 py-1.5 border rounded-sm text-sm transition-all duration-200",
     t.input.base,
     t.input.focus,
     variant === "number" && t.input.number,
