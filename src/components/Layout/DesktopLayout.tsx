@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback } from "react";
-import type { GazaSite } from "../../types";
+import type { GazaSite, FilterState } from "../../types";
 import { Input } from "../Form/Input";
 import { FilterTag } from "../FilterBar/FilterTag";
 import { formatLabel } from "../../utils/format";
@@ -20,13 +20,12 @@ const TimelineScrubber = lazy(() =>
   import("../Timeline/TimelineScrubber").then((m) => ({ default: m.TimelineScrubber }))
 );
 
+// Partial filter state for display-only (no creationYear filters used in DesktopLayout)
+type DesktopFilters = Pick<FilterState, "selectedTypes" | "selectedStatuses" | "searchTerm" | "destructionDateStart" | "destructionDateEnd">;
+
 interface DesktopLayoutProps {
-  // Filter state
-  selectedTypes: Array<GazaSite["type"]>;
-  selectedStatuses: Array<GazaSite["status"]>;
-  searchTerm: string;
-  destructionDateStart: Date | null;
-  destructionDateEnd: Date | null;
+  // Filter state (grouped)
+  filters: DesktopFilters;
   setSelectedTypes: (types: Array<GazaSite["type"]>) => void;
   setSelectedStatuses: (statuses: Array<GazaSite["status"]>) => void;
   setSearchTerm: (term: string) => void;
@@ -40,11 +39,15 @@ interface DesktopLayoutProps {
   filteredSites: GazaSite[];
   totalSites: number;
 
-  // Table props
-  tableWidth: number;
-  isResizing: boolean;
-  handleResizeStart: () => void;
-  getVisibleColumns: () => string[];
+  // Table props (grouped)
+  tableResize: {
+    width: number;
+    isResizing: boolean;
+    handleResizeStart: () => void;
+    getVisibleColumns: () => string[];
+  };
+
+  // Site interaction
   onSiteClick: (site: GazaSite) => void;
   onSiteHighlight: (siteId: string | null) => void;
   highlightedSiteId: string | null;
@@ -56,11 +59,7 @@ interface DesktopLayoutProps {
  * Three-column layout: Table (left, resizable) | HeritageMap (center) | SiteDetailView (right) | Timeline (below both maps)
  */
 export function DesktopLayout({
-  selectedTypes,
-  selectedStatuses,
-  searchTerm,
-  destructionDateStart,
-  destructionDateEnd,
+  filters,
   setSelectedTypes,
   setSelectedStatuses,
   setSearchTerm,
@@ -71,10 +70,7 @@ export function DesktopLayout({
   openFilterModal,
   filteredSites,
   totalSites,
-  tableWidth,
-  isResizing,
-  handleResizeStart,
-  getVisibleColumns,
+  tableResize,
   onSiteClick,
   onSiteHighlight,
   highlightedSiteId,
@@ -82,6 +78,9 @@ export function DesktopLayout({
 }: DesktopLayoutProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
+
+  // Destructure filters for easier access
+  const { selectedTypes, selectedStatuses, searchTerm, destructionDateStart, destructionDateEnd } = filters;
 
   // Memoized filter tag handlers to prevent unnecessary re-renders
   const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
@@ -105,7 +104,7 @@ export function DesktopLayout({
         {/* Left Column - Sites Table (Resizable, black border like timeline) */}
         <aside
           className="flex-shrink-0 pl-4 pt-2 pb-2 relative flex flex-col z-10"
-          style={{ width: `${tableWidth}px` }}
+          style={{ width: `${tableResize.width}px` }}
         >
           <SitesTable
             sites={filteredSites}
@@ -113,15 +112,15 @@ export function DesktopLayout({
             onSiteHighlight={onSiteHighlight}
             highlightedSiteId={highlightedSiteId}
             onExpandTable={onExpandTable}
-            visibleColumns={getVisibleColumns()}
+            visibleColumns={tableResize.getVisibleColumns()}
           />
 
           {/* Resize handle */}
           <div
             className={`absolute top-3 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${
-              isResizing ? "bg-[#ed3039] bg-opacity-50" : ""
+              tableResize.isResizing ? "bg-[#ed3039] bg-opacity-50" : ""
             }`}
-            onMouseDown={handleResizeStart}
+            onMouseDown={tableResize.handleResizeStart}
             title="Drag to resize table"
             aria-label="Resize table"
           />

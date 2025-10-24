@@ -106,11 +106,13 @@ export function HomePage({ isMobile }: HomePageProps) {
           />
         ) : (
           <DesktopLayout
-            selectedTypes={appState.filters.selectedTypes}
-            selectedStatuses={appState.filters.selectedStatuses}
-            searchTerm={appState.filters.searchTerm}
-            destructionDateStart={appState.filters.destructionDateStart}
-            destructionDateEnd={appState.filters.destructionDateEnd}
+            filters={{
+              selectedTypes: appState.filters.selectedTypes,
+              selectedStatuses: appState.filters.selectedStatuses,
+              searchTerm: appState.filters.searchTerm,
+              destructionDateStart: appState.filters.destructionDateStart,
+              destructionDateEnd: appState.filters.destructionDateEnd,
+            }}
             setSelectedTypes={appState.setSelectedTypes}
             setSelectedStatuses={appState.setSelectedStatuses}
             setSearchTerm={appState.setSearchTerm}
@@ -121,10 +123,12 @@ export function HomePage({ isMobile }: HomePageProps) {
             openFilterModal={appState.openFilterModal}
             filteredSites={filteredSites}
             totalSites={total}
-            tableWidth={tableResize.tableWidth}
-            isResizing={tableResize.isResizing}
-            handleResizeStart={tableResize.handleResizeStart}
-            getVisibleColumns={tableResize.getVisibleColumns}
+            tableResize={{
+              width: tableResize.tableWidth,
+              isResizing: tableResize.isResizing,
+              handleResizeStart: tableResize.handleResizeStart,
+              getVisibleColumns: tableResize.getVisibleColumns,
+            }}
             onSiteClick={appState.setSelectedSite}
             onSiteHighlight={appState.setHighlightedSiteId}
             highlightedSiteId={appState.highlightedSiteId}
