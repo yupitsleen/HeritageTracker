@@ -4,6 +4,11 @@
  */
 
 /**
+ * Re-export FilterState for convenient imports
+ */
+export type { FilterState } from "./filters";
+
+/**
  * Source documentation reference
  */
 export interface Source {
