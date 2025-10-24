@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
 import { useAnimation } from "../../contexts/AnimationContext";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 interface TimeToggleProps {
   selectedPeriod: TimePeriod;
@@ -51,6 +52,7 @@ function formatYear(dateStr: string): string {
  */
 export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) {
   const { setSyncActive } = useAnimation();
+  const translate = useTranslation();
 
   // Dynamically generate period buttons from HISTORICAL_IMAGERY constants
   const periods = useMemo(() => {
@@ -82,7 +84,7 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
                 : "bg-white text-gray-700 hover:bg-gray-100"
             }`}
             title={period.tooltip}
-            aria-label={`Switch to ${period.label} satellite imagery`}
+            aria-label={`${translate("map.switchTo")} ${period.label} ${translate("map.satelliteImagery")}`}
           >
             {period.shortLabel}
           </button>

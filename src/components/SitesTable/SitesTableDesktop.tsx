@@ -8,6 +8,7 @@ import { TABLE_CONFIG } from "../../constants/layout";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
 import { exportSites, getExportConfigs } from "../../config/exportFormats";
@@ -48,6 +49,7 @@ export function SitesTableDesktop({
 }: SitesTableDesktopProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [selectedExportFormat, setSelectedExportFormat] = useState<ExportFormatId>("csv");
@@ -164,13 +166,13 @@ export function SitesTableDesktop({
         <div className="px-2 pt-2 pb-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">
-              <h2 className={`text-sm font-bold ${t.text.subheading}`}>Heritage Sites</h2>
+              <h2 className={`text-sm font-bold ${t.text.subheading}`}>{translate("table.heritageSites")}</h2>
               {onExpandTable && (
                 <button
                   onClick={onExpandTable}
                   className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
-                  title="Expand table to see all columns"
-                  aria-label="Expand table to see all columns"
+                  title={translate("table.expandTable")}
+                  aria-label={translate("table.expandTable")}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -189,8 +191,8 @@ export function SitesTableDesktop({
                   value={selectedExportFormat}
                   onChange={(e) => setSelectedExportFormat(e.target.value as ExportFormatId)}
                   className={`px-2 py-1 text-[10px] rounded border ${t.border.default} ${t.bg.primary} ${t.text.body} focus:outline-none focus:ring-1 focus:ring-[#009639] transition-colors duration-200`}
-                  title="Select export format"
-                  aria-label="Select export format"
+                  title={translate("table.selectExportFormat")}
+                  aria-label={translate("table.selectExportFormat")}
                 >
                   {exportConfigs.map((config) => (
                     <option key={config.id} value={config.id}>
@@ -202,8 +204,8 @@ export function SitesTableDesktop({
                   onClick={handleExport}
                   variant="primary"
                   size="xs"
-                  title={`Export table data to ${exportConfigs.find(c => c.id === selectedExportFormat)?.label} file`}
-                  aria-label={`Export to ${exportConfigs.find(c => c.id === selectedExportFormat)?.label}`}
+                  title={`${translate("table.export")} ${exportConfigs.find(c => c.id === selectedExportFormat)?.label}`}
+                  aria-label={`${translate("table.export")} ${exportConfigs.find(c => c.id === selectedExportFormat)?.label}`}
                   icon={
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -215,7 +217,7 @@ export function SitesTableDesktop({
                     </svg>
                   }
                 >
-                  Export
+                  {translate("table.export")}
                 </Button>
               </div>
             )}
@@ -234,7 +236,7 @@ export function SitesTableDesktop({
                   onClick={() => handleSort("type")}
                   style={{ width: `${TABLE_CONFIG.TYPE_COLUMN_WIDTH}px` }}
                 >
-                  Type
+                  {translate("table.type")}
                   <SortIcon field="type" />
                 </th>
               )}
@@ -244,7 +246,7 @@ export function SitesTableDesktop({
                   onClick={() => handleSort("name")}
                   style={{ width: variant === "compact" ? "200px" : "auto", maxWidth: variant === "compact" ? "200px" : "none" }}
                 >
-                  Site Name
+                  {translate("table.siteName")}
                   <SortIcon field="name" />
                 </th>
               )}
@@ -253,7 +255,7 @@ export function SitesTableDesktop({
                   className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("status")}
                 >
-                  Status
+                  {translate("table.status")}
                   <SortIcon field="status" />
                 </th>
               )}
@@ -263,10 +265,10 @@ export function SitesTableDesktop({
                   onClick={() => handleSort("dateDestroyed")}
                 >
                   {visibleColumns
-                    ? "Destruction Date"
+                    ? translate("table.destructionDate")
                     : variant === "compact"
-                      ? "Destruction Date"
-                      : "Destruction Date (Gregorian)"}
+                      ? translate("table.destructionDate")
+                      : translate("table.destructionDateGregorian")}
                   <SortIcon field="dateDestroyed" />
                 </th>
               )}
@@ -275,7 +277,7 @@ export function SitesTableDesktop({
                   className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("dateDestroyedIslamic")}
                 >
-                  Destruction Date (Islamic)
+                  {translate("table.destructionDateIslamic")}
                   <SortIcon field="dateDestroyedIslamic" />
                 </th>
               )}
@@ -284,7 +286,7 @@ export function SitesTableDesktop({
                   className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("yearBuilt")}
                 >
-                  Built (Gregorian)
+                  {translate("table.builtGregorian")}
                   <SortIcon field="yearBuilt" />
                 </th>
               )}
@@ -293,7 +295,7 @@ export function SitesTableDesktop({
                   className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
                   onClick={() => handleSort("yearBuiltIslamic")}
                 >
-                  Built (Islamic)
+                  {translate("table.builtIslamic")}
                   <SortIcon field="yearBuiltIslamic" />
                 </th>
               )}
