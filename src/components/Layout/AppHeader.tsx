@@ -1,6 +1,7 @@
 import { components, cn } from "../../styles/theme";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon, LanguageIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useLocale } from "../../contexts/LocaleContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
 import { IconButton } from "../Button/IconButton";
@@ -20,10 +21,16 @@ interface AppHeaderProps {
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
+  const { locale, setLocale } = useLocale();
   const navigate = useNavigate();
   const location = useLocation();
 
   const isOnHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
+
+  // Toggle between English and Arabic
+  const toggleLanguage = () => {
+    setLocale(locale === "en" ? "ar" : "en");
+  };
 
   return (
     <div className={`sticky top-0 z-[10] transition-colors duration-200 ${
@@ -93,6 +100,14 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
                 title="How to use this page"
               />
             )}
+
+            {/* Language Toggle - Globe icon with current language */}
+            <IconButton
+              icon={<LanguageIcon className="w-4 h-4" />}
+              onClick={toggleLanguage}
+              ariaLabel={`Switch to ${locale === "en" ? "Arabic" : "English"}`}
+              title={`Current: ${locale === "en" ? "English" : "العربية"}`}
+            />
 
             {/* Dark Mode Toggle - Discrete icon button */}
             <IconButton

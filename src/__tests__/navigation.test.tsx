@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { LocaleProvider } from "../contexts/LocaleContext";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import { mockSites } from "../data/mockSites";
@@ -21,13 +22,15 @@ import { AdvancedAnimation } from "../pages/AdvancedAnimation";
 function renderWithProviders(ui: React.ReactElement) {
   return render(
     <BrowserRouter>
-      <ThemeProvider>
-        <CalendarProvider>
-          <AnimationProvider sites={mockSites}>
-            {ui}
-          </AnimationProvider>
-        </CalendarProvider>
-      </ThemeProvider>
+      <LocaleProvider>
+        <ThemeProvider>
+          <CalendarProvider>
+            <AnimationProvider sites={mockSites}>
+              {ui}
+            </AnimationProvider>
+          </CalendarProvider>
+        </ThemeProvider>
+      </LocaleProvider>
     </BrowserRouter>
   );
 }
@@ -40,13 +43,15 @@ describe("Navigation", () => {
       // Use MemoryRouter to control the route
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <ThemeProvider>
-            <AppHeader
-              onOpenDonate={noop}
-              onOpenStats={noop}
-              onOpenAbout={noop}
-            />
-          </ThemeProvider>
+          <LocaleProvider>
+            <ThemeProvider>
+              <AppHeader
+                onOpenDonate={noop}
+                onOpenStats={noop}
+                onOpenAbout={noop}
+              />
+            </ThemeProvider>
+          </LocaleProvider>
         </MemoryRouter>
       );
 
@@ -61,13 +66,15 @@ describe("Navigation", () => {
       // Use MemoryRouter with advanced-animation route
       render(
         <MemoryRouter initialEntries={["/advanced-animation"]}>
-          <ThemeProvider>
-            <AppHeader
-              onOpenDonate={noop}
-              onOpenStats={noop}
-              onOpenAbout={noop}
-            />
-          </ThemeProvider>
+          <LocaleProvider>
+            <ThemeProvider>
+              <AppHeader
+                onOpenDonate={noop}
+                onOpenStats={noop}
+                onOpenAbout={noop}
+              />
+            </ThemeProvider>
+          </LocaleProvider>
         </MemoryRouter>
       );
 
