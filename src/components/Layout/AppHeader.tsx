@@ -1,5 +1,5 @@
 import { components, cn } from "../../styles/theme";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon, LanguageIcon } from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useLocale } from "../../contexts/LocaleContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -103,7 +103,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
 
             {/* Language Toggle - Globe icon with current language */}
             <IconButton
-              icon={<LanguageIcon className="w-4 h-4" />}
+              icon={<GlobeAltIcon className="w-4 h-4" />}
               onClick={toggleLanguage}
               ariaLabel={`Switch to ${locale === "en" ? "Arabic" : "English"}`}
               title={`Current: ${locale === "en" ? "English" : "العربية"}`}
