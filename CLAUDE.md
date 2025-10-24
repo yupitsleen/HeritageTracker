@@ -3,14 +3,14 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 1379 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/sprint2-extensibility (Sprint 4 complete - 22 registry systems) | main (production)
+**Current:** 45 sites | 1413 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/backendPrepContd (i18n complete - 22 registries) | main (production)
 
 ### Essential Commands
 
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 1379 tests - MUST pass before commit
+npm test        # 1413 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -35,7 +35,7 @@ git commit -m "docs: update docs"
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ Header (black bg, right-aligned: Advanced Timeline | Help | Stats | About) │
+│ Header (black bg, right: Lang | Help | Stats | About) Language selector!   │
 │ 🔺 Red Triangle Background (Palestinian flag theme)                         │
 ├──────────┬─────────────────────────────────────────────────────────────────┤
 │ Table    │ FilterBar (black border, search + color key)                    │
@@ -109,12 +109,17 @@ src/
 │   │   └── VirtualizedTableBody.tsx  # Virtual scrolling (prepared, disabled)
 │   ├── FilterBar/FilterBar.tsx       # Deferred filter application
 │   ├── Button/Button.tsx             # Reusable button component
-│   ├── Layout/AppHeader.tsx          # Header with navigation
+│   ├── Layout/AppHeader.tsx          # Header with navigation + language selector
+│   ├── LanguageSelector/             # NEW: Language dropdown
+│   │   └── LanguageSelector.tsx      # Shows all registered locales
 │   └── LazySection.tsx               # Intersection Observer wrapper
 ├── contexts/
 │   ├── AnimationContext.tsx          # Global timeline state (main page)
 │   ├── WaybackContext.tsx            # Wayback playback state
-│   └── ThemeContext.tsx              # Dark mode + system preference detection
+│   ├── ThemeContext.tsx              # Dark mode + system preference detection
+│   └── LocaleContext.tsx             # NEW: i18n state (locale, direction, translations)
+├── config/
+│   └── locales.ts                    # NEW: Locale registry (22nd registry!)
 ├── services/
 │   └── waybackService.ts             # ESRI Wayback API integration
 ├── constants/map.ts                  # GAZA_CENTER, HISTORICAL_IMAGERY
@@ -180,6 +185,98 @@ function MyComponent() {
 - `darkMode.test.tsx` - Component dark mode rendering (19 tests)
 - `darkModeAutomated.test.tsx` - Automated validation (scans codebase for `dark:` modifiers)
 - `ThemeContext.test.tsx` - System preference detection (6 tests)
+
+### Internationalization (i18n) System
+
+**LocaleContext** - React Context-based i18n with dynamic locale registry:
+
+```typescript
+// contexts/LocaleContext.tsx
+export function LocaleProvider({ children }: LocaleProviderProps) {
+  // Priority: localStorage → browser language → default (English)
+  const [locale, setLocaleState] = useState<LocaleCode>(() => {
+    const stored = localStorage.getItem("heritage-tracker-locale");
+    if (stored === "en" || stored === "ar") return stored;
+
+    const browserLang = navigator.language.toLowerCase();
+    if (browserLang.startsWith("ar")) return "ar";
+
+    return getDefaultLocale().code;
+  });
+
+  // Update document direction for RTL support
+  useEffect(() => {
+    document.documentElement.lang = localeConfig.bcp47;
+    document.documentElement.dir = localeConfig.direction; // "ltr" or "rtl"
+  }, [locale, localeConfig]);
+}
+```
+
+**Locale Registry** - 22nd registry system with CRUD operations:
+
+```typescript
+// config/locales.ts
+registerLocale({
+  code: "ar",
+  name: "Arabic",
+  nativeName: "العربية",
+  bcp47: "ar",
+  direction: "rtl"
+});
+
+// Query helpers
+getAllLocales();                    // Get all registered locales
+getLocale("ar");                    // Get specific locale config
+getLocaleName("ar", true);          // Get native name: "العربية"
+getLocalesByDirection("rtl");       // Filter by direction
+isRTLLocale("ar");                  // Check if RTL: true
+```
+
+**LanguageSelector Component** - Dynamic dropdown showing all locales:
+
+```tsx
+import { LanguageSelector } from "../components/LanguageSelector";
+
+// In header
+<LanguageSelector />  // Shows all registered locales automatically
+```
+
+**RTL Layout Strategy:**
+
+- **Smart Selective RTL** - Only text content respects RTL, spatial/temporal controls stay LTR
+- **Stays LTR** (with `dir="ltr"` overrides):
+  - ✅ Headers (AppHeader, AdvancedAnimation)
+  - ✅ Main layout (DesktopLayout - table left, maps right)
+  - ✅ Timeline controls (Play/Pause/Reset - media convention)
+  - ✅ Previous/Next buttons (temporal direction is universal)
+  - ✅ Timeline axis (2014→2025 - left-to-right globally)
+- **Respects RTL** (with `dir="rtl"`):
+  - ✅ Map popup (SitePopup - full RTL with translated labels)
+  - ✅ Arabic text in cells (right-aligned)
+  - ✅ Future: Modal content, descriptions
+
+**Translation Pattern:**
+
+```tsx
+import { useLocale } from "../../contexts/LocaleContext";
+
+function MyComponent() {
+  const { getLabel, localeConfig } = useLocale();
+  const isRTL = localeConfig.direction === "rtl";
+
+  return (
+    <div dir={localeConfig.direction}>
+      <span>{getLabel("Type:", "النوع:")}</span>
+    </div>
+  );
+}
+```
+
+**Testing:**
+
+- `locales.test.ts` - Locale registry CRUD (56 tests)
+- `LocaleContext.test.tsx` - Provider and hooks (14 tests)
+- All tests include LocaleProvider via `renderWithTheme` utility
 
 ### Historical Satellite Imagery
 
@@ -627,7 +724,23 @@ import { SITE_TYPES } from "../config/siteTypes";
 
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feat/sprint2-extensibility - Current Branch):**
+**Completed (feat/backendPrepContd - Current Branch):**
+
+- [x] **i18n Architecture Complete (Issue #3)** ✅ (Oct 24)
+  - **Purpose**: Full internationalization infrastructure with dynamic locale registry
+  - **Components**:
+    - Locale Registry (22nd registry!) with CRUD operations (56 tests)
+    - LocaleContext with localStorage + browser detection
+    - LanguageSelector dropdown component (dynamic, extensible)
+    - RTL layout support with smart selective overrides
+    - Arabic translations for map popup labels
+  - **RTL Strategy**: Selective `dir="ltr"` on temporal/spatial controls, `dir="rtl"` on text content
+  - **Testing**: +34 new tests (1379 → 1413 total, 70 i18n tests)
+  - **Key commits**: 921f5ab, 2128ad3, b2ba124, 26e1546
+  - **Key files**: LanguageSelector.tsx, LocaleContext.tsx, locales.ts, SitePopup.tsx
+  - **Benefits**: Adding new languages requires zero code changes (just registry)
+
+**Completed (feat/sprint2-extensibility - Merged):**
 
 - [x] **Sprint 4: Remaining Small Issues** ✅ (Oct 24)
   - **Purpose**: Complete 6 remaining quick-win extensibility issues
@@ -859,14 +972,16 @@ import { SITE_TYPES } from "../config/siteTypes";
 
 **Future:**
 
+- [ ] Translate modal content (Help, Stats, About, Donate)
+- [ ] Translate table headers and UI buttons
+- [ ] Add more languages (French, Spanish, Hebrew, etc.)
 - [ ] Advanced Animation mobile optimization
 - [ ] Resume timeline animations (Phase 3+) on main page
 - [ ] All 110+ UNESCO-verified sites
 - [ ] Database integration (Supabase)
-- [ ] Full Arabic translation
 
 ---
 
 **Last Updated:** October 24, 2025
-**Version:** 1.16.0-dev
-**Branch:** feat/sprint2-extensibility (Sprint 4 complete - 22/27 registry systems - 81.5%) | main (production)
+**Version:** 1.17.0-dev
+**Branch:** feat/backendPrepContd (i18n complete - 22 registries - 1413 tests) | main (production)
