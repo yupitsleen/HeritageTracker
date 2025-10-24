@@ -1,0 +1,104 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - 'feat/**'
+      - 'fix/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run all tests
+        run: npm test
+
+      - name: Run mobile smoke test
+        run: npm test -- App.mobile.test.tsx
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Analyze bundle size
+        id: bundle
+        run: |
+          echo "## 📦 Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "Total dist size:" >> $GITHUB_STEP_SUMMARY
+          du -sh dist/ >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "JavaScript bundles:" >> $GITHUB_STEP_SUMMARY
+          ls -lh dist/assets/*.js | awk '{print $5 "\t" $9}' >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+          # Calculate total size
+          BUNDLE_SIZE=$(du -sb dist/ | awk '{print $1}')
+          BUNDLE_SIZE_MB=$(echo "scale=2; $BUNDLE_SIZE / 1024 / 1024" | bc)
+          echo "bundle_size=$BUNDLE_SIZE" >> $GITHUB_OUTPUT
+          echo "bundle_size_mb=$BUNDLE_SIZE_MB" >> $GITHUB_OUTPUT
+
+      - name: Check bundle size limit
+        run: |
+          BUNDLE_SIZE=${{ steps.bundle.outputs.bundle_size }}
+          MAX_SIZE=$((1024 * 1024))  # 1MB limit
+
+          if [ $BUNDLE_SIZE -gt $MAX_SIZE ]; then
+            echo "❌ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) exceeds limit (1MB)"
+            echo "::error::Bundle size exceeds 1MB limit"
+            exit 1
+          else
+            echo "✅ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) is within limit (1MB)"
+          fi
+
+      - name: Comment PR with results
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync(process.env.GITHUB_STEP_SUMMARY, 'utf8');
+
+            const comment = `## ✅ PR Checks Complete
+
+            **Build Status:** ${{ job.status }}
+            **Bundle Size:** ${{ steps.bundle.outputs.bundle_size_mb }}MB
+
+            ${summary}
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: production-build
+          path: ./dist
+          retention-days: 7
