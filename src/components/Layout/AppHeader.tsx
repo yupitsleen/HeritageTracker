@@ -1,9 +1,11 @@
 import { components, cn } from "../../styles/theme";
 import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useTranslation } from "../../contexts/LocaleContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
 import { IconButton } from "../Button/IconButton";
+import { LanguageSelector } from "../LanguageSelector";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
 
 interface AppHeaderProps {
@@ -20,6 +22,7 @@ interface AppHeaderProps {
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
+  const t = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,13 +31,14 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
   return (
     <div className={`sticky top-0 z-[10] transition-colors duration-200 ${
       isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
-    }`}>
+    }`} dir="ltr">
       {/* Header - BLACK background, ultra compact */}
+      {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
           {/* Left: Title */}
           <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-            Heritage Tracker
+            {t("header.title")}
           </h1>
 
           {/* Center: Main action buttons - desktop only */}
@@ -46,10 +50,10 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
                 variant="secondary"
                 size="xs"
                 lightText
-                aria-label="Open Advanced Animation Timeline"
-                title="View historical satellite imagery timeline with destruction events"
+                aria-label={t("header.advancedTimeline")}
+                title={t("header.advancedTimeline")}
               >
-                Advanced Timeline
+                {t("header.advancedTimeline")}
               </Button>
             )}
 
@@ -58,27 +62,27 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               variant="danger"
               size="xs"
               lightText
-              aria-label="Help Palestine - Donate to relief efforts"
+              aria-label={t("header.helpPalestine")}
             >
-              Help Palestine
+              {t("header.helpPalestine")}
             </Button>
             <Button
               onClick={onOpenStats}
               variant="primary"
               size="xs"
               lightText
-              aria-label="View Statistics"
+              aria-label={t("header.statistics")}
             >
-              Statistics
+              {t("header.statistics")}
             </Button>
             <Button
               onClick={onOpenAbout}
               variant="primary"
               size="xs"
               lightText
-              aria-label="About Heritage Tracker"
+              aria-label={t("header.about")}
             >
-              About
+              {t("header.about")}
             </Button>
           </div>
 
@@ -89,17 +93,20 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               <IconButton
                 icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
                 onClick={onOpenHelp}
-                ariaLabel="How to use this page"
-                title="How to use this page"
+                ariaLabel={t("common.help")}
+                title={t("common.help")}
               />
             )}
+
+            {/* Language Selector - Dropdown showing all registered locales */}
+            <LanguageSelector />
 
             {/* Dark Mode Toggle - Discrete icon button */}
             <IconButton
               icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
               onClick={toggleTheme}
-              ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              ariaLabel={isDark ? t("common.settings") : t("common.settings")}
+              title={isDark ? t("common.settings") : t("common.settings")}
             />
           </div>
         </div>

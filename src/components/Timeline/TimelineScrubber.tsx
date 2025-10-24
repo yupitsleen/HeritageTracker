@@ -9,6 +9,7 @@ import {
 import type { GazaSite } from "../../types";
 import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 import { Input } from "../Form/Input";
@@ -93,6 +94,7 @@ export function TimelineScrubber({
   } = useAnimation();
 
   const t = useThemeClasses();
+  const translate = useTranslation();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
@@ -305,7 +307,8 @@ export function TimelineScrubber({
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center mb-2 gap-2 flex-wrap relative">
+      {/* dir="ltr" keeps media controls left-to-right regardless of language */}
+      <div className="flex items-center mb-2 gap-2 flex-wrap relative" dir="ltr">
         {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
         <div className="flex items-center gap-1.5">
           {!advancedMode && (
@@ -316,9 +319,9 @@ export function TimelineScrubber({
                   variant="primary"
                   size="xs"
                   icon={<PlayIcon className="w-3 h-3" />}
-                  aria-label="Play timeline animation"
+                  aria-label={translate("timeline.play")}
                 >
-                  Play
+                  {translate("timeline.play")}
                 </Button>
               ) : (
                 <Button
@@ -326,9 +329,9 @@ export function TimelineScrubber({
                   variant="danger"
                   size="xs"
                   icon={<PauseIcon className="w-3 h-3" />}
-                  aria-label="Pause timeline animation"
+                  aria-label={translate("timeline.pause")}
                 >
-                  Pause
+                  {translate("timeline.pause")}
                 </Button>
               )}
             </>
@@ -340,9 +343,9 @@ export function TimelineScrubber({
             variant="secondary"
             size="xs"
             icon={<ArrowPathIcon className="w-3 h-3" />}
-            aria-label="Reset timeline to start"
+            aria-label={translate("common.reset")}
           >
-            Reset
+            {translate("common.reset")}
           </Button>
 
           {/* Sync Map toggle button - only show in advanced mode */}
@@ -352,12 +355,10 @@ export function TimelineScrubber({
               variant="secondary"
               active={advancedMode.syncMapOnDotClick}
               size="xs"
-              aria-label={
-                advancedMode.syncMapOnDotClick ? "Disable sync on dot click" : "Enable sync on dot click"
-              }
-              title="When enabled, clicking timeline dots syncs satellite imagery to show the site before destruction"
+              aria-label={translate("timeline.syncMap")}
+              title={translate("timeline.syncMap")}
             >
-              {advancedMode.syncMapOnDotClick ? "✓" : ""} Sync map version
+              {advancedMode.syncMapOnDotClick ? "✓" : ""} {translate("timeline.syncMap")}
             </Button>
           )}
 
@@ -367,17 +368,17 @@ export function TimelineScrubber({
             variant="secondary"
             active={zoomToSiteEnabled}
             size="xs"
-            aria-label={zoomToSiteEnabled ? "Disable zoom to site" : "Enable zoom to site"}
-            title="When enabled, map zooms in when a site is highlighted. When disabled, only the marker is shown without zooming"
+            aria-label={translate("timeline.zoomToSite")}
+            title={translate("timeline.zoomToSite")}
           >
-            {zoomToSiteEnabled ? "✓" : ""} Zoom to Site
+            {zoomToSiteEnabled ? "✓" : ""} {translate("timeline.zoomToSite")}
           </Button>
 
           {!advancedMode && (
             /* Speed control - hidden in advanced mode */
             <div className="flex items-center gap-1.5">
               <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
-                Speed:
+                {translate("timeline.speed")}:
               </label>
               <select
                 id="speed-control"
@@ -397,27 +398,28 @@ export function TimelineScrubber({
         </div>
 
         {/* Center: Previous/Next navigation (Advanced Timeline only) */}
+        {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
         {advancedMode && (
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5" dir="ltr">
             <Button
               onClick={goToPreviousEvent}
               disabled={!canGoPrevious}
               variant="secondary"
               size="xs"
-              aria-label="Go to previous destruction event"
-              title="Navigate to previous site destruction event"
+              aria-label={translate("timeline.previousAriaLabel")}
+              title={translate("timeline.previousTitle")}
             >
-              ⏮ Previous
+              ⏮ {translate("timeline.previous")}
             </Button>
             <Button
               onClick={goToNextEvent}
               disabled={!canGoNext}
               variant="secondary"
               size="xs"
-              aria-label="Go to next destruction event"
-              title="Navigate to next site destruction event"
+              aria-label={translate("timeline.nextAriaLabel")}
+              title={translate("timeline.nextTitle")}
             >
-              Next ⏭
+              {translate("timeline.next")} ⏭
             </Button>
           </div>
         )}
@@ -425,7 +427,7 @@ export function TimelineScrubber({
         {/* Right: Date Filter */}
         <div className="flex items-center gap-1.5 ml-auto">
           <label className={`text-[10px] font-semibold ${t.text.heading}`}>
-            Date:
+            {translate("timeline.dateFilter")}:
           </label>
           <Input
             variant="date"
@@ -433,17 +435,17 @@ export function TimelineScrubber({
             onChange={(e) => {
               onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
             }}
-            placeholder="From"
+            placeholder={translate("timeline.from")}
             className="flex-none w-28 text-[10px] py-0.5 px-1.5"
           />
-          <span className={`text-[10px] font-medium ${t.text.body}`}>to</span>
+          <span className={`text-[10px] font-medium ${t.text.body}`}>{translate("timeline.to")}</span>
           <Input
             variant="date"
             value={(destructionDateEnd || defaultEndDate).toISOString().split("T")[0]}
             onChange={(e) => {
               onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
             }}
-            placeholder="To"
+            placeholder={translate("timeline.to")}
             className="flex-none w-28 text-[10px] py-0.5 px-1.5"
           />
 
@@ -458,10 +460,10 @@ export function TimelineScrubber({
                 ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
                 : t.timeline.clearFilterInvisible
             }`}
-            aria-label="Clear date filter"
+            aria-label={translate("timeline.clearFilter")}
             disabled={!destructionDateStart && !destructionDateEnd}
           >
-            Clear
+            {translate("timeline.clear")}
           </button>
         </div>
       </div>
@@ -504,11 +506,11 @@ export function TimelineScrubber({
 
       {/* Keyboard shortcuts hint */}
       <div className={`mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
-        Keyboard: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> Play/Pause
+        {translate("timeline.keyboard")}: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> {translate("timeline.playPause")}
         {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> Step
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> {translate("timeline.step")}
         {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> Jump
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> {translate("timeline.jump")}
       </div>
     </div>
   );

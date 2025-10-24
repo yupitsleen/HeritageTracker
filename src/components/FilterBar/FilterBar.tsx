@@ -8,6 +8,7 @@ import { DateRangeFilter } from "./DateRangeFilter";
 import { YearRangeFilter } from "./YearRangeFilter";
 import { Input } from "../Form/Input";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 interface FilterBarProps {
   selectedTypes: Array<GazaSite["type"]>;
@@ -76,6 +77,7 @@ export function FilterBar({
   sites = [],
 }: FilterBarProps) {
   const t = useThemeClasses();
+  const translate = useTranslation();
 
   // Calculate default date range from all sites' destruction dates
   const { defaultStartDate, defaultEndDate } = useMemo(() => {
@@ -138,14 +140,14 @@ export function FilterBar({
             type="text"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search"
+            placeholder={translate("filters.search")}
             className="w-full pr-8 text-xs py-1 px-2 text-black placeholder:text-gray-400"
           />
           {searchTerm.trim().length > 0 && (
             <button
               onClick={() => onSearchChange("")}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Clear search"
+              aria-label={translate("filters.clearSearch")}
             >
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -166,9 +168,9 @@ export function FilterBar({
         <div className="space-y-4">
           {/* Type Filter */}
           <div>
-            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>Site Type</label>
+            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>{translate("filters.siteType")}</label>
             <MultiSelectDropdown
-              label="Select types..."
+              label={translate("filters.selectTypes")}
               options={SITE_TYPES}
               selectedValues={selectedTypes}
               onChange={onTypeChange}
@@ -178,7 +180,7 @@ export function FilterBar({
 
           {/* Destruction Date Range */}
           <DateRangeFilter
-            label="Destruction Date"
+            label={translate("filters.destructionDate")}
             startDate={destructionDateStart}
             endDate={destructionDateEnd}
             onStartChange={onDestructionDateStartChange}
@@ -192,9 +194,9 @@ export function FilterBar({
         <div className="space-y-4">
           {/* Status Filter */}
           <div>
-            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>Status</label>
+            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>{translate("filters.status")}</label>
             <MultiSelectDropdown
-              label="Select status..."
+              label={translate("filters.selectStatus")}
               options={STATUS_OPTIONS}
               selectedValues={selectedStatuses}
               onChange={onStatusChange}
@@ -204,7 +206,7 @@ export function FilterBar({
 
           {/* Creation Year Range */}
           <YearRangeFilter
-            label="Year Built"
+            label={translate("filters.yearBuilt")}
             onStartChange={onCreationYearStartChange}
             onEndChange={onCreationYearEndChange}
             supportBCE={true}

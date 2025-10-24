@@ -116,7 +116,8 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
   return (
     <div className={t.timeline.container}>
       {/* Header - Current date and position with step controls - centered */}
-      <div className="flex items-center justify-center gap-3 mb-2">
+      {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
+      <div className="flex items-center justify-center gap-3 mb-2" dir="ltr">
         {/* Previous button */}
         <Button
           onClick={handlePrevious}

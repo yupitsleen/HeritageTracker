@@ -1,12 +1,13 @@
 import { render } from "@testing-library/react";
 import type { RenderOptions } from "@testing-library/react";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { LocaleProvider } from "../contexts/LocaleContext";
 
 /**
- * Custom render function that wraps components with ThemeProvider
+ * Custom render function that wraps components with ThemeProvider and LocaleProvider
  *
  * This utility eliminates the need to manually wrap components with
- * ThemeProvider in every test file that uses useTheme() hook.
+ * providers in every test file that uses useTheme() or useLocale() hooks.
  *
  * @example
  * ```tsx
@@ -27,7 +28,11 @@ export function renderWithTheme(
   options?: Omit<RenderOptions, "wrapper">
 ) {
   return render(ui, {
-    wrapper: ({ children }) => <ThemeProvider>{children}</ThemeProvider>,
+    wrapper: ({ children }) => (
+      <LocaleProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+      </LocaleProvider>
+    ),
     ...options,
   });
 }

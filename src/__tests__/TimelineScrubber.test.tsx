@@ -303,9 +303,9 @@ describe("TimelineScrubber", () => {
         </AnimationProvider>
       );
 
-      const zoomButton = container.querySelector('[title*="zoom"]');
+      const zoomButton = container.querySelector('[aria-label="Zoom to Site"]');
       expect(zoomButton).toBeInTheDocument();
-      expect(zoomButton?.getAttribute("title")).toContain("map");
+      expect(zoomButton?.getAttribute("title")).toBe("Zoom to Site");
     });
   });
 
@@ -323,8 +323,8 @@ describe("TimelineScrubber", () => {
         </AnimationProvider>
       );
 
-      // Should show "Sync map version" button in advanced mode
-      const syncButton = getByText(/Sync map version/i);
+      // Should show "Sync Map" button in advanced mode
+      const syncButton = getByText(/Sync Map/i);
       expect(syncButton).toBeInTheDocument();
     });
 
@@ -335,8 +335,8 @@ describe("TimelineScrubber", () => {
         </AnimationProvider>
       );
 
-      // Should NOT show "Sync map version" button in normal mode
-      expect(queryByText(/Sync map version/i)).not.toBeInTheDocument();
+      // Should NOT show "Sync Map" button in normal mode
+      expect(queryByText(/Sync Map/i)).not.toBeInTheDocument();
     });
 
     it("has proper ARIA label for Sync map version button in advanced mode", () => {

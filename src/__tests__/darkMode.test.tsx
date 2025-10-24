@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { LocaleProvider } from "../contexts/LocaleContext";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import { mockSites } from "../data/mockSites";
@@ -38,13 +39,15 @@ function renderWithProviders(ui: React.ReactElement, theme: "light" | "dark" = "
 
   return render(
     <BrowserRouter>
-      <ThemeProvider>
-        <CalendarProvider>
-          <AnimationProvider sites={mockSites}>
-            {ui}
-          </AnimationProvider>
-        </CalendarProvider>
-      </ThemeProvider>
+      <LocaleProvider>
+        <ThemeProvider>
+          <CalendarProvider>
+            <AnimationProvider sites={mockSites}>
+              {ui}
+            </AnimationProvider>
+          </CalendarProvider>
+        </ThemeProvider>
+      </LocaleProvider>
     </BrowserRouter>
   );
 }

@@ -3,10 +3,16 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TimeToggle } from "./TimeToggle";
 import { AnimationProvider } from "../../contexts/AnimationContext";
+import { LocaleProvider } from "../../contexts/LocaleContext";
+import { ThemeProvider } from "../../contexts/ThemeContext";
 
-// Wrapper component to provide AnimationContext
+// Wrapper component to provide AnimationContext, LocaleContext, and ThemeContext
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <AnimationProvider>{children}</AnimationProvider>
+  <LocaleProvider>
+    <ThemeProvider>
+      <AnimationProvider>{children}</AnimationProvider>
+    </ThemeProvider>
+  </LocaleProvider>
 );
 
 describe("TimeToggle", () => {

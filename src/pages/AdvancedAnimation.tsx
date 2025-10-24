@@ -5,6 +5,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Button } from "../components/Button";
 import { IconButton } from "../components/Button/IconButton";
+import { LanguageSelector } from "../components/LanguageSelector";
 import { Modal } from "../components/Modal/Modal";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { mockSites } from "../data/mockSites";
@@ -179,7 +180,9 @@ export function AdvancedAnimation() {
         className={`sticky top-0 z-[10] transition-colors duration-200 ${
           isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
         }`}
+        dir="ltr"
       >
+        {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
         <div className="max-w-full px-4 py-2 relative">
           {/* Left: Back button */}
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
@@ -200,7 +203,7 @@ export function AdvancedAnimation() {
             Advanced Satellite Timeline
           </h1>
 
-          {/* Right: Help + Dark mode toggle + Info */}
+          {/* Right: Help + Language + Dark mode toggle + Info */}
           <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
             {/* Help Button */}
             <IconButton
@@ -209,6 +212,9 @@ export function AdvancedAnimation() {
               ariaLabel="How to use this page"
               title="How to use this page"
             />
+
+            {/* Language Selector - Dropdown showing all registered locales */}
+            <LanguageSelector />
 
             {/* Dark Mode Toggle */}
             <IconButton

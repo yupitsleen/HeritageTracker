@@ -4,6 +4,7 @@ import { mockSites } from "./data/mockSites";
 import { CalendarProvider } from "./contexts/CalendarContext";
 import { AnimationProvider } from "./contexts/AnimationContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LocaleProvider } from "./contexts/LocaleContext";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { HomePage } from "./pages/HomePage";
 import { AdvancedAnimation } from "./pages/AdvancedAnimation";
@@ -45,21 +46,23 @@ function App() {
 
   return (
     <BrowserRouter basename="/HeritageTracker">
-      <ThemeProvider>
-        <CalendarProvider>
-          <ErrorBoundary>
-            {isMobile ? (
-              // Mobile: No AnimationProvider (timeline not shown)
-              <AppRouter isMobile={true} />
-            ) : (
-              // Desktop: AnimationProvider for timeline features
-              <AnimationProvider sites={mockSites}>
-                <AppRouter isMobile={false} />
-              </AnimationProvider>
-            )}
-          </ErrorBoundary>
-        </CalendarProvider>
-      </ThemeProvider>
+      <LocaleProvider>
+        <ThemeProvider>
+          <CalendarProvider>
+            <ErrorBoundary>
+              {isMobile ? (
+                // Mobile: No AnimationProvider (timeline not shown)
+                <AppRouter isMobile={true} />
+              ) : (
+                // Desktop: AnimationProvider for timeline features
+                <AnimationProvider sites={mockSites}>
+                  <AppRouter isMobile={false} />
+                </AnimationProvider>
+              )}
+            </ErrorBoundary>
+          </CalendarProvider>
+        </ThemeProvider>
+      </LocaleProvider>
     </BrowserRouter>
   );
 }
