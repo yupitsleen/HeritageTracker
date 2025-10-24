@@ -20,7 +20,9 @@
  */
 
 import type {
-  ImageryPeriodConfig, // eslint-disable-line @typescript-eslint/no-unused-vars
+  // @ts-expect-error - Used in JSDoc comments
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ImageryPeriodConfig,
   ImageryPeriodId,
   ExtendedImageryPeriodConfig,
   ImageryPeriodCategory,

@@ -310,6 +310,9 @@ export function getCategoryClasses<
   const config = id
     ? getComponentClassConfig(id)
     : getDefaultComponentClassConfig();
+  if (!config) {
+    throw new Error(`Component class config not found: ${id}`);
+  }
   return config[category];
 }
 
