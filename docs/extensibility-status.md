@@ -4,6 +4,7 @@
 **Current Branch:** feat/sprint2-extensibility
 **Total Tests:** 1379 (up from 848 at start)
 **Overall Progress:** 22 of 27 issues complete (81.5%)
+**Registry Systems:** 21 complete registries
 
 ---
 
@@ -218,8 +219,8 @@
 - Increase: **+531 tests (+62.6%)**
 
 **Code Organization:**
-- 22+ registry systems implemented
-- All with comprehensive test coverage (average 38 tests per registry)
+- 21 registry systems implemented
+- All with comprehensive test coverage (average 45 tests per registry)
 - Full TypeScript type safety
 - Backward compatibility maintained
 - Arabic label support throughout
@@ -279,29 +280,29 @@
 
 ### What We Built
 
-**22 Complete Registry Systems:**
+**21 Complete Registry Systems:**
+
 1. Site Type Registry
-2. Status Registry
-3. Export Format System
+2. Site Status Registry
+3. Export Format Registry
 4. Source Type Registry
 5. Verifier Registry
-6. Filter Extensibility
-7. CSV Column Customization
+6. Filter Registry
+7. CSV Column Registry
 8. Tile Layer Registry
-9. Imagery Period System
+9. Imagery Period Registry
 10. Map Viewport Registry (Gaza Center + Zoom)
 11. Color Theme Registry
-12. Glow Formula Config
-13. Wayback Timeline Config
-14. Animation Speed Config
-15. Timeline Date Config
-16. Marker Icon CDN
-17. Marker Responsive Config
+12. Glow Formula Registry
+13. Wayback Timeline Registry
+14. Animation Speed Registry
+15. Timeline Date Registry
+16. Marker Icon Registry
+17. Marker Size Registry (Responsive)
 18. Table Variants Registry
-19. Frame Rate Config
-20. Component Class Names
-21. Enhanced Date Parsing
-22. Date Locale Support
+19. Frame Rate Registry
+20. Component Class Registry
+21. Date Locale Registry
 
 **Every registry includes:**
 - TypeScript type definitions
@@ -327,4 +328,4 @@
 
 ---
 
-**Summary:** We've achieved **81.5% completion** (22/27 issues) with **1379 tests** (up from 848). Only i18n Architecture remains as a major effort. All core backend, map, timeline, and UI extensibility is complete and production-ready!
+**Summary:** We've achieved **81.5% completion** (22/27 issues) with **21 registry systems** and **1379 tests** (up from 848). Only i18n Architecture remains as a major effort. All core backend, map, timeline, and UI extensibility is complete and production-ready!
