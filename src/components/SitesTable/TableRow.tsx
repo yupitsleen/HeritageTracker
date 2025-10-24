@@ -13,7 +13,7 @@ interface TableRowProps {
   visibleColumns: Set<string>;
   onSiteClick: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
-  rowRef?: React.RefObject<HTMLTableRowElement>;
+  rowRef?: React.RefObject<HTMLTableRowElement | null>;
 }
 
 /**

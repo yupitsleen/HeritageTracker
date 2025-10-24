@@ -1,13 +1,7 @@
 import { Button } from "../Button";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
-import type { ExportFormatId } from "../../types/export";
-
-interface ExportConfig {
-  id: ExportFormatId;
-  label: string;
-  icon: string;
-}
+import type { ExportFormatId, ExportConfig } from "../../types/export";
 
 interface ExportControlsProps {
   selectedFormat: ExportFormatId;
