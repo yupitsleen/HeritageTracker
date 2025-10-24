@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Z_INDEX } from "../../constants/layout";
 
 interface MultiSelectDropdownProps<T extends string> {
   label: string;
@@ -76,10 +77,11 @@ export function MultiSelectDropdown<T extends string>({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className={`fixed z-[9999] mt-1 w-44 border rounded-md shadow-lg max-h-48 overflow-y-auto ${t.bg.primary} ${t.border.subtle}`}
+        <div className={`fixed mt-1 w-44 border rounded-md shadow-lg max-h-48 overflow-y-auto ${t.bg.primary} ${t.border.subtle}`}
           style={{
             top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 4 : 0,
             left: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().left : 0,
+            zIndex: Z_INDEX.DROPDOWN,
           }}
         >
           <ul className="py-0.5" role="listbox">

@@ -3,6 +3,59 @@
  */
 
 /**
+ * Responsive breakpoint thresholds (in pixels)
+ *
+ * Used for determining mobile/tablet/desktop layouts.
+ * Matches Tailwind's default breakpoints (md: 768px, lg: 1024px).
+ *
+ * @example
+ * ```typescript
+ * const isMobile = window.innerWidth < BREAKPOINTS.MOBILE;
+ * const isTablet = window.innerWidth >= BREAKPOINTS.MOBILE && window.innerWidth < BREAKPOINTS.TABLET;
+ * const isDesktop = window.innerWidth >= BREAKPOINTS.TABLET;
+ * ```
+ */
+export const BREAKPOINTS = {
+  /** Mobile breakpoint: width < 768px (matches Tailwind 'md') */
+  MOBILE: 768,
+  /** Tablet breakpoint: 768px ≤ width < 1024px (matches Tailwind 'lg') */
+  TABLET: 1024,
+  /** Desktop breakpoint: width ≥ 1024px */
+  DESKTOP: 1024,
+} as const;
+
+/**
+ * Z-index layers for consistent stacking order
+ *
+ * Higher values appear above lower values.
+ * Use these constants instead of arbitrary z-index values.
+ *
+ * @example
+ * ```typescript
+ * <div style={{ zIndex: Z_INDEX.MODAL }}>Modal content</div>
+ * <div style={{ zIndex: Z_INDEX.DROPDOWN }}>Dropdown menu</div>
+ * ```
+ */
+export const Z_INDEX = {
+  /** Base layer (z-index: 0) */
+  BASE: 0,
+  /** Content layer (z-index: 1) */
+  CONTENT: 1,
+  /** Sticky elements like headers (z-index: 100) */
+  STICKY: 100,
+  /** Dropdown menus and popovers (z-index: 1000) */
+  DROPDOWN: 1000,
+  /** Tooltips (z-index: 1010) */
+  TOOLTIP: 1010,
+  /** Fixed elements like sidebars (z-index: 1020) */
+  FIXED: 1020,
+  /** Modal overlays and dialogs (z-index: 9999) */
+  MODAL: 9999,
+  /** Critical notifications (z-index: 10000) */
+  NOTIFICATION: 10000,
+} as const;
+
+/**
  * Table configuration
  */
 export const TABLE_CONFIG = {
