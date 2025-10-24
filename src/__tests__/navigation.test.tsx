@@ -55,7 +55,7 @@ describe("Navigation", () => {
         </MemoryRouter>
       );
 
-      const advancedButton = screen.getByRole("button", { name: "Open Advanced Animation Timeline" });
+      const advancedButton = screen.getByRole("button", { name: "Advanced Timeline" });
       expect(advancedButton).toBeInTheDocument();
       expect(advancedButton).toHaveTextContent("Advanced Timeline");
     });
