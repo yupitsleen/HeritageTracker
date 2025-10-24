@@ -1,6 +1,5 @@
 import { Input } from "../Form/Input";
-import { Tooltip } from "../Tooltip";
-import { InfoIcon } from "../Icons";
+import { FilterLabel } from "./FilterLabel";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface DateRangeFilterProps {
@@ -33,14 +32,7 @@ export function DateRangeFilter({
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-2">
-        <label className={`text-sm font-semibold ${t.text.heading}`}>{label}</label>
-        {tooltip && (
-          <Tooltip content={tooltip}>
-            <InfoIcon className={`w-4 h-4 ${t.icon.default}`} aria-label="More information" />
-          </Tooltip>
-        )}
-      </div>
+      <FilterLabel label={label} tooltip={tooltip} />
       <div className="flex items-center gap-2">
         <Input
           variant="date"
