@@ -1,4 +1,4 @@
-import type { GazaSite } from "../../types";
+import type { GazaSite, FilterState } from "../../types";
 import { cn, components } from "../../styles/theme";
 import { FilterBar } from "../FilterBar/FilterBar";
 import { SitesTable } from "../SitesTable";
@@ -7,18 +7,8 @@ import { useTheme } from "../../contexts/ThemeContext";
 
 interface MobileLayoutProps {
   // Filter state
-  selectedTypes: Array<GazaSite["type"]>;
-  selectedStatuses: Array<GazaSite["status"]>;
-  destructionDateStart: Date | null;
-  destructionDateEnd: Date | null;
-  searchTerm: string;
-  onTypeChange: (types: Array<GazaSite["type"]>) => void;
-  onStatusChange: (statuses: Array<GazaSite["status"]>) => void;
-  onDestructionDateStartChange: (date: Date | null) => void;
-  onDestructionDateEndChange: (date: Date | null) => void;
-  onCreationYearStartChange: (year: number | null) => void;
-  onCreationYearEndChange: (year: number | null) => void;
-  onSearchChange: (term: string) => void;
+  filters: FilterState;
+  onFilterChange: (updates: Partial<FilterState>) => void;
 
   // Table props
   filteredSites: GazaSite[];
@@ -32,18 +22,8 @@ interface MobileLayoutProps {
  * Map and timeline not rendered on mobile
  */
 export function MobileLayout({
-  selectedTypes,
-  selectedStatuses,
-  destructionDateStart,
-  destructionDateEnd,
-  searchTerm,
-  onTypeChange,
-  onStatusChange,
-  onDestructionDateStartChange,
-  onDestructionDateEndChange,
-  onCreationYearStartChange,
-  onCreationYearEndChange,
-  onSearchChange,
+  filters,
+  onFilterChange,
   filteredSites,
   onSiteClick,
   onSiteHighlight,
@@ -74,18 +54,8 @@ export function MobileLayout({
         </button>
 
         <FilterBar
-          selectedTypes={selectedTypes}
-          selectedStatuses={selectedStatuses}
-          destructionDateStart={destructionDateStart}
-          destructionDateEnd={destructionDateEnd}
-          searchTerm={searchTerm}
-          onTypeChange={onTypeChange}
-          onStatusChange={onStatusChange}
-          onDestructionDateStartChange={onDestructionDateStartChange}
-          onDestructionDateEndChange={onDestructionDateEndChange}
-          onCreationYearStartChange={onCreationYearStartChange}
-          onCreationYearEndChange={onCreationYearEndChange}
-          onSearchChange={onSearchChange}
+          filters={filters}
+          onFilterChange={onFilterChange}
         />
       </div>
 

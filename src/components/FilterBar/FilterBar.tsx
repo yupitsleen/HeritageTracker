@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { GazaSite } from "../../types";
+import type { GazaSite, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
 import { parseYearBuilt } from "../../utils/siteFilters";
@@ -11,19 +11,9 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 
 interface FilterBarProps {
-  selectedTypes: Array<GazaSite["type"]>;
-  selectedStatuses: Array<GazaSite["status"]>;
-  destructionDateStart: Date | null;
-  destructionDateEnd: Date | null;
-  searchTerm: string;
-  onTypeChange: (types: Array<GazaSite["type"]>) => void;
-  onStatusChange: (statuses: Array<GazaSite["status"]>) => void;
-  onDestructionDateStartChange: (date: Date | null) => void;
-  onDestructionDateEndChange: (date: Date | null) => void;
-  onCreationYearStartChange: (year: number | null) => void;
-  onCreationYearEndChange: (year: number | null) => void;
-  onSearchChange: (term: string) => void;
-  sites?: GazaSite[]; // Optional for calculating default dates
+  filters: FilterState;
+  onFilterChange: (updates: Partial<FilterState>) => void;
+  sites?: GazaSite[];
 }
 
 /**
@@ -62,18 +52,8 @@ interface FilterBarProps {
  * See src/config/filters.ts for filter registry documentation.
  */
 export function FilterBar({
-  selectedTypes,
-  selectedStatuses,
-  destructionDateStart,
-  destructionDateEnd,
-  searchTerm,
-  onTypeChange,
-  onStatusChange,
-  onDestructionDateStartChange,
-  onDestructionDateEndChange,
-  onCreationYearStartChange,
-  onCreationYearEndChange,
-  onSearchChange,
+  filters,
+  onFilterChange,
   sites = [],
 }: FilterBarProps) {
   const t = useThemeClasses();
@@ -138,14 +118,14 @@ export function FilterBar({
         <div className="relative w-full">
           <Input
             type="text"
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={filters.searchTerm}
+            onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
             placeholder={translate("filters.search")}
             className="w-full pr-8 text-xs py-1 px-2 text-black placeholder:text-gray-400"
           />
-          {searchTerm.trim().length > 0 && (
+          {filters.searchTerm.trim().length > 0 && (
             <button
-              onClick={() => onSearchChange("")}
+              onClick={() => onFilterChange({ searchTerm: "" })}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label={translate("filters.clearSearch")}
             >
@@ -172,8 +152,8 @@ export function FilterBar({
             <MultiSelectDropdown
               label={translate("filters.selectTypes")}
               options={SITE_TYPES}
-              selectedValues={selectedTypes}
-              onChange={onTypeChange}
+              selectedValues={filters.selectedTypes}
+              onChange={(types) => onFilterChange({ selectedTypes: types })}
               formatLabel={formatLabel}
             />
           </div>
@@ -181,10 +161,10 @@ export function FilterBar({
           {/* Destruction Date Range */}
           <DateRangeFilter
             label={translate("filters.destructionDate")}
-            startDate={destructionDateStart}
-            endDate={destructionDateEnd}
-            onStartChange={onDestructionDateStartChange}
-            onEndChange={onDestructionDateEndChange}
+            startDate={filters.destructionDateStart}
+            endDate={filters.destructionDateEnd}
+            onStartChange={(date) => onFilterChange({ destructionDateStart: date })}
+            onEndChange={(date) => onFilterChange({ destructionDateEnd: date })}
             defaultStartDate={defaultStartDate}
             defaultEndDate={defaultEndDate}
           />
@@ -198,8 +178,8 @@ export function FilterBar({
             <MultiSelectDropdown
               label={translate("filters.selectStatus")}
               options={STATUS_OPTIONS}
-              selectedValues={selectedStatuses}
-              onChange={onStatusChange}
+              selectedValues={filters.selectedStatuses}
+              onChange={(statuses) => onFilterChange({ selectedStatuses: statuses })}
               formatLabel={formatLabel}
             />
           </div>
@@ -207,8 +187,8 @@ export function FilterBar({
           {/* Creation Year Range */}
           <YearRangeFilter
             label={translate("filters.yearBuilt")}
-            onStartChange={onCreationYearStartChange}
-            onEndChange={onCreationYearEndChange}
+            onStartChange={(year) => onFilterChange({ creationYearStart: year })}
+            onEndChange={(year) => onFilterChange({ creationYearEnd: year })}
             supportBCE={true}
             startYearDefault={defaultStartYear}
             endYearDefault={defaultEndYear}

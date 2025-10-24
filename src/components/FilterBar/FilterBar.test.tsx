@@ -2,10 +2,10 @@ import { describe, it, expect, vi } from "vitest";
 import { renderWithTheme, screen } from "../../test-utils/renderWithTheme";
 import { FilterBar } from "./FilterBar";
 import { CalendarProvider } from "../../contexts/CalendarContext";
-import type { GazaSite } from "../../types";
+import type { GazaSite, FilterState } from "../../types";
 
 describe("FilterBar", () => {
-  const mockProps = {
+  const mockFilters: FilterState = {
     selectedTypes: [],
     selectedStatuses: [],
     destructionDateStart: null,
@@ -13,13 +13,13 @@ describe("FilterBar", () => {
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
-    onTypeChange: vi.fn(),
-    onStatusChange: vi.fn(),
-    onDestructionDateStartChange: vi.fn(),
-    onDestructionDateEndChange: vi.fn(),
-    onCreationYearStartChange: vi.fn(),
-    onCreationYearEndChange: vi.fn(),
-    onSearchChange: vi.fn(),
+  };
+
+  const mockOnFilterChange = vi.fn();
+
+  const mockProps = {
+    filters: mockFilters,
+    onFilterChange: mockOnFilterChange,
   };
 
   it("renders without crashing", () => {
