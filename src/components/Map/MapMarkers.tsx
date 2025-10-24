@@ -1,7 +1,8 @@
 import { useMemo, memo } from "react";
 import { Marker, CircleMarker, Popup } from "react-leaflet";
 import type { GazaSite } from "../../types";
-import { createMarkerIcon, getMarkerColor } from "../../utils/mapHelpers";
+import { createMarkerIcon } from "../../utils/mapHelpers";
+import { getStatusHexColor } from "../../utils/colorHelpers";
 import { SitePopup } from "./SitePopup";
 
 interface MapMarkersProps {
@@ -11,12 +12,6 @@ interface MapMarkersProps {
   onSiteHighlight?: (siteId: string | null) => void;
   currentTimestamp?: Date;
 }
-
-const COLOR_MAP: Record<string, string> = {
-  red: "#ed3039",
-  orange: "#D97706",
-  yellow: "#CA8A04",
-};
 
 /**
  * MapMarkers - Renders heritage site markers on the map
@@ -55,7 +50,7 @@ export const MapMarkers = memo(function MapMarkers({
     <>
       {sites.map((site) => {
         const isHighlighted = site.id === highlightedSiteId;
-        const color = getMarkerColor(site.status);
+        const fillColor = getStatusHexColor(site.status);
         const destroyed = destroyedSiteIds.has(site.id);
 
         if (isHighlighted) {
@@ -83,7 +78,7 @@ export const MapMarkers = memo(function MapMarkers({
             center={site.coordinates}
             radius={destroyed ? 2 : 3} // Match timeline dot size (was 6, now 3)
             pathOptions={{
-              fillColor: destroyed ? "#000000" : COLOR_MAP[color],
+              fillColor: destroyed ? "#000000" : fillColor,
               fillOpacity: destroyed ? 1 : 0.8,
               color: "#000000",
               weight: 1,

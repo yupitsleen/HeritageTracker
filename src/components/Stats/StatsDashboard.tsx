@@ -4,6 +4,7 @@ import { useHeritageStats } from "../../hooks/useHeritageStats";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { LAST_UPDATED } from "../../constants/statistics";
+import { BREAKPOINTS } from "../../constants/layout";
 
 interface StatsDashboardProps {
   sites: GazaSite[];
@@ -20,7 +21,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
 
   // Detect desktop vs mobile for conditional rendering (not just CSS hiding)
   const [isDesktop, setIsDesktop] = useState(() => {
-    return typeof window !== 'undefined' && window.innerWidth >= 768;
+    return typeof window !== 'undefined' && window.innerWidth >= BREAKPOINTS.MOBILE;
   });
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
     if (typeof window === 'undefined') return;
 
     const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 768);
+      setIsDesktop(window.innerWidth >= BREAKPOINTS.MOBILE);
     };
     window.addEventListener('resize', checkDesktop);
     return () => window.removeEventListener('resize', checkDesktop);

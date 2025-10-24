@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { CloseIcon } from "../Icons";
+import { Z_INDEX } from "../../constants/layout";
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,7 +17,7 @@ interface ModalProps {
  * Supports custom z-index for modal stacking (e.g., detail modal over table modal)
  * Supports dark mode
  */
-export function Modal({ isOpen, onClose, children, title, zIndex = 9999 }: ModalProps) {
+export function Modal({ isOpen, onClose, children, title, zIndex = Z_INDEX.MODAL }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const t = useThemeClasses();
 
@@ -87,19 +89,7 @@ export function Modal({ isOpen, onClose, children, title, zIndex = 9999 }: Modal
           )}
           aria-label="Close modal"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <CloseIcon className="w-6 h-6" />
         </button>
 
         {/* Modal Body */}

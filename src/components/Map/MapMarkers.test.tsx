@@ -232,7 +232,7 @@ describe("MapMarkers", () => {
       // Should render as normal circle marker with red color
       const marker = container.querySelector("path.leaflet-interactive");
       expect(marker).toBeInTheDocument();
-      expect(marker?.getAttribute("fill")).toBe("#ed3039"); // Red for destroyed status (but not yet destroyed)
+      expect(marker?.getAttribute("fill")).toBe("#b91c1c"); // Red for destroyed status (but not yet destroyed) - from centralized color system
     });
   });
 

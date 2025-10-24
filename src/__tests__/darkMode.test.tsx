@@ -115,21 +115,21 @@ describe("Dark Mode - Component Rendering", () => {
   });
 
   describe("Filter Bar", () => {
+    const mockFilters = {
+      selectedTypes: [],
+      selectedStatuses: [],
+      destructionDateStart: null,
+      destructionDateEnd: null,
+      creationYearStart: null,
+      creationYearEnd: null,
+      searchTerm: "",
+    };
+
     it("renders in light mode", () => {
       const { container } = renderWithProviders(
         <FilterBar
-          selectedTypes={[]}
-          selectedStatuses={[]}
-          destructionDateStart=""
-          destructionDateEnd=""
-          searchTerm=""
-          onTypeChange={noop}
-          onStatusChange={noop}
-          onDestructionDateStartChange={noop}
-          onDestructionDateEndChange={noop}
-          onCreationYearStartChange={noop}
-          onCreationYearEndChange={noop}
-          onSearchChange={noop}
+          filters={mockFilters}
+          onFilterChange={noop}
         />,
         "light"
       );
@@ -139,18 +139,8 @@ describe("Dark Mode - Component Rendering", () => {
     it("renders in dark mode", () => {
       const { container } = renderWithProviders(
         <FilterBar
-          selectedTypes={[]}
-          selectedStatuses={[]}
-          destructionDateStart=""
-          destructionDateEnd=""
-          searchTerm=""
-          onTypeChange={noop}
-          onStatusChange={noop}
-          onDestructionDateStartChange={noop}
-          onDestructionDateEndChange={noop}
-          onCreationYearStartChange={noop}
-          onCreationYearEndChange={noop}
-          onSearchChange={noop}
+          filters={mockFilters}
+          onFilterChange={noop}
         />,
         "dark"
       );

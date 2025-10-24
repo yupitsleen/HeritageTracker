@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useCallback } from "react";
 import { mockSites } from "../data/mockSites";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
@@ -13,6 +13,7 @@ import { MobileLayout } from "../components/Layout/MobileLayout";
 import { SitesTable } from "../components/SitesTable";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Button } from "../components/Button";
+import type { FilterState } from "../types";
 
 // Lazy load heavy components for better initial load performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
@@ -35,6 +36,28 @@ export function HomePage({ isMobile }: HomePageProps) {
   const { isDark } = useTheme();
 
   const t = useThemeClasses();
+
+  // Wrapper function to handle filter updates for FilterBar component
+  const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
+    if (updates.selectedTypes !== undefined) appState.setSelectedTypes(updates.selectedTypes);
+    if (updates.selectedStatuses !== undefined) appState.setSelectedStatuses(updates.selectedStatuses);
+    if (updates.destructionDateStart !== undefined) appState.setDestructionDateStart(updates.destructionDateStart);
+    if (updates.destructionDateEnd !== undefined) appState.setDestructionDateEnd(updates.destructionDateEnd);
+    if (updates.creationYearStart !== undefined) appState.setCreationYearStart(updates.creationYearStart);
+    if (updates.creationYearEnd !== undefined) appState.setCreationYearEnd(updates.creationYearEnd);
+    if (updates.searchTerm !== undefined) appState.setSearchTerm(updates.searchTerm);
+  }, [appState]);
+
+  // Wrapper function for temp filter updates in modal
+  const handleTempFilterChange = useCallback((updates: Partial<FilterState>) => {
+    if (updates.selectedTypes !== undefined) appState.setTempSelectedTypes(updates.selectedTypes);
+    if (updates.selectedStatuses !== undefined) appState.setTempSelectedStatuses(updates.selectedStatuses);
+    if (updates.destructionDateStart !== undefined) appState.setTempDestructionDateStart(updates.destructionDateStart);
+    if (updates.destructionDateEnd !== undefined) appState.setTempDestructionDateEnd(updates.destructionDateEnd);
+    if (updates.creationYearStart !== undefined) appState.setTempCreationYearStart(updates.creationYearStart);
+    if (updates.creationYearEnd !== undefined) appState.setTempCreationYearEnd(updates.creationYearEnd);
+    if (updates.searchTerm !== undefined) appState.setSearchTerm(updates.searchTerm);
+  }, [appState]);
 
   return (
     <div
@@ -74,18 +97,8 @@ export function HomePage({ isMobile }: HomePageProps) {
       <main id="main-content" className="pb-24 md:pb-0 relative">
         {isMobile ? (
           <MobileLayout
-            selectedTypes={appState.filters.selectedTypes}
-            selectedStatuses={appState.filters.selectedStatuses}
-            destructionDateStart={appState.filters.destructionDateStart}
-            destructionDateEnd={appState.filters.destructionDateEnd}
-            searchTerm={appState.filters.searchTerm}
-            onTypeChange={appState.setSelectedTypes}
-            onStatusChange={appState.setSelectedStatuses}
-            onDestructionDateStartChange={appState.setDestructionDateStart}
-            onDestructionDateEndChange={appState.setDestructionDateEnd}
-            onCreationYearStartChange={appState.setCreationYearStart}
-            onCreationYearEndChange={appState.setCreationYearEnd}
-            onSearchChange={appState.setSearchTerm}
+            filters={appState.filters}
+            onFilterChange={handleFilterChange}
             filteredSites={filteredSites}
             onSiteClick={appState.setSelectedSite}
             onSiteHighlight={appState.setHighlightedSiteId}
@@ -93,11 +106,13 @@ export function HomePage({ isMobile }: HomePageProps) {
           />
         ) : (
           <DesktopLayout
-            selectedTypes={appState.filters.selectedTypes}
-            selectedStatuses={appState.filters.selectedStatuses}
-            searchTerm={appState.filters.searchTerm}
-            destructionDateStart={appState.filters.destructionDateStart}
-            destructionDateEnd={appState.filters.destructionDateEnd}
+            filters={{
+              selectedTypes: appState.filters.selectedTypes,
+              selectedStatuses: appState.filters.selectedStatuses,
+              searchTerm: appState.filters.searchTerm,
+              destructionDateStart: appState.filters.destructionDateStart,
+              destructionDateEnd: appState.filters.destructionDateEnd,
+            }}
             setSelectedTypes={appState.setSelectedTypes}
             setSelectedStatuses={appState.setSelectedStatuses}
             setSearchTerm={appState.setSearchTerm}
@@ -108,10 +123,12 @@ export function HomePage({ isMobile }: HomePageProps) {
             openFilterModal={appState.openFilterModal}
             filteredSites={filteredSites}
             totalSites={total}
-            tableWidth={tableResize.tableWidth}
-            isResizing={tableResize.isResizing}
-            handleResizeStart={tableResize.handleResizeStart}
-            getVisibleColumns={tableResize.getVisibleColumns}
+            tableResize={{
+              width: tableResize.tableWidth,
+              isResizing: tableResize.isResizing,
+              handleResizeStart: tableResize.handleResizeStart,
+              getVisibleColumns: tableResize.getVisibleColumns,
+            }}
             onSiteClick={appState.setSelectedSite}
             onSiteHighlight={appState.setHighlightedSiteId}
             highlightedSiteId={appState.highlightedSiteId}
@@ -283,18 +300,11 @@ export function HomePage({ isMobile }: HomePageProps) {
       >
         <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
         <FilterBar
-          selectedTypes={appState.tempFilters.selectedTypes}
-          selectedStatuses={appState.tempFilters.selectedStatuses}
-          destructionDateStart={appState.tempFilters.destructionDateStart}
-          destructionDateEnd={appState.tempFilters.destructionDateEnd}
-          searchTerm={appState.filters.searchTerm}
-          onTypeChange={appState.setTempSelectedTypes}
-          onStatusChange={appState.setTempSelectedStatuses}
-          onDestructionDateStartChange={appState.setTempDestructionDateStart}
-          onDestructionDateEndChange={appState.setTempDestructionDateEnd}
-          onCreationYearStartChange={appState.setTempCreationYearStart}
-          onCreationYearEndChange={appState.setTempCreationYearEnd}
-          onSearchChange={appState.setSearchTerm}
+          filters={{
+            ...appState.tempFilters,
+            searchTerm: appState.filters.searchTerm,
+          }}
+          onFilterChange={handleTempFilterChange}
           sites={mockSites}
         />
         <div className="mt-6 flex justify-end gap-3">

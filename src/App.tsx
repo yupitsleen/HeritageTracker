@@ -8,6 +8,7 @@ import { LocaleProvider } from "./contexts/LocaleContext";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { HomePage } from "./pages/HomePage";
 import { AdvancedAnimation } from "./pages/AdvancedAnimation";
+import { BREAKPOINTS } from "./constants/layout";
 
 /**
  * Router component with routes
@@ -30,12 +31,12 @@ function App() {
   // Check if we're on mobile - initialize immediately from window.innerWidth
   const [isMobile, setIsMobile] = useState(() => {
     // Check during initial render (works in browser, defaults to false in SSR)
-    return typeof window !== 'undefined' && window.innerWidth < 768;
+    return typeof window !== 'undefined' && window.innerWidth < BREAKPOINTS.MOBILE;
   });
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
+      setIsMobile(window.innerWidth < BREAKPOINTS.MOBILE);
     };
 
     // Recheck on mount (in case window was resized before mount)
