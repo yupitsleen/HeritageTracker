@@ -88,6 +88,8 @@ export interface Translations {
     zoomIn: string;
     zoomOut: string;
     showSiteMarkers: string;
+    switchTo: string;
+    satelliteImagery: string;
   };
 
   /** Timeline component */
@@ -100,6 +102,21 @@ export interface Translations {
     dateRange: string;
     startDate: string;
     endDate: string;
+    previous: string;
+    previousAriaLabel: string;
+    previousTitle: string;
+    next: string;
+    nextAriaLabel: string;
+    nextTitle: string;
+    dateFilter: string;
+    from: string;
+    to: string;
+    clear: string;
+    clearFilter: string;
+    keyboard: string;
+    playPause: string;
+    step: string;
+    jump: string;
   };
 
   /** Table component */
@@ -116,11 +133,23 @@ export interface Translations {
     mobile: string;
     viewDetails: string;
     sortBy: string;
+    heritageSites: string;
+    expandTable: string;
+    selectExportFormat: string;
+    export: string;
+    siteName: string;
+    destructionDate: string;
+    destructionDateGregorian: string;
+    destructionDateIslamic: string;
+    builtGregorian: string;
+    builtIslamic: string;
   };
 
   /** Filter bar */
   filters: {
     searchPlaceholder: string;
+    search: string;
+    clearSearch: string;
     typeFilter: string;
     statusFilter: string;
     allTypes: string;
@@ -129,6 +158,12 @@ export interface Translations {
     destructionDateRange: string;
     applyFilters: string;
     clearFilters: string;
+    siteType: string;
+    selectTypes: string;
+    status: string;
+    selectStatus: string;
+    destructionDate: string;
+    yearBuilt: string;
   };
 
   /** Site types */

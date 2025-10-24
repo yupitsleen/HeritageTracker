@@ -3,6 +3,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useLocale } from "../../contexts/LocaleContext";
 import { getAllLocales, getLocaleName } from "../../config/locales";
 import { useTheme } from "../../contexts/ThemeContext";
+import type { LocaleCode } from "../../types/i18n";
 
 interface LanguageSelectorProps {
   /**
@@ -39,7 +40,7 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
   }, [isOpen]);
 
   const handleLocaleChange = (newLocale: string) => {
-    setLocale(newLocale);
+    setLocale(newLocale as LocaleCode);
     setIsOpen(false);
   };
 
