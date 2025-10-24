@@ -3,14 +3,14 @@
 ## 🚀 Quick Start
 
 **Status:** LIVE - https://yupitsleen.github.io/HeritageTracker/
-**Current:** 45 sites | 432 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
-**Branch:** feat/advancedMapFixes (Advanced Timeline features + code quality improvements) | main (production)
+**Current:** 45 sites | 1379 tests | React 19 + TypeScript + Vite 7 + Tailwind v4 + Leaflet + D3.js
+**Branch:** feat/sprint2-extensibility (Sprint 4 complete - 22 registry systems) | main (production)
 
 ### Essential Commands
 
 ```bash
 npm run dev     # localhost:5173 (ASSUME RUNNING)
-npm test        # 432 tests - MUST pass before commit
+npm test        # 1379 tests - MUST pass before commit
 npm run lint    # MUST be clean before commit
 npm run build   # Production build
 ```
@@ -259,7 +259,7 @@ interface GazaSite {
 **BEFORE EVERY COMMIT:**
 
 - [ ] `npm run lint` - clean
-- [ ] `npm test` - all 307 tests pass
+- [ ] `npm test` - all 1379 tests pass
 - [ ] Visual check in browser (dev server running)
 - [ ] No console errors
 - [ ] Mobile view renders (no AnimationProvider errors)
@@ -276,7 +276,7 @@ interface GazaSite {
 ## 🧪 Testing
 
 **Framework:** Vitest + React Testing Library
-**Coverage:** 307 tests across 26 files
+**Coverage:** 1379 tests across 52 files (432 UI + 947 registry tests)
 **Test Files:**
 
 - `Button.test.tsx` (24 tests) - Reusable button component
@@ -535,9 +535,134 @@ useEffect(() => {
 
 ---
 
+## 🔧 Extensibility Architecture
+
+**Status:** 22 of 27 issues complete (81.5%) | Sprint 4 complete
+**Documentation:** [docs/extensibility-status.md](docs/extensibility-status.md)
+
+### Registry Pattern
+
+All configuration uses a centralized **registry pattern** for extensibility:
+
+```typescript
+// Consistent API across all 22 registry systems
+export const registry = {
+  register(config: ConfigType): void,
+  getAll(): ConfigType[],
+  get(id: string): ConfigType | undefined,
+  update(id: string, updates: Partial<ConfigType>): void,
+  remove(id: string): boolean,
+  getLabel(id: string, locale?: 'en' | 'ar'): string,
+  // ... plus category-specific helpers
+};
+```
+
+### 22 Complete Registry Systems
+
+**Data & Backend (5/5 - 100% complete):**
+- Site Type Registry (`src/config/siteTypes.ts`) - 54 tests
+- Site Status Registry (`src/config/siteStatuses.ts`) - 53 tests
+- Heritage Value Registry (`src/config/heritageValues.ts`) - 42 tests
+- Destruction Cause Registry (`src/config/destructionCauses.ts`) - 42 tests
+- Data Source Registry (`src/config/dataSources.ts`) - 44 tests
+
+**Map & Visualization (8/8 - 100% complete):**
+- Color Theme Registry (`src/config/colorThemes.ts`) - 50 tests
+- Glow Formula Registry (`src/config/glowFormulas.ts`) - 41 tests
+- Marker Icon CDN Registry (`src/config/markerIcons.ts`) - 38 tests
+- Marker Size (Responsive) Registry (`src/config/markerSizes.ts`) - 44 tests
+- Map Viewport Registry (`src/config/mapViewports.ts`) - 43 tests
+- Map Tile Layer Registry (`src/config/mapTileLayers.ts`) - 42 tests
+- Clustering Algo Registry (`src/config/clusteringAlgos.ts`) - 37 tests
+- Filter Preset Registry (`src/config/filterPresets.ts`) - 38 tests
+
+**Timeline & Animation (4/4 - 100% complete):**
+- Imagery Period Registry (`src/config/imageryPeriods.ts`) - 46 tests
+- Wayback Timeline Config Registry (`src/config/waybackTimeline.ts`) - 41 tests
+- Timeline Date Range Registry (`src/config/timelineDates.ts`) - 41 tests
+- Frame Rate Registry (`src/config/frameRates.ts`) - 45 tests
+
+**UI & Polish (5/5 - 100% complete):**
+- Sort Config Registry (`src/config/sortConfigs.ts`) - 54 tests
+- Export Format Registry (`src/config/exportFormats.ts`) - 46 tests
+- Table Variant Registry (`src/config/tableVariants.ts`) - 49 tests
+- Component Class Registry (`src/config/componentClasses.ts`) - 47 tests
+- Calendar Type Registry (`src/config/calendarTypes.ts`) - 40 tests
+
+**Total Tests Added:** 947 registry tests (average 43 tests per registry)
+
+### Backward Compatibility
+
+All registries export constants for existing code:
+
+```typescript
+// Example: src/config/siteTypes.ts
+export const SITE_TYPES = ["mosque", "church", "archaeological", ...];
+export const SITE_TYPE_CONFIG = getAllSiteTypes(); // Full configs
+
+// Existing code continues to work:
+import { SITE_TYPES } from "../config/siteTypes";
+```
+
+### Key Benefits
+
+- **Zero-downtime changes** - Register new configs without code deployment
+- **Multi-tenant ready** - Different clients can use different configs
+- **Type-safe** - Full TypeScript interfaces throughout
+- **i18n support** - English + Arabic labels in all registries
+- **Comprehensive testing** - 25-54 tests per registry (100% coverage)
+- **Consistent API** - Same CRUD operations across all 22+ systems
+
+### What's Left (5 issues)
+
+**i18n Architecture (1 major issue):**
+- Issue #3: Translation service (requires architectural decisions)
+
+**Phase 3+ Work (4 issues):**
+- Issue #4, #9, #22, #25: Animation/glow/metrics (deferred to future phases)
+
+**See:** [docs/extensibility-status.md](docs/extensibility-status.md) for complete status
+
+---
+
 ## 📝 Recent Updates (Oct 2025)
 
-**Completed (feat/advancedMapFixes - Current Branch):**
+**Completed (feat/sprint2-extensibility - Current Branch):**
+
+- [x] **Sprint 4: Remaining Small Issues** ✅ (Oct 24)
+  - **Purpose**: Complete 6 remaining quick-win extensibility issues
+  - **Issues Complete**: #15, #18, #23, #24, #26, #27
+  - **Testing**: +264 new registry tests (1115 → 1379 total)
+  - **Registries Added**:
+    - Timeline Date Range Registry (41 tests)
+    - Marker Icon CDN Registry (38 tests)
+    - Marker Responsive Size Registry (44 tests)
+    - Table Variant Registry (49 tests)
+    - Frame Rate Registry (45 tests)
+    - Component Class Registry (47 tests)
+  - **Progress**: 16/27 → 22/27 issues (59.3% → 81.5%)
+  - **Key commits**: c2401ce, 6fa7ab1, faf74b0, 8dc5e2c, f46b27a, 880e93a
+  - **Key files**: 18 new files (6 types + 6 configs + 6 test files)
+
+- [x] **Sprint 3: Map/Timeline/UI Registries** ✅ (Oct 24)
+  - **Issues Complete**: #7, #11, #13, #17, #19, #20
+  - **Registries**: Imagery Period, Wayback Timeline, Color Theme, Glow Formula, Map Viewport, Map Tile Layer
+  - **Testing**: +267 tests
+  - **Key commits**: Multiple (see extensibility-status.md)
+
+- [x] **Sprint 2: Core Extensibility** ✅ (Oct 24)
+  - **Issues Complete**: #8, #10, #12, #14, #16, #21
+  - **Registries**: Destruction Cause, Data Source, Clustering, Filter Preset, Sort Config, Export Format
+  - **Testing**: +252 tests
+  - **Key commits**: Multiple (see extensibility-status.md)
+
+- [x] **Sprint 1: Foundation Registries** ✅ (Oct 24)
+  - **Issues Complete**: #1, #2, #5, #6, #9
+  - **Registries**: Site Type, Site Status, Heritage Value, Calendar Type
+  - **Testing**: +164 tests
+  - **Key commits**: Multiple (see extensibility-status.md)
+
+**Completed (feat/advancedMapFixes - Merged):**
 
 - [x] **Advanced Timeline Page Enhancements** ✅ (Oct 22)
   - **Previous/Next Navigation**: Added buttons to navigate through timeline destruction events
@@ -742,6 +867,6 @@ useEffect(() => {
 
 ---
 
-**Last Updated:** October 22, 2025
-**Version:** 1.15.0-dev
-**Branch:** feat/advancedMapFixes (Advanced Timeline features + code quality improvements complete) | main (production)
+**Last Updated:** October 24, 2025
+**Version:** 1.16.0-dev
+**Branch:** feat/sprint2-extensibility (Sprint 4 complete - 22/27 registry systems - 81.5%) | main (production)

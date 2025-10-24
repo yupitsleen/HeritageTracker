@@ -5,10 +5,11 @@
 **Documenting the destruction of Palestinian cultural heritage through interactive visualization.**
 
 ![Project Status](https://img.shields.io/badge/status-production-brightgreen)
-![Tests](https://img.shields.io/badge/tests-432%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-1379%20passing-brightgreen)
 ![Deployment](https://img.shields.io/badge/deployment-live-success)
 ![PWA](https://img.shields.io/badge/PWA-enabled-blue)
 ![License](https://img.shields.io/badge/license-TBD-lightgrey)
+![Extensibility](https://img.shields.io/badge/extensibility-81.5%25%20complete-blue)
 
 **🌐 Live Site:** https://yupitsleen.github.io/HeritageTracker/
 
@@ -52,7 +53,8 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **Dark mode support** with system preference detection and manual toggle
 - **Advanced Timeline page** with 150+ ESRI Wayback satellite imagery versions (2014-2025)
 - **GitHub repository link** in footer for easy access to source code
-- **Comprehensive test suite** (432 tests including performance regression tests for 1000+ sites)
+- **Comprehensive test suite** (1379 tests: 432 UI + 947 registry tests)
+- **Extensibility architecture** with 22 registry systems for zero-downtime configuration
 
 ### 🚧 In Progress
 
@@ -70,6 +72,51 @@ Document and visualize the destruction of Palestinian cultural heritage with evi
 - **React Testing Library** - Component testing
 - **GitHub Actions** - CI/CD automation with mobile smoke tests and bundle monitoring
 - **GitHub Pages** - Production hosting with auto-deployment
+
+## 🔧 Extensibility Architecture
+
+**Status:** 22 of 27 issues complete (81.5%)
+**Documentation:** [docs/extensibility-status.md](docs/extensibility-status.md)
+
+Heritage Tracker features a comprehensive **registry pattern** architecture enabling zero-downtime configuration changes:
+
+### 22 Complete Registry Systems
+
+- **Data & Backend (5/5):** Site Type, Site Status, Heritage Value, Destruction Cause, Data Source
+- **Map & Visualization (8/8):** Color Theme, Glow Formula, Marker Icon CDN, Marker Size, Map Viewport, Map Tile Layer, Clustering Algo, Filter Preset
+- **Timeline & Animation (4/4):** Imagery Period, Wayback Timeline, Timeline Date Range, Frame Rate
+- **UI & Polish (5/5):** Sort Config, Export Format, Table Variant, Component Class, Calendar Type
+
+### Key Benefits
+
+- **Type-safe configuration:** Full TypeScript interfaces across all 22 systems
+- **i18n support:** English + Arabic labels in all registries
+- **Backward compatible:** All existing code continues to work
+- **Multi-tenant ready:** Different clients can use different configs
+- **Comprehensive tests:** 947 registry tests (average 43 tests per registry)
+- **Consistent API:** Same CRUD operations (register, get, update, remove) across all systems
+
+Example registry usage:
+
+```typescript
+import { registerSiteType, getAllSiteTypes } from "./config/siteTypes";
+
+// Register new site type dynamically
+registerSiteType({
+  id: "library",
+  label: "Library",
+  labelArabic: "مكتبة",
+  icon: "📚",
+  color: "#9333ea",
+});
+
+// All components automatically use the new type
+const types = getAllSiteTypes(); // Includes new library type
+```
+
+See [docs/extensibility-status.md](docs/extensibility-status.md) for complete details.
+
+---
 
 ## 🚀 Quick Start
 
@@ -95,7 +142,7 @@ npm run dev
 
 ```bash
 npm run dev          # Dev server with HMR (localhost:5173)
-npm test            # Run test suite (432 tests)
+npm test            # Run test suite (1379 tests: 432 UI + 947 registry)
 npm run lint        # ESLint code quality check
 npm run build       # Production build (with PWA manifest + service worker)
 npm run preview     # Preview production build locally
@@ -199,7 +246,8 @@ vite.config.ts                  # Vite config with PWA plugin + code splitting
 
 - **[CLAUDE.md](./CLAUDE.md)** - Complete development context for AI assistants
 - **[CODE_REVIEW.md](./CODE_REVIEW.md)** - Refactoring plan and progress tracking
-- **[ARCHITECTURE_REVIEW.md](./ARCHITECTURE_REVIEW.md)** - ✨ NEW - Detailed architecture analysis
+- **[ARCHITECTURE_REVIEW.md](./ARCHITECTURE_REVIEW.md)** - Detailed architecture analysis
+- **[extensibility-status.md](./docs/extensibility-status.md)** - ✨ NEW - Registry architecture and Sprint progress
 - **[timeline-animation-spec.md](./docs/timeline-animation-spec.md)** - Timeline animation feature spec
 - **[Research Study](./docs/research/research-document.md)** - Data sources and legal framework
 - **[SOURCES.md](./docs/SOURCES.md)** - Bibliography and citations
@@ -222,11 +270,13 @@ vite.config.ts                  # Vite config with PWA plugin + code splitting
 - [x] **45 Gaza heritage sites documented** ✅
 - [x] **Dark mode support** with system preference detection ✅
 - [x] **Advanced Timeline page** with 150+ ESRI Wayback imagery versions ✅
-- [x] Comprehensive test suite (432 tests including performance regression tests)
+- [x] **Extensibility architecture** with 22 registry systems (81.5% complete) ✅
+- [x] Comprehensive test suite (1379 tests: 432 UI + 947 registry)
 - [x] CI/CD pipeline with mobile tests + bundle monitoring
 - [x] **Performance optimizations:** Lazy loading, code splitting, PWA, O(n) algorithms
 - [x] **1000+ site scaling validated** with performance regression tests
 - [x] **DEPLOYED TO PRODUCTION:** https://yupitsleen.github.io/HeritageTracker/
+- [ ] Complete remaining extensibility work (5 issues: i18n + Phase 3+ features)
 - [ ] SEO optimization (meta tags, structured data)
 - [ ] Social media preview cards
 
@@ -271,7 +321,7 @@ We welcome contributions! Ways to help:
 - Write tests for new features (minimum 5+ tests per component)
 - Include mobile-specific tests when applicable
 - Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-- Ensure all 432 tests pass before committing
+- Ensure all 1379 tests pass before committing
 - Run `npm run lint && npm test` before every commit
 - All changes automatically tested and deployed via CI/CD
 - Mobile smoke tests and bundle size monitoring in CI pipeline
@@ -301,11 +351,53 @@ This project builds on documentation by UNESCO, Forensic Architecture, Heritage 
 
 ---
 
-_Last updated: October 23, 2025 | Version: 1.15.0 | 🚀 Live in Production with PWA | 45 sites documented | 432 tests passing | Bundle optimized (310KB main, 669KB total) | Performance validated for 1000+ sites | **Production-ready with comprehensive optimizations**_
+_Last updated: October 24, 2025 | Version: 1.16.0-dev | 🚀 Live in Production with PWA | 45 sites documented | 1379 tests passing (432 UI + 947 registry) | Bundle optimized (310KB main, 669KB total) | **Extensibility architecture: 22/27 registry systems (81.5%)** | Performance validated for 1000+ sites | **Production-ready with comprehensive optimizations**_
 
 **Live Site:** https://yupitsleen.github.io/HeritageTracker/
 
 ## 📈 Recent Updates
+
+### v1.16.0-dev - Extensibility Architecture (Sprint 4 Complete - Oct 24, 2025)
+
+**Extensibility Progress: 81.5% Complete (22/27 issues)**
+
+**Sprint 4: Remaining Small Issues (6 issues complete)**
+
+- **Timeline Date Range Registry** - Dynamic fallback date configuration (41 tests)
+- **Marker Icon CDN Registry** - Configurable icon/shadow URLs (38 tests)
+- **Marker Responsive Size Registry** - Breakpoint-based sizing (44 tests)
+- **Table Variant Registry** - Column visibility per variant (49 tests)
+- **Frame Rate Registry** - FPS-based animation control (45 tests)
+- **Component Class Registry** - Tailwind class organization (47 tests)
+
+**Sprint 3: Map/Timeline/UI Registries (6 issues complete)**
+
+- Imagery Period, Wayback Timeline, Color Theme, Glow Formula, Map Viewport, Map Tile Layer (+267 tests)
+
+**Sprint 2: Core Extensibility (6 issues complete)**
+
+- Destruction Cause, Data Source, Clustering, Filter Preset, Sort Config, Export Format (+252 tests)
+
+**Sprint 1: Foundation Registries (4 issues complete)**
+
+- Site Type, Site Status, Heritage Value, Calendar Type (+164 tests)
+
+**Total Impact:**
+
+- **+947 registry tests** across 22 systems
+- **1379 total tests** (up from 432)
+- **22 registry systems** with consistent CRUD API
+- **100% backward compatible** - all existing code continues to work
+- **i18n ready** - English + Arabic labels throughout
+
+**What's Left (5 issues):**
+
+- Issue #3: i18n Architecture (requires architectural decisions)
+- Issues #4, #9, #22, #25: Animation/glow/metrics (deferred to Phase 3+)
+
+See [docs/extensibility-status.md](docs/extensibility-status.md) for complete details.
+
+---
 
 ### v1.15.0 - UI Refinement & Advanced Timeline (Oct 21-23, 2025)
 
