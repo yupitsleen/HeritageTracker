@@ -307,12 +307,50 @@ interface Source {
 
 ---
 
+## Recent Code Quality Improvements (October 2025)
+
+### Phase 1: Foundation - COMPLETED ✅
+
+Successfully completed comprehensive code quality refactoring:
+
+**1. Extract Magic Numbers to Constants**
+- Created `src/constants/layout.ts` with BREAKPOINTS and Z_INDEX
+- Eliminated hardcoded values (768px, 9999 z-index)
+- Added 22 comprehensive tests
+
+**2. Consolidate Color Mapping**
+- Centralized status colors in `utils/colorHelpers.ts`
+- Removed duplicate COLOR_MAP from MapMarkers
+- Single source of truth for all status colors
+
+**3. Extract Icon Components**
+- Created reusable `InfoIcon`, `CloseIcon`, `ChevronIcon`
+- Eliminated duplicate SVG code across components
+- Added 22 tests for icon library
+
+**4. Extract FilterLabel Component**
+- Created reusable label+tooltip component
+- Eliminated 16 lines of duplicate code
+- Added 7 tests for FilterLabel
+
+**Impact:**
+- ✅ 1464 tests passing (+36 new tests)
+- ✅ Production build: 7.34s
+- ✅ Zero DRY violations in refactored areas
+- ✅ Better maintainability and consistency
+
+See [CODE_REVIEW.md](CODE_REVIEW.md) for detailed code quality assessment and next steps.
+
+---
+
 ## Lessons Learned
 
 ### What Works Well
 
 - **StatusBadge component** - Reusable, consistent styling
-- **Centralized constants** - `SITE_TYPES`, `STATUS_OPTIONS` in utils
+- **Centralized constants** - `BREAKPOINTS`, `Z_INDEX` in constants/layout.ts
+- **Reusable icon library** - `InfoIcon`, `CloseIcon`, `ChevronIcon` components
+- **FilterLabel component** - Consistent filter headers with optional tooltips
 - **FilterBar patterns** - Multi-select dropdown is clean UX
 - **Cross-component sync** - Shared `selectedSiteId` state works great
 - **BC/BCE handling** - Explicit era handling prevents confusion
@@ -356,6 +394,8 @@ npm test -- --watch     # Run tests in watch mode
 
 ---
 
-**Last Updated:** October 2025  
-**Project Status:** MVP Phase 1 - 90% complete (5/20-25 sites documented)  
-**Next Priority:** Complete remaining 15-20 sites data collection
+**Last Updated:** October 2025
+**Project Status:** MVP Phase 1 - 90% complete (5/20-25 sites documented)
+**Code Quality:** Phase 1 refactoring complete (DRY/KISS/SOLID improvements)
+**Test Coverage:** 1464 tests passing
+**Next Priority:** Complete remaining 15-20 sites data collection OR continue Phase 2 refactoring
