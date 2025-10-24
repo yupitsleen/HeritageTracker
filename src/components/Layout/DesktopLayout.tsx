@@ -98,8 +98,9 @@ export function DesktopLayout({
   }, [setDestructionDateStart, setDestructionDateEnd]);
 
   return (
-    <div className="hidden md:flex md:h-[calc(100vh-65px)] md:overflow-hidden relative">
+    <div className="hidden md:flex md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
       {/* Two-column layout - Fills remaining space */}
+      {/* dir="ltr" keeps spatial layout consistent (table left, maps right) regardless of language */}
       <div className="flex gap-2 flex-1 min-h-0">
         {/* Left Column - Sites Table (Resizable, black border like timeline) */}
         <aside

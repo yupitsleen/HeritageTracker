@@ -305,7 +305,8 @@ export function TimelineScrubber({
       aria-label="Timeline Scrubber"
     >
       {/* Controls */}
-      <div className="flex items-center mb-2 gap-2 flex-wrap relative">
+      {/* dir="ltr" keeps media controls left-to-right regardless of language */}
+      <div className="flex items-center mb-2 gap-2 flex-wrap relative" dir="ltr">
         {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
         <div className="flex items-center gap-1.5">
           {!advancedMode && (
@@ -397,8 +398,9 @@ export function TimelineScrubber({
         </div>
 
         {/* Center: Previous/Next navigation (Advanced Timeline only) */}
+        {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
         {advancedMode && (
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5" dir="ltr">
             <Button
               onClick={goToPreviousEvent}
               disabled={!canGoPrevious}

@@ -1,10 +1,10 @@
 import { components, cn } from "../../styles/theme";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
-import { useLocale } from "../../contexts/LocaleContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
 import { IconButton } from "../Button/IconButton";
+import { LanguageSelector } from "../LanguageSelector";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
 
 interface AppHeaderProps {
@@ -21,22 +21,17 @@ interface AppHeaderProps {
  */
 export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
-  const { locale, setLocale } = useLocale();
   const navigate = useNavigate();
   const location = useLocation();
 
   const isOnHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
 
-  // Toggle between English and Arabic
-  const toggleLanguage = () => {
-    setLocale(locale === "en" ? "ar" : "en");
-  };
-
   return (
     <div className={`sticky top-0 z-[10] transition-colors duration-200 ${
       isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
-    }`}>
+    }`} dir="ltr">
       {/* Header - BLACK background, ultra compact */}
+      {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
           {/* Left: Title */}
@@ -101,13 +96,8 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               />
             )}
 
-            {/* Language Toggle - Globe icon with current language */}
-            <IconButton
-              icon={<GlobeAltIcon className="w-4 h-4" />}
-              onClick={toggleLanguage}
-              ariaLabel={`Switch to ${locale === "en" ? "Arabic" : "English"}`}
-              title={`Current: ${locale === "en" ? "English" : "العربية"}`}
-            />
+            {/* Language Selector - Dropdown showing all registered locales */}
+            <LanguageSelector />
 
             {/* Dark Mode Toggle - Discrete icon button */}
             <IconButton
