@@ -112,8 +112,8 @@ describe('siteStatus', () => {
     });
 
     it('returns label for unregistered status', () => {
-      const label = getStatusLabel('unknown');
-      expect(label).toBe('unknown');
+      const label = getStatusLabel('not-a-real-status');
+      expect(label).toBe('not-a-real-status');
     });
   });
 
@@ -126,7 +126,7 @@ describe('siteStatus', () => {
 
     it('returns false for unregistered statuses', () => {
       expect(isStatusRegistered('partially-restored')).toBe(false);
-      expect(isStatusRegistered('unknown')).toBe(false);
+      expect(isStatusRegistered('not-a-real-status')).toBe(false);
     });
   });
 
@@ -138,7 +138,7 @@ describe('siteStatus', () => {
     });
 
     it('returns grey for unregistered status', () => {
-      expect(getMarkerColor('unknown')).toBe('grey');
+      expect(getMarkerColor('not-a-real-status')).toBe('grey');
     });
 
     it('returns custom color for registered custom status', () => {
