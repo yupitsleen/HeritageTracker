@@ -1,11 +1,11 @@
 import { lazy, Suspense, useCallback } from "react";
-import { mockSites } from "../data/mockSites";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
 import { useAppState } from "../hooks/useAppState";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useTableResize } from "../hooks/useTableResize";
 import { useThemeClasses } from "../hooks/useThemeClasses";
+import { useSites } from "../hooks/useSites";
 import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { DesktopLayout } from "../components/Layout/DesktopLayout";
@@ -13,6 +13,9 @@ import { MobileLayout } from "../components/Layout/MobileLayout";
 import { SitesTable } from "../components/SitesTable";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Button } from "../components/Button";
+import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
+import { ErrorMessage } from "../components/Error/ErrorMessage";
+import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 
 // Lazy load heavy components for better initial load performance
@@ -29,35 +32,35 @@ interface HomePageProps {
  * HomePage - Main heritage tracker view with table, maps, and timeline
  */
 export function HomePage({ isMobile }: HomePageProps) {
+  // Fetch sites from API (using mock adapter in development)
+  const { sites, isLoading, error, refetch } = useSites();
+
   // Use extracted hooks
   const appState = useAppState();
-  const { filteredSites, total } = useFilteredSites(mockSites, appState.filters);
+  const { filteredSites, total } = useFilteredSites(sites, appState.filters);
   const tableResize = useTableResize();
   const { isDark } = useTheme();
 
   const t = useThemeClasses();
 
-  // Wrapper function to handle filter updates for FilterBar component
+  // Wrapper functions to handle filter updates using helper
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
-    if (updates.selectedTypes !== undefined) appState.setSelectedTypes(updates.selectedTypes);
-    if (updates.selectedStatuses !== undefined) appState.setSelectedStatuses(updates.selectedStatuses);
-    if (updates.destructionDateStart !== undefined) appState.setDestructionDateStart(updates.destructionDateStart);
-    if (updates.destructionDateEnd !== undefined) appState.setDestructionDateEnd(updates.destructionDateEnd);
-    if (updates.creationYearStart !== undefined) appState.setCreationYearStart(updates.creationYearStart);
-    if (updates.creationYearEnd !== undefined) appState.setCreationYearEnd(updates.creationYearEnd);
-    if (updates.searchTerm !== undefined) appState.setSearchTerm(updates.searchTerm);
+    applyFilterUpdates(updates, appState, false);
   }, [appState]);
 
-  // Wrapper function for temp filter updates in modal
   const handleTempFilterChange = useCallback((updates: Partial<FilterState>) => {
-    if (updates.selectedTypes !== undefined) appState.setTempSelectedTypes(updates.selectedTypes);
-    if (updates.selectedStatuses !== undefined) appState.setTempSelectedStatuses(updates.selectedStatuses);
-    if (updates.destructionDateStart !== undefined) appState.setTempDestructionDateStart(updates.destructionDateStart);
-    if (updates.destructionDateEnd !== undefined) appState.setTempDestructionDateEnd(updates.destructionDateEnd);
-    if (updates.creationYearStart !== undefined) appState.setTempCreationYearStart(updates.creationYearStart);
-    if (updates.creationYearEnd !== undefined) appState.setTempCreationYearEnd(updates.creationYearEnd);
-    if (updates.searchTerm !== undefined) appState.setSearchTerm(updates.searchTerm);
+    applyFilterUpdates(updates, appState, true);
   }, [appState]);
+
+  // Show loading state while fetching sites
+  if (isLoading) {
+    return <LoadingSpinner fullScreen message="Loading heritage sites..." />;
+  }
+
+  // Show error state if fetch failed
+  if (error) {
+    return <ErrorMessage error={error} onRetry={refetch} fullScreen />;
+  }
 
   return (
     <div
@@ -186,7 +189,7 @@ export function HomePage({ isMobile }: HomePageProps) {
             </div>
           }
         >
-          <StatsDashboard sites={mockSites} />
+          <StatsDashboard sites={sites} />
         </Suspense>
       </Modal>
 
@@ -305,7 +308,7 @@ export function HomePage({ isMobile }: HomePageProps) {
             searchTerm: appState.filters.searchTerm,
           }}
           onFilterChange={handleTempFilterChange}
-          sites={mockSites}
+          sites={sites}
         />
         <div className="mt-6 flex justify-end gap-3">
           <Button

@@ -40,6 +40,14 @@ export const STATUS_REGISTRY: Record<string, StatusConfig> = {
     markerColor: "orange",
     description: "Major structural damage, may not be repairable"
   },
+  "looted": {
+    id: "looted",
+    label: "Looted",
+    labelArabic: "منهوب",
+    severity: 60,
+    markerColor: "purple",
+    description: "Artifacts or valuables stolen or removed"
+  },
   "damaged": {
     id: "damaged",
     label: "Damaged",
@@ -48,16 +56,31 @@ export const STATUS_REGISTRY: Record<string, StatusConfig> = {
     markerColor: "yellow",
     description: "Partial damage, repairable with restoration work"
   },
+  "abandoned": {
+    id: "abandoned",
+    label: "Abandoned",
+    labelArabic: "مهجور",
+    severity: 25,
+    markerColor: "gray",
+    description: "No longer in use or maintained, but structurally intact"
+  },
+  "unknown": {
+    id: "unknown",
+    label: "Unknown",
+    labelArabic: "غير معروف",
+    severity: 10,
+    markerColor: "lightgray",
+    description: "Status cannot be verified or is uncertain"
+  },
+  "unharmed": {
+    id: "unharmed",
+    label: "Unharmed",
+    labelArabic: "سليم",
+    severity: 0,
+    markerColor: "green",
+    description: "No damage, fully intact and preserved"
+  },
 };
-
-/**
- * Register a new status dynamically
- *
- * @param config - Status configuration
- */
-export function registerStatus(config: StatusConfig): void {
-  STATUS_REGISTRY[config.id] = config;
-}
 
 /**
  * Get all registered statuses, sorted by severity (highest first)
@@ -103,16 +126,6 @@ export function getStatusLabel(statusId: string, locale: string = 'en'): string 
   }
 
   return config.label;
-}
-
-/**
- * Check if a status is registered
- *
- * @param statusId - Status identifier
- * @returns True if status is registered
- */
-export function isStatusRegistered(statusId: string): boolean {
-  return statusId in STATUS_REGISTRY;
 }
 
 /**

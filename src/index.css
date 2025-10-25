@@ -133,3 +133,33 @@ html {
     transition: none !important;
   }
 }
+
+/* Leaflet marker cluster customization */
+/* Palestinian flag color scheme for clusters */
+.marker-cluster-custom {
+  background: rgba(185, 28, 28, 0.6); /* Palestine red with transparency */
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.marker-cluster-custom:hover {
+  background: rgba(185, 28, 28, 0.8); /* Darker on hover */
+}
+
+.cluster-marker {
+  color: white;
+  font-weight: bold;
+  line-height: 40px;
+  font-size: 14px;
+}
+
+/* Dark mode support for clusters */
+[data-theme="dark"] .marker-cluster-custom {
+  background: rgba(185, 28, 28, 0.7);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .marker-cluster-custom:hover {
+  background: rgba(185, 28, 28, 0.9);
+}

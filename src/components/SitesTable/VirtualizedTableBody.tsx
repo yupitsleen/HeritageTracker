@@ -1,28 +1,32 @@
-// NOTE: react-window types are currently incompatible with production build (TypeScript error)
-// The library exports 'List' but TypeScript definitions expect 'FixedSizeList'
-// This component is prepared for future use when site count exceeds VIRTUAL_SCROLL_THRESHOLD (50)
-// Currently not activated because standard rendering performs well for current dataset
-// TODO: Resolve react-window import issue or switch to react-virtualized when needed
+/**
+ * Virtualized table body using TanStack Virtual
+ * Only renders visible rows for optimal performance with large datasets
+ *
+ * Activated when site count exceeds VIRTUAL_SCROLL_THRESHOLD (100 sites)
+ */
 
-import type { GazaSite } from "../../types";
-import { SiteTableRow } from "./SiteTableRow";
+import { useRef } from 'react';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import type { GazaSite } from '../../types';
+import { SiteTableRow } from './SiteTableRow';
 
 interface VirtualizedTableBodyProps {
   sites: GazaSite[];
   onSiteClick: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
-  variant: "compact" | "expanded";
+  variant: 'compact' | 'expanded';
   isColumnVisible: (columnName: string) => boolean;
-  height: number; // Container height
-  itemHeight: number; // Row height
+  height?: number; // Container height (default: 600px)
 }
 
 /**
- * Virtualized table body using react-window
- * Only renders visible rows for optimal performance with large datasets
+ * Virtualized table body using TanStack Virtual
+ * Only renders visible rows for optimal performance
  *
- * CURRENTLY DISABLED - See note above about react-window compatibility
+ * @param sites Array of sites to display
+ * @param variant Table variant (compact: 48px rows, expanded: 64px rows)
+ * @param height Container height in pixels (default: 600)
  */
 export function VirtualizedTableBody({
   sites,
@@ -31,21 +35,62 @@ export function VirtualizedTableBody({
   highlightedSiteId,
   variant,
   isColumnVisible,
+  height = 600,
 }: VirtualizedTableBodyProps) {
-  // Fallback to regular rendering until react-window import is resolved
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const rowVirtualizer = useVirtualizer({
+    count: sites.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => (variant === 'compact' ? 48 : 64), // Row height
+    overscan: 5, // Render 5 extra rows above/below viewport
+  });
+
   return (
-    <tbody>
-      {sites.map((site) => (
-        <SiteTableRow
-          key={site.id}
-          site={site}
-          onSiteClick={onSiteClick}
-          onSiteHighlight={onSiteHighlight}
-          highlightedSiteId={highlightedSiteId}
-          variant={variant}
-          isColumnVisible={isColumnVisible}
-        />
-      ))}
-    </tbody>
+    <div
+      ref={parentRef}
+      style={{
+        height: `${height}px`,
+        overflow: 'auto',
+      }}
+    >
+      <div
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+          width: '100%',
+          position: 'relative',
+        }}
+      >
+        <table className="min-w-full">
+          <tbody>
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const site = sites[virtualRow.index];
+              return (
+                <tr
+                  key={site.id}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
+                >
+                  <SiteTableRow
+                    site={site}
+                    onSiteClick={onSiteClick}
+                    onSiteHighlight={onSiteHighlight}
+                    highlightedSiteId={highlightedSiteId}
+                    variant={variant}
+                    isColumnVisible={isColumnVisible}
+                  />
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }

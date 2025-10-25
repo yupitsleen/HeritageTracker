@@ -9,6 +9,10 @@ import { useTableExport } from "../../hooks/useTableExport";
 import { TableHeader } from "./TableHeader";
 import { TableRow } from "./TableRow";
 import { ExportControls } from "./ExportControls";
+import { VirtualizedTableBody } from "./VirtualizedTableBody";
+
+// Threshold for enabling virtual scrolling
+const VIRTUAL_SCROLL_THRESHOLD = 100;
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
@@ -76,6 +80,12 @@ export function SitesTableDesktop({
     return new Set(visibleColumns);
   }, [variant, visibleColumns]);
 
+  // Helper to check if column is visible
+  const isColumnVisible = (columnName: string) => visibleColumnsSet.has(columnName);
+
+  // Determine if we should use virtual scrolling
+  const shouldUseVirtualScroll = sortedSites.length > VIRTUAL_SCROLL_THRESHOLD;
+
   return (
     <div
       className={`flex flex-col backdrop-blur-sm border ${t.border.primary} rounded shadow-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
@@ -119,28 +129,52 @@ export function SitesTableDesktop({
 
       {/* Scrollable table with sticky headers */}
       <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
-        <table className={t.table.base}>
-          <TableHeader
-            visibleColumns={visibleColumnsSet}
-            variant={variant}
-            sortField={sortField}
-            sortDirection={sortDirection}
-            onSort={handleSort}
-          />
-          <tbody>
-            {sortedSites.map((site) => (
-              <TableRow
-                key={site.id}
-                site={site}
-                isHighlighted={highlightedSiteId === site.id}
+        {shouldUseVirtualScroll ? (
+          // Virtual scrolling for 100+ sites
+          <div>
+            <table className={t.table.base}>
+              <TableHeader
                 visibleColumns={visibleColumnsSet}
-                onSiteClick={onSiteClick}
-                onSiteHighlight={onSiteHighlight}
-                rowRef={highlightedSiteId === site.id ? highlightedRowRef : undefined}
+                variant={variant}
+                sortField={sortField}
+                sortDirection={sortDirection}
+                onSort={handleSort}
               />
-            ))}
-          </tbody>
-        </table>
+            </table>
+            <VirtualizedTableBody
+              sites={sortedSites}
+              onSiteClick={onSiteClick}
+              onSiteHighlight={onSiteHighlight}
+              highlightedSiteId={highlightedSiteId}
+              variant={variant}
+              isColumnVisible={isColumnVisible}
+            />
+          </div>
+        ) : (
+          // Standard rendering for < 100 sites
+          <table className={t.table.base}>
+            <TableHeader
+              visibleColumns={visibleColumnsSet}
+              variant={variant}
+              sortField={sortField}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+            />
+            <tbody>
+              {sortedSites.map((site) => (
+                <TableRow
+                  key={site.id}
+                  site={site}
+                  isHighlighted={highlightedSiteId === site.id}
+                  visibleColumns={visibleColumnsSet}
+                  onSiteClick={onSiteClick}
+                  onSiteHighlight={onSiteHighlight}
+                  rowRef={highlightedSiteId === site.id ? highlightedRowRef : undefined}
+                />
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

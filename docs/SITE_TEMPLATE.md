@@ -8,7 +8,7 @@ This template helps you add new sites to `src/data/mockSites.ts` in the correct 
 **Optional Fields:** nameArabic, dateDestroyed, yearBuiltIslamic, dateDestroyedIslamic, images
 
 **Valid Types:** mosque, church, archaeological, museum, historic-building
-**Valid Statuses:** destroyed, heavily-damaged, damaged
+**Valid Statuses:** destroyed, heavily-damaged, looted, damaged, abandoned, unknown, unharmed
 
 ## Template
 
@@ -80,9 +80,16 @@ Can be:
 - **Example:** `[31.5203, 34.4668]` (Gaza City center)
 
 ### Status
-- `destroyed` - Completely destroyed
-- `heavily-damaged` - Partially destroyed, major damage
-- `damaged` - Minor to moderate damage
+
+Choose one of:
+
+- `destroyed` - Completely destroyed, no structural integrity remaining
+- `heavily-damaged` - Major structural damage, may not be repairable
+- `looted` - Artifacts or valuables stolen or removed
+- `damaged` - Partial damage, repairable with restoration work
+- `abandoned` - No longer in use or maintained, but structurally intact
+- `unknown` - Status cannot be verified or is uncertain
+- `unharmed` - No damage, fully intact and preserved
 
 ### Date Destroyed
 - **Format:** ISO date `YYYY-MM-DD`
@@ -188,7 +195,7 @@ Before adding a new site, verify:
 - [ ] At least one organization in verifiedBy
 - [ ] Source URLs start with http:// or https:// (if provided)
 - [ ] Type is one of the 5 valid types
-- [ ] Status is one of the 3 valid statuses
+- [ ] Status is one of the 7 valid statuses
 - [ ] Islamic dates verified using calendar converter (if provided)
 
 ## After Adding Sites
