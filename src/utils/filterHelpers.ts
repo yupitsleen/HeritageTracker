@@ -56,6 +56,7 @@ const TEMP_FILTER_SETTER_MAP: SetterMap = {
  */
 export function applyFilterUpdates(
   updates: Partial<FilterState>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   appState: any,
   useTemp = false
 ): void {

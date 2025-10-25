@@ -26,8 +26,10 @@ import type { SitesQueryParams } from './types';
  * ```
  */
 export function applyQueryFilters(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query: any,
   params?: SitesQueryParams
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any {
   if (!params) return query;
 

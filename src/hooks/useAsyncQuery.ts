@@ -7,8 +7,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-export interface UseAsyncQueryOptions<TParams> {
-  queryFn: (params?: TParams) => Promise<any>;
+export interface UseAsyncQueryOptions<TParams, TData> {
+  queryFn: (params?: TParams) => Promise<TData>;
   params?: TParams;
   enabled?: boolean;
   errorMessage?: string;
@@ -43,7 +43,7 @@ export function useAsyncQuery<TData, TParams = void>({
   enabled = true,
   errorMessage = 'Query failed',
   onError,
-}: UseAsyncQueryOptions<TParams>): UseAsyncQueryReturn<TData> {
+}: UseAsyncQueryOptions<TParams, TData>): UseAsyncQueryReturn<TData> {
   const [data, setData] = useState<TData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(enabled);
   const [error, setError] = useState<Error | null>(null);
