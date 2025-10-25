@@ -19,7 +19,7 @@ export interface Database {
           type: string;
           year_built: string;
           year_built_islamic: string | null;
-          coordinates: unknown; // PostGIS geography type
+          coordinates: { coordinates: [number, number] }; // PostGIS geography type (GeoJSON)
           status: string;
           date_destroyed: string | null;
           date_destroyed_islamic: string | null;
@@ -27,8 +27,8 @@ export interface Database {
           historical_significance: string;
           cultural_value: string;
           verified_by: string[];
-          images: unknown | null; // JSONB
-          sources: unknown[]; // JSONB array
+          images: Record<string, unknown>[] | null; // JSONB array
+          sources: Record<string, unknown>[]; // JSONB array
           unesco_listed: boolean | null;
           artifact_count: number | null;
           is_unique: boolean | null;
@@ -38,8 +38,63 @@ export interface Database {
           created_at: string;
           updated_at: string;
         };
-        Insert: Omit<Database['public']['Tables']['heritage_sites']['Row'], 'id' | 'created_at' | 'updated_at'>;
-        Update: Partial<Database['public']['Tables']['heritage_sites']['Insert']>;
+        Insert: {
+          id?: string;
+          name: string;
+          name_arabic?: string | null;
+          type: string;
+          year_built: string;
+          year_built_islamic?: string | null;
+          coordinates: string; // WKT format for insert
+          status: string;
+          date_destroyed?: string | null;
+          date_destroyed_islamic?: string | null;
+          description: string;
+          historical_significance: string;
+          cultural_value: string;
+          verified_by: string[];
+          images?: Record<string, unknown>[] | null;
+          sources: Record<string, unknown>[];
+          unesco_listed?: boolean | null;
+          artifact_count?: number | null;
+          is_unique?: boolean | null;
+          religious_significance?: boolean | null;
+          community_gathering_place?: boolean | null;
+          historical_events?: string[] | null;
+        };
+        Update: {
+          name?: string;
+          name_arabic?: string | null;
+          type?: string;
+          year_built?: string;
+          year_built_islamic?: string | null;
+          coordinates?: string;
+          status?: string;
+          date_destroyed?: string | null;
+          date_destroyed_islamic?: string | null;
+          description?: string;
+          historical_significance?: string;
+          cultural_value?: string;
+          verified_by?: string[];
+          images?: Record<string, unknown>[] | null;
+          sources?: Record<string, unknown>[];
+          unesco_listed?: boolean | null;
+          artifact_count?: number | null;
+          is_unique?: boolean | null;
+          religious_significance?: boolean | null;
+          community_gathering_place?: boolean | null;
+          historical_events?: string[] | null;
+        };
+      };
+    };
+    Functions: {
+      sites_near_point: {
+        Args: {
+          lat: number;
+          lng: number;
+          radius_km: number;
+        };
+        Returns: Database['public']['Tables']['heritage_sites']['Row'][];
       };
     };
   };

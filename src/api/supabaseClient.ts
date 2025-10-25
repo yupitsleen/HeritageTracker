@@ -71,3 +71,16 @@ export const supabase = createSupabaseClient();
 export const isSupabaseConfigured = (): boolean => {
   return supabase !== null && import.meta.env.VITE_USE_MOCK_API !== 'true';
 };
+
+/**
+ * Get Supabase client with null check
+ *
+ * Throws error if not configured (for production).
+ * Use this in API functions that require Supabase.
+ */
+export const getSupabaseClient = (): ReturnType<typeof createClient<Database>> => {
+  if (!supabase) {
+    throw new Error('Supabase not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
+  }
+  return supabase;
+};

@@ -5,9 +5,10 @@
  * Uses Supabase client for production, mock adapter for development.
  */
 
-import { supabase, isSupabaseConfigured } from './supabaseClient';
+import { supabase, isSupabaseConfigured, getSupabaseClient } from './supabaseClient';
 import type { PaginatedResponse, SitesQueryParams } from './types';
 import type { GazaSite } from '../types';
+import type { Database } from './database.types';
 import { mockGetAllSites, mockGetSiteById } from './mockAdapter';
 
 /**
@@ -216,22 +217,27 @@ export async function getSitesNearLocation(
   lng: number,
   radiusKm: number
 ): Promise<GazaSite[]> {
-  if (!isSupabaseConfigured() || !supabase) {
-    throw new Error('Supabase not configured');
-  }
+  const client = getSupabaseClient();
 
-  const { data, error } = await supabase.rpc('sites_near_point', {
-    lat,
-    lng,
-    radius_km: radiusKm,
-  });
+  const { data, error } = await client.rpc(
+    'sites_near_point' as never,
+    {
+      lat,
+      lng,
+      radius_km: radiusKm,
+    } as never
+  );
 
   if (error) {
     console.error('Geospatial query error:', error);
     throw new Error(`Failed to find nearby sites: ${error.message}`);
   }
 
-  return data.map(convertSupabaseRow);
+  if (!data) {
+    return [];
+  }
+
+  return (data as Database['public']['Tables']['heritage_sites']['Row'][]).map(convertSupabaseRow);
 }
 
 /**
@@ -241,41 +247,45 @@ export async function getSitesNearLocation(
  * @returns Created site with ID
  */
 export async function createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> {
-  if (!isSupabaseConfigured() || !supabase) {
-    throw new Error('Supabase not configured');
-  }
+  const client = getSupabaseClient();
 
-  const { data, error } = await supabase
+  const insertData = {
+    name: site.name,
+    name_arabic: site.nameArabic,
+    type: site.type,
+    year_built: site.yearBuilt,
+    year_built_islamic: site.yearBuiltIslamic,
+    coordinates: `POINT(${site.coordinates[1]} ${site.coordinates[0]})`, // PostGIS format
+    status: site.status,
+    date_destroyed: site.dateDestroyed,
+    date_destroyed_islamic: site.dateDestroyedIslamic,
+    description: site.description,
+    historical_significance: site.historicalSignificance,
+    cultural_value: site.culturalValue,
+    verified_by: site.verifiedBy,
+    images: site.images ?? null,
+    sources: site.sources as unknown,
+    unesco_listed: site.unescoListed,
+    artifact_count: site.artifactCount,
+    is_unique: site.isUnique,
+    religious_significance: site.religiousSignificance,
+    community_gathering_place: site.communityGatheringPlace,
+    historical_events: site.historicalEvents,
+  } as unknown as Database['public']['Tables']['heritage_sites']['Insert'];
+
+  const { data, error } = await client
     .from('heritage_sites')
-    .insert({
-      name: site.name,
-      name_arabic: site.nameArabic,
-      type: site.type,
-      year_built: site.yearBuilt,
-      year_built_islamic: site.yearBuiltIslamic,
-      coordinates: `POINT(${site.coordinates[1]} ${site.coordinates[0]})`, // PostGIS format
-      status: site.status,
-      date_destroyed: site.dateDestroyed,
-      date_destroyed_islamic: site.dateDestroyedIslamic,
-      description: site.description,
-      historical_significance: site.historicalSignificance,
-      cultural_value: site.culturalValue,
-      verified_by: site.verifiedBy,
-      images: site.images as unknown,
-      sources: site.sources as unknown,
-      unesco_listed: site.unescoListed,
-      artifact_count: site.artifactCount,
-      is_unique: site.isUnique,
-      religious_significance: site.religiousSignificance,
-      community_gathering_place: site.communityGatheringPlace,
-      historical_events: site.historicalEvents,
-    })
+    .insert(insertData as never)
     .select()
     .single();
 
   if (error) {
     console.error('Failed to create site:', error);
     throw new Error(`Failed to create site: ${error.message}`);
+  }
+
+  if (!data) {
+    throw new Error('No data returned after site creation');
   }
 
   return convertSupabaseRow(data);
@@ -289,9 +299,7 @@ export async function createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> 
  * @returns Updated site
  */
 export async function updateSite(id: string, updates: Partial<GazaSite>): Promise<GazaSite> {
-  if (!isSupabaseConfigured() || !supabase) {
-    throw new Error('Supabase not configured');
-  }
+  const client = getSupabaseClient();
 
   // Convert camelCase to snake_case for database
   const dbUpdates: Record<string, unknown> = {};
@@ -302,9 +310,9 @@ export async function updateSite(id: string, updates: Partial<GazaSite>): Promis
   if (updates.description) dbUpdates.description = updates.description;
   // ... add more fields as needed
 
-  const { data, error } = await supabase
+  const { data, error} = await client
     .from('heritage_sites')
-    .update(dbUpdates)
+    .update(dbUpdates as never)
     .eq('id', id)
     .select()
     .single();
