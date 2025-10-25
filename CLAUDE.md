@@ -41,7 +41,7 @@
 
 ```bash
 npm run dev     # Dev server → http://localhost:5173 (keep running for HMR)
-npm test        # Run test suite (1546 tests must pass ✓)
+npm test        # Run test suite (1533 tests must pass ✓)
 npm run lint    # ESLint + Prettier check
 npm run build   # Production build
 ```
@@ -52,15 +52,16 @@ npm run build   # Production build
 - **Tailwind CSS v4** (custom Palestinian flag theme)
 - **Leaflet** (interactive maps)
 - **D3.js** (timeline visualization)
-- **Vitest** (testing - 1546 tests passing)
-- **Mock-First Backend Ready** (API layer + mock adapter)
+- **Vitest** (testing - 1533 tests passing)
+- **Supabase** (PostgreSQL + PostGIS backend)
 
 ### Current State
 
 - **44 sites** documented (Gaza heritage sites)
 - **MVP Phase 1:** Complete ✅
-- **Backend Integration:** Complete ✅ (Mock-first approach, ready for C#/.NET API)
+- **Backend:** Supabase-ready ✅ (PostgreSQL + PostGIS, mock adapter for dev)
 - **Features:** Interactive map, timeline, advanced filtering, detail modals, bilingual support, async data loading
+- **Scaling:** Ready for thousands of sites with pagination + virtual scrolling
 
 ### Data Sources
 
@@ -93,7 +94,7 @@ git commit -m "Add feature with Claude"
 
 ### Quality Gates
 
-1. **Test First** - 1546/1546 tests must pass before commit
+1. **Test First** - 1533/1533 tests must pass before commit
 2. **Keep Dev Server Running** - Use HMR for instant feedback
 3. **DRY/KISS/SOLID** - Review code quality before commit
 4. **Smoke Tests** - Quick manual verification (not implementation)
@@ -112,8 +113,9 @@ git commit -m "Add feature with Claude"
 
 ```
 src/
-├── api/                    # Backend integration layer ✅ NEW
-│   ├── client.ts           # Base HTTP client with error handling
+├── api/                    # Backend integration layer ✅
+│   ├── supabaseClient.ts   # Supabase connection
+│   ├── database.types.ts   # Supabase database types
 │   ├── sites.ts            # Site API endpoints (CRUD)
 │   ├── types.ts            # API response types
 │   └── mockAdapter.ts      # Mock functions for development
@@ -299,11 +301,11 @@ interface Source {
 
 ### Technical Constraints
 
-- **Static site (MVP)** - No backend, no auth, no database
-- **Client-side only** - All data in `sites.json`
+- **Supabase Backend** - PostgreSQL + PostGIS for geospatial queries
+- **Free tier → $25/mo** - Scales to thousands of sites
 - **Free tier services** - Leaflet (no API key), D3.js (free)
-- **Vercel/Netlify deployment** - Free hosting tiers
-- **No ongoing costs** - Sustainable long-term
+- **Vercel deployment** - Free frontend hosting
+- **Low ongoing costs** - Sustainable long-term ($0-25/mo)
 
 ### Accessibility
 
@@ -365,92 +367,54 @@ Successfully completed comprehensive code quality refactoring:
 - Eliminated 16 lines of duplicate code
 - Added 7 tests for FilterLabel
 
-**Impact:**
-- ✅ 1464 tests passing (+36 new tests)
-- ✅ Production build: 7.34s
-- ✅ Zero DRY violations in refactored areas
-- ✅ Better maintainability and consistency
-
 ### Phase 2: Component Architecture - COMPLETED ✅
 
 Successfully completed major component refactoring focusing on separation of concerns:
 
 **1. Simplify FilterBar Props (14→3)**
 - Grouped 14 individual props into 3: `filters`, `onFilterChange`, `sites`
-- Updated MobileLayout and HomePage modal to use new interface
 - Reduced coupling and prop drilling
 
 **2. Simplify DesktopLayout Props (20→15)**
 - Grouped filter display state (5 props → 1 `filters` object)
 - Grouped table resize props (4 props → 1 `tableResize` object)
-- Cleaner prop passing throughout
 
 **3. Extract Complex Calculations to Hooks**
 - Created `useDefaultDateRange` hook (32 lines + 4 tests)
 - Created `useDefaultYearRange` hook (47 lines + 5 tests)
-- Reduced FilterBar complexity by 55 lines
 
 **4. Break Down SitesTableDesktop (385→148 lines, 61% reduction)**
-- Extracted 3 custom hooks:
-  - `useTableSort` - Sort logic (95 lines)
-  - `useTableScroll` - Scroll behavior (30 lines)
-  - `useTableExport` - Export functionality (34 lines)
-- Created 4 sub-components:
-  - `SortIcon` - Sort indicators (23 lines)
-  - `TableHeader` - Column headers (115 lines)
-  - `TableRow` - Row rendering (123 lines)
-  - `ExportControls` - Export UI (70 lines)
+- Extracted 3 custom hooks for sort, scroll, export
+- Created 4 sub-components for better organization
+
+### Phase 3: Supabase Backend Integration - COMPLETED ✅
+
+Migrated to Supabase-only backend (removed C#/.NET option):
+
+**1. API Layer Simplification**
+- Created Supabase client ([src/api/supabaseClient.ts](src/api/supabaseClient.ts))
+- Rewrote site API endpoints ([src/api/sites.ts](src/api/sites.ts)) for Supabase
+- Added database types ([src/api/database.types.ts](src/api/database.types.ts))
+- Removed generic HTTP client (simplified architecture)
+
+**2. New Status Types**
+- Added 4 new statuses: `looted`, `abandoned`, `unknown`, `unharmed`
+- Full bilingual support (English/Arabic)
+- Updated all components and tests
+
+**3. Documentation Updates**
+- API_CONTRACT.md v3.0 - Supabase-only specification
+- SCALING_IMPLEMENTATION_PLAN.md - Pagination + virtual scrolling guide
+- Removed obsolete C#/.NET documentation
 
 **Impact:**
-- ✅ 1473 tests passing (+9 new tests from Phase 2)
+- ✅ 1533 tests passing (all backend tests working with mock adapter)
 - ✅ Production build successful
-- ✅ SitesTableDesktop: 385→148 lines (61% reduction)
-- ✅ All hooks reusable and independently testable
-- ✅ Ready for 1000+ sites with virtual scrolling infrastructure
-- ✅ Better adherence to Single Responsibility Principle
+- ✅ Supabase ready (PostgreSQL + PostGIS)
+- ✅ Ready for thousands of sites
+- ✅ Simplified codebase (removed 263 lines of unused code)
 
-### Phase 3: Backend Integration - COMPLETED ✅
-
-Successfully completed mock-first backend integration preparation:
-
-**1. API Layer Foundation**
-- Created centralized HTTP client ([src/api/client.ts](src/api/client.ts))
-- Built site-specific API endpoints ([src/api/sites.ts](src/api/sites.ts))
-- Added comprehensive TypeScript types ([src/api/types.ts](src/api/types.ts))
-- Environment-based configuration (dev/prod)
-
-**2. Mock Adapter Implementation**
-- Created mock adapter ([src/api/mockAdapter.ts](src/api/mockAdapter.ts)) - MSW alternative
-- Simulates realistic network delays (500ms)
-- Conditional mocking via `VITE_USE_MOCK_API` environment variable
-- Easy swap to real backend (change 1 env variable)
-
-**3. Data Fetching Hooks**
-- Created `useSites` hook with loading/error/refetch states
-- Created `useSiteById` hook for individual site fetching
-- Added 24 comprehensive behavior-focused tests
-
-**4. UI Components**
-- Created accessible LoadingSpinner component
-- Created ErrorMessage component with retry functionality
-- Added 36 tests for loading/error components
-- Styled to match Palestinian flag theme
-
-**5. Component Updates**
-- Updated HomePage to use async data fetching
-- Added loading and error state handling
-- Fixed React Hooks rules violations
-- All components now use mock adapter
-
-**Impact:**
-- ✅ 1546 tests passing (+73 new tests from Phase 3)
-- ✅ Production build successful (8.41s)
-- ✅ Zero linting errors
-- ✅ TypeScript strict mode compliant
-- ✅ Complete API contract documented ([API_CONTRACT.md](API_CONTRACT.md))
-- ✅ Ready for C#/.NET backend integration
-
-See [BACKEND_INTEGRATION_PLAN.md](BACKEND_INTEGRATION_PLAN.md) for detailed implementation plan.
+See [API_CONTRACT.md](API_CONTRACT.md) for Supabase setup guide.
 
 ---
 
@@ -505,9 +469,9 @@ npm test -- --watch     # Run tests in watch mode
 
 ---
 
-**Last Updated:** October 24, 2025
+**Last Updated:** October 25, 2025
 **Project Status:** MVP Phase 1 - COMPLETE ✅ (44 sites documented)
-**Code Quality:** Phase 1-3 refactoring complete (DRY/KISS/SOLID + Backend Integration)
-**Test Coverage:** 1546 tests passing
-**Backend Status:** Mock-first integration complete, ready for C#/.NET API
-**Next Priority:** Backend team implements API per API_CONTRACT.md
+**Code Quality:** Phase 1-3 refactoring complete (DRY/KISS/SOLID + Supabase Integration)
+**Test Coverage:** 1533 tests passing
+**Backend Status:** Supabase-ready (PostgreSQL + PostGIS)
+**Next Priority:** Set up Supabase project and deploy (see API_CONTRACT.md)
