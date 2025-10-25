@@ -83,15 +83,6 @@ export const STATUS_REGISTRY: Record<string, StatusConfig> = {
 };
 
 /**
- * Register a new status dynamically
- *
- * @param config - Status configuration
- */
-export function registerStatus(config: StatusConfig): void {
-  STATUS_REGISTRY[config.id] = config;
-}
-
-/**
  * Get all registered statuses, sorted by severity (highest first)
  *
  * @returns Array of all status configurations
@@ -135,16 +126,6 @@ export function getStatusLabel(statusId: string, locale: string = 'en'): string 
   }
 
   return config.label;
-}
-
-/**
- * Check if a status is registered
- *
- * @param statusId - Status identifier
- * @returns True if status is registered
- */
-export function isStatusRegistered(statusId: string): boolean {
-  return statusId in STATUS_REGISTRY;
 }
 
 /**

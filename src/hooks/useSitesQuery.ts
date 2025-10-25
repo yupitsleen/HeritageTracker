@@ -13,6 +13,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getSitesPaginated } from '../api/sites';
+import { QUERY_CONFIG } from '../config/queryConfig';
 import type { SitesQueryParams } from '../api/types';
 import type { GazaSite } from '../types';
 
@@ -38,12 +39,12 @@ import type { GazaSite } from '../types';
  */
 export function useSitesQuery(params?: SitesQueryParams) {
   return useQuery({
-    queryKey: ['sites', params], // Cache key based on params
+    queryKey: ['sites', params],
     queryFn: () => getSitesPaginated(params),
-    staleTime: 5 * 60 * 1000, // Data fresh for 5 minutes
-    gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes (formerly cacheTime)
-    retry: 2, // Retry failed requests twice
-    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    staleTime: QUERY_CONFIG.STALE_TIME,
+    gcTime: QUERY_CONFIG.GC_TIME,
+    retry: QUERY_CONFIG.RETRY_COUNT,
+    refetchOnWindowFocus: QUERY_CONFIG.REFETCH_ON_WINDOW_FOCUS,
   });
 }
 
@@ -64,9 +65,9 @@ export function useAllSitesQuery(params?: Omit<SitesQueryParams, 'page' | 'pageS
       });
       return response.data as GazaSite[];
     },
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    retry: 2,
-    refetchOnWindowFocus: false,
+    staleTime: QUERY_CONFIG.STALE_TIME,
+    gcTime: QUERY_CONFIG.GC_TIME,
+    retry: QUERY_CONFIG.RETRY_COUNT,
+    refetchOnWindowFocus: QUERY_CONFIG.REFETCH_ON_WINDOW_FOCUS,
   });
 }

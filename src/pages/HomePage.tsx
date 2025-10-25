@@ -15,6 +15,7 @@ import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Button } from "../components/Button";
 import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
+import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 
 // Lazy load heavy components for better initial load performance
@@ -42,26 +43,13 @@ export function HomePage({ isMobile }: HomePageProps) {
 
   const t = useThemeClasses();
 
-  // Wrapper function to handle filter updates for FilterBar component
+  // Wrapper functions to handle filter updates using helper
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
-    if (updates.selectedTypes !== undefined) appState.setSelectedTypes(updates.selectedTypes);
-    if (updates.selectedStatuses !== undefined) appState.setSelectedStatuses(updates.selectedStatuses);
-    if (updates.destructionDateStart !== undefined) appState.setDestructionDateStart(updates.destructionDateStart);
-    if (updates.destructionDateEnd !== undefined) appState.setDestructionDateEnd(updates.destructionDateEnd);
-    if (updates.creationYearStart !== undefined) appState.setCreationYearStart(updates.creationYearStart);
-    if (updates.creationYearEnd !== undefined) appState.setCreationYearEnd(updates.creationYearEnd);
-    if (updates.searchTerm !== undefined) appState.setSearchTerm(updates.searchTerm);
+    applyFilterUpdates(updates, appState, false);
   }, [appState]);
 
-  // Wrapper function for temp filter updates in modal
   const handleTempFilterChange = useCallback((updates: Partial<FilterState>) => {
-    if (updates.selectedTypes !== undefined) appState.setTempSelectedTypes(updates.selectedTypes);
-    if (updates.selectedStatuses !== undefined) appState.setTempSelectedStatuses(updates.selectedStatuses);
-    if (updates.destructionDateStart !== undefined) appState.setTempDestructionDateStart(updates.destructionDateStart);
-    if (updates.destructionDateEnd !== undefined) appState.setTempDestructionDateEnd(updates.destructionDateEnd);
-    if (updates.creationYearStart !== undefined) appState.setTempCreationYearStart(updates.creationYearStart);
-    if (updates.creationYearEnd !== undefined) appState.setTempCreationYearEnd(updates.creationYearEnd);
-    if (updates.searchTerm !== undefined) appState.setSearchTerm(updates.searchTerm);
+    applyFilterUpdates(updates, appState, true);
   }, [appState]);
 
   // Show loading state while fetching sites

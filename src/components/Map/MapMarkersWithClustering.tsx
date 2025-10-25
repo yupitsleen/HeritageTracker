@@ -30,6 +30,71 @@ interface MapMarkersWithClusteringProps {
 const CLUSTERING_THRESHOLD = 50;
 
 /**
+ * Create marker cluster group with custom styling
+ */
+function createClusterGroup(): L.MarkerClusterGroup {
+  return L.markerClusterGroup({
+    maxClusterRadius: 50,
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    iconCreateFunction: (cluster) => {
+      const count = cluster.getChildCount();
+      return L.divIcon({
+        html: `<div class="cluster-marker">${count}</div>`,
+        className: 'marker-cluster-custom',
+        iconSize: L.point(40, 40),
+      });
+    },
+  });
+}
+
+/**
+ * Create a single marker for a site
+ */
+function createSiteMarker(
+  site: GazaSite,
+  isHighlighted: boolean,
+  isDestroyed: boolean
+): L.Marker | L.CircleMarker {
+  if (isHighlighted) {
+    // Highlighted sites use teardrop icon
+    return L.marker(site.coordinates, {
+      icon: createMarkerIcon(site.status, true),
+    });
+  }
+
+  // Regular sites use circle marker
+  const fillColor = getStatusHexColor(site.status);
+  return L.circleMarker(site.coordinates, {
+    radius: isDestroyed ? 2 : 3,
+    fillColor: isDestroyed ? '#000000' : fillColor,
+    fillOpacity: isDestroyed ? 1 : 0.8,
+    color: '#000000',
+    weight: 1,
+  });
+}
+
+/**
+ * Add popup to marker
+ */
+function addPopupToMarker(
+  marker: L.Marker | L.CircleMarker,
+  site: GazaSite,
+  onViewMore: (() => void) | undefined
+): void {
+  const popupContent = renderToStaticMarkup(
+    <SitePopup site={site} onViewMore={onViewMore || (() => {})} />
+  );
+
+  marker.bindPopup(popupContent, {
+    maxWidth: 320,
+    maxHeight: 400,
+    className: 'heritage-popup',
+  });
+}
+
+/**
  * MapMarkersWithClustering - Clusters markers for better performance with large datasets
  *
  * Features:
@@ -41,6 +106,7 @@ const CLUSTERING_THRESHOLD = 50;
  * PERFORMANCE:
  * - Memoized destroyed sites Set (O(1) lookups)
  * - React.memo to prevent unnecessary re-renders
+ * - Extracted helper functions for better testability
  */
 export const MapMarkersWithClustering = memo(function MapMarkersWithClustering({
   sites,
@@ -69,73 +135,34 @@ export const MapMarkersWithClustering = memo(function MapMarkersWithClustering({
   useEffect(() => {
     if (!map) return;
 
-    // Create marker cluster group if clustering is enabled
-    const markers = shouldCluster
-      ? L.markerClusterGroup({
-          maxClusterRadius: 50,
-          spiderfyOnMaxZoom: true,
-          showCoverageOnHover: false,
-          zoomToBoundsOnClick: true,
-          iconCreateFunction: (cluster) => {
-            const count = cluster.getChildCount();
-            return L.divIcon({
-              html: `<div class="cluster-marker">${count}</div>`,
-              className: 'marker-cluster-custom',
-              iconSize: L.point(40, 40),
-            });
-          },
-        })
-      : L.layerGroup();
+    // Create marker group (clustered or regular)
+    const markerGroup = shouldCluster ? createClusterGroup() : L.layerGroup();
 
-    // Add markers
+    // Add markers for each site
     sites.forEach((site) => {
       const isHighlighted = site.id === highlightedSiteId;
-      const fillColor = getStatusHexColor(site.status);
-      const destroyed = destroyedSiteIds.has(site.id);
+      const isDestroyed = destroyedSiteIds.has(site.id);
 
-      let marker: L.Marker | L.CircleMarker;
-
-      if (isHighlighted) {
-        // Highlighted sites use teardrop icon
-        marker = L.marker(site.coordinates, {
-          icon: createMarkerIcon(site.status, true),
-        });
-      } else {
-        // Regular sites use circle marker
-        marker = L.circleMarker(site.coordinates, {
-          radius: destroyed ? 2 : 3,
-          fillColor: destroyed ? '#000000' : fillColor,
-          fillOpacity: destroyed ? 1 : 0.8,
-          color: '#000000',
-          weight: 1,
-        });
-      }
+      // Create marker
+      const marker = createSiteMarker(site, isHighlighted, isDestroyed);
 
       // Add popup
-      const popupContent = renderToStaticMarkup(
-        <SitePopup site={site} onViewMore={() => onSiteClick?.(site)} />
-      );
+      addPopupToMarker(marker, site, () => onSiteClick?.(site));
 
-      marker.bindPopup(popupContent, {
-        maxWidth: 320,
-        maxHeight: 400,
-        className: 'heritage-popup',
-      });
-
-      // Add click handler
+      // Add click handler for highlighting
       marker.on('click', () => {
         onSiteHighlight?.(site.id);
       });
 
-      markers.addLayer(marker);
+      markerGroup.addLayer(marker);
     });
 
-    // Add markers to map
-    map.addLayer(markers);
+    // Add to map
+    map.addLayer(markerGroup);
 
     // Cleanup on unmount
     return () => {
-      map.removeLayer(markers);
+      map.removeLayer(markerGroup);
     };
   }, [map, sites, highlightedSiteId, onSiteClick, onSiteHighlight, destroyedSiteIds, shouldCluster]);
 

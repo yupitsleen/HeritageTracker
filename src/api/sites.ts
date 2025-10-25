@@ -6,6 +6,7 @@
  */
 
 import { supabase, isSupabaseConfigured, getSupabaseClient } from './supabaseClient';
+import { applyQueryFilters } from './queryHelpers';
 import type { PaginatedResponse, SitesQueryParams } from './types';
 import type { GazaSite } from '../types';
 import type { Database } from './database.types';
@@ -67,26 +68,8 @@ export async function getAllSites(params?: SitesQueryParams): Promise<GazaSite[]
 
   let query = supabase.from('heritage_sites').select('*');
 
-  // Apply filters
-  if (params?.types && params.types.length > 0) {
-    query = query.in('type', params.types);
-  }
-
-  if (params?.statuses && params.statuses.length > 0) {
-    query = query.in('status', params.statuses);
-  }
-
-  if (params?.dateDestroyedStart) {
-    query = query.gte('date_destroyed', params.dateDestroyedStart);
-  }
-
-  if (params?.dateDestroyedEnd) {
-    query = query.lte('date_destroyed', params.dateDestroyedEnd);
-  }
-
-  if (params?.search) {
-    query = query.or(`name.ilike.%${params.search}%,name_arabic.ilike.%${params.search}%`);
-  }
+  // Apply common filters using helper
+  query = applyQueryFilters(query, params);
 
   // Execute query
   const { data, error } = await query;
@@ -122,26 +105,8 @@ export async function getSitesPaginated(
     .select('*', { count: 'exact' })
     .range(from, to);
 
-  // Apply filters (same as getAllSites)
-  if (params?.types && params.types.length > 0) {
-    query = query.in('type', params.types);
-  }
-
-  if (params?.statuses && params.statuses.length > 0) {
-    query = query.in('status', params.statuses);
-  }
-
-  if (params?.dateDestroyedStart) {
-    query = query.gte('date_destroyed', params.dateDestroyedStart);
-  }
-
-  if (params?.dateDestroyedEnd) {
-    query = query.lte('date_destroyed', params.dateDestroyedEnd);
-  }
-
-  if (params?.search) {
-    query = query.or(`name.ilike.%${params.search}%,name_arabic.ilike.%${params.search}%`);
-  }
+  // Apply common filters using helper
+  query = applyQueryFilters(query, params);
 
   // Apply sorting
   if (params?.sortBy) {

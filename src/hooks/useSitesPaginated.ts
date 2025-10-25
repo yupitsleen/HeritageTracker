@@ -8,10 +8,11 @@
  * - Optional filtering via query parameters
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useAsyncQuery } from './useAsyncQuery';
 import { getSitesPaginated } from '../api/sites';
 import type { GazaSite } from '../types';
-import type { SitesQueryParams } from '../api/types';
+import type { SitesQueryParams, PaginatedResponse } from '../api/types';
 
 /**
  * Hook return type
@@ -67,40 +68,39 @@ export function useSitesPaginated(
   initialPage = 1,
   initialPageSize = 50
 ): UseSitesPaginatedReturn {
-  const [sites, setSites] = useState<GazaSite[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(initialPage);
   const [pageSize] = useState(initialPageSize);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const fetchSites = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  // Build query params including pagination
+  const queryParams = useMemo(
+    () => ({
+      ...params,
+      page,
+      pageSize,
+    }),
+    [params, page, pageSize]
+  );
 
-    try {
-      const response = await getSitesPaginated({
-        ...params,
-        page,
-        pageSize,
-      });
+  // Fetch paginated data using shared async hook
+  const { data, isLoading, error, refetch } = useAsyncQuery<
+    PaginatedResponse<GazaSite>,
+    SitesQueryParams
+  >({
+    queryFn: getSitesPaginated,
+    params: queryParams,
+    errorMessage: 'Failed to fetch paginated sites',
+    onError: (err) => console.error('useSitesPaginated error:', err),
+  });
 
-      setSites(response.data);
-      setTotalItems(response.pagination.totalItems);
-      setTotalPages(response.pagination.totalPages);
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('Failed to fetch paginated sites');
-      setError(error);
-      console.error('useSitesPaginated error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [params, page, pageSize]);
-
+  // Update pagination metadata when data changes
   useEffect(() => {
-    fetchSites();
-  }, [fetchSites]);
+    if (data) {
+      setTotalItems(data.pagination.totalItems);
+      setTotalPages(data.pagination.totalPages);
+    }
+  }, [data]);
 
   const goToPage = useCallback(
     (newPage: number) => {
@@ -120,7 +120,7 @@ export function useSitesPaginated(
   }, [page, goToPage]);
 
   return {
-    sites,
+    sites: data?.data ?? [],
     isLoading,
     error,
     pagination: {
@@ -132,6 +132,6 @@ export function useSitesPaginated(
     goToPage,
     nextPage,
     prevPage,
-    refetch: fetchSites,
+    refetch,
   };
 }

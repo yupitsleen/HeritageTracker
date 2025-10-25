@@ -7,7 +7,7 @@
  * - Optional filtering via query parameters
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useAsyncQuery } from './useAsyncQuery';
 import { getAllSites } from '../api/sites';
 import type { GazaSite } from '../types';
 import type { SitesQueryParams } from '../api/types';
@@ -39,34 +39,16 @@ export interface UseSitesReturn {
  * ```
  */
 export function useSites(params?: SitesQueryParams): UseSitesReturn {
-  const [sites, setSites] = useState<GazaSite[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  const fetchSites = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const data = await getAllSites(params);
-      setSites(data);
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('Failed to fetch sites');
-      setError(error);
-      console.error('useSites error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [params]);
-
-  useEffect(() => {
-    fetchSites();
-  }, [fetchSites]);
+  const { data, isLoading, error, refetch } = useAsyncQuery<GazaSite[], SitesQueryParams>({
+    queryFn: getAllSites,
+    params,
+    errorMessage: 'Failed to fetch sites',
+  });
 
   return {
-    sites,
+    sites: data ?? [],
     isLoading,
     error,
-    refetch: fetchSites,
+    refetch,
   };
 }
