@@ -1,53 +1,47 @@
-# Heritage Tracker REST API Contract
+# Heritage Tracker API Contract - Supabase Backend
 
-**Version:** 2.0
+**Version:** 3.0
 **Last Updated:** October 25, 2025
-**Status:** Ready for Backend Implementation
-**Recommended Backend:** Supabase (PostgreSQL) or C#/.NET
+**Status:** Production Ready
+**Backend:** Supabase (PostgreSQL + PostGIS)
 
 ---
 
 ## Overview
 
-This document defines the REST API contract between the Heritage Tracker frontend and backend. The frontend is fully implemented and ready to connect to a backend that implements this specification.
+This document defines the Supabase backend implementation for Heritage Tracker. The frontend is fully implemented and ready to connect.
 
-**Architecture designed for:** Thousands to millions of heritage sites globally
+**Architecture:** Designed for thousands to millions of heritage sites globally
 
-### Recommended Backend Approach
+### Backend: Supabase (PostgreSQL)
 
-**Option A: Supabase (PostgreSQL) - Recommended for Fast Implementation**
+**Why Supabase:**
 - Auto-generated REST API from database schema
-- Built-in authentication, storage, and real-time
-- PostGIS for geospatial queries
+- Built-in authentication, storage, and real-time subscriptions
+- PostGIS extension for geospatial queries
+- Automatic API documentation
+- Row-Level Security (RLS) for access control
 - Free tier → $25/mo at scale
 - Setup time: 2-3 hours
 
-**Option B: C#/.NET Core - Recommended for Enterprise**
-- Full control over business logic
-- ASP.NET Core Web API
-- Entity Framework + PostgreSQL/SQL Server
-- Setup time: 40+ hours
-
-**Base URL (Supabase):** `https://[project-id].supabase.co/rest/v1/`
-**Base URL (Custom):** `https://api.heritagetracker.com/api`
+**Base URL:** `https://[project-id].supabase.co/rest/v1/`
+**Auth:** Supabase JWT tokens
 
 ---
 
 ## Authentication
 
-**Public Read Access:** No authentication required for GET requests
+**Public Read Access:** No authentication required (anon key only)
 
-**Admin Write Access:** JWT bearer tokens for POST, PUT, DELETE operations
-
-### Supabase Authentication
 ```http
-Authorization: Bearer <supabase_jwt_token>
 apikey: <supabase_anon_key>
 ```
 
-### Custom Backend Authentication
+**Admin Write Access:** Authenticated users with JWT tokens
+
 ```http
-Authorization: Bearer <jwt_token>
+Authorization: Bearer <supabase_jwt_token>
+apikey: <supabase_anon_key>
 ```
 
 ---
@@ -566,7 +560,7 @@ Contact frontend team for:
 
 ---
 
-## Appendix A: Supabase Implementation Guide
+## Supabase Implementation Guide
 
 ### Quick Start with Supabase (2-3 hours)
 
@@ -803,125 +797,7 @@ export async function getAllSites(params?: SitesQueryParams) {
 
 ---
 
-## Appendix B: C#/.NET Implementation Guide
-
-### Quick Start with ASP.NET Core (40+ hours)
-
-#### Database Schema (Entity Framework)
-
-```csharp
-public class HeritageSite
-{
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string Name { get; set; } = string.Empty;
-    public string? NameArabic { get; set; }
-    public string Type { get; set; } = string.Empty;
-    public string YearBuilt { get; set; } = string.Empty;
-    public string? YearBuiltIslamic { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public string Status { get; set; } = string.Empty;
-    public DateTime? DateDestroyed { get; set; }
-    public string? DateDestroyedIslamic { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public string HistoricalSignificance { get; set; } = string.Empty;
-    public string CulturalValue { get; set; } = string.Empty;
-    public List<string> VerifiedBy { get; set; } = new();
-    public ImageSet? Images { get; set; }
-    public List<Source> Sources { get; set; } = new();
-
-    // Metadata
-    public bool UnescoListed { get; set; }
-    public int? ArtifactCount { get; set; }
-
-    // Timestamps
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-}
-
-// DbContext
-public class HeritageDbContext : DbContext
-{
-    public DbSet<HeritageSite> Sites { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<HeritageSite>()
-            .HasIndex(s => s.Type);
-        modelBuilder.Entity<HeritageSite>()
-            .HasIndex(s => s.Status);
-        modelBuilder.Entity<HeritageSite>()
-            .HasIndex(s => s.DateDestroyed);
-    }
-}
-```
-
-#### API Controller
-
-```csharp
-[ApiController]
-[Route("api/sites")]
-public class SitesController : ControllerBase
-{
-    private readonly HeritageDbContext _context;
-
-    [HttpGet]
-    public async Task<ActionResult<ApiResponse<List<HeritageSite>>>> GetSites(
-        [FromQuery] string? type,
-        [FromQuery] string? status)
-    {
-        var query = _context.Sites.AsQueryable();
-
-        if (!string.IsNullOrEmpty(type))
-        {
-            var types = type.Split(',');
-            query = query.Where(s => types.Contains(s.Type));
-        }
-
-        if (!string.IsNullOrEmpty(status))
-        {
-            var statuses = status.Split(',');
-            query = query.Where(s => statuses.Contains(s.Status));
-        }
-
-        var sites = await query.ToListAsync();
-
-        return Ok(new ApiResponse<List<HeritageSite>>
-        {
-            Data = sites,
-            Success = true,
-            Timestamp = DateTime.UtcNow
-        });
-    }
-
-    [HttpGet("paginated")]
-    public async Task<ActionResult<PaginatedResponse<HeritageSite>>> GetSitesPaginated(
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 50)
-    {
-        var totalItems = await _context.Sites.CountAsync();
-        var sites = await _context.Sites
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-
-        return Ok(new PaginatedResponse<HeritageSite>
-        {
-            Data = sites,
-            Pagination = new PaginationInfo
-            {
-                Page = page,
-                PageSize = pageSize,
-                TotalItems = totalItems,
-                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
-            }
-        });
-    }
-}
-```
-
----
-
-**Document Version:** 2.0
+**Document Version:** 3.0
 **Frontend Ready:** Yes (Scaled for thousands of sites)
-**Backend Status:** Pending Implementation (Supabase recommended)
+**Backend:** Supabase (PostgreSQL + PostGIS)
+**Status:** Production Ready

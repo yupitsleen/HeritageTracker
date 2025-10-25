@@ -1,9 +1,8 @@
 /**
- * API Response Types for Heritage Tracker Backend
+ * API Types for Heritage Tracker (Supabase Backend)
  *
- * These types define the structure of data returned from the REST API.
- * They may differ slightly from internal GazaSite types to accommodate
- * backend serialization formats.
+ * Type definitions for API requests and responses.
+ * These types wrap Supabase responses with pagination and metadata.
  */
 
 import type { GazaSite, Source, ImageWithAttribution } from '../types';
@@ -57,12 +56,14 @@ export interface ApiSite extends GazaSite {
 
 /**
  * Query parameters for filtering sites
+ * Used with both getAllSites() and getSitesPaginated()
  */
 export interface SitesQueryParams {
-  type?: string | string[];
-  status?: string | string[];
+  types?: string[];
+  statuses?: string[];
   dateDestroyedStart?: string;
   dateDestroyedEnd?: string;
+  search?: string;
   page?: number;
   pageSize?: number;
   sortBy?: 'name' | 'dateDestroyed' | 'dateFounded' | 'type' | 'status';

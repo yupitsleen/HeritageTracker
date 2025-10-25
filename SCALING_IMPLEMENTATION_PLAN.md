@@ -1,6 +1,8 @@
 # Scaling Implementation Plan - Pagination + Virtual Scrolling
 
 **Created:** October 25, 2025
+**Updated:** October 25, 2025 (Supabase-specific)
+**Backend:** Supabase (PostgreSQL + PostGIS)
 **Target:** Scale from 44 sites → thousands of sites
 **Estimated Time:** 8-10 hours total
 
@@ -15,9 +17,11 @@ Frontend updates needed to handle thousands of heritage sites efficiently with:
 4. Optimized filtering
 
 **Current State:**
-- ✅ API layer ready with `getSitesPaginated()` function
+- ✅ Supabase client created (`supabaseClient.ts`)
+- ✅ API layer updated with `getSitesPaginated()` using Supabase
 - ✅ `VirtualizedTableBody` component exists (disabled)
 - ✅ All infrastructure in place
+- ✅ Generic HTTP client removed (Supabase-only approach)
 - ⚠️ Currently fetches all sites at once (works for 44, breaks at 1000+)
 
 ---
@@ -710,5 +714,6 @@ If issues occur in production:
 
 **Last Updated:** October 25, 2025
 **Status:** Ready for Implementation
+**Backend:** Supabase (PostgreSQL + PostGIS)
 **Estimated Total Time:** 8-10 hours
-**Dependencies:** Backend API must support pagination endpoint
+**Dependencies:** Supabase project must be set up (see API_CONTRACT.md)
