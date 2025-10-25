@@ -68,11 +68,13 @@ export function useAsyncQuery<TData, TParams = void>({
     } finally {
       setIsLoading(false);
     }
-  }, [queryFn, params, enabled, errorMessage, onError]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params, enabled, errorMessage]);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params, enabled]);
 
   return {
     data,
