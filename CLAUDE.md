@@ -41,7 +41,7 @@
 
 ```bash
 npm run dev     # Dev server → http://localhost:5173 (keep running for HMR)
-npm test        # Run test suite (38 tests must pass ✓)
+npm test        # Run test suite (1546 tests must pass ✓)
 npm run lint    # ESLint + Prettier check
 npm run build   # Production build
 ```
@@ -52,13 +52,15 @@ npm run build   # Production build
 - **Tailwind CSS v4** (custom Palestinian flag theme)
 - **Leaflet** (interactive maps)
 - **D3.js** (timeline visualization)
-- **Vitest** (testing - 38 tests passing)
+- **Vitest** (testing - 1546 tests passing)
+- **Mock-First Backend Ready** (API layer + mock adapter)
 
 ### Current State
 
-- **5 of 20-25 sites** documented
-- **MVP Phase 1:** ~90% complete
-- **Features:** Interactive map, timeline, advanced filtering, detail modals, bilingual support
+- **44 sites** documented (Gaza heritage sites)
+- **MVP Phase 1:** Complete ✅
+- **Backend Integration:** Complete ✅ (Mock-first approach, ready for C#/.NET API)
+- **Features:** Interactive map, timeline, advanced filtering, detail modals, bilingual support, async data loading
 
 ### Data Sources
 
@@ -91,7 +93,7 @@ git commit -m "Add feature with Claude"
 
 ### Quality Gates
 
-1. **Test First** - 38/38 tests must pass before commit
+1. **Test First** - 1546/1546 tests must pass before commit
 2. **Keep Dev Server Running** - Use HMR for instant feedback
 3. **DRY/KISS/SOLID** - Review code quality before commit
 4. **Smoke Tests** - Quick manual verification (not implementation)
@@ -110,15 +112,25 @@ git commit -m "Add feature with Claude"
 
 ```
 src/
+├── api/                    # Backend integration layer ✅ NEW
+│   ├── client.ts           # Base HTTP client with error handling
+│   ├── sites.ts            # Site API endpoints (CRUD)
+│   ├── types.ts            # API response types
+│   └── mockAdapter.ts      # Mock functions for development
 ├── components/
 │   ├── FilterBar/          # Multi-select dropdown filters
 │   ├── Map/                # Leaflet map with custom zoom
 │   ├── Timeline/           # D3.js visualization
 │   ├── SiteDetailPanel/    # Modal with bilingual content
 │   ├── SiteCards/          # Grid display
-│   └── StatusBadge/        # Reusable status indicator
+│   ├── StatusBadge/        # Reusable status indicator
+│   ├── Loading/            # LoadingSpinner component ✅ NEW
+│   └── Error/              # ErrorMessage component ✅ NEW
+├── hooks/                  # Custom React hooks ✅ NEW
+│   ├── useSites.ts         # Fetch all sites with loading/error states
+│   └── useSiteById.ts      # Fetch single site by ID
 ├── data/
-│   └── sites.json          # Heritage sites data (5/20-25)
+│   └── sites.json          # Heritage sites data (44 sites)
 ├── types/
 │   └── index.ts            # TypeScript interfaces
 ├── utils/
@@ -130,8 +142,10 @@ src/
 ### State Management Pattern
 
 ```typescript
+// Data fetching with custom hooks
+const { sites, isLoading, error, refetch } = useSites();
+
 // Centralized state in App.tsx
-const [sites, setSites] = useState<HeritageSite[]>([]);
 const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null);
 const [filters, setFilters] = useState<FilterState>({
   types: [],
@@ -140,6 +154,24 @@ const [filters, setFilters] = useState<FilterState>({
 });
 
 // Pass down as props (no Redux/Context for MVP)
+```
+
+### Backend Integration Pattern
+
+```typescript
+// Environment-based API switching (mock vs real)
+// .env.development: VITE_USE_MOCK_API=true
+// .env.production: VITE_USE_MOCK_API=false
+
+// In src/api/sites.ts
+const shouldUseMockData = () => import.meta.env.VITE_USE_MOCK_API === 'true';
+
+export async function getAllSites() {
+  if (shouldUseMockData()) {
+    return mockGetAllSites(); // Mock adapter
+  }
+  return apiClient.get('/sites'); // Real API
+}
 ```
 
 ### Component Patterns
@@ -377,7 +409,48 @@ Successfully completed major component refactoring focusing on separation of con
 - ✅ Ready for 1000+ sites with virtual scrolling infrastructure
 - ✅ Better adherence to Single Responsibility Principle
 
-See [CODE_REVIEW.md](CODE_REVIEW.md) for detailed code quality assessment.
+### Phase 3: Backend Integration - COMPLETED ✅
+
+Successfully completed mock-first backend integration preparation:
+
+**1. API Layer Foundation**
+- Created centralized HTTP client ([src/api/client.ts](src/api/client.ts))
+- Built site-specific API endpoints ([src/api/sites.ts](src/api/sites.ts))
+- Added comprehensive TypeScript types ([src/api/types.ts](src/api/types.ts))
+- Environment-based configuration (dev/prod)
+
+**2. Mock Adapter Implementation**
+- Created mock adapter ([src/api/mockAdapter.ts](src/api/mockAdapter.ts)) - MSW alternative
+- Simulates realistic network delays (500ms)
+- Conditional mocking via `VITE_USE_MOCK_API` environment variable
+- Easy swap to real backend (change 1 env variable)
+
+**3. Data Fetching Hooks**
+- Created `useSites` hook with loading/error/refetch states
+- Created `useSiteById` hook for individual site fetching
+- Added 24 comprehensive behavior-focused tests
+
+**4. UI Components**
+- Created accessible LoadingSpinner component
+- Created ErrorMessage component with retry functionality
+- Added 36 tests for loading/error components
+- Styled to match Palestinian flag theme
+
+**5. Component Updates**
+- Updated HomePage to use async data fetching
+- Added loading and error state handling
+- Fixed React Hooks rules violations
+- All components now use mock adapter
+
+**Impact:**
+- ✅ 1546 tests passing (+73 new tests from Phase 3)
+- ✅ Production build successful (8.41s)
+- ✅ Zero linting errors
+- ✅ TypeScript strict mode compliant
+- ✅ Complete API contract documented ([API_CONTRACT.md](API_CONTRACT.md))
+- ✅ Ready for C#/.NET backend integration
+
+See [BACKEND_INTEGRATION_PLAN.md](BACKEND_INTEGRATION_PLAN.md) for detailed implementation plan.
 
 ---
 
@@ -432,8 +505,9 @@ npm test -- --watch     # Run tests in watch mode
 
 ---
 
-**Last Updated:** October 2025
-**Project Status:** MVP Phase 1 - 90% complete (5/20-25 sites documented)
-**Code Quality:** Phase 1 refactoring complete (DRY/KISS/SOLID improvements)
-**Test Coverage:** 1464 tests passing
-**Next Priority:** Complete remaining 15-20 sites data collection OR continue Phase 2 refactoring
+**Last Updated:** October 24, 2025
+**Project Status:** MVP Phase 1 - COMPLETE ✅ (44 sites documented)
+**Code Quality:** Phase 1-3 refactoring complete (DRY/KISS/SOLID + Backend Integration)
+**Test Coverage:** 1546 tests passing
+**Backend Status:** Mock-first integration complete, ready for C#/.NET API
+**Next Priority:** Backend team implements API per API_CONTRACT.md
