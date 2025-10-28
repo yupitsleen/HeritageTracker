@@ -175,6 +175,7 @@ export const en: Translations = {
     yearBuilt: "Year Built",
     status: "Status",
     dateDestroyed: "Date Destroyed/Damaged",
+    lastUpdated: "Last Updated",
     description: "Description",
     whatWasLost: "What Was Lost",
     beforeDestruction: "Before destruction",

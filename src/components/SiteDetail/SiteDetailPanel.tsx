@@ -59,6 +59,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
             )}
           </div>
         )}
+        <InfoItem label={translate("siteDetail.lastUpdated")} value={site.lastUpdated} t={t} />
       </div>
 
       {/* Description */}

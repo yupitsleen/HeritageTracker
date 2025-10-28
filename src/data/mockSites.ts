@@ -16,6 +16,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-12-07",
     dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "Gaza's oldest and largest mosque, originally a Byzantine church converted in the 7th century. The mosque housed rare Islamic manuscripts and served as a center of learning for centuries.",
     historicalSignificance:
@@ -61,6 +62,7 @@ export const mockSites: GazaSite[] = [
     status: "heavily-damaged",
     dateDestroyed: "2023-10-19",
     dateDestroyedIslamic: "3 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "One of the oldest churches in the world, built in 425 CE and named after Saint Porphyrius, Bishop of Gaza. The church served Gaza's small Christian community and was a rare example of early Byzantine architecture.",
     historicalSignificance:
@@ -109,6 +111,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2024-01-15",
     dateDestroyedIslamic: "4 Rajab 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "Ancient seaport and settlement site with continuous occupation from the Iron Age through the Islamic period. Contained over 4,000 archaeological objects including pottery, coins, and architectural remains.",
     historicalSignificance:
@@ -157,6 +160,7 @@ export const mockSites: GazaSite[] = [
     status: "heavily-damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A 13th-century Mamluk palace that served as the residence of Napoleon Bonaparte during his 1799 Gaza campaign. Later converted into a museum showcasing Gaza's history with collections of pottery, coins, and historical artifacts.",
     historicalSignificance:
@@ -204,6 +208,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2024-02-10",
     dateDestroyedIslamic: "1 Sha'ban 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic Ottoman bathhouse representing traditional Islamic bathing culture and social architecture. The hammam featured distinctive domed chambers, intricate stonework, and a sophisticated water heating system.",
     historicalSignificance:
@@ -251,6 +256,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-10-15", // Estimated October 2023
     dateDestroyedIslamic: "29 Rabi' al-Awwal 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "One of the largest and oldest mosques in Gaza, located in the ad-Darrāj Quarter of the Old City. The mosque is named after Hashim ibn Abd al-Manaf, the great-grandfather of Prophet Muhammad, whose tomb is believed to be located under the mosque's dome.",
     historicalSignificance:
@@ -321,6 +327,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-01", // Estimated late 2023
     dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A Mamluk-era mosque situated in the midst of a cemetery in the Tuffah neighborhood of Gaza City. The mosque contains the tomb of Sheikh Ali ibn Marwan, a holy man from the Hasani family who came from Morocco and died in Gaza in 1314 CE.",
     historicalSignificance:
@@ -354,6 +361,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-11-20", // Estimated November 2023
     dateDestroyedIslamic: "7 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A 5th-century Byzantine church and monastery built in 444 CE during the reign of Emperor Theodosius II. The site spanned 850 square meters with 400 square meters of colorful mosaic floors depicting animals, hunting scenes, and palm trees. The church walls were adorned with 16 religious texts written in ancient Greek.",
     historicalSignificance:
@@ -387,6 +395,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-10-10", // Estimated early October 2023
     dateDestroyedIslamic: "24 Rabi' al-Awwal 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A cultural museum in al-Qarara, near Khan Younis, dedicated to teaching about Gaza's heritage and preserving the cultural identity of southern Gaza. The museum served as an educational center for local communities.",
     historicalSignificance:
@@ -420,6 +429,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-11-25",
     dateDestroyedIslamic: "12 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A major cultural center in Gaza City built in 1985, housing a theatre and a library containing tens of thousands of books. The center served as a hub for arts, culture, and education in Gaza.",
     historicalSignificance:
@@ -455,6 +465,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-12-01", // Estimated late 2023
     dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "An ancient seaport located at Tell Iblakhiye, 2 kilometers north of Gaza's main port near the Beach Refugee Camp. The archaeological site was inhabited from the Mycenaean to Byzantine period, with its heyday during the Hellenistic period when it became an independent city.",
     historicalSignificance:
@@ -489,6 +500,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-01", // Estimated late 2023
     dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A major Bronze Age settlement located at the mouth of Wadi Ghazzah, 1.8 kilometers inland from the Mediterranean coast, south of Gaza City. The site was inhabited during 2000-1800 BCE and sits on the main land route between ancient Egypt and the Levant.",
     historicalSignificance:
@@ -523,6 +535,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-01", // Estimated late 2023
     dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "The oldest and largest Egyptian colony in the Southern Levant, located in the al-Zahra neighborhood 5 kilometers south of Gaza City. The site covers 12-20 acres and rises more than 10 meters above the coastal plain, containing exceptionally well-preserved Early Bronze Age mud-brick architecture.",
     historicalSignificance:
@@ -557,6 +570,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-11-29",
     dateDestroyedIslamic: "16 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "The Central Archives housed within the administrative buildings of Gaza City Municipality in Palestine Square. The archives contained materials documenting Palestinian lives going back 150 years, urban development plans, documents relating to ancient buildings of historical value, and handwritten materials from well-known national figures.",
     historicalSignificance:
@@ -592,6 +606,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-14",
     dateDestroyedIslamic: "1 Jumada al-Akhirah 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "One of the oldest and largest monasteries in the Middle East, founded around 340 CE by Saint Hilarion, a native of Gaza and key figure in Palestinian monasticism. The archaeological site at Tell Umm el-'Amr spans a large area with intricate Byzantine-era mosaics and church ruins.",
     historicalSignificance:
@@ -635,6 +650,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-10-08",
     dateDestroyedIslamic: "23 Rabi' al-Awwal 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "The largest Roman cemetery discovered in Gaza, with 125+ tombs excavated from an area of 4,000 square meters. The necropolis was discovered in February 2022 during construction work and featured remarkable artifacts including two rare lead sarcophagi - one engraved with grape harvest motifs, the other with dolphins swimming in water.",
     historicalSignificance:
@@ -686,6 +702,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2024-01-17",
     dateDestroyedIslamic: "6 Rajab 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A national museum housed within Al-Israa University, containing more than 3,000 rare archaeological artifacts spanning Gaza's history. The university was the last remaining higher education institution in Gaza when it was destroyed. Before demolition, occupying forces looted the museum's entire collection of artifacts.",
     historicalSignificance:
@@ -733,6 +750,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-10-11",
     dateDestroyedIslamic: "25 Rabi' al-Awwal 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A museum in Rafah housing a 30-year collection of ancient coins, copper plates, jewelry, and archaeological artifacts from southern Gaza. The museum served as an important cultural institution documenting the heritage of the Rafah region.",
     historicalSignificance:
@@ -767,6 +785,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-10-31",
     dateDestroyedIslamic: "16 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "An ancient mosque in Jabaliya with 7th-century origins, representing one of the oldest Islamic religious structures in northern Gaza. The mosque served as a central place of worship for the Jabaliya community.",
     historicalSignificance:
@@ -801,6 +820,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-18",
     dateDestroyedIslamic: "5 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A 17th-century Ottoman residential palace built in 1661, representing traditional Ottoman domestic architecture in Gaza. The palace featured distinctive stonework, vaulted rooms, and traditional courtyard design.",
     historicalSignificance:
@@ -835,6 +855,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-10",
     dateDestroyedIslamic: "26 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic 19th-century house in Gaza City that was repurposed as the Goethe Institute cultural center. The building represented traditional Gazan residential architecture and served as a hub for German-Palestinian cultural exchange.",
     historicalSignificance:
@@ -869,6 +890,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-12-05",
     dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic covered market dating to the Mamluk period (14th century), featuring traditional vaulted stone architecture. The market was a central commercial hub in Gaza's old city, with shops selling traditional crafts, textiles, and goods.",
     historicalSignificance:
@@ -903,6 +925,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-25",
     dateDestroyedIslamic: "12 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A Commonwealth War Graves Commission cemetery containing the graves of soldiers from World War I and II, primarily from the British Empire forces. The cemetery includes over 3,200 burials and commemorates those who died in the Palestine campaigns.",
     historicalSignificance:
@@ -936,6 +959,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-03",
     dateDestroyedIslamic: "19 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A small museum housed within a hotel in northern Gaza, established in 2008. The museum contained local archaeological artifacts and cultural objects documenting Gaza's heritage.",
     historicalSignificance:
@@ -969,6 +993,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A regional museum in Deir al-Balah, central Gaza, housing archaeological artifacts from the surrounding area including pottery, ancient tools, and historical objects documenting local heritage.",
     historicalSignificance:
@@ -1003,6 +1028,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-10",
     dateDestroyedIslamic: "27 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "An Iron Age archaeological site in southern Gaza dating from 1200-500 BCE. The tell (ancient settlement mound) contains evidence of Philistine and later period occupation, with pottery, tools, and architectural remains.",
     historicalSignificance:
@@ -1036,6 +1062,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-10-17",
     dateDestroyedIslamic: "1 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A beloved community bookshop in Gaza City, restored and reopened in 2021 after previous destruction. The bookshop served as a cultural hub, providing books, educational materials, and a gathering space for Gaza's literary community.",
     historicalSignificance:
@@ -1070,6 +1097,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-12-12",
     dateDestroyedIslamic: "29 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "An Ottoman-era domed building housing a manuscript center with rare Islamic texts and historical documents. The center specialized in the preservation and study of Arabic manuscripts and historical records.",
     historicalSignificance:
@@ -1104,6 +1132,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-22",
     dateDestroyedIslamic: "9 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic Ottoman-era building in Gaza City's old quarter, representing traditional Palestinian architecture and urban design from the Ottoman period.",
     historicalSignificance:
@@ -1132,6 +1161,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-28",
     dateDestroyedIslamic: "15 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic Ottoman-era sabil (public water fountain), representing traditional Islamic charitable architecture. Sabils were public fountains providing free water to travelers and residents, embodying Islamic principles of charity and community service.",
     historicalSignificance:
@@ -1160,6 +1190,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-01",
     dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A 19th-century historic house in Gaza City representing traditional Palestinian residential architecture. The house features characteristic stonework, arched windows, and courtyard design typical of upper-class Gaza homes.",
     historicalSignificance:
@@ -1187,6 +1218,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-10-25",
     dateDestroyedIslamic: "10 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A government storage facility in the Sheikh Radwan neighborhood housing archaeological artifacts and antiquities pending study, conservation, or museum display. The facility contained objects from various excavations across Gaza.",
     historicalSignificance:
@@ -1221,6 +1253,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-15",
     dateDestroyedIslamic: "2 Jumada al-Akhirah 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A Mamluk-era mosque in Gaza City dating to the 13th or 14th century, featuring traditional Mamluk architectural elements including stonework and arched prayer halls.",
     historicalSignificance:
@@ -1248,6 +1281,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2024-01-08",
     dateDestroyedIslamic: "26 Jumada al-Akhirah 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A cultural museum in Khan Younis housing collections of traditional crafts, historical artifacts, and cultural objects documenting southern Gaza's heritage and Bedouin traditions.",
     historicalSignificance:
@@ -1280,6 +1314,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-11-08",
     dateDestroyedIslamic: "24 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A contemporary art center established in 2010, dedicated to promoting Palestinian contemporary art, providing exhibition space, artist residencies, and cultural programming for Gaza's artistic community.",
     historicalSignificance:
@@ -1314,6 +1349,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-18",
     dateDestroyedIslamic: "5 Jumada al-Akhirah 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "An early 20th-century historic building near the former railway station in Gaza City. The house represents the architectural style of the late Ottoman and British Mandate periods.",
     historicalSignificance:
@@ -1341,6 +1377,7 @@ export const mockSites: GazaSite[] = [
     status: "heavily-damaged",
     dateDestroyed: "2023-11-12",
     dateDestroyedIslamic: "28 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A Mamluk-era mosque dating to the 14th century, named after the Ottoman administrative position of Katib Wilaya (provincial secretary). The mosque features characteristic Mamluk stonework and architectural details.",
     historicalSignificance:
@@ -1374,6 +1411,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-10-20",
     dateDestroyedIslamic: "5 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A community cultural center in the Al-Zeitoun neighborhood of Gaza City, established in 1995. The center provided library services, cultural programming, and educational activities for the local community.",
     historicalSignificance:
@@ -1401,6 +1439,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-22",
     dateDestroyedIslamic: "9 Jumada al-Akhirah 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic 19th-century house belonging to the prominent Al-Shawa family, one of Gaza's most notable families. The house represents traditional Palestinian elite residential architecture.",
     historicalSignificance:
@@ -1428,6 +1467,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-12-08",
     dateDestroyedIslamic: "25 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A British Mandate-era courthouse built in the 1930s, representing colonial administrative architecture in Gaza. The building features Mandate-period architectural style with characteristic arched windows and stone facades.",
     historicalSignificance:
@@ -1455,6 +1495,7 @@ export const mockSites: GazaSite[] = [
     status: "heavily-damaged",
     dateDestroyed: "2024-01-20",
     dateDestroyedIslamic: "9 Rajab 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "The historic old market of Khan Yunis, dating to the Ottoman period. The market featured traditional covered stalls, stone archways, and commercial buildings serving the southern Gaza region for centuries.",
     historicalSignificance:
@@ -1482,6 +1523,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-10-28",
     dateDestroyedIslamic: "13 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic Islamic cemetery dating from the 15th century, named after Sheikh Radwan, a revered Islamic scholar and saint. The cemetery contains historic graves, tombs, and mausoleums of important religious and community figures.",
     historicalSignificance:
@@ -1509,6 +1551,7 @@ export const mockSites: GazaSite[] = [
     status: "damaged",
     dateDestroyed: "2023-11-05",
     dateDestroyedIslamic: "21 Rabi' al-Thani 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "Al-Muntar Hill is an ancient tell (settlement mound) with archaeological layers spanning thousands of years. Napoleon Bonaparte's forces fortified the hilltop during the 1799 Gaza campaign. The site offers strategic views over Gaza and has been continuously significant from ancient to modern times.",
     historicalSignificance:
@@ -1536,6 +1579,7 @@ export const mockSites: GazaSite[] = [
     status: "destroyed",
     dateDestroyed: "2023-12-03",
     dateDestroyedIslamic: "20 Jumada al-Ula 1445 AH",
+    lastUpdated: "2024-05-27", // Based on UNESCO assessment date
     description:
       "A historic Mamluk-era mosque dating to the 13th century, located in Gaza City's old quarter. The mosque featured traditional Mamluk architectural elements including intricate stonework and vaulted prayer halls.",
     historicalSignificance:

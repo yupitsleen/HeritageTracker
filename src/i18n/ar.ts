@@ -175,6 +175,7 @@ export const ar: Translations = {
     yearBuilt: "سنة البناء",
     status: "الحالة",
     dateDestroyed: "تاريخ التدمير/التلف",
+    lastUpdated: "آخر تحديث",
     description: "الوصف",
     whatWasLost: "ما تم فقدانه",
     beforeDestruction: "قبل التدمير",

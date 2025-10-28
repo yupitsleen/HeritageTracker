@@ -33,6 +33,7 @@ function convertSupabaseRow(row: Record<string, unknown>): GazaSite {
     status: row.status as string,
     dateDestroyed: row.date_destroyed as string | undefined,
     dateDestroyedIslamic: row.date_destroyed_islamic as string | undefined,
+    lastUpdated: row.last_updated as string,
     description: row.description as string,
     historicalSignificance: row.historical_significance as string,
     culturalValue: row.cultural_value as string,

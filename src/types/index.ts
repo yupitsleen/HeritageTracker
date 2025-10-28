@@ -51,6 +51,7 @@ export interface GazaSite {
   status: string; // Now accepts any string - use STATUS_REGISTRY for valid statuses
   dateDestroyed?: string;
   dateDestroyedIslamic?: string; // Manually verified Islamic calendar date
+  lastUpdated: string; // ISO date string - tracks when site information was last verified/updated
   description: string;
   historicalSignificance: string;
   culturalValue: string;

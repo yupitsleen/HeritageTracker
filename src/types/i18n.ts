@@ -224,6 +224,7 @@ export interface Translations {
     yearBuilt: string;
     status: string;
     dateDestroyed: string;
+    lastUpdated: string;
     description: string;
     whatWasLost: string;
     beforeDestruction: string;
