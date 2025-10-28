@@ -2,18 +2,11 @@ import type { GazaSite } from "../../types";
 import { StatusBadge } from "../StatusBadge";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useLocale, useTranslation } from "../../contexts/LocaleContext";
-import type { TranslationKey } from "../../types/i18n";
+import { translateSiteType } from "../../utils/format";
 
 interface SitePopupProps {
   site: GazaSite;
   onViewMore: () => void;
-}
-
-/**
- * Helper to convert kebab-case to camelCase for translation keys
- */
-function toTranslationKey(value: string): string {
-  return value.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
 /**
@@ -29,7 +22,7 @@ export function SitePopup({ site, onViewMore }: SitePopupProps) {
   const isRTL = localeConfig.direction === "rtl";
 
   // Translate site type
-  const siteTypeLabel = translate(`siteTypes.${toTranslationKey(site.type)}` as TranslationKey);
+  const siteTypeLabel = translateSiteType(translate, site.type);
 
   return (
     <div

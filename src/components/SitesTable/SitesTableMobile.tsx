@@ -1,11 +1,10 @@
 import { useState, useMemo } from "react";
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateCompact, formatDateLong } from "../../utils/format";
+import { formatDateCompact, formatDateLong, translateStatus } from "../../utils/format";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
-import type { TranslationKey } from "../../types/i18n";
 
 interface SitesTableMobileProps {
   sites: GazaSite[];
@@ -13,15 +12,6 @@ interface SitesTableMobileProps {
 
 type SortField = "name" | "dateDestroyed";
 type SortDirection = "asc" | "desc";
-
-/**
- * Map status values to i18n translation keys
- */
-function getStatusTranslationKey(status: string): string {
-  // Convert kebab-case to camelCase for translation keys
-  // e.g., "heavily-damaged" → "heavilyDamaged"
-  return status.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-}
 
 /**
  * Mobile accordion variant of sites table
@@ -197,7 +187,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                     className="text-sm font-semibold"
                     style={{ color: getStatusHexColor(site.status) }}
                   >
-                    {translate(`siteStatus.${getStatusTranslationKey(site.status)}` as TranslationKey)}
+                    {translateStatus(translate, site.status)}
                   </p>
                 </div>
 

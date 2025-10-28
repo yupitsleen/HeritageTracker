@@ -1,21 +1,13 @@
 import type { GazaSite } from "../../types";
 import { StatusBadge } from "../StatusBadge";
-import { formatLabel } from "../../utils/format";
+import { formatLabel, translateSiteType, translateStatus } from "../../utils/format";
 import { cn } from "../../styles/theme";
 import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
-import type { TranslationKey } from "../../types/i18n";
 
 interface SiteDetailPanelProps {
   site: GazaSite;
-}
-
-/**
- * Helper to convert kebab-case to camelCase for translation keys
- */
-function toTranslationKey(value: string): string {
-  return value.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
 /**
@@ -27,8 +19,8 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
   const translate = useTranslation();
 
   // Translate site type and status
-  const siteTypeLabel = translate(`siteTypes.${toTranslationKey(site.type)}` as TranslationKey);
-  const siteStatusLabel = translate(`siteStatus.${toTranslationKey(site.status)}` as TranslationKey);
+  const siteTypeLabel = translateSiteType(translate, site.type);
+  const siteStatusLabel = translateStatus(translate, site.status);
 
   return (
     <div className="space-y-6">

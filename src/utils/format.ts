@@ -2,6 +2,8 @@
  * Formatting utility functions
  */
 
+import type { TranslationKey } from "../types/i18n";
+
 /**
  * Formats kebab-case or snake_case strings to Title Case
  * @example formatLabel("heavily-damaged") => "Heavily Damaged"
@@ -72,4 +74,58 @@ export const formatDateLong = (
     day: "numeric",
     year: "numeric",
   });
+};
+
+/**
+ * Converts kebab-case strings to camelCase for i18n translation keys.
+ * Used to map data values (site.status, site.type) to translation key format.
+ *
+ * @param value - Kebab-case string from data
+ * @returns CamelCase string for translation key lookup
+ *
+ * @example
+ * toTranslationKey("heavily-damaged") // => "heavilyDamaged"
+ * toTranslationKey("archaeological-site") // => "archaeologicalSite"
+ * toTranslationKey("mosque") // => "mosque" (unchanged if no hyphens)
+ */
+export const toTranslationKey = (value: string): string => {
+  return value.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+};
+
+/**
+ * Translates a site status value to its localized string.
+ * Handles kebab-case to camelCase conversion and type casting.
+ *
+ * @param translate - Translation function from useTranslation hook
+ * @param status - Site status value (e.g., "heavily-damaged", "destroyed")
+ * @returns Translated status string
+ *
+ * @example
+ * translateStatus(translate, "heavily-damaged") // => "Heavily Damaged" (en) or "تضرر بشدة" (ar)
+ * translateStatus(translate, "destroyed") // => "Destroyed" (en) or "مدمر" (ar)
+ */
+export const translateStatus = (
+  translate: (key: TranslationKey) => string,
+  status: string
+): string => {
+  return translate(`siteStatus.${toTranslationKey(status)}` as TranslationKey);
+};
+
+/**
+ * Translates a site type value to its localized string.
+ * Handles kebab-case to camelCase conversion and type casting.
+ *
+ * @param translate - Translation function from useTranslation hook
+ * @param type - Site type value (e.g., "archaeological-site", "mosque")
+ * @returns Translated type string
+ *
+ * @example
+ * translateSiteType(translate, "archaeological-site") // => "Archaeological Site" (en) or "موقع أثري" (ar)
+ * translateSiteType(translate, "mosque") // => "Mosque" (en) or "مسجد" (ar)
+ */
+export const translateSiteType = (
+  translate: (key: TranslationKey) => string,
+  type: string
+): string => {
+  return translate(`siteTypes.${toTranslationKey(type)}` as TranslationKey);
 };

@@ -1,13 +1,12 @@
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard } from "../../utils/format";
+import { formatDateStandard, translateStatus } from "../../utils/format";
 import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
-import type { TranslationKey } from "../../types/i18n";
 
 interface TableRowProps {
   site: GazaSite;
@@ -22,15 +21,6 @@ interface TableRowProps {
  * Individual table row for a heritage site
  * Handles cell rendering based on visible columns
  */
-/**
- * Map status values to i18n translation keys
- */
-function getStatusTranslationKey(status: string): string {
-  // Convert kebab-case to camelCase for translation keys
-  // e.g., "heavily-damaged" → "heavilyDamaged"
-  return status.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-}
-
 export function TableRow({
   site,
   isHighlighted,
@@ -93,7 +83,7 @@ export function TableRow({
             className={`font-semibold ${COMPACT_TABLE.text}`}
             style={{ color: getStatusHexColor(site.status) }}
           >
-            {translate(`siteStatus.${getStatusTranslationKey(site.status)}` as TranslationKey)}
+            {translateStatus(translate, site.status)}
           </span>
         </td>
       )}
