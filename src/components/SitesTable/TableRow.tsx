@@ -5,7 +5,7 @@ import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import { useTranslation } from "../../contexts/LocaleContext";
+import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
 
 interface TableRowProps {
@@ -32,6 +32,14 @@ export function TableRow({
   const { isDark } = useTheme();
   const t = useThemeClasses();
   const translate = useTranslation();
+  const { localeConfig } = useLocale();
+  const isRTL = localeConfig.direction === "rtl";
+
+  // Determine primary and secondary names based on text direction
+  // RTL languages (Arabic, Hebrew, etc.) show nameArabic first if available
+  // LTR languages (English, etc.) show English name first
+  const primaryName = isRTL && site.nameArabic ? site.nameArabic : site.name;
+  const secondaryName = isRTL && site.nameArabic ? site.name : site.nameArabic;
 
   return (
     <tr
@@ -65,13 +73,18 @@ export function TableRow({
             }}
             className="text-left w-full hover:underline"
           >
-            <div className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}>{site.name}</div>
-            {site.nameArabic && (
+            <div
+              className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}
+              dir={isRTL ? "rtl" : "ltr"}
+            >
+              {primaryName}
+            </div>
+            {secondaryName && (
               <div
                 className={`text-[10px] ${t.text.muted} mt-0.5`}
-                dir="rtl"
+                dir={isRTL ? "ltr" : "rtl"}
               >
-                {site.nameArabic}
+                {secondaryName}
               </div>
             )}
           </button>

@@ -4,7 +4,7 @@ import { getStatusHexColor } from "../../styles/theme";
 import { formatDateCompact, formatDateLong, translateStatus } from "../../utils/format";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
-import { useTranslation } from "../../contexts/LocaleContext";
+import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 
 interface SitesTableMobileProps {
   sites: GazaSite[];
@@ -21,6 +21,8 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
   const translate = useTranslation();
+  const { localeConfig } = useLocale();
+  const isRTL = localeConfig.direction === "rtl";
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
@@ -126,12 +128,17 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                 <div
                   className="font-semibold text-xs truncate"
                   style={{ color: getStatusHexColor(site.status) }}
+                  dir={isRTL ? "rtl" : "ltr"}
                 >
-                  {site.name}
+                  {isRTL && site.nameArabic ? site.nameArabic : site.name}
                 </div>
-                {site.nameArabic && (
-                  <div className={`text-xs ${t.text.muted} truncate text-left`} lang="ar">
-                    {site.nameArabic}
+                {(isRTL ? site.name : site.nameArabic) && (
+                  <div
+                    className={`text-xs ${t.text.muted} truncate`}
+                    dir={isRTL ? "ltr" : "rtl"}
+                    lang={isRTL ? "en" : "ar"}
+                  >
+                    {isRTL ? site.name : site.nameArabic}
                   </div>
                 )}
               </div>
@@ -166,9 +173,20 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
               <div className={`border-t-2 ${t.border.default} p-4 ${t.bg.secondary} space-y-3`}>
                 {/* Site Name (Full) */}
                 <div className="text-center">
-                  <h3 className={`font-bold text-base ${t.text.heading}`}>{site.name}</h3>
-                  {site.nameArabic && (
-                    <p className={`text-sm ${t.text.body} mt-1`}>{site.nameArabic}</p>
+                  <h3
+                    className={`font-bold text-base ${t.text.heading}`}
+                    dir={isRTL ? "rtl" : "ltr"}
+                  >
+                    {isRTL && site.nameArabic ? site.nameArabic : site.name}
+                  </h3>
+                  {(isRTL ? site.name : site.nameArabic) && (
+                    <p
+                      className={`text-sm ${t.text.body} mt-1`}
+                      dir={isRTL ? "ltr" : "rtl"}
+                      lang={isRTL ? "en" : "ar"}
+                    >
+                      {isRTL ? site.name : site.nameArabic}
+                    </p>
                   )}
                 </div>
 
