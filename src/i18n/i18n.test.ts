@@ -74,7 +74,7 @@ describe("translate", () => {
   it("translates nested keys", () => {
     expect(translate("en", "map.satelliteView")).toBe("Satellite");
     expect(translate("en", "timeline.play")).toBe("Play");
-    expect(translate("en", "table.name")).toBe("Name");
+    expect(translate("en", "table.siteName")).toBe("Site Name");
   });
 
   it("returns key if translation not found", () => {

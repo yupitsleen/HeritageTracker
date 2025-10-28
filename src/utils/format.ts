@@ -129,3 +129,37 @@ export const translateSiteType = (
 ): string => {
   return translate(`siteTypes.${toTranslationKey(type)}` as TranslationKey);
 };
+
+/**
+ * Gets display names for a site based on current text direction.
+ * Handles RTL/LTR language switching for bilingual site name display.
+ *
+ * @param site - Site object with name and optional nameArabic
+ * @param isRTL - Whether current locale uses RTL direction
+ * @returns Object with primary and secondary names, plus direction attributes
+ *
+ * @example
+ * // For English (LTR):
+ * getSiteDisplayNames({ name: "Great Mosque", nameArabic: "الجامع الكبير" }, false)
+ * // => { primary: "Great Mosque", secondary: "الجامع الكبير", primaryDir: "ltr", secondaryDir: "rtl" }
+ *
+ * // For Arabic (RTL):
+ * getSiteDisplayNames({ name: "Great Mosque", nameArabic: "الجامع الكبير" }, true)
+ * // => { primary: "الجامع الكبير", secondary: "Great Mosque", primaryDir: "rtl", secondaryDir: "ltr" }
+ */
+export const getSiteDisplayNames = (
+  site: { name: string; nameArabic?: string },
+  isRTL: boolean
+): {
+  primary: string;
+  secondary: string | undefined;
+  primaryDir: "ltr" | "rtl";
+  secondaryDir: "ltr" | "rtl";
+} => {
+  const primary = isRTL && site.nameArabic ? site.nameArabic : site.name;
+  const secondary = isRTL && site.nameArabic ? site.name : site.nameArabic;
+  const primaryDir = isRTL ? "rtl" : "ltr";
+  const secondaryDir = isRTL ? "ltr" : "rtl";
+
+  return { primary, secondary, primaryDir, secondaryDir };
+};

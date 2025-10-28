@@ -100,6 +100,13 @@ export const it: Translations = {
     destructionDateIslamic: "Data Distruzione (Islamico)",
     builtGregorian: "Costruito (Gregoriano)",
     builtIslamic: "Costruito (Islamico)",
+    showing: "Visualizzazione",
+    site: "sito",
+    sites: "siti",
+    islamic: "Islamico",
+    description: "Descrizione",
+    coordinates: "Coordinate",
+    sources: "Fonti",
   },
 
   filters: {

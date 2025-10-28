@@ -1,6 +1,6 @@
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard, translateStatus } from "../../utils/format";
+import { formatDateStandard, translateStatus, getSiteDisplayNames } from "../../utils/format";
 import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -35,11 +35,8 @@ export function TableRow({
   const { localeConfig } = useLocale();
   const isRTL = localeConfig.direction === "rtl";
 
-  // Determine primary and secondary names based on text direction
-  // RTL languages (Arabic, Hebrew, etc.) show nameArabic first if available
-  // LTR languages (English, etc.) show English name first
-  const primaryName = isRTL && site.nameArabic ? site.nameArabic : site.name;
-  const secondaryName = isRTL && site.nameArabic ? site.name : site.nameArabic;
+  // Get display names based on text direction (RTL vs LTR)
+  const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
 
   return (
     <tr
@@ -75,16 +72,16 @@ export function TableRow({
           >
             <div
               className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}
-              dir={isRTL ? "rtl" : "ltr"}
+              dir={primaryDir}
             >
-              {primaryName}
+              {primary}
             </div>
-            {secondaryName && (
+            {secondary && (
               <div
                 className={`text-[10px] ${t.text.muted} mt-0.5`}
-                dir={isRTL ? "ltr" : "rtl"}
+                dir={secondaryDir}
               >
-                {secondaryName}
+                {secondary}
               </div>
             )}
           </button>

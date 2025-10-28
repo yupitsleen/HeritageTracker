@@ -143,6 +143,13 @@ export interface Translations {
     destructionDateIslamic: string;
     builtGregorian: string;
     builtIslamic: string;
+    showing: string;
+    site: string;
+    sites: string;
+    islamic: string;
+    description: string;
+    coordinates: string;
+    sources: string;
   };
 
   /** Filter bar */

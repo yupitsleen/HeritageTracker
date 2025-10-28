@@ -100,6 +100,13 @@ export const ar: Translations = {
     destructionDateIslamic: "تاريخ التدمير (هجري)",
     builtGregorian: "البناء (ميلادي)",
     builtIslamic: "البناء (هجري)",
+    showing: "عرض",
+    site: "موقع",
+    sites: "مواقع",
+    islamic: "إسلامي",
+    description: "الوصف",
+    coordinates: "الإحداثيات",
+    sources: "المصادر",
   },
 
   filters: {
