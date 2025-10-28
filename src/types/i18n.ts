@@ -8,7 +8,7 @@
 /**
  * Supported locale codes (BCP 47 language tags)
  */
-export type LocaleCode = "en" | "ar";
+export type LocaleCode = "en" | "ar" | "it";
 
 /**
  * Text direction for locale

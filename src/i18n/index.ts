@@ -1,6 +1,7 @@
 import type { LocaleCode, Translations, TranslationKey } from "../types/i18n";
 import { en } from "./en";
 import { ar } from "./ar";
+import { it } from "./it";
 
 /**
  * Translation registry
@@ -10,6 +11,7 @@ import { ar } from "./ar";
 export const TRANSLATIONS: Record<LocaleCode, Translations> = {
   en,
   ar,
+  it,
 };
 
 /**

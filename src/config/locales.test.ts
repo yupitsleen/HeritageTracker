@@ -73,9 +73,9 @@ describe("getLocaleConfig", () => {
 });
 
 describe("getAvailableLocales", () => {
-  it("returns all 2 locales", () => {
+  it("returns all 3 locales", () => {
     const locales = getAvailableLocales();
-    expect(locales).toHaveLength(2);
+    expect(locales).toHaveLength(3);
   });
 
   it("returns array of LocaleConfig objects", () => {
@@ -132,7 +132,7 @@ describe("isLocaleSupported", () => {
 describe("getLocaleCodes", () => {
   it("returns all locale codes", () => {
     const codes = getLocaleCodes();
-    expect(codes).toEqual(["en", "ar"]);
+    expect(codes).toEqual(["en", "ar", "it"]);
   });
 
   it("returns only string values", () => {
