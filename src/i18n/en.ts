@@ -103,6 +103,9 @@ export const en: Translations = {
   },
 
   filters: {
+    filters: "Filters",
+    clear: "Clear",
+    clearAll: "Clear All",
     searchPlaceholder: "Search sites...",
     search: "Search",
     clearSearch: "Clear search",

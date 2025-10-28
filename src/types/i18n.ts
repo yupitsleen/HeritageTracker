@@ -147,6 +147,9 @@ export interface Translations {
 
   /** Filter bar */
   filters: {
+    filters: string;
+    clear: string;
+    clearAll: string;
     searchPlaceholder: string;
     search: string;
     clearSearch: string;

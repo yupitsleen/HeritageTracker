@@ -7,6 +7,7 @@ import { SitesTable } from "../SitesTable";
 import { SkeletonMap } from "../Loading/Skeleton";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useTranslation } from "../../contexts/LocaleContext";
 import { COMPACT_FILTER_BAR } from "../../constants/compactDesign";
 
 // Lazy load heavy components
@@ -78,6 +79,7 @@ export function DesktopLayout({
 }: DesktopLayoutProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
+  const translate = useTranslation();
 
   // Destructure filters for easier access
   const { selectedTypes, selectedStatuses, searchTerm, destructionDateStart, destructionDateEnd } = filters;
@@ -140,7 +142,7 @@ export function DesktopLayout({
                     onClick={openFilterModal}
                     className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#009639] hover:bg-[#007b2f] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
                   >
-                    Filters
+                    {translate("filters.filters")}
                   </button>
 
                   {/* Search bar - inline */}
@@ -181,7 +183,7 @@ export function DesktopLayout({
                       onClick={clearAllFilters}
                       className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#ed3039] hover:bg-[#d4202a] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
                     >
-                      Clear
+                      {translate("filters.clear")}
                     </button>
                   )}
                 </div>
