@@ -1,5 +1,6 @@
 import { cn, components } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 interface AppFooterProps {
   onOpenDonate: () => void;
@@ -15,6 +16,7 @@ interface AppFooterProps {
  */
 export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: AppFooterProps) {
   const t = useThemeClasses();
+  const translate = useTranslation();
 
   return (
     <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg z-[5] opacity-50 transition-colors duration-200 ${t.flag.greenBg}`}>
@@ -23,7 +25,7 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
         <div className="py-1.5">
           <div className={cn(components.container.base)}>
             <p className="text-[10px] text-center">
-              Heritage Tracker • UNESCO, Forensic Architecture, Heritage for Peace •{" "}
+              {translate("footer.title")} • {translate("footer.sources")} •{" "}
               <a
                 href="https://github.com/yupitsleen/HeritageTracker"
                 target="_blank"
@@ -31,7 +33,7 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="View source code on GitHub"
               >
-                Github
+                {translate("footer.github")}
               </a>
             </p>
           </div>
@@ -43,13 +45,13 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
         <div className="py-1.5">
           <div className={cn(components.container.base)}>
             <p className="text-[10px] text-center font-semibold">
-              Heritage Tracker •{" "}
+              {translate("footer.title")} •{" "}
               <button
                 onClick={onOpenDonate}
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="Help Palestine - Donate to relief efforts"
               >
-                Donate
+                {translate("footer.donate")}
               </button>
               {" • "}
               <button
@@ -57,7 +59,7 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="View Statistics"
               >
-                Stats
+                {translate("footer.stats")}
               </button>
               {" • "}
               <button
@@ -65,7 +67,7 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="About Heritage Tracker"
               >
-                About
+                {translate("footer.about")}
               </button>
               {" • "}
               <a
@@ -75,7 +77,7 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="View source code on GitHub"
               >
-                Github
+                {translate("footer.github")}
               </a>
             </p>
           </div>

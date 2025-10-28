@@ -1,10 +1,11 @@
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard } from "../../utils/format";
+import { formatDateStandard, translateStatus, getSiteDisplayNames } from "../../utils/format";
 import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
 
 interface TableRowProps {
@@ -30,6 +31,12 @@ export function TableRow({
 }: TableRowProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
+  const { localeConfig } = useLocale();
+  const isRTL = localeConfig.direction === "rtl";
+
+  // Get display names based on text direction (RTL vs LTR)
+  const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
 
   return (
     <tr
@@ -63,13 +70,18 @@ export function TableRow({
             }}
             className="text-left w-full hover:underline"
           >
-            <div className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}>{site.name}</div>
-            {site.nameArabic && (
+            <div
+              className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}
+              dir={primaryDir}
+            >
+              {primary}
+            </div>
+            {secondary && (
               <div
                 className={`text-[10px] ${t.text.muted} mt-0.5`}
-                dir="rtl"
+                dir={secondaryDir}
               >
-                {site.nameArabic}
+                {secondary}
               </div>
             )}
           </button>
@@ -78,10 +90,10 @@ export function TableRow({
       {visibleColumns.has("status") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY}`}>
           <span
-            className={`font-semibold capitalize ${COMPACT_TABLE.text}`}
+            className={`font-semibold ${COMPACT_TABLE.text}`}
             style={{ color: getStatusHexColor(site.status) }}
           >
-            {site.status.replace("-", " ")}
+            {translateStatus(translate, site.status)}
           </span>
         </td>
       )}

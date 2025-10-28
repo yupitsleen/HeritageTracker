@@ -7,6 +7,7 @@ import { Button } from "../Button";
 import { IconButton } from "../Button/IconButton";
 import { LanguageSelector } from "../LanguageSelector";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
+import { Z_INDEX } from "../../constants/layout";
 
 interface AppHeaderProps {
   onOpenDonate: () => void;
@@ -29,9 +30,13 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
   const isOnHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
 
   return (
-    <div className={`sticky top-0 z-[10] transition-colors duration-200 ${
-      isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
-    }`} dir="ltr">
+    <div
+      className={`sticky top-0 transition-colors duration-200 ${
+        isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
+      }`}
+      style={{ zIndex: Z_INDEX.STICKY }}
+      dir="ltr"
+    >
       {/* Header - BLACK background, ultra compact */}
       {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
       <header className={components.header.base}>
@@ -86,19 +91,20 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
             </Button>
           </div>
 
-          {/* Right: Icon buttons - desktop only */}
-          <div className={`hidden md:flex ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Help Button - Question mark icon */}
+          {/* Right: Icon buttons */}
+          <div className={`flex ${COMPACT_HEADER.buttonGap} items-center`}>
+            {/* Help Button - Question mark icon - desktop only */}
             {onOpenHelp && (
               <IconButton
                 icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
                 onClick={onOpenHelp}
                 ariaLabel={t("common.help")}
                 title={t("common.help")}
+                className="hidden md:flex"
               />
             )}
 
-            {/* Language Selector - Dropdown showing all registered locales */}
+            {/* Language Selector - Dropdown showing all registered locales - always visible */}
             <LanguageSelector />
 
             {/* Dark Mode Toggle - Discrete icon button */}

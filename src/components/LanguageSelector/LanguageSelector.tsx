@@ -3,6 +3,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useLocale } from "../../contexts/LocaleContext";
 import { getAllLocales, getLocaleName } from "../../config/locales";
 import { useTheme } from "../../contexts/ThemeContext";
+import { Z_INDEX } from "../../constants/layout";
 import type { LocaleCode } from "../../types/i18n";
 
 interface LanguageSelectorProps {
@@ -72,11 +73,12 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
       {/* Dropdown Menu */}
       {isOpen && (
         <div
-          className={`absolute right-0 mt-1 py-1 rounded-md shadow-lg border z-[9999] min-w-[120px] ${
+          className={`absolute right-0 mt-1 py-1 rounded-md shadow-lg border min-w-[120px] ${
             isDark
               ? "bg-gray-800 border-gray-700"
               : "bg-white border-gray-200"
           }`}
+          style={{ zIndex: Z_INDEX.DROPDOWN }}
         >
           {allLocales.map((loc) => {
             const isSelected = loc.code === locale;

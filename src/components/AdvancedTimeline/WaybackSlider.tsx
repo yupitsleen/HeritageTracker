@@ -1,6 +1,7 @@
 import { useMemo, useRef, useCallback } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
 import type { WaybackRelease } from "../../services/waybackService";
 
@@ -28,6 +29,7 @@ interface WaybackSliderProps {
 export function WaybackSlider({ releases, currentIndex, onIndexChange }: WaybackSliderProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
   const timelineRef = useRef<HTMLDivElement>(null);
 
   const currentRelease = releases[currentIndex];
@@ -124,9 +126,9 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
           disabled={currentIndex === 0}
           variant="secondary"
           size="xs"
-          aria-label="Previous imagery release"
+          aria-label={translate("timeline.previous")}
         >
-          ⏮ Previous
+          ⏮ {translate("timeline.previous")}
         </Button>
 
         <Button
@@ -134,9 +136,9 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
           disabled={currentIndex === releases.length - 1}
           variant="secondary"
           size="xs"
-          aria-label="Next imagery release"
+          aria-label={translate("timeline.next")}
         >
-          Next ⏭
+          {translate("timeline.next")} ⏭
         </Button>
       </div>
 

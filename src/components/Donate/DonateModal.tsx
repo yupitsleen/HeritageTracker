@@ -1,4 +1,5 @@
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 /**
  * DonateModal - Modal containing links to reputable Palestinian relief organizations
@@ -41,16 +42,17 @@ const DONATION_ORGANIZATIONS: DonationOrg[] = [
 
 export function DonateModal() {
   const t = useThemeClasses();
+  const translate = useTranslation();
 
   return (
     <div className={`rounded-lg max-w-4xl max-h-[80vh] overflow-y-auto ${t.bg.primary}`}>
       <div className="px-4 py-3">
         <h2 className={`text-lg font-bold mb-3 ${t.text.heading}`}>
-          Help Palestine
+          {translate("donate.title")}
         </h2>
 
         <p className={`text-xs mb-4 ${t.text.body}`}>
-          Reputable organizations providing essential humanitarian aid to Palestinians.
+          {translate("donate.description")}
         </p>
 
         <div className="space-y-3">
@@ -65,7 +67,7 @@ export function DonateModal() {
                     {org.name}
                   </h3>
                   <p className={`text-[10px] mb-1.5 ${t.text.muted}`}>
-                    <span className="font-medium">Focus:</span> {org.focus}
+                    <span className="font-medium">{translate("donate.focus")}</span> {org.focus}
                   </p>
                   <p className={`text-xs mb-2 ${t.text.body}`}>
                     {org.description}
@@ -78,7 +80,7 @@ export function DonateModal() {
                   className={`flex-shrink-0 px-3 py-1.5 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold whitespace-nowrap active:scale-95 ${t.flag.greenBg} ${t.flag.greenHover}`}
                   aria-label={`Donate to ${org.name}`}
                 >
-                  Donate
+                  {translate("donate.donateButton")}
                 </a>
               </div>
             </div>
@@ -87,7 +89,7 @@ export function DonateModal() {
 
         <div className={`mt-4 p-3 rounded-lg ${t.bg.tertiary} border ${t.border.default}`}>
           <p className={`text-[10px] ${t.text.muted}`}>
-            <strong>Note:</strong> Not affiliated with these organizations. Please research before donating.
+            <strong>{translate("donate.disclaimer")}</strong> {translate("donate.disclaimerText")}
           </p>
         </div>
       </div>

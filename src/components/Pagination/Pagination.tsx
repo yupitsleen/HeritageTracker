@@ -8,6 +8,8 @@
  * - Disabled states during loading
  */
 
+import { useTranslation } from "../../contexts/LocaleContext";
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -43,14 +45,15 @@ export function Pagination({
   onPageChange,
   isLoading = false,
 }: PaginationProps) {
+  const translate = useTranslation();
   const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   return (
     <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
       {/* Stats */}
       <div className="text-sm text-gray-700">
-        Showing page <span className="font-semibold">{currentPage}</span> of{' '}
-        <span className="font-semibold">{totalPages}</span> ({totalItems} total sites)
+        {translate("pagination.showingPage")} <span className="font-semibold">{currentPage}</span> {translate("pagination.of")}{' '}
+        <span className="font-semibold">{totalPages}</span> ({totalItems} {translate("pagination.totalSites")})
       </div>
 
       {/* Page controls */}
@@ -59,9 +62,9 @@ export function Pagination({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1 || isLoading}
           className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
-          aria-label="Previous page"
+          aria-label={translate("pagination.previous")}
         >
-          Previous
+          {translate("pagination.previous")}
         </button>
 
         {pageNumbers.map((pageNum, idx) =>
@@ -79,7 +82,7 @@ export function Pagination({
                   ? 'bg-palestine-red text-white border-palestine-red'
                   : 'border-gray-300 hover:bg-gray-100 disabled:opacity-50'
               }`}
-              aria-label={`Go to page ${pageNum}`}
+              aria-label={`${translate("pagination.goToPage")} ${pageNum}`}
               aria-current={pageNum === currentPage ? 'page' : undefined}
             >
               {pageNum}
@@ -91,9 +94,9 @@ export function Pagination({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages || isLoading}
           className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
-          aria-label="Next page"
+          aria-label={translate("pagination.next")}
         >
-          Next
+          {translate("pagination.next")}
         </button>
       </div>
     </div>

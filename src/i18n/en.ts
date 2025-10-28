@@ -100,9 +100,19 @@ export const en: Translations = {
     destructionDateIslamic: "Destruction Date (Islamic)",
     builtGregorian: "Built (Gregorian)",
     builtIslamic: "Built (Islamic)",
+    showing: "Showing",
+    site: "site",
+    sites: "sites",
+    islamic: "Islamic",
+    description: "Description",
+    coordinates: "Coordinates",
+    sources: "Sources",
   },
 
   filters: {
+    filters: "Filters",
+    clear: "Clear",
+    clearAll: "Clear All",
     searchPlaceholder: "Search sites...",
     search: "Search",
     clearSearch: "Clear search",
@@ -133,7 +143,11 @@ export const en: Translations = {
   siteStatus: {
     destroyed: "Destroyed",
     heavilyDamaged: "Heavily Damaged",
+    looted: "Looted",
     damaged: "Damaged",
+    abandoned: "Abandoned",
+    unknown: "Unknown",
+    unharmed: "Unharmed",
   },
 
   stats: {
@@ -167,6 +181,16 @@ export const en: Translations = {
     images: "Images",
     coordinates: "Coordinates",
     verificationSources: "Verification Sources",
+    siteType: "Site Type",
+    yearBuilt: "Year Built",
+    status: "Status",
+    dateDestroyed: "Date Destroyed/Damaged",
+    lastUpdated: "Last Updated",
+    description: "Description",
+    whatWasLost: "What Was Lost",
+    beforeDestruction: "Before destruction",
+    afterDestruction: "After destruction",
+    seeMore: "See More",
   },
 
   modals: {
@@ -180,6 +204,10 @@ export const en: Translations = {
     notFound: "Not found",
     invalidData: "Invalid data format",
     exportFailed: "Export failed",
+    somethingWrong: "Something went wrong",
+    unexpectedError: "An unexpected error occurred. Please try again.",
+    tryAgain: "Try Again",
+    persistsContact: "If this problem persists, please contact support.",
   },
 
   aria: {
@@ -190,5 +218,41 @@ export const en: Translations = {
     filterControl: "Filter control",
     timelineControl: "Timeline control",
     mapControl: "Map control",
+  },
+
+  pagination: {
+    showingPage: "Showing page",
+    of: "of",
+    totalSites: "total sites",
+    previous: "Previous",
+    next: "Next",
+    goToPage: "Go to page",
+  },
+
+  loading: {
+    message: "Loading...",
+    pleaseWait: "Loading content, please wait...",
+  },
+
+  donate: {
+    title: "Help Palestine",
+    description: "Reputable organizations providing essential humanitarian aid to Palestinians.",
+    focus: "Focus:",
+    donateButton: "Donate",
+    disclaimer: "Note:",
+    disclaimerText: "Heritage Tracker is not affiliated with these organizations. Please research before donating.",
+  },
+
+  footer: {
+    title: "Heritage Tracker",
+    sources: "UNESCO, Forensic Architecture, Heritage for Peace",
+    github: "Github",
+    donate: "Donate",
+    stats: "Stats",
+    about: "About",
+  },
+
+  legend: {
+    colorKey: "Color Key:",
   },
 };

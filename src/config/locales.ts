@@ -40,6 +40,13 @@ export const LOCALE_REGISTRY: Record<string, LocaleConfig> = {
     nativeName: "العربية",
     direction: "rtl",
   },
+  it: {
+    code: "it",
+    bcp47: "it-IT",
+    name: "Italian",
+    nativeName: "Italiano",
+    direction: "ltr",
+  },
 };
 
 // ============================================================================

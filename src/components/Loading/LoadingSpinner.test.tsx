@@ -6,46 +6,46 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { renderWithTheme, screen } from '../../test-utils/renderWithTheme';
 import { LoadingSpinner } from './LoadingSpinner';
 
 describe('LoadingSpinner', () => {
   describe('Rendering', () => {
     it('renders without crashing', () => {
-      render(<LoadingSpinner />);
+      renderWithTheme(<LoadingSpinner />);
       expect(screen.getByRole('status')).toBeInTheDocument();
     });
 
     it('displays default loading message', () => {
-      render(<LoadingSpinner />);
+      renderWithTheme(<LoadingSpinner />);
       expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('displays custom message when provided', () => {
-      render(<LoadingSpinner message="Loading heritage sites..." />);
+      renderWithTheme(<LoadingSpinner message="Loading heritage sites..." />);
       expect(screen.getByText('Loading heritage sites...')).toBeInTheDocument();
     });
   });
 
   describe('Accessibility', () => {
     it('has role="status" for screen readers', () => {
-      render(<LoadingSpinner />);
+      renderWithTheme(<LoadingSpinner />);
       expect(screen.getByRole('status')).toBeInTheDocument();
     });
 
     it('has aria-live="polite" for announcements', () => {
-      render(<LoadingSpinner />);
+      renderWithTheme(<LoadingSpinner />);
       const statusElement = screen.getByRole('status');
       expect(statusElement).toHaveAttribute('aria-live', 'polite');
     });
 
     it('includes screen reader text', () => {
-      render(<LoadingSpinner />);
+      renderWithTheme(<LoadingSpinner />);
       expect(screen.getByText('Loading content, please wait...')).toBeInTheDocument();
     });
 
     it('has sr-only class on screen reader text', () => {
-      render(<LoadingSpinner />);
+      renderWithTheme(<LoadingSpinner />);
       const srText = screen.getByText('Loading content, please wait...');
       expect(srText).toHaveClass('sr-only');
     });
@@ -53,36 +53,36 @@ describe('LoadingSpinner', () => {
 
   describe('Size Variants', () => {
     it('renders with small size', () => {
-      render(<LoadingSpinner size="sm" />);
+      renderWithTheme(<LoadingSpinner size="sm" />);
       expect(screen.getByRole('status')).toBeInTheDocument();
     });
 
     it('renders with medium size (default)', () => {
-      render(<LoadingSpinner size="md" />);
+      renderWithTheme(<LoadingSpinner size="md" />);
       expect(screen.getByRole('status')).toBeInTheDocument();
     });
 
     it('renders with large size', () => {
-      render(<LoadingSpinner size="lg" />);
+      renderWithTheme(<LoadingSpinner size="lg" />);
       expect(screen.getByRole('status')).toBeInTheDocument();
     });
   });
 
   describe('Full Screen Mode', () => {
     it('renders in regular mode by default', () => {
-      render(<LoadingSpinner />);
+      renderWithTheme(<LoadingSpinner />);
       const container = screen.getByRole('status');
       expect(container).not.toHaveClass('fixed');
     });
 
     it('renders in full screen mode when enabled', () => {
-      render(<LoadingSpinner fullScreen />);
+      renderWithTheme(<LoadingSpinner fullScreen />);
       const container = screen.getByRole('status');
       expect(container).toHaveClass('fixed');
     });
 
     it('renders with custom message in full screen', () => {
-      render(<LoadingSpinner fullScreen message="Initializing..." />);
+      renderWithTheme(<LoadingSpinner fullScreen message="Initializing..." />);
       expect(screen.getByText('Initializing...')).toBeInTheDocument();
       expect(screen.getByRole('status')).toHaveClass('fixed');
     });
@@ -90,7 +90,7 @@ describe('LoadingSpinner', () => {
 
   describe('Combined Props', () => {
     it('handles all props together', () => {
-      render(
+      renderWithTheme(
         <LoadingSpinner
           size="lg"
           message="Loading data..."
@@ -104,14 +104,14 @@ describe('LoadingSpinner', () => {
   });
 
   describe('Message Display', () => {
-    it('hides message when empty string provided', () => {
-      render(<LoadingSpinner message="" />);
-      // Default message should not be shown
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+    it('shows default message when empty string provided', () => {
+      renderWithTheme(<LoadingSpinner message="" />);
+      // Default message should be shown when empty string is provided
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('displays message for each size variant', () => {
-      const { rerender } = render(<LoadingSpinner size="sm" message="Small loading" />);
+      const { rerender } = renderWithTheme(<LoadingSpinner size="sm" message="Small loading" />);
       expect(screen.getByText('Small loading')).toBeInTheDocument();
 
       rerender(<LoadingSpinner size="md" message="Medium loading" />);

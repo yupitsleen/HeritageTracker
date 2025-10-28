@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback } from "react";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
+import { useTranslation } from "../contexts/LocaleContext";
 import { useAppState } from "../hooks/useAppState";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useTableResize } from "../hooks/useTableResize";
@@ -40,6 +41,7 @@ export function HomePage({ isMobile }: HomePageProps) {
   const { filteredSites, total } = useFilteredSites(sites, appState.filters);
   const tableResize = useTableResize();
   const { isDark } = useTheme();
+  const translate = useTranslation();
 
   const t = useThemeClasses();
 
@@ -316,7 +318,7 @@ export function HomePage({ isMobile }: HomePageProps) {
             disabled={!appState.hasTempFilters}
             variant="ghost"
           >
-            Clear All
+            {translate("filters.clearAll")}
           </Button>
           <Button
             onClick={appState.applyFilters}
@@ -324,7 +326,7 @@ export function HomePage({ isMobile }: HomePageProps) {
             variant="primary"
             className={appState.hasUnappliedChanges ? "animate-pulse ring-2 ring-white/50" : ""}
           >
-            Apply Filters
+            {translate("filters.applyFilters")}
           </Button>
         </div>
       </Modal>

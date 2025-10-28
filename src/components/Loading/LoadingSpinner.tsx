@@ -5,6 +5,8 @@
  * Used for full-page or section loading states
  */
 
+import { useTranslation } from "../../contexts/LocaleContext";
+
 interface LoadingSpinnerProps {
   /**
    * Size of the spinner (default: 'md')
@@ -44,9 +46,12 @@ const messageSizeClasses = {
  */
 export function LoadingSpinner({
   size = 'md',
-  message = 'Loading...',
+  message,
   fullScreen = false,
 }: LoadingSpinnerProps) {
+  const translate = useTranslation();
+  const displayMessage = message || translate("loading.message");
+
   const containerClasses = fullScreen
     ? 'fixed inset-0 bg-white bg-opacity-90 z-50 flex flex-col items-center justify-center'
     : 'flex flex-col items-center justify-center py-12';
@@ -66,14 +71,14 @@ export function LoadingSpinner({
       />
 
       {/* Loading message */}
-      {message && (
+      {displayMessage && (
         <p className={`mt-4 text-gray-600 ${messageSizeClasses[size]}`}>
-          {message}
+          {displayMessage}
         </p>
       )}
 
       {/* Screen reader only text */}
-      <span className="sr-only">Loading content, please wait...</span>
+      <span className="sr-only">{translate("loading.pleaseWait")}</span>
     </div>
   );
 }
