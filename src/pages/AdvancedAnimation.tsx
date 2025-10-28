@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
+import { useTranslation } from "../contexts/LocaleContext";
 import { Button } from "../components/Button";
 import { IconButton } from "../components/Button/IconButton";
 import { LanguageSelector } from "../components/LanguageSelector";
@@ -38,6 +39,7 @@ const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m
 export function AdvancedAnimation() {
   const { isDark, toggleTheme } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
   const navigate = useNavigate();
 
   // Fetch Wayback releases
@@ -194,13 +196,13 @@ export function AdvancedAnimation() {
               className="flex items-center gap-1.5"
             >
               <span className="text-base">&larr;</span>
-              Back
+              {translate("advancedTimeline.backToMain")}
             </Button>
           </div>
 
           {/* Center: Title */}
           <h1 className="text-lg font-bold text-[#fefefe] text-center">
-            Advanced Satellite Timeline
+            {translate("advancedTimeline.title")}
           </h1>
 
           {/* Right: Help + Language + Dark mode toggle + Info */}

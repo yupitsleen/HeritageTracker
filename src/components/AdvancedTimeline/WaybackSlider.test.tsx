@@ -1,13 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { renderWithTheme, screen, fireEvent } from "../../test-utils/renderWithTheme";
 import { WaybackSlider } from "./WaybackSlider";
-import { ThemeProvider } from "../../contexts/ThemeContext";
 import type { WaybackRelease } from "../../services/waybackService";
-
-// Helper to render with theme provider
-function renderWithTheme(ui: React.ReactElement) {
-  return render(<ThemeProvider>{ui}</ThemeProvider>);
-}
 
 // Mock releases for testing
 const mockReleases: WaybackRelease[] = [
@@ -57,8 +51,8 @@ describe("WaybackSlider", () => {
       );
 
       // Should render Previous and Next buttons
-      expect(screen.getByLabelText("Previous imagery release")).toBeInTheDocument();
-      expect(screen.getByLabelText("Next imagery release")).toBeInTheDocument();
+      expect(screen.getByLabelText("Previous")).toBeInTheDocument();
+      expect(screen.getByLabelText("Next")).toBeInTheDocument();
     });
 
     it("renders empty state when no releases provided", () => {
@@ -75,8 +69,8 @@ describe("WaybackSlider", () => {
       );
 
       // Should have Previous and Next buttons
-      expect(screen.getByLabelText("Previous imagery release")).toBeInTheDocument();
-      expect(screen.getByLabelText("Next imagery release")).toBeInTheDocument();
+      expect(screen.getByLabelText("Previous")).toBeInTheDocument();
+      expect(screen.getByLabelText("Next")).toBeInTheDocument();
     });
 
     it("renders year labels for timeline", () => {
@@ -99,8 +93,8 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 
-      expect(screen.getByRole("button", { name: /Previous imagery release/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Next imagery release/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Previous/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Next/i })).toBeInTheDocument();
     });
 
     it("calls onIndexChange when Next button clicked", () => {
@@ -109,7 +103,7 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 
-      const nextButton = screen.getByRole("button", { name: /Next imagery release/i });
+      const nextButton = screen.getByRole("button", { name: /Next/i });
       fireEvent.click(nextButton);
 
       expect(onIndexChange).toHaveBeenCalledWith(3);
@@ -121,7 +115,7 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 
-      const prevButton = screen.getByRole("button", { name: /Previous imagery release/i });
+      const prevButton = screen.getByRole("button", { name: /Previous/i });
       fireEvent.click(prevButton);
 
       expect(onIndexChange).toHaveBeenCalledWith(1);
@@ -133,7 +127,7 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
       );
 
-      const prevButton = screen.getByRole("button", { name: /Previous imagery release/i });
+      const prevButton = screen.getByRole("button", { name: /Previous/i });
       expect(prevButton).toBeDisabled();
     });
 
@@ -143,7 +137,7 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={4} onIndexChange={onIndexChange} />
       );
 
-      const nextButton = screen.getByRole("button", { name: /Next imagery release/i });
+      const nextButton = screen.getByRole("button", { name: /Next/i });
       expect(nextButton).toBeDisabled();
     });
 
@@ -153,7 +147,7 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
       );
 
-      const prevButton = screen.getByRole("button", { name: /Previous imagery release/i });
+      const prevButton = screen.getByRole("button", { name: /Previous/i });
       fireEvent.click(prevButton);
 
       expect(onIndexChange).not.toHaveBeenCalled();
@@ -165,7 +159,7 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={4} onIndexChange={onIndexChange} />
       );
 
-      const nextButton = screen.getByRole("button", { name: /Next imagery release/i });
+      const nextButton = screen.getByRole("button", { name: /Next/i });
       fireEvent.click(nextButton);
 
       expect(onIndexChange).not.toHaveBeenCalled();
@@ -306,8 +300,8 @@ describe("WaybackSlider", () => {
       );
 
       // Both buttons should be disabled (only one release)
-      const prevButton = screen.getByRole("button", { name: /Previous imagery release/i });
-      const nextButton = screen.getByRole("button", { name: /Next imagery release/i });
+      const prevButton = screen.getByRole("button", { name: /Previous/i });
+      const nextButton = screen.getByRole("button", { name: /Next/i });
       expect(prevButton).toBeDisabled();
       expect(nextButton).toBeDisabled();
     });
@@ -335,9 +329,7 @@ describe("WaybackSlider", () => {
 
       // Update to different index
       rerender(
-        <ThemeProvider>
-          <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
-        </ThemeProvider>
+        <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 
       // New date check

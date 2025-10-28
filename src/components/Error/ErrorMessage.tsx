@@ -5,6 +5,8 @@
  * Styled with Palestinian flag red accent (#EE2A35)
  */
 
+import { useTranslation } from "../../contexts/LocaleContext";
+
 interface ErrorMessageProps {
   /**
    * Error object to display
@@ -19,7 +21,7 @@ interface ErrorMessageProps {
    */
   fullScreen?: boolean;
   /**
-   * Custom error title (default: "Something went wrong")
+   * Custom error title (defaults to translated "errors.somethingWrong")
    */
   title?: string;
 }
@@ -37,8 +39,11 @@ export function ErrorMessage({
   error,
   onRetry,
   fullScreen = false,
-  title = 'Something went wrong',
+  title,
 }: ErrorMessageProps) {
+  const translate = useTranslation();
+  const displayTitle = title || translate("errors.somethingWrong");
+
   const containerClasses = fullScreen
     ? 'fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center p-4'
     : 'flex items-center justify-center py-12 px-4';
@@ -64,12 +69,12 @@ export function ErrorMessage({
 
         {/* Error title */}
         <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
-          {title}
+          {displayTitle}
         </h2>
 
         {/* Error message */}
         <p className="text-gray-600 text-center mb-6">
-          {error.message || 'An unexpected error occurred. Please try again.'}
+          {error.message || translate("errors.unexpectedError")}
         </p>
 
         {/* Retry button */}
@@ -92,13 +97,13 @@ export function ErrorMessage({
             "
             type="button"
           >
-            Try Again
+            {translate("errors.tryAgain")}
           </button>
         )}
 
         {/* Additional help text */}
         <p className="text-sm text-gray-500 text-center mt-4">
-          If this problem persists, please contact support.
+          {translate("errors.persistsContact")}
         </p>
       </div>
     </div>

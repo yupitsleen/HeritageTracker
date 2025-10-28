@@ -1,12 +1,19 @@
 import type { GazaSite } from "../../types";
 import { StatusBadge } from "../StatusBadge";
-import { formatLabel } from "../../utils/format";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import { useLocale } from "../../contexts/LocaleContext";
+import { useLocale, useTranslation } from "../../contexts/LocaleContext";
+import type { TranslationKey } from "../../types/i18n";
 
 interface SitePopupProps {
   site: GazaSite;
   onViewMore: () => void;
+}
+
+/**
+ * Helper to convert kebab-case to camelCase for translation keys
+ */
+function toTranslationKey(value: string): string {
+  return value.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
 /**
@@ -17,8 +24,12 @@ interface SitePopupProps {
  */
 export function SitePopup({ site, onViewMore }: SitePopupProps) {
   const t = useThemeClasses();
-  const { getLabel, localeConfig } = useLocale();
+  const { localeConfig } = useLocale();
+  const translate = useTranslation();
   const isRTL = localeConfig.direction === "rtl";
+
+  // Translate site type
+  const siteTypeLabel = translate(`siteTypes.${toTranslationKey(site.type)}` as TranslationKey);
 
   return (
     <div
@@ -38,16 +49,16 @@ export function SitePopup({ site, onViewMore }: SitePopupProps) {
 
       <div className={`text-[10px] space-y-0.5 ${t.text.muted}`}>
         <p className="leading-tight">
-          <span className="font-semibold">{getLabel("Type:", "النوع:")} </span>
-          {formatLabel(site.type)}
+          <span className="font-semibold">{translate("filters.siteType")}: </span>
+          {siteTypeLabel}
         </p>
         <p className="leading-tight">
-          <span className="font-semibold">{getLabel("Built:", "بُني:")} </span>
+          <span className="font-semibold">{translate("filters.yearBuilt")}: </span>
           {site.yearBuilt}
         </p>
         {site.dateDestroyed && (
           <p className="leading-tight">
-            <span className="font-semibold">{getLabel("Destroyed:", "دُمر:")} </span>
+            <span className="font-semibold">{translate("table.dateDestroyed")}: </span>
             {site.dateDestroyed}
           </p>
         )}
@@ -66,7 +77,7 @@ export function SitePopup({ site, onViewMore }: SitePopupProps) {
           onClick={onViewMore}
           className={`px-2 py-1 text-[10px] font-semibold rounded transition-all duration-200 active:scale-95 text-[#009639] hover:text-white bg-transparent ${t.flag.greenHover} border border-[#009639]`}
         >
-          {isRTL ? `← ${getLabel("See More", "المزيد")}` : `${getLabel("See More", "المزيد")} →`}
+          {isRTL ? `← ${translate("siteDetail.seeMore")}` : `${translate("siteDetail.seeMore")} →`}
         </button>
       </div>
     </div>

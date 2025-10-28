@@ -5,7 +5,9 @@ import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
+import type { TranslationKey } from "../../types/i18n";
 
 interface TableRowProps {
   site: GazaSite;
@@ -20,6 +22,15 @@ interface TableRowProps {
  * Individual table row for a heritage site
  * Handles cell rendering based on visible columns
  */
+/**
+ * Map status values to i18n translation keys
+ */
+function getStatusTranslationKey(status: string): string {
+  // Convert kebab-case to camelCase for translation keys
+  // e.g., "heavily-damaged" → "heavilyDamaged"
+  return status.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
 export function TableRow({
   site,
   isHighlighted,
@@ -30,6 +41,7 @@ export function TableRow({
 }: TableRowProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
 
   return (
     <tr
@@ -78,10 +90,10 @@ export function TableRow({
       {visibleColumns.has("status") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY}`}>
           <span
-            className={`font-semibold capitalize ${COMPACT_TABLE.text}`}
+            className={`font-semibold ${COMPACT_TABLE.text}`}
             style={{ color: getStatusHexColor(site.status) }}
           >
-            {site.status.replace("-", " ")}
+            {translate(`siteStatus.${getStatusTranslationKey(site.status)}` as TranslationKey)}
           </span>
         </td>
       )}

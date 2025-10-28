@@ -4,9 +4,18 @@ import { formatLabel } from "../../utils/format";
 import { cn } from "../../styles/theme";
 import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
+import type { TranslationKey } from "../../types/i18n";
 
 interface SiteDetailPanelProps {
   site: GazaSite;
+}
+
+/**
+ * Helper to convert kebab-case to camelCase for translation keys
+ */
+function toTranslationKey(value: string): string {
+  return value.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
 /**
@@ -15,6 +24,12 @@ interface SiteDetailPanelProps {
  */
 export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
   const t = useThemeClasses();
+  const translate = useTranslation();
+
+  // Translate site type and status
+  const siteTypeLabel = translate(`siteTypes.${toTranslationKey(site.type)}` as TranslationKey);
+  const siteStatusLabel = translate(`siteStatus.${toTranslationKey(site.status)}` as TranslationKey);
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -34,18 +49,18 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
 
       {/* Key Information Grid */}
       <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg p-4 ${t.bg.tertiary}`}>
-        <InfoItem label="Site Type" value={formatLabel(site.type)} t={t} />
+        <InfoItem label={translate("siteDetail.siteType")} value={siteTypeLabel} t={t} />
         <div>
-          <span className={`text-sm font-semibold ${t.text.body}`}>Year Built:</span>
+          <span className={`text-sm font-semibold ${t.text.body}`}>{translate("siteDetail.yearBuilt")}:</span>
           <p className={`mt-1 ${t.text.heading}`}>{site.yearBuilt}</p>
           {site.yearBuiltIslamic && (
             <p className={`text-sm mt-1 ${t.text.muted}`}>{site.yearBuiltIslamic}</p>
           )}
         </div>
-        <InfoItem label="Status" value={formatLabel(site.status)} t={t} />
+        <InfoItem label={translate("siteDetail.status")} value={siteStatusLabel} t={t} />
         {site.dateDestroyed && (
           <div>
-            <span className={`text-sm font-semibold ${t.text.body}`}>Date Destroyed/Damaged:</span>
+            <span className={`text-sm font-semibold ${t.text.body}`}>{translate("siteDetail.dateDestroyed")}:</span>
             <p className={`mt-1 ${t.text.heading}`}>{site.dateDestroyed}</p>
             {site.dateDestroyedIslamic && (
               <p className={`text-sm mt-1 ${t.text.muted}`}>{site.dateDestroyedIslamic}</p>
@@ -56,7 +71,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
 
       {/* Description */}
       <section>
-        <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>Description</h4>
+        <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>{translate("siteDetail.description")}</h4>
         <p className={`leading-relaxed ${t.text.body}`}>{site.description}</p>
       </section>
 
@@ -64,7 +79,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       {site.historicalSignificance && (
         <section>
           <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>
-            Historical Significance
+            {translate("siteDetail.historicalSignificance")}
           </h4>
           <p className={`leading-relaxed ${t.text.body}`}>{site.historicalSignificance}</p>
         </section>
@@ -73,35 +88,35 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       {/* Cultural Value / What Was Lost */}
       {site.culturalValue && (
         <section>
-          <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>What Was Lost</h4>
+          <h4 className={`text-lg font-semibold mb-2 ${t.text.heading}`}>{translate("siteDetail.whatWasLost")}</h4>
           <p className={`leading-relaxed ${t.text.body}`}>{site.culturalValue}</p>
         </section>
       )}
 
       {/* Images Section */}
       <section>
-        <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>Images</h4>
+        <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.images")}</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Before image */}
           {site.images?.before ? (
             <SiteImage
               image={site.images.before}
-              alt={`${site.name} - Before destruction`}
-              label="Before destruction"
+              alt={`${site.name} - ${translate("siteDetail.beforeDestruction")}`}
+              label={translate("siteDetail.beforeDestruction")}
             />
           ) : (
-            <SiteImagePlaceholder label="Before destruction" />
+            <SiteImagePlaceholder label={translate("siteDetail.beforeDestruction")} />
           )}
 
           {/* After image */}
           {site.images?.after ? (
             <SiteImage
               image={site.images.after}
-              alt={`${site.name} - After destruction`}
-              label="After destruction"
+              alt={`${site.name} - ${translate("siteDetail.afterDestruction")}`}
+              label={translate("siteDetail.afterDestruction")}
             />
           ) : (
-            <SiteImagePlaceholder label="After destruction" />
+            <SiteImagePlaceholder label={translate("siteDetail.afterDestruction")} />
           )}
 
           {/* Satellite image (optional, only show if provided) */}
@@ -118,7 +133,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       {/* Sources Section */}
       {site.sources && site.sources.length > 0 && (
         <section>
-          <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>Sources</h4>
+          <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.sources")}</h4>
           <div className="space-y-3">
             {site.sources.map((source, index) => (
               <div
@@ -144,7 +159,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
                         "transition-colors whitespace-nowrap"
                       )}
                     >
-                      View Source
+                      {translate("table.viewDetails")}
                     </a>
                   )}
                 </div>
@@ -166,7 +181,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       {/* Coordinates (for reference) */}
       <section className={`text-sm border-t pt-4 ${t.text.subtle} ${t.border.default}`}>
         <p>
-          <span className="font-medium">Coordinates:</span> {site.coordinates[0]},{" "}
+          <span className="font-medium">{translate("siteDetail.coordinates")}:</span> {site.coordinates[0]},{" "}
           {site.coordinates[1]}
         </p>
       </section>

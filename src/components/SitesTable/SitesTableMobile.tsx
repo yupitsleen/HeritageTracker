@@ -4,6 +4,8 @@ import { getStatusHexColor } from "../../styles/theme";
 import { formatDateCompact, formatDateLong } from "../../utils/format";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useTranslation } from "../../contexts/LocaleContext";
+import type { TranslationKey } from "../../types/i18n";
 
 interface SitesTableMobileProps {
   sites: GazaSite[];
@@ -13,12 +15,22 @@ type SortField = "name" | "dateDestroyed";
 type SortDirection = "asc" | "desc";
 
 /**
+ * Map status values to i18n translation keys
+ */
+function getStatusTranslationKey(status: string): string {
+  // Convert kebab-case to camelCase for translation keys
+  // e.g., "heavily-damaged" → "heavilyDamaged"
+  return status.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+/**
  * Mobile accordion variant of sites table
  * Features: Collapsible rows, status-colored names, sortable columns
  */
 export function SitesTableMobile({ sites }: SitesTableMobileProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
+  const translate = useTranslation();
   const [sortField, setSortField] = useState<SortField>("dateDestroyed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
@@ -182,10 +194,10 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                 <div>
                   <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>Status:</span>
                   <p
-                    className="text-sm font-semibold capitalize"
+                    className="text-sm font-semibold"
                     style={{ color: getStatusHexColor(site.status) }}
                   >
-                    {site.status.replace("-", " ")}
+                    {translate(`siteStatus.${getStatusTranslationKey(site.status)}` as TranslationKey)}
                   </p>
                 </div>
 

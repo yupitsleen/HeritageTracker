@@ -179,7 +179,11 @@ export interface Translations {
   siteStatus: {
     destroyed: string;
     heavilyDamaged: string;
+    looted: string;
     damaged: string;
+    abandoned: string;
+    unknown: string;
+    unharmed: string;
   };
 
   /** Statistics dashboard */
@@ -216,6 +220,15 @@ export interface Translations {
     images: string;
     coordinates: string;
     verificationSources: string;
+    siteType: string;
+    yearBuilt: string;
+    status: string;
+    dateDestroyed: string;
+    description: string;
+    whatWasLost: string;
+    beforeDestruction: string;
+    afterDestruction: string;
+    seeMore: string;
   };
 
   /** Modal dialogs */
@@ -231,6 +244,10 @@ export interface Translations {
     notFound: string;
     invalidData: string;
     exportFailed: string;
+    somethingWrong: string;
+    unexpectedError: string;
+    tryAgain: string;
+    persistsContact: string;
   };
 
   /** Accessibility labels */
@@ -242,6 +259,47 @@ export interface Translations {
     filterControl: string;
     timelineControl: string;
     mapControl: string;
+  };
+
+  /** Pagination component */
+  pagination: {
+    showingPage: string;
+    of: string;
+    totalSites: string;
+    previous: string;
+    next: string;
+    goToPage: string;
+  };
+
+  /** Loading states */
+  loading: {
+    message: string;
+    pleaseWait: string;
+  };
+
+  /** Donate modal */
+  donate: {
+    title: string;
+    description: string;
+    focus: string;
+    donateButton: string;
+    disclaimer: string;
+    disclaimerText: string;
+  };
+
+  /** Footer component */
+  footer: {
+    title: string;
+    sources: string;
+    github: string;
+    donate: string;
+    stats: string;
+    about: string;
+  };
+
+  /** Map legend */
+  legend: {
+    colorKey: string;
   };
 }
 
@@ -265,7 +323,12 @@ export type TranslationKey =
   | `siteDetail.${keyof Translations["siteDetail"]}`
   | `modals.${keyof Translations["modals"]}`
   | `errors.${keyof Translations["errors"]}`
-  | `aria.${keyof Translations["aria"]}`;
+  | `aria.${keyof Translations["aria"]}`
+  | `pagination.${keyof Translations["pagination"]}`
+  | `loading.${keyof Translations["loading"]}`
+  | `donate.${keyof Translations["donate"]}`
+  | `footer.${keyof Translations["footer"]}`
+  | `legend.${keyof Translations["legend"]}`;
 
 /**
  * Translation function type

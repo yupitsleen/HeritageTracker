@@ -133,7 +133,11 @@ export const ar: Translations = {
   siteStatus: {
     destroyed: "مدمر",
     heavilyDamaged: "تضرر بشدة",
+    looted: "منهوب",
     damaged: "متضرر",
+    abandoned: "مهجور",
+    unknown: "غير معروف",
+    unharmed: "سليم",
   },
 
   stats: {
@@ -167,6 +171,15 @@ export const ar: Translations = {
     images: "الصور",
     coordinates: "الإحداثيات",
     verificationSources: "مصادر التحقق",
+    siteType: "نوع الموقع",
+    yearBuilt: "سنة البناء",
+    status: "الحالة",
+    dateDestroyed: "تاريخ التدمير/التلف",
+    description: "الوصف",
+    whatWasLost: "ما تم فقدانه",
+    beforeDestruction: "قبل التدمير",
+    afterDestruction: "بعد التدمير",
+    seeMore: "شاهد المزيد",
   },
 
   modals: {
@@ -180,6 +193,10 @@ export const ar: Translations = {
     notFound: "غير موجود",
     invalidData: "تنسيق بيانات غير صالح",
     exportFailed: "فشل التصدير",
+    somethingWrong: "حدث خطأ ما",
+    unexpectedError: "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+    tryAgain: "حاول مرة أخرى",
+    persistsContact: "إذا استمرت هذه المشكلة، يرجى الاتصال بالدعم.",
   },
 
   aria: {
@@ -190,5 +207,41 @@ export const ar: Translations = {
     filterControl: "التحكم في التصفية",
     timelineControl: "التحكم في الجدول الزمني",
     mapControl: "التحكم في الخريطة",
+  },
+
+  pagination: {
+    showingPage: "عرض الصفحة",
+    of: "من",
+    totalSites: "إجمالي المواقع",
+    previous: "السابق",
+    next: "التالي",
+    goToPage: "الانتقال إلى الصفحة",
+  },
+
+  loading: {
+    message: "جار التحميل...",
+    pleaseWait: "جار تحميل المحتوى، يرجى الانتظار...",
+  },
+
+  donate: {
+    title: "ساعد فلسطين",
+    description: "منظمات موثوقة توفر المساعدات الإنسانية الأساسية للفلسطينيين.",
+    focus: "التركيز:",
+    donateButton: "تبرع",
+    disclaimer: "ملاحظة:",
+    disclaimerText: "متتبع التراث غير تابع لهذه المنظمات. يرجى البحث قبل التبرع.",
+  },
+
+  footer: {
+    title: "متتبع التراث",
+    sources: "اليونسكو، العمارة الجنائية، التراث من أجل السلام",
+    github: "جيت هاب",
+    donate: "تبرع",
+    stats: "الإحصائيات",
+    about: "حول",
+  },
+
+  legend: {
+    colorKey: "مفتاح الألوان:",
   },
 };
