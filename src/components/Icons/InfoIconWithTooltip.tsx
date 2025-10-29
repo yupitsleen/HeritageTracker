@@ -1,5 +1,6 @@
 import { InfoIcon } from "./InfoIcon";
 import { Tooltip } from "../Tooltip";
+import { INFO_ICON_COLORS } from "../../constants/tooltip";
 
 interface InfoIconWithTooltipProps {
   /** Tooltip text to display on hover */
@@ -29,7 +30,7 @@ export function InfoIconWithTooltip({
   return (
     <Tooltip content={tooltip}>
       <InfoIcon
-        className={`${className} text-gray-400 hover:text-gray-500 transition-colors cursor-help`}
+        className={`${className} ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
         aria-label={ariaLabel || tooltip}
       />
     </Tooltip>
