@@ -41,11 +41,32 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
         {/* Header */}
         <div className="mb-4 md:mb-6 text-center">
           <h1 className={`text-xl md:text-3xl font-bold ${t.text.heading} mb-1.5`}>
-            The Scale of Destruction
+            Documenting Genocide
           </h1>
           <p className={`text-xs md:text-base ${t.text.muted}`}>
-            Understanding what has been lost to humanity
+            The systematic erasure of a people and their history
           </p>
+        </div>
+
+        {/* Human Toll - Critical Context */}
+        <div className={`bg-gradient-to-br ${isDark ? "from-red-900/30 to-red-900/10" : "from-red-50 to-red-100"} border-2 border-[#ed3039] rounded-lg p-3 md:p-6 mb-4 md:mb-6`}>
+          <div className="grid grid-cols-2 gap-4 md:gap-6 text-center">
+            <div>
+              <div className="text-3xl md:text-5xl font-bold text-[#ed3039] mb-1">45,000+</div>
+              <div className={`text-[10px] md:text-sm font-semibold ${t.text.heading}`}>Palestinians Killed</div>
+              <p className={`text-[10px] md:text-xs ${t.text.muted} mt-1`}>70% women & children</p>
+            </div>
+            <div>
+              <div className="text-3xl md:text-5xl font-bold text-[#ed3039] mb-1">1.9M</div>
+              <div className={`text-[10px] md:text-sm font-semibold ${t.text.heading}`}>Forcibly Displaced</div>
+              <p className={`text-[10px] md:text-xs ${t.text.muted} mt-1`}>90% of Gaza's population</p>
+            </div>
+          </div>
+          <div className={`mt-3 md:mt-4 pt-3 md:pt-4 border-t border-[#ed3039]/30 text-center`}>
+            <p className={`text-xs md:text-sm ${t.text.body} font-medium`}>
+              Genocide destroys both people and their heritage. This page documents the cultural erasure.
+            </p>
+          </div>
         </div>
 
         {/* Hero statistic - Years of history */}
@@ -132,6 +153,43 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
         </section>
 
 
+        {/* Comparative Scale - If This Were Your City */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-base md:text-lg font-bold ${t.text.heading} mb-2 md:mb-3`}>If This Were Your City</h2>
+          <p className={`text-xs md:text-sm ${t.text.body} mb-3`}>
+            Gaza's heritage destruction, proportionally applied to other cities:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+              <h3 className={`text-xs md:text-sm font-bold ${t.text.heading} mb-2`}>Rome</h3>
+              <p className={`text-[10px] md:text-xs ${t.text.body} mb-2`}>
+                The Pantheon, Colosseum, and 8 medieval churches—destroyed in 14 months.
+              </p>
+              <p className={`text-[10px] ${t.text.muted} italic`}>
+                Equivalent to Gaza's losses
+              </p>
+            </div>
+            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+              <h3 className={`text-xs md:text-sm font-bold ${t.text.heading} mb-2`}>Paris</h3>
+              <p className={`text-[10px] md:text-xs ${t.text.body} mb-2`}>
+                Notre-Dame, Sainte-Chapelle, The Louvre, and 12 historic churches—leveled.
+              </p>
+              <p className={`text-[10px] ${t.text.muted} italic`}>
+                Equivalent to Gaza's losses
+              </p>
+            </div>
+            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+              <h3 className={`text-xs md:text-sm font-bold ${t.text.heading} mb-2`}>New York</h3>
+              <p className={`text-[10px] md:text-xs ${t.text.body} mb-2`}>
+                St. Patrick's Cathedral, Trinity Church, The Met, MoMA, and colonial-era sites—erased.
+              </p>
+              <p className={`text-[10px] ${t.text.muted} italic`}>
+                Equivalent to Gaza's losses
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Legal Context */}
         <section className="mb-4 md:mb-6">
           <h2 className={`text-base md:text-lg font-bold ${t.text.heading} mb-2 md:mb-3`}>Legal Framework</h2>
@@ -144,6 +202,11 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               <strong>Rome Statute Article 8(2)(b)(ix):</strong> Intentionally directing attacks
               against buildings dedicated to religion, education, art, science, or historic
               monuments constitutes a <strong>war crime</strong>.
+            </p>
+            <p>
+              <strong>UN Genocide Convention Article II:</strong> Genocide includes acts committed
+              with intent to destroy, in whole or in part, a national, ethnical, racial or religious
+              group—including destruction of their cultural heritage.
             </p>
             {isDesktop && (
               <p>

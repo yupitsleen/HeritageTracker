@@ -81,12 +81,12 @@ describe("Dark Mode - Component Rendering", () => {
   describe("Stats Dashboard", () => {
     it("renders in light mode", () => {
       renderWithProviders(<StatsDashboard sites={mockSites} />, "light");
-      expect(screen.getByText("The Scale of Destruction")).toBeInTheDocument();
+      expect(screen.getByText("Documenting Genocide")).toBeInTheDocument();
     });
 
     it("renders in dark mode", () => {
       renderWithProviders(<StatsDashboard sites={mockSites} />, "dark");
-      expect(screen.getByText("The Scale of Destruction")).toBeInTheDocument();
+      expect(screen.getByText("Documenting Genocide")).toBeInTheDocument();
     });
   });
 
