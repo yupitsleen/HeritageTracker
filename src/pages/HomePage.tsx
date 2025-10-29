@@ -18,11 +18,11 @@ import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
+import { About } from "../components/About/About";
+import { StatsDashboard } from "../components/Stats/StatsDashboard";
 
-// Lazy load heavy components for better initial load performance
+// Lazy load only SiteDetailPanel and DonateModal (less frequently accessed)
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
-const About = lazy(() => import("../components/About/About").then(m => ({ default: m.About })));
-const StatsDashboard = lazy(() => import("../components/Stats/StatsDashboard").then(m => ({ default: m.StatsDashboard })));
 const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 interface HomePageProps {
@@ -184,15 +184,7 @@ export function HomePage({ isMobile }: HomePageProps) {
         onClose={() => appState.setIsStatsOpen(false)}
         zIndex={10001}
       >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading statistics...</div>
-            </div>
-          }
-        >
-          <StatsDashboard sites={sites} />
-        </Suspense>
+        <StatsDashboard sites={sites} />
       </Modal>
 
       {/* About Modal */}
@@ -201,15 +193,7 @@ export function HomePage({ isMobile }: HomePageProps) {
         onClose={() => appState.setIsAboutOpen(false)}
         zIndex={10001}
       >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading about...</div>
-            </div>
-          }
-        >
-          <About sites={sites} />
-        </Suspense>
+        <About sites={sites} />
       </Modal>
 
       {/* Donate Modal */}
