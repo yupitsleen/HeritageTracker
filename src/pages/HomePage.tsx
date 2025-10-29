@@ -18,10 +18,9 @@ import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
-import { About } from "../components/About/About";
-import { StatsDashboard } from "../components/Stats/StatsDashboard";
 
 // Lazy load only SiteDetailPanel and DonateModal (less frequently accessed)
+// Note: About and Stats are now dedicated pages at /about and /stats for better performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
@@ -93,8 +92,6 @@ export function HomePage({ isMobile }: HomePageProps) {
       {/* Header with flag line */}
       <AppHeader
         onOpenDonate={() => appState.setIsDonateOpen(true)}
-        onOpenStats={() => appState.setIsStatsOpen(true)}
-        onOpenAbout={() => appState.setIsAboutOpen(true)}
         onOpenHelp={() => appState.setIsHelpOpen(true)}
       />
 
@@ -176,24 +173,6 @@ export function HomePage({ isMobile }: HomePageProps) {
             variant="expanded"
           />
         </div>
-      </Modal>
-
-      {/* Statistics Modal */}
-      <Modal
-        isOpen={appState.modals.isStatsOpen}
-        onClose={() => appState.setIsStatsOpen(false)}
-        zIndex={10001}
-      >
-        <StatsDashboard sites={sites} />
-      </Modal>
-
-      {/* About Modal */}
-      <Modal
-        isOpen={appState.modals.isAboutOpen}
-        onClose={() => appState.setIsAboutOpen(false)}
-        zIndex={10001}
-      >
-        <About sites={sites} />
       </Modal>
 
       {/* Donate Modal */}
@@ -318,8 +297,6 @@ export function HomePage({ isMobile }: HomePageProps) {
       {/* Footer */}
       <AppFooter
         onOpenDonate={() => appState.setIsDonateOpen(true)}
-        onOpenStats={() => appState.setIsStatsOpen(true)}
-        onOpenAbout={() => appState.setIsAboutOpen(true)}
         isMobile={isMobile}
       />
     </div>

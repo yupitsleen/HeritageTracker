@@ -11,8 +11,6 @@ import { Z_INDEX } from "../../constants/layout";
 
 interface AppHeaderProps {
   onOpenDonate: () => void;
-  onOpenStats: () => void;
-  onOpenAbout: () => void;
   onOpenHelp?: () => void;
 }
 
@@ -20,8 +18,9 @@ interface AppHeaderProps {
  * Application header with title, description, and action buttons
  * Black background with Palestinian flag colors
  * Includes dark mode toggle and navigation to advanced animation page
+ * Stats and About now navigate to dedicated pages for better performance
  */
-export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }: AppHeaderProps) {
+export function AppHeader({ onOpenDonate, onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
@@ -72,7 +71,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               {t("header.helpPalestine")}
             </Button>
             <Button
-              onClick={onOpenStats}
+              onClick={() => navigate("/stats")}
               variant="primary"
               size="xs"
               lightText
@@ -81,7 +80,7 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
               {t("header.statistics")}
             </Button>
             <Button
-              onClick={onOpenAbout}
+              onClick={() => navigate("/about")}
               variant="primary"
               size="xs"
               lightText

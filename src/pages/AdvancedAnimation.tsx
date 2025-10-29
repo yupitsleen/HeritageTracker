@@ -15,10 +15,9 @@ import { useWaybackReleases } from "../hooks/useWaybackReleases";
 import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
-import { About } from "../components/About/About";
-import { StatsDashboard } from "../components/Stats/StatsDashboard";
 
 // Lazy load the map, timeline, and modal components
+// Note: About and Stats are now dedicated pages at /about and /stats for better performance
 const SiteDetailView = lazy(() =>
   import("../components/Map/SiteDetailView").then((m) => ({ default: m.SiteDetailView }))
 );
@@ -68,8 +67,6 @@ export function AdvancedAnimation() {
 
   // Modal states for footer and help
   const [isDonateOpen, setIsDonateOpen] = useState(false);
-  const [isStatsOpen, setIsStatsOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   // Get current release
@@ -338,24 +335,6 @@ export function AdvancedAnimation() {
         )}
       </Modal>
 
-      {/* Statistics Modal */}
-      <Modal
-        isOpen={isStatsOpen}
-        onClose={() => setIsStatsOpen(false)}
-        zIndex={10001}
-      >
-        <StatsDashboard sites={mockSites} />
-      </Modal>
-
-      {/* About Modal */}
-      <Modal
-        isOpen={isAboutOpen}
-        onClose={() => setIsAboutOpen(false)}
-        zIndex={10001}
-      >
-        <About sites={mockSites} />
-      </Modal>
-
       {/* Donate Modal */}
       <Modal
         isOpen={isDonateOpen}
@@ -449,8 +428,6 @@ export function AdvancedAnimation() {
       {/* Footer - Desktop only */}
       <AppFooter
         onOpenDonate={() => setIsDonateOpen(true)}
-        onOpenStats={() => setIsStatsOpen(true)}
-        onOpenAbout={() => setIsAboutOpen(true)}
         isMobile={false}
       />
     </div>

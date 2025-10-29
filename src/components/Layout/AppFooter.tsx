@@ -1,11 +1,10 @@
+import { Link } from "react-router-dom";
 import { cn, components } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 
 interface AppFooterProps {
   onOpenDonate: () => void;
-  onOpenStats: () => void;
-  onOpenAbout: () => void;
   isMobile: boolean;
 }
 
@@ -13,8 +12,9 @@ interface AppFooterProps {
  * Application footer with attribution and navigation
  * Green background with Palestinian flag colors
  * Muted in dark mode
+ * Stats and About now navigate to dedicated pages for better performance
  */
-export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: AppFooterProps) {
+export function AppFooter({ onOpenDonate, isMobile }: AppFooterProps) {
   const t = useThemeClasses();
   const translate = useTranslation();
 
@@ -54,21 +54,21 @@ export function AppFooter({ onOpenDonate, onOpenStats, onOpenAbout, isMobile }: 
                 {translate("footer.donate")}
               </button>
               {" • "}
-              <button
-                onClick={onOpenStats}
+              <Link
+                to="/stats"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="View Statistics"
               >
                 {translate("footer.stats")}
-              </button>
+              </Link>
               {" • "}
-              <button
-                onClick={onOpenAbout}
+              <Link
+                to="/about"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="About Heritage Tracker"
               >
                 {translate("footer.about")}
-              </button>
+              </Link>
               {" • "}
               <a
                 href="https://github.com/yupitsleen/HeritageTracker"

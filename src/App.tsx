@@ -8,6 +8,8 @@ import { LocaleProvider } from "./contexts/LocaleContext";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { HomePage } from "./pages/HomePage";
 import { AdvancedAnimation } from "./pages/AdvancedAnimation";
+import { AboutPage } from "./pages/AboutPage";
+import { StatsPage } from "./pages/StatsPage";
 import { BREAKPOINTS } from "./constants/layout";
 
 /**
@@ -18,6 +20,8 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
     <Routes>
       <Route path="/" element={<HomePage isMobile={isMobile} />} />
       <Route path="/advanced-animation" element={<AdvancedAnimation />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/stats" element={<StatsPage />} />
     </Routes>
   );
 }
