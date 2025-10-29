@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { memo } from "react";
 import type { GazaSite } from "../../types";
 import { useHeritageStats } from "../../hooks/useHeritageStats";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { LAST_UPDATED } from "../../constants/statistics";
-import { BREAKPOINTS } from "../../constants/layout";
 
 interface StatsDashboardProps {
   sites: GazaSite[];
@@ -12,31 +11,20 @@ interface StatsDashboardProps {
 
 /**
  * Statistics Dashboard - conveys the scale and impact of cultural heritage destruction
+ *
+ * Performance optimizations:
+ * - Removed resize listener (use pure CSS instead)
+ * - Memoized component to prevent re-renders
+ * - Added CSS containment for better scroll performance
  */
-export function StatsDashboard({ sites }: StatsDashboardProps) {
+export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashboardProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
-  // Calculate impactful statistics using extracted hook
+  // Calculate impactful statistics using extracted hook (already memoized)
   const stats = useHeritageStats(sites);
 
-  // Detect desktop vs mobile for conditional rendering (not just CSS hiding)
-  const [isDesktop, setIsDesktop] = useState(() => {
-    return typeof window !== 'undefined' && window.innerWidth >= BREAKPOINTS.MOBILE;
-  });
-
-  useEffect(() => {
-    // SSR safety check - ensure window exists
-    if (typeof window === 'undefined') return;
-
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= BREAKPOINTS.MOBILE);
-    };
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
-  }, []);
-
   return (
-    <div className={`max-h-[80vh] overflow-y-auto ${t.bg.primary}`}>
+    <div className={`max-h-[80vh] overflow-y-auto ${t.bg.primary}`} style={{ contain: 'layout style paint' }}>
       <div className="p-3 md:p-6 max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-4 md:mb-6 text-center">
@@ -90,11 +78,9 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             <div className={`text-[10px] md:text-xs font-semibold ${t.text.heading} mb-1.5 md:mb-2`}>
               Sites Over 1,000 Years Old
             </div>
-            {isDesktop && (
-              <p className={`text-[10px] ${t.text.muted} leading-relaxed`}>
-                Survived centuries—destroyed in months.
-              </p>
-            )}
+            <p className={`hidden md:block text-[10px] ${t.text.muted} leading-relaxed`}>
+              Survived centuries—destroyed in months.
+            </p>
           </div>
 
           {/* Religious sites */}
@@ -105,11 +91,9 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             <div className={`text-[10px] md:text-xs font-semibold ${t.text.heading} mb-1.5 md:mb-2`}>
               Houses of Worship Destroyed
             </div>
-            {isDesktop && (
-              <p className={`text-[10px] ${t.text.muted} leading-relaxed`}>
-                Active mosques and churches serving communities.
-              </p>
-            )}
+            <p className={`hidden md:block text-[10px] ${t.text.muted} leading-relaxed`}>
+              Active mosques and churches serving communities.
+            </p>
           </div>
 
           {/* Museums */}
@@ -120,11 +104,9 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             <div className={`text-[10px] md:text-xs font-semibold ${t.text.heading} mb-1.5 md:mb-2`}>
               Museums & Cultural Centers
             </div>
-            {isDesktop && (
-              <p className={`text-[10px] ${t.text.muted} leading-relaxed`}>
-                Rare artifacts, libraries, and centuries of archives.
-              </p>
-            )}
+            <p className={`hidden md:block text-[10px] ${t.text.muted} leading-relaxed`}>
+              Rare artifacts, libraries, and centuries of archives.
+            </p>
           </div>
         </div>
 
@@ -141,14 +123,12 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
             </div>
 
             {/* Al-Israa University Museum */}
-            {isDesktop && (
-            <div className={`border-l-4 border-[#ed3039] ${t.bg.tertiary} p-3 rounded-r-lg`}>
+            <div className={`hidden md:block border-l-4 border-[#ed3039] ${t.bg.tertiary} p-3 rounded-r-lg`}>
               <h3 className={`text-sm font-bold ${t.text.heading} mb-0.5`}>Al-Israa University Museum</h3>
               <p className={`text-xs ${t.text.body}`}>
                 3,000+ artifacts looted • Building demolished with explosives
               </p>
             </div>
-            )}
           </div>
         </section>
 
@@ -208,13 +188,11 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
               with intent to destroy, in whole or in part, a national, ethnical, racial or religious
               group—including destruction of their cultural heritage.
             </p>
-            {isDesktop && (
-              <p>
-                <strong>UNESCO Enhanced Protection:</strong> Saint Hilarion Monastery was granted the
-                highest level of immunity in December 2023, then designated World Heritage in Danger
-                in July 2024—yet sustained damage to surrounding infrastructure.
-              </p>
-            )}
+            <p className="hidden md:block">
+              <strong>UNESCO Enhanced Protection:</strong> Saint Hilarion Monastery was granted the
+              highest level of immunity in December 2023, then designated World Heritage in Danger
+              in July 2024—yet sustained damage to surrounding infrastructure.
+            </p>
           </div>
         </section>
 
@@ -232,4 +210,4 @@ export function StatsDashboard({ sites }: StatsDashboardProps) {
       </div>
     </div>
   );
-}
+});
