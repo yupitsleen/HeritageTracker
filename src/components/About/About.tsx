@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AboutHeader } from "./sections/AboutHeader";
 import { MissionSection } from "./sections/MissionSection";
+import { ResponsibilitySection } from "./sections/ResponsibilitySection";
 import { MethodologySection } from "./sections/MethodologySection";
 import { DataSourcesSection } from "./sections/DataSourcesSection";
 import { TheDataSection } from "./sections/TheDataSection";
@@ -34,6 +35,7 @@ export const About = memo(function About({ sites }: AboutProps) {
       <div className="p-3 md:p-6 max-w-4xl mx-auto">
         <AboutHeader />
         <MissionSection />
+        <ResponsibilitySection />
         <MethodologySection />
         <DataSourcesSection />
         <TheDataSection sites={sites} />
