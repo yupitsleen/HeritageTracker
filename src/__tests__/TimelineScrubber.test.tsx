@@ -380,10 +380,12 @@ describe("TimelineScrubber", () => {
         </AnimationProvider>
       );
 
-      const svg = container.querySelector("svg");
-      expect(svg).toBeInTheDocument();
-      // SVG should have aria-hidden for accessibility
-      expect(svg).toHaveAttribute("aria-hidden", "true");
+      // Get all SVGs and find the timeline SVG (not the InfoIcon SVG)
+      const svgs = container.querySelectorAll("svg");
+      const timelineSvg = Array.from(svgs).find((svg) => svg.classList.contains("mt-1"));
+      expect(timelineSvg).toBeInTheDocument();
+      // Timeline SVG should have aria-hidden for accessibility
+      expect(timelineSvg).toHaveAttribute("aria-hidden", "true");
     });
 
     it("container has overflow-visible to prevent tooltip clipping", () => {

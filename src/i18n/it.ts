@@ -75,6 +75,8 @@ export const it: Translations = {
     playPause: "Riproduci/Pausa",
     step: "Passo",
     jump: "Salta",
+    tooltipDefault: "Fai clic su Riproduci per animare gli eventi di distruzione. Usa il filtro data per concentrarti su periodi di tempo specifici. Fai clic sui punti per vedere i dettagli del sito.",
+    tooltipAdvanced: "Fai clic sui punti rossi per evidenziare i siti. Usa Precedente/Successivo per navigare tra gli eventi. Abilita 'Sincronizza Mappa' per mostrare automaticamente le immagini satellitari prima della distruzione di ogni sito.",
   },
 
   table: {
@@ -100,6 +102,7 @@ export const it: Translations = {
     destructionDateIslamic: "Data Distruzione (Islamico)",
     builtGregorian: "Costruito (Gregoriano)",
     builtIslamic: "Costruito (Islamico)",
+    tooltip: "Fai clic su qualsiasi riga del sito per visualizzare informazioni dettagliate. Fai clic sulle intestazioni delle colonne per ordinare. Passa il mouse sopra le righe del sito per evidenziarle sulla mappa e sulla timeline.",
     showing: "Visualizzazione",
     site: "sito",
     sites: "siti",
@@ -171,6 +174,7 @@ export const it: Translations = {
     resetTimeline: "Ripristina timeline",
     nextEvent: "Evento successivo",
     previousEvent: "Evento precedente",
+    waybackTooltip: "Naviga tra oltre 150 versioni storiche di immagini satellitari dal 2014 al 2025. Ogni linea grigia rappresenta una data di acquisizione dell'immagine. Fai clic ovunque sulla timeline per saltare a quella data. Passa il mouse sopra le linee grigie per vedere le date esatte.",
   },
 
   siteDetail: {

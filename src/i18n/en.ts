@@ -75,6 +75,8 @@ export const en: Translations = {
     playPause: "Play/Pause",
     step: "Step",
     jump: "Jump",
+    tooltipDefault: "Click Play to animate through destruction events. Use the date filter to focus on specific time periods. Click dots to see site details.",
+    tooltipAdvanced: "Click red dots to highlight sites. Use Previous/Next to navigate between events. Enable 'Sync Map' to automatically show satellite imagery from before each site's destruction.",
   },
 
   table: {
@@ -98,6 +100,7 @@ export const en: Translations = {
     destructionDate: "Destruction Date",
     destructionDateGregorian: "Destruction Date (Gregorian)",
     destructionDateIslamic: "Destruction Date (Islamic)",
+    tooltip: "Click any site row to view detailed information. Click column headers to sort. Hover over site rows to highlight them on the map and timeline.",
     builtGregorian: "Built (Gregorian)",
     builtIslamic: "Built (Islamic)",
     showing: "Showing",
@@ -171,6 +174,7 @@ export const en: Translations = {
     resetTimeline: "Reset timeline",
     nextEvent: "Next event",
     previousEvent: "Previous event",
+    waybackTooltip: "Navigate through 150+ historical satellite imagery versions from 2014-2025. Each gray line represents one imagery capture date. Click anywhere on the timeline to jump to that date. Hover over gray lines to see exact dates.",
   },
 
   siteDetail: {

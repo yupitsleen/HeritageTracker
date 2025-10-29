@@ -4,6 +4,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
 import type { WaybackRelease } from "../../services/waybackService";
+import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
 
 /**
  * Callback type for Wayback release index changes
@@ -119,7 +120,14 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
     <div className={t.timeline.container}>
       {/* Header - Current date and position with step controls - centered */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
-      <div className="flex items-center justify-center gap-3 mb-2" dir="ltr">
+      <div className="flex items-center justify-center gap-3 mb-2 relative" dir="ltr">
+        {/* Info icon in top right */}
+        <div className="absolute right-0 top-0">
+          <InfoIconWithTooltip
+            tooltip={translate("advancedTimeline.waybackTooltip")}
+          />
+        </div>
+
         {/* Previous button */}
         <Button
           onClick={handlePrevious}

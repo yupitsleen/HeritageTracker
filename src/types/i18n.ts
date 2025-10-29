@@ -117,6 +117,8 @@ export interface Translations {
     playPause: string;
     step: string;
     jump: string;
+    tooltipDefault: string;
+    tooltipAdvanced: string;
   };
 
   /** Table component */
@@ -150,6 +152,7 @@ export interface Translations {
     description: string;
     coordinates: string;
     sources: string;
+    tooltip: string;
   };
 
   /** Filter bar */
@@ -219,6 +222,7 @@ export interface Translations {
     resetTimeline: string;
     nextEvent: string;
     previousEvent: string;
+    waybackTooltip: string;
   };
 
   /** Site detail panel */

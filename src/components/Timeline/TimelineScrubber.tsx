@@ -21,6 +21,7 @@ import {
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
 import { getSpeedValues } from "../../config/animation";
+import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
 
 /**
  * Callback type for date change handlers
@@ -309,6 +310,16 @@ export function TimelineScrubber({
       {/* Controls */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
       <div className="flex items-center mb-2 gap-2 flex-wrap relative" dir="ltr">
+        {/* Info icon in top right */}
+        <div className="absolute right-0 top-0">
+          <InfoIconWithTooltip
+            tooltip={advancedMode
+              ? translate("timeline.tooltipAdvanced")
+              : translate("timeline.tooltipDefault")
+            }
+          />
+        </div>
+
         {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
         <div className="flex items-center gap-1.5">
           {!advancedMode && (

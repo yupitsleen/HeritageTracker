@@ -10,6 +10,7 @@ import { TableHeader } from "./TableHeader";
 import { TableRow } from "./TableRow";
 import { ExportControls } from "./ExportControls";
 import { VirtualizedTableBody } from "./VirtualizedTableBody";
+import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
 
 // Threshold for enabling virtual scrolling
 const VIRTUAL_SCROLL_THRESHOLD = 100;
@@ -114,6 +115,9 @@ export function SitesTableDesktop({
                   </svg>
                 </button>
               )}
+              <InfoIconWithTooltip
+                tooltip={translate("table.tooltip")}
+              />
             </div>
             {variant === "expanded" && (
               <ExportControls
