@@ -208,7 +208,7 @@ export function HomePage({ isMobile }: HomePageProps) {
             </div>
           }
         >
-          <About />
+          <About sites={sites} />
         </Suspense>
       </Modal>
 

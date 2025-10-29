@@ -368,7 +368,7 @@ export function AdvancedAnimation() {
             </div>
           }
         >
-          <About />
+          <About sites={mockSites} />
         </Suspense>
       </Modal>
 

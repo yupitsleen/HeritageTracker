@@ -10,6 +10,11 @@ import { LegalFrameworkSection } from "./sections/LegalFrameworkSection";
 import { ContributingSection } from "./sections/ContributingSection";
 import { AcknowledgmentsSection } from "./sections/AcknowledgmentsSection";
 import { AttributionSection } from "./sections/AttributionSection";
+import type { GazaSite } from "../../types";
+
+interface AboutProps {
+  sites: GazaSite[];
+}
 
 /**
  * About/Methodology page explaining the project's purpose, data sources, and verification process
@@ -21,7 +26,7 @@ import { AttributionSection } from "./sections/AttributionSection";
  * - Added CSS containment for better scroll performance
  * - Memoized component to prevent unnecessary re-renders
  */
-export const About = memo(function About() {
+export const About = memo(function About({ sites }: AboutProps) {
   const t = useThemeClasses();
 
   return (
@@ -31,7 +36,7 @@ export const About = memo(function About() {
         <MissionSection />
         <MethodologySection />
         <DataSourcesSection />
-        <TheDataSection />
+        <TheDataSection sites={sites} />
         <ResearchSection />
         <LegalFrameworkSection />
         <ContributingSection />
