@@ -62,8 +62,8 @@ export const COLORS = {
   // Muted/subdued colors for active/toggle states
   SUBDUED_GREEN_DARK: '#2d5a38',         // Muted green for active toggle (dark mode)
   SUBDUED_GREEN_DARK_HOVER: '#3a6b48',   // Hover on active (dark mode)
-  SUBDUED_GREEN_LIGHT: '#4a7c59',        // Muted green for active toggle (light mode)
-  SUBDUED_GREEN_LIGHT_HOVER: '#5a8c69',  // Hover on active (light mode)
+  SUBDUED_GREEN_LIGHT: '#2d5a38',        // Muted green for active toggle (light mode) - darker for better contrast with white text
+  SUBDUED_GREEN_LIGHT_HOVER: '#3a6b48',  // Hover on active (light mode)
 } as const;
 
 /**
