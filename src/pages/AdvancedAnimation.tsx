@@ -208,7 +208,7 @@ export function AdvancedAnimation() {
           <AnimationProvider sites={mockSites}>
             {/* Full-screen satellite map with Wayback imagery */}
             <div
-              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden`}
+              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden relative z-10`}
             >
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
@@ -222,7 +222,7 @@ export function AdvancedAnimation() {
             </div>
 
             {/* Wayback Release Slider - Visual timeline with year markers */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 relative z-10">
               <WaybackSlider
                 releases={releases}
                 currentIndex={currentReleaseIndex}
@@ -232,7 +232,7 @@ export function AdvancedAnimation() {
             </div>
 
             {/* Timeline Scrubber - Site filtering with advanced mode sync */}
-            <div className="flex-shrink-0 min-h-[100px]">
+            <div className="flex-shrink-0 min-h-[100px] relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <TimelineScrubber
                   key="advanced-timeline-scrubber"
