@@ -47,11 +47,11 @@ export function DonateModal() {
   return (
     <div className="rounded-lg max-w-4xl max-h-[80vh] overflow-y-auto">
       <div className="px-4 py-3">
-        <h2 className={`text-lg font-bold mb-3 ${t.text.heading}`}>
+        <h2 className="text-xl font-bold mb-3 text-gray-900">
           {translate("donate.title")}
         </h2>
 
-        <p className={`text-xs mb-4 ${t.text.body}`}>
+        <p className="text-sm mb-4 text-gray-900">
           {translate("donate.description")}
         </p>
 
@@ -63,13 +63,13 @@ export function DonateModal() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
-                  <h3 className={`font-semibold text-sm mb-1 ${t.text.heading}`}>
+                  <h3 className="font-semibold text-base mb-1 text-gray-900">
                     {org.name}
                   </h3>
-                  <p className={`text-[10px] mb-1.5 ${t.text.muted}`}>
+                  <p className="text-xs mb-1.5 text-gray-900">
                     <span className="font-medium">{translate("donate.focus")}</span> {org.focus}
                   </p>
-                  <p className={`text-xs mb-2 ${t.text.body}`}>
+                  <p className="text-sm mb-2 text-gray-900">
                     {org.description}
                   </p>
                 </div>
@@ -77,7 +77,7 @@ export function DonateModal() {
                   href={org.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex-shrink-0 px-3 py-1.5 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs font-semibold whitespace-nowrap active:scale-95 ${t.flag.greenBg} ${t.flag.greenHover}`}
+                  className={`flex-shrink-0 px-3 py-1.5 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm font-semibold whitespace-nowrap active:scale-95 ${t.flag.greenBg} ${t.flag.greenHover}`}
                   aria-label={`Donate to ${org.name}`}
                 >
                   {translate("donate.donateButton")}
@@ -88,7 +88,7 @@ export function DonateModal() {
         </div>
 
         <div className={`mt-4 p-3 rounded-lg ${t.bg.tertiary} border ${t.border.default}`}>
-          <p className={`text-[10px] ${t.text.muted}`}>
+          <p className="text-xs text-gray-900">
             <strong>{translate("donate.disclaimer")}</strong> {translate("donate.disclaimerText")}
           </p>
         </div>

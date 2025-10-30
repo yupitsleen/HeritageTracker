@@ -8,7 +8,7 @@ export function AttributionSection() {
 
   return (
     <section className={`border-t ${t.border.default} pt-4 md:pt-6`}>
-      <p className={`text-[10px] md:text-xs ${t.text.muted} leading-relaxed mb-3`}>
+      <p className="text-xs md:text-sm text-gray-900 leading-relaxed mb-3">
         <strong>Content Attribution & Methodology:</strong> Site descriptions and historical
         information are original syntheses created by combining factual data from multiple
         verified sources. Research was conducted using publicly available reports from UNESCO,
@@ -18,7 +18,7 @@ export function AttributionSection() {
         are original summaries of publicly available information, not direct quotations.
         Research assistance provided by Claude (Anthropic).
       </p>
-      <p className={`text-[10px] md:text-xs ${t.text.muted} leading-relaxed`}>
+      <p className="text-xs md:text-sm text-gray-900 leading-relaxed">
         <strong>Disclaimer:</strong> Heritage Tracker is an independent documentation project.
         All information is sourced from publicly available reports by UNESCO, Forensic
         Architecture, Heritage for Peace, and other reputable cultural heritage organizations.
