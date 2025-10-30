@@ -18,6 +18,7 @@ import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 import { Z_INDEX } from "../constants/layout";
+import { COLORS } from "../constants/colors";
 
 // Lazy load only SiteDetailPanel (less frequently accessed)
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
@@ -81,7 +82,7 @@ export function HomePage({ isMobile }: HomePageProps) {
           style={{
             width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
             height: '100vh', // Full viewport height
-            background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
+            background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
             clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
           }}
           aria-hidden="true"

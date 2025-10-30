@@ -12,6 +12,7 @@ import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
 import { Z_INDEX } from "../constants/layout";
+import { COLORS } from "../constants/colors";
 
 // Lazy load the map, timeline, and modal components
 // Note: About and Stats are now dedicated pages at /about and /stats for better performance
@@ -169,7 +170,7 @@ export function AdvancedAnimation() {
         style={{
           width: '800px',
           height: '100vh',
-          background: isDark ? '#8b2a30' : '#ed3039',
+          background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED,
           clipPath: 'polygon(0 0, 0 100%, 800px 50%)',
         }}
         aria-hidden="true"

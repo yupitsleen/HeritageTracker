@@ -15,6 +15,7 @@ import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
 import type { GazaSite } from "../types";
 import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
 import { Z_INDEX } from "../constants/layout";
+import { COLORS } from "../constants/colors";
 
 // Lazy load Site Detail Panel
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
@@ -126,7 +127,12 @@ export function DataPage() {
                 {/* Filter Button */}
                 <button
                   onClick={openFilterModal}
-                  className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#009639] hover:bg-[#007b2f] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
+                  style={{
+                    backgroundColor: COLORS.FLAG_GREEN,
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN_HOVER)}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN)}
+                  className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
                 >
                   {translate("filters.filters")}
                 </button>
