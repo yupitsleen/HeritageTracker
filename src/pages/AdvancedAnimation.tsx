@@ -221,19 +221,13 @@ export function AdvancedAnimation() {
               </Suspense>
             </div>
 
-            {/* Info bar showing dataset stats */}
-            <div className={`flex-shrink-0 text-xs ${t.text.muted} text-center pb-2`}>
-              {isLoading && "Loading imagery..."}
-              {error && "Error loading imagery"}
-              {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Heritage Sites`}
-            </div>
-
             {/* Wayback Release Slider - Visual timeline with year markers */}
             <div className="flex-shrink-0">
               <WaybackSlider
                 releases={releases}
                 currentIndex={currentReleaseIndex}
                 onIndexChange={setCurrentReleaseIndex}
+                totalSites={mockSites.length}
               />
             </div>
 

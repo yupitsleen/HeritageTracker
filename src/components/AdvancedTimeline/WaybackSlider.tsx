@@ -15,6 +15,7 @@ interface WaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
+  totalSites?: number;
 }
 
 /**
@@ -27,7 +28,7 @@ interface WaybackSliderProps {
  * - Previous/Next step buttons
  * - Visual scrubber showing current position
  */
-export function WaybackSlider({ releases, currentIndex, onIndexChange }: WaybackSliderProps) {
+export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSites }: WaybackSliderProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
   const translate = useTranslation();
@@ -121,6 +122,11 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange }: Wayback
       {/* Header - Current date and position with step controls - centered */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
       <div className="flex items-center justify-center gap-3 mb-2 relative" dir="ltr">
+        {/* Dataset info - absolutely positioned to the right of buttons, centered between buttons and info icon */}
+        <div className={`absolute right-10 text-xs ${t.text.muted} pointer-events-none`}>
+          {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
+        </div>
+
         {/* Info icon in top right */}
         <div className="absolute right-0 top-0">
           <InfoIconWithTooltip
