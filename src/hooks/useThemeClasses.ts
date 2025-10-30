@@ -44,8 +44,8 @@ export function useThemeClasses() {
       primary: isDark ? "bg-gray-800" : "bg-white",
       /** Secondary background (nested containers) */
       secondary: isDark ? "bg-gray-700" : "bg-gray-50",
-      /** Tertiary background (subtle emphasis) */
-      tertiary: isDark ? "bg-gray-700/50" : "bg-gray-100",
+      /** Tertiary background (subtle emphasis) - border-only in light mode, subtle fill in dark mode */
+      tertiary: isDark ? "bg-gray-700/50" : "",
       /** Hover state background */
       hover: isDark ? "hover:bg-gray-700" : "hover:bg-gray-100",
       /** Active/selected state */

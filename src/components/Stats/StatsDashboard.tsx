@@ -37,7 +37,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
         </div>
 
         {/* Human Toll - Critical Context */}
-        <div className={`bg-gradient-to-br ${isDark ? "from-red-900/30 to-red-900/10" : "from-red-50 to-red-100"} border-2 border-[#ed3039] rounded-lg p-3 md:p-6 mb-4 md:mb-6`}>
+        <div className={`${isDark ? "bg-gradient-to-br from-red-900/30 to-red-900/10" : ""} border-2 border-[#ed3039] rounded-lg p-3 md:p-6 mb-4 md:mb-6`}>
           <div className="grid grid-cols-2 gap-4 md:gap-6 text-center">
             <div>
               <div className="text-3xl md:text-5xl font-bold text-[#ed3039] mb-1">45,000+</div>
@@ -84,7 +84,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
           </div>
 
           {/* Religious sites */}
-          <div className={`${isDark ? "bg-red-900/20" : "bg-red-50"} border-2 border-[#ed3039] rounded-lg p-3 md:p-4`}>
+          <div className={`${isDark ? "bg-red-900/20" : ""} border-2 border-[#ed3039] rounded-lg p-3 md:p-4`}>
             <div className="text-2xl md:text-3xl font-bold text-[#ed3039] mb-1">
               {stats.religiousDestroyed}/{stats.religiousSites}
             </div>
@@ -97,7 +97,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
           </div>
 
           {/* Museums */}
-          <div className={`${isDark ? "bg-orange-900/20" : "bg-orange-50"} border-2 border-orange-400 rounded-lg p-3 md:p-4`}>
+          <div className={`${isDark ? "bg-orange-900/20" : ""} border-2 border-orange-400 rounded-lg p-3 md:p-4`}>
             <div className="text-2xl md:text-3xl font-bold text-orange-600 mb-1">
               {stats.museumsDestroyed}/{stats.museums}
             </div>
