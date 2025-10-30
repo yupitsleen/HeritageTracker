@@ -57,16 +57,16 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
 
           {/* Center: Main action buttons - desktop only */}
           <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Home/Map Navigation */}
+            {/* Home/Dashboard Navigation */}
             <Button
               onClick={() => navigate("/")}
               variant={activePage === "home" ? "primary" : "ghost"}
               size="xs"
               lightText
-              aria-label="Map View"
+              aria-label="Dashboard View"
               className={activePage === "home" ? "ring-2 ring-white/50" : ""}
             >
-              Map
+              Dashboard
             </Button>
 
             {/* Advanced Animation Navigation */}
