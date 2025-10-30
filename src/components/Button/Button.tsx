@@ -53,7 +53,7 @@ function getVariantClasses(
 
     ghost: isDark
       ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
-      : `bg-transparent hover:bg-gray-100 ${textColor} border-gray-300 hover:opacity-90`,
+      : `bg-transparent hover:bg-gray-100 ${textColor} hover:text-black border-gray-300 hover:opacity-90`,
   };
 
   return variants[variant];
