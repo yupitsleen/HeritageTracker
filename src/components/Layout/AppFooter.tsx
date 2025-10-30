@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { cn, components } from "../../styles/theme";
+import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Z_INDEX } from "../../constants/layout";
@@ -25,7 +25,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
       {/* Desktop footer - ultra compact */}
       {!isMobile && (
         <div className="py-1.5">
-          <div className={cn(components.container.base)}>
+          <div className={cn("container mx-auto px-4")}>
             <p className="text-[10px] text-center">
               {translate("footer.title")} • {translate("footer.sources")} •{" "}
               <a
@@ -45,7 +45,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
       {/* Mobile footer - compact */}
       {isMobile && (
         <div className="py-1.5">
-          <div className={cn(components.container.base)}>
+          <div className={cn("container mx-auto px-4")}>
             <p className="text-[10px] text-center font-semibold">
               {translate("footer.title")} •{" "}
               <Link

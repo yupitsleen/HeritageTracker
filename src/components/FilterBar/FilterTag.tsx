@@ -1,4 +1,4 @@
-import { components, cn } from "../../styles/theme";
+import { cn } from "../../styles/theme";
 
 interface FilterTagProps {
   label: string;
@@ -12,11 +12,15 @@ interface FilterTagProps {
  */
 export function FilterTag({ label, onRemove, ariaLabel }: FilterTagProps) {
   return (
-    <span className={cn(components.tag.base, components.tag.default)}>
+    <span className={cn(
+      "inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs rounded",
+      "bg-gray-500 hover:bg-gray-600 text-white font-medium border border-gray-600",
+      "transition-colors duration-200"
+    )}>
       {label}
       <button
         onClick={onRemove}
-        className={components.tag.removeButton}
+        className="ml-0.5 text-gray-200 hover:text-[#ed3039] transition-colors text-sm font-bold leading-none"
         aria-label={ariaLabel}
       >
         ×

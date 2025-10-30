@@ -1,5 +1,5 @@
 import type { GazaSite, FilterState } from "../../types";
-import { cn, components } from "../../styles/theme";
+import { cn } from "../../styles/theme";
 import { FilterBar } from "../FilterBar/FilterBar";
 import { SitesTable } from "../SitesTable";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
@@ -36,7 +36,7 @@ export function MobileLayout({
   return (
     <div className="md:hidden">
       {/* Filter Bar with Theme Toggle */}
-      <div className={cn(components.container.base, "py-2 relative")}>
+      <div className={cn("container mx-auto px-4", "py-2 relative")}>
         {/* Dark Mode Toggle - Mobile only, top right */}
         <button
           onClick={toggleTheme}

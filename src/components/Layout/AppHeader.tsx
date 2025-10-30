@@ -1,4 +1,4 @@
-import { components, cn } from "../../styles/theme";
+import { cn } from "../../styles/theme";
 import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
@@ -49,8 +49,8 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
     >
       {/* Header - BLACK background, ultra compact */}
       {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
-      <header className={components.header.base}>
-        <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
+      <header className="bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
+        <div className={cn("container mx-auto px-4", "py-1.5 relative flex items-center justify-between")}>
           {/* Left: Title - clickable to return home */}
           <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
             <button
