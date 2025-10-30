@@ -15,7 +15,7 @@ import { SharedLayout } from "../components/Layout/SharedLayout";
 export function AboutPage() {
   return (
     <SharedLayout>
-      <div className="max-w-4xl mx-auto py-6">
+      <div className="max-w-4xl mx-auto py-6 pb-24">
         <About sites={mockSites} />
       </div>
     </SharedLayout>

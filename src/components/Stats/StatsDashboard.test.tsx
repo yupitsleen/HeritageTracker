@@ -78,12 +78,6 @@ describe("StatsDashboard", () => {
     expect(hasSiteReferences).toBe(true);
   });
 
-  it("is scrollable", () => {
-    const { container } = renderWithTheme(<StatsDashboard sites={mockSites} />);
-    const scrollableDiv = container.querySelector('[class*="overflow"]');
-    expect(scrollableDiv).toBeInTheDocument();
-  });
-
   it("handles empty sites array gracefully", () => {
     renderWithTheme(<StatsDashboard sites={[]} />);
     // Should still render without crashing

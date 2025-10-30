@@ -42,7 +42,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   return (
     <div
       className={`sticky top-0 transition-colors duration-200 ${
-        isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
+        isDark ? "bg-gray-900" : "bg-[#000000]"
       }`}
       style={{ zIndex: Z_INDEX.STICKY }}
       dir="ltr"

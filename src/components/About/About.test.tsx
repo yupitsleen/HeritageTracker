@@ -19,11 +19,4 @@ describe("About", () => {
       expect(bodyText.length).toBeGreaterThan(100); // Has meaningful content
     });
   });
-
-  it("is scrollable", () => {
-    const { container } = renderWithTheme(<About sites={mockSites} />);
-    // Check that content is in a scrollable container
-    const scrollableDiv = container.querySelector('[class*="overflow"]');
-    expect(scrollableDiv).toBeInTheDocument();
-  });
 });

@@ -19,7 +19,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
   const translate = useTranslation();
 
   return (
-    <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg opacity-50 transition-colors duration-200 ${t.flag.greenBg}`}
+    <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg transition-colors duration-200 ${t.flag.greenBg}`}
       style={{ zIndex: Z_INDEX.BASE }}
     >
       {/* Desktop footer - ultra compact */}
