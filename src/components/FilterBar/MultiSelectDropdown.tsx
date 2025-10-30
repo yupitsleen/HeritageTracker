@@ -8,6 +8,8 @@ interface MultiSelectDropdownProps<T extends string> {
   selectedValues: T[];
   onChange: (values: T[]) => void;
   formatLabel?: (value: string) => string;
+  /** Override z-index for dropdown menu (e.g., when inside a modal) */
+  zIndex?: number;
 }
 
 /**
@@ -20,6 +22,7 @@ export function MultiSelectDropdown<T extends string>({
   selectedValues,
   onChange,
   formatLabel = (v) => v,
+  zIndex,
 }: MultiSelectDropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -77,11 +80,9 @@ export function MultiSelectDropdown<T extends string>({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className={`fixed mt-1 w-44 border rounded-md shadow-lg max-h-48 overflow-y-auto ${t.bg.primary} ${t.border.subtle}`}
+        <div className={`absolute mt-1 w-44 border rounded-md shadow-lg max-h-48 overflow-y-auto ${t.bg.primary} ${t.border.subtle}`}
           style={{
-            top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 4 : 0,
-            left: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().left : 0,
-            zIndex: Z_INDEX.DROPDOWN,
+            zIndex: zIndex ?? Z_INDEX.DROPDOWN,
           }}
         >
           <ul className="py-0.5" role="listbox">
