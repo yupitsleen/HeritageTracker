@@ -1,4 +1,4 @@
-import { useState, useCallback, lazy, Suspense } from "react";
+import { useState, useCallback, useMemo, lazy, Suspense } from "react";
 import { mockSites } from "../data/mockSites";
 import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
@@ -11,6 +11,7 @@ import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTranslation } from "../contexts/LocaleContext";
 import { formatLabel } from "../utils/format";
 import type { FilterState } from "../types/filters";
+import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
 import type { GazaSite } from "../types";
 import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
 
@@ -21,44 +22,38 @@ export function DataPage() {
   const t = useThemeClasses();
   const translate = useTranslation();
 
-  const [filters, setFilters] = useState<FilterState>({
-    selectedTypes: [],
-    selectedStatuses: [],
-    destructionDateStart: null,
-    destructionDateEnd: null,
-    creationYearStart: null,
-    creationYearEnd: null,
-    searchTerm: "",
-  });
+  const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
 
   const [tempFilters, setTempFilters] = useState<FilterState>(filters);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
-  // Apply filters to sites
-  const filteredSites = mockSites.filter(site => {
-    // Type filter
-    if (filters.selectedTypes.length > 0 && !filters.selectedTypes.includes(site.type)) {
-      return false;
-    }
-
-    // Status filter
-    if (filters.selectedStatuses.length > 0 && !filters.selectedStatuses.includes(site.status)) {
-      return false;
-    }
-
-    // Search filter
-    if (filters.searchTerm) {
-      const searchLower = filters.searchTerm.toLowerCase();
-      const matchesName = site.name.toLowerCase().includes(searchLower);
-      const matchesArabicName = site.name_ar?.toLowerCase().includes(searchLower);
-      if (!matchesName && !matchesArabicName) {
+  // Apply filters to sites (memoized for performance)
+  const filteredSites = useMemo(() => {
+    return mockSites.filter(site => {
+      // Type filter
+      if (filters.selectedTypes.length > 0 && !filters.selectedTypes.includes(site.type)) {
         return false;
       }
-    }
 
-    return true;
-  });
+      // Status filter
+      if (filters.selectedStatuses.length > 0 && !filters.selectedStatuses.includes(site.status)) {
+        return false;
+      }
+
+      // Search filter
+      if (filters.searchTerm) {
+        const searchLower = filters.searchTerm.toLowerCase();
+        const matchesName = site.name.toLowerCase().includes(searchLower);
+        const matchesArabicName = site.name_ar?.toLowerCase().includes(searchLower);
+        if (!matchesName && !matchesArabicName) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [filters]);
 
   const handleFilterChange = (updates: Partial<FilterState>) => {
     setTempFilters(prev => ({ ...prev, ...updates }));
@@ -75,26 +70,12 @@ export function DataPage() {
   };
 
   const clearAllFilters = () => {
-    const emptyFilters = {
-      selectedTypes: [],
-      selectedStatuses: [],
-      destructionDateStart: null,
-      destructionDateEnd: null,
-      creationYearStart: null,
-      creationYearEnd: null,
-      searchTerm: "",
-    };
+    const emptyFilters = createEmptyFilterState();
     setFilters(emptyFilters);
     setTempFilters(emptyFilters);
   };
 
-  const hasActiveFilters =
-    filters.selectedTypes.length > 0 ||
-    filters.selectedStatuses.length > 0 ||
-    filters.destructionDateStart !== null ||
-    filters.destructionDateEnd !== null ||
-    filters.creationYearStart !== null ||
-    filters.creationYearEnd !== null;
+  const hasActiveFilters = !isFilterStateEmpty(filters);
 
   // Memoized filter tag handlers to prevent unnecessary re-renders
   const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
