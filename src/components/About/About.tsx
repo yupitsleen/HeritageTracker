@@ -29,7 +29,7 @@ interface AboutProps {
 export const About = memo(function About({ sites }: AboutProps) {
   return (
     <div style={{ contain: 'layout style paint' }}>
-      <div className="p-3 md:p-6 max-w-4xl mx-auto">
+      <div className="p-3 md:p-6">
         <AboutHeader />
         <MissionSection />
         <ResponsibilitySection />

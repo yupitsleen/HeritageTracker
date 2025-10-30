@@ -45,7 +45,7 @@ export function DonateModal() {
   const translate = useTranslation();
 
   return (
-    <div className="rounded-lg max-w-4xl max-h-[80vh] overflow-y-auto">
+    <div className="rounded-lg max-h-[80vh] overflow-y-auto">
       <div className="px-4 py-3">
         <h2 className="text-xl font-bold mb-3 text-gray-900">
           {translate("donate.title")}

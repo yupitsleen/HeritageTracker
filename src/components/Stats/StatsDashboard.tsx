@@ -25,7 +25,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
 
   return (
     <div style={{ contain: 'layout style paint' }}>
-      <div className="p-3 md:p-6 max-w-6xl mx-auto">
+      <div className="p-3 md:p-6">
         {/* Header */}
         <div className="mb-4 md:mb-6 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-1.5">

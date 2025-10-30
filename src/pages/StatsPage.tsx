@@ -15,7 +15,7 @@ import { SharedLayout } from "../components/Layout/SharedLayout";
 export function StatsPage() {
   return (
     <SharedLayout>
-      <div className="max-w-4xl mx-auto py-6 pb-24">
+      <div className="container mx-auto px-4 py-6 pb-24 max-w-7xl">
         <StatsDashboard sites={mockSites} />
       </div>
     </SharedLayout>
