@@ -70,7 +70,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               size="xs"
               lightText
               aria-label={t("header.dashboard")}
-              className={activePage === "home" ? "ring-2 ring-white/50" : ""}
+              className={activePage === "home" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.dashboard")}
             </Button>
@@ -83,7 +83,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               lightText
               aria-label={t("header.advancedTimeline")}
               title={t("header.advancedTimeline")}
-              className={activePage === "advanced-animation" ? "ring-2 ring-white/50" : ""}
+              className={activePage === "advanced-animation" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.advancedTimeline")}
             </Button>
@@ -95,7 +95,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               size="xs"
               lightText
               aria-label={t("header.helpPalestine")}
-              className={activePage === "donate" ? "ring-2 ring-white/50" : ""}
+              className={activePage === "donate" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.helpPalestine")}
             </Button>
@@ -107,7 +107,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               size="xs"
               lightText
               aria-label={t("header.statistics")}
-              className={activePage === "stats" ? "ring-2 ring-white/50" : ""}
+              className={activePage === "stats" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.statistics")}
             </Button>
@@ -119,7 +119,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               size="xs"
               lightText
               aria-label={t("header.about")}
-              className={activePage === "about" ? "ring-2 ring-white/50" : ""}
+              className={activePage === "about" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.about")}
             </Button>
