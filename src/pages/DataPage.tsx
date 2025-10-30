@@ -177,7 +177,7 @@ export function DataPage() {
 
               {/* Results count */}
               <div className={`${COMPACT_FILTER_BAR.inputText} ${t.text.muted}`}>
-                Showing {filteredSites.length} of {mockSites.length} sites
+                {translate("filters.showingCount", { filtered: filteredSites.length, total: mockSites.length })}
               </div>
             </div>
 

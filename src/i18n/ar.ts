@@ -135,6 +135,7 @@ export const ar: Translations = {
     selectStatus: "اختر الحالة...",
     destructionDate: "تاريخ التدمير",
     yearBuilt: "سنة البناء",
+    showingCount: "عرض {{filtered}} من {{total}} موقع",
   },
 
   siteTypes: {

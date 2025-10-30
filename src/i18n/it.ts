@@ -135,6 +135,7 @@ export const it: Translations = {
     selectStatus: "Seleziona stato...",
     destructionDate: "Data Distruzione",
     yearBuilt: "Anno di Costruzione",
+    showingCount: "Mostrando {{filtered}} di {{total}} siti",
   },
 
   siteTypes: {
