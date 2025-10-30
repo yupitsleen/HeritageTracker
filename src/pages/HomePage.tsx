@@ -19,10 +19,9 @@ import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 
-// Lazy load only SiteDetailPanel and DonateModal (less frequently accessed)
-// Note: About and Stats are now dedicated pages at /about and /stats for better performance
+// Lazy load only SiteDetailPanel (less frequently accessed)
+// Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
-const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 interface HomePageProps {
   isMobile: boolean;
@@ -91,7 +90,6 @@ export function HomePage({ isMobile }: HomePageProps) {
 
       {/* Header with flag line */}
       <AppHeader
-        onOpenDonate={() => appState.setIsDonateOpen(true)}
         onOpenHelp={() => appState.setIsHelpOpen(true)}
       />
 
@@ -173,23 +171,6 @@ export function HomePage({ isMobile }: HomePageProps) {
             variant="expanded"
           />
         </div>
-      </Modal>
-
-      {/* Donate Modal */}
-      <Modal
-        isOpen={appState.modals.isDonateOpen}
-        onClose={() => appState.setIsDonateOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading...</div>
-            </div>
-          }
-        >
-          <DonateModal />
-        </Suspense>
       </Modal>
 
       {/* Help Modal */}
@@ -296,7 +277,6 @@ export function HomePage({ isMobile }: HomePageProps) {
 
       {/* Footer */}
       <AppFooter
-        onOpenDonate={() => appState.setIsDonateOpen(true)}
         isMobile={isMobile}
       />
     </div>

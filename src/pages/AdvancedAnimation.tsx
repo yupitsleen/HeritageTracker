@@ -27,7 +27,6 @@ const TimelineScrubber = lazy(() =>
 const SiteDetailPanel = lazy(() =>
   import("../components/SiteDetail/SiteDetailPanel").then((m) => ({ default: m.SiteDetailPanel }))
 );
-const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 /**
  * Advanced Animation Page
@@ -66,7 +65,6 @@ export function AdvancedAnimation() {
   const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
 
   // Modal states for footer and help
-  const [isDonateOpen, setIsDonateOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   // Get current release
@@ -336,25 +334,7 @@ export function AdvancedAnimation() {
       </Modal>
 
       {/* Donate Modal */}
-      <Modal
-        isOpen={isDonateOpen}
-        onClose={() => setIsDonateOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading...</div>
-            </div>
-          }
-        >
-          <DonateModal />
-        </Suspense>
-      </Modal>
-
-      {/* Help Modal */}
-      <Modal
-        isOpen={isHelpOpen}
+      <Modal isOpen={isHelpOpen}
         onClose={() => setIsHelpOpen(false)}
         zIndex={10001}
       >
@@ -427,7 +407,7 @@ export function AdvancedAnimation() {
 
       {/* Footer - Desktop only */}
       <AppFooter
-        onOpenDonate={() => setIsDonateOpen(true)}
+        
         isMobile={false}
       />
     </div>

@@ -10,7 +10,6 @@ import { COMPACT_HEADER } from "../../constants/compactDesign";
 import { Z_INDEX } from "../../constants/layout";
 
 interface AppHeaderProps {
-  onOpenDonate: () => void;
   onOpenHelp?: () => void;
 }
 
@@ -18,9 +17,9 @@ interface AppHeaderProps {
  * Application header with title, description, and action buttons
  * Black background with Palestinian flag colors
  * Includes dark mode toggle and navigation to advanced animation page
- * Stats and About now navigate to dedicated pages for better performance
+ * Stats, About, and Donate now navigate to dedicated pages for better performance
  */
-export function AppHeader({ onOpenDonate, onOpenHelp }: AppHeaderProps) {
+export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ export function AppHeader({ onOpenDonate, onOpenHelp }: AppHeaderProps) {
             )}
 
             <Button
-              onClick={onOpenDonate}
+              onClick={() => navigate("/donate")}
               variant="danger"
               size="xs"
               lightText

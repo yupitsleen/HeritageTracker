@@ -4,7 +4,6 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 
 interface AppFooterProps {
-  onOpenDonate: () => void;
   isMobile: boolean;
 }
 
@@ -12,9 +11,9 @@ interface AppFooterProps {
  * Application footer with attribution and navigation
  * Green background with Palestinian flag colors
  * Muted in dark mode
- * Stats and About now navigate to dedicated pages for better performance
+ * Stats, About, and Donate now navigate to dedicated pages for better performance
  */
-export function AppFooter({ onOpenDonate, isMobile }: AppFooterProps) {
+export function AppFooter({ isMobile }: AppFooterProps) {
   const t = useThemeClasses();
   const translate = useTranslation();
 
@@ -46,13 +45,13 @@ export function AppFooter({ onOpenDonate, isMobile }: AppFooterProps) {
           <div className={cn(components.container.base)}>
             <p className="text-[10px] text-center font-semibold">
               {translate("footer.title")} •{" "}
-              <button
-                onClick={onOpenDonate}
+              <Link
+                to="/donate"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
                 aria-label="Help Palestine - Donate to relief efforts"
               >
                 {translate("footer.donate")}
-              </button>
+              </Link>
               {" • "}
               <Link
                 to="/stats"

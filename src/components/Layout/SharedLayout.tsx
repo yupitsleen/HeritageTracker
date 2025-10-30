@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import type { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -6,9 +6,6 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AppHeader } from "./AppHeader";
 import { AppFooter } from "./AppFooter";
 import { Modal } from "../Modal/Modal";
-
-// Lazy load modals that are less frequently accessed
-const DonateModal = lazy(() => import("../Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 interface SharedLayoutProps {
   children: ReactNode;
@@ -23,8 +20,8 @@ interface SharedLayoutProps {
  * - App header with navigation
  * - App footer with links
  * - Skip to content link for accessibility
- * - Donate modal (shared across all pages)
  * - Help modal (shared across all pages)
+ * - Donate now navigates to dedicated page at /donate for better performance
  */
 export function SharedLayout({ children, showFooter = true }: SharedLayoutProps) {
   const { isDark } = useTheme();
@@ -32,7 +29,6 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
   const location = useLocation();
 
   // Modal state
-  const [isDonateOpen, setIsDonateOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   // Check if we're on home page for background triangle
@@ -70,7 +66,6 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
 
       {/* Header with flag line */}
       <AppHeader
-        onOpenDonate={() => setIsDonateOpen(true)}
         onOpenHelp={() => setIsHelpOpen(true)}
       />
 
@@ -82,27 +77,9 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
       {/* Footer (optional) */}
       {showFooter && (
         <AppFooter
-          onOpenDonate={() => setIsDonateOpen(true)}
           isMobile={isMobile}
         />
       )}
-
-      {/* Donate Modal (shared across all pages) */}
-      <Modal
-        isOpen={isDonateOpen}
-        onClose={() => setIsDonateOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading...</div>
-            </div>
-          }
-        >
-          <DonateModal />
-        </Suspense>
-      </Modal>
 
       {/* Help Modal (shared across all pages) */}
       <Modal

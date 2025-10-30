@@ -10,6 +10,7 @@ import { HomePage } from "./pages/HomePage";
 import { AdvancedAnimation } from "./pages/AdvancedAnimation";
 import { AboutPage } from "./pages/AboutPage";
 import { StatsPage } from "./pages/StatsPage";
+import { DonatePage } from "./pages/DonatePage";
 import { BREAKPOINTS } from "./constants/layout";
 
 /**
@@ -22,6 +23,7 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
       <Route path="/advanced-animation" element={<AdvancedAnimation />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/stats" element={<StatsPage />} />
+      <Route path="/donate" element={<DonatePage />} />
     </Routes>
   );
 }
