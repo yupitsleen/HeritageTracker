@@ -179,6 +179,7 @@ export interface Translations {
     selectStatus: string;
     destructionDate: string;
     yearBuilt: string;
+    showingCount: string;
   };
 
   /** Site types */
