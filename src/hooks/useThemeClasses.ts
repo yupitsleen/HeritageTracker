@@ -24,16 +24,20 @@ export function useThemeClasses() {
      * Text color classes
      */
     text: {
-      /** Primary heading text (h1, h2) */
-      heading: isDark ? "text-gray-100" : "text-gray-900",
-      /** Secondary heading text (h3, h4) */
-      subheading: isDark ? "text-gray-200" : "text-gray-800",
-      /** Body text */
-      body: isDark ? "text-gray-300" : "text-gray-700",
-      /** Muted/secondary text */
+      /** Primary heading text (h1, h2) - High contrast white/black */
+      heading: isDark ? "text-white" : "text-gray-900",
+      /** Secondary heading text (h3, h4) - High contrast white/black */
+      subheading: isDark ? "text-white" : "text-gray-900",
+      /** Body text - High contrast white/black for readability */
+      body: isDark ? "text-white" : "text-gray-900",
+      /** Muted/secondary text - Slightly lower contrast */
       muted: isDark ? "text-gray-400" : "text-gray-600",
       /** Subtle/disabled text */
       subtle: isDark ? "text-gray-500" : "text-gray-500",
+      /** Caption/small text - High contrast white/black */
+      caption: isDark ? "text-white" : "text-gray-900",
+      /** Emphasis text (bold, important) - High contrast white/black */
+      emphasis: isDark ? "text-white" : "text-gray-900",
     },
 
     /**

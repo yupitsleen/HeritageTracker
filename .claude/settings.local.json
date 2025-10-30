@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(for file in MissionSection.tsx ResearchSection.tsx ResponsibilitySection.tsx TheDataSection.tsx)",
-      "Bash(do)"
+      "Bash(do)",
+      "Bash(expr:*)"
     ],
     "deny": [],
     "ask": []
