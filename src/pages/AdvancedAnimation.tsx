@@ -161,11 +161,25 @@ export function AdvancedAnimation() {
       data-theme={isDark ? "dark" : "light"}
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
+      {/* Palestinian Flag Red Triangle - Background Element */}
+      {/* Z-index 0 to stay behind all content */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none z-0 opacity-50 transition-colors duration-200"
+        style={{
+          width: '800px',
+          height: '100vh',
+          background: isDark ? '#8b2a30' : '#ed3039',
+          clipPath: 'polygon(0 0, 0 100%, 800px 50%)',
+        }}
+        aria-hidden="true"
+      />
+
       {/* Header - shared across all pages */}
       <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
 
       {/* Main content */}
-      <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2">
+      {/* Relative positioning creates stacking context above z-0 triangle */}
+      <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2 relative">
         {/* Loading state */}
         {isLoading && (
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { useLocation } from "react-router-dom";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AppHeader } from "./AppHeader";
@@ -26,16 +25,12 @@ interface SharedLayoutProps {
 export function SharedLayout({ children, showFooter = true }: SharedLayoutProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
-  const location = useLocation();
 
   // Modal state
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  // Check if we're on home page for background triangle
-  const isHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
-
   // Determine if mobile based on page - HomePage passes isMobile prop, others assume desktop
-  const isMobile = false; // Default to desktop for About/Stats/AdvancedAnimation
+  const isMobile = false; // Default to desktop for About/Stats/Donate pages
 
   return (
     <div
@@ -50,19 +45,18 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
         Skip to main content
       </a>
 
-      {/* Palestinian Flag Red Triangle - Background Element (Home page only, desktop only) */}
-      {isHomePage && (
-        <div
-          className="fixed top-0 left-0 pointer-events-none z-[8] opacity-50 transition-colors duration-200"
-          style={{
-            width: '800px', // Default width for home page
-            height: '100vh',
-            background: isDark ? '#8b2a30' : '#ed3039',
-            clipPath: 'polygon(0 0, 0 100%, 800px 50%)',
-          }}
-          aria-hidden="true"
-        />
-      )}
+      {/* Palestinian Flag Red Triangle - Background Element (All pages, desktop only) */}
+      {/* Z-index 0 to stay behind all content (footer=5, header=sticky, content=auto) */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none z-0 opacity-50 transition-colors duration-200"
+        style={{
+          width: '800px', // Extends from left edge
+          height: '100vh',
+          background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
+          clipPath: 'polygon(0 0, 0 100%, 800px 50%)',
+        }}
+        aria-hidden="true"
+      />
 
       {/* Header with flag line */}
       <AppHeader
@@ -70,7 +64,8 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
       />
 
       {/* Main Content */}
-      <main id="main-content">
+      {/* Relative positioning creates stacking context above z-0 triangle */}
+      <main id="main-content" className="relative">
         {children}
       </main>
 
