@@ -64,6 +64,58 @@ export function AdvancedAnimation() {
   const [tempFilters, setTempFilters] = useState<FilterState>(filters);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
+  // Pre-compute default date ranges ONCE at page level (not on every filter change)
+  const defaultDateRange = useMemo(() => {
+    const destructionDates = mockSites
+      .filter(site => site.dateDestroyed)
+      .map(site => new Date(site.dateDestroyed!));
+
+    if (destructionDates.length === 0) {
+      return {
+        defaultStartDate: new Date("2023-10-07"),
+        defaultEndDate: new Date(),
+      };
+    }
+
+    const timestamps = destructionDates.map(d => d.getTime());
+    return {
+      defaultStartDate: new Date(Math.min(...timestamps)),
+      defaultEndDate: new Date(Math.max(...timestamps)),
+    };
+  }, []); // Empty deps - only calculate once
+
+  const defaultYearRange = useMemo(() => {
+    const creationYears = mockSites
+      .filter(site => site.yearBuilt)
+      .map(site => {
+        const match = site.yearBuilt?.match(/^(?:BCE\s+)?(-?\d+)/);
+        return match ? parseInt(match[1], 10) * (site.yearBuilt?.startsWith('BCE') ? -1 : 1) : null;
+      })
+      .filter((year): year is number => year !== null);
+
+    if (creationYears.length === 0) {
+      return {
+        defaultStartYear: "",
+        defaultEndYear: new Date().getFullYear().toString(),
+        defaultStartEra: "CE" as const,
+      };
+    }
+
+    const minYear = Math.min(...creationYears);
+    const maxYear = Math.max(...creationYears);
+
+    const formatYear = (year: number): string => {
+      if (year < 0) return Math.abs(year).toString();
+      return year.toString();
+    };
+
+    return {
+      defaultStartYear: formatYear(minYear),
+      defaultEndYear: formatYear(maxYear),
+      defaultStartEra: minYear < 0 ? ("BCE" as const) : ("CE" as const),
+    };
+  }, []); // Empty deps - only calculate once
+
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
@@ -108,9 +160,9 @@ export function AdvancedAnimation() {
   }, [filters]);
 
   // Filter handlers
-  const handleFilterChange = (updates: Partial<FilterState>) => {
+  const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
     setTempFilters(prev => ({ ...prev, ...updates }));
-  };
+  }, []);
 
   const openFilterModal = () => {
     setTempFilters(filters);
@@ -486,6 +538,8 @@ export function AdvancedAnimation() {
           filters={tempFilters}
           onFilterChange={handleFilterChange}
           sites={mockSites}
+          defaultDateRange={defaultDateRange}
+          defaultYearRange={defaultYearRange}
         />
         <div className="mt-6 flex justify-end gap-3">
           <Button

@@ -18,9 +18,10 @@ interface ModalProps {
  * Supports dark mode
  *
  * Performance optimizations:
- * - Reduced backdrop blur intensity (backdrop-blur-[2px] instead of backdrop-blur-sm)
+ * - NO backdrop blur (backdrop-blur causes severe performance degradation)
  * - Added will-change hint for smoother transforms
  * - Memoized component to prevent unnecessary re-renders
+ * - CSS containment for layout/style/paint isolation
  */
 export const Modal = memo(function Modal({ isOpen, onClose, children, title, zIndex = Z_INDEX.MODAL }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -68,9 +69,9 @@ export const Modal = memo(function Modal({ isOpen, onClose, children, title, zIn
       aria-modal="true"
       aria-labelledby={title ? "modal-title" : undefined}
     >
-      {/* Backdrop with lightweight blur effect */}
+      {/* Backdrop without blur (blur causes severe performance issues) */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-[2px] transition-opacity"
+        className="absolute inset-0 bg-black/75 transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
