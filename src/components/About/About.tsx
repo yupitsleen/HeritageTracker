@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AboutHeader } from "./sections/AboutHeader";
 import { MissionSection } from "./sections/MissionSection";
 import { ResponsibilitySection } from "./sections/ResponsibilitySection";
@@ -28,10 +27,8 @@ interface AboutProps {
  * - Memoized component to prevent unnecessary re-renders
  */
 export const About = memo(function About({ sites }: AboutProps) {
-  const t = useThemeClasses();
-
   return (
-    <div className={`max-h-[80vh] overflow-y-auto ${t.bg.primary}`} style={{ contain: 'layout style paint' }}>
+    <div className="max-h-[80vh] overflow-y-auto" style={{ contain: 'layout style paint' }}>
       <div className="p-3 md:p-6 max-w-4xl mx-auto">
         <AboutHeader />
         <MissionSection />
