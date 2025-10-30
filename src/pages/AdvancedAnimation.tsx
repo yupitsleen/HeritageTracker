@@ -11,6 +11,7 @@ import { useWaybackReleases } from "../hooks/useWaybackReleases";
 import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
+import { Z_INDEX } from "../constants/layout";
 
 // Lazy load the map, timeline, and modal components
 // Note: About and Stats are now dedicated pages at /about and /stats for better performance
@@ -258,7 +259,7 @@ export function AdvancedAnimation() {
       <Modal
         isOpen={selectedSite !== null}
         onClose={() => setSelectedSite(null)}
-        zIndex={10000}
+        zIndex={Z_INDEX.MODAL}
       >
         {selectedSite && (
           <Suspense
@@ -276,7 +277,7 @@ export function AdvancedAnimation() {
       {/* Donate Modal */}
       <Modal isOpen={isHelpOpen}
         onClose={() => setIsHelpOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <div className="p-6">
           <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Advanced Satellite Timeline</h2>

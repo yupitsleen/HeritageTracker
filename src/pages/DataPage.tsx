@@ -14,6 +14,7 @@ import type { FilterState } from "../types/filters";
 import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
 import type { GazaSite } from "../types";
 import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
+import { Z_INDEX } from "../constants/layout";
 
 // Lazy load Site Detail Panel
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
@@ -232,7 +233,7 @@ export function DataPage() {
       <Modal
         isOpen={selectedSite !== null}
         onClose={() => setSelectedSite(null)}
-        zIndex={10000}
+        zIndex={Z_INDEX.MODAL}
       >
         {selectedSite && (
           <Suspense
@@ -251,7 +252,7 @@ export function DataPage() {
       <Modal
         isOpen={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
         <FilterBar

@@ -5,6 +5,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AppHeader } from "./AppHeader";
 import { AppFooter } from "./AppFooter";
 import { Modal } from "../Modal/Modal";
+import { Z_INDEX } from "../../constants/layout";
 
 interface SharedLayoutProps {
   children: ReactNode;
@@ -80,7 +81,7 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
       <Modal
         isOpen={isHelpOpen}
         onClose={() => setIsHelpOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <div className="p-6">
           <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Heritage Tracker</h2>

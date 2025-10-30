@@ -17,6 +17,7 @@ import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
+import { Z_INDEX } from "../constants/layout";
 
 // Lazy load only SiteDetailPanel (less frequently accessed)
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
@@ -139,7 +140,7 @@ export function HomePage({ isMobile }: HomePageProps) {
       <Modal
         isOpen={appState.selectedSite !== null}
         onClose={() => appState.setSelectedSite(null)}
-        zIndex={10000}
+        zIndex={Z_INDEX.MODAL}
       >
         {appState.selectedSite && (
           <Suspense
@@ -159,7 +160,7 @@ export function HomePage({ isMobile }: HomePageProps) {
       <Modal
         isOpen={appState.modals.isHelpOpen}
         onClose={() => appState.setIsHelpOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <div className="p-6">
           <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Heritage Tracker</h2>
@@ -227,7 +228,7 @@ export function HomePage({ isMobile }: HomePageProps) {
       <Modal
         isOpen={appState.modals.isFilterOpen}
         onClose={() => appState.setIsFilterOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
         <FilterBar
