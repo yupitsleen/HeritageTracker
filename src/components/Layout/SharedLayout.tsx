@@ -6,7 +6,7 @@ import { AppHeader } from "./AppHeader";
 import { AppFooter } from "./AppFooter";
 import { Modal } from "../Modal/Modal";
 import { Z_INDEX } from "../../constants/layout";
-import { COLORS } from "../../constants/colors";
+import { COLORS } from "../../config/colorThemes";
 
 interface SharedLayoutProps {
   children: ReactNode;

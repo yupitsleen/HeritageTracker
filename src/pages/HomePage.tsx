@@ -19,7 +19,7 @@ import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../constants/colors";
+import { COLORS } from "../config/colorThemes";
 
 // Lazy load only SiteDetailPanel (less frequently accessed)
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance

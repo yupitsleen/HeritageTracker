@@ -15,7 +15,7 @@ import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
 import type { GazaSite } from "../types";
 import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../constants/colors";
+import { COLORS } from "../config/colorThemes";
 
 // Lazy load Site Detail Panel
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));

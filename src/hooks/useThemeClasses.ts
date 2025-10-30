@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTheme } from "../contexts/ThemeContext";
-import { COLORS } from "../constants/colors";
+import { COLORS } from "../config/colorThemes";
 
 /**
  * Theme-aware CSS class utility hook

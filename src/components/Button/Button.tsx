@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { PALESTINIAN_FLAG, SUBDUED_COLORS } from './buttonColors';
+import { PALESTINIAN_FLAG, SUBDUED_COLORS } from '../../config/colorThemes';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';

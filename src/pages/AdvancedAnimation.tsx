@@ -19,7 +19,7 @@ import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
 import { formatLabel } from "../utils/format";
 import { useTranslation } from "../contexts/LocaleContext";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../constants/colors";
+import { COLORS } from "../config/colorThemes";
 import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
 
 // Lazy load the map, timeline, and modal components
