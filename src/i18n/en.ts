@@ -33,6 +33,7 @@ export const en: Translations = {
   header: {
     title: "Heritage Tracker",
     dashboard: "Dashboard",
+    data: "Data",
     advancedTimeline: "Advanced Timeline",
     statistics: "Statistics",
     helpPalestine: "Help Palestine",

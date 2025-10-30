@@ -29,6 +29,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   const getActivePage = () => {
     const path = location.pathname;
     if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "home";
+    if (path.includes("/data")) return "data";
     if (path.includes("/advanced-animation")) return "advanced-animation";
     if (path.includes("/donate")) return "donate";
     if (path.includes("/stats")) return "stats";
@@ -73,6 +74,18 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               className={activePage === "home" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.dashboard")}
+            </Button>
+
+            {/* Data Navigation */}
+            <Button
+              onClick={() => navigate("/data")}
+              variant={activePage === "data" ? "primary" : "ghost"}
+              size="xs"
+              lightText
+              aria-label={t("header.data")}
+              className={activePage === "data" ? "ring-2 ring-white/50 border" : "border-0"}
+            >
+              {t("header.data")}
             </Button>
 
             {/* Advanced Animation Navigation */}

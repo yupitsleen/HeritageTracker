@@ -33,6 +33,7 @@ export const ar: Translations = {
   header: {
     title: "متتبع التراث",
     dashboard: "لوحة التحكم",
+    data: "البيانات",
     advancedTimeline: "الجدول الزمني المتقدم",
     statistics: "الإحصائيات",
     helpPalestine: "ساعد فلسطين",

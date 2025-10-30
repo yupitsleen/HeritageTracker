@@ -33,6 +33,7 @@ export const it: Translations = {
   header: {
     title: "Registro del Patrimonio",
     dashboard: "Cruscotto",
+    data: "Dati",
     advancedTimeline: "Timeline Avanzata",
     statistics: "Statistiche",
     helpPalestine: "Aiuta la Palestina",

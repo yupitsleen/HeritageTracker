@@ -132,7 +132,6 @@ export function HomePage({ isMobile }: HomePageProps) {
             onSiteClick={appState.setSelectedSite}
             onSiteHighlight={appState.setHighlightedSiteId}
             highlightedSiteId={appState.highlightedSiteId}
-            onExpandTable={() => appState.setIsTableExpanded(true)}
           />
         )}
       </main>
@@ -156,22 +155,6 @@ export function HomePage({ isMobile }: HomePageProps) {
         )}
       </Modal>
 
-      {/* Expanded Table Modal */}
-      <Modal
-        isOpen={appState.modals.isTableExpanded}
-        onClose={() => appState.setIsTableExpanded(false)}
-        zIndex={9999}
-      >
-        <div className="h-[80vh]">
-          <SitesTable
-            sites={filteredSites}
-            onSiteClick={appState.setSelectedSite}
-            onSiteHighlight={appState.setHighlightedSiteId}
-            highlightedSiteId={appState.highlightedSiteId}
-            variant="expanded"
-          />
-        </div>
-      </Modal>
 
       {/* Help Modal */}
       <Modal

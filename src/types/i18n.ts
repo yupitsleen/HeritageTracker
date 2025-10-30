@@ -73,6 +73,7 @@ export interface Translations {
   header: {
     title: string;
     dashboard: string;
+    data: string;
     advancedTimeline: string;
     statistics: string;
     helpPalestine: string;

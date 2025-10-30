@@ -11,6 +11,7 @@ import { AdvancedAnimation } from "./pages/AdvancedAnimation";
 import { AboutPage } from "./pages/AboutPage";
 import { StatsPage } from "./pages/StatsPage";
 import { DonatePage } from "./pages/DonatePage";
+import { DataPage } from "./pages/DataPage";
 import { BREAKPOINTS } from "./constants/layout";
 
 /**
@@ -20,6 +21,7 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
   return (
     <Routes>
       <Route path="/" element={<HomePage isMobile={isMobile} />} />
+      <Route path="/data" element={<DataPage />} />
       <Route path="/advanced-animation" element={<AdvancedAnimation />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/stats" element={<StatsPage />} />
