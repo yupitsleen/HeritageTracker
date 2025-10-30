@@ -47,7 +47,7 @@ export function DataPage() {
       if (filters.searchTerm) {
         const searchLower = filters.searchTerm.toLowerCase();
         const matchesName = site.name.toLowerCase().includes(searchLower);
-        const matchesArabicName = site.name_ar?.toLowerCase().includes(searchLower);
+        const matchesArabicName = site.nameArabic?.toLowerCase().includes(searchLower);
         if (!matchesName && !matchesArabicName) {
           return false;
         }
@@ -120,7 +120,7 @@ export function DataPage() {
       <div className="h-[calc(100vh-100px)] flex flex-col mb-8">
         {/* Compact Filter Bar */}
         <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 px-4`}>
-          <div className={`${COMPACT_FILTER_BAR.containerPadding} flex flex-col gap-1.5`}>
+          <div className={`${COMPACT_FILTER_BAR.padding} flex flex-col gap-1.5`}>
             {/* Top row - Filter controls */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -154,7 +154,7 @@ export function DataPage() {
                     value={filters.searchTerm}
                     onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
                     placeholder={translate("filters.searchPlaceholder")}
-                    className={`${COMPACT_FILTER_BAR.inputWidth} ${COMPACT_FILTER_BAR.inputHeight} ${COMPACT_FILTER_BAR.inputPadding} text-black placeholder:text-gray-400 ${COMPACT_FILTER_BAR.inputText}`}
+                    className={`w-48 ${COMPACT_FILTER_BAR.inputHeight} ${COMPACT_FILTER_BAR.inputPadding} text-black placeholder:text-gray-400 ${COMPACT_FILTER_BAR.inputText}`}
                   />
                   {filters.searchTerm.trim().length > 0 && (
                     <button
@@ -176,7 +176,7 @@ export function DataPage() {
               </div>
 
               {/* Results count */}
-              <div className={`${COMPACT_FILTER_BAR.resultText} ${t.text.muted}`}>
+              <div className={`${COMPACT_FILTER_BAR.inputText} ${t.text.muted}`}>
                 Showing {filteredSites.length} of {mockSites.length} sites
               </div>
             </div>

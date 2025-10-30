@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
 import { useTranslation } from "../contexts/LocaleContext";
@@ -41,8 +42,14 @@ export function HomePage({ isMobile }: HomePageProps) {
   const tableResize = useTableResize();
   const { isDark } = useTheme();
   const translate = useTranslation();
+  const navigate = useNavigate();
 
   const t = useThemeClasses();
+
+  // Navigate to Data page (full table view)
+  const handleExpandTable = useCallback(() => {
+    navigate("/data");
+  }, [navigate]);
 
   // Wrapper functions to handle filter updates using helper
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
@@ -133,6 +140,7 @@ export function HomePage({ isMobile }: HomePageProps) {
             onSiteClick={appState.setSelectedSite}
             onSiteHighlight={appState.setHighlightedSiteId}
             highlightedSiteId={appState.highlightedSiteId}
+            onExpandTable={handleExpandTable}
           />
         )}
       </main>
