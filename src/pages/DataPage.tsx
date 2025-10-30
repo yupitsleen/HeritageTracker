@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, lazy, Suspense } from "react";
 import { mockSites } from "../data/mockSites";
 import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
@@ -13,6 +13,9 @@ import { formatLabel } from "../utils/format";
 import type { FilterState } from "../types/filters";
 import type { GazaSite } from "../types";
 import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
+
+// Lazy load Site Detail Panel
+const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
 export function DataPage() {
   const t = useThemeClasses();
@@ -30,6 +33,7 @@ export function DataPage() {
 
   const [tempFilters, setTempFilters] = useState<FilterState>(filters);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
   // Apply filters to sites
   const filteredSites = mockSites.filter(site => {
@@ -121,6 +125,11 @@ export function DataPage() {
       creationYearStart: null,
       creationYearEnd: null
     }));
+  }, []);
+
+  // Handle site click to open detail panel
+  const handleSiteClick = useCallback((site: GazaSite) => {
+    setSelectedSite(site);
   }, []);
 
   return (
@@ -230,13 +239,32 @@ export function DataPage() {
         <div className="flex-1 min-h-0 px-4">
           <SitesTable
             sites={filteredSites}
-            onSiteClick={() => {}}
+            onSiteClick={handleSiteClick}
             onSiteHighlight={() => {}}
             highlightedSiteId={null}
             variant="expanded"
           />
         </div>
       </div>
+
+      {/* Site Detail Modal */}
+      <Modal
+        isOpen={selectedSite !== null}
+        onClose={() => setSelectedSite(null)}
+        zIndex={10000}
+      >
+        {selectedSite && (
+          <Suspense
+            fallback={
+              <div className={`p-8 text-center ${t.layout.loadingText}`}>
+                <div>Loading site details...</div>
+              </div>
+            }
+          >
+            <SiteDetailPanel site={selectedSite} />
+          </Suspense>
+        )}
+      </Modal>
 
       {/* Filter Modal */}
       <Modal
