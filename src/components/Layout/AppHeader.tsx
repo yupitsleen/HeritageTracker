@@ -10,9 +10,6 @@ import { COMPACT_HEADER } from "../../constants/compactDesign";
 import { Z_INDEX } from "../../constants/layout";
 
 interface AppHeaderProps {
-  onOpenDonate: () => void;
-  onOpenStats: () => void;
-  onOpenAbout: () => void;
   onOpenHelp?: () => void;
 }
 
@@ -20,19 +17,32 @@ interface AppHeaderProps {
  * Application header with title, description, and action buttons
  * Black background with Palestinian flag colors
  * Includes dark mode toggle and navigation to advanced animation page
+ * Stats, About, and Donate now navigate to dedicated pages for better performance
  */
-export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }: AppHeaderProps) {
+export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isOnHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
+  // Determine active page for highlighting
+  const getActivePage = () => {
+    const path = location.pathname;
+    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "home";
+    if (path.includes("/data")) return "data";
+    if (path.includes("/advanced-animation")) return "advanced-animation";
+    if (path.includes("/donate")) return "donate";
+    if (path.includes("/stats")) return "stats";
+    if (path.includes("/about")) return "about";
+    return null;
+  };
+
+  const activePage = getActivePage();
 
   return (
     <div
       className={`sticky top-0 transition-colors duration-200 ${
-        isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
+        isDark ? "bg-gray-900" : "bg-[#000000]"
       }`}
       style={{ zIndex: Z_INDEX.STICKY }}
       dir="ltr"
@@ -41,51 +51,88 @@ export function AppHeader({ onOpenDonate, onOpenStats, onOpenAbout, onOpenHelp }
       {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
-          {/* Left: Title */}
+          {/* Left: Title - clickable to return home */}
           <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-            {t("header.title")}
+            <button
+              onClick={() => navigate("/")}
+              className="cursor-pointer uppercase"
+              aria-label="Go to home page"
+            >
+              {t("header.title")}
+            </button>
           </h1>
 
           {/* Center: Main action buttons - desktop only */}
           <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Advanced Animation Navigation - Only show on home page */}
-            {isOnHomePage && (
-              <Button
-                onClick={() => navigate("/advanced-animation")}
-                variant="secondary"
-                size="xs"
-                lightText
-                aria-label={t("header.advancedTimeline")}
-                title={t("header.advancedTimeline")}
-              >
-                {t("header.advancedTimeline")}
-              </Button>
-            )}
-
+            {/* Home/Dashboard Navigation */}
             <Button
-              onClick={onOpenDonate}
-              variant="danger"
+              onClick={() => navigate("/")}
+              variant={activePage === "home" ? "primary" : "ghost"}
+              size="xs"
+              lightText
+              aria-label={t("header.dashboard")}
+              className={activePage === "home" ? "ring-2 ring-white/50 border" : "border-0"}
+            >
+              {t("header.dashboard")}
+            </Button>
+
+            {/* Data Navigation */}
+            <Button
+              onClick={() => navigate("/data")}
+              variant={activePage === "data" ? "primary" : "ghost"}
+              size="xs"
+              lightText
+              aria-label={t("header.data")}
+              className={activePage === "data" ? "ring-2 ring-white/50 border" : "border-0"}
+            >
+              {t("header.data")}
+            </Button>
+
+            {/* Advanced Animation Navigation */}
+            <Button
+              onClick={() => navigate("/advanced-animation")}
+              variant={activePage === "advanced-animation" ? "secondary" : "ghost"}
+              size="xs"
+              lightText
+              aria-label={t("header.advancedTimeline")}
+              title={t("header.advancedTimeline")}
+              className={activePage === "advanced-animation" ? "ring-2 ring-white/50 border" : "border-0"}
+            >
+              {t("header.advancedTimeline")}
+            </Button>
+
+            {/* Donate Navigation */}
+            <Button
+              onClick={() => navigate("/donate")}
+              variant={activePage === "donate" ? "danger" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.helpPalestine")}
+              className={activePage === "donate" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.helpPalestine")}
             </Button>
+
+            {/* Stats Navigation */}
             <Button
-              onClick={onOpenStats}
-              variant="primary"
+              onClick={() => navigate("/stats")}
+              variant={activePage === "stats" ? "primary" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.statistics")}
+              className={activePage === "stats" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.statistics")}
             </Button>
+
+            {/* About Navigation */}
             <Button
-              onClick={onOpenAbout}
-              variant="primary"
+              onClick={() => navigate("/about")}
+              variant={activePage === "about" ? "primary" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.about")}
+              className={activePage === "about" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.about")}
             </Button>

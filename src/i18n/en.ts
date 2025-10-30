@@ -32,6 +32,8 @@ export const en: Translations = {
 
   header: {
     title: "Heritage Tracker",
+    dashboard: "Dashboard",
+    data: "Data",
     advancedTimeline: "Advanced Timeline",
     statistics: "Statistics",
     helpPalestine: "Help Palestine",
@@ -75,6 +77,8 @@ export const en: Translations = {
     playPause: "Play/Pause",
     step: "Step",
     jump: "Jump",
+    tooltipDefault: "Click Play to animate through destruction events. Use the date filter to focus on specific time periods. Click dots to see site details.",
+    tooltipAdvanced: "Click red dots to highlight sites. Use Previous/Next to navigate between events. Enable 'Sync Map' to automatically show satellite imagery from before each site's destruction.",
   },
 
   table: {
@@ -98,6 +102,7 @@ export const en: Translations = {
     destructionDate: "Destruction Date",
     destructionDateGregorian: "Destruction Date (Gregorian)",
     destructionDateIslamic: "Destruction Date (Islamic)",
+    tooltip: "Click any site row to view detailed information. Click column headers to sort. Hover over site rows to highlight them on the map and timeline.",
     builtGregorian: "Built (Gregorian)",
     builtIslamic: "Built (Islamic)",
     showing: "Showing",
@@ -113,7 +118,7 @@ export const en: Translations = {
     filters: "Filters",
     clear: "Clear",
     clearAll: "Clear All",
-    searchPlaceholder: "Search sites...",
+    searchPlaceholder: "Search...",
     search: "Search",
     clearSearch: "Clear search",
     typeFilter: "Type Filter",
@@ -130,6 +135,7 @@ export const en: Translations = {
     selectStatus: "Select status...",
     destructionDate: "Destruction Date",
     yearBuilt: "Year Built",
+    showingCount: "Showing {{filtered}} of {{total}} sites",
   },
 
   siteTypes: {
@@ -171,6 +177,7 @@ export const en: Translations = {
     resetTimeline: "Reset timeline",
     nextEvent: "Next event",
     previousEvent: "Previous event",
+    waybackTooltip: "Navigate through 150+ historical satellite imagery versions from 2014-2025. Each gray line represents one imagery capture date. Click anywhere on the timeline to jump to that date. Hover over gray lines to see exact dates.",
   },
 
   siteDetail: {
@@ -218,6 +225,15 @@ export const en: Translations = {
     filterControl: "Filter control",
     timelineControl: "Timeline control",
     mapControl: "Map control",
+    switchToLightMode: "Switch to light mode",
+    switchToDarkMode: "Switch to dark mode",
+    viewGithub: "View source code on GitHub",
+    helpPalestineDonate: "Help Palestine - Donate to relief efforts",
+    viewStatistics: "View Statistics",
+    aboutHeritageTracker: "About Heritage Tracker",
+    resizeTable: "Resize table",
+    dragToResizeTable: "Drag to resize table",
+    clearSearch: "Clear search",
   },
 
   pagination: {

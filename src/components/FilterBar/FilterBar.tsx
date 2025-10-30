@@ -9,6 +9,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
+import { Z_INDEX } from "../../constants/layout";
 
 interface FilterBarProps {
   filters: FilterState;
@@ -109,6 +110,7 @@ export function FilterBar({
               selectedValues={filters.selectedTypes}
               onChange={(types) => onFilterChange({ selectedTypes: types })}
               formatLabel={formatLabel}
+              zIndex={Z_INDEX.MODAL_DROPDOWN}
             />
           </div>
 
@@ -135,6 +137,7 @@ export function FilterBar({
               selectedValues={filters.selectedStatuses}
               onChange={(statuses) => onFilterChange({ selectedStatuses: statuses })}
               formatLabel={formatLabel}
+              zIndex={Z_INDEX.MODAL_DROPDOWN}
             />
           </div>
 

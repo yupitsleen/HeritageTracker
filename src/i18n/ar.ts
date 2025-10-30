@@ -32,6 +32,8 @@ export const ar: Translations = {
 
   header: {
     title: "متتبع التراث",
+    dashboard: "لوحة التحكم",
+    data: "البيانات",
     advancedTimeline: "الجدول الزمني المتقدم",
     statistics: "الإحصائيات",
     helpPalestine: "ساعد فلسطين",
@@ -75,6 +77,8 @@ export const ar: Translations = {
     playPause: "تشغيل/إيقاف",
     step: "خطوة",
     jump: "قفز",
+    tooltipDefault: "انقر فوق تشغيل لتحريك أحداث التدمير. استخدم مرشح التاريخ للتركيز على فترات زمنية محددة. انقر فوق النقاط لمشاهدة تفاصيل الموقع.",
+    tooltipAdvanced: "انقر فوق النقاط الحمراء لتسليط الضوء على المواقع. استخدم السابق/التالي للتنقل بين الأحداث. قم بتمكين 'مزامنة الخريطة' لإظهار صور الأقمار الصناعية تلقائيًا من قبل تدمير كل موقع.",
   },
 
   table: {
@@ -100,6 +104,7 @@ export const ar: Translations = {
     destructionDateIslamic: "تاريخ التدمير (هجري)",
     builtGregorian: "البناء (ميلادي)",
     builtIslamic: "البناء (هجري)",
+    tooltip: "انقر فوق أي صف موقع لعرض معلومات مفصلة. انقر فوق رؤوس الأعمدة للفرز. مرر مؤشر الماوس فوق صفوف الموقع لتمييزها على الخريطة والجدول الزمني.",
     showing: "عرض",
     site: "موقع",
     sites: "مواقع",
@@ -113,7 +118,7 @@ export const ar: Translations = {
     filters: "المرشحات",
     clear: "مسح",
     clearAll: "مسح الكل",
-    searchPlaceholder: "البحث عن المواقع...",
+    searchPlaceholder: "بحث...",
     search: "بحث",
     clearSearch: "مسح البحث",
     typeFilter: "تصفية النوع",
@@ -130,6 +135,7 @@ export const ar: Translations = {
     selectStatus: "اختر الحالة...",
     destructionDate: "تاريخ التدمير",
     yearBuilt: "سنة البناء",
+    showingCount: "عرض {{filtered}} من {{total}} موقع",
   },
 
   siteTypes: {
@@ -171,6 +177,7 @@ export const ar: Translations = {
     resetTimeline: "إعادة تعيين الجدول الزمني",
     nextEvent: "الحدث التالي",
     previousEvent: "الحدث السابق",
+    waybackTooltip: "التنقل خلال أكثر من ١٥٠ إصدارًا من صور الأقمار الصناعية التاريخية من ٢٠١٤-٢٠٢٥. يمثل كل خط رمادي تاريخ التقاط صورة واحدة. انقر في أي مكان على الجدول الزمني للانتقال إلى ذلك التاريخ. مرر مؤشر الماوس فوق الخطوط الرمادية لرؤية التواريخ الدقيقة.",
   },
 
   siteDetail: {
@@ -218,6 +225,15 @@ export const ar: Translations = {
     filterControl: "التحكم في التصفية",
     timelineControl: "التحكم في الجدول الزمني",
     mapControl: "التحكم في الخريطة",
+    switchToLightMode: "التبديل إلى الوضع النهاري",
+    switchToDarkMode: "التبديل إلى الوضع الليلي",
+    viewGithub: "عرض الكود المصدري على جيت هاب",
+    helpPalestineDonate: "ساعد فلسطين - تبرع لجهود الإغاثة",
+    viewStatistics: "عرض الإحصائيات",
+    aboutHeritageTracker: "حول متتبع التراث",
+    resizeTable: "تغيير حجم الجدول",
+    dragToResizeTable: "اسحب لتغيير حجم الجدول",
+    clearSearch: "مسح البحث",
   },
 
   pagination: {

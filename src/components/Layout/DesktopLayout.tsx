@@ -123,8 +123,8 @@ export function DesktopLayout({
               tableResize.isResizing ? "bg-[#ed3039] bg-opacity-50" : ""
             }`}
             onMouseDown={tableResize.handleResizeStart}
-            title="Drag to resize table"
-            aria-label="Resize table"
+            title={translate("aria.dragToResizeTable")}
+            aria-label={translate("aria.resizeTable")}
           />
         </aside>
 
@@ -151,14 +151,14 @@ export function DesktopLayout({
                       type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Search..."
+                      placeholder={translate("filters.searchPlaceholder")}
                       className={`w-full pr-6 ${COMPACT_FILTER_BAR.inputText} ${COMPACT_FILTER_BAR.inputPadding} border-0 h-full`}
                     />
                     {searchTerm.trim().length > 0 && (
                       <button
                         onClick={() => setSearchTerm("")}
                         className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                        aria-label="Clear search"
+                        aria-label={translate("aria.clearSearch")}
                       >
                         <svg
                           className="w-3 h-3"

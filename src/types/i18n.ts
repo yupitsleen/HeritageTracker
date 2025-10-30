@@ -72,6 +72,8 @@ export interface Translations {
   /** Header navigation */
   header: {
     title: string;
+    dashboard: string;
+    data: string;
     advancedTimeline: string;
     statistics: string;
     helpPalestine: string;
@@ -117,6 +119,8 @@ export interface Translations {
     playPause: string;
     step: string;
     jump: string;
+    tooltipDefault: string;
+    tooltipAdvanced: string;
   };
 
   /** Table component */
@@ -150,6 +154,7 @@ export interface Translations {
     description: string;
     coordinates: string;
     sources: string;
+    tooltip: string;
   };
 
   /** Filter bar */
@@ -174,6 +179,7 @@ export interface Translations {
     selectStatus: string;
     destructionDate: string;
     yearBuilt: string;
+    showingCount: string;
   };
 
   /** Site types */
@@ -219,6 +225,7 @@ export interface Translations {
     resetTimeline: string;
     nextEvent: string;
     previousEvent: string;
+    waybackTooltip: string;
   };
 
   /** Site detail panel */
@@ -270,6 +277,15 @@ export interface Translations {
     filterControl: string;
     timelineControl: string;
     mapControl: string;
+    switchToLightMode: string;
+    switchToDarkMode: string;
+    viewGithub: string;
+    helpPalestineDonate: string;
+    viewStatistics: string;
+    aboutHeritageTracker: string;
+    resizeTable: string;
+    dragToResizeTable: string;
+    clearSearch: string;
   };
 
   /** Pagination component */

@@ -17,7 +17,8 @@
       "Bash(git add -A)",
       "Bash(git mv:*)",
       "Bash(git reset:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git diff:*)"
     ]
   },
   "outputStyle": "default"

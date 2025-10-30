@@ -53,6 +53,8 @@ export const Z_INDEX = {
   MODAL: 9999,
   /** Critical notifications (z-index: 10000) */
   NOTIFICATION: 10000,
+  /** Dropdowns inside modals (z-index: 10002) - Must be above modal backdrop */
+  MODAL_DROPDOWN: 10002,
 } as const;
 
 /**

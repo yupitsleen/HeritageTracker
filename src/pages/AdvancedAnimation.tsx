@@ -1,22 +1,21 @@
 import { lazy, Suspense, useState, useCallback, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
-import { useTranslation } from "../contexts/LocaleContext";
-import { Button } from "../components/Button";
-import { IconButton } from "../components/Button/IconButton";
-import { LanguageSelector } from "../components/LanguageSelector";
 import { Modal } from "../components/Modal/Modal";
+import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
+import { Button } from "../components/Button";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
 import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
+import { Z_INDEX } from "../constants/layout";
+import { COLORS } from "../constants/colors";
 
 // Lazy load the map, timeline, and modal components
+// Note: About and Stats are now dedicated pages at /about and /stats for better performance
 const SiteDetailView = lazy(() =>
   import("../components/Map/SiteDetailView").then((m) => ({ default: m.SiteDetailView }))
 );
@@ -26,9 +25,6 @@ const TimelineScrubber = lazy(() =>
 const SiteDetailPanel = lazy(() =>
   import("../components/SiteDetail/SiteDetailPanel").then((m) => ({ default: m.SiteDetailPanel }))
 );
-const About = lazy(() => import("../components/About/About").then(m => ({ default: m.About })));
-const StatsDashboard = lazy(() => import("../components/Stats/StatsDashboard").then(m => ({ default: m.StatsDashboard })));
-const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 /**
  * Advanced Animation Page
@@ -37,10 +33,8 @@ const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m
  * Reuses SiteDetailView and TimelineScrubber from home page
  */
 export function AdvancedAnimation() {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const t = useThemeClasses();
-  const translate = useTranslation();
-  const navigate = useNavigate();
 
   // Fetch Wayback releases
   const { releases, isLoading, error } = useWaybackReleases();
@@ -67,9 +61,6 @@ export function AdvancedAnimation() {
   const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
 
   // Modal states for footer and help
-  const [isDonateOpen, setIsDonateOpen] = useState(false);
-  const [isStatsOpen, setIsStatsOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   // Get current release
@@ -159,11 +150,6 @@ export function AdvancedAnimation() {
   );
 
   /**
-   * Navigate back to home page
-   */
-  const handleBackClick = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
 
   /**
    * Reload page to retry loading Wayback releases
@@ -177,75 +163,25 @@ export function AdvancedAnimation() {
       data-theme={isDark ? "dark" : "light"}
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
-      {/* Header with back button */}
-      <header
-        className={`sticky top-0 z-[10] transition-colors duration-200 ${
-          isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
-        }`}
-        dir="ltr"
-      >
-        {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
-        <div className="max-w-full px-4 py-2 relative">
-          {/* Left: Back button */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Button
-              onClick={handleBackClick}
-              variant="ghost"
-              size="sm"
-              lightText
-              className="flex items-center gap-1.5"
-            >
-              <span className="text-base">&larr;</span>
-              {translate("advancedTimeline.backToMain")}
-            </Button>
-          </div>
+      {/* Palestinian Flag Red Triangle - Background Element */}
+      {/* Z-index 0 to stay behind all content */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none z-0 opacity-50 transition-colors duration-200"
+        style={{
+          width: '800px',
+          height: '100vh',
+          background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED,
+          clipPath: 'polygon(0 0, 0 100%, 800px 50%)',
+        }}
+        aria-hidden="true"
+      />
 
-          {/* Center: Title */}
-          <h1 className="text-lg font-bold text-[#fefefe] text-center">
-            {translate("advancedTimeline.title")}
-          </h1>
-
-          {/* Right: Help + Language + Dark mode toggle + Info */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            {/* Help Button */}
-            <IconButton
-              icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
-              onClick={() => setIsHelpOpen(true)}
-              ariaLabel="How to use this page"
-              title="How to use this page"
-            />
-
-            {/* Language Selector - Dropdown showing all registered locales */}
-            <LanguageSelector />
-
-            {/* Dark Mode Toggle */}
-            <IconButton
-              icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
-              onClick={toggleTheme}
-              ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            />
-
-            {/* Info text */}
-            <div className="text-xs text-gray-400">
-              {isLoading && "Loading..."}
-              {error && "Error"}
-              {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Sites`}
-            </div>
-          </div>
-        </div>
-
-        {/* Flag-colored horizontal line */}
-        <div className="flex h-1">
-          <div className="flex-1 bg-[#ed3039]"></div>
-          <div className="flex-1 bg-[#000000]"></div>
-          <div className="flex-1 bg-[#ed3039]"></div>
-          <div className="flex-1 bg-[#009639]"></div>
-        </div>
-      </header>
+      {/* Header - shared across all pages */}
+      <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
 
       {/* Main content */}
-      <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2">
+      {/* Relative positioning creates stacking context above z-0 triangle */}
+      <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2 relative">
         {/* Loading state */}
         {isLoading && (
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
@@ -274,7 +210,7 @@ export function AdvancedAnimation() {
           <AnimationProvider sites={mockSites}>
             {/* Full-screen satellite map with Wayback imagery */}
             <div
-              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden`}
+              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden relative z-10`}
             >
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
@@ -288,16 +224,17 @@ export function AdvancedAnimation() {
             </div>
 
             {/* Wayback Release Slider - Visual timeline with year markers */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 relative z-10">
               <WaybackSlider
                 releases={releases}
                 currentIndex={currentReleaseIndex}
                 onIndexChange={setCurrentReleaseIndex}
+                totalSites={mockSites.length}
               />
             </div>
 
             {/* Timeline Scrubber - Site filtering with advanced mode sync */}
-            <div className="flex-shrink-0 min-h-[100px]">
+            <div className="flex-shrink-0 min-h-[100px] relative z-10">
               <Suspense fallback={<SkeletonMap />}>
                 <TimelineScrubber
                   key="advanced-timeline-scrubber"
@@ -323,7 +260,7 @@ export function AdvancedAnimation() {
       <Modal
         isOpen={selectedSite !== null}
         onClose={() => setSelectedSite(null)}
-        zIndex={10000}
+        zIndex={Z_INDEX.MODAL}
       >
         {selectedSite && (
           <Suspense
@@ -338,62 +275,10 @@ export function AdvancedAnimation() {
         )}
       </Modal>
 
-      {/* Statistics Modal */}
-      <Modal
-        isOpen={isStatsOpen}
-        onClose={() => setIsStatsOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading statistics...</div>
-            </div>
-          }
-        >
-          <StatsDashboard sites={mockSites} />
-        </Suspense>
-      </Modal>
-
-      {/* About Modal */}
-      <Modal
-        isOpen={isAboutOpen}
-        onClose={() => setIsAboutOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading about...</div>
-            </div>
-          }
-        >
-          <About />
-        </Suspense>
-      </Modal>
-
       {/* Donate Modal */}
-      <Modal
-        isOpen={isDonateOpen}
-        onClose={() => setIsDonateOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading...</div>
-            </div>
-          }
-        >
-          <DonateModal />
-        </Suspense>
-      </Modal>
-
-      {/* Help Modal */}
-      <Modal
-        isOpen={isHelpOpen}
+      <Modal isOpen={isHelpOpen}
         onClose={() => setIsHelpOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <div className="p-6">
           <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Advanced Satellite Timeline</h2>
@@ -464,9 +349,7 @@ export function AdvancedAnimation() {
 
       {/* Footer - Desktop only */}
       <AppFooter
-        onOpenDonate={() => setIsDonateOpen(true)}
-        onOpenStats={() => setIsStatsOpen(true)}
-        onOpenAbout={() => setIsAboutOpen(true)}
+        
         isMobile={false}
       />
     </div>

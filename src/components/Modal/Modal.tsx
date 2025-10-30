@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { CloseIcon } from "../Icons";
@@ -16,8 +16,13 @@ interface ModalProps {
  * Accessible modal component with backdrop, escape key support, and focus trapping
  * Supports custom z-index for modal stacking (e.g., detail modal over table modal)
  * Supports dark mode
+ *
+ * Performance optimizations:
+ * - Reduced backdrop blur intensity (backdrop-blur-[2px] instead of backdrop-blur-sm)
+ * - Added will-change hint for smoother transforms
+ * - Memoized component to prevent unnecessary re-renders
  */
-export function Modal({ isOpen, onClose, children, title, zIndex = Z_INDEX.MODAL }: ModalProps) {
+export const Modal = memo(function Modal({ isOpen, onClose, children, title, zIndex = Z_INDEX.MODAL }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const t = useThemeClasses();
 
@@ -63,9 +68,9 @@ export function Modal({ isOpen, onClose, children, title, zIndex = Z_INDEX.MODAL
       aria-modal="true"
       aria-labelledby={title ? "modal-title" : undefined}
     >
-      {/* Backdrop with blur effect */}
+      {/* Backdrop with lightweight blur effect */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-all"
+        className="absolute inset-0 bg-black/60 backdrop-blur-[2px] transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -76,9 +81,10 @@ export function Modal({ isOpen, onClose, children, title, zIndex = Z_INDEX.MODAL
         tabIndex={-1}
         className={cn(
           "relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto",
-          "rounded-2xl shadow-2xl transform transition-all",
+          "rounded-2xl shadow-2xl transform transition-all will-change-transform",
           t.card.base
         )}
+        style={{ contain: 'layout style paint' }}
       >
         {/* Close button - positioned at top right of content */}
         <button
@@ -97,4 +103,4 @@ export function Modal({ isOpen, onClose, children, title, zIndex = Z_INDEX.MODAL
       </div>
     </div>
   );
-}
+});

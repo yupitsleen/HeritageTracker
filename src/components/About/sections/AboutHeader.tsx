@@ -1,17 +1,13 @@
-import { useThemeClasses } from "../../../hooks/useThemeClasses";
-
 /**
  * AboutHeader - Header section for About page
  */
 export function AboutHeader() {
-  const t = useThemeClasses();
-
   return (
     <div className="mb-4 md:mb-6 text-center">
-      <h1 className={`text-xl md:text-3xl font-bold ${t.text.heading} mb-1.5`}>
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-1.5">
         About Heritage Tracker
       </h1>
-      <p className={`text-xs md:text-base ${t.text.muted}`}>
+      <p className="text-sm md:text-lg text-gray-900">
         Evidence-based documentation of Palestinian cultural heritage destruction
       </p>
     </div>

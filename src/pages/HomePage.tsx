@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
 import { useTranslation } from "../contexts/LocaleContext";
@@ -11,19 +12,18 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { DesktopLayout } from "../components/Layout/DesktopLayout";
 import { MobileLayout } from "../components/Layout/MobileLayout";
-import { SitesTable } from "../components/SitesTable";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Button } from "../components/Button";
 import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
+import { Z_INDEX } from "../constants/layout";
+import { COLORS } from "../constants/colors";
 
-// Lazy load heavy components for better initial load performance
+// Lazy load only SiteDetailPanel (less frequently accessed)
+// Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
-const About = lazy(() => import("../components/About/About").then(m => ({ default: m.About })));
-const StatsDashboard = lazy(() => import("../components/Stats/StatsDashboard").then(m => ({ default: m.StatsDashboard })));
-const DonateModal = lazy(() => import("../components/Donate/DonateModal").then(m => ({ default: m.DonateModal })));
 
 interface HomePageProps {
   isMobile: boolean;
@@ -42,8 +42,14 @@ export function HomePage({ isMobile }: HomePageProps) {
   const tableResize = useTableResize();
   const { isDark } = useTheme();
   const translate = useTranslation();
+  const navigate = useNavigate();
 
   const t = useThemeClasses();
+
+  // Navigate to Data page (full table view)
+  const handleExpandTable = useCallback(() => {
+    navigate("/data");
+  }, [navigate]);
 
   // Wrapper functions to handle filter updates using helper
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
@@ -83,7 +89,7 @@ export function HomePage({ isMobile }: HomePageProps) {
           style={{
             width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
             height: '100vh', // Full viewport height
-            background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
+            background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
             clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
           }}
           aria-hidden="true"
@@ -92,9 +98,6 @@ export function HomePage({ isMobile }: HomePageProps) {
 
       {/* Header with flag line */}
       <AppHeader
-        onOpenDonate={() => appState.setIsDonateOpen(true)}
-        onOpenStats={() => appState.setIsStatsOpen(true)}
-        onOpenAbout={() => appState.setIsAboutOpen(true)}
         onOpenHelp={() => appState.setIsHelpOpen(true)}
       />
 
@@ -137,7 +140,7 @@ export function HomePage({ isMobile }: HomePageProps) {
             onSiteClick={appState.setSelectedSite}
             onSiteHighlight={appState.setHighlightedSiteId}
             highlightedSiteId={appState.highlightedSiteId}
-            onExpandTable={() => appState.setIsTableExpanded(true)}
+            onExpandTable={handleExpandTable}
           />
         )}
       </main>
@@ -146,7 +149,7 @@ export function HomePage({ isMobile }: HomePageProps) {
       <Modal
         isOpen={appState.selectedSite !== null}
         onClose={() => appState.setSelectedSite(null)}
-        zIndex={10000}
+        zIndex={Z_INDEX.MODAL}
       >
         {appState.selectedSite && (
           <Suspense
@@ -161,79 +164,12 @@ export function HomePage({ isMobile }: HomePageProps) {
         )}
       </Modal>
 
-      {/* Expanded Table Modal */}
-      <Modal
-        isOpen={appState.modals.isTableExpanded}
-        onClose={() => appState.setIsTableExpanded(false)}
-        zIndex={9999}
-      >
-        <div className="h-[80vh]">
-          <SitesTable
-            sites={filteredSites}
-            onSiteClick={appState.setSelectedSite}
-            onSiteHighlight={appState.setHighlightedSiteId}
-            highlightedSiteId={appState.highlightedSiteId}
-            variant="expanded"
-          />
-        </div>
-      </Modal>
-
-      {/* Statistics Modal */}
-      <Modal
-        isOpen={appState.modals.isStatsOpen}
-        onClose={() => appState.setIsStatsOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading statistics...</div>
-            </div>
-          }
-        >
-          <StatsDashboard sites={sites} />
-        </Suspense>
-      </Modal>
-
-      {/* About Modal */}
-      <Modal
-        isOpen={appState.modals.isAboutOpen}
-        onClose={() => appState.setIsAboutOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading about...</div>
-            </div>
-          }
-        >
-          <About />
-        </Suspense>
-      </Modal>
-
-      {/* Donate Modal */}
-      <Modal
-        isOpen={appState.modals.isDonateOpen}
-        onClose={() => appState.setIsDonateOpen(false)}
-        zIndex={10001}
-      >
-        <Suspense
-          fallback={
-            <div className={`p-8 text-center ${t.layout.loadingText}`}>
-              <div>Loading...</div>
-            </div>
-          }
-        >
-          <DonateModal />
-        </Suspense>
-      </Modal>
 
       {/* Help Modal */}
       <Modal
         isOpen={appState.modals.isHelpOpen}
         onClose={() => appState.setIsHelpOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <div className="p-6">
           <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Heritage Tracker</h2>
@@ -301,7 +237,7 @@ export function HomePage({ isMobile }: HomePageProps) {
       <Modal
         isOpen={appState.modals.isFilterOpen}
         onClose={() => appState.setIsFilterOpen(false)}
-        zIndex={10001}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
         <FilterBar
@@ -333,9 +269,6 @@ export function HomePage({ isMobile }: HomePageProps) {
 
       {/* Footer */}
       <AppFooter
-        onOpenDonate={() => appState.setIsDonateOpen(true)}
-        onOpenStats={() => appState.setIsStatsOpen(true)}
-        onOpenAbout={() => appState.setIsAboutOpen(true)}
         isMobile={isMobile}
       />
     </div>

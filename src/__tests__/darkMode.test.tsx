@@ -68,12 +68,12 @@ describe("Dark Mode - Component Rendering", () => {
 
   describe("About Modal", () => {
     it("renders in light mode", () => {
-      renderWithProviders(<About />, "light");
+      renderWithProviders(<About sites={mockSites} />, "light");
       expect(screen.getByText("About Heritage Tracker")).toBeInTheDocument();
     });
 
     it("renders in dark mode", () => {
-      renderWithProviders(<About />, "dark");
+      renderWithProviders(<About sites={mockSites} />, "dark");
       expect(screen.getByText("About Heritage Tracker")).toBeInTheDocument();
     });
   });
@@ -81,12 +81,12 @@ describe("Dark Mode - Component Rendering", () => {
   describe("Stats Dashboard", () => {
     it("renders in light mode", () => {
       renderWithProviders(<StatsDashboard sites={mockSites} />, "light");
-      expect(screen.getByText("The Scale of Destruction")).toBeInTheDocument();
+      expect(screen.getByText("Documenting Genocide")).toBeInTheDocument();
     });
 
     it("renders in dark mode", () => {
       renderWithProviders(<StatsDashboard sites={mockSites} />, "dark");
-      expect(screen.getByText("The Scale of Destruction")).toBeInTheDocument();
+      expect(screen.getByText("Documenting Genocide")).toBeInTheDocument();
     });
   });
 

@@ -34,6 +34,7 @@ describe("Layout Constants", () => {
       expect(Z_INDEX.FIXED).toBe(1020);
       expect(Z_INDEX.MODAL).toBe(9999);
       expect(Z_INDEX.NOTIFICATION).toBe(10000);
+      expect(Z_INDEX.MODAL_DROPDOWN).toBe(10002);
     });
 
     it("should have correct stacking order", () => {
@@ -44,16 +45,22 @@ describe("Layout Constants", () => {
       expect(Z_INDEX.TOOLTIP).toBeLessThan(Z_INDEX.FIXED);
       expect(Z_INDEX.FIXED).toBeLessThan(Z_INDEX.MODAL);
       expect(Z_INDEX.MODAL).toBeLessThan(Z_INDEX.NOTIFICATION);
+      expect(Z_INDEX.NOTIFICATION).toBeLessThan(Z_INDEX.MODAL_DROPDOWN);
     });
 
     it("should have modal z-index high enough to overlay content", () => {
       expect(Z_INDEX.MODAL).toBeGreaterThan(1000);
     });
 
-    it("should have notification as highest z-index", () => {
+    it("should have modal dropdown above modal and notification", () => {
+      expect(Z_INDEX.MODAL_DROPDOWN).toBeGreaterThan(Z_INDEX.MODAL);
+      expect(Z_INDEX.MODAL_DROPDOWN).toBeGreaterThan(Z_INDEX.NOTIFICATION);
+    });
+
+    it("should have modal dropdown as highest z-index", () => {
       const allZIndices = Object.values(Z_INDEX);
       const maxZIndex = Math.max(...allZIndices);
-      expect(Z_INDEX.NOTIFICATION).toBe(maxZIndex);
+      expect(Z_INDEX.MODAL_DROPDOWN).toBe(maxZIndex);
     });
   });
 
