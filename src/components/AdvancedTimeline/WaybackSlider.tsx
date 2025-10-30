@@ -160,17 +160,27 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
       <div className="relative">
         {/* Year labels - positioned above the timeline */}
         <div className="relative h-4 mb-2">
-          {yearMarkers.map(({ year, position }) => (
-            <div
-              key={year}
-              className="absolute -translate-x-1/2"
-              style={{ left: `${position}%` }}
-            >
-              <span className={`text-[9px] font-semibold ${t.text.body}`}>
-                {year}
-              </span>
-            </div>
-          ))}
+          {yearMarkers.map(({ year, position }, index) => {
+            const isFirst = index === 0;
+            const isLast = index === yearMarkers.length - 1;
+            const transformClass = isFirst
+              ? "" // Left-align for first year to prevent left overflow
+              : isLast
+              ? "-translate-x-full" // Right-align for last year to prevent right overflow
+              : "-translate-x-1/2"; // Center for middle years
+
+            return (
+              <div
+                key={year}
+                className={`absolute ${transformClass}`}
+                style={{ left: `${position}%` }}
+              >
+                <span className={`text-[9px] font-semibold ${t.text.body}`}>
+                  {year}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         {/* Interactive timeline bar */}
