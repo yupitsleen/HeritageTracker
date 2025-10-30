@@ -1,3 +1,4 @@
+import { useTheme } from "../../../contexts/ThemeContext";
 import { useMemo } from "react";
 import { useThemeClasses } from "../../../hooks/useThemeClasses";
 import type { GazaSite } from "../../../types";
@@ -11,6 +12,7 @@ interface TheDataSectionProps {
  * Now dynamically calculated from actual site data
  */
 export function TheDataSection({ sites }: TheDataSectionProps) {
+  const { isDark } = useTheme();
   const t = useThemeClasses();
 
   // Calculate stats dynamically from site data
@@ -35,29 +37,29 @@ export function TheDataSection({ sites }: TheDataSectionProps) {
 
   return (
     <section className="hidden md:block mb-8">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">The Data</h2>
+      <h2 className={`text-3xl font-bold  mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>The Data</h2>
       <div className={`${t.bg.tertiary} rounded-lg p-6 space-y-4`}>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-3xl font-bold text-[#009639]">{stats.total}</div>
-            <div className="text-base text-gray-900">Sites Documented</div>
+            <div className={`text-base  ${isDark ? "text-white" : "text-gray-900"}`}>Sites Documented</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-[#ed3039]">{stats.destroyed}</div>
-            <div className="text-base text-gray-900">Completely Destroyed</div>
+            <div className={`text-base  ${isDark ? "text-white" : "text-gray-900"}`}>Completely Destroyed</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-[#ca8a04]">{stats.damaged}</div>
-            <div className="text-base text-gray-900">Damaged</div>
+            <div className={`text-base  ${isDark ? "text-white" : "text-gray-900"}`}>Damaged</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-gray-900">
+            <div className={`text-3xl font-bold  ${isDark ? "text-white" : "text-gray-900"}`}>
               {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) / 10}k` : "—"}
             </div>
-            <div className="text-base text-gray-900">Years of History</div>
+            <div className={`text-base  ${isDark ? "text-white" : "text-gray-900"}`}>Years of History</div>
           </div>
         </div>
-        <p className="text-base text-gray-900 text-center mt-4">
+        <p className={`text-base  text-center mt-4 ${isDark ? "text-white" : "text-gray-900"}`}>
           As of January 2025 • {stats.total} documented heritage sites
         </p>
       </div>
