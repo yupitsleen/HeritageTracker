@@ -19,7 +19,10 @@
       "Bash(git reset:*)",
       "Bash(git add:*)",
       "Bash(git diff:*)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(for file in \"src/components/Layout/DesktopLayout.tsx\" \"src/components/Layout/MobileLayout.tsx\" \"src/components/Layout/SharedLayout.tsx\" \"src/components/Layout/AppHeader.tsx\" \"src/components/LanguageSelector/LanguageSelector.tsx\" \"src/components/Button/Button.tsx\" \"src/pages/HomePage.tsx\" \"src/pages/AdvancedAnimation.tsx\")",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(done)"
     ]
   },
   "outputStyle": "default"
