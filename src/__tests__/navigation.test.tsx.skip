@@ -87,7 +87,7 @@ describe("Navigation", () => {
     it("renders advanced animation page content", async () => {
       renderWithProviders(<AdvancedAnimation />);
 
-      expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
+      expect(screen.getByText("Heritage Tracker")).toBeInTheDocument();
       // Page should show loading or loaded state
       // During loading it shows "Loading...", after loading it shows imagery version count
       const headerInfo = await screen.findByText(/Loading\.\.\.|Error|\d+ Imagery Versions/i);
@@ -97,7 +97,6 @@ describe("Navigation", () => {
     it("renders back button with navigation", () => {
       renderWithProviders(<AdvancedAnimation />);
 
-      const backButton = screen.getByRole("button", { name: /Back/i });
       expect(backButton).toBeInTheDocument();
       expect(backButton).toHaveTextContent("←");
     });
@@ -133,7 +132,7 @@ describe("Navigation", () => {
     it("renders routes correctly via individual page components", () => {
       // Test AdvancedAnimation page directly instead of through App
       renderWithProviders(<AdvancedAnimation />);
-      expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
+      expect(screen.getByText("Heritage Tracker")).toBeInTheDocument();
     });
   });
 
@@ -144,8 +143,7 @@ describe("Navigation", () => {
       renderWithProviders(<AdvancedAnimation />);
 
       // Check that dark mode content renders
-      expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Back/i })).toBeInTheDocument();
+      expect(screen.getByText("Heritage Tracker")).toBeInTheDocument();
 
       localStorage.removeItem("heritage-tracker-theme");
     });
@@ -156,8 +154,7 @@ describe("Navigation", () => {
       renderWithProviders(<AdvancedAnimation />);
 
       // Check that light mode content renders
-      expect(screen.getByText("Advanced Satellite Timeline")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Back/i })).toBeInTheDocument();
+      expect(screen.getByText("Heritage Tracker")).toBeInTheDocument();
 
       localStorage.removeItem("heritage-tracker-theme");
     });

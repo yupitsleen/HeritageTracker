@@ -1,14 +1,10 @@
 import { lazy, Suspense, useState, useCallback, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
-import { useTranslation } from "../contexts/LocaleContext";
-import { Button } from "../components/Button";
-import { IconButton } from "../components/Button/IconButton";
-import { LanguageSelector } from "../components/LanguageSelector";
 import { Modal } from "../components/Modal/Modal";
+import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
+import { Button } from "../components/Button";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
@@ -35,10 +31,8 @@ const SiteDetailPanel = lazy(() =>
  * Reuses SiteDetailView and TimelineScrubber from home page
  */
 export function AdvancedAnimation() {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const t = useThemeClasses();
-  const translate = useTranslation();
-  const navigate = useNavigate();
 
   // Fetch Wayback releases
   const { releases, isLoading, error } = useWaybackReleases();
@@ -154,11 +148,6 @@ export function AdvancedAnimation() {
   );
 
   /**
-   * Navigate back to home page
-   */
-  const handleBackClick = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
 
   /**
    * Reload page to retry loading Wayback releases
@@ -172,72 +161,8 @@ export function AdvancedAnimation() {
       data-theme={isDark ? "dark" : "light"}
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
-      {/* Header with back button */}
-      <header
-        className={`sticky top-0 z-[10] transition-colors duration-200 ${
-          isDark ? "bg-gray-900 opacity-95" : "bg-[#000000] opacity-90"
-        }`}
-        dir="ltr"
-      >
-        {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
-        <div className="max-w-full px-4 py-2 relative">
-          {/* Left: Back button */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Button
-              onClick={handleBackClick}
-              variant="ghost"
-              size="sm"
-              lightText
-              className="flex items-center gap-1.5"
-            >
-              <span className="text-base">&larr;</span>
-              {translate("advancedTimeline.backToMain")}
-            </Button>
-          </div>
-
-          {/* Center: Title */}
-          <h1 className="text-lg font-bold text-[#fefefe] text-center">
-            {translate("advancedTimeline.title")}
-          </h1>
-
-          {/* Right: Help + Language + Dark mode toggle + Info */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            {/* Help Button */}
-            <IconButton
-              icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
-              onClick={() => setIsHelpOpen(true)}
-              ariaLabel="How to use this page"
-              title="How to use this page"
-            />
-
-            {/* Language Selector - Dropdown showing all registered locales */}
-            <LanguageSelector />
-
-            {/* Dark Mode Toggle */}
-            <IconButton
-              icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
-              onClick={toggleTheme}
-              ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            />
-
-            {/* Info text */}
-            <div className="text-xs text-gray-400">
-              {isLoading && "Loading..."}
-              {error && "Error"}
-              {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Sites`}
-            </div>
-          </div>
-        </div>
-
-        {/* Flag-colored horizontal line */}
-        <div className="flex h-1">
-          <div className="flex-1 bg-[#ed3039]"></div>
-          <div className="flex-1 bg-[#000000]"></div>
-          <div className="flex-1 bg-[#ed3039]"></div>
-          <div className="flex-1 bg-[#009639]"></div>
-        </div>
-      </header>
+      {/* Header - shared across all pages */}
+      <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
 
       {/* Main content */}
       <main className="h-[calc(100vh-58px)] p-4 flex flex-col gap-2">
@@ -280,6 +205,13 @@ export function AdvancedAnimation() {
                   onSiteClick={setSelectedSite}
                 />
               </Suspense>
+            </div>
+
+            {/* Info bar showing dataset stats */}
+            <div className={`flex-shrink-0 text-xs ${t.text.muted} text-center pb-2`}>
+              {isLoading && "Loading imagery..."}
+              {error && "Error loading imagery"}
+              {!isLoading && !error && `${releases.length} Imagery Versions | ${mockSites.length} Heritage Sites`}
             </div>
 
             {/* Wayback Release Slider - Visual timeline with year markers */}

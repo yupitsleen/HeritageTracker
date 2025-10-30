@@ -25,7 +25,18 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isOnHomePage = location.pathname === "/" || location.pathname === "/HeritageTracker" || location.pathname === "/HeritageTracker/";
+  // Determine active page for highlighting
+  const getActivePage = () => {
+    const path = location.pathname;
+    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "home";
+    if (path.includes("/advanced-animation")) return "advanced-animation";
+    if (path.includes("/donate")) return "donate";
+    if (path.includes("/stats")) return "stats";
+    if (path.includes("/about")) return "about";
+    return null;
+  };
+
+  const activePage = getActivePage();
 
   return (
     <div
@@ -46,44 +57,63 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
 
           {/* Center: Main action buttons - desktop only */}
           <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Advanced Animation Navigation - Only show on home page */}
-            {isOnHomePage && (
-              <Button
-                onClick={() => navigate("/advanced-animation")}
-                variant="secondary"
-                size="xs"
-                lightText
-                aria-label={t("header.advancedTimeline")}
-                title={t("header.advancedTimeline")}
-              >
-                {t("header.advancedTimeline")}
-              </Button>
-            )}
+            {/* Home/Map Navigation */}
+            <Button
+              onClick={() => navigate("/")}
+              variant={activePage === "home" ? "primary" : "ghost"}
+              size="xs"
+              lightText
+              aria-label="Map View"
+              className={activePage === "home" ? "ring-2 ring-white/50" : ""}
+            >
+              Map
+            </Button>
 
+            {/* Advanced Animation Navigation */}
+            <Button
+              onClick={() => navigate("/advanced-animation")}
+              variant={activePage === "advanced-animation" ? "secondary" : "ghost"}
+              size="xs"
+              lightText
+              aria-label={t("header.advancedTimeline")}
+              title={t("header.advancedTimeline")}
+              className={activePage === "advanced-animation" ? "ring-2 ring-white/50" : ""}
+            >
+              {t("header.advancedTimeline")}
+            </Button>
+
+            {/* Donate Navigation */}
             <Button
               onClick={() => navigate("/donate")}
-              variant="danger"
+              variant={activePage === "donate" ? "danger" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.helpPalestine")}
+              className={activePage === "donate" ? "ring-2 ring-white/50" : ""}
             >
               {t("header.helpPalestine")}
             </Button>
+
+            {/* Stats Navigation */}
             <Button
               onClick={() => navigate("/stats")}
-              variant="primary"
+              variant={activePage === "stats" ? "primary" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.statistics")}
+              className={activePage === "stats" ? "ring-2 ring-white/50" : ""}
             >
               {t("header.statistics")}
             </Button>
+
+            {/* About Navigation */}
             <Button
               onClick={() => navigate("/about")}
-              variant="primary"
+              variant={activePage === "about" ? "primary" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.about")}
+              className={activePage === "about" ? "ring-2 ring-white/50" : ""}
             >
               {t("header.about")}
             </Button>
