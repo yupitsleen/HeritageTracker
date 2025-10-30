@@ -50,9 +50,15 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
       {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
       <header className={components.header.base}>
         <div className={cn(components.container.base, "py-1.5 relative flex items-center justify-between")}>
-          {/* Left: Title */}
+          {/* Left: Title - clickable to return home */}
           <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-            {t("header.title")}
+            <button
+              onClick={() => navigate("/")}
+              className="cursor-pointer uppercase"
+              aria-label="Go to home page"
+            >
+              {t("header.title")}
+            </button>
           </h1>
 
           {/* Center: Main action buttons - desktop only */}
