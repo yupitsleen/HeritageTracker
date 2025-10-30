@@ -32,6 +32,7 @@ export const it: Translations = {
 
   header: {
     title: "Registro del Patrimonio",
+    dashboard: "Cruscotto",
     advancedTimeline: "Timeline Avanzata",
     statistics: "Statistiche",
     helpPalestine: "Aiuta la Palestina",
@@ -116,7 +117,7 @@ export const it: Translations = {
     filters: "Filtri",
     clear: "Cancella",
     clearAll: "Cancella Tutto",
-    searchPlaceholder: "Cerca siti...",
+    searchPlaceholder: "Cerca...",
     search: "Cerca",
     clearSearch: "Cancella ricerca",
     typeFilter: "Filtro Tipo",
@@ -222,6 +223,15 @@ export const it: Translations = {
     filterControl: "Controllo filtro",
     timelineControl: "Controllo timeline",
     mapControl: "Controllo mappa",
+    switchToLightMode: "Passa alla modalità chiara",
+    switchToDarkMode: "Passa alla modalità scura",
+    viewGithub: "Visualizza codice sorgente su GitHub",
+    helpPalestineDonate: "Aiuta la Palestina - Dona per gli sforzi di soccorso",
+    viewStatistics: "Visualizza Statistiche",
+    aboutHeritageTracker: "Informazioni su Registro del Patrimonio",
+    resizeTable: "Ridimensiona tabella",
+    dragToResizeTable: "Trascina per ridimensionare la tabella",
+    clearSearch: "Cancella ricerca",
   },
 
   pagination: {

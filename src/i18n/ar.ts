@@ -32,6 +32,7 @@ export const ar: Translations = {
 
   header: {
     title: "متتبع التراث",
+    dashboard: "لوحة التحكم",
     advancedTimeline: "الجدول الزمني المتقدم",
     statistics: "الإحصائيات",
     helpPalestine: "ساعد فلسطين",
@@ -116,7 +117,7 @@ export const ar: Translations = {
     filters: "المرشحات",
     clear: "مسح",
     clearAll: "مسح الكل",
-    searchPlaceholder: "البحث عن المواقع...",
+    searchPlaceholder: "بحث...",
     search: "بحث",
     clearSearch: "مسح البحث",
     typeFilter: "تصفية النوع",
@@ -222,6 +223,15 @@ export const ar: Translations = {
     filterControl: "التحكم في التصفية",
     timelineControl: "التحكم في الجدول الزمني",
     mapControl: "التحكم في الخريطة",
+    switchToLightMode: "التبديل إلى الوضع النهاري",
+    switchToDarkMode: "التبديل إلى الوضع الليلي",
+    viewGithub: "عرض الكود المصدري على جيت هاب",
+    helpPalestineDonate: "ساعد فلسطين - تبرع لجهود الإغاثة",
+    viewStatistics: "عرض الإحصائيات",
+    aboutHeritageTracker: "حول متتبع التراث",
+    resizeTable: "تغيير حجم الجدول",
+    dragToResizeTable: "اسحب لتغيير حجم الجدول",
+    clearSearch: "مسح البحث",
   },
 
   pagination: {

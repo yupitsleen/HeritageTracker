@@ -72,6 +72,7 @@ export interface Translations {
   /** Header navigation */
   header: {
     title: string;
+    dashboard: string;
     advancedTimeline: string;
     statistics: string;
     helpPalestine: string;
@@ -274,6 +275,15 @@ export interface Translations {
     filterControl: string;
     timelineControl: string;
     mapControl: string;
+    switchToLightMode: string;
+    switchToDarkMode: string;
+    viewGithub: string;
+    helpPalestineDonate: string;
+    viewStatistics: string;
+    aboutHeritageTracker: string;
+    resizeTable: string;
+    dragToResizeTable: string;
+    clearSearch: string;
   };
 
   /** Pagination component */

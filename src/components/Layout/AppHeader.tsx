@@ -63,10 +63,10 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               variant={activePage === "home" ? "primary" : "ghost"}
               size="xs"
               lightText
-              aria-label="Dashboard View"
+              aria-label={t("header.dashboard")}
               className={activePage === "home" ? "ring-2 ring-white/50" : ""}
             >
-              Dashboard
+              {t("header.dashboard")}
             </Button>
 
             {/* Advanced Animation Navigation */}

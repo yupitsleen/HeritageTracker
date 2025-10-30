@@ -30,7 +30,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
-                aria-label="View source code on GitHub"
+                aria-label={translate("aria.viewGithub")}
               >
                 {translate("footer.github")}
               </a>
@@ -48,7 +48,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               <Link
                 to="/donate"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
-                aria-label="Help Palestine - Donate to relief efforts"
+                aria-label={translate("aria.helpPalestineDonate")}
               >
                 {translate("footer.donate")}
               </Link>
@@ -56,7 +56,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               <Link
                 to="/stats"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
-                aria-label="View Statistics"
+                aria-label={translate("aria.viewStatistics")}
               >
                 {translate("footer.stats")}
               </Link>
@@ -64,7 +64,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               <Link
                 to="/about"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
-                aria-label="About Heritage Tracker"
+                aria-label={translate("aria.aboutHeritageTracker")}
               >
                 {translate("footer.about")}
               </Link>
@@ -74,7 +74,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-[#fefefe]/80 transition-colors"
-                aria-label="View source code on GitHub"
+                aria-label={translate("aria.viewGithub")}
               >
                 {translate("footer.github")}
               </a>

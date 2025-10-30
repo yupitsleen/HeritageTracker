@@ -4,6 +4,7 @@ import { FilterBar } from "../FilterBar/FilterBar";
 import { SitesTable } from "../SitesTable";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 interface MobileLayoutProps {
   // Filter state
@@ -30,6 +31,7 @@ export function MobileLayout({
   highlightedSiteId,
 }: MobileLayoutProps) {
   const { isDark, toggleTheme } = useTheme();
+  const t = useTranslation();
 
   return (
     <div className="md:hidden">
@@ -43,8 +45,8 @@ export function MobileLayout({
               ? "bg-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white"
               : "bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white"
           }`}
-          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          aria-label={isDark ? t("aria.switchToLightMode") : t("aria.switchToDarkMode")}
+          title={isDark ? t("aria.switchToLightMode") : t("aria.switchToDarkMode")}
         >
           {isDark ? (
             <SunIcon className="w-5 h-5" />

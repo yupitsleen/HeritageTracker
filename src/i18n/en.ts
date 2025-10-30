@@ -32,6 +32,7 @@ export const en: Translations = {
 
   header: {
     title: "Heritage Tracker",
+    dashboard: "Dashboard",
     advancedTimeline: "Advanced Timeline",
     statistics: "Statistics",
     helpPalestine: "Help Palestine",
@@ -116,7 +117,7 @@ export const en: Translations = {
     filters: "Filters",
     clear: "Clear",
     clearAll: "Clear All",
-    searchPlaceholder: "Search sites...",
+    searchPlaceholder: "Search...",
     search: "Search",
     clearSearch: "Clear search",
     typeFilter: "Type Filter",
@@ -222,6 +223,15 @@ export const en: Translations = {
     filterControl: "Filter control",
     timelineControl: "Timeline control",
     mapControl: "Map control",
+    switchToLightMode: "Switch to light mode",
+    switchToDarkMode: "Switch to dark mode",
+    viewGithub: "View source code on GitHub",
+    helpPalestineDonate: "Help Palestine - Donate to relief efforts",
+    viewStatistics: "View Statistics",
+    aboutHeritageTracker: "About Heritage Tracker",
+    resizeTable: "Resize table",
+    dragToResizeTable: "Drag to resize table",
+    clearSearch: "Clear search",
   },
 
   pagination: {
