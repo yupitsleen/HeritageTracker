@@ -11,7 +11,6 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { DesktopLayout } from "../components/Layout/DesktopLayout";
 import { MobileLayout } from "../components/Layout/MobileLayout";
-import { SitesTable } from "../components/SitesTable";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Button } from "../components/Button";
 import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
