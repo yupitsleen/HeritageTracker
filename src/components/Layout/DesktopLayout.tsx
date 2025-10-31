@@ -100,13 +100,72 @@ export function DesktopLayout({
   }, [onFilterChange]);
 
   return (
-    <div className="hidden md:flex md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
-      {/* Two-column layout - Fills remaining space */}
+    <div className="hidden md:flex md:flex-col md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
       {/* dir="ltr" keeps spatial layout consistent (table left, maps right) regardless of language */}
-      <div className="flex gap-2 flex-1 min-h-0">
-        {/* Left Column - Sites Table (Resizable, black border like timeline) */}
+
+      {/* Filter bar - Full width at top */}
+      <div className={`flex-shrink-0 mx-4 mt-2 p-3 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[1001] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+        <div className="flex flex-col gap-3">
+          {/* Unified FilterBar with search, filters, and actions */}
+          <FilterBar
+            filters={filters}
+            onFilterChange={onFilterChange}
+            sites={sites}
+            defaultDateRange={defaultDateRange}
+            defaultYearRange={defaultYearRange}
+            showActions={true}
+            totalSites={totalSites}
+            filteredSites={filteredSites.length}
+            onClearAll={clearAllFilters}
+          />
+
+          {/* Active filter tags (only if filters active) */}
+          {hasActiveFilters && (
+            <div className="flex items-center gap-2 flex-wrap">
+              {filters.selectedTypes.map((type) => (
+                <FilterTag
+                  key={type}
+                  label={formatLabel(type)}
+                  onRemove={() => handleRemoveType(type)}
+                  ariaLabel={`Remove ${type} filter`}
+                />
+              ))}
+              {filters.selectedStatuses.map((status) => (
+                <FilterTag
+                  key={status}
+                  label={formatLabel(status)}
+                  onRemove={() => handleRemoveStatus(status)}
+                  ariaLabel={`Remove ${status} filter`}
+                />
+              ))}
+              {/* Destruction date filter tag */}
+              {(filters.destructionDateStart || filters.destructionDateEnd) && (
+                <FilterTag
+                  key="destruction-date"
+                  label={`Date: ${filters.destructionDateStart?.toLocaleDateString() || '...'} - ${filters.destructionDateEnd?.toLocaleDateString() || '...'}`}
+                  onRemove={handleRemoveDateRange}
+                  ariaLabel="Remove destruction date filter"
+                />
+              )}
+              {/* Creation year filter tag */}
+              {(filters.creationYearStart || filters.creationYearEnd) && (
+                <FilterTag
+                  key="creation-year"
+                  label={`Built: ${filters.creationYearStart || '...'} - ${filters.creationYearEnd || '...'}`}
+                  onRemove={handleRemoveCreationYearRange}
+                  ariaLabel="Remove creation year filter"
+                />
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Three-column layout: Table | Map | SiteDetailView (all same height) */}
+      <div className="flex gap-2 flex-1 min-h-0 px-4 pt-2">
+        {/* Left Column - Sites Table (Resizable) */}
         <aside
-          className="flex-shrink-0 pl-4 pt-2 pb-2 relative flex flex-col z-10"
+          className="flex-shrink-0 relative flex flex-col z-10"
           style={{ width: `${tableResize.width}px` }}
         >
           <SitesTable
@@ -120,7 +179,7 @@ export function DesktopLayout({
 
           {/* Resize handle */}
           <div
-            className={`absolute top-3 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${
+            className={`absolute top-0 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${
               tableResize.isResizing ? "bg-[#ed3039] bg-opacity-50" : ""
             }`}
             onMouseDown={tableResize.handleResizeStart}
@@ -129,106 +188,42 @@ export function DesktopLayout({
           />
         </aside>
 
-        {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
-        <div className="flex-1 min-w-0 pr-4 flex flex-col">
-          {/* Filter bar - Horizontal layout with all filters inline */}
-          <div className={`flex-shrink-0 mt-2 p-3 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[1001] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
-            <div className="flex flex-col gap-3">
-              {/* Unified FilterBar with search, filters, and actions */}
-              <FilterBar
-                filters={filters}
-                onFilterChange={onFilterChange}
-                sites={sites}
-                defaultDateRange={defaultDateRange}
-                defaultYearRange={defaultYearRange}
-                showActions={true}
-                totalSites={totalSites}
-                filteredSites={filteredSites.length}
-                onClearAll={clearAllFilters}
-              />
-
-              {/* Active filter tags (only if filters active) */}
-              {hasActiveFilters && (
-                <div className="flex items-center gap-2 flex-wrap">
-                  {filters.selectedTypes.map((type) => (
-                    <FilterTag
-                      key={type}
-                      label={formatLabel(type)}
-                      onRemove={() => handleRemoveType(type)}
-                      ariaLabel={`Remove ${type} filter`}
-                    />
-                  ))}
-                  {filters.selectedStatuses.map((status) => (
-                    <FilterTag
-                      key={status}
-                      label={formatLabel(status)}
-                      onRemove={() => handleRemoveStatus(status)}
-                      ariaLabel={`Remove ${status} filter`}
-                    />
-                  ))}
-                  {/* Destruction date filter tag */}
-                  {(filters.destructionDateStart || filters.destructionDateEnd) && (
-                    <FilterTag
-                      key="destruction-date"
-                      label={`Date: ${filters.destructionDateStart?.toLocaleDateString() || '...'} - ${filters.destructionDateEnd?.toLocaleDateString() || '...'}`}
-                      onRemove={handleRemoveDateRange}
-                      ariaLabel="Remove destruction date filter"
-                    />
-                  )}
-                  {/* Creation year filter tag */}
-                  {(filters.creationYearStart || filters.creationYearEnd) && (
-                    <FilterTag
-                      key="creation-year"
-                      label={`Built: ${filters.creationYearStart || '...'} - ${filters.creationYearEnd || '...'}`}
-                      onRemove={handleRemoveCreationYearRange}
-                      ariaLabel="Remove creation year filter"
-                    />
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Two maps side by side - Constrained height to leave room for timeline + footer */}
-          <div className="flex gap-2 min-h-0 pt-2" style={{ height: 'calc(100% - 185px)' }}>
-            {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-            <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
-              <Suspense fallback={<SkeletonMap />}>
-                <HeritageMap
-                  sites={filteredSites}
-                  onSiteClick={onSiteClick}
-                  highlightedSiteId={highlightedSiteId}
-                  onSiteHighlight={onSiteHighlight}
-                />
-              </Suspense>
-            </div>
-
-            {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-            <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
-              <Suspense fallback={<SkeletonMap />}>
-                <SiteDetailView
-                  sites={filteredSites}
-                  highlightedSiteId={highlightedSiteId}
-                />
-              </Suspense>
-            </div>
-          </div>
-
-          {/* Timeline Scrubber - Fixed height at bottom, mb-6 to clear fixed footer */}
-          <div className="mt-1.5 mb-6 flex-shrink-0 h-[100px] relative z-10">
-            <Suspense fallback={<SkeletonMap />}>
-              <TimelineScrubber
-                sites={filteredSites}
-                destructionDateStart={filters.destructionDateStart}
-                destructionDateEnd={filters.destructionDateEnd}
-                onDestructionDateStartChange={(date) => onFilterChange({ destructionDateStart: date })}
-                onDestructionDateEndChange={(date) => onFilterChange({ destructionDateEnd: date })}
-                highlightedSiteId={highlightedSiteId}
-                onSiteHighlight={onSiteHighlight}
-              />
-            </Suspense>
-          </div>
+        {/* Center - Heritage Map (Traditional/Satellite toggle) */}
+        <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
+          <Suspense fallback={<SkeletonMap />}>
+            <HeritageMap
+              sites={filteredSites}
+              onSiteClick={onSiteClick}
+              highlightedSiteId={highlightedSiteId}
+              onSiteHighlight={onSiteHighlight}
+            />
+          </Suspense>
         </div>
+
+        {/* Right - Site Detail View (Satellite only, zooms on selection) */}
+        <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
+          <Suspense fallback={<SkeletonMap />}>
+            <SiteDetailView
+              sites={filteredSites}
+              highlightedSiteId={highlightedSiteId}
+            />
+          </Suspense>
+        </div>
+      </div>
+
+      {/* Timeline Scrubber - Full width at bottom, mb-6 to clear fixed footer */}
+      <div className="mx-4 mt-1.5 mb-6 flex-shrink-0 h-[100px] relative z-10">
+        <Suspense fallback={<SkeletonMap />}>
+          <TimelineScrubber
+            sites={filteredSites}
+            destructionDateStart={filters.destructionDateStart}
+            destructionDateEnd={filters.destructionDateEnd}
+            onDestructionDateStartChange={(date) => onFilterChange({ destructionDateStart: date })}
+            onDestructionDateEndChange={(date) => onFilterChange({ destructionDateEnd: date })}
+            highlightedSiteId={highlightedSiteId}
+            onSiteHighlight={onSiteHighlight}
+          />
+        </Suspense>
       </div>
     </div>
   );
