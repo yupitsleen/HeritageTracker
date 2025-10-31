@@ -41,7 +41,7 @@ export function DateRangeFilter({
             onStartChange(e.target.value ? new Date(e.target.value) : null);
           }}
           placeholder="From"
-          className="flex-1 text-sm py-2 px-3"
+          className="flex-1 h-9 text-sm px-3"
         />
         <span className={`text-sm font-medium ${t.text.body}`}>to</span>
         <Input
@@ -51,7 +51,7 @@ export function DateRangeFilter({
             onEndChange(e.target.value ? new Date(e.target.value) : null);
           }}
           placeholder="To"
-          className="flex-1 text-sm py-2 px-3"
+          className="flex-1 h-9 text-sm px-3"
         />
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { lazy, Suspense, useCallback } from "react";
 import type { GazaSite, FilterState } from "../../types";
-import { Input } from "../Form/Input";
 import { FilterTag } from "../FilterBar/FilterTag";
 import { FilterBar } from "../FilterBar/FilterBar";
 import { formatLabel } from "../../utils/format";
@@ -9,8 +8,6 @@ import { SkeletonMap } from "../Loading/Skeleton";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
-import { COMPACT_FILTER_BAR } from "../../constants/compactDesign";
-import { COLORS } from "../../config/colorThemes";
 
 // Lazy load heavy components
 const HeritageMap = lazy(() =>
@@ -135,80 +132,24 @@ export function DesktopLayout({
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-4 flex flex-col">
           {/* Filter bar - Horizontal layout with all filters inline */}
-          <div className={`flex-shrink-0 mt-2 ${COMPACT_FILTER_BAR.padding} backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[1001] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
-            <div className="flex flex-col gap-1.5">
-              {/* Top row - Filter controls and buttons */}
-              <div className="flex items-start gap-2">
-                {/* FilterBar component with inline filters */}
-                <div className="flex-1 min-w-0">
-                  <FilterBar
-                    filters={filters}
-                    onFilterChange={onFilterChange}
-                    sites={sites}
-                    defaultDateRange={defaultDateRange}
-                    defaultYearRange={defaultYearRange}
-                  />
-                </div>
+          <div className={`flex-shrink-0 mt-2 p-3 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[1001] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+            <div className="flex flex-col gap-3">
+              {/* Unified FilterBar with search, filters, and actions */}
+              <FilterBar
+                filters={filters}
+                onFilterChange={onFilterChange}
+                sites={sites}
+                defaultDateRange={defaultDateRange}
+                defaultYearRange={defaultYearRange}
+                showActions={true}
+                totalSites={totalSites}
+                filteredSites={filteredSites.length}
+                onClearAll={clearAllFilters}
+              />
 
-                {/* Right side controls */}
-                <div className="flex items-start gap-2 flex-shrink-0">
-                  {/* Search bar - inline */}
-                  <div className={`relative w-[180px] border ${t.border.primary} rounded ${COMPACT_FILTER_BAR.inputHeight}`}>
-                    <Input
-                      type="text"
-                      value={filters.searchTerm}
-                      onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
-                      placeholder={translate("filters.searchPlaceholder")}
-                      className={`w-full pr-6 ${COMPACT_FILTER_BAR.inputText} ${COMPACT_FILTER_BAR.inputPadding} border-0 h-full`}
-                    />
-                    {filters.searchTerm.trim().length > 0 && (
-                      <button
-                        onClick={() => onFilterChange({ searchTerm: "" })}
-                        className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                        aria-label={translate("aria.clearSearch")}
-                      >
-                        <svg
-                          className="w-3 h-3"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Clear button */}
-                  {hasActiveFilters && (
-                    <button
-                      onClick={clearAllFilters}
-                      style={{
-                        backgroundColor: COLORS.FLAG_RED,
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED_HOVER)}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED)}
-                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
-                    >
-                      {translate("filters.clear")}
-                    </button>
-                  )}
-
-                  {/* Site count */}
-                  <span className={`text-[10px] font-medium whitespace-nowrap self-center ${t.text.muted}`}>
-                    {filteredSites.length} / {totalSites}
-                  </span>
-                </div>
-              </div>
-
-              {/* Bottom row - Active filter tags (only if filters active) */}
+              {/* Active filter tags (only if filters active) */}
               {hasActiveFilters && (
-                <div className="flex items-center gap-1.5 flex-wrap">
+                <div className="flex items-center gap-2 flex-wrap">
                   {filters.selectedTypes.map((type) => (
                     <FilterTag
                       key={type}

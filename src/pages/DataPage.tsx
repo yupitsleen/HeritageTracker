@@ -5,23 +5,18 @@ import { SharedLayout } from "../components/Layout/SharedLayout";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { FilterTag } from "../components/FilterBar/FilterTag";
 import { Modal } from "../components/Modal/Modal";
-import { Input } from "../components/Form/Input";
 import { useThemeClasses } from "../hooks/useThemeClasses";
-import { useTranslation } from "../contexts/LocaleContext";
 import { formatLabel } from "../utils/format";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
 import type { GazaSite } from "../types";
-import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../config/colorThemes";
 
 // Lazy load Site Detail Panel
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
 export function DataPage() {
   const t = useThemeClasses();
-  const translate = useTranslation();
 
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
@@ -154,76 +149,25 @@ export function DataPage() {
   return (
     <SharedLayout>
       <div className="h-[calc(100vh-100px)] flex flex-col mb-8 pt-4">
-        {/* Filter Bar */}
+        {/* Filter Bar Container */}
         <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 mx-4 rounded relative z-[1001]`}>
-          <div className={`${COMPACT_FILTER_BAR.padding} flex flex-col gap-1.5`}>
-            {/* Top row - Filter controls */}
-            <div className="flex items-start gap-2">
-              {/* FilterBar component with inline filters */}
-              <div className="flex-1 min-w-0">
-                <FilterBar
-                  filters={filters}
-                  onFilterChange={handleFilterChange}
-                  sites={mockSites}
-                  defaultDateRange={defaultDateRange}
-                  defaultYearRange={defaultYearRange}
-                />
-              </div>
+          <div className="p-4 flex flex-col gap-3">
+            {/* Unified FilterBar with search, filters, and actions */}
+            <FilterBar
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              sites={mockSites}
+              defaultDateRange={defaultDateRange}
+              defaultYearRange={defaultYearRange}
+              showActions={true}
+              totalSites={mockSites.length}
+              filteredSites={filteredSites.length}
+              onClearAll={clearAllFilters}
+            />
 
-              {/* Right side controls */}
-              <div className="flex items-start gap-2 flex-shrink-0">
-                {/* Search Input */}
-                <div className="relative w-[180px]">
-                  <Input
-                    type="text"
-                    value={filters.searchTerm}
-                    onChange={(e) => handleFilterChange({ searchTerm: e.target.value })}
-                    placeholder={translate("filters.searchPlaceholder")}
-                    className={`w-full ${COMPACT_FILTER_BAR.inputHeight} ${COMPACT_FILTER_BAR.inputPadding} text-black placeholder:text-gray-400 ${COMPACT_FILTER_BAR.inputText}`}
-                  />
-                  {filters.searchTerm.trim().length > 0 && (
-                    <button
-                      onClick={() => handleFilterChange({ searchTerm: "" })}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                      aria-label={translate("aria.clearSearch")}
-                    >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-
-                {/* Clear All button */}
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearAllFilters}
-                    style={{
-                      backgroundColor: COLORS.FLAG_RED,
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED_HOVER)}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED)}
-                    className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
-                  >
-                    {translate("filters.clearAll")}
-                  </button>
-                )}
-
-                {/* Results count */}
-                <div className={`${COMPACT_FILTER_BAR.inputText} ${t.text.muted} self-center whitespace-nowrap`}>
-                  {translate("filters.showingCount", { filtered: filteredSites.length, total: mockSites.length })}
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom row - Active filter tags (only if filters active) */}
+            {/* Active filter tags (only if filters active) */}
             {hasActiveFilters && (
-              <div className="flex items-center gap-1.5 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
                 {filters.selectedTypes.map((type) => (
                   <FilterTag
                     key={type}

@@ -6,7 +6,6 @@ import { MultiSelectDropdown } from "./MultiSelectDropdown";
 import { DateRangeFilter } from "./DateRangeFilter";
 import { YearRangeFilter } from "./YearRangeFilter";
 import { Input } from "../Form/Input";
-import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -27,6 +26,14 @@ interface FilterBarProps {
     defaultEndYear: string;
     defaultStartEra: "BCE" | "CE";
   };
+  /** Show Clear All button and results count */
+  showActions?: boolean;
+  /** Total number of sites (for results count) */
+  totalSites?: number;
+  /** Filtered number of sites (for results count) */
+  filteredSites?: number;
+  /** Callback for Clear All button */
+  onClearAll?: () => void;
 }
 
 /**
@@ -70,8 +77,11 @@ export const FilterBar = memo(function FilterBar({
   sites = [],
   defaultDateRange: providedDateRange,
   defaultYearRange: providedYearRange,
+  showActions = false,
+  totalSites = 0,
+  filteredSites = 0,
+  onClearAll,
 }: FilterBarProps) {
-  const t = useThemeClasses();
   const translate = useTranslation();
 
   // Use provided ranges or calculate from sites (fallback for backward compatibility)
@@ -81,17 +91,28 @@ export const FilterBar = memo(function FilterBar({
   const { defaultStartDate, defaultEndDate } = providedDateRange || computedDateRange;
   const { defaultStartYear, defaultEndYear, defaultStartEra } = providedYearRange || computedYearRange;
 
+  // Check if any filters are active
+  const hasActiveFilters =
+    filters.selectedTypes.length > 0 ||
+    filters.selectedStatuses.length > 0 ||
+    filters.destructionDateStart !== null ||
+    filters.destructionDateEnd !== null ||
+    filters.creationYearStart !== null ||
+    filters.creationYearEnd !== null ||
+    filters.searchTerm.trim().length > 0;
+
   return (
     <div className="text-white">
-      {/* Mobile Search bar */}
-      <div className="md:hidden mb-2">
-        <div className="relative w-full">
+      {/* Desktop: Single row layout with search on far left */}
+      <div className="hidden md:flex md:flex-wrap md:gap-3 md:items-start">
+        {/* Search Bar - Far Left */}
+        <div className="relative flex-1 max-w-[200px] min-w-[180px]">
           <Input
             type="text"
             value={filters.searchTerm}
             onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
-            placeholder={translate("filters.search")}
-            className="w-full pr-8 text-xs py-1 px-2 text-black placeholder:text-gray-400"
+            placeholder={translate("filters.searchPlaceholder")}
+            className="w-full h-9 px-3 pr-8 text-sm text-black placeholder:text-gray-400"
           />
           {filters.searchTerm.trim().length > 0 && (
             <button
@@ -99,7 +120,7 @@ export const FilterBar = memo(function FilterBar({
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label={translate("filters.clearSearch")}
             >
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -110,13 +131,9 @@ export const FilterBar = memo(function FilterBar({
             </button>
           )}
         </div>
-      </div>
 
-      {/* Filter controls - horizontal layout (hidden on mobile) */}
-      <div className="hidden md:flex md:gap-4 md:items-start">
         {/* Type Filter */}
-        <div className="flex-1 min-w-0">
-          <label className={`block text-xs font-semibold mb-1.5 ${t.text.heading}`}>{translate("filters.siteType")}</label>
+        <div className="flex-1 min-w-[150px] max-w-[180px]">
           <MultiSelectDropdown
             label={translate("filters.selectTypes")}
             options={SITE_TYPES}
@@ -128,8 +145,7 @@ export const FilterBar = memo(function FilterBar({
         </div>
 
         {/* Status Filter */}
-        <div className="flex-1 min-w-0">
-          <label className={`block text-xs font-semibold mb-1.5 ${t.text.heading}`}>{translate("filters.status")}</label>
+        <div className="flex-1 min-w-[150px] max-w-[180px]">
           <MultiSelectDropdown
             label={translate("filters.selectStatus")}
             options={STATUS_OPTIONS}
@@ -141,7 +157,7 @@ export const FilterBar = memo(function FilterBar({
         </div>
 
         {/* Destruction Date Range */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-[280px]">
           <DateRangeFilter
             label={translate("filters.destructionDate")}
             startDate={filters.destructionDateStart}
@@ -154,7 +170,7 @@ export const FilterBar = memo(function FilterBar({
         </div>
 
         {/* Creation Year Range */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-[300px]">
           <YearRangeFilter
             label={translate("filters.yearBuilt")}
             onStartChange={(year) => onFilterChange({ creationYearStart: year })}
@@ -165,6 +181,121 @@ export const FilterBar = memo(function FilterBar({
             startEraDefault={defaultStartEra}
           />
         </div>
+
+        {/* Actions - Far Right */}
+        {showActions && (
+          <>
+            {/* Spacer to push actions to the right */}
+            <div className="flex-grow"></div>
+
+            {/* Clear All Button */}
+            {hasActiveFilters && onClearAll && (
+              <button
+                onClick={onClearAll}
+                className="px-4 h-9 bg-[#CE1126] hover:bg-[#a00d1e] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 text-sm whitespace-nowrap"
+              >
+                {translate("filters.clearAll")}
+              </button>
+            )}
+
+            {/* Results Count */}
+            <div className="text-sm text-gray-300 self-center whitespace-nowrap">
+              {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Mobile: Vertical stack layout */}
+      <div className="md:hidden space-y-2">
+        {/* Search Bar */}
+        <div className="relative w-full">
+          <Input
+            type="text"
+            value={filters.searchTerm}
+            onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
+            placeholder={translate("filters.searchPlaceholder")}
+            className="w-full h-9 px-3 pr-8 text-sm text-black placeholder:text-gray-400"
+          />
+          {filters.searchTerm.trim().length > 0 && (
+            <button
+              onClick={() => onFilterChange({ searchTerm: "" })}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label={translate("filters.clearSearch")}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {/* Filter Dropdowns */}
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <MultiSelectDropdown
+              label={translate("filters.selectTypes")}
+              options={SITE_TYPES}
+              selectedValues={filters.selectedTypes}
+              onChange={(types) => onFilterChange({ selectedTypes: types })}
+              formatLabel={formatLabel}
+              zIndex={Z_INDEX.DROPDOWN}
+            />
+          </div>
+          <div className="flex-1">
+            <MultiSelectDropdown
+              label={translate("filters.selectStatus")}
+              options={STATUS_OPTIONS}
+              selectedValues={filters.selectedStatuses}
+              onChange={(statuses) => onFilterChange({ selectedStatuses: statuses })}
+              formatLabel={formatLabel}
+              zIndex={Z_INDEX.DROPDOWN}
+            />
+          </div>
+        </div>
+
+        {/* Date Filters */}
+        <DateRangeFilter
+          label={translate("filters.destructionDate")}
+          startDate={filters.destructionDateStart}
+          endDate={filters.destructionDateEnd}
+          onStartChange={(date) => onFilterChange({ destructionDateStart: date })}
+          onEndChange={(date) => onFilterChange({ destructionDateEnd: date })}
+          defaultStartDate={defaultStartDate}
+          defaultEndDate={defaultEndDate}
+        />
+
+        <YearRangeFilter
+          label={translate("filters.yearBuilt")}
+          onStartChange={(year) => onFilterChange({ creationYearStart: year })}
+          onEndChange={(year) => onFilterChange({ creationYearEnd: year })}
+          supportBCE={true}
+          startYearDefault={defaultStartYear}
+          endYearDefault={defaultEndYear}
+          startEraDefault={defaultStartEra}
+        />
+
+        {/* Mobile Actions */}
+        {showActions && (
+          <div className="flex items-center justify-between gap-2">
+            {hasActiveFilters && onClearAll && (
+              <button
+                onClick={onClearAll}
+                className="px-4 h-9 bg-[#CE1126] hover:bg-[#a00d1e] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 text-sm"
+              >
+                {translate("filters.clearAll")}
+              </button>
+            )}
+            <div className="text-sm text-gray-300 whitespace-nowrap">
+              {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

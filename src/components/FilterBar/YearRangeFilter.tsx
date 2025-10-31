@@ -72,7 +72,7 @@ export function YearRangeFilter({
             onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
             placeholder="Year"
             min="1"
-            className="flex-1 text-sm py-2 px-3"
+            className="flex-1 h-9 text-sm px-3"
           />
           {supportBCE && (
             <Select
@@ -81,7 +81,7 @@ export function YearRangeFilter({
               onChange={(e) =>
                 handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")
               }
-              className="px-2 py-2 text-sm"
+              className="h-9 px-2 text-sm"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
@@ -96,7 +96,7 @@ export function YearRangeFilter({
             onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
             placeholder="Year"
             min="1"
-            className="flex-1 text-sm py-2 px-3"
+            className="flex-1 h-9 text-sm px-3"
           />
           {supportBCE && (
             <Select
@@ -105,7 +105,7 @@ export function YearRangeFilter({
               onChange={(e) =>
                 handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")
               }
-              className="px-2 py-2 text-sm"
+              className="h-9 px-2 text-sm"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
