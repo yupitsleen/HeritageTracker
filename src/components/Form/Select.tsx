@@ -1,4 +1,4 @@
-import { components, cn } from "../../styles/theme";
+import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size"> {
@@ -13,9 +13,13 @@ interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>
 export function Select({ size = "default", className, children, ...props }: SelectProps) {
   const t = useThemeClasses();
 
+  const sizeClasses = size === "small" ? "px-2 py-2 text-sm" : "px-4 py-2";
+
   const baseClasses = cn(
-    size === "default" ? components.select.base : components.select.small,
+    "w-full rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#009639] focus:border-[#009639]",
+    t.border.primary,
     t.input.base,
+    sizeClasses,
     className
   );
 

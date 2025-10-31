@@ -1,15 +1,10 @@
 /**
  * Centralized theme configuration
- * Re-exports colors, components, and utility functions
+ * Re-exports utility functions and defines common styling utilities
  *
- * This file serves as a single entry point for all theme-related imports
+ * This file serves as a single entry point for theme-related imports
+ * For theme-aware component styling, use the useThemeClasses() hook
  */
-
-// Re-export colors
-export { colors } from "./colors";
-
-// Re-export components
-export { components } from "./components";
 
 // Re-export utility functions
 export { cn } from "../utils/classNames";

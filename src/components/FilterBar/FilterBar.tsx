@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { GazaSite, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel } from "../../utils/format";
@@ -15,6 +16,17 @@ interface FilterBarProps {
   filters: FilterState;
   onFilterChange: (updates: Partial<FilterState>) => void;
   sites?: GazaSite[];
+  /** Pre-computed default date range to avoid recalculating on every render */
+  defaultDateRange?: {
+    defaultStartDate: Date;
+    defaultEndDate: Date;
+  };
+  /** Pre-computed default year range to avoid recalculating on every render */
+  defaultYearRange?: {
+    defaultStartYear: string;
+    defaultEndYear: string;
+    defaultStartEra: "BCE" | "CE";
+  };
 }
 
 /**
@@ -52,19 +64,22 @@ interface FilterBarProps {
  *
  * See src/config/filters.ts for filter registry documentation.
  */
-export function FilterBar({
+export const FilterBar = memo(function FilterBar({
   filters,
   onFilterChange,
   sites = [],
+  defaultDateRange: providedDateRange,
+  defaultYearRange: providedYearRange,
 }: FilterBarProps) {
   const t = useThemeClasses();
   const translate = useTranslation();
 
-  // Calculate default date range from all sites' destruction dates
-  const { defaultStartDate, defaultEndDate } = useDefaultDateRange(sites);
+  // Use provided ranges or calculate from sites (fallback for backward compatibility)
+  const computedDateRange = useDefaultDateRange(sites);
+  const computedYearRange = useDefaultYearRange(sites);
 
-  // Calculate default year range from all sites' creation years
-  const { defaultStartYear, defaultEndYear, defaultStartEra } = useDefaultYearRange(sites);
+  const { defaultStartDate, defaultEndDate } = providedDateRange || computedDateRange;
+  const { defaultStartYear, defaultEndYear, defaultStartEra } = providedYearRange || computedYearRange;
 
   return (
     <div className="text-white">
@@ -155,4 +170,4 @@ export function FilterBar({
       </div>
     </div>
   );
-}
+});

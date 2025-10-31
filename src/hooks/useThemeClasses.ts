@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTheme } from "../contexts/ThemeContext";
-import { COLORS } from "../constants/colors";
+import { COLORS } from "../config/colorThemes";
 
 /**
  * Theme-aware CSS class utility hook
@@ -24,16 +24,22 @@ export function useThemeClasses() {
      * Text color classes
      */
     text: {
-      /** Primary heading text (h1, h2) */
-      heading: isDark ? "text-gray-100" : "text-gray-900",
-      /** Secondary heading text (h3, h4) */
-      subheading: isDark ? "text-gray-200" : "text-gray-800",
-      /** Body text */
-      body: isDark ? "text-gray-300" : "text-gray-700",
-      /** Muted/secondary text */
+      /** Primary text - High contrast white/black (same as heading/body) */
+      primary: isDark ? "text-white" : "text-gray-900",
+      /** Primary heading text (h1, h2) - High contrast white/black */
+      heading: isDark ? "text-white" : "text-gray-900",
+      /** Secondary heading text (h3, h4) - High contrast white/black */
+      subheading: isDark ? "text-white" : "text-gray-900",
+      /** Body text - High contrast white/black for readability */
+      body: isDark ? "text-white" : "text-gray-900",
+      /** Muted/secondary text - Slightly lower contrast */
       muted: isDark ? "text-gray-400" : "text-gray-600",
       /** Subtle/disabled text */
       subtle: isDark ? "text-gray-500" : "text-gray-500",
+      /** Caption/small text - High contrast white/black */
+      caption: isDark ? "text-white" : "text-gray-900",
+      /** Emphasis text (bold, important) - High contrast white/black */
+      emphasis: isDark ? "text-white" : "text-gray-900",
     },
 
     /**
@@ -44,8 +50,8 @@ export function useThemeClasses() {
       primary: isDark ? "bg-gray-800" : "bg-white",
       /** Secondary background (nested containers) */
       secondary: isDark ? "bg-gray-700" : "bg-gray-50",
-      /** Tertiary background (subtle emphasis) */
-      tertiary: isDark ? "bg-gray-700/50" : "bg-gray-100",
+      /** Tertiary background (subtle emphasis) - border-only in light mode, subtle fill in dark mode */
+      tertiary: isDark ? "bg-gray-700/50" : "",
       /** Hover state background */
       hover: isDark ? "hover:bg-gray-700" : "hover:bg-gray-100",
       /** Active/selected state */

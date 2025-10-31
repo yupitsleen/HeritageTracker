@@ -12,37 +12,37 @@ interface StatCardProps {
 export function StatCard({ value, title, description, variant = "gray" }: StatCardProps) {
   const variantStyles = {
     green: {
-      bg: "bg-green-50",
+      bg: "",
       border: "border-[#009639]",
       text: "text-[#009639]",
     },
     red: {
-      bg: "bg-red-50",
+      bg: "",
       border: "border-[#ed3039]",
       text: "text-[#ed3039]",
     },
     orange: {
-      bg: "bg-orange-50",
+      bg: "",
       border: "border-orange-400",
       text: "text-orange-600",
     },
     yellow: {
-      bg: "bg-yellow-50",
+      bg: "",
       border: "border-[#ca8a04]",
       text: "text-[#ca8a04]",
     },
     blue: {
-      bg: "bg-blue-50",
+      bg: "",
       border: "border-blue-500",
       text: "text-blue-600",
     },
     purple: {
-      bg: "bg-purple-50",
+      bg: "",
       border: "border-purple-600",
       text: "text-purple-600",
     },
     gray: {
-      bg: "bg-gray-50",
+      bg: "",
       border: "border-gray-300",
       text: "text-[#009639]",
     },

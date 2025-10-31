@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { COLORS } from "./colors";
+import { COLORS } from "../config/colorThemes";
 
 describe("COLORS constant", () => {
   describe("Structure and Type Safety", () => {
@@ -36,6 +36,13 @@ describe("COLORS constant", () => {
     it("should contain border colors", () => {
       expect(COLORS.BORDER_DEFAULT_LIGHT).toBeDefined();
       expect(COLORS.BORDER_BLACK).toBeDefined();
+    });
+
+    it("should contain subdued button colors", () => {
+      expect(COLORS.SUBDUED_GREEN_DARK).toBeDefined();
+      expect(COLORS.SUBDUED_GREEN_DARK_HOVER).toBeDefined();
+      expect(COLORS.SUBDUED_GREEN_LIGHT).toBeDefined();
+      expect(COLORS.SUBDUED_GREEN_LIGHT_HOVER).toBeDefined();
     });
   });
 

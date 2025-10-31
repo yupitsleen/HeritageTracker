@@ -43,15 +43,20 @@ export function VirtualizedTableBody({
     count: sites.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => (variant === 'compact' ? 48 : 64), // Row height
-    overscan: 5, // Render 5 extra rows above/below viewport
+    overscan: 10, // Render 10 extra rows above/below viewport for smoother scrolling
   });
 
   return (
     <div
       ref={parentRef}
+      className="smooth-scroll"
       style={{
         height: `${height}px`,
         overflow: 'auto',
+        willChange: 'transform',
+        contain: 'strict',
+        scrollBehavior: 'auto', // Use auto for better performance during virtual scrolling
+        WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
       }}
     >
       <div
@@ -75,6 +80,7 @@ export function VirtualizedTableBody({
                     width: '100%',
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
+                    willChange: 'transform',
                   }}
                 >
                   <SiteTableRow

@@ -1,18 +1,26 @@
-import { lazy, Suspense, useState, useCallback, useRef, useEffect } from "react";
+import { lazy, Suspense, useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { Modal } from "../components/Modal/Modal";
 import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { Button } from "../components/Button";
+import { Input } from "../components/Form/Input";
+import { FilterBar } from "../components/FilterBar/FilterBar";
+import { FilterTag } from "../components/FilterBar/FilterTag";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
 import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
+import type { FilterState } from "../types/filters";
+import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
+import { formatLabel } from "../utils/format";
+import { useTranslation } from "../contexts/LocaleContext";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../constants/colors";
+import { COLORS } from "../config/colorThemes";
+import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
 
 // Lazy load the map, timeline, and modal components
 // Note: About and Stats are now dedicated pages at /about and /stats for better performance
@@ -35,6 +43,7 @@ const SiteDetailPanel = lazy(() =>
 export function AdvancedAnimation() {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
 
   // Fetch Wayback releases
   const { releases, isLoading, error } = useWaybackReleases();
@@ -49,6 +58,63 @@ export function AdvancedAnimation() {
       setCurrentReleaseIndex(releases.length - 1);
     }
   }, [releases, currentReleaseIndex]);
+
+  // Filter state
+  const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
+  const [tempFilters, setTempFilters] = useState<FilterState>(filters);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  // Pre-compute default date ranges ONCE at page level (not on every filter change)
+  const defaultDateRange = useMemo(() => {
+    const destructionDates = mockSites
+      .filter(site => site.dateDestroyed)
+      .map(site => new Date(site.dateDestroyed!));
+
+    if (destructionDates.length === 0) {
+      return {
+        defaultStartDate: new Date("2023-10-07"),
+        defaultEndDate: new Date(),
+      };
+    }
+
+    const timestamps = destructionDates.map(d => d.getTime());
+    return {
+      defaultStartDate: new Date(Math.min(...timestamps)),
+      defaultEndDate: new Date(Math.max(...timestamps)),
+    };
+  }, []); // Empty deps - only calculate once
+
+  const defaultYearRange = useMemo(() => {
+    const creationYears = mockSites
+      .filter(site => site.yearBuilt)
+      .map(site => {
+        const match = site.yearBuilt?.match(/^(?:BCE\s+)?(-?\d+)/);
+        return match ? parseInt(match[1], 10) * (site.yearBuilt?.startsWith('BCE') ? -1 : 1) : null;
+      })
+      .filter((year): year is number => year !== null);
+
+    if (creationYears.length === 0) {
+      return {
+        defaultStartYear: "",
+        defaultEndYear: new Date().getFullYear().toString(),
+        defaultStartEra: "CE" as const,
+      };
+    }
+
+    const minYear = Math.min(...creationYears);
+    const maxYear = Math.max(...creationYears);
+
+    const formatYear = (year: number): string => {
+      if (year < 0) return Math.abs(year).toString();
+      return year.toString();
+    };
+
+    return {
+      defaultStartYear: formatYear(minYear),
+      defaultEndYear: formatYear(maxYear),
+      defaultStartEra: minYear < 0 ? ("BCE" as const) : ("CE" as const),
+    };
+  }, []); // Empty deps - only calculate once
 
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
@@ -65,6 +131,87 @@ export function AdvancedAnimation() {
 
   // Get current release
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
+
+  // Apply filters to sites (memoized for performance)
+  const filteredSites = useMemo(() => {
+    return mockSites.filter(site => {
+      // Type filter
+      if (filters.selectedTypes.length > 0 && !filters.selectedTypes.includes(site.type)) {
+        return false;
+      }
+
+      // Status filter
+      if (filters.selectedStatuses.length > 0 && !filters.selectedStatuses.includes(site.status)) {
+        return false;
+      }
+
+      // Search filter
+      if (filters.searchTerm) {
+        const searchLower = filters.searchTerm.toLowerCase();
+        const matchesName = site.name.toLowerCase().includes(searchLower);
+        const matchesArabicName = site.nameArabic?.toLowerCase().includes(searchLower);
+        if (!matchesName && !matchesArabicName) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [filters]);
+
+  // Filter handlers
+  const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
+    setTempFilters(prev => ({ ...prev, ...updates }));
+  }, []);
+
+  const openFilterModal = () => {
+    setTempFilters(filters);
+    setIsFilterModalOpen(true);
+  };
+
+  const applyFilters = () => {
+    setFilters(tempFilters);
+    setIsFilterModalOpen(false);
+  };
+
+  const clearAllFilters = () => {
+    const emptyFilters = createEmptyFilterState();
+    setFilters(emptyFilters);
+    setTempFilters(emptyFilters);
+  };
+
+  const hasActiveFilters = !isFilterStateEmpty(filters);
+
+  // Memoized filter tag handlers to prevent unnecessary re-renders
+  const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
+    setFilters(prev => ({
+      ...prev,
+      selectedTypes: prev.selectedTypes.filter((t) => t !== typeToRemove)
+    }));
+  }, []);
+
+  const handleRemoveStatus = useCallback((statusToRemove: GazaSite["status"]) => {
+    setFilters(prev => ({
+      ...prev,
+      selectedStatuses: prev.selectedStatuses.filter((s) => s !== statusToRemove)
+    }));
+  }, []);
+
+  const handleRemoveDestructionDateRange = useCallback(() => {
+    setFilters(prev => ({
+      ...prev,
+      destructionDateStart: null,
+      destructionDateEnd: null
+    }));
+  }, []);
+
+  const handleRemoveCreationYearRange = useCallback(() => {
+    setFilters(prev => ({
+      ...prev,
+      creationYearStart: null,
+      creationYearEnd: null
+    }));
+  }, []);
 
   /**
    * Find the latest Wayback release that occurred BEFORE (or on) the destruction date
@@ -138,7 +285,7 @@ export function AdvancedAnimation() {
       // If sync is enabled and a site is selected, find and show the nearest Wayback release
       // Use ref to get current value without recreating callback
       if (syncMapOnDotClickRef.current && siteId) {
-        const site = mockSites.find((s: GazaSite) => s.id === siteId);
+        const site = filteredSites.find((s: GazaSite) => s.id === siteId);
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
           const nearestReleaseIndex = findNearestWaybackRelease(destructionDate);
@@ -146,7 +293,7 @@ export function AdvancedAnimation() {
         }
       }
     },
-    [findNearestWaybackRelease]
+    [findNearestWaybackRelease, filteredSites]
   );
 
   /**
@@ -207,14 +354,119 @@ export function AdvancedAnimation() {
 
         {/* Success state - Map + Wayback controls */}
         {!isLoading && !error && releases.length > 0 && (
-          <AnimationProvider sites={mockSites}>
+          <AnimationProvider sites={filteredSites}>
+            {/* Compact Filter Bar */}
+            <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-2 px-4 rounded relative z-10`}>
+              <div className={`${COMPACT_FILTER_BAR.padding} flex flex-col gap-1.5`}>
+                {/* Top row - Filter controls */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {/* Filter Button */}
+                    <button
+                      onClick={openFilterModal}
+                      style={{
+                        backgroundColor: COLORS.FLAG_GREEN,
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN_HOVER)}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN)}
+                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
+                    >
+                      {translate("filters.filters")}
+                    </button>
+
+                    {/* Clear All button - only show if filters active */}
+                    {hasActiveFilters && (
+                      <button
+                        onClick={clearAllFilters}
+                        className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} ${t.bg.secondary} ${t.text.body} border ${t.border.default} rounded shadow-sm hover:shadow-md transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText}`}
+                      >
+                        {translate("filters.clearAll")}
+                      </button>
+                    )}
+
+                    {/* Search Input */}
+                    <div className="relative">
+                      <Input
+                        type="text"
+                        value={filters.searchTerm}
+                        onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
+                        placeholder={translate("filters.searchPlaceholder")}
+                        className={`w-48 ${COMPACT_FILTER_BAR.inputHeight} ${COMPACT_FILTER_BAR.inputPadding} text-black placeholder:text-gray-400 ${COMPACT_FILTER_BAR.inputText}`}
+                      />
+                      {filters.searchTerm.trim().length > 0 && (
+                        <button
+                          onClick={() => setFilters(prev => ({ ...prev, searchTerm: "" }))}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                          aria-label={translate("aria.clearSearch")}
+                        >
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Results count */}
+                  <div className={`${COMPACT_FILTER_BAR.inputText} ${t.text.muted}`}>
+                    {translate("filters.showingCount", { filtered: filteredSites.length, total: mockSites.length })}
+                  </div>
+                </div>
+
+                {/* Bottom row - Active filter tags (only if filters active) */}
+                {hasActiveFilters && (
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {filters.selectedTypes.map((type) => (
+                      <FilterTag
+                        key={type}
+                        label={formatLabel(type)}
+                        onRemove={() => handleRemoveType(type)}
+                        ariaLabel={`Remove ${type} filter`}
+                      />
+                    ))}
+                    {filters.selectedStatuses.map((status) => (
+                      <FilterTag
+                        key={status}
+                        label={formatLabel(status)}
+                        onRemove={() => handleRemoveStatus(status)}
+                        ariaLabel={`Remove ${status} filter`}
+                      />
+                    ))}
+                    {/* Destruction date filter tag */}
+                    {(filters.destructionDateStart || filters.destructionDateEnd) && (
+                      <FilterTag
+                        key="destruction-date"
+                        label={`Destroyed: ${filters.destructionDateStart?.toLocaleDateString() || '...'} - ${filters.destructionDateEnd?.toLocaleDateString() || '...'}`}
+                        onRemove={handleRemoveDestructionDateRange}
+                        ariaLabel="Remove destruction date filter"
+                      />
+                    )}
+                    {/* Creation year filter tag */}
+                    {(filters.creationYearStart || filters.creationYearEnd) && (
+                      <FilterTag
+                        key="creation-year"
+                        label={`Built: ${filters.creationYearStart || '...'} - ${filters.creationYearEnd || '...'}`}
+                        onRemove={handleRemoveCreationYearRange}
+                        ariaLabel="Remove creation year filter"
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Full-screen satellite map with Wayback imagery */}
             <div
               className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden relative z-10`}
             >
               <Suspense fallback={<SkeletonMap />}>
                 <SiteDetailView
-                  sites={mockSites}
+                  sites={filteredSites}
                   highlightedSiteId={highlightedSiteId}
                   customTileUrl={currentRelease?.tileUrl}
                   customMaxZoom={currentRelease?.maxZoom}
@@ -229,7 +481,7 @@ export function AdvancedAnimation() {
                 releases={releases}
                 currentIndex={currentReleaseIndex}
                 onIndexChange={setCurrentReleaseIndex}
-                totalSites={mockSites.length}
+                totalSites={filteredSites.length}
               />
             </div>
 
@@ -238,7 +490,7 @@ export function AdvancedAnimation() {
               <Suspense fallback={<SkeletonMap />}>
                 <TimelineScrubber
                   key="advanced-timeline-scrubber"
-                  sites={mockSites}
+                  sites={filteredSites}
                   destructionDateStart={destructionDateStart}
                   destructionDateEnd={destructionDateEnd}
                   onDestructionDateStartChange={setDestructionDateStart}
@@ -275,7 +527,39 @@ export function AdvancedAnimation() {
         )}
       </Modal>
 
-      {/* Donate Modal */}
+      {/* Filter Modal */}
+      <Modal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        zIndex={Z_INDEX.MODAL_DROPDOWN}
+      >
+        <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
+        <FilterBar
+          filters={tempFilters}
+          onFilterChange={handleFilterChange}
+          sites={mockSites}
+          defaultDateRange={defaultDateRange}
+          defaultYearRange={defaultYearRange}
+        />
+        <div className="mt-6 flex justify-end gap-3">
+          <Button
+            onClick={() => setTempFilters(filters)}
+            variant="secondary"
+            size="sm"
+          >
+            {translate("filters.clear")}
+          </Button>
+          <Button
+            onClick={applyFilters}
+            variant="primary"
+            size="sm"
+          >
+            {translate("filters.applyFilters")}
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Help Modal */}
       <Modal isOpen={isHelpOpen}
         onClose={() => setIsHelpOpen(false)}
         zIndex={Z_INDEX.MODAL_DROPDOWN}
