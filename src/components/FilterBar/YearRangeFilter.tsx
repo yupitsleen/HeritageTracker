@@ -24,7 +24,7 @@ export function YearRangeFilter({
   onStartChange,
   onEndChange,
   label,
-  tooltip = "Year filters use Gregorian calendar only",
+  tooltip,
   supportBCE = true,
   startYearDefault = "",
   endYearDefault = new Date().getFullYear().toString(),
@@ -63,7 +63,7 @@ export function YearRangeFilter({
 
   return (
     <div>
-      <FilterLabel label={label} tooltip={tooltip} />
+      {label && <FilterLabel label={label} tooltip={tooltip} />}
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 flex-1">
           <Input

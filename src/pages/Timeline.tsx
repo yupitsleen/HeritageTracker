@@ -6,7 +6,6 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { Button } from "../components/Button";
 import { FilterBar } from "../components/FilterBar/FilterBar";
-import { FilterTag } from "../components/FilterBar/FilterTag";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
@@ -14,8 +13,7 @@ import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
 import type { FilterState } from "../types/filters";
-import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
-import { formatLabel } from "../utils/format";
+import { createEmptyFilterState } from "../types/filters";
 import { Z_INDEX } from "../constants/layout";
 import { COLORS } from "../config/colorThemes";
 
@@ -161,39 +159,6 @@ export function Timeline() {
   const clearAllFilters = () => {
     setFilters(createEmptyFilterState());
   };
-
-  const hasActiveFilters = !isFilterStateEmpty(filters);
-
-  // Memoized filter tag handlers to prevent unnecessary re-renders
-  const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
-    setFilters(prev => ({
-      ...prev,
-      selectedTypes: prev.selectedTypes.filter((t) => t !== typeToRemove)
-    }));
-  }, []);
-
-  const handleRemoveStatus = useCallback((statusToRemove: GazaSite["status"]) => {
-    setFilters(prev => ({
-      ...prev,
-      selectedStatuses: prev.selectedStatuses.filter((s) => s !== statusToRemove)
-    }));
-  }, []);
-
-  const handleRemoveDestructionDateRange = useCallback(() => {
-    setFilters(prev => ({
-      ...prev,
-      destructionDateStart: null,
-      destructionDateEnd: null
-    }));
-  }, []);
-
-  const handleRemoveCreationYearRange = useCallback(() => {
-    setFilters(prev => ({
-      ...prev,
-      creationYearStart: null,
-      creationYearEnd: null
-    }));
-  }, []);
 
   /**
    * Find the earliest Wayback release that occurred AFTER the destruction date
@@ -351,46 +316,6 @@ export function Timeline() {
                   filteredSites={filteredSites.length}
                   onClearAll={clearAllFilters}
                 />
-
-                {/* Active filter tags (only if filters active) */}
-                {hasActiveFilters && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {filters.selectedTypes.map((type) => (
-                      <FilterTag
-                        key={type}
-                        label={formatLabel(type)}
-                        onRemove={() => handleRemoveType(type)}
-                        ariaLabel={`Remove ${type} filter`}
-                      />
-                    ))}
-                    {filters.selectedStatuses.map((status) => (
-                      <FilterTag
-                        key={status}
-                        label={formatLabel(status)}
-                        onRemove={() => handleRemoveStatus(status)}
-                        ariaLabel={`Remove ${status} filter`}
-                      />
-                    ))}
-                    {/* Destruction date filter tag */}
-                    {(filters.destructionDateStart || filters.destructionDateEnd) && (
-                      <FilterTag
-                        key="destruction-date"
-                        label={`Destroyed: ${filters.destructionDateStart?.toLocaleDateString() || '...'} - ${filters.destructionDateEnd?.toLocaleDateString() || '...'}`}
-                        onRemove={handleRemoveDestructionDateRange}
-                        ariaLabel="Remove destruction date filter"
-                      />
-                    )}
-                    {/* Creation year filter tag */}
-                    {(filters.creationYearStart || filters.creationYearEnd) && (
-                      <FilterTag
-                        key="creation-year"
-                        label={`Built: ${filters.creationYearStart || '...'} - ${filters.creationYearEnd || '...'}`}
-                        onRemove={handleRemoveCreationYearRange}
-                        ariaLabel="Remove creation year filter"
-                      />
-                    )}
-                  </div>
-                )}
               </div>
             </div>
 

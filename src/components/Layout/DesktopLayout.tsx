@@ -1,8 +1,6 @@
-import { lazy, Suspense, useCallback } from "react";
+import { lazy, Suspense } from "react";
 import type { GazaSite, FilterState } from "../../types";
-import { FilterTag } from "../FilterBar/FilterTag";
 import { FilterBar } from "../FilterBar/FilterBar";
-import { formatLabel } from "../../utils/format";
 import { SitesTable } from "../SitesTable";
 import { SkeletonMap } from "../Loading/Skeleton";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -65,7 +63,6 @@ interface DesktopLayoutProps {
 export function DesktopLayout({
   filters,
   onFilterChange,
-  hasActiveFilters,
   clearAllFilters,
   filteredSites,
   totalSites,
@@ -81,23 +78,6 @@ export function DesktopLayout({
   const t = useThemeClasses();
   const { isDark } = useTheme();
   const translate = useTranslation();
-
-  // Memoized filter tag handlers to prevent unnecessary re-renders
-  const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
-    onFilterChange({ selectedTypes: filters.selectedTypes.filter((t) => t !== typeToRemove) });
-  }, [filters.selectedTypes, onFilterChange]);
-
-  const handleRemoveStatus = useCallback((statusToRemove: GazaSite["status"]) => {
-    onFilterChange({ selectedStatuses: filters.selectedStatuses.filter((s) => s !== statusToRemove) });
-  }, [filters.selectedStatuses, onFilterChange]);
-
-  const handleRemoveDateRange = useCallback(() => {
-    onFilterChange({ destructionDateStart: null, destructionDateEnd: null });
-  }, [onFilterChange]);
-
-  const handleRemoveCreationYearRange = useCallback(() => {
-    onFilterChange({ creationYearStart: null, creationYearEnd: null });
-  }, [onFilterChange]);
 
   return (
     <div className="hidden md:flex md:flex-col md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
@@ -118,46 +98,6 @@ export function DesktopLayout({
             filteredSites={filteredSites.length}
             onClearAll={clearAllFilters}
           />
-
-          {/* Active filter tags (only if filters active) */}
-          {hasActiveFilters && (
-            <div className="flex items-center gap-2 flex-wrap">
-              {filters.selectedTypes.map((type) => (
-                <FilterTag
-                  key={type}
-                  label={formatLabel(type)}
-                  onRemove={() => handleRemoveType(type)}
-                  ariaLabel={`Remove ${type} filter`}
-                />
-              ))}
-              {filters.selectedStatuses.map((status) => (
-                <FilterTag
-                  key={status}
-                  label={formatLabel(status)}
-                  onRemove={() => handleRemoveStatus(status)}
-                  ariaLabel={`Remove ${status} filter`}
-                />
-              ))}
-              {/* Destruction date filter tag */}
-              {(filters.destructionDateStart || filters.destructionDateEnd) && (
-                <FilterTag
-                  key="destruction-date"
-                  label={`Date: ${filters.destructionDateStart?.toLocaleDateString() || '...'} - ${filters.destructionDateEnd?.toLocaleDateString() || '...'}`}
-                  onRemove={handleRemoveDateRange}
-                  ariaLabel="Remove destruction date filter"
-                />
-              )}
-              {/* Creation year filter tag */}
-              {(filters.creationYearStart || filters.creationYearEnd) && (
-                <FilterTag
-                  key="creation-year"
-                  label={`Built: ${filters.creationYearStart || '...'} - ${filters.creationYearEnd || '...'}`}
-                  onRemove={handleRemoveCreationYearRange}
-                  ariaLabel="Remove creation year filter"
-                />
-              )}
-            </div>
-          )}
         </div>
       </div>
 
