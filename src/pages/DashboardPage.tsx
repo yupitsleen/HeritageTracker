@@ -22,14 +22,14 @@ import { COLORS } from "../config/colorThemes";
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
-interface HomePageProps {
+interface DashboardPageProps {
   isMobile: boolean;
 }
 
 /**
- * HomePage - Main heritage tracker view with table, maps, and timeline
+ * DashboardPage - Main heritage tracker dashboard with table, maps, and timeline
  */
-export function HomePage({ isMobile }: HomePageProps) {
+export function DashboardPage({ isMobile }: DashboardPageProps) {
   // Fetch sites from API (using mock adapter in development)
   const { sites, isLoading, error, refetch } = useSites();
 
@@ -205,9 +205,9 @@ export function HomePage({ isMobile }: HomePageProps) {
             </section>
 
             <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Advanced Timeline</h3>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Timeline Page</h3>
               <p className="text-sm">
-                Click "Advanced Timeline" in the header to view a specialized page with 150+ historical satellite imagery versions
+                Click "Timeline" in the header to view a specialized page with 150+ historical satellite imagery versions
                 from ESRI Wayback (2014-2025), showing how the landscape has changed over time.
               </p>
             </section>

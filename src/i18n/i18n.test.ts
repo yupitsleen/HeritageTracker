@@ -27,7 +27,7 @@ describe("TRANSLATIONS", () => {
       "siteTypes",
       "siteStatus",
       "stats",
-      "advancedTimeline",
+      "timelinePage",
       "siteDetail",
       "modals",
       "errors",

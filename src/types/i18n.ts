@@ -74,7 +74,7 @@ export interface Translations {
     title: string;
     dashboard: string;
     data: string;
-    advancedTimeline: string;
+    timeline: string;
     statistics: string;
     helpPalestine: string;
     about: string;
@@ -213,8 +213,8 @@ export interface Translations {
     notableLosses: string;
   };
 
-  /** Advanced Timeline page */
-  advancedTimeline: {
+  /** Timeline page */
+  timelinePage: {
     title: string;
     backToMain: string;
     releases: string;
@@ -346,7 +346,7 @@ export type TranslationKey =
   | `siteTypes.${keyof Translations["siteTypes"]}`
   | `siteStatus.${keyof Translations["siteStatus"]}`
   | `stats.${keyof Translations["stats"]}`
-  | `advancedTimeline.${keyof Translations["advancedTimeline"]}`
+  | `timelinePage.${keyof Translations["timelinePage"]}`
   | `siteDetail.${keyof Translations["siteDetail"]}`
   | `modals.${keyof Translations["modals"]}`
   | `errors.${keyof Translations["errors"]}`

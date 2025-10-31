@@ -130,7 +130,7 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
         {/* Info icon in top right */}
         <div className="absolute right-0 top-0">
           <InfoIconWithTooltip
-            tooltip={translate("advancedTimeline.waybackTooltip")}
+            tooltip={translate("timelinePage.waybackTooltip")}
           />
         </div>
 

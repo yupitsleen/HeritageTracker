@@ -6,8 +6,8 @@ import { AnimationProvider } from "./contexts/AnimationContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LocaleProvider } from "./contexts/LocaleContext";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
-import { HomePage } from "./pages/HomePage";
-import { AdvancedAnimation } from "./pages/AdvancedAnimation";
+import { DashboardPage } from "./pages/DashboardPage";
+import { Timeline } from "./pages/Timeline";
 import { AboutPage } from "./pages/AboutPage";
 import { StatsPage } from "./pages/StatsPage";
 import { DonatePage } from "./pages/DonatePage";
@@ -20,9 +20,9 @@ import { BREAKPOINTS } from "./constants/layout";
 function AppRouter({ isMobile }: { isMobile: boolean }) {
   return (
     <Routes>
-      <Route path="/" element={<HomePage isMobile={isMobile} />} />
+      <Route path="/" element={<DashboardPage isMobile={isMobile} />} />
       <Route path="/data" element={<DataPage />} />
-      <Route path="/advanced-animation" element={<AdvancedAnimation />} />
+      <Route path="/timeline" element={<Timeline />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/stats" element={<StatsPage />} />
       <Route path="/donate" element={<DonatePage />} />

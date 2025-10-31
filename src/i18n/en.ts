@@ -34,7 +34,7 @@ export const en: Translations = {
     title: "Heritage Tracker",
     dashboard: "Dashboard",
     data: "Data",
-    advancedTimeline: "Advanced Timeline",
+    timeline: "Timeline",
     statistics: "Statistics",
     helpPalestine: "Help Palestine",
     about: "About",
@@ -167,8 +167,8 @@ export const en: Translations = {
     notableLosses: "Notable Losses",
   },
 
-  advancedTimeline: {
-    title: "Advanced Satellite Timeline",
+  timelinePage: {
+    title: "Satellite Timeline",
     backToMain: "Back to Main View",
     releases: "Releases",
     satelliteDates: "Satellite imagery dates",

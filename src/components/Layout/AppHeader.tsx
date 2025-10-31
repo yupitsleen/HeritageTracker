@@ -16,8 +16,8 @@ interface AppHeaderProps {
 /**
  * Application header with title, description, and action buttons
  * Black background with Palestinian flag colors
- * Includes dark mode toggle and navigation to advanced animation page
- * Stats, About, and Donate now navigate to dedicated pages for better performance
+ * Includes dark mode toggle and navigation to all pages
+ * Dashboard, Data, Timeline, Stats, About, and Donate pages
  */
 export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
@@ -28,9 +28,9 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   // Determine active page for highlighting
   const getActivePage = () => {
     const path = location.pathname;
-    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "home";
+    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "dashboard";
     if (path.includes("/data")) return "data";
-    if (path.includes("/advanced-animation")) return "advanced-animation";
+    if (path.includes("/timeline")) return "timeline";
     if (path.includes("/donate")) return "donate";
     if (path.includes("/stats")) return "stats";
     if (path.includes("/about")) return "about";
@@ -64,14 +64,14 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
 
           {/* Center: Main action buttons - desktop only */}
           <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Home/Dashboard Navigation */}
+            {/* Dashboard Navigation */}
             <Button
               onClick={() => navigate("/")}
-              variant={activePage === "home" ? "primary" : "ghost"}
+              variant={activePage === "dashboard" ? "primary" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.dashboard")}
-              className={activePage === "home" ? "ring-2 ring-white/50 border" : "border-0"}
+              className={activePage === "dashboard" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.dashboard")}
             </Button>
@@ -88,17 +88,17 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               {t("header.data")}
             </Button>
 
-            {/* Advanced Animation Navigation */}
+            {/* Timeline Navigation */}
             <Button
-              onClick={() => navigate("/advanced-animation")}
-              variant={activePage === "advanced-animation" ? "secondary" : "ghost"}
+              onClick={() => navigate("/timeline")}
+              variant={activePage === "timeline" ? "secondary" : "ghost"}
               size="xs"
               lightText
-              aria-label={t("header.advancedTimeline")}
-              title={t("header.advancedTimeline")}
-              className={activePage === "advanced-animation" ? "ring-2 ring-white/50 border" : "border-0"}
+              aria-label={t("header.timeline")}
+              title={t("header.timeline")}
+              className={activePage === "timeline" ? "ring-2 ring-white/50 border" : "border-0"}
             >
-              {t("header.advancedTimeline")}
+              {t("header.timeline")}
             </Button>
 
             {/* Donate Navigation */}

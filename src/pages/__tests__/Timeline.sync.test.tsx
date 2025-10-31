@@ -15,7 +15,7 @@ const mockReleases = [
 ];
 
 /**
- * Implementation of the algorithm (copied from AdvancedAnimation.tsx)
+ * Implementation of the algorithm (copied from Timeline.tsx)
  */
 function findNearestWaybackRelease(releases: typeof mockReleases, targetDate: Date): number {
   if (releases.length === 0) return 0;

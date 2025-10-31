@@ -32,12 +32,12 @@ const SiteDetailPanel = lazy(() =>
 );
 
 /**
- * Advanced Animation Page
+ * Timeline Page
  * Full-screen satellite map with Wayback imagery (186 historical versions)
  * Timeline scrubber for site filtering
  * Reuses SiteDetailView and TimelineScrubber from home page
  */
-export function AdvancedAnimation() {
+export function Timeline() {
   const { isDark } = useTheme();
   const t = useThemeClasses();
 
@@ -468,13 +468,13 @@ export function AdvancedAnimation() {
         zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
         <div className="p-6">
-          <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Advanced Satellite Timeline</h2>
+          <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Satellite Timeline</h2>
 
           <div className={`space-y-4 ${t.text.body}`}>
             <section>
               <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
               <p className="text-sm">
-                The Advanced Satellite Timeline provides access to 150+ historical satellite imagery versions from
+                The Satellite Timeline provides access to 150+ historical satellite imagery versions from
                 ESRI Wayback (2014-2025). This specialized view lets you see how the landscape has changed over time,
                 with precise timestamps for each satellite image capture.
               </p>
