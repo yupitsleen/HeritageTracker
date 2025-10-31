@@ -14,7 +14,8 @@
       "Bash(npm run lint:*)",
       "Bash(git add:*)",
       "Bash(powershell -Command:*)",
-      "Bash(Select-String -Pattern \"^(siteStatus|siteTypes|sourceTypes|verifiers)\\.ts$\")"
+      "Bash(Select-String -Pattern \"^(siteStatus|siteTypes|sourceTypes|verifiers)\\.ts$\")",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []
