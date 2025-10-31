@@ -18,7 +18,9 @@
       "Bash(rm:*)",
       "Bash(npm run build:*)",
       "Bash(git log:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(Select-String -Pattern \"Test Files|Tests \")",
+      "Bash(Select-Object -Last 2)"
     ],
     "deny": [],
     "ask": []
