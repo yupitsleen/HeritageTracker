@@ -131,6 +131,7 @@ export const it: Translations = {
     applyFilters: "Applica Filtri",
     clearFilters: "Cancella Filtri",
     siteType: "Tipo di Sito",
+    type: "Tipo",
     selectTypes: "Seleziona tipi...",
     status: "Stato",
     selectStatus: "Seleziona stato...",

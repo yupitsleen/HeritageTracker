@@ -101,7 +101,7 @@ export const FilterBar = memo(function FilterBar({
   };
 
   // Format year range for pill display
-  const formatYearRange = (start: string | null, end: string | null) => {
+  const formatYearRange = (start: number | null, end: number | null) => {
     if (!start && !end) return null;
     return `${start || "Start"} - ${end || "End"}`;
   };
@@ -286,7 +286,7 @@ export const FilterBar = memo(function FilterBar({
           {/* Year Built Tag */}
           {(filters.creationYearStart || filters.creationYearEnd) && (
             <FilterTag
-              label={formatYearRange(filters.creationYearStart, filters.creationYearEnd) || ""}
+              label={(formatYearRange(filters.creationYearStart, filters.creationYearEnd) ?? "")}
               onRemove={() =>
                 onFilterChange({
                   creationYearStart: null,

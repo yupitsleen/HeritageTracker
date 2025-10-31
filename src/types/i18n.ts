@@ -155,6 +155,7 @@ export interface Translations {
     coordinates: string;
     sources: string;
     tooltip: string;
+    lastUpdated: string;
   };
 
   /** Filter bar */
@@ -174,6 +175,7 @@ export interface Translations {
     applyFilters: string;
     clearFilters: string;
     siteType: string;
+    type: string;
     selectTypes: string;
     status: string;
     selectStatus: string;
