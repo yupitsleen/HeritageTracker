@@ -267,8 +267,8 @@ export function TimelineScrubber({
     );
   }, [advancedMode, destructionDates, currentTimestamp]);
 
-  const canGoPrevious = advancedMode && currentEventIndex > 0;
-  const canGoNext = advancedMode && currentEventIndex < destructionDates.length - 1;
+  const canGoPrevious = !!advancedMode && currentEventIndex > 0;
+  const canGoNext = !!advancedMode && currentEventIndex < destructionDates.length - 1;
 
   const goToPreviousEvent = () => {
     if (canGoPrevious) {

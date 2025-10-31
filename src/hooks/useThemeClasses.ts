@@ -25,21 +25,21 @@ export function useThemeClasses() {
      */
     text: {
       /** Primary text - High contrast white/black (same as heading/body) */
-      primary: isDark ? "text-white" : "text-gray-900",
+      primary: isDark ? "text-white" : "text-black",
       /** Primary heading text (h1, h2) - High contrast white/black */
-      heading: isDark ? "text-white" : "text-gray-900",
+      heading: isDark ? "text-white" : "text-black",
       /** Secondary heading text (h3, h4) - High contrast white/black */
-      subheading: isDark ? "text-white" : "text-gray-900",
+      subheading: isDark ? "text-white" : "text-black",
       /** Body text - High contrast white/black for readability */
-      body: isDark ? "text-white" : "text-gray-900",
+      body: isDark ? "text-white" : "text-black",
       /** Muted/secondary text - Slightly lower contrast */
       muted: isDark ? "text-gray-400" : "text-gray-600",
       /** Subtle/disabled text */
       subtle: isDark ? "text-gray-500" : "text-gray-500",
       /** Caption/small text - High contrast white/black */
-      caption: isDark ? "text-white" : "text-gray-900",
+      caption: isDark ? "text-white" : "text-black",
       /** Emphasis text (bold, important) - High contrast white/black */
-      emphasis: isDark ? "text-white" : "text-gray-900",
+      emphasis: isDark ? "text-white" : "text-black",
     },
 
     /**
@@ -141,7 +141,7 @@ export function useThemeClasses() {
       /** Loading/fallback text */
       loadingText: isDark ? "text-gray-300" : "text-gray-600",
       /** Modal heading */
-      modalHeading: isDark ? "text-gray-100" : "text-gray-900",
+      modalHeading: isDark ? "text-gray-100" : "text-black",
       /** Skip to content link focus state */
       skipLink: "sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10002] focus:bg-[#009639] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg",
     },
@@ -233,11 +233,11 @@ export function useThemeClasses() {
      */
     stats: {
       /** Red accent for destruction statistics (dark mode only) */
-      destructionNumber: isDark ? `text-[${COLORS.FLAG_RED}]` : "text-gray-900",
+      destructionNumber: isDark ? `text-[${COLORS.FLAG_RED}]` : "text-black",
       /** Green accent for heritage statistics (dark mode only) */
-      heritageNumber: isDark ? `text-[${COLORS.FLAG_GREEN}]` : "text-gray-900",
+      heritageNumber: isDark ? `text-[${COLORS.FLAG_GREEN}]` : "text-black",
       /** Orange accent for cultural institution statistics (dark mode only) */
-      culturalNumber: isDark ? "text-orange-600" : "text-gray-900",
+      culturalNumber: isDark ? "text-orange-600" : "text-black",
       /** Red background gradient for critical sections */
       destructionBg: isDark ? "bg-gradient-to-br from-red-900/30 to-red-900/10" : "",
       /** Red background for destruction cards */

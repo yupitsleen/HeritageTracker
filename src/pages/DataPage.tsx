@@ -169,9 +169,9 @@ export function DataPage() {
 
   return (
     <SharedLayout>
-      <div className="h-[calc(100vh-100px)] flex flex-col mb-8">
+      <div className="h-[calc(100vh-100px)] flex flex-col mb-8 pt-4">
         {/* Compact Filter Bar */}
-        <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 px-4`}>
+        <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 mx-4 rounded`}>
           <div className={`${COMPACT_FILTER_BAR.padding} flex flex-col gap-1.5`}>
             {/* Top row - Filter controls */}
             <div className="flex items-center justify-between">
