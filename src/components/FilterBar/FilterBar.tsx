@@ -107,9 +107,9 @@ export const FilterBar = memo(function FilterBar({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {/* Main Filter Row */}
-      <div className="flex flex-wrap items-center justify-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-1.5">
         {/* "Filters:" Label - Green */}
         <span className="hidden md:inline-block text-[#009639] font-semibold text-sm">
           Filters:
@@ -122,7 +122,7 @@ export const FilterBar = memo(function FilterBar({
             value={filters.searchTerm}
             onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
             placeholder={translate("filters.searchPlaceholder")}
-            className="w-full h-10 px-3 pr-8 text-sm text-black placeholder:text-gray-400"
+            className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
           />
           {filters.searchTerm.trim().length > 0 && (
             <button
@@ -136,7 +136,7 @@ export const FilterBar = memo(function FilterBar({
         </div>
 
         {/* Desktop Filter Buttons - Hidden on mobile */}
-        <div className="hidden md:flex md:items-center md:gap-2 md:flex-wrap">
+        <div className="hidden md:flex md:items-center md:gap-1.5 md:flex-wrap">
           {/* Type Filter */}
           <FilterButton label={translate("filters.selectTypes")} count={filters.selectedTypes.length}>
             <FilterCheckboxList
@@ -196,7 +196,7 @@ export const FilterBar = memo(function FilterBar({
         <button
           onClick={() => setIsMobileFiltersOpen(true)}
           className={cn(
-            "md:hidden flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md border",
+            "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
             "transition-all duration-200",
             t.bg.primary,
             t.border.subtle,
@@ -240,7 +240,7 @@ export const FilterBar = memo(function FilterBar({
 
       {/* Active Filter Tags Row */}
       {hasActiveFilters && (
-        <div className="flex flex-wrap items-center justify-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-1.5">
           {/* Type Tags */}
           {filters.selectedTypes.map((type) => (
             <FilterTag

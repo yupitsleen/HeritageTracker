@@ -110,8 +110,6 @@ export function Timeline() {
 
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
-  const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
-  const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
@@ -135,6 +133,21 @@ export function Timeline() {
       // Status filter
       if (filters.selectedStatuses.length > 0 && !filters.selectedStatuses.includes(site.status)) {
         return false;
+      }
+
+      // Destruction date filter
+      if (filters.destructionDateStart && site.dateDestroyed) {
+        const destructionDate = new Date(site.dateDestroyed);
+        if (destructionDate < filters.destructionDateStart) {
+          return false;
+        }
+      }
+
+      if (filters.destructionDateEnd && site.dateDestroyed) {
+        const destructionDate = new Date(site.dateDestroyed);
+        if (destructionDate > filters.destructionDateEnd) {
+          return false;
+        }
       }
 
       // Search filter
@@ -302,21 +315,19 @@ export function Timeline() {
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
             {/* Filter Bar Container */}
-            <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-2 px-4 rounded relative z-[1001]`}>
-              <div className="p-4 flex flex-col gap-3">
-                {/* Unified FilterBar with search, filters, and actions */}
-                <FilterBar
-                  filters={filters}
-                  onFilterChange={handleFilterChange}
-                  sites={mockSites}
-                  defaultDateRange={defaultDateRange}
-                  defaultYearRange={defaultYearRange}
-                  showActions={true}
-                  totalSites={mockSites.length}
-                  filteredSites={filteredSites.length}
-                  onClearAll={clearAllFilters}
-                />
-              </div>
+            <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-2 p-2 rounded relative z-[1001]`}>
+              {/* Unified FilterBar with search, filters, and actions */}
+              <FilterBar
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                sites={mockSites}
+                defaultDateRange={defaultDateRange}
+                defaultYearRange={defaultYearRange}
+                showActions={true}
+                totalSites={mockSites.length}
+                filteredSites={filteredSites.length}
+                onClearAll={clearAllFilters}
+              />
             </div>
 
             {/* Full-screen satellite map with Wayback imagery */}
@@ -350,10 +361,6 @@ export function Timeline() {
                 <TimelineScrubber
                   key="advanced-timeline-scrubber"
                   sites={filteredSites}
-                  destructionDateStart={destructionDateStart}
-                  destructionDateEnd={destructionDateEnd}
-                  onDestructionDateStartChange={setDestructionDateStart}
-                  onDestructionDateEndChange={setDestructionDateEnd}
                   highlightedSiteId={highlightedSiteId}
                   onSiteHighlight={handleSiteHighlight}
                   advancedMode={{

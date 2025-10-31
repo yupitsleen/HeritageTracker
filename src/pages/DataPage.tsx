@@ -115,21 +115,19 @@ export function DataPage() {
     <SharedLayout>
       <div className="h-[calc(100vh-100px)] flex flex-col mb-8 pt-4">
         {/* Filter Bar Container */}
-        <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 mx-4 rounded relative z-[1001]`}>
-          <div className="p-4 flex flex-col gap-3">
-            {/* Unified FilterBar with search, filters, and actions */}
-            <FilterBar
-              filters={filters}
-              onFilterChange={handleFilterChange}
-              sites={mockSites}
-              defaultDateRange={defaultDateRange}
-              defaultYearRange={defaultYearRange}
-              showActions={true}
-              totalSites={mockSites.length}
-              filteredSites={filteredSites.length}
-              onClearAll={clearAllFilters}
-            />
-          </div>
+        <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 mx-4 p-2 rounded relative z-[1001]`}>
+          {/* Unified FilterBar with search, filters, and actions */}
+          <FilterBar
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            sites={mockSites}
+            defaultDateRange={defaultDateRange}
+            defaultYearRange={defaultYearRange}
+            showActions={true}
+            totalSites={mockSites.length}
+            filteredSites={filteredSites.length}
+            onClearAll={clearAllFilters}
+          />
         </div>
 
         {/* Data Table */}

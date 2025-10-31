@@ -39,7 +39,7 @@ export function FilterButton({ label, count, children, icon, panelWidth = "w-64"
         <>
           <PopoverButton
             className={cn(
-              "flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md border",
+              "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
               "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009639]",
               t.bg.primary,
               t.border.subtle,
@@ -60,7 +60,7 @@ export function FilterButton({ label, count, children, icon, panelWidth = "w-64"
 
           <PopoverPanel
             className={cn(
-              "absolute left-0 mt-2 rounded-md shadow-lg border",
+              "absolute left-0 mt-1.5 rounded-md shadow-lg border",
               "focus:outline-none whitespace-nowrap",
               panelWidth,
               t.bg.primary,
@@ -68,7 +68,7 @@ export function FilterButton({ label, count, children, icon, panelWidth = "w-64"
             )}
             style={{ zIndex: Z_INDEX.DROPDOWN }}
           >
-            <div className="p-3 w-max">{children}</div>
+            <div className="p-2.5 w-max">{children}</div>
           </PopoverPanel>
         </>
       )}

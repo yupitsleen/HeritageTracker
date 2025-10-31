@@ -10,13 +10,11 @@ import { useTimelineData } from "../../hooks/useTimelineData";
 import { TIMELINE_CONFIG, TOOLTIP_CONFIG } from "../../constants/timeline";
 import {
   calculateDefaultDateRange,
-  filterEventsByDateRange,
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
 import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
 import { TimelineControls } from "./TimelineControls";
 import { TimelineNavigation } from "./TimelineNavigation";
-import { TimelineDateFilter } from "./TimelineDateFilter";
 
 /**
  * Callback type for date change handlers
@@ -43,10 +41,6 @@ export interface AdvancedTimelineMode {
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
-  destructionDateStart: Date | null;
-  destructionDateEnd: Date | null;
-  onDestructionDateStartChange: DateChangeHandler;
-  onDestructionDateEndChange: DateChangeHandler;
   highlightedSiteId?: string | null;
   onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
@@ -66,10 +60,6 @@ interface TimelineScrubberProps {
  */
 export function TimelineScrubber({
   sites,
-  destructionDateStart,
-  destructionDateEnd,
-  onDestructionDateStartChange,
-  onDestructionDateEndChange,
   highlightedSiteId,
   onSiteHighlight,
   advancedMode,
@@ -100,28 +90,20 @@ export function TimelineScrubber({
   // Extract timeline data using custom hook
   const { events: allDestructionDates } = useTimelineData(sites);
 
-  // Combine related date calculations into single memoization for better performance
-  // Reduces dependency checking overhead and prevents cascading recalculations
-  const timelineData = useMemo(() => {
-    // Calculate default date range from dataset (oldest and newest destruction dates)
+  // Calculate date range from dataset (oldest and newest destruction dates)
+  const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
     const defaults = calculateDefaultDateRange(allDestructionDates, startDate, endDate);
-
-    // Filter destruction dates based on date filter
-    const filtered = filterEventsByDateRange(allDestructionDates, destructionDateStart, destructionDateEnd);
-
-    // Calculate adjusted timeline range based on filtered dates
-    const hasActiveFilter = Boolean(destructionDateStart || destructionDateEnd);
-    const adjusted = calculateAdjustedDateRange(filtered, hasActiveFilter, startDate, endDate);
+    // No filtering - show all events (filtering happens at page level via FilterBar)
+    const adjusted = calculateAdjustedDateRange(allDestructionDates, false, startDate, endDate);
 
     return {
       ...defaults,
-      destructionDates: filtered,
       ...adjusted,
     };
-  }, [allDestructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
+  }, [allDestructionDates, startDate, endDate]);
 
-  // Destructure combined timeline data
-  const { defaultStartDate, defaultEndDate, destructionDates, adjustedStartDate, adjustedEndDate } = timelineData;
+  // Use all destruction dates (no filtering in timeline component)
+  const destructionDates = allDestructionDates;
 
   // Observe container width changes
   useEffect(() => {
@@ -335,16 +317,6 @@ export function TimelineScrubber({
             onNext={goToNextEvent}
           />
         )}
-
-        {/* Right: Date Filter */}
-        <TimelineDateFilter
-          destructionDateStart={destructionDateStart}
-          destructionDateEnd={destructionDateEnd}
-          defaultStartDate={defaultStartDate}
-          defaultEndDate={defaultEndDate}
-          onDestructionDateStartChange={onDestructionDateStartChange}
-          onDestructionDateEndChange={onDestructionDateEndChange}
-        />
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}

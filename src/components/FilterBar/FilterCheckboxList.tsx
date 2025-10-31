@@ -45,7 +45,7 @@ export function FilterCheckboxList<T extends string>({
   };
 
   return (
-    <div className="space-y-2 max-h-64 overflow-y-auto">
+    <div className="space-y-2">
       {options.map((option) => {
         const isSelected = selectedValues.includes(option);
         return (
