@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { useTranslation } from "../../contexts/LocaleContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface TimeToggleProps {
   selectedPeriod: TimePeriod;
@@ -53,6 +54,7 @@ function formatYear(dateStr: string): string {
 export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) {
   const { setSyncActive } = useAnimation();
   const translate = useTranslation();
+  const t = useThemeClasses();
 
   // Dynamically generate period buttons from HISTORICAL_IMAGERY constants
   const periods = useMemo(() => {
@@ -68,7 +70,7 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
   }, []);
 
   return (
-    <div className="absolute top-2 right-2 z-[1000] bg-white/90 backdrop-blur-sm rounded-lg shadow-md overflow-hidden">
+    <div className={`absolute top-2 right-2 z-[1000] ${t.containerBg.opaque} backdrop-blur-sm rounded-lg shadow-md overflow-hidden`}>
       <div className="flex">
         {periods.map((period) => (
           <button
@@ -78,10 +80,10 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
               setSyncActive(false);
               onPeriodChange(period.value);
             }}
-            className={`px-3 py-1.5 text-xs font-semibold transition-colors border-r border-gray-200 last:border-r-0 ${
+            className={`px-3 py-1.5 text-xs font-semibold transition-colors border-r ${t.border.default} last:border-r-0 ${
               selectedPeriod === period.value
-                ? "bg-[#009639] text-white"
-                : "bg-white text-gray-700 hover:bg-gray-100"
+                ? `bg-[#009639] text-white`
+                : `${t.bg.primary} ${t.text.body} ${t.bg.hover}`
             }`}
             title={period.tooltip}
             aria-label={`${translate("map.switchTo")} ${period.label} ${translate("map.satelliteImagery")}`}

@@ -227,5 +227,23 @@ export function useThemeClasses() {
       /** Keyboard key display */
       base: isDark ? "bg-gray-700" : "bg-gray-200",
     },
+
+    /**
+     * Statistics accent colors - emphasize numbers in dark mode, neutral in light mode
+     */
+    stats: {
+      /** Red accent for destruction statistics (dark mode only) */
+      destructionNumber: isDark ? `text-[${COLORS.FLAG_RED}]` : "text-gray-900",
+      /** Green accent for heritage statistics (dark mode only) */
+      heritageNumber: isDark ? `text-[${COLORS.FLAG_GREEN}]` : "text-gray-900",
+      /** Orange accent for cultural institution statistics (dark mode only) */
+      culturalNumber: isDark ? "text-orange-600" : "text-gray-900",
+      /** Red background gradient for critical sections */
+      destructionBg: isDark ? "bg-gradient-to-br from-red-900/30 to-red-900/10" : "",
+      /** Red background for destruction cards */
+      destructionCardBg: isDark ? "bg-red-900/20" : "",
+      /** Orange background for cultural institution cards */
+      culturalCardBg: isDark ? "bg-orange-900/20" : "",
+    },
   }), [isDark]);
 }

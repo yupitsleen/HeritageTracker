@@ -6,6 +6,7 @@
  */
 
 import { useTranslation } from "../../contexts/LocaleContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface ErrorMessageProps {
   /**
@@ -42,15 +43,16 @@ export function ErrorMessage({
   title,
 }: ErrorMessageProps) {
   const translate = useTranslation();
+  const t = useThemeClasses();
   const displayTitle = title || translate("errors.somethingWrong");
 
   const containerClasses = fullScreen
-    ? 'fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center p-4'
+    ? `fixed inset-0 ${t.containerBg.opaque} z-50 flex items-center justify-center p-4`
     : 'flex items-center justify-center py-12 px-4';
 
   return (
     <div className={containerClasses} role="alert" aria-live="assertive">
-      <div className="max-w-md w-full bg-white border-2 border-red-200 rounded-xl p-6 shadow-lg">
+      <div className={`max-w-md w-full ${t.bg.primary} border-2 border-red-200 rounded-xl p-6 shadow-lg`}>
         {/* Error icon */}
         <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
           <svg
@@ -68,12 +70,12 @@ export function ErrorMessage({
         </div>
 
         {/* Error title */}
-        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
+        <h2 className={`text-xl font-semibold ${t.text.heading} text-center mb-2`}>
           {displayTitle}
         </h2>
 
         {/* Error message */}
-        <p className="text-gray-600 text-center mb-6">
+        <p className={`${t.text.muted} text-center mb-6`}>
           {error.message || translate("errors.unexpectedError")}
         </p>
 
@@ -102,7 +104,7 @@ export function ErrorMessage({
         )}
 
         {/* Additional help text */}
-        <p className="text-sm text-gray-500 text-center mt-4">
+        <p className={`text-sm ${t.text.subtle} text-center mt-4`}>
           {translate("errors.persistsContact")}
         </p>
       </div>

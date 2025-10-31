@@ -111,7 +111,7 @@ describe("TimeToggle", () => {
     const unselected = screen.getByLabelText("Switch to Current satellite imagery");
 
     expect(selected).toHaveClass("bg-[#009639]", "text-white");
-    expect(unselected).toHaveClass("bg-white", "text-gray-700", "hover:bg-gray-100");
+    expect(unselected).toHaveClass("bg-white", "text-gray-900", "hover:bg-gray-100");
   });
 
   it("displays full date in tooltip on hover", () => {
