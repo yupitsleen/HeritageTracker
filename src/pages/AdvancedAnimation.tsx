@@ -214,12 +214,12 @@ export function AdvancedAnimation() {
   }, []);
 
   /**
-   * Find the latest Wayback release that occurred BEFORE (or on) the destruction date
-   * This shows the satellite imagery from right before the site was destroyed
+   * Find the earliest Wayback release that occurred AFTER the destruction date
+   * This shows the satellite imagery from right after the site was destroyed
    *
    * @param targetDate - The destruction date to search for
-   * @returns Index of the nearest release, or 0 if no releases available
-   * @throws Never throws - returns 0 for invalid inputs
+   * @returns Index of the nearest release, or last release if no releases available after
+   * @throws Never throws - returns last release index for invalid inputs
    */
   const findNearestWaybackRelease = useCallback(
     (targetDate: Date): number => {
@@ -228,15 +228,14 @@ export function AdvancedAnimation() {
 
       // Guard: Invalid date
       if (!targetDate || isNaN(targetDate.getTime())) {
-        console.warn('findNearestWaybackRelease: Invalid target date provided, using first release');
-        return 0;
+        console.warn('findNearestWaybackRelease: Invalid target date provided, using last release');
+        return releases.length - 1;
       }
 
       const targetTime = targetDate.getTime();
-      let nearestIndex = 0;
 
-      // Find the LATEST release that occurred BEFORE or ON the target date
-      // We iterate through all releases and keep updating to the latest one that's still before/on target
+      // Find the EARLIEST release that occurred AFTER the target date
+      // We iterate through all releases and return the first one after the target
       for (let i = 0; i < releases.length; i++) {
         const releaseDate = new Date(releases[i].releaseDate);
 
@@ -248,16 +247,16 @@ export function AdvancedAnimation() {
 
         const releaseTime = releaseDate.getTime();
 
-        // Only consider releases that are before or on the target date
-        if (releaseTime <= targetTime) {
-          nearestIndex = i; // This is valid, keep it
-        } else {
-          // We've passed the target date, stop looking
-          break;
+        // Return the first release that's after the target date
+        if (releaseTime > targetTime) {
+          return i;
         }
       }
 
-      return nearestIndex;
+      // If no release found after the target date, return the last release
+      // This handles cases where the destruction happened after the last imagery
+      return releases.length - 1;
+
     },
     [releases]
   );
