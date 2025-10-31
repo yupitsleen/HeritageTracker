@@ -505,11 +505,7 @@ export function TimelineScrubber({
             }}
           >
             <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
-              {currentTimestamp.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
+              {currentTimestamp.toISOString().split('T')[0]}
             </div>
           </div>
         )}
