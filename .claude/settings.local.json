@@ -9,7 +9,10 @@
       "Bash(for:*)",
       "Bash(do [ -f \"$file\" ])",
       "Bash(wc:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
