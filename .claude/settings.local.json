@@ -17,7 +17,8 @@
       "Bash(Select-String -Pattern \"^(siteStatus|siteTypes|sourceTypes|verifiers)\\.ts$\")",
       "Bash(rm:*)",
       "Bash(npm run build:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
