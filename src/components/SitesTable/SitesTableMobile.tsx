@@ -279,6 +279,16 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                     <p className={`text-sm ${t.text.heading}`}>{site.verifiedBy.join(", ")}</p>
                   </div>
                 )}
+
+                {/* Last Updated */}
+                <div>
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
+                    {translate("table.lastUpdated")}:
+                  </span>
+                  <p className={`text-sm ${t.text.heading}`}>
+                    {formatDateLong(site.lastUpdated, localeConfig.bcp47)}
+                  </p>
+                </div>
               </div>
             )}
             </div>

@@ -112,6 +112,7 @@ export const ar: Translations = {
     description: "الوصف",
     coordinates: "الإحداثيات",
     sources: "المصادر",
+    lastUpdated: "آخر تحديث",
   },
 
   filters: {

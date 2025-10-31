@@ -112,6 +112,7 @@ export const en: Translations = {
     description: "Description",
     coordinates: "Coordinates",
     sources: "Sources",
+    lastUpdated: "Last Updated",
   },
 
   filters: {

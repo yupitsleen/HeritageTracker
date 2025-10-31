@@ -115,6 +115,11 @@ export function TableRow({
           {site.yearBuiltIslamic || "N/A"}
         </td>
       )}
+      {visibleColumns.has("lastUpdated") && (
+        <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
+          {formatDateStandard(site.lastUpdated, localeConfig.bcp47)}
+        </td>
+      )}
     </tr>
   );
 }
