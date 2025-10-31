@@ -3,7 +3,13 @@
     "allow": [
       "Bash(for file in MissionSection.tsx ResearchSection.tsx ResponsibilitySection.tsx TheDataSection.tsx)",
       "Bash(do)",
-      "Bash(expr:*)"
+      "Bash(expr:*)",
+      "Bash(for dir in src/components/*/)",
+      "Bash(ls:*)",
+      "Bash(for:*)",
+      "Bash(do [ -f \"$file\" ])",
+      "Bash(wc:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
