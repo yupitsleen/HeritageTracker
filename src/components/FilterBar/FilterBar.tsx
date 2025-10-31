@@ -112,24 +112,36 @@ export const FilterBar = memo(function FilterBar({
         </div>
       </div>
 
-      {/* Filter controls - grid layout for modal (hidden on mobile) */}
-      <div className="hidden md:grid grid-cols-2 gap-6">
-        {/* Left Column */}
-        <div className="space-y-4">
-          {/* Type Filter */}
-          <div>
-            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>{translate("filters.siteType")}</label>
-            <MultiSelectDropdown
-              label={translate("filters.selectTypes")}
-              options={SITE_TYPES}
-              selectedValues={filters.selectedTypes}
-              onChange={(types) => onFilterChange({ selectedTypes: types })}
-              formatLabel={formatLabel}
-              zIndex={Z_INDEX.MODAL_DROPDOWN}
-            />
-          </div>
+      {/* Filter controls - horizontal layout (hidden on mobile) */}
+      <div className="hidden md:flex md:gap-4 md:items-start">
+        {/* Type Filter */}
+        <div className="flex-1 min-w-0">
+          <label className={`block text-xs font-semibold mb-1.5 ${t.text.heading}`}>{translate("filters.siteType")}</label>
+          <MultiSelectDropdown
+            label={translate("filters.selectTypes")}
+            options={SITE_TYPES}
+            selectedValues={filters.selectedTypes}
+            onChange={(types) => onFilterChange({ selectedTypes: types })}
+            formatLabel={formatLabel}
+            zIndex={Z_INDEX.DROPDOWN}
+          />
+        </div>
 
-          {/* Destruction Date Range */}
+        {/* Status Filter */}
+        <div className="flex-1 min-w-0">
+          <label className={`block text-xs font-semibold mb-1.5 ${t.text.heading}`}>{translate("filters.status")}</label>
+          <MultiSelectDropdown
+            label={translate("filters.selectStatus")}
+            options={STATUS_OPTIONS}
+            selectedValues={filters.selectedStatuses}
+            onChange={(statuses) => onFilterChange({ selectedStatuses: statuses })}
+            formatLabel={formatLabel}
+            zIndex={Z_INDEX.DROPDOWN}
+          />
+        </div>
+
+        {/* Destruction Date Range */}
+        <div className="flex-1 min-w-0">
           <DateRangeFilter
             label={translate("filters.destructionDate")}
             startDate={filters.destructionDateStart}
@@ -141,22 +153,8 @@ export const FilterBar = memo(function FilterBar({
           />
         </div>
 
-        {/* Right Column */}
-        <div className="space-y-4">
-          {/* Status Filter */}
-          <div>
-            <label className={`block text-sm font-semibold mb-2 ${t.text.heading}`}>{translate("filters.status")}</label>
-            <MultiSelectDropdown
-              label={translate("filters.selectStatus")}
-              options={STATUS_OPTIONS}
-              selectedValues={filters.selectedStatuses}
-              onChange={(statuses) => onFilterChange({ selectedStatuses: statuses })}
-              formatLabel={formatLabel}
-              zIndex={Z_INDEX.MODAL_DROPDOWN}
-            />
-          </div>
-
-          {/* Creation Year Range */}
+        {/* Creation Year Range */}
+        <div className="flex-1 min-w-0">
           <YearRangeFilter
             label={translate("filters.yearBuilt")}
             onStartChange={(year) => onFilterChange({ creationYearStart: year })}

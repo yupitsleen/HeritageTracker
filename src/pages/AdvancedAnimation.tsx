@@ -61,8 +61,6 @@ export function AdvancedAnimation() {
 
   // Filter state
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
-  const [tempFilters, setTempFilters] = useState<FilterState>(filters);
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   // Pre-compute default date ranges ONCE at page level (not on every filter change)
   const defaultDateRange = useMemo(() => {
@@ -161,23 +159,11 @@ export function AdvancedAnimation() {
 
   // Filter handlers
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
-    setTempFilters(prev => ({ ...prev, ...updates }));
+    setFilters(prev => ({ ...prev, ...updates }));
   }, []);
 
-  const openFilterModal = () => {
-    setTempFilters(filters);
-    setIsFilterModalOpen(true);
-  };
-
-  const applyFilters = () => {
-    setFilters(tempFilters);
-    setIsFilterModalOpen(false);
-  };
-
   const clearAllFilters = () => {
-    const emptyFilters = createEmptyFilterState();
-    setFilters(emptyFilters);
-    setTempFilters(emptyFilters);
+    setFilters(createEmptyFilterState());
   };
 
   const hasActiveFilters = !isFilterStateEmpty(filters);
@@ -354,47 +340,36 @@ export function AdvancedAnimation() {
         {/* Success state - Map + Wayback controls */}
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
-            {/* Compact Filter Bar */}
-            <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-2 px-4 rounded relative z-10`}>
+            {/* Filter Bar */}
+            <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-2 px-4 rounded relative z-[1001]`}>
               <div className={`${COMPACT_FILTER_BAR.padding} flex flex-col gap-1.5`}>
                 {/* Top row - Filter controls */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {/* Filter Button */}
-                    <button
-                      onClick={openFilterModal}
-                      style={{
-                        backgroundColor: COLORS.FLAG_GREEN,
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN_HOVER)}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN)}
-                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
-                    >
-                      {translate("filters.filters")}
-                    </button>
+                <div className="flex items-start gap-2">
+                  {/* FilterBar component with inline filters */}
+                  <div className="flex-1 min-w-0">
+                    <FilterBar
+                      filters={filters}
+                      onFilterChange={handleFilterChange}
+                      sites={mockSites}
+                      defaultDateRange={defaultDateRange}
+                      defaultYearRange={defaultYearRange}
+                    />
+                  </div>
 
-                    {/* Clear All button - only show if filters active */}
-                    {hasActiveFilters && (
-                      <button
-                        onClick={clearAllFilters}
-                        className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} ${t.bg.secondary} ${t.text.body} border ${t.border.default} rounded shadow-sm hover:shadow-md transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText}`}
-                      >
-                        {translate("filters.clearAll")}
-                      </button>
-                    )}
-
+                  {/* Right side controls */}
+                  <div className="flex items-start gap-2 flex-shrink-0">
                     {/* Search Input */}
-                    <div className="relative">
+                    <div className="relative w-[180px]">
                       <Input
                         type="text"
                         value={filters.searchTerm}
-                        onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
+                        onChange={(e) => handleFilterChange({ searchTerm: e.target.value })}
                         placeholder={translate("filters.searchPlaceholder")}
-                        className={`w-48 ${COMPACT_FILTER_BAR.inputHeight} ${COMPACT_FILTER_BAR.inputPadding} text-black placeholder:text-gray-400 ${COMPACT_FILTER_BAR.inputText}`}
+                        className={`w-full ${COMPACT_FILTER_BAR.inputHeight} ${COMPACT_FILTER_BAR.inputPadding} text-black placeholder:text-gray-400 ${COMPACT_FILTER_BAR.inputText}`}
                       />
                       {filters.searchTerm.trim().length > 0 && (
                         <button
-                          onClick={() => setFilters(prev => ({ ...prev, searchTerm: "" }))}
+                          onClick={() => handleFilterChange({ searchTerm: "" })}
                           className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                           aria-label={translate("aria.clearSearch")}
                         >
@@ -409,11 +384,26 @@ export function AdvancedAnimation() {
                         </button>
                       )}
                     </div>
-                  </div>
 
-                  {/* Results count */}
-                  <div className={`${COMPACT_FILTER_BAR.inputText} ${t.text.muted}`}>
-                    {translate("filters.showingCount", { filtered: filteredSites.length, total: mockSites.length })}
+                    {/* Clear All button */}
+                    {hasActiveFilters && (
+                      <button
+                        onClick={clearAllFilters}
+                        style={{
+                          backgroundColor: COLORS.FLAG_RED,
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED_HOVER)}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED)}
+                        className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
+                      >
+                        {translate("filters.clearAll")}
+                      </button>
+                    )}
+
+                    {/* Results count */}
+                    <div className={`${COMPACT_FILTER_BAR.inputText} ${t.text.muted} self-center whitespace-nowrap`}>
+                      {translate("filters.showingCount", { filtered: filteredSites.length, total: mockSites.length })}
+                    </div>
                   </div>
                 </div>
 
@@ -526,37 +516,6 @@ export function AdvancedAnimation() {
         )}
       </Modal>
 
-      {/* Filter Modal */}
-      <Modal
-        isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
-        zIndex={Z_INDEX.MODAL_DROPDOWN}
-      >
-        <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
-        <FilterBar
-          filters={tempFilters}
-          onFilterChange={handleFilterChange}
-          sites={mockSites}
-          defaultDateRange={defaultDateRange}
-          defaultYearRange={defaultYearRange}
-        />
-        <div className="mt-6 flex justify-end gap-3">
-          <Button
-            onClick={() => setTempFilters(filters)}
-            variant="secondary"
-            size="sm"
-          >
-            {translate("filters.clear")}
-          </Button>
-          <Button
-            onClick={applyFilters}
-            variant="primary"
-            size="sm"
-          >
-            {translate("filters.applyFilters")}
-          </Button>
-        </div>
-      </Modal>
 
       {/* Help Modal */}
       <Modal isOpen={isHelpOpen}

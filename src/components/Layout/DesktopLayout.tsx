@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback } from "react";
 import type { GazaSite, FilterState } from "../../types";
 import { Input } from "../Form/Input";
 import { FilterTag } from "../FilterBar/FilterTag";
+import { FilterBar } from "../FilterBar/FilterBar";
 import { formatLabel } from "../../utils/format";
 import { SitesTable } from "../SitesTable";
 import { SkeletonMap } from "../Loading/Skeleton";
@@ -9,6 +10,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { COMPACT_FILTER_BAR } from "../../constants/compactDesign";
+import { COLORS } from "../../config/colorThemes";
 
 // Lazy load heavy components
 const HeritageMap = lazy(() =>
@@ -21,24 +23,17 @@ const TimelineScrubber = lazy(() =>
   import("../Timeline/TimelineScrubber").then((m) => ({ default: m.TimelineScrubber }))
 );
 
-// Partial filter state for display-only (no creationYear filters used in DesktopLayout)
-type DesktopFilters = Pick<FilterState, "selectedTypes" | "selectedStatuses" | "searchTerm" | "destructionDateStart" | "destructionDateEnd">;
-
 interface DesktopLayoutProps {
   // Filter state (grouped)
-  filters: DesktopFilters;
-  setSelectedTypes: (types: Array<GazaSite["type"]>) => void;
-  setSelectedStatuses: (statuses: Array<GazaSite["status"]>) => void;
-  setSearchTerm: (term: string) => void;
-  setDestructionDateStart: (date: Date | null) => void;
-  setDestructionDateEnd: (date: Date | null) => void;
+  filters: FilterState;
+  onFilterChange: (updates: Partial<FilterState>) => void;
   hasActiveFilters: boolean;
   clearAllFilters: () => void;
-  openFilterModal: () => void;
 
   // Site data
   filteredSites: GazaSite[];
   totalSites: number;
+  sites: GazaSite[];
 
   // Table props (grouped)
   tableResize: {
@@ -53,6 +48,17 @@ interface DesktopLayoutProps {
   onSiteHighlight: (siteId: string | null) => void;
   highlightedSiteId: string | null;
   onExpandTable: () => void;
+
+  // Default ranges for filters
+  defaultDateRange?: {
+    defaultStartDate: Date;
+    defaultEndDate: Date;
+  };
+  defaultYearRange?: {
+    defaultStartYear: string;
+    defaultEndYear: string;
+    defaultStartEra: "BCE" | "CE";
+  };
 }
 
 /**
@@ -61,42 +67,40 @@ interface DesktopLayoutProps {
  */
 export function DesktopLayout({
   filters,
-  setSelectedTypes,
-  setSelectedStatuses,
-  setSearchTerm,
-  setDestructionDateStart,
-  setDestructionDateEnd,
+  onFilterChange,
   hasActiveFilters,
   clearAllFilters,
-  openFilterModal,
   filteredSites,
   totalSites,
+  sites,
   tableResize,
   onSiteClick,
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
+  defaultDateRange,
+  defaultYearRange,
 }: DesktopLayoutProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
   const translate = useTranslation();
 
-  // Destructure filters for easier access
-  const { selectedTypes, selectedStatuses, searchTerm, destructionDateStart, destructionDateEnd } = filters;
-
   // Memoized filter tag handlers to prevent unnecessary re-renders
   const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
-    setSelectedTypes(selectedTypes.filter((t) => t !== typeToRemove));
-  }, [selectedTypes, setSelectedTypes]);
+    onFilterChange({ selectedTypes: filters.selectedTypes.filter((t) => t !== typeToRemove) });
+  }, [filters.selectedTypes, onFilterChange]);
 
   const handleRemoveStatus = useCallback((statusToRemove: GazaSite["status"]) => {
-    setSelectedStatuses(selectedStatuses.filter((s) => s !== statusToRemove));
-  }, [selectedStatuses, setSelectedStatuses]);
+    onFilterChange({ selectedStatuses: filters.selectedStatuses.filter((s) => s !== statusToRemove) });
+  }, [filters.selectedStatuses, onFilterChange]);
 
   const handleRemoveDateRange = useCallback(() => {
-    setDestructionDateStart(null);
-    setDestructionDateEnd(null);
-  }, [setDestructionDateStart, setDestructionDateEnd]);
+    onFilterChange({ destructionDateStart: null, destructionDateEnd: null });
+  }, [onFilterChange]);
+
+  const handleRemoveCreationYearRange = useCallback(() => {
+    onFilterChange({ creationYearStart: null, creationYearEnd: null });
+  }, [onFilterChange]);
 
   return (
     <div className="hidden md:flex md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
@@ -130,33 +134,36 @@ export function DesktopLayout({
 
         {/* Center & Right - Filter bar, Maps side by side + Timeline below */}
         <div className="flex-1 min-w-0 pr-4 flex flex-col">
-          {/* Filter bar - Compact horizontal single-row layout */}
-          <div className={`flex-shrink-0 mt-2 ${COMPACT_FILTER_BAR.padding} backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[5] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+          {/* Filter bar - Horizontal layout with all filters inline */}
+          <div className={`flex-shrink-0 mt-2 ${COMPACT_FILTER_BAR.padding} backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[1001] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
             <div className="flex flex-col gap-1.5">
-              {/* Top row - Filter controls and legend (single horizontal row) */}
-              <div className="flex items-center gap-2">
-                {/* Left side - Filter controls */}
-                <div className="flex items-center gap-2">
-                  {/* Filter Button */}
-                  <button
-                    onClick={openFilterModal}
-                    className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#009639] hover:bg-[#007b2f] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
-                  >
-                    {translate("filters.filters")}
-                  </button>
+              {/* Top row - Filter controls and buttons */}
+              <div className="flex items-start gap-2">
+                {/* FilterBar component with inline filters */}
+                <div className="flex-1 min-w-0">
+                  <FilterBar
+                    filters={filters}
+                    onFilterChange={onFilterChange}
+                    sites={sites}
+                    defaultDateRange={defaultDateRange}
+                    defaultYearRange={defaultYearRange}
+                  />
+                </div>
 
+                {/* Right side controls */}
+                <div className="flex items-start gap-2 flex-shrink-0">
                   {/* Search bar - inline */}
-                  <div className={`relative flex-1 max-w-[200px] border ${t.border.primary} rounded ${COMPACT_FILTER_BAR.inputHeight}`}>
+                  <div className={`relative w-[180px] border ${t.border.primary} rounded ${COMPACT_FILTER_BAR.inputHeight}`}>
                     <Input
                       type="text"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      value={filters.searchTerm}
+                      onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
                       placeholder={translate("filters.searchPlaceholder")}
                       className={`w-full pr-6 ${COMPACT_FILTER_BAR.inputText} ${COMPACT_FILTER_BAR.inputPadding} border-0 h-full`}
                     />
-                    {searchTerm.trim().length > 0 && (
+                    {filters.searchTerm.trim().length > 0 && (
                       <button
-                        onClick={() => setSearchTerm("")}
+                        onClick={() => onFilterChange({ searchTerm: "" })}
                         className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                         aria-label={translate("aria.clearSearch")}
                       >
@@ -181,52 +188,28 @@ export function DesktopLayout({
                   {hasActiveFilters && (
                     <button
                       onClick={clearAllFilters}
-                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} bg-[#ed3039] hover:bg-[#d4202a] text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
+                      style={{
+                        backgroundColor: COLORS.FLAG_RED,
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED_HOVER)}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_RED)}
+                      className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
                     >
                       {translate("filters.clear")}
                     </button>
                   )}
-                </div>
 
-                {/* Center/Right - Site count and Status legend (Color Key) - All inline */}
-                <div className="flex items-center gap-3 ml-auto">
                   {/* Site count */}
-                  <span className={`text-[10px] font-medium whitespace-nowrap ${t.text.muted}`}>
+                  <span className={`text-[10px] font-medium whitespace-nowrap self-center ${t.text.muted}`}>
                     {filteredSites.length} / {totalSites}
                   </span>
-
-                  {/* Status Legend (Color Key) - Ultra compact */}
-                  <div className={`flex items-center gap-2 px-2 py-0.5 rounded border ${t.border.primary} ${t.bg.secondary}`}>
-                    <span className={`text-[10px] font-semibold ${t.text.body}`}>Key:</span>
-                    <div className="flex items-center gap-1">
-                      <div
-                        className="w-2.5 h-2.5 rounded-full border border-white"
-                        style={{ backgroundColor: "#b91c1c" }}
-                      />
-                      <span className={`text-[10px] ${t.text.body}`}>Destroyed</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <div
-                        className="w-2.5 h-2.5 rounded-full border border-white"
-                        style={{ backgroundColor: "#d97706" }}
-                      />
-                      <span className={`text-[10px] ${t.text.body}`}>Heavy</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <div
-                        className="w-2.5 h-2.5 rounded-full border border-white"
-                        style={{ backgroundColor: "#ca8a04" }}
-                      />
-                      <span className={`text-[10px] ${t.text.body}`}>Damaged</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
               {/* Bottom row - Active filter tags (only if filters active) */}
               {hasActiveFilters && (
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  {selectedTypes.map((type) => (
+                  {filters.selectedTypes.map((type) => (
                     <FilterTag
                       key={type}
                       label={formatLabel(type)}
@@ -234,7 +217,7 @@ export function DesktopLayout({
                       ariaLabel={`Remove ${type} filter`}
                     />
                   ))}
-                  {selectedStatuses.map((status) => (
+                  {filters.selectedStatuses.map((status) => (
                     <FilterTag
                       key={status}
                       label={formatLabel(status)}
@@ -243,12 +226,21 @@ export function DesktopLayout({
                     />
                   ))}
                   {/* Destruction date filter tag */}
-                  {(destructionDateStart || destructionDateEnd) && (
+                  {(filters.destructionDateStart || filters.destructionDateEnd) && (
                     <FilterTag
                       key="destruction-date"
-                      label={`Date: ${destructionDateStart?.toLocaleDateString() || '...'} - ${destructionDateEnd?.toLocaleDateString() || '...'}`}
+                      label={`Date: ${filters.destructionDateStart?.toLocaleDateString() || '...'} - ${filters.destructionDateEnd?.toLocaleDateString() || '...'}`}
                       onRemove={handleRemoveDateRange}
                       ariaLabel="Remove destruction date filter"
+                    />
+                  )}
+                  {/* Creation year filter tag */}
+                  {(filters.creationYearStart || filters.creationYearEnd) && (
+                    <FilterTag
+                      key="creation-year"
+                      label={`Built: ${filters.creationYearStart || '...'} - ${filters.creationYearEnd || '...'}`}
+                      onRemove={handleRemoveCreationYearRange}
+                      ariaLabel="Remove creation year filter"
                     />
                   )}
                 </div>
@@ -286,10 +278,10 @@ export function DesktopLayout({
             <Suspense fallback={<SkeletonMap />}>
               <TimelineScrubber
                 sites={filteredSites}
-                destructionDateStart={destructionDateStart}
-                destructionDateEnd={destructionDateEnd}
-                onDestructionDateStartChange={setDestructionDateStart}
-                onDestructionDateEndChange={setDestructionDateEnd}
+                destructionDateStart={filters.destructionDateStart}
+                destructionDateEnd={filters.destructionDateEnd}
+                onDestructionDateStartChange={(date) => onFilterChange({ destructionDateStart: date })}
+                onDestructionDateEndChange={(date) => onFilterChange({ destructionDateEnd: date })}
                 highlightedSiteId={highlightedSiteId}
                 onSiteHighlight={onSiteHighlight}
               />
