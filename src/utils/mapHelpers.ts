@@ -1,5 +1,5 @@
 import { Icon } from "leaflet";
-import { getMarkerColor as getMarkerColorFromRegistry } from "../config/siteStatus";
+import { getMarkerColor as getMarkerColorFromRegistry } from "../config/data.config";
 import {
   MARKER_ICON_BASE_URL,
   MARKER_SHADOW_URL,

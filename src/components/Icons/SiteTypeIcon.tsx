@@ -4,7 +4,7 @@ import {
   HomeModernIcon,
 } from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
-import { getSiteTypeConfig } from "../../config/siteTypes";
+import { getSiteTypeConfig } from "../../config/data.config";
 
 interface SiteTypeIconProps {
   type: GazaSite["type"];

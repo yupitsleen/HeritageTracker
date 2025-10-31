@@ -3,8 +3,7 @@
  * Centralized to ensure consistency across components
  */
 
-import { getSiteTypes } from "../config/siteTypes";
-import { getStatuses } from "../config/siteStatus";
+import { getSiteTypes, getStatuses } from "../config/data.config";
 
 /**
  * Available site types for filtering
