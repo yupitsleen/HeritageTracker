@@ -24,6 +24,8 @@ export function useThemeClasses() {
      * Text color classes
      */
     text: {
+      /** Primary text - High contrast white/black (same as heading/body) */
+      primary: isDark ? "text-white" : "text-gray-900",
       /** Primary heading text (h1, h2) - High contrast white/black */
       heading: isDark ? "text-white" : "text-gray-900",
       /** Secondary heading text (h3, h4) - High contrast white/black */

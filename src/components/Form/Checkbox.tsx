@@ -1,7 +1,7 @@
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 
-interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**
    * Optional label text to display next to checkbox
    */
