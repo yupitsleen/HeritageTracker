@@ -16,7 +16,8 @@
       "Bash(powershell -Command:*)",
       "Bash(Select-String -Pattern \"^(siteStatus|siteTypes|sourceTypes|verifiers)\\.ts$\")",
       "Bash(rm:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []
