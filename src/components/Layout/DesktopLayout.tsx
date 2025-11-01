@@ -167,7 +167,7 @@ export function DesktopLayout({
             onSiteHighlight={onSiteHighlight}
             advancedMode={{
               syncMapOnDotClick: false,
-              onSyncMapToggle: () => {}, // No-op: sync toggle not needed on Dashboard
+              onSyncMapToggle: undefined, // Hide "Sync Map" button on Dashboard
             }}
           />
         </Suspense>

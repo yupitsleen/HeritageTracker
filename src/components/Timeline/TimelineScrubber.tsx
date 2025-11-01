@@ -36,7 +36,7 @@ export type ToggleHandler = () => void;
  */
 export interface AdvancedTimelineMode {
   syncMapOnDotClick: boolean;
-  onSyncMapToggle: ToggleHandler;
+  onSyncMapToggle?: ToggleHandler; // Optional: allows hiding Sync Map button while keeping navigation
 }
 
 interface TimelineScrubberProps {
