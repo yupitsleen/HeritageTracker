@@ -198,6 +198,60 @@ describe("SiteDetailView", () => {
     expect(screen.getByTestId("marker")).toBeInTheDocument();
   });
 
+  describe("Date Label", () => {
+    it("renders date label when provided", () => {
+      renderWithAnimation(
+        <SiteDetailView
+          sites={mockSites}
+          highlightedSiteId={null}
+          dateLabel="2024-01-15"
+        />
+      );
+
+      expect(screen.getByText("2024-01-15")).toBeInTheDocument();
+    });
+
+    it("does not render date label when not provided", () => {
+      const { container } = renderWithAnimation(
+        <SiteDetailView sites={mockSites} highlightedSiteId={null} />
+      );
+
+      // Check that no date labels are rendered
+      expect(container.textContent).not.toMatch(/\d{4}-\d{2}-\d{2}/);
+    });
+
+    it("date label has green background and correct styling", () => {
+      renderWithAnimation(
+        <SiteDetailView
+          sites={mockSites}
+          highlightedSiteId={null}
+          dateLabel="2024-01-15"
+        />
+      );
+
+      const label = screen.getByText("2024-01-15");
+      expect(label).toHaveClass("bg-[#009639]");
+      expect(label).toHaveClass("text-white");
+      expect(label).toHaveClass("text-[15px]");
+      expect(label).toHaveClass("opacity-70");
+      expect(label).toHaveClass("font-semibold");
+    });
+
+    it("renders date label with custom tile URL", () => {
+      renderWithAnimation(
+        <SiteDetailView
+          sites={mockSites}
+          highlightedSiteId={null}
+          customTileUrl="https://wayback.example.com/tiles"
+          customMaxZoom={19}
+          dateLabel="2023-10-01"
+        />
+      );
+
+      expect(screen.getByText("2023-10-01")).toBeInTheDocument();
+    });
+  });
+
   describe("Popup Functionality", () => {
     it("renders popup when site is highlighted", () => {
       renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);

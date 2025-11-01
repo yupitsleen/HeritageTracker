@@ -18,6 +18,8 @@ interface SiteDetailViewProps {
   customTileUrl?: string;
   // Optional custom max zoom for custom tiles
   customMaxZoom?: number;
+  // Optional date label to display at top of map
+  dateLabel?: string;
   // Optional callback for when user clicks "See More" in popup
   onSiteClick?: (site: GazaSite) => void;
 }
@@ -34,6 +36,7 @@ export function SiteDetailView({
   highlightedSiteId,
   customTileUrl,
   customMaxZoom,
+  dateLabel,
   onSiteClick,
 }: SiteDetailViewProps) {
   // Get animation context for timeline sync and zoom toggle
@@ -101,6 +104,15 @@ export function SiteDetailView({
 
   return (
     <div className="relative h-full">
+      {/* Date label - shown when provided (e.g., from Wayback imagery) */}
+      {dateLabel && (
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
+          <div className="px-3 py-0.75 bg-[#009639] text-white text-[15px] font-semibold rounded whitespace-nowrap shadow-lg opacity-70">
+            {dateLabel}
+          </div>
+        </div>
+      )}
+
       {/* Time period toggle - hide when using custom Wayback imagery */}
       {!customTileUrl && (
         <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />

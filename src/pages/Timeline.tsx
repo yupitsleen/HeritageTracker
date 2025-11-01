@@ -415,6 +415,8 @@ export function Timeline() {
                     afterTileUrl={currentRelease?.tileUrl || ""}
                     beforeMaxZoom={beforeRelease?.maxZoom || 19}
                     afterMaxZoom={currentRelease?.maxZoom || 19}
+                    beforeDateLabel={beforeRelease?.releaseDate}
+                    afterDateLabel={currentRelease?.releaseDate}
                     onSiteClick={setSelectedSite}
                   />
                 ) : (
@@ -423,6 +425,7 @@ export function Timeline() {
                     highlightedSiteId={highlightedSiteId}
                     customTileUrl={currentRelease?.tileUrl}
                     customMaxZoom={currentRelease?.maxZoom}
+                    dateLabel={currentRelease?.releaseDate}
                     onSiteClick={setSelectedSite}
                   />
                 )}

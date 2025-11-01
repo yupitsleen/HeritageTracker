@@ -9,6 +9,8 @@ interface ComparisonMapViewProps {
   afterTileUrl: string;
   beforeMaxZoom: number;
   afterMaxZoom: number;
+  beforeDateLabel?: string;
+  afterDateLabel?: string;
   onSiteClick?: (site: GazaSite) => void;
 }
 
@@ -23,7 +25,9 @@ interface ComparisonMapViewProps {
  * - Side-by-side layout (50% width each)
  * - Comparison Mode toggle button
  * - Both maps respect "Sync Map" and "Zoom to Site" settings
- * - No labels (dates shown via overlay - TBD)
+ * - Date labels at the top of each map (1.5x size of wayback scrubber tooltip, 70% opacity)
+ *   - Left map: Yellow label (matches yellow scrubber)
+ *   - Right map: Green label (matches green scrubber)
  */
 export function ComparisonMapView({
   sites,
@@ -32,6 +36,8 @@ export function ComparisonMapView({
   afterTileUrl,
   beforeMaxZoom,
   afterMaxZoom,
+  beforeDateLabel,
+  afterDateLabel,
   onSiteClick,
 }: ComparisonMapViewProps) {
   const t = useThemeClasses();
@@ -41,7 +47,15 @@ export function ComparisonMapView({
       {/* Side-by-side map layout with gap-2 to match Dashboard */}
       <div className="flex h-full gap-2">
         {/* Left Map - Earlier imagery (yellow scrubber) */}
-        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden`}>
+        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
+          {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
+          {beforeDateLabel && (
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
+              <div className="px-3 py-0.75 bg-[#F4D03F] text-black text-[15px] font-semibold rounded whitespace-nowrap shadow-lg opacity-70">
+                {beforeDateLabel}
+              </div>
+            </div>
+          )}
           <SiteDetailView
             sites={sites}
             highlightedSiteId={highlightedSiteId}
@@ -52,7 +66,15 @@ export function ComparisonMapView({
         </div>
 
         {/* Right Map - Later imagery (green scrubber) */}
-        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden`}>
+        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
+          {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
+          {afterDateLabel && (
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
+              <div className="px-3 py-0.75 bg-[#009639] text-white text-[15px] font-semibold rounded whitespace-nowrap shadow-lg opacity-70">
+                {afterDateLabel}
+              </div>
+            </div>
+          )}
           <SiteDetailView
             sites={sites}
             highlightedSiteId={highlightedSiteId}
