@@ -163,3 +163,64 @@ export const getSiteDisplayNames = (
 
   return { primary, secondary, primaryDir, secondaryDir };
 };
+
+/**
+ * Formats a date range for filter pill display
+ *
+ * @param start - Start date or null
+ * @param end - End date or null
+ * @param locale - BCP 47 language tag (e.g., 'en-US', 'ar-EG'). Defaults to 'en-US'
+ * @returns Formatted date range string or null if both dates are null
+ *
+ * @example
+ * formatDateRange(new Date('2023-01-01'), new Date('2023-12-31'), 'en-US')
+ * // => "Jan 2023 - Dec 2023"
+ *
+ * formatDateRange(new Date('2023-01-01'), null, 'en-US')
+ * // => "Jan 2023 - End"
+ *
+ * formatDateRange(null, null, 'en-US')
+ * // => null
+ */
+export const formatDateRange = (
+  start: Date | null,
+  end: Date | null,
+  locale: string = "en-US"
+): string | null => {
+  if (!start && !end) return null;
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    year: "numeric",
+  };
+
+  const formatDate = (d: Date | null) =>
+    d?.toLocaleDateString(locale, options);
+
+  return `${formatDate(start) || "Start"} - ${formatDate(end) || "End"}`;
+};
+
+/**
+ * Formats a year range for filter pill display
+ *
+ * @param start - Start year or null
+ * @param end - End year or null
+ * @returns Formatted year range string or null if both years are null
+ *
+ * @example
+ * formatYearRange(800, 1200)
+ * // => "800 - 1200"
+ *
+ * formatYearRange(800, null)
+ * // => "800 - End"
+ *
+ * formatYearRange(null, null)
+ * // => null
+ */
+export const formatYearRange = (
+  start: number | null,
+  end: number | null
+): string | null => {
+  if (!start && !end) return null;
+  return `${start || "Start"} - ${end || "End"}`;
+};

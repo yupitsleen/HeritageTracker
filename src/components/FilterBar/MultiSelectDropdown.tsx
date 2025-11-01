@@ -38,7 +38,8 @@ export function MultiSelectDropdown<T extends string>({
 
   const trigger = (
     <button
-      className={`flex items-center justify-between gap-2 px-3 h-9 border rounded-lg text-sm focus:ring-2 focus:ring-[#009639] focus:border-transparent transition-all duration-200 ${t.bg.primary} ${t.border.subtle} ${t.bg.hover}`}
+      type="button"
+      className={`flex items-center justify-between gap-2 px-3 h-9 border rounded-lg text-sm focus:ring-2 focus:ring-[#009639] focus:border-transparent focus:outline-none transition-all duration-200 ${t.bg.primary} ${t.border.subtle} ${t.bg.hover}`}
       aria-haspopup="listbox"
     >
       <span className={`font-medium ${t.text.body}`}>

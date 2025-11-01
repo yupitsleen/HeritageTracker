@@ -1,8 +1,8 @@
-import { memo, useState } from "react";
+import { memo, useState, useMemo } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { GazaSite, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
-import { formatLabel } from "../../utils/format";
+import { formatLabel, formatDateRange, formatYearRange } from "../../utils/format";
 import { FilterButton } from "./FilterButton";
 import { FilterCheckboxList } from "./FilterCheckboxList";
 import { FilterTag } from "./FilterTag";
@@ -10,10 +10,12 @@ import { DateRangeFilter } from "./DateRangeFilter";
 import { YearRangeFilter } from "./YearRangeFilter";
 import { Input } from "../Form/Input";
 import { Button } from "../Button/Button";
+import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
+import { useActiveFilters } from "../../hooks/useActiveFilters";
 import { Z_INDEX } from "../../constants/layout";
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -77,34 +79,19 @@ export const FilterBar = memo(function FilterBar({
   const { defaultStartDate, defaultEndDate } = providedDateRange || computedDateRange;
   const { defaultStartYear, defaultEndYear, defaultStartEra } = providedYearRange || computedYearRange;
 
-  // Check if any filters are active
-  const hasActiveFilters =
-    filters.selectedTypes.length > 0 ||
-    filters.selectedStatuses.length > 0 ||
-    filters.destructionDateStart !== null ||
-    filters.destructionDateEnd !== null ||
-    filters.creationYearStart !== null ||
-    filters.creationYearEnd !== null ||
-    filters.searchTerm.trim().length > 0;
+  // Use custom hook for derived filter state (memoized)
+  const { hasActiveFilters, activeFilterCount } = useActiveFilters(filters);
 
-  const activeFilterCount =
-    filters.selectedTypes.length +
-    filters.selectedStatuses.length +
-    (filters.destructionDateStart || filters.destructionDateEnd ? 1 : 0) +
-    (filters.creationYearStart || filters.creationYearEnd ? 1 : 0);
+  // Memoized formatted ranges for filter pills
+  const dateRangeLabel = useMemo(
+    () => formatDateRange(filters.destructionDateStart, filters.destructionDateEnd),
+    [filters.destructionDateStart, filters.destructionDateEnd]
+  );
 
-  // Format date range for pill display
-  const formatDateRange = (start: Date | null, end: Date | null) => {
-    if (!start && !end) return null;
-    const formatDate = (d: Date | null) => d?.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-    return `${formatDate(start) || "Start"} - ${formatDate(end) || "End"}`;
-  };
-
-  // Format year range for pill display
-  const formatYearRange = (start: number | null, end: number | null) => {
-    if (!start && !end) return null;
-    return `${start || "Start"} - ${end || "End"}`;
-  };
+  const yearRangeLabel = useMemo(
+    () => formatYearRange(filters.creationYearStart, filters.creationYearEnd),
+    [filters.creationYearStart, filters.creationYearEnd]
+  );
 
   return (
     <div className="space-y-2">
@@ -126,11 +113,12 @@ export const FilterBar = memo(function FilterBar({
           />
           {filters.searchTerm.trim().length > 0 && (
             <button
+              type="button"
               onClick={() => onFilterChange({ searchTerm: "" })}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
               aria-label={translate("filters.clearSearch")}
             >
-              <CloseIcon className="w-4 h-4" />
+              <CloseIcon className="w-4 h-4" aria-hidden="true" />
             </button>
           )}
         </div>
@@ -194,10 +182,11 @@ export const FilterBar = memo(function FilterBar({
 
         {/* Mobile Filters Button - Visible only on mobile */}
         <button
+          type="button"
           onClick={() => setIsMobileFiltersOpen(true)}
           className={cn(
             "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
-            "transition-all duration-200",
+            "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
             t.bg.primary,
             t.border.subtle,
             t.bg.hover,
@@ -208,11 +197,7 @@ export const FilterBar = memo(function FilterBar({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
           </svg>
           <span>Filters</span>
-          {activeFilterCount > 0 && (
-            <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-[#009639] text-white text-xs font-bold">
-              {activeFilterCount}
-            </span>
-          )}
+          {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
         </button>
 
         {/* Actions - Centered with filters */}
@@ -270,9 +255,9 @@ export const FilterBar = memo(function FilterBar({
           ))}
 
           {/* Destruction Date Tag */}
-          {(filters.destructionDateStart || filters.destructionDateEnd) && (
+          {dateRangeLabel && (
             <FilterTag
-              label={formatDateRange(filters.destructionDateStart, filters.destructionDateEnd) || ""}
+              label={dateRangeLabel}
               onRemove={() =>
                 onFilterChange({
                   destructionDateStart: null,
@@ -284,9 +269,9 @@ export const FilterBar = memo(function FilterBar({
           )}
 
           {/* Year Built Tag */}
-          {(filters.creationYearStart || filters.creationYearEnd) && (
+          {yearRangeLabel && (
             <FilterTag
-              label={(formatYearRange(filters.creationYearStart, filters.creationYearEnd) ?? "")}
+              label={yearRangeLabel}
               onRemove={() =>
                 onFilterChange({
                   creationYearStart: null,
@@ -324,11 +309,12 @@ export const FilterBar = memo(function FilterBar({
                 Filters
               </DialogTitle>
               <button
+                type="button"
                 onClick={() => setIsMobileFiltersOpen(false)}
-                className={cn("p-1 rounded-md transition-colors", t.bg.hover)}
+                className={cn("p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none", t.bg.hover)}
                 aria-label="Close filters"
               >
-                <CloseIcon className="w-6 h-6" />
+                <CloseIcon className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
 

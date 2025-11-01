@@ -106,23 +106,29 @@ export function DashboardPage({ isMobile }: DashboardPageProps) {
           />
         ) : (
           <DesktopLayout
-            filters={appState.filters}
-            onFilterChange={handleFilterChange}
-            hasActiveFilters={appState.hasActiveFilters}
-            clearAllFilters={appState.clearAllFilters}
-            filteredSites={filteredSites}
-            totalSites={total}
-            sites={sites}
+            filterProps={{
+              filters: appState.filters,
+              onFilterChange: handleFilterChange,
+              hasActiveFilters: appState.hasActiveFilters,
+              onClearAll: appState.clearAllFilters,
+            }}
+            siteData={{
+              sites,
+              filteredSites,
+              totalSites: total,
+            }}
             tableResize={{
               width: tableResize.tableWidth,
               isResizing: tableResize.isResizing,
               handleResizeStart: tableResize.handleResizeStart,
               getVisibleColumns: tableResize.getVisibleColumns,
             }}
-            onSiteClick={appState.setSelectedSite}
-            onSiteHighlight={appState.setHighlightedSiteId}
-            highlightedSiteId={appState.highlightedSiteId}
-            onExpandTable={handleExpandTable}
+            siteInteraction={{
+              highlightedSiteId: appState.highlightedSiteId,
+              onSiteClick: appState.setSelectedSite,
+              onSiteHighlight: appState.setHighlightedSiteId,
+              onExpandTable: handleExpandTable,
+            }}
           />
         )}
       </main>

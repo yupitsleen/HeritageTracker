@@ -1,5 +1,6 @@
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronIcon } from "../Dropdown/BaseDropdown";
+import { CountBadge } from "../Badge/CountBadge";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Z_INDEX } from "../../constants/layout";
 import { cn } from "../../styles/theme";
@@ -50,11 +51,7 @@ export function FilterButton({ label, count, children, icon, panelWidth = "w-64"
           >
             {icon && <span className="flex-shrink-0">{icon}</span>}
             <span>{label}</span>
-            {count > 0 && (
-              <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-[#009639] text-white text-xs font-bold">
-                {count}
-              </span>
-            )}
+            {count > 0 && <CountBadge count={count} variant="primary" />}
             <ChevronIcon isOpen={open} className={cn("w-4 h-4", t.icon.muted)} />
           </PopoverButton>
 
