@@ -2,7 +2,6 @@ import { lazy, Suspense, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
-import { useTranslation } from "../contexts/LocaleContext";
 import { useAppState } from "../hooks/useAppState";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useTableResize } from "../hooks/useTableResize";
@@ -12,8 +11,6 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { DesktopLayout } from "../components/Layout/DesktopLayout";
 import { MobileLayout } from "../components/Layout/MobileLayout";
-import { FilterBar } from "../components/FilterBar/FilterBar";
-import { Button } from "../components/Button";
 import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
@@ -25,14 +22,14 @@ import { COLORS } from "../config/colorThemes";
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
-interface HomePageProps {
+interface DashboardPageProps {
   isMobile: boolean;
 }
 
 /**
- * HomePage - Main heritage tracker view with table, maps, and timeline
+ * DashboardPage - Main heritage tracker dashboard with table, maps, and timeline
  */
-export function HomePage({ isMobile }: HomePageProps) {
+export function DashboardPage({ isMobile }: DashboardPageProps) {
   // Fetch sites from API (using mock adapter in development)
   const { sites, isLoading, error, refetch } = useSites();
 
@@ -41,7 +38,6 @@ export function HomePage({ isMobile }: HomePageProps) {
   const { filteredSites, total } = useFilteredSites(sites, appState.filters);
   const tableResize = useTableResize();
   const { isDark } = useTheme();
-  const translate = useTranslation();
   const navigate = useNavigate();
 
   const t = useThemeClasses();
@@ -51,13 +47,9 @@ export function HomePage({ isMobile }: HomePageProps) {
     navigate("/data");
   }, [navigate]);
 
-  // Wrapper functions to handle filter updates using helper
+  // Wrapper function to handle filter updates using helper
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
     applyFilterUpdates(updates, appState, false);
-  }, [appState]);
-
-  const handleTempFilterChange = useCallback((updates: Partial<FilterState>) => {
-    applyFilterUpdates(updates, appState, true);
   }, [appState]);
 
   // Show loading state while fetching sites
@@ -114,33 +106,29 @@ export function HomePage({ isMobile }: HomePageProps) {
           />
         ) : (
           <DesktopLayout
-            filters={{
-              selectedTypes: appState.filters.selectedTypes,
-              selectedStatuses: appState.filters.selectedStatuses,
-              searchTerm: appState.filters.searchTerm,
-              destructionDateStart: appState.filters.destructionDateStart,
-              destructionDateEnd: appState.filters.destructionDateEnd,
+            filterProps={{
+              filters: appState.filters,
+              onFilterChange: handleFilterChange,
+              hasActiveFilters: appState.hasActiveFilters,
+              onClearAll: appState.clearAllFilters,
             }}
-            setSelectedTypes={appState.setSelectedTypes}
-            setSelectedStatuses={appState.setSelectedStatuses}
-            setSearchTerm={appState.setSearchTerm}
-            setDestructionDateStart={appState.setDestructionDateStart}
-            setDestructionDateEnd={appState.setDestructionDateEnd}
-            hasActiveFilters={appState.hasActiveFilters}
-            clearAllFilters={appState.clearAllFilters}
-            openFilterModal={appState.openFilterModal}
-            filteredSites={filteredSites}
-            totalSites={total}
+            siteData={{
+              sites,
+              filteredSites,
+              totalSites: total,
+            }}
             tableResize={{
               width: tableResize.tableWidth,
               isResizing: tableResize.isResizing,
               handleResizeStart: tableResize.handleResizeStart,
               getVisibleColumns: tableResize.getVisibleColumns,
             }}
-            onSiteClick={appState.setSelectedSite}
-            onSiteHighlight={appState.setHighlightedSiteId}
-            highlightedSiteId={appState.highlightedSiteId}
-            onExpandTable={handleExpandTable}
+            siteInteraction={{
+              highlightedSiteId: appState.highlightedSiteId,
+              onSiteClick: appState.setSelectedSite,
+              onSiteHighlight: appState.setHighlightedSiteId,
+              onExpandTable: handleExpandTable,
+            }}
           />
         )}
       </main>
@@ -217,53 +205,19 @@ export function HomePage({ isMobile }: HomePageProps) {
               <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Filtering</h3>
               <ul className="text-sm space-y-1 list-disc list-inside">
                 <li>Use the search bar to find sites by name</li>
-                <li>Click "Filters" to filter by type, status, or date range</li>
+                <li>Use the filter dropdowns to filter by type, status, destruction date, or year built</li>
                 <li>Clear all filters with the "Clear" button</li>
               </ul>
             </section>
 
             <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Advanced Timeline</h3>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Timeline Page</h3>
               <p className="text-sm">
-                Click "Advanced Timeline" in the header to view a specialized page with 150+ historical satellite imagery versions
+                Click "Timeline" in the header to view a specialized page with 150+ historical satellite imagery versions
                 from ESRI Wayback (2014-2025), showing how the landscape has changed over time.
               </p>
             </section>
           </div>
-        </div>
-      </Modal>
-
-      {/* Filter Modal */}
-      <Modal
-        isOpen={appState.modals.isFilterOpen}
-        onClose={() => appState.setIsFilterOpen(false)}
-        zIndex={Z_INDEX.MODAL_DROPDOWN}
-      >
-        <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
-        <FilterBar
-          filters={{
-            ...appState.tempFilters,
-            searchTerm: appState.filters.searchTerm,
-          }}
-          onFilterChange={handleTempFilterChange}
-          sites={sites}
-        />
-        <div className="mt-6 flex justify-end gap-3">
-          <Button
-            onClick={appState.clearTempFilters}
-            disabled={!appState.hasTempFilters}
-            variant="ghost"
-          >
-            {translate("filters.clearAll")}
-          </Button>
-          <Button
-            onClick={appState.applyFilters}
-            disabled={!appState.hasUnappliedChanges}
-            variant="primary"
-            className={appState.hasUnappliedChanges ? "animate-pulse ring-2 ring-white/50" : ""}
-          >
-            {translate("filters.applyFilters")}
-          </Button>
         </div>
       </Modal>
 

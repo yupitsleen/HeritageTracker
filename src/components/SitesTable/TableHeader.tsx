@@ -95,6 +95,15 @@ export function TableHeader({
             <SortIcon field="yearBuiltIslamic" currentField={sortField} direction={sortDirection} />
           </th>
         )}
+        {visibleColumns.has("lastUpdated") && (
+          <th
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            onClick={() => onSort("lastUpdated")}
+          >
+            {translate("table.lastUpdated")}
+            <SortIcon field="lastUpdated" currentField={sortField} direction={sortDirection} />
+          </th>
+        )}
       </tr>
     </thead>
   );

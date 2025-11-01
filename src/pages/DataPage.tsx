@@ -3,31 +3,20 @@ import { mockSites } from "../data/mockSites";
 import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
 import { FilterBar } from "../components/FilterBar/FilterBar";
-import { FilterTag } from "../components/FilterBar/FilterTag";
 import { Modal } from "../components/Modal/Modal";
-import { Button } from "../components/Button";
-import { Input } from "../components/Form/Input";
 import { useThemeClasses } from "../hooks/useThemeClasses";
-import { useTranslation } from "../contexts/LocaleContext";
-import { formatLabel } from "../utils/format";
 import type { FilterState } from "../types/filters";
-import { createEmptyFilterState, isFilterStateEmpty } from "../types/filters";
+import { createEmptyFilterState } from "../types/filters";
 import type { GazaSite } from "../types";
-import { COMPACT_FILTER_BAR } from "../constants/compactDesign";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../config/colorThemes";
 
 // Lazy load Site Detail Panel
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
 export function DataPage() {
   const t = useThemeClasses();
-  const translate = useTranslation();
 
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
-
-  const [tempFilters, setTempFilters] = useState<FilterState>(filters);
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
   // Pre-compute default date ranges ONCE at page level (not on every filter change)
@@ -110,57 +99,12 @@ export function DataPage() {
   }, [filters]);
 
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
-    setTempFilters(prev => ({ ...prev, ...updates }));
+    setFilters(prev => ({ ...prev, ...updates }));
   }, []);
-
-  const openFilterModal = () => {
-    setTempFilters(filters);
-    setIsFilterModalOpen(true);
-  };
-
-  const applyFilters = () => {
-    setFilters(tempFilters);
-    setIsFilterModalOpen(false);
-  };
 
   const clearAllFilters = () => {
-    const emptyFilters = createEmptyFilterState();
-    setFilters(emptyFilters);
-    setTempFilters(emptyFilters);
+    setFilters(createEmptyFilterState());
   };
-
-  const hasActiveFilters = !isFilterStateEmpty(filters);
-
-  // Memoized filter tag handlers to prevent unnecessary re-renders
-  const handleRemoveType = useCallback((typeToRemove: GazaSite["type"]) => {
-    setFilters(prev => ({
-      ...prev,
-      selectedTypes: prev.selectedTypes.filter((t) => t !== typeToRemove)
-    }));
-  }, []);
-
-  const handleRemoveStatus = useCallback((statusToRemove: GazaSite["status"]) => {
-    setFilters(prev => ({
-      ...prev,
-      selectedStatuses: prev.selectedStatuses.filter((s) => s !== statusToRemove)
-    }));
-  }, []);
-
-  const handleRemoveDestructionDateRange = useCallback(() => {
-    setFilters(prev => ({
-      ...prev,
-      destructionDateStart: null,
-      destructionDateEnd: null
-    }));
-  }, []);
-
-  const handleRemoveCreationYearRange = useCallback(() => {
-    setFilters(prev => ({
-      ...prev,
-      creationYearStart: null,
-      creationYearEnd: null
-    }));
-  }, []);
 
   // Handle site click to open detail panel
   const handleSiteClick = useCallback((site: GazaSite) => {
@@ -169,110 +113,21 @@ export function DataPage() {
 
   return (
     <SharedLayout>
-      <div className="h-[calc(100vh-100px)] flex flex-col mb-8">
-        {/* Compact Filter Bar */}
-        <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 px-4`}>
-          <div className={`${COMPACT_FILTER_BAR.padding} flex flex-col gap-1.5`}>
-            {/* Top row - Filter controls */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {/* Filter Button */}
-                <button
-                  onClick={openFilterModal}
-                  style={{
-                    backgroundColor: COLORS.FLAG_GREEN,
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN_HOVER)}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.FLAG_GREEN)}
-                  className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} text-white rounded shadow-md hover:shadow-lg transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText} border ${t.border.primary}`}
-                >
-                  {translate("filters.filters")}
-                </button>
-
-                {/* Clear All button - only show if filters active */}
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearAllFilters}
-                    className={`${COMPACT_FILTER_BAR.buttonPadding} ${COMPACT_FILTER_BAR.inputHeight} ${t.bg.secondary} ${t.text.body} border ${t.border.default} rounded shadow-sm hover:shadow-md transition-all duration-200 font-semibold active:scale-95 ${COMPACT_FILTER_BAR.inputText}`}
-                  >
-                    {translate("filters.clearAll")}
-                  </button>
-                )}
-
-                {/* Search Input */}
-                <div className="relative">
-                  <Input
-                    type="text"
-                    value={filters.searchTerm}
-                    onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
-                    placeholder={translate("filters.searchPlaceholder")}
-                    className={`w-48 ${COMPACT_FILTER_BAR.inputHeight} ${COMPACT_FILTER_BAR.inputPadding} text-black placeholder:text-gray-400 ${COMPACT_FILTER_BAR.inputText}`}
-                  />
-                  {filters.searchTerm.trim().length > 0 && (
-                    <button
-                      onClick={() => setFilters(prev => ({ ...prev, searchTerm: "" }))}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                      aria-label={translate("aria.clearSearch")}
-                    >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Results count */}
-              <div className={`${COMPACT_FILTER_BAR.inputText} ${t.text.muted}`}>
-                {translate("filters.showingCount", { filtered: filteredSites.length, total: mockSites.length })}
-              </div>
-            </div>
-
-            {/* Bottom row - Active filter tags (only if filters active) */}
-            {hasActiveFilters && (
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {filters.selectedTypes.map((type) => (
-                  <FilterTag
-                    key={type}
-                    label={formatLabel(type)}
-                    onRemove={() => handleRemoveType(type)}
-                    ariaLabel={`Remove ${type} filter`}
-                  />
-                ))}
-                {filters.selectedStatuses.map((status) => (
-                  <FilterTag
-                    key={status}
-                    label={formatLabel(status)}
-                    onRemove={() => handleRemoveStatus(status)}
-                    ariaLabel={`Remove ${status} filter`}
-                  />
-                ))}
-                {/* Destruction date filter tag */}
-                {(filters.destructionDateStart || filters.destructionDateEnd) && (
-                  <FilterTag
-                    key="destruction-date"
-                    label={`Destroyed: ${filters.destructionDateStart?.toLocaleDateString() || '...'} - ${filters.destructionDateEnd?.toLocaleDateString() || '...'}`}
-                    onRemove={handleRemoveDestructionDateRange}
-                    ariaLabel="Remove destruction date filter"
-                  />
-                )}
-                {/* Creation year filter tag */}
-                {(filters.creationYearStart || filters.creationYearEnd) && (
-                  <FilterTag
-                    key="creation-year"
-                    label={`Built: ${filters.creationYearStart || '...'} - ${filters.creationYearEnd || '...'}`}
-                    onRemove={handleRemoveCreationYearRange}
-                    ariaLabel="Remove creation year filter"
-                  />
-                )}
-              </div>
-            )}
-          </div>
+      <div className="h-[calc(100vh-100px)] flex flex-col mb-8 pt-4">
+        {/* Filter Bar Container */}
+        <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 mx-4 p-2 rounded relative z-[1001]`}>
+          {/* Unified FilterBar with search, filters, and actions */}
+          <FilterBar
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            sites={mockSites}
+            defaultDateRange={defaultDateRange}
+            defaultYearRange={defaultYearRange}
+            showActions={true}
+            totalSites={mockSites.length}
+            filteredSites={filteredSites.length}
+            onClearAll={clearAllFilters}
+          />
         </div>
 
         {/* Data Table */}
@@ -306,37 +161,6 @@ export function DataPage() {
         )}
       </Modal>
 
-      {/* Filter Modal */}
-      <Modal
-        isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
-        zIndex={Z_INDEX.MODAL_DROPDOWN}
-      >
-        <h2 className={`text-2xl font-bold mb-6 ${t.layout.modalHeading}`}>Filter Sites</h2>
-        <FilterBar
-          filters={tempFilters}
-          onFilterChange={handleFilterChange}
-          sites={mockSites}
-          defaultDateRange={defaultDateRange}
-          defaultYearRange={defaultYearRange}
-        />
-        <div className="mt-6 flex justify-end gap-3">
-          <Button
-            onClick={() => setTempFilters(filters)}
-            variant="secondary"
-            size="sm"
-          >
-            {translate("filters.clear")}
-          </Button>
-          <Button
-            onClick={applyFilters}
-            variant="primary"
-            size="sm"
-          >
-            {translate("filters.applyFilters")}
-          </Button>
-        </div>
-      </Modal>
     </SharedLayout>
   );
 }

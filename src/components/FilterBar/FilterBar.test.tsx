@@ -94,9 +94,9 @@ describe("FilterBar", () => {
         </CalendarProvider>
       );
 
-      // Check that date inputs exist (they should show default values)
-      const dateInputs = screen.getAllByPlaceholderText(/From|To/);
-      expect(dateInputs.length).toBeGreaterThan(0);
+      // Check that the destruction date filter button exists
+      const destructionDateButton = screen.getByText("Destruction Date Range");
+      expect(destructionDateButton).toBeInTheDocument();
     });
 
     it("calculates year built range from sites data", () => {
@@ -106,8 +106,8 @@ describe("FilterBar", () => {
         </CalendarProvider>
       );
 
-      // Year Built label should be visible (using getAllByText since it appears in multiple places)
-      const yearBuiltLabels = screen.getAllByText("Year Built");
+      // Year Built Range label should be visible (using getAllByText since it appears in multiple places)
+      const yearBuiltLabels = screen.getAllByText("Year Built Range");
       expect(yearBuiltLabels.length).toBeGreaterThan(0);
     });
 

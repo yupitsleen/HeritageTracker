@@ -2,9 +2,10 @@ import { useState } from "react";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useLocale } from "../../contexts/LocaleContext";
 import { getAllLocales, getLocaleName } from "../../config/locales";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 import type { LocaleCode } from "../../types/i18n";
 import { BaseDropdown, ChevronIcon } from "../Dropdown/BaseDropdown";
+import { Z_INDEX } from "../../constants/layout";
 
 interface LanguageSelectorProps {
   /**
@@ -19,7 +20,7 @@ interface LanguageSelectorProps {
  */
 export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
   const { locale, setLocale } = useLocale();
-  const { isDark } = useTheme();
+  const t = useThemeClasses();
   const [isOpen, setIsOpen] = useState(false);
 
   const allLocales = getAllLocales();
@@ -32,11 +33,7 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
 
   const trigger = (
     <button
-      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md transition-colors ${
-        isDark
-          ? "bg-gray-800 hover:bg-gray-700 text-gray-200"
-          : "bg-gray-100 hover:bg-gray-200 text-gray-800"
-      }`}
+      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md transition-colors ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`}
       aria-label="Select language"
       title={`Current: ${currentLocaleName}`}
     >
@@ -53,11 +50,8 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
       onToggle={setIsOpen}
       align="right"
       className={className}
-      menuClassName={`py-1 rounded-md shadow-lg border min-w-[120px] ${
-        isDark
-          ? "bg-gray-800 border-gray-700"
-          : "bg-white border-gray-200"
-      }`}
+      menuClassName={`py-1 rounded-md shadow-lg border min-w-[120px] ${t.bg.primary} ${t.border.default}`}
+      zIndex={Z_INDEX.DROPDOWN + 100}
     >
       {allLocales.map((loc) => {
         const isSelected = loc.code === locale;
@@ -67,12 +61,8 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
             onClick={() => handleLocaleChange(loc.code)}
             className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
               isSelected
-                ? isDark
-                  ? "bg-gray-700 text-[#009639] font-semibold"
-                  : "bg-gray-100 text-[#009639] font-semibold"
-                : isDark
-                ? "text-gray-200 hover:bg-gray-700"
-                : "text-gray-800 hover:bg-gray-50"
+                ? `${t.bg.secondary} text-[#009639] font-semibold`
+                : `${t.text.body} ${t.bg.hover}`
             }`}
             aria-current={isSelected ? "true" : undefined}
           >
@@ -90,7 +80,7 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
             </div>
             {/* Show English name as subtitle if different from native */}
             {loc.name !== loc.nativeName && (
-              <div className={`text-[10px] mt-0.5 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+              <div className={`text-[10px] mt-0.5 ${t.text.subtle}`}>
                 {loc.name}
               </div>
             )}

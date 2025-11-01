@@ -1,4 +1,3 @@
-import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 
@@ -42,18 +41,17 @@ const DONATION_ORGANIZATIONS: DonationOrg[] = [
 ];
 
 export function DonateModal() {
-  const { isDark } = useTheme();
   const t = useThemeClasses();
   const translate = useTranslation();
 
   return (
     <div className="rounded-lg max-h-[80vh] overflow-y-auto">
       <div className="px-4 py-3 max-w-3xl mx-auto text-center">
-        <h2 className={`text-xl font-bold mb-3 ${isDark ? "text-white" : "text-gray-900"}`}>
+        <h2 className={`text-xl font-bold mb-3 ${t.text.heading}`}>
           {translate("donate.title")}
         </h2>
 
-        <p className={`text-sm mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
+        <p className={`text-sm mb-4 ${t.text.body}`}>
           {translate("donate.description")}
         </p>
 
@@ -65,13 +63,13 @@ export function DonateModal() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 text-left">
-                  <h3 className={`font-semibold text-base mb-1 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  <h3 className={`font-semibold text-base mb-1 ${t.text.heading}`}>
                     {org.name}
                   </h3>
-                  <p className={`text-xs mb-1.5 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  <p className={`text-xs mb-1.5 ${t.text.body}`}>
                     <span className="font-medium">{translate("donate.focus")}</span> {org.focus}
                   </p>
-                  <p className={`text-sm mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  <p className={`text-sm mb-2 ${t.text.body}`}>
                     {org.description}
                   </p>
                 </div>
@@ -90,7 +88,7 @@ export function DonateModal() {
         </div>
 
         <div className={`mt-4 p-3 rounded-lg ${t.bg.tertiary} border ${t.border.default} text-left`}>
-          <p className={`text-xs ${isDark ? "text-white" : "text-gray-900"}`}>
+          <p className={`text-xs ${t.text.body}`}>
             <strong>{translate("donate.disclaimer")}</strong> {translate("donate.disclaimerText")}
           </p>
         </div>

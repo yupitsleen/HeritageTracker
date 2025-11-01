@@ -34,7 +34,7 @@ export const ar: Translations = {
     title: "متتبع التراث",
     dashboard: "لوحة التحكم",
     data: "البيانات",
-    advancedTimeline: "الجدول الزمني المتقدم",
+    timeline: "الجدول الزمني",
     statistics: "الإحصائيات",
     helpPalestine: "ساعد فلسطين",
     about: "حول",
@@ -112,6 +112,7 @@ export const ar: Translations = {
     description: "الوصف",
     coordinates: "الإحداثيات",
     sources: "المصادر",
+    lastUpdated: "آخر تحديث",
   },
 
   filters: {
@@ -130,11 +131,12 @@ export const ar: Translations = {
     applyFilters: "تطبيق المرشحات",
     clearFilters: "مسح المرشحات",
     siteType: "نوع الموقع",
+    type: "النوع",
     selectTypes: "اختر الأنواع...",
     status: "الحالة",
     selectStatus: "اختر الحالة...",
-    destructionDate: "تاريخ التدمير",
-    yearBuilt: "سنة البناء",
+    destructionDate: "نطاق تاريخ التدمير",
+    yearBuilt: "نطاق سنة البناء",
     showingCount: "عرض {{filtered}} من {{total}} موقع",
   },
 
@@ -166,8 +168,8 @@ export const ar: Translations = {
     notableLosses: "الخسائر البارزة",
   },
 
-  advancedTimeline: {
-    title: "الجدول الزمني المتقدم للأقمار الصناعية",
+  timelinePage: {
+    title: "الجدول الزمني للأقمار الصناعية",
     backToMain: "العودة إلى العرض الرئيسي",
     releases: "الإصدارات",
     satelliteDates: "تواريخ الصور الفضائية",

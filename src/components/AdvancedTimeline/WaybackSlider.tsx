@@ -130,7 +130,7 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
         {/* Info icon in top right */}
         <div className="absolute right-0 top-0">
           <InfoIconWithTooltip
-            tooltip={translate("advancedTimeline.waybackTooltip")}
+            tooltip={translate("timelinePage.waybackTooltip")}
           />
         </div>
 
@@ -234,8 +234,16 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
             style={{ left: `${currentPositionPercent}%` }}
           >
-            {/* Floating date tooltip - positioned above scrubber */}
-            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 pointer-events-none">
+            {/* Floating date tooltip - positioned above scrubber with edge detection */}
+            <div
+              className={`absolute bottom-full mb-2 pointer-events-none ${
+                currentPositionPercent < 10
+                  ? 'left-0'
+                  : currentPositionPercent > 90
+                  ? 'right-0'
+                  : 'left-1/2 -translate-x-1/2'
+              }`}
+            >
               <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
                 {currentRelease?.releaseDate || "Unknown"}
               </div>

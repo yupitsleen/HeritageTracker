@@ -24,7 +24,7 @@ export function DateRangeFilter({
   onStartChange,
   onEndChange,
   label,
-  tooltip = "Date filters use Gregorian calendar only",
+  tooltip,
   defaultStartDate,
   defaultEndDate,
 }: DateRangeFilterProps) {
@@ -32,8 +32,8 @@ export function DateRangeFilter({
 
   return (
     <div>
-      <FilterLabel label={label} tooltip={tooltip} />
-      <div className="flex items-center gap-2">
+      {label && <FilterLabel label={label} tooltip={tooltip} />}
+      <div className="flex items-center gap-1.5">
         <Input
           variant="date"
           value={(startDate || defaultStartDate)?.toISOString().split("T")[0] || ""}
@@ -41,9 +41,9 @@ export function DateRangeFilter({
             onStartChange(e.target.value ? new Date(e.target.value) : null);
           }}
           placeholder="From"
-          className="flex-1 text-sm py-2 px-3"
+          className="flex-1 h-8 text-xs px-2"
         />
-        <span className={`text-sm font-medium ${t.text.body}`}>to</span>
+        <span className={`text-xs font-medium ${t.text.body}`}>to</span>
         <Input
           variant="date"
           value={(endDate || defaultEndDate)?.toISOString().split("T")[0] || ""}
@@ -51,7 +51,7 @@ export function DateRangeFilter({
             onEndChange(e.target.value ? new Date(e.target.value) : null);
           }}
           placeholder="To"
-          className="flex-1 text-sm py-2 px-3"
+          className="flex-1 h-8 text-xs px-2"
         />
       </div>
     </div>

@@ -16,9 +16,12 @@ export const TOOLTIP_POSITIONING = {
 
 /**
  * Tooltip styling constants
+ *
+ * @deprecated Z_INDEX has been moved to Z_INDEX.NOTIFICATION in constants/layout.ts
+ * for better centralized z-index management
  */
 export const TOOLTIP_STYLING = {
-  /** Z-index for tooltip overlay */
+  /** @deprecated Use Z_INDEX.NOTIFICATION from constants/layout.ts instead */
   Z_INDEX: 10000,
   /** Maximum width of tooltip box (px) */
   MAX_WIDTH: 320,

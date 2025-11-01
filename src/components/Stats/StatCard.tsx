@@ -1,3 +1,5 @@
+import { useThemeClasses } from "../../hooks/useThemeClasses";
+
 interface StatCardProps {
   value: string | number;
   title: string;
@@ -10,6 +12,7 @@ interface StatCardProps {
  * Used for displaying key metrics in a grid layout
  */
 export function StatCard({ value, title, description, variant = "gray" }: StatCardProps) {
+  const t = useThemeClasses();
   const variantStyles = {
     green: {
       bg: "",
@@ -55,11 +58,11 @@ export function StatCard({ value, title, description, variant = "gray" }: StatCa
       <div className={`text-3xl md:text-4xl font-bold ${styles.text} mb-1 md:mb-2`}>
         {value}
       </div>
-      <div className="text-xs md:text-sm font-semibold text-gray-900 mb-2 md:mb-3">
+      <div className={`text-xs md:text-sm font-semibold ${t.text.heading} mb-2 md:mb-3`}>
         {title}
       </div>
       {description && (
-        <p className="text-xs text-gray-600 leading-relaxed hidden md:block">
+        <p className={`text-xs ${t.text.muted} leading-relaxed hidden md:block`}>
           {description}
         </p>
       )}

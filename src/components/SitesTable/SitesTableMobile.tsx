@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import {
@@ -12,17 +12,20 @@ import {
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useLocale, useTranslation } from "../../contexts/LocaleContext";
+import { useTableSort, type SortField } from "../../hooks/useTableSort";
 
 interface SitesTableMobileProps {
   sites: GazaSite[];
 }
 
-type SortField = "name" | "dateDestroyed";
-type SortDirection = "asc" | "desc";
-
 /**
  * Mobile accordion variant of sites table
  * Features: Collapsible rows, status-colored names, sortable columns
+ *
+ * Responsibilities:
+ * - Mobile-optimized layout with accordion-style rows
+ * - Expand/collapse functionality
+ * - Coordination with useTableSort hook for sorting
  */
 export function SitesTableMobile({ sites }: SitesTableMobileProps) {
   const t = useThemeClasses();
@@ -30,44 +33,12 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
   const translate = useTranslation();
   const { localeConfig } = useLocale();
   const isRTL = localeConfig.direction === "rtl";
-  const [sortField, setSortField] = useState<SortField>("dateDestroyed");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  // Sort logic (shared with Desktop variant via hook)
+  const { sortField, sortDirection, handleSort, sortedSites } = useTableSort(sites);
+
+  // Mobile-specific state
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
-
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const sortedSites = useMemo(() => {
-    const sorted = [...sites].sort((a, b) => {
-      let aValue: string | number;
-      let bValue: string | number;
-
-      switch (sortField) {
-        case "name":
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
-          break;
-        case "dateDestroyed":
-          aValue = a.dateDestroyed ? new Date(a.dateDestroyed).getTime() : 0;
-          bValue = b.dateDestroyed ? new Date(b.dateDestroyed).getTime() : 0;
-          break;
-        default:
-          return 0;
-      }
-
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    return sorted;
-  }, [sites, sortField, sortDirection]);
 
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) {
@@ -308,6 +279,16 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                     <p className={`text-sm ${t.text.heading}`}>{site.verifiedBy.join(", ")}</p>
                   </div>
                 )}
+
+                {/* Last Updated */}
+                <div>
+                  <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
+                    {translate("table.lastUpdated")}:
+                  </span>
+                  <p className={`text-sm ${t.text.heading}`}>
+                    {formatDateLong(site.lastUpdated, localeConfig.bcp47)}
+                  </p>
+                </div>
               </div>
             )}
             </div>

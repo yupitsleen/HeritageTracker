@@ -19,7 +19,8 @@ export function AppFooter({ isMobile }: AppFooterProps) {
   const translate = useTranslation();
 
   return (
-    <footer className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg transition-colors duration-200 ${t.flag.greenBg}`}
+    <footer
+      className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg transition-colors duration-200 ${t.flag.greenBg}`}
       style={{ zIndex: Z_INDEX.BASE }}
     >
       {/* Desktop footer - ultra compact */}
@@ -27,7 +28,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
         <div className="py-1.5">
           <div className={cn("container mx-auto px-4")}>
             <p className="text-[10px] text-center">
-              {translate("footer.title")} • {translate("footer.sources")} •{" "}
+              {translate("footer.title")} •{" "}
               <a
                 href="https://github.com/yupitsleen/HeritageTracker"
                 target="_blank"

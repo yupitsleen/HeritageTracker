@@ -38,13 +38,14 @@ export function MultiSelectDropdown<T extends string>({
 
   const trigger = (
     <button
-      className={`flex items-center gap-1 px-2 py-1 border rounded-lg text-[10px] focus:ring-2 focus:ring-[#009639] focus:border-transparent transition-all duration-200 ${t.bg.primary} ${t.border.subtle} ${t.bg.hover}`}
+      type="button"
+      className={`flex items-center justify-between gap-2 px-3 h-9 border rounded-lg text-sm focus:ring-2 focus:ring-[#009639] focus:border-transparent focus:outline-none transition-all duration-200 ${t.bg.primary} ${t.border.subtle} ${t.bg.hover}`}
       aria-haspopup="listbox"
     >
       <span className={`font-medium ${t.text.body}`}>
         {label}
         {/* Always reserve space for count to prevent layout shift */}
-        <span className={`ml-0.5 font-semibold inline-block min-w-[20px] ${selectedValues.length > 0 ? 'text-[#009639]' : 'opacity-0'}`}>
+        <span className={`ml-1 font-semibold inline-block min-w-[24px] ${selectedValues.length > 0 ? 'text-[#009639]' : 'opacity-0'}`}>
           ({selectedValues.length > 0 ? selectedValues.length : '99'})
         </span>
       </span>
@@ -60,20 +61,20 @@ export function MultiSelectDropdown<T extends string>({
       zIndex={zIndex}
       menuClassName={`w-44 border rounded-md shadow-lg max-h-48 overflow-y-auto ${t.bg.primary} ${t.border.subtle}`}
     >
-      <ul className="py-0.5" role="listbox">
+      <ul className="py-1" role="listbox">
         {options.map((option) => {
           const isSelected = selectedValues.includes(option);
           return (
             <li
               key={option}
-              className={`px-2 py-1 cursor-pointer flex items-center gap-1.5 ${t.bg.hover}`}
+              className={`px-3 py-2 cursor-pointer flex items-center gap-2 ${t.bg.hover}`}
               onClick={() => toggleOption(option)}
               role="option"
               aria-selected={isSelected}
             >
               {/* Checkbox */}
               <div
-                className={`w-3 h-3 border-2 rounded flex items-center justify-center ${
+                className={`w-4 h-4 border-2 rounded flex items-center justify-center flex-shrink-0 ${
                   isSelected
                     ? "bg-[#009639] border-[#009639]"
                     : `${t.border.subtle} ${t.bg.primary}`
@@ -81,7 +82,7 @@ export function MultiSelectDropdown<T extends string>({
               >
                 {isSelected && (
                   <svg
-                    className="w-2 h-2 text-white"
+                    className="w-2.5 h-2.5 text-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -95,7 +96,7 @@ export function MultiSelectDropdown<T extends string>({
                   </svg>
                 )}
               </div>
-              <span className={`text-[10px] ${t.text.body}`}>{formatLabel(option)}</span>
+              <span className={`text-sm ${t.text.body}`}>{formatLabel(option)}</span>
             </li>
           );
         })}

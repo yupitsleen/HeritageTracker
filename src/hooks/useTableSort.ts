@@ -8,7 +8,8 @@ export type SortField =
   | "dateDestroyed"
   | "dateDestroyedIslamic"
   | "yearBuilt"
-  | "yearBuiltIslamic";
+  | "yearBuiltIslamic"
+  | "lastUpdated";
 
 export type SortDirection = "asc" | "desc";
 
@@ -76,6 +77,10 @@ export function useTableSort(
         case "yearBuiltIslamic":
           aValue = a.yearBuiltIslamic || "zzz";
           bValue = b.yearBuiltIslamic || "zzz";
+          break;
+        case "lastUpdated":
+          aValue = a.lastUpdated ? new Date(a.lastUpdated).getTime() : 0;
+          bValue = b.lastUpdated ? new Date(b.lastUpdated).getTime() : 0;
           break;
         default:
           return 0;

@@ -31,7 +31,7 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
   // Modal state
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  // Determine if mobile based on page - HomePage passes isMobile prop, others assume desktop
+  // Determine if mobile based on page - DashboardPage passes isMobile prop, others assume desktop
   const isMobile = false; // Default to desktop for About/Stats/Donate pages
 
   return (
@@ -101,7 +101,7 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
               <ul className="text-sm list-disc list-inside space-y-1">
                 <li><strong>Statistics:</strong> View comprehensive statistics and charts</li>
                 <li><strong>About:</strong> Learn about the project, methodology, and data sources</li>
-                <li><strong>Advanced Timeline:</strong> Explore satellite imagery over time</li>
+                <li><strong>Timeline:</strong> Explore satellite imagery over time</li>
                 <li><strong>Help Palestine:</strong> Support relief efforts</li>
               </ul>
             </section>

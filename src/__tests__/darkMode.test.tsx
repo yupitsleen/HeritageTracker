@@ -193,7 +193,7 @@ describe("Dark Mode - Component Rendering", () => {
   describe("App Header", () => {
     it("renders in light mode", () => {
       renderWithProviders(
-        <AppHeader onOpenDonate={noop} onOpenStats={noop} onOpenAbout={noop} />,
+        <AppHeader />,
         "light"
       );
       expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
@@ -201,7 +201,7 @@ describe("Dark Mode - Component Rendering", () => {
 
     it("renders in dark mode", () => {
       renderWithProviders(
-        <AppHeader onOpenDonate={noop} onOpenStats={noop} onOpenAbout={noop} />,
+        <AppHeader />,
         "dark"
       );
       expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
@@ -211,30 +211,20 @@ describe("Dark Mode - Component Rendering", () => {
   describe("App Footer", () => {
     it("renders in light mode", () => {
       renderWithProviders(
-        <AppFooter
-          onOpenDonate={noop}
-          onOpenStats={noop}
-          onOpenAbout={noop}
-          isMobile={false}
-        />,
+        <AppFooter isMobile={false} />,
         "light"
       );
       expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
-      expect(screen.getByText(/UNESCO, Forensic Architecture, Heritage for Peace/i)).toBeInTheDocument();
+      expect(screen.getByText(/Github/i)).toBeInTheDocument();
     });
 
     it("renders in dark mode", () => {
       renderWithProviders(
-        <AppFooter
-          onOpenDonate={noop}
-          onOpenStats={noop}
-          onOpenAbout={noop}
-          isMobile={false}
-        />,
+        <AppFooter isMobile={false} />,
         "dark"
       );
       expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
-      expect(screen.getByText(/UNESCO, Forensic Architecture, Heritage for Peace/i)).toBeInTheDocument();
+      expect(screen.getByText(/Github/i)).toBeInTheDocument();
     });
   });
 });

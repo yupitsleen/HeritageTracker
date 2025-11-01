@@ -34,7 +34,7 @@ export const it: Translations = {
     title: "Registro del Patrimonio",
     dashboard: "Cruscotto",
     data: "Dati",
-    advancedTimeline: "Timeline Avanzata",
+    timeline: "Timeline",
     statistics: "Statistiche",
     helpPalestine: "Aiuta la Palestina",
     about: "Informazioni",
@@ -112,6 +112,7 @@ export const it: Translations = {
     description: "Descrizione",
     coordinates: "Coordinate",
     sources: "Fonti",
+    lastUpdated: "Ultimo Aggiornamento",
   },
 
   filters: {
@@ -130,6 +131,7 @@ export const it: Translations = {
     applyFilters: "Applica Filtri",
     clearFilters: "Cancella Filtri",
     siteType: "Tipo di Sito",
+    type: "Tipo",
     selectTypes: "Seleziona tipi...",
     status: "Stato",
     selectStatus: "Seleziona stato...",
@@ -166,8 +168,8 @@ export const it: Translations = {
     notableLosses: "Perdite Notevoli",
   },
 
-  advancedTimeline: {
-    title: "Timeline Satellitare Avanzata",
+  timelinePage: {
+    title: "Timeline Satellitare",
     backToMain: "Torna alla Vista Principale",
     releases: "Rilasci",
     satelliteDates: "Date immagini satellitari",
@@ -177,7 +179,7 @@ export const it: Translations = {
     resetTimeline: "Ripristina timeline",
     nextEvent: "Evento successivo",
     previousEvent: "Evento precedente",
-    waybackTooltip: "Naviga tra oltre 150 versioni storiche di immagini satellitari dal 2014 al 2025. Ogni linea grigia rappresenta una data di acquisizione dell'immagine. Fai clic ovunque sulla timeline per saltare a quella data. Passa il mouse sopra le linee grigie per vedere le date esatte.",
+    waybackTooltip: "Naviga tra oltre 150 versioni storiche di immagini satellitari dal 2014 al 2025. Ogni linea grigia rappresenta una data di acquisizione dell'immagine. Fai clic ovunque sulla timeline per saltare a quella data. Passa il mouse sopre le linee grigie per vedere le date esatte.",
   },
 
   siteDetail: {

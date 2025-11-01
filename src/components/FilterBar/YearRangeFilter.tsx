@@ -24,7 +24,7 @@ export function YearRangeFilter({
   onStartChange,
   onEndChange,
   label,
-  tooltip = "Year filters use Gregorian calendar only",
+  tooltip,
   supportBCE = true,
   startYearDefault = "",
   endYearDefault = new Date().getFullYear().toString(),
@@ -63,8 +63,8 @@ export function YearRangeFilter({
 
   return (
     <div>
-      <FilterLabel label={label} tooltip={tooltip} />
-      <div className="flex items-center gap-2">
+      {label && <FilterLabel label={label} tooltip={tooltip} />}
+      <div className="flex items-center gap-1.5">
         <div className="flex items-center gap-1 flex-1">
           <Input
             variant="number"
@@ -72,7 +72,7 @@ export function YearRangeFilter({
             onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
             placeholder="Year"
             min="1"
-            className="flex-1 text-sm py-2 px-3"
+            className="flex-1 h-8 text-xs px-2"
           />
           {supportBCE && (
             <Select
@@ -81,14 +81,14 @@ export function YearRangeFilter({
               onChange={(e) =>
                 handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")
               }
-              className="px-2 py-2 text-sm"
+              className="h-8 px-1.5 text-xs"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>
             </Select>
           )}
         </div>
-        <span className={`text-sm font-medium ${t.text.body}`}>to</span>
+        <span className={`text-xs font-medium ${t.text.body}`}>to</span>
         <div className="flex items-center gap-1 flex-1">
           <Input
             variant="number"
@@ -96,7 +96,7 @@ export function YearRangeFilter({
             onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
             placeholder="Year"
             min="1"
-            className="flex-1 text-sm py-2 px-3"
+            className="flex-1 h-8 text-xs px-2"
           />
           {supportBCE && (
             <Select
@@ -105,7 +105,7 @@ export function YearRangeFilter({
               onChange={(e) =>
                 handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")
               }
-              className="px-2 py-2 text-sm"
+              className="h-8 px-1.5 text-xs"
             >
               <option value="BCE">BCE</option>
               <option value="CE">CE</option>

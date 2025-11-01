@@ -163,3 +163,19 @@ html {
 [data-theme="dark"] .marker-cluster-custom:hover {
   background: rgba(185, 28, 28, 0.9);
 }
+
+/* Mobile drawer slide-up animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}

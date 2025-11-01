@@ -1,27 +1,20 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 // Optimized D3 imports - only import what we need
 import { scaleTime } from "d3-scale";
-import {
-  PlayIcon,
-  PauseIcon,
-  ArrowPathIcon,
-} from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
-import { useAnimation, type AnimationSpeed } from "../../contexts/AnimationContext";
+import { useAnimation } from "../../contexts/AnimationContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
-import { Input } from "../Form/Input";
-import { Button } from "../Button";
 import { TIMELINE_CONFIG, TOOLTIP_CONFIG } from "../../constants/timeline";
 import {
   calculateDefaultDateRange,
-  filterEventsByDateRange,
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
-import { getSpeedValues } from "../../config/animation";
 import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { TimelineControls } from "./TimelineControls";
+import { TimelineNavigation } from "./TimelineNavigation";
 
 /**
  * Callback type for date change handlers
@@ -48,10 +41,6 @@ export interface AdvancedTimelineMode {
 
 interface TimelineScrubberProps {
   sites: GazaSite[];
-  destructionDateStart: Date | null;
-  destructionDateEnd: Date | null;
-  onDestructionDateStartChange: DateChangeHandler;
-  onDestructionDateEndChange: DateChangeHandler;
   highlightedSiteId?: string | null;
   onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
@@ -71,10 +60,6 @@ interface TimelineScrubberProps {
  */
 export function TimelineScrubber({
   sites,
-  destructionDateStart,
-  destructionDateEnd,
-  onDestructionDateStartChange,
-  onDestructionDateEndChange,
   highlightedSiteId,
   onSiteHighlight,
   advancedMode,
@@ -105,28 +90,20 @@ export function TimelineScrubber({
   // Extract timeline data using custom hook
   const { events: allDestructionDates } = useTimelineData(sites);
 
-  // Combine related date calculations into single memoization for better performance
-  // Reduces dependency checking overhead and prevents cascading recalculations
-  const timelineData = useMemo(() => {
-    // Calculate default date range from dataset (oldest and newest destruction dates)
+  // Calculate date range from dataset (oldest and newest destruction dates)
+  const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
     const defaults = calculateDefaultDateRange(allDestructionDates, startDate, endDate);
-
-    // Filter destruction dates based on date filter
-    const filtered = filterEventsByDateRange(allDestructionDates, destructionDateStart, destructionDateEnd);
-
-    // Calculate adjusted timeline range based on filtered dates
-    const hasActiveFilter = Boolean(destructionDateStart || destructionDateEnd);
-    const adjusted = calculateAdjustedDateRange(filtered, hasActiveFilter, startDate, endDate);
+    // No filtering - show all events (filtering happens at page level via FilterBar)
+    const adjusted = calculateAdjustedDateRange(allDestructionDates, false, startDate, endDate);
 
     return {
       ...defaults,
-      destructionDates: filtered,
       ...adjusted,
     };
-  }, [allDestructionDates, startDate, endDate, destructionDateStart, destructionDateEnd]);
+  }, [allDestructionDates, startDate, endDate]);
 
-  // Destructure combined timeline data
-  const { defaultStartDate, defaultEndDate, destructionDates, adjustedStartDate, adjustedEndDate } = timelineData;
+  // Use all destruction dates (no filtering in timeline component)
+  const destructionDates = allDestructionDates;
 
   // Observe container width changes
   useEffect(() => {
@@ -249,11 +226,6 @@ export function TimelineScrubber({
     endDate,
   ]);
 
-  // Speed options from config
-  const speedOptions: AnimationSpeed[] = useMemo(() => {
-    return getSpeedValues();
-  }, []);
-
   // Check if timeline is at the start or end position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
   const isAtEnd = currentTimestamp.getTime() >= adjustedEndDate.getTime();
@@ -277,8 +249,8 @@ export function TimelineScrubber({
     );
   }, [advancedMode, destructionDates, currentTimestamp]);
 
-  const canGoPrevious = advancedMode && currentEventIndex > 0;
-  const canGoNext = advancedMode && currentEventIndex < destructionDates.length - 1;
+  const canGoPrevious = !!advancedMode && currentEventIndex > 0;
+  const canGoNext = !!advancedMode && currentEventIndex < destructionDates.length - 1;
 
   const goToPreviousEvent = () => {
     if (canGoPrevious) {
@@ -320,163 +292,31 @@ export function TimelineScrubber({
           />
         </div>
 
-        {/* Left: Play/Pause/Reset/Sync Map/Speed (hide play/pause in advanced mode) */}
-        <div className="flex items-center gap-1.5">
-          {!advancedMode && (
-            <>
-              {!isPlaying ? (
-                <Button
-                  onClick={handlePlay}
-                  variant="primary"
-                  size="xs"
-                  icon={<PlayIcon className="w-3 h-3" />}
-                  aria-label={translate("timeline.play")}
-                >
-                  {translate("timeline.play")}
-                </Button>
-              ) : (
-                <Button
-                  onClick={pause}
-                  variant="danger"
-                  size="xs"
-                  icon={<PauseIcon className="w-3 h-3" />}
-                  aria-label={translate("timeline.pause")}
-                >
-                  {translate("timeline.pause")}
-                </Button>
-              )}
-            </>
-          )}
-
-          <Button
-            onClick={reset}
-            disabled={isAtStart}
-            variant="secondary"
-            size="xs"
-            icon={<ArrowPathIcon className="w-3 h-3" />}
-            aria-label={translate("common.reset")}
-          >
-            {translate("common.reset")}
-          </Button>
-
-          {/* Sync Map toggle button - only show in advanced mode */}
-          {advancedMode && (
-            <Button
-              onClick={advancedMode.onSyncMapToggle}
-              variant="secondary"
-              active={advancedMode.syncMapOnDotClick}
-              size="xs"
-              aria-label={translate("timeline.syncMap")}
-              title={translate("timeline.syncMap")}
-            >
-              {advancedMode.syncMapOnDotClick ? "✓" : ""} {translate("timeline.syncMap")}
-            </Button>
-          )}
-
-          {/* Zoom to Site toggle button */}
-          <Button
-            onClick={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
-            variant="secondary"
-            active={zoomToSiteEnabled}
-            size="xs"
-            aria-label={translate("timeline.zoomToSite")}
-            title={translate("timeline.zoomToSite")}
-          >
-            {zoomToSiteEnabled ? "✓" : ""} {translate("timeline.zoomToSite")}
-          </Button>
-
-          {!advancedMode && (
-            /* Speed control - hidden in advanced mode */
-            <div className="flex items-center gap-1.5">
-              <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
-                {translate("timeline.speed")}:
-              </label>
-              <select
-                id="speed-control"
-                value={speed}
-                onChange={(e) => setSpeed(Number(e.target.value) as AnimationSpeed)}
-                className={`${t.timeline.speedSelect} ${t.input.base}`}
-                aria-label="Animation speed control"
-              >
-                {speedOptions.map((s) => (
-                  <option key={s} value={s}>
-                    {s}x
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-        </div>
+        {/* Left: Play/Pause/Reset/Sync Map/Speed controls */}
+        <TimelineControls
+          isPlaying={isPlaying}
+          isAtStart={isAtStart}
+          speed={speed}
+          zoomToSiteEnabled={zoomToSiteEnabled}
+          advancedMode={!!advancedMode}
+          syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
+          onPlay={handlePlay}
+          onPause={pause}
+          onReset={reset}
+          onSpeedChange={setSpeed}
+          onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
+          onSyncMapToggle={advancedMode?.onSyncMapToggle}
+        />
 
         {/* Center: Previous/Next navigation (Advanced Timeline only) */}
-        {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
         {advancedMode && (
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5" dir="ltr">
-            <Button
-              onClick={goToPreviousEvent}
-              disabled={!canGoPrevious}
-              variant="secondary"
-              size="xs"
-              aria-label={translate("timeline.previousAriaLabel")}
-              title={translate("timeline.previousTitle")}
-            >
-              ⏮ {translate("timeline.previous")}
-            </Button>
-            <Button
-              onClick={goToNextEvent}
-              disabled={!canGoNext}
-              variant="secondary"
-              size="xs"
-              aria-label={translate("timeline.nextAriaLabel")}
-              title={translate("timeline.nextTitle")}
-            >
-              {translate("timeline.next")} ⏭
-            </Button>
-          </div>
+          <TimelineNavigation
+            canGoPrevious={canGoPrevious}
+            canGoNext={canGoNext}
+            onPrevious={goToPreviousEvent}
+            onNext={goToNextEvent}
+          />
         )}
-
-        {/* Right: Date Filter */}
-        <div className="flex items-center gap-1.5 ml-auto">
-          <label className={`text-[10px] font-semibold ${t.text.heading}`}>
-            {translate("timeline.dateFilter")}:
-          </label>
-          <Input
-            variant="date"
-            value={(destructionDateStart || defaultStartDate).toISOString().split("T")[0]}
-            onChange={(e) => {
-              onDestructionDateStartChange(e.target.value ? new Date(e.target.value) : null);
-            }}
-            placeholder={translate("timeline.from")}
-            className="flex-none w-28 text-[10px] py-0.5 px-1.5"
-          />
-          <span className={`text-[10px] font-medium ${t.text.body}`}>{translate("timeline.to")}</span>
-          <Input
-            variant="date"
-            value={(destructionDateEnd || defaultEndDate).toISOString().split("T")[0]}
-            onChange={(e) => {
-              onDestructionDateEndChange(e.target.value ? new Date(e.target.value) : null);
-            }}
-            placeholder={translate("timeline.to")}
-            className="flex-none w-28 text-[10px] py-0.5 px-1.5"
-          />
-
-          {/* Clear Date Filter button - always reserve space, only visible when filter is active */}
-          <button
-            onClick={() => {
-              onDestructionDateStartChange(null);
-              onDestructionDateEndChange(null);
-            }}
-            className={`${t.timeline.clearFilterVisible} ${
-              destructionDateStart || destructionDateEnd
-                ? `${t.bg.secondary} ${t.text.body} ${t.bg.hover}`
-                : t.timeline.clearFilterInvisible
-            }`}
-            aria-label={translate("timeline.clearFilter")}
-            disabled={!destructionDateStart && !destructionDateEnd}
-          >
-            {translate("timeline.clear")}
-          </button>
-        </div>
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
@@ -505,11 +345,7 @@ export function TimelineScrubber({
             }}
           >
             <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
-              {currentTimestamp.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
+              {currentTimestamp.toISOString().split('T')[0]}
             </div>
           </div>
         )}
