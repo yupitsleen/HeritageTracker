@@ -22,6 +22,9 @@ import { COLORS } from "../config/colorThemes";
 const SiteDetailView = lazy(() =>
   import("../components/Map/SiteDetailView").then((m) => ({ default: m.SiteDetailView }))
 );
+const ComparisonMapView = lazy(() =>
+  import("../components/Map/ComparisonMapView").then((m) => ({ default: m.ComparisonMapView }))
+);
 const TimelineScrubber = lazy(() =>
   import("../components/Timeline/TimelineScrubber").then((m) => ({ default: m.TimelineScrubber }))
 );
@@ -116,11 +119,21 @@ export function Timeline() {
   // Default to ON for better user experience on Advanced Timeline page
   const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
 
+  // Comparison Mode toggle - when enabled, shows two maps side-by-side
+  // Default to OFF for standard single-map view
+  const [comparisonModeEnabled, setComparisonModeEnabled] = useState(false);
+
+  // Before release index for comparison mode (earlier imagery)
+  const [beforeReleaseIndex, setBeforeReleaseIndex] = useState(0);
+
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  // Get current release
+  // Get current release (for "after" imagery or single map mode)
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
+
+  // Get before release (for "before" imagery in comparison mode)
+  const beforeRelease = releases.length > 0 ? releases[beforeReleaseIndex] : null;
 
   // Apply filters to sites (memoized for performance)
   const filteredSites = useMemo(() => {
@@ -222,18 +235,69 @@ export function Timeline() {
   );
 
   /**
+   * Find the nearest Wayback release that occurred BEFORE the destruction date
+   * This shows the satellite imagery from before the site was destroyed
+   *
+   * @param targetDate - The destruction date to search for
+   * @returns Index of the nearest release before destruction, or 0 if none found
+   * @throws Never throws - returns 0 for invalid inputs
+   */
+  const findNearestWaybackReleaseBeforeDestruction = useCallback(
+    (targetDate: Date): number => {
+      // Guard: Empty releases array
+      if (releases.length === 0) return 0;
+
+      // Guard: Invalid date
+      if (!targetDate || isNaN(targetDate.getTime())) {
+        console.warn('findNearestWaybackReleaseBeforeDestruction: Invalid target date provided, using first release');
+        return 0;
+      }
+
+      const targetTime = targetDate.getTime();
+      let nearestIndex = 0;
+
+      // Find the LATEST release that occurred BEFORE the target date
+      // We iterate through all releases in reverse and return the first one before the target
+      for (let i = releases.length - 1; i >= 0; i--) {
+        const releaseDate = new Date(releases[i].releaseDate);
+
+        // Guard: Invalid release date
+        if (isNaN(releaseDate.getTime())) {
+          console.warn(`findNearestWaybackReleaseBeforeDestruction: Invalid release date at index ${i}, skipping`);
+          continue;
+        }
+
+        const releaseTime = releaseDate.getTime();
+
+        // Return the first release that's before the target date
+        if (releaseTime < targetTime) {
+          nearestIndex = i;
+          break;
+        }
+      }
+
+      return nearestIndex;
+    },
+    [releases]
+  );
+
+  /**
    * Handle timeline dot click - highlight site and optionally sync map
-   * Using useRef to avoid recreating this callback when syncMapOnDotClick changes
+   * Using useRef to avoid recreating callback when dependencies change
    */
   const syncMapOnDotClickRef = useRef(syncMapOnDotClick);
+  const comparisonModeEnabledRef = useRef(comparisonModeEnabled);
+
   useEffect(() => {
     syncMapOnDotClickRef.current = syncMapOnDotClick;
-  }, [syncMapOnDotClick]);
+    comparisonModeEnabledRef.current = comparisonModeEnabled;
+  }, [syncMapOnDotClick, comparisonModeEnabled]);
 
   /**
    * Handle site selection from timeline
    * When sync is enabled, automatically finds and displays the Wayback imagery
    * from right before the site was destroyed
+   * In comparison mode, also sets the "before" imagery
    *
    * @param siteId - ID of the selected site, or null to deselect
    */
@@ -242,17 +306,25 @@ export function Timeline() {
       setHighlightedSiteId(siteId);
 
       // If sync is enabled and a site is selected, find and show the nearest Wayback release
-      // Use ref to get current value without recreating callback
+      // Use refs to get current values without recreating callback
       if (syncMapOnDotClickRef.current && siteId) {
         const site = filteredSites.find((s: GazaSite) => s.id === siteId);
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
+
+          // Set "after" imagery (post-destruction)
           const nearestReleaseIndex = findNearestWaybackRelease(destructionDate);
           setCurrentReleaseIndex(nearestReleaseIndex);
+
+          // If comparison mode is enabled, also set "before" imagery (pre-destruction)
+          if (comparisonModeEnabledRef.current) {
+            const beforeReleaseIdx = findNearestWaybackReleaseBeforeDestruction(destructionDate);
+            setBeforeReleaseIndex(beforeReleaseIdx);
+          }
         }
       }
     },
-    [findNearestWaybackRelease, filteredSites]
+    [findNearestWaybackRelease, findNearestWaybackReleaseBeforeDestruction, filteredSites]
   );
 
   /**
@@ -315,7 +387,10 @@ export function Timeline() {
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
             {/* Filter Bar Container */}
-            <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-2 p-2 rounded relative z-[1001]`}>
+            <div
+              className={`flex-shrink-0 mb-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+              style={{ zIndex: Z_INDEX.CONTENT }}
+            >
               {/* Unified FilterBar with search, filters, and actions */}
               <FilterBar
                 filters={filters}
@@ -332,16 +407,36 @@ export function Timeline() {
 
             {/* Full-screen satellite map with Wayback imagery */}
             <div
-              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden relative z-10`}
+              className={`flex-1 min-h-0 ${comparisonModeEnabled ? '' : `${t.border.primary2} rounded shadow-xl overflow-hidden`} relative z-10`}
             >
               <Suspense fallback={<SkeletonMap />}>
-                <SiteDetailView
-                  sites={filteredSites}
-                  highlightedSiteId={highlightedSiteId}
-                  customTileUrl={currentRelease?.tileUrl}
-                  customMaxZoom={currentRelease?.maxZoom}
-                  onSiteClick={setSelectedSite}
-                />
+                {comparisonModeEnabled ? (
+                  <ComparisonMapView
+                    sites={filteredSites}
+                    highlightedSiteId={highlightedSiteId}
+                    before={{
+                      tileUrl: beforeRelease?.tileUrl || "",
+                      maxZoom: beforeRelease?.maxZoom || 19,
+                      dateLabel: beforeRelease?.releaseDate,
+                    }}
+                    after={{
+                      tileUrl: currentRelease?.tileUrl || "",
+                      maxZoom: currentRelease?.maxZoom || 19,
+                      dateLabel: currentRelease?.releaseDate,
+                    }}
+                    onSiteClick={setSelectedSite}
+                  />
+                ) : (
+                  <SiteDetailView
+                    sites={filteredSites}
+                    highlightedSiteId={highlightedSiteId}
+                    customTileUrl={currentRelease?.tileUrl}
+                    customMaxZoom={currentRelease?.maxZoom}
+                    dateLabel={currentRelease?.releaseDate}
+                    onSiteClick={setSelectedSite}
+                    comparisonModeActive={false}
+                  />
+                )}
               </Suspense>
             </div>
 
@@ -352,6 +447,10 @@ export function Timeline() {
                 currentIndex={currentReleaseIndex}
                 onIndexChange={setCurrentReleaseIndex}
                 totalSites={filteredSites.length}
+                comparisonMode={comparisonModeEnabled}
+                beforeIndex={beforeReleaseIndex}
+                onBeforeIndexChange={setBeforeReleaseIndex}
+                onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
               />
             </div>
 
@@ -430,6 +529,19 @@ export function Timeline() {
                 <li><strong>Red Dots:</strong> Show when sites were destroyed (vertically stacked for visibility)</li>
                 <li><strong>Green Scrubber:</strong> Drag to view different dates, tooltip shows current date</li>
                 <li>Click anywhere on the timeline to jump to that date</li>
+              </ul>
+            </section>
+
+            <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Comparison Mode</h3>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li><strong>Toggle:</strong> Click "Comparison Mode" button above the timeline to enable side-by-side view</li>
+                <li><strong>Two Maps:</strong> View "before" imagery (left) and "after" imagery (right) simultaneously</li>
+                <li><strong>Yellow Scrubber:</strong> Controls the "before" date (appears below timeline with yellow tooltip)</li>
+                <li><strong>Green Scrubber:</strong> Controls the "after" date (above timeline with green tooltip)</li>
+                <li><strong>Click Timeline:</strong> Moves the closest scrubber to that date</li>
+                <li><strong>Auto-Sync:</strong> When clicking site dots with sync enabled, automatically sets before/after imagery around the destruction date</li>
+                <li>Perfect for comparing satellite imagery before and after destruction events</li>
               </ul>
             </section>
 

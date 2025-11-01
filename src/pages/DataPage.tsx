@@ -5,6 +5,7 @@ import { SharedLayout } from "../components/Layout/SharedLayout";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Modal } from "../components/Modal/Modal";
 import { useThemeClasses } from "../hooks/useThemeClasses";
+import { useTheme } from "../contexts/ThemeContext";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
 import type { GazaSite } from "../types";
@@ -15,6 +16,7 @@ const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPa
 
 export function DataPage() {
   const t = useThemeClasses();
+  const { isDark } = useTheme();
 
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
@@ -115,7 +117,10 @@ export function DataPage() {
     <SharedLayout>
       <div className="h-[calc(100vh-100px)] flex flex-col mb-8 pt-4">
         {/* Filter Bar Container */}
-        <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-4 mx-4 p-2 rounded relative z-[1001]`}>
+        <div
+          className={`flex-shrink-0 mx-4 mb-4 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+          style={{ zIndex: Z_INDEX.CONTENT }}
+        >
           {/* Unified FilterBar with search, filters, and actions */}
           <FilterBar
             filters={filters}

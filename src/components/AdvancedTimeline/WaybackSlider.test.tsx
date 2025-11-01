@@ -284,8 +284,8 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 
-      // Should have white scrubber circle with green border
-      const scrubber = container.querySelector(".border-\\[\\#009639\\]");
+      // Should have white scrubber circle with green border (now uses inline style)
+      const scrubber = container.querySelector('[style*="border-color"][style*="rgb(0, 150, 57)"]');
       expect(scrubber).toBeTruthy();
     });
   });
@@ -472,6 +472,346 @@ describe("WaybackSlider", () => {
       const tooltipsAbove = container.querySelectorAll(".bottom-full");
       // Should have multiple: tick mark tooltips (5) + scrubber tooltip (1) = 6 total
       expect(tooltipsAbove.length).toBeGreaterThan(5);
+    });
+  });
+
+  describe("Comparison Mode", () => {
+    describe("Dual Scrubber Rendering", () => {
+      it("renders two scrubbers when comparison mode is enabled", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Should have two scrubber indicators (white circles with colored borders)
+        const scrubbers = container.querySelectorAll(".w-3.h-3.bg-white");
+        expect(scrubbers).toHaveLength(2);
+      });
+
+      it("renders only one scrubber when comparison mode is disabled", () => {
+        const onIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={false}
+          />
+        );
+
+        // Should have only one scrubber
+        const scrubbers = container.querySelectorAll(".w-3.h-3.bg-white");
+        expect(scrubbers).toHaveLength(1);
+      });
+
+      it("renders yellow scrubber for before index", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Should have yellow border scrubber (Palestinian flag yellow #FDB927)
+        // Now uses inline style instead of CSS class
+        const yellowScrubber = container.querySelector('[style*="border-color"][style*="rgb(253, 185, 39)"]');
+        expect(yellowScrubber).toBeTruthy();
+      });
+
+      it("renders green scrubber for current index", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Should have green border scrubber (Palestinian flag green #009639)
+        // Now uses inline style instead of CSS class
+        const greenScrubber = container.querySelector('[style*="border-color"][style*="rgb(0, 150, 57)"]');
+        expect(greenScrubber).toBeTruthy();
+      });
+
+      it("shows correct date on yellow scrubber tooltip", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Yellow tooltip should show release at beforeIndex (index 1 = "2014-06-15")
+        // Now uses inline style with DateLabel component
+        const yellowTooltips = container.querySelectorAll('[style*="background-color"][style*="rgb(253, 185, 39)"]');
+        expect(yellowTooltips.length).toBeGreaterThan(0);
+        expect(yellowTooltips[0]).toHaveTextContent("2014-06-15");
+      });
+
+      it("shows correct date on green scrubber tooltip", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Green tooltip should show release at currentIndex (index 4 = "2016-03-05")
+        // Now uses inline style with DateLabel component
+        // Note: There may be multiple green elements (progress bar uses CSS class, tooltip uses inline style)
+        const greenTooltips = container.querySelectorAll('[style*="background-color"][style*="rgb(0, 150, 57)"]');
+        expect(greenTooltips.length).toBeGreaterThan(0);
+
+        // Find the tooltip with text (should be the DateLabel component)
+        let foundTooltip = false;
+        greenTooltips.forEach((el) => {
+          if (el.textContent && el.textContent.includes("2016-03-05")) {
+            foundTooltip = true;
+          }
+        });
+        expect(foundTooltip).toBe(true);
+      });
+    });
+
+    describe("Click Behavior in Comparison Mode", () => {
+      it("calls onBeforeIndexChange when clicking near yellow scrubber", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Find timeline bar
+        const timeline = container.querySelector(".h-3.cursor-pointer");
+        expect(timeline).toBeInTheDocument();
+
+        // Simulate click at 10% (closer to beforeIndex at position ~25%)
+        if (timeline) {
+          const rect = { left: 0, width: 1000 } as DOMRect;
+          vi.spyOn(timeline, "getBoundingClientRect").mockReturnValue(rect);
+
+          fireEvent.click(timeline, { clientX: 100 }); // 10% position
+        }
+
+        // Should call onBeforeIndexChange, not onIndexChange
+        expect(onBeforeIndexChange).toHaveBeenCalled();
+      });
+
+      it("calls onIndexChange when clicking near green scrubber", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Find timeline bar
+        const timeline = container.querySelector(".h-3.cursor-pointer");
+        expect(timeline).toBeInTheDocument();
+
+        // Simulate click at 90% (closer to currentIndex at position ~100%)
+        if (timeline) {
+          const rect = { left: 0, width: 1000 } as DOMRect;
+          vi.spyOn(timeline, "getBoundingClientRect").mockReturnValue(rect);
+
+          fireEvent.click(timeline, { clientX: 900 }); // 90% position
+        }
+
+        // Should call onIndexChange, not onBeforeIndexChange
+        expect(onIndexChange).toHaveBeenCalled();
+      });
+
+      it("moves closest scrubber based on click position", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={3}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        const timeline = container.querySelector(".h-3.cursor-pointer");
+
+        // Click in the middle (50%) - should move whichever is closer
+        if (timeline) {
+          const rect = { left: 0, width: 1000 } as DOMRect;
+          vi.spyOn(timeline, "getBoundingClientRect").mockReturnValue(rect);
+
+          fireEvent.click(timeline, { clientX: 500 }); // 50% position
+        }
+
+        // Either handler should be called (which one depends on scrubber positions)
+        expect(onIndexChange.mock.calls.length + onBeforeIndexChange.mock.calls.length).toBe(1);
+      });
+    });
+
+    describe("Single Mode Fallback", () => {
+      it("calls onIndexChange when comparison mode is off", () => {
+        const onIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={false}
+          />
+        );
+
+        const timeline = container.querySelector(".h-3.cursor-pointer");
+
+        if (timeline) {
+          const rect = { left: 0, width: 1000 } as DOMRect;
+          vi.spyOn(timeline, "getBoundingClientRect").mockReturnValue(rect);
+
+          fireEvent.click(timeline, { clientX: 500 });
+        }
+
+        expect(onIndexChange).toHaveBeenCalled();
+      });
+
+      it("does not call onBeforeIndexChange when comparison mode is off", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={false}
+            beforeIndex={0}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        const timeline = container.querySelector(".h-3.cursor-pointer");
+
+        if (timeline) {
+          const rect = { left: 0, width: 1000 } as DOMRect;
+          vi.spyOn(timeline, "getBoundingClientRect").mockReturnValue(rect);
+
+          fireEvent.click(timeline, { clientX: 500 });
+        }
+
+        expect(onBeforeIndexChange).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("Edge Cases", () => {
+      it("handles missing onBeforeIndexChange gracefully", () => {
+        const onIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={0}
+          />
+        );
+
+        const timeline = container.querySelector(".h-3.cursor-pointer");
+
+        // Should not crash when clicking
+        if (timeline) {
+          const rect = { left: 0, width: 1000 } as DOMRect;
+          vi.spyOn(timeline, "getBoundingClientRect").mockReturnValue(rect);
+
+          expect(() => {
+            fireEvent.click(timeline, { clientX: 100 });
+          }).not.toThrow();
+        }
+      });
+
+      it("renders only green scrubber when beforeRelease is null", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={-1} // Invalid index
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Should still render green scrubber (now uses inline style)
+        const greenScrubber = container.querySelector('[style*="border-color"][style*="rgb(0, 150, 57)"]');
+        expect(greenScrubber).toBeTruthy();
+
+        // Yellow scrubber should not be present (invalid beforeIndex)
+        const scrubbers = container.querySelectorAll(".w-3.h-3.bg-white");
+        expect(scrubbers).toHaveLength(1); // Only green
+      });
+
+      it("handles same beforeIndex and currentIndex", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        const { container } = renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={2} // Same as currentIndex
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        // Should render both scrubbers (they may overlap visually)
+        const scrubbers = container.querySelectorAll(".w-3.h-3.bg-white");
+        expect(scrubbers).toHaveLength(2);
+      });
     });
   });
 });

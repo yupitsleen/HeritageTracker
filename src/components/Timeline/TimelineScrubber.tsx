@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useState } from "react";
+import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 // Optimized D3 imports - only import what we need
 import { scaleTime } from "d3-scale";
 import type { GazaSite } from "../../types";
@@ -36,7 +36,7 @@ export type ToggleHandler = () => void;
  */
 export interface AdvancedTimelineMode {
   syncMapOnDotClick: boolean;
-  onSyncMapToggle: ToggleHandler;
+  onSyncMapToggle?: ToggleHandler; // Optional: allows hiding Sync Map button while keeping navigation
 }
 
 interface TimelineScrubberProps {
@@ -71,12 +71,14 @@ export function TimelineScrubber({
     startDate,
     endDate,
     zoomToSiteEnabled,
+    mapMarkersVisible,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
     setZoomToSiteEnabled,
+    setMapMarkersVisible,
   } = useAnimation();
 
   const t = useThemeClasses();
@@ -175,6 +177,14 @@ export function TimelineScrubber({
     };
   }, [svgMounted, timeScale, destructionDates, currentTimestamp, highlightedSiteId, setTimestamp, pause, onSiteHighlight]);
 
+  // Handle reset button click - reset timeline AND clear highlighted site to reset map zoom
+  const handleReset = useCallback(() => {
+    reset(); // Reset timeline to start
+    if (onSiteHighlight) {
+      onSiteHighlight(null); // Clear highlighted site to reset map to Gaza overview
+    }
+  }, [reset, onSiteHighlight]);
+
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -204,7 +214,7 @@ export function TimelineScrubber({
         case "Home": // Jump to start
           e.preventDefault();
           pause();
-          reset();
+          handleReset();
           break;
         case "End": // Jump to end
           e.preventDefault();
@@ -221,7 +231,7 @@ export function TimelineScrubber({
     isPlaying,
     play,
     pause,
-    reset,
+    handleReset,
     setTimestamp,
     endDate,
   ]);
@@ -242,29 +252,66 @@ export function TimelineScrubber({
   };
 
   // Previous/Next navigation for Advanced Timeline mode
+  // Find the current position relative to events (not requiring exact match)
   const currentEventIndex = useMemo(() => {
     if (!advancedMode || destructionDates.length === 0) return -1;
-    return destructionDates.findIndex(
-      (event) => event.date.getTime() === currentTimestamp.getTime()
-    );
+
+    const currentTime = currentTimestamp.getTime();
+
+    // Check if we're before all events
+    if (currentTime < destructionDates[0].date.getTime()) {
+      return -1; // Special value meaning "before first event"
+    }
+
+    // Check if we're after all events
+    if (currentTime >= destructionDates[destructionDates.length - 1].date.getTime()) {
+      return destructionDates.length - 1; // At or after last event
+    }
+
+    // We're somewhere in the middle - find the event we've passed or are closest to
+    for (let i = 0; i < destructionDates.length; i++) {
+      if (currentTime < destructionDates[i].date.getTime()) {
+        // We're before this event, so we're at the previous event
+        return i - 1;
+      }
+    }
+
+    // Fallback: find nearest event
+    let nearestIndex = 0;
+    let minDiff = Math.abs(destructionDates[0].date.getTime() - currentTime);
+
+    for (let i = 1; i < destructionDates.length; i++) {
+      const diff = Math.abs(destructionDates[i].date.getTime() - currentTime);
+      if (diff < minDiff) {
+        minDiff = diff;
+        nearestIndex = i;
+      }
+    }
+
+    return nearestIndex;
   }, [advancedMode, destructionDates, currentTimestamp]);
 
-  const canGoPrevious = !!advancedMode && currentEventIndex > 0;
-  const canGoNext = !!advancedMode && currentEventIndex < destructionDates.length - 1;
+  const canGoPrevious = !!advancedMode && currentEventIndex >= 0;
+  const canGoNext = !!advancedMode && destructionDates.length > 0 && currentEventIndex < destructionDates.length - 1;
 
   const goToPreviousEvent = () => {
     if (canGoPrevious) {
-      const prevEvent = destructionDates[currentEventIndex - 1];
-      setTimestamp(prevEvent.date);
-      if (onSiteHighlight) {
-        onSiteHighlight(prevEvent.siteId);
+      const targetIndex = currentEventIndex === -1 ? 0 : currentEventIndex - 1;
+      if (targetIndex >= 0) {
+        const prevEvent = destructionDates[targetIndex];
+        setTimestamp(prevEvent.date);
+        if (onSiteHighlight) {
+          onSiteHighlight(prevEvent.siteId);
+        }
       }
     }
   };
 
   const goToNextEvent = () => {
     if (canGoNext) {
-      const nextEvent = destructionDates[currentEventIndex + 1];
+      // If we're before all events (index -1), go to first event (index 0)
+      const targetIndex = currentEventIndex === -1 ? 0 : currentEventIndex + 1;
+      const nextEvent = destructionDates[targetIndex];
       setTimestamp(nextEvent.date);
       if (onSiteHighlight) {
         onSiteHighlight(nextEvent.siteId);
@@ -298,13 +345,15 @@ export function TimelineScrubber({
           isAtStart={isAtStart}
           speed={speed}
           zoomToSiteEnabled={zoomToSiteEnabled}
+          mapMarkersVisible={mapMarkersVisible}
           advancedMode={!!advancedMode}
           syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
           onPlay={handlePlay}
           onPause={pause}
-          onReset={reset}
+          onReset={handleReset}
           onSpeedChange={setSpeed}
           onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
+          onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
           onSyncMapToggle={advancedMode?.onSyncMapToggle}
         />
 

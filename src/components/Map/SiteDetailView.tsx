@@ -1,11 +1,13 @@
 import { useMemo, useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { GazaSite } from "../../types";
-import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
+import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, MARKER_CLASSNAMES, type TimePeriod } from "../../constants/map";
 import { SITE_MARKER_CONFIG } from "../../constants/timeline";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
 import { SitePopup } from "./SitePopup";
+import { MapMarkers } from "./MapMarkers";
+import { DateLabel } from "../Timeline/DateLabel";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import L from "leaflet";
@@ -18,8 +20,12 @@ interface SiteDetailViewProps {
   customTileUrl?: string;
   // Optional custom max zoom for custom tiles
   customMaxZoom?: number;
+  // Optional date label to display at top of map
+  dateLabel?: string;
   // Optional callback for when user clicks "See More" in popup
   onSiteClick?: (site: GazaSite) => void;
+  // Optional flag to indicate if comparison mode is active (disables adaptive zoom)
+  comparisonModeActive?: boolean;
 }
 
 /**
@@ -29,9 +35,17 @@ interface SiteDetailViewProps {
  * Supports historical imagery comparison (2014, Aug 2023, Current)
  * Can sync imagery periods with timeline playback when enabled
  */
-export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, customMaxZoom, onSiteClick }: SiteDetailViewProps) {
+export function SiteDetailView({
+  sites,
+  highlightedSiteId,
+  customTileUrl,
+  customMaxZoom,
+  dateLabel,
+  onSiteClick,
+  comparisonModeActive = false,
+}: SiteDetailViewProps) {
   // Get animation context for timeline sync and zoom toggle
-  const { currentTimestamp, syncActive, zoomToSiteEnabled } = useAnimation();
+  const { currentTimestamp, syncActive, zoomToSiteEnabled, mapMarkersVisible } = useAnimation();
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("EARLY_2024");
@@ -68,10 +82,25 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
   // When zoomToSiteEnabled is OFF, only show marker without zooming in
   const { center, zoom } = useMemo(() => {
     if (highlightedSite && zoomToSiteEnabled) {
+      // Adaptive zoom: Use closer zoom for newer imagery (2022-04-27+), but only when NOT in comparison mode
+      // This provides better satellite detail when available, while keeping comparison maps at consistent zoom
+      let targetZoom = SITE_DETAIL_ZOOM; // Default: 17
+
+      if (!comparisonModeActive && dateLabel) {
+        // Check if imagery is from 2022-04-27 or later (when higher zoom rendering became available)
+        const imageryDate = new Date(dateLabel);
+        const highResThreshold = new Date("2022-04-27");
+
+        if (imageryDate >= highResThreshold) {
+          // Use zoom 18 for newer imagery with better resolution
+          targetZoom = 18;
+        }
+      }
+
       // Zoom in on selected site, but don't exceed the period's max zoom
       return {
         center: highlightedSite.coordinates,
-        zoom: Math.min(SITE_DETAIL_ZOOM, periodMaxZoom),
+        zoom: Math.min(targetZoom, periodMaxZoom),
       };
     }
     // Default: Gaza overview (or keep current position if zoomToSite is OFF)
@@ -79,12 +108,12 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
       center: GAZA_CENTER,
       zoom: DEFAULT_ZOOM,
     };
-  }, [highlightedSite, periodMaxZoom, zoomToSiteEnabled]);
+  }, [highlightedSite, periodMaxZoom, zoomToSiteEnabled, comparisonModeActive, dateLabel]);
 
   // Create a custom marker icon for the highlighted site
   const markerIcon = useMemo(() => {
     return L.divIcon({
-      className: "custom-marker-icon",
+      className: MARKER_CLASSNAMES.CUSTOM_ICON,
       html: `
         <div class="w-5 h-5 bg-[#ed3039] border-[3px] border-white rounded-full shadow-md"></div>
       `,
@@ -95,6 +124,13 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
 
   return (
     <div className="relative h-full">
+      {/* Date label - shown when provided (e.g., from Wayback imagery) */}
+      {dateLabel && (
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
+          <DateLabel date={dateLabel} variant="green" size="md" />
+        </div>
+      )}
+
       {/* Time period toggle - hide when using custom Wayback imagery */}
       {!customTileUrl && (
         <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
@@ -123,13 +159,26 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
           minZoom={1}
         />
 
-        {/* Show marker for highlighted site with popup */}
-        {highlightedSite && (
-          <Marker position={highlightedSite.coordinates} icon={markerIcon}>
-            <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
-              <SitePopup site={highlightedSite} onViewMore={() => onSiteClick?.(highlightedSite)} />
-            </Popup>
-          </Marker>
+        {/* Show markers - only if markers are visible */}
+        {mapMarkersVisible && (
+          <>
+            {highlightedSite ? (
+              /* Show single marker for highlighted site when zoomed in */
+              <Marker position={highlightedSite.coordinates} icon={markerIcon}>
+                <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
+                  <SitePopup site={highlightedSite} onViewMore={() => onSiteClick?.(highlightedSite)} />
+                </Popup>
+              </Marker>
+            ) : (
+              /* Show all site markers when zoomed out (no site selected) */
+              <MapMarkers
+                sites={sites}
+                highlightedSiteId={highlightedSiteId}
+                onSiteClick={onSiteClick}
+                currentTimestamp={currentTimestamp}
+              />
+            )}
+          </>
         )}
       </MapContainer>
     </div>

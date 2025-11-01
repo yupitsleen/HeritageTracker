@@ -10,6 +10,7 @@ interface TimelineControlsProps {
   isAtStart: boolean;
   speed: AnimationSpeed;
   zoomToSiteEnabled: boolean;
+  mapMarkersVisible: boolean;
   advancedMode: boolean;
   syncMapOnDotClick?: boolean;
   onPlay: () => void;
@@ -17,6 +18,7 @@ interface TimelineControlsProps {
   onReset: () => void;
   onSpeedChange: (speed: AnimationSpeed) => void;
   onZoomToSiteToggle: () => void;
+  onMapMarkersToggle: () => void;
   onSyncMapToggle?: () => void;
 }
 
@@ -38,6 +40,7 @@ export function TimelineControls({
   isAtStart,
   speed,
   zoomToSiteEnabled,
+  mapMarkersVisible,
   advancedMode,
   syncMapOnDotClick,
   onPlay,
@@ -45,6 +48,7 @@ export function TimelineControls({
   onReset,
   onSpeedChange,
   onZoomToSiteToggle,
+  onMapMarkersToggle,
   onSyncMapToggle,
 }: TimelineControlsProps) {
   const translate = useTranslation();
@@ -116,6 +120,18 @@ export function TimelineControls({
         title={translate("timeline.zoomToSite")}
       >
         {zoomToSiteEnabled ? "✓" : ""} {translate("timeline.zoomToSite")}
+      </Button>
+
+      {/* Show Map Markers toggle */}
+      <Button
+        onClick={onMapMarkersToggle}
+        variant="secondary"
+        active={mapMarkersVisible}
+        size="xs"
+        aria-label={translate("timeline.showMapMarkers")}
+        title={translate("timeline.showMapMarkers")}
+      >
+        {mapMarkersVisible ? "✓" : ""} {translate("timeline.showMapMarkers")}
       </Button>
 
       {/* Speed control - hidden in advanced mode */}

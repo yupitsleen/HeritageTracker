@@ -46,6 +46,14 @@ export const MARKER_CONFIG = {
 } as const;
 
 /**
+ * Marker class names for consistent styling
+ */
+export const MARKER_CLASSNAMES = {
+  /** Custom marker icon wrapper class */
+  CUSTOM_ICON: "custom-marker-icon",
+} as const;
+
+/**
  * Tile layer configurations for different languages
  */
 export const TILE_CONFIGS = {

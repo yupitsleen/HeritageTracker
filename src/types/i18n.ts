@@ -101,6 +101,8 @@ export interface Translations {
     speed: string;
     syncMap: string;
     zoomToSite: string;
+    showMapMarkers: string;
+    comparisonMode: string;
     dateRange: string;
     startDate: string;
     endDate: string;

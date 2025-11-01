@@ -165,6 +165,10 @@ export function DesktopLayout({
             sites={filteredSites}
             highlightedSiteId={highlightedSiteId}
             onSiteHighlight={onSiteHighlight}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: undefined, // Hide "Sync Map" button on Dashboard
+            }}
           />
         </Suspense>
       </div>

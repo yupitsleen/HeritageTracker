@@ -9,8 +9,6 @@ import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useSites } from "../hooks/useSites";
 import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
-import { DesktopLayout } from "../components/Layout/DesktopLayout";
-import { MobileLayout } from "../components/Layout/MobileLayout";
 import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
 import { applyFilterUpdates } from "../utils/filterHelpers";
@@ -18,7 +16,15 @@ import type { FilterState } from "../types";
 import { Z_INDEX } from "../constants/layout";
 import { COLORS } from "../config/colorThemes";
 
-// Lazy load only SiteDetailPanel (less frequently accessed)
+// Lazy load layout components for parallel chunk loading and faster initial paint
+const DesktopLayout = lazy(() =>
+  import("../components/Layout/DesktopLayout").then((m) => ({ default: m.DesktopLayout }))
+);
+const MobileLayout = lazy(() =>
+  import("../components/Layout/MobileLayout").then((m) => ({ default: m.MobileLayout }))
+);
+
+// Lazy load SiteDetailPanel (less frequently accessed)
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
@@ -52,12 +58,7 @@ export function DashboardPage({ isMobile }: DashboardPageProps) {
     applyFilterUpdates(updates, appState, false);
   }, [appState]);
 
-  // Show loading state while fetching sites
-  if (isLoading) {
-    return <LoadingSpinner fullScreen message="Loading heritage sites..." />;
-  }
-
-  // Show error state if fetch failed
+  // Show error state if fetch failed (full screen)
   if (error) {
     return <ErrorMessage error={error} onRetry={refetch} fullScreen />;
   }
@@ -93,43 +94,51 @@ export function DashboardPage({ isMobile }: DashboardPageProps) {
         onOpenHelp={() => appState.setIsHelpOpen(true)}
       />
 
-      {/* Main Content */}
+      {/* Main Content - Non-blocking render with skeleton UI while loading */}
       <main id="main-content" className="pb-24 md:pb-0 relative">
-        {isMobile ? (
-          <MobileLayout
-            filters={appState.filters}
-            onFilterChange={handleFilterChange}
-            filteredSites={filteredSites}
-            onSiteClick={appState.setSelectedSite}
-            onSiteHighlight={appState.setHighlightedSiteId}
-            highlightedSiteId={appState.highlightedSiteId}
-          />
+        {isLoading ? (
+          // Show skeleton UI immediately while data loads
+          <LoadingSpinner fullScreen message="Loading heritage sites..." />
         ) : (
-          <DesktopLayout
-            filterProps={{
-              filters: appState.filters,
-              onFilterChange: handleFilterChange,
-              hasActiveFilters: appState.hasActiveFilters,
-              onClearAll: appState.clearAllFilters,
-            }}
-            siteData={{
-              sites,
-              filteredSites,
-              totalSites: total,
-            }}
-            tableResize={{
-              width: tableResize.tableWidth,
-              isResizing: tableResize.isResizing,
-              handleResizeStart: tableResize.handleResizeStart,
-              getVisibleColumns: tableResize.getVisibleColumns,
-            }}
-            siteInteraction={{
-              highlightedSiteId: appState.highlightedSiteId,
-              onSiteClick: appState.setSelectedSite,
-              onSiteHighlight: appState.setHighlightedSiteId,
-              onExpandTable: handleExpandTable,
-            }}
-          />
+          // Lazy load layout components with Suspense for parallel chunk loading
+          <Suspense fallback={<LoadingSpinner fullScreen message="Loading dashboard..." />}>
+            {isMobile ? (
+              <MobileLayout
+                filters={appState.filters}
+                onFilterChange={handleFilterChange}
+                filteredSites={filteredSites}
+                onSiteClick={appState.setSelectedSite}
+                onSiteHighlight={appState.setHighlightedSiteId}
+                highlightedSiteId={appState.highlightedSiteId}
+              />
+            ) : (
+              <DesktopLayout
+                filterProps={{
+                  filters: appState.filters,
+                  onFilterChange: handleFilterChange,
+                  hasActiveFilters: appState.hasActiveFilters,
+                  onClearAll: appState.clearAllFilters,
+                }}
+                siteData={{
+                  sites,
+                  filteredSites,
+                  totalSites: total,
+                }}
+                tableResize={{
+                  width: tableResize.tableWidth,
+                  isResizing: tableResize.isResizing,
+                  handleResizeStart: tableResize.handleResizeStart,
+                  getVisibleColumns: tableResize.getVisibleColumns,
+                }}
+                siteInteraction={{
+                  highlightedSiteId: appState.highlightedSiteId,
+                  onSiteClick: appState.setSelectedSite,
+                  onSiteHighlight: appState.setHighlightedSiteId,
+                  onExpandTable: handleExpandTable,
+                }}
+              />
+            )}
+          </Suspense>
         )}
       </main>
 

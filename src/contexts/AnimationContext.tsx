@@ -25,6 +25,8 @@ interface AnimationContextValue {
   syncActive: boolean;
   // Zoom to site toggle - whether to zoom in when highlighting a site
   zoomToSiteEnabled: boolean;
+  // Map markers visibility toggle - whether to show markers on satellite maps
+  mapMarkersVisible: boolean;
 
   // Actions
   play: () => void;
@@ -35,6 +37,7 @@ interface AnimationContextValue {
   setSyncMapEnabled: (enabled: boolean) => void;
   setSyncActive: (active: boolean) => void;
   setZoomToSiteEnabled: (enabled: boolean) => void;
+  setMapMarkersVisible: (visible: boolean) => void;
 }
 
 const AnimationContext = createContext<AnimationContextValue | undefined>(undefined);
@@ -68,7 +71,11 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     const earliestDate = new Date(Math.min(...destructionDates));
     const latestDate = new Date(Math.max(...destructionDates));
 
-    return { startDate: earliestDate, endDate: latestDate };
+    // Start timeline 7 days before the first destruction date
+    // This ensures the first site can be highlighted/zoomed when clicked or navigated to
+    const startWithBuffer = new Date(earliestDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    return { startDate: startWithBuffer, endDate: latestDate };
   }, [sites]);
 
   const [currentTimestamp, setCurrentTimestamp] = useState<Date>(startDate);
@@ -77,6 +84,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
   const [syncMapEnabled, setSyncMapEnabled] = useState(false); // Default: OFF
   const [syncActive, setSyncActive] = useState(false); // Tracks if sync is currently active
   const [zoomToSiteEnabled, setZoomToSiteEnabled] = useState(true); // Default: ON (current behavior)
+  const [mapMarkersVisible, setMapMarkersVisible] = useState(true); // Default: ON (show markers)
 
   // Ref to store animation frame ID for cleanup
   const animationFrameRef = useRef<number | null>(null);
@@ -221,6 +229,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     syncMapEnabled,
     syncActive,
     zoomToSiteEnabled,
+    mapMarkersVisible,
     play,
     pause,
     reset,
@@ -229,6 +238,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     setSyncMapEnabled,
     setSyncActive,
     setZoomToSiteEnabled,
+    setMapMarkersVisible,
   };
 
   return (

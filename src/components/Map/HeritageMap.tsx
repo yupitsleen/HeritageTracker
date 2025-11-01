@@ -66,7 +66,7 @@ export const HeritageMap = memo(function HeritageMap({
         {/* Phase 2: Ambient heritage glow layer - dims as sites are destroyed */}
         <MapGlowLayer glowContributions={glowContributions} maxGlow={maxGlow} />
 
-        {/* Heritage Site Markers */}
+        {/* Heritage Site Markers - always visible on left map (Dashboard) */}
         <MapMarkers
           sites={sites}
           highlightedSiteId={highlightedSiteId}
