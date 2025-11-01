@@ -401,7 +401,7 @@ export function Timeline() {
 
             {/* Full-screen satellite map with Wayback imagery */}
             <div
-              className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden relative z-10`}
+              className={`flex-1 min-h-0 ${comparisonModeEnabled ? '' : `${t.border.primary2} rounded shadow-xl overflow-hidden`} relative z-10`}
             >
               <Suspense fallback={<SkeletonMap />}>
                 {comparisonModeEnabled ? (

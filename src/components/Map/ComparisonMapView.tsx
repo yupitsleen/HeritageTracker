@@ -1,5 +1,6 @@
 import type { GazaSite } from "../../types";
 import { SiteDetailView } from "./SiteDetailView";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface ComparisonMapViewProps {
   sites: GazaSite[];
@@ -33,12 +34,14 @@ export function ComparisonMapView({
   afterMaxZoom,
   onSiteClick,
 }: ComparisonMapViewProps) {
+  const t = useThemeClasses();
+
   return (
     <div className="relative h-full">
-      {/* Side-by-side map layout */}
-      <div className="flex h-full">
+      {/* Side-by-side map layout with gap-2 to match Dashboard */}
+      <div className="flex h-full gap-2">
         {/* Left Map - Earlier imagery (yellow scrubber) */}
-        <div className="w-1/2 h-full border-r border-gray-300">
+        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden`}>
           <SiteDetailView
             sites={sites}
             highlightedSiteId={highlightedSiteId}
@@ -49,7 +52,7 @@ export function ComparisonMapView({
         </div>
 
         {/* Right Map - Later imagery (green scrubber) */}
-        <div className="w-1/2 h-full">
+        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden`}>
           <SiteDetailView
             sites={sites}
             highlightedSiteId={highlightedSiteId}
