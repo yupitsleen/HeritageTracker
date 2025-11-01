@@ -6,6 +6,7 @@ import { SkeletonMap } from "../Loading/Skeleton";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
+import { Z_INDEX } from "../../constants/layout";
 
 // Lazy load heavy components
 const HeritageMap = lazy(() =>
@@ -18,33 +19,12 @@ const TimelineScrubber = lazy(() =>
   import("../Timeline/TimelineScrubber").then((m) => ({ default: m.TimelineScrubber }))
 );
 
-interface DesktopLayoutProps {
-  // Filter state (grouped)
+/** Filter-related props grouped together */
+interface FilterProps {
   filters: FilterState;
   onFilterChange: (updates: Partial<FilterState>) => void;
   hasActiveFilters: boolean;
-  clearAllFilters: () => void;
-
-  // Site data
-  filteredSites: GazaSite[];
-  totalSites: number;
-  sites: GazaSite[];
-
-  // Table props (grouped)
-  tableResize: {
-    width: number;
-    isResizing: boolean;
-    handleResizeStart: () => void;
-    getVisibleColumns: () => string[];
-  };
-
-  // Site interaction
-  onSiteClick: (site: GazaSite) => void;
-  onSiteHighlight: (siteId: string | null) => void;
-  highlightedSiteId: string | null;
-  onExpandTable: () => void;
-
-  // Default ranges for filters
+  onClearAll: () => void;
   defaultDateRange?: {
     defaultStartDate: Date;
     defaultEndDate: Date;
@@ -56,35 +36,64 @@ interface DesktopLayoutProps {
   };
 }
 
+/** Site data props grouped together */
+interface SiteDataProps {
+  sites: GazaSite[];
+  filteredSites: GazaSite[];
+  totalSites: number;
+}
+
+/** Table resize state props grouped together */
+interface TableResizeProps {
+  width: number;
+  isResizing: boolean;
+  handleResizeStart: () => void;
+  getVisibleColumns: () => string[];
+}
+
+/** Site interaction props grouped together */
+interface SiteInteractionProps {
+  highlightedSiteId: string | null;
+  onSiteClick: (site: GazaSite) => void;
+  onSiteHighlight: (siteId: string | null) => void;
+  onExpandTable: () => void;
+}
+
+interface DesktopLayoutProps {
+  filterProps: FilterProps;
+  siteData: SiteDataProps;
+  tableResize: TableResizeProps;
+  siteInteraction: SiteInteractionProps;
+}
+
 /**
  * Desktop layout with filter bar, resizable table, dual maps, and timeline
  * Three-column layout: Table (left, resizable) | HeritageMap (center) | SiteDetailView (right) | Timeline (below both maps)
  */
 export function DesktopLayout({
-  filters,
-  onFilterChange,
-  clearAllFilters,
-  filteredSites,
-  totalSites,
-  sites,
+  filterProps,
+  siteData,
   tableResize,
-  onSiteClick,
-  onSiteHighlight,
-  highlightedSiteId,
-  onExpandTable,
-  defaultDateRange,
-  defaultYearRange,
+  siteInteraction,
 }: DesktopLayoutProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
   const translate = useTranslation();
+
+  // Destructure grouped props for easier access
+  const { filters, onFilterChange, onClearAll, defaultDateRange, defaultYearRange } = filterProps;
+  const { sites, filteredSites, totalSites } = siteData;
+  const { highlightedSiteId, onSiteClick, onSiteHighlight, onExpandTable } = siteInteraction;
 
   return (
     <div className="hidden md:flex md:flex-col md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
       {/* dir="ltr" keeps spatial layout consistent (table left, maps right) regardless of language */}
 
       {/* Filter bar - Full width at top */}
-      <div className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative z-[1001] transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+      <div
+        className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+        style={{ zIndex: Z_INDEX.CONTENT }}
+      >
         {/* Unified FilterBar with search, filters, and actions */}
         <FilterBar
           filters={filters}
@@ -95,7 +104,7 @@ export function DesktopLayout({
           showActions={true}
           totalSites={totalSites}
           filteredSites={filteredSites.length}
-          onClearAll={clearAllFilters}
+          onClearAll={onClearAll}
         />
       </div>
 

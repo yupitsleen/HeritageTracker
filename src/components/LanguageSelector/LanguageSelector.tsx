@@ -5,6 +5,7 @@ import { getAllLocales, getLocaleName } from "../../config/locales";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import type { LocaleCode } from "../../types/i18n";
 import { BaseDropdown, ChevronIcon } from "../Dropdown/BaseDropdown";
+import { Z_INDEX } from "../../constants/layout";
 
 interface LanguageSelectorProps {
   /**
@@ -50,6 +51,7 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
       align="right"
       className={className}
       menuClassName={`py-1 rounded-md shadow-lg border min-w-[120px] ${t.bg.primary} ${t.border.default}`}
+      zIndex={Z_INDEX.DROPDOWN + 100}
     >
       {allLocales.map((loc) => {
         const isSelected = loc.code === locale;
