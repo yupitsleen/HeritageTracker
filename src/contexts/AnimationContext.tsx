@@ -71,7 +71,11 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     const earliestDate = new Date(Math.min(...destructionDates));
     const latestDate = new Date(Math.max(...destructionDates));
 
-    return { startDate: earliestDate, endDate: latestDate };
+    // Start timeline 7 days before the first destruction date
+    // This ensures the first site can be highlighted/zoomed when clicked or navigated to
+    const startWithBuffer = new Date(earliestDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    return { startDate: startWithBuffer, endDate: latestDate };
   }, [sites]);
 
   const [currentTimestamp, setCurrentTimestamp] = useState<Date>(startDate);

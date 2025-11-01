@@ -252,13 +252,31 @@ export function TimelineScrubber({
   };
 
   // Previous/Next navigation for Advanced Timeline mode
-  // Find the nearest event to the current timestamp (not requiring exact match)
+  // Find the current position relative to events (not requiring exact match)
   const currentEventIndex = useMemo(() => {
     if (!advancedMode || destructionDates.length === 0) return -1;
 
     const currentTime = currentTimestamp.getTime();
 
-    // Find the index of the event closest to the current timestamp
+    // Check if we're before all events
+    if (currentTime < destructionDates[0].date.getTime()) {
+      return -1; // Special value meaning "before first event"
+    }
+
+    // Check if we're after all events
+    if (currentTime >= destructionDates[destructionDates.length - 1].date.getTime()) {
+      return destructionDates.length - 1; // At or after last event
+    }
+
+    // We're somewhere in the middle - find the event we've passed or are closest to
+    for (let i = 0; i < destructionDates.length; i++) {
+      if (currentTime < destructionDates[i].date.getTime()) {
+        // We're before this event, so we're at the previous event
+        return i - 1;
+      }
+    }
+
+    // Fallback: find nearest event
     let nearestIndex = 0;
     let minDiff = Math.abs(destructionDates[0].date.getTime() - currentTime);
 
@@ -273,22 +291,27 @@ export function TimelineScrubber({
     return nearestIndex;
   }, [advancedMode, destructionDates, currentTimestamp]);
 
-  const canGoPrevious = !!advancedMode && currentEventIndex > 0;
-  const canGoNext = !!advancedMode && currentEventIndex < destructionDates.length - 1;
+  const canGoPrevious = !!advancedMode && currentEventIndex >= 0;
+  const canGoNext = !!advancedMode && destructionDates.length > 0 && currentEventIndex < destructionDates.length - 1;
 
   const goToPreviousEvent = () => {
     if (canGoPrevious) {
-      const prevEvent = destructionDates[currentEventIndex - 1];
-      setTimestamp(prevEvent.date);
-      if (onSiteHighlight) {
-        onSiteHighlight(prevEvent.siteId);
+      const targetIndex = currentEventIndex === -1 ? 0 : currentEventIndex - 1;
+      if (targetIndex >= 0) {
+        const prevEvent = destructionDates[targetIndex];
+        setTimestamp(prevEvent.date);
+        if (onSiteHighlight) {
+          onSiteHighlight(prevEvent.siteId);
+        }
       }
     }
   };
 
   const goToNextEvent = () => {
     if (canGoNext) {
-      const nextEvent = destructionDates[currentEventIndex + 1];
+      // If we're before all events (index -1), go to first event (index 0)
+      const targetIndex = currentEventIndex === -1 ? 0 : currentEventIndex + 1;
+      const nextEvent = destructionDates[targetIndex];
       setTimestamp(nextEvent.date);
       if (onSiteHighlight) {
         onSiteHighlight(nextEvent.siteId);
