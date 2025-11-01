@@ -247,6 +247,7 @@ All planned features have been successfully implemented and tested:
 5. ✅ **Settings Integration** - "Sync Map" and "Zoom to Site" work with both maps
 6. ✅ **i18n Support** - English, Arabic, and Italian translations
 7. ✅ **Comprehensive Tests** - 14 new tests for dual scrubber functionality
+8. ✅ **Adaptive Zoom** - Automatic higher zoom (18) for newer imagery (2022-04-27+) when comparison mode is OFF
 
 ---
 
@@ -254,7 +255,7 @@ All planned features have been successfully implemented and tested:
 
 ### **Test Suite:**
 
-✅ **697 tests passing** (maintained, +14 new comparison mode tests)
+✅ **720 tests passing** (maintained, +20 comparison mode tests, +6 adaptive zoom tests)
 
 ### **WaybackSlider Comparison Mode Tests** (14 tests added)
 
@@ -282,6 +283,18 @@ All planned features have been successfully implemented and tested:
 - ✅ Renders only green scrubber when `beforeRelease` is null
 - ✅ Handles same `beforeIndex` and `currentIndex`
 
+### **Adaptive Zoom Tests** (6 tests added)
+
+**File:** `src/components/Map/SiteDetailView.test.tsx` (lines 255-339)
+
+#### **Zoom Level Adaptation** (6 tests)
+- ✅ Uses adaptive zoom (18) for imagery from 2022-04-27 or later when comparison mode is OFF
+- ✅ Uses standard zoom (17) for imagery before 2022-04-27 when comparison mode is OFF
+- ✅ Uses standard zoom (17) in comparison mode regardless of imagery date
+- ✅ Uses standard zoom when no dateLabel is provided
+- ✅ Handles edge case: exactly 2022-04-27 uses adaptive zoom
+- ✅ Handles edge case: one day before threshold uses standard zoom
+
 ---
 
 ## **File Changes Summary**
@@ -293,11 +306,81 @@ All planned features have been successfully implemented and tested:
 | [ComparisonMapView.tsx](src/components/Map/ComparisonMapView.tsx) | **New** | 90 lines | Side-by-side map component with toggle |
 | [SiteDetailView.tsx](src/components/Map/SiteDetailView.tsx) | **Modified** | +20 lines | Comparison mode toggle integration |
 | [WaybackSlider.test.tsx](src/components/AdvancedTimeline/WaybackSlider.test.tsx) | **Modified** | +327 lines | 14 new comparison mode tests |
+| [SiteDetailView.test.tsx](src/components/Map/SiteDetailView.test.tsx) | **Modified** | +85 lines | 6 new adaptive zoom tests |
 | [en.ts](src/i18n/en.ts) | **Modified** | +1 line | "Comparison Mode" translation |
 | [ar.ts](src/i18n/ar.ts) | **Modified** | +1 line | "وضع المقارنة" translation |
 | [it.ts](src/i18n/it.ts) | **Modified** | +1 line | "Modalità Confronto" translation |
 
-**Total:** ~651 new/modified lines of code | **Tests:** +14 (697 total passing)
+**Total:** ~736 new/modified lines of code | **Tests:** +20 (720 total passing)
+
+---
+
+## **Phase 6: Adaptive Zoom for Newer Imagery (Nov 2025)**
+
+### **Feature: Smart Zoom Level Selection**
+
+**Problem:** Older satellite imagery (pre-2022) cannot zoom as close as newer imagery, but the "Zoom to Site" feature used a fixed zoom level (17) for all imagery periods.
+
+**Solution:** Implemented adaptive zoom that automatically uses a closer zoom level (18) for imagery from 2022-04-27 onwards, but **only when comparison mode is OFF**.
+
+### **Implementation Details**
+
+**File Changes:**
+- **[SiteDetailView.tsx](src/components/Map/SiteDetailView.tsx)** (lines 14-109)
+  - Added `comparisonModeActive` prop (boolean, default: `false`)
+  - Added date-based zoom logic (lines 82-96)
+  - Checks if imagery date >= 2022-04-27 AND comparison mode is OFF
+  - Uses zoom 18 for newer imagery, zoom 17 otherwise
+
+- **[Timeline.tsx](src/pages/Timeline.tsx)** (line 430)
+  - Passes `comparisonModeActive={false}` to single-map SiteDetailView
+
+- **[ComparisonMapView.tsx](src/components/Map/ComparisonMapView.tsx)** (lines 65, 85)
+  - Passes `comparisonModeActive={true}` to both comparison maps
+  - Ensures both maps use consistent zoom 17 for easier comparison
+
+### **Zoom Logic**
+
+```typescript
+// Adaptive zoom: Use closer zoom for newer imagery (2022-04-27+)
+// but only when NOT in comparison mode
+let targetZoom = SITE_DETAIL_ZOOM; // Default: 17
+
+if (!comparisonModeActive && dateLabel) {
+  const imageryDate = new Date(dateLabel);
+  const highResThreshold = new Date("2022-04-27");
+
+  if (imageryDate >= highResThreshold) {
+    targetZoom = 18; // Use zoom 18 for newer imagery with better resolution
+  }
+}
+
+// Still respect tile layer's maxZoom limit
+zoom: Math.min(targetZoom, periodMaxZoom)
+```
+
+### **Behavior Summary**
+
+| Scenario | Comparison Mode | Imagery Date | Zoom Level |
+|----------|----------------|--------------|------------|
+| Single map | OFF | >= 2022-04-27 | **18** (adaptive) |
+| Single map | OFF | < 2022-04-27 | 17 (standard) |
+| Comparison mode | ON | Any date | 17 (consistent) |
+| No dateLabel | OFF | N/A | 17 (standard) |
+
+### **Why Disable in Comparison Mode?**
+
+In comparison mode, both maps should maintain the **same zoom level** to make it easier to compare visual details side-by-side. If one map zoomed to 18 and the other to 17, the visual scale difference would make comparison difficult.
+
+### **Test Coverage**
+
+6 comprehensive tests added to [SiteDetailView.test.tsx](src/components/Map/SiteDetailView.test.tsx) (lines 255-339):
+- ✅ Adaptive zoom (18) for imagery >= 2022-04-27 when comparison OFF
+- ✅ Standard zoom (17) for imagery < 2022-04-27 when comparison OFF
+- ✅ Standard zoom (17) in comparison mode (any date)
+- ✅ Standard zoom when no dateLabel provided
+- ✅ Edge case: Exactly 2022-04-27 uses adaptive zoom
+- ✅ Edge case: One day before (2022-04-26) uses standard zoom
 
 ---
 

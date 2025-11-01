@@ -22,6 +22,8 @@ interface SiteDetailViewProps {
   dateLabel?: string;
   // Optional callback for when user clicks "See More" in popup
   onSiteClick?: (site: GazaSite) => void;
+  // Optional flag to indicate if comparison mode is active (disables adaptive zoom)
+  comparisonModeActive?: boolean;
 }
 
 /**
@@ -38,9 +40,10 @@ export function SiteDetailView({
   customMaxZoom,
   dateLabel,
   onSiteClick,
+  comparisonModeActive = false,
 }: SiteDetailViewProps) {
   // Get animation context for timeline sync and zoom toggle
-  const { currentTimestamp, syncActive, zoomToSiteEnabled } = useAnimation();
+  const { currentTimestamp, syncActive, zoomToSiteEnabled, mapMarkersVisible } = useAnimation();
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("EARLY_2024");
@@ -77,10 +80,25 @@ export function SiteDetailView({
   // When zoomToSiteEnabled is OFF, only show marker without zooming in
   const { center, zoom } = useMemo(() => {
     if (highlightedSite && zoomToSiteEnabled) {
+      // Adaptive zoom: Use closer zoom for newer imagery (2022-04-27+), but only when NOT in comparison mode
+      // This provides better satellite detail when available, while keeping comparison maps at consistent zoom
+      let targetZoom = SITE_DETAIL_ZOOM; // Default: 17
+
+      if (!comparisonModeActive && dateLabel) {
+        // Check if imagery is from 2022-04-27 or later (when higher zoom rendering became available)
+        const imageryDate = new Date(dateLabel);
+        const highResThreshold = new Date("2022-04-27");
+
+        if (imageryDate >= highResThreshold) {
+          // Use zoom 18 for newer imagery with better resolution
+          targetZoom = 18;
+        }
+      }
+
       // Zoom in on selected site, but don't exceed the period's max zoom
       return {
         center: highlightedSite.coordinates,
-        zoom: Math.min(SITE_DETAIL_ZOOM, periodMaxZoom),
+        zoom: Math.min(targetZoom, periodMaxZoom),
       };
     }
     // Default: Gaza overview (or keep current position if zoomToSite is OFF)
@@ -88,7 +106,7 @@ export function SiteDetailView({
       center: GAZA_CENTER,
       zoom: DEFAULT_ZOOM,
     };
-  }, [highlightedSite, periodMaxZoom, zoomToSiteEnabled]);
+  }, [highlightedSite, periodMaxZoom, zoomToSiteEnabled, comparisonModeActive, dateLabel]);
 
   // Create a custom marker icon for the highlighted site
   const markerIcon = useMemo(() => {
@@ -141,8 +159,8 @@ export function SiteDetailView({
           minZoom={1}
         />
 
-        {/* Show marker for highlighted site with popup */}
-        {highlightedSite && (
+        {/* Show marker for highlighted site with popup - only if markers are visible */}
+        {highlightedSite && mapMarkersVisible && (
           <Marker position={highlightedSite.coordinates} icon={markerIcon}>
             <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
               <SitePopup site={highlightedSite} onViewMore={() => onSiteClick?.(highlightedSite)} />

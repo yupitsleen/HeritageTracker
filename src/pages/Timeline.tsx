@@ -427,6 +427,7 @@ export function Timeline() {
                     customMaxZoom={currentRelease?.maxZoom}
                     dateLabel={currentRelease?.releaseDate}
                     onSiteClick={setSelectedSite}
+                    comparisonModeActive={false}
                   />
                 )}
               </Suspense>

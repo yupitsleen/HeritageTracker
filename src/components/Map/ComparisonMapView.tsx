@@ -62,6 +62,7 @@ export function ComparisonMapView({
             customTileUrl={beforeTileUrl}
             customMaxZoom={beforeMaxZoom}
             onSiteClick={onSiteClick}
+            comparisonModeActive={true}
           />
         </div>
 
@@ -81,6 +82,7 @@ export function ComparisonMapView({
             customTileUrl={afterTileUrl}
             customMaxZoom={afterMaxZoom}
             onSiteClick={onSiteClick}
+            comparisonModeActive={true}
           />
         </div>
       </div>

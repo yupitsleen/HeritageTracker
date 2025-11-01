@@ -59,6 +59,7 @@ export const ar: Translations = {
     speed: "السرعة",
     syncMap: "مزامنة الخريطة",
     zoomToSite: "التكبير إلى الموقع",
+    showMapMarkers: "إظهار علامات الخريطة",
     comparisonMode: "وضع المقارنة",
     dateRange: "نطاق التاريخ",
     startDate: "تاريخ البدء",

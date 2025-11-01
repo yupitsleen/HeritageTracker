@@ -71,12 +71,14 @@ export function TimelineScrubber({
     startDate,
     endDate,
     zoomToSiteEnabled,
+    mapMarkersVisible,
     play,
     pause,
     reset,
     setTimestamp,
     setSpeed,
     setZoomToSiteEnabled,
+    setMapMarkersVisible,
   } = useAnimation();
 
   const t = useThemeClasses();
@@ -298,6 +300,7 @@ export function TimelineScrubber({
           isAtStart={isAtStart}
           speed={speed}
           zoomToSiteEnabled={zoomToSiteEnabled}
+          mapMarkersVisible={mapMarkersVisible}
           advancedMode={!!advancedMode}
           syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
           onPlay={handlePlay}
@@ -305,6 +308,7 @@ export function TimelineScrubber({
           onReset={reset}
           onSpeedChange={setSpeed}
           onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
+          onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
           onSyncMapToggle={advancedMode?.onSyncMapToggle}
         />
 

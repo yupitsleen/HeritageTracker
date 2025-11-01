@@ -59,6 +59,7 @@ export const en: Translations = {
     speed: "Speed",
     syncMap: "Sync Map",
     zoomToSite: "Zoom to Site",
+    showMapMarkers: "Show Map Markers",
     comparisonMode: "Comparison Mode",
     dateRange: "Date Range",
     startDate: "Start Date",
