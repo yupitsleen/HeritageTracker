@@ -205,8 +205,8 @@ export function WaybackSlider({
         </Button>
       </div>
 
-      {/* Timeline visualization container */}
-      <div className="relative">
+      {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}
+      <div className="relative pb-6">
         {/* Year labels - positioned above the timeline */}
         <div className="relative h-4 mb-2">
           {yearMarkers.map(({ year, position }, index) => {
@@ -284,9 +284,9 @@ export function WaybackSlider({
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
               style={{ left: `${beforePositionPercent}%` }}
             >
-              {/* Floating date tooltip - positioned above scrubber with edge detection */}
+              {/* Floating date tooltip - positioned below scrubber with edge detection */}
               <div
-                className={`absolute bottom-full mb-2 pointer-events-none ${
+                className={`absolute top-full mt-2 pointer-events-none ${
                   beforePositionPercent < 10
                     ? 'left-0'
                     : beforePositionPercent > 90
