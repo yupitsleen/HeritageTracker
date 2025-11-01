@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useState } from "react";
+import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 // Optimized D3 imports - only import what we need
 import { scaleTime } from "d3-scale";
 import type { GazaSite } from "../../types";
@@ -177,6 +177,14 @@ export function TimelineScrubber({
     };
   }, [svgMounted, timeScale, destructionDates, currentTimestamp, highlightedSiteId, setTimestamp, pause, onSiteHighlight]);
 
+  // Handle reset button click - reset timeline AND clear highlighted site to reset map zoom
+  const handleReset = useCallback(() => {
+    reset(); // Reset timeline to start
+    if (onSiteHighlight) {
+      onSiteHighlight(null); // Clear highlighted site to reset map to Gaza overview
+    }
+  }, [reset, onSiteHighlight]);
+
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -206,7 +214,7 @@ export function TimelineScrubber({
         case "Home": // Jump to start
           e.preventDefault();
           pause();
-          reset();
+          handleReset();
           break;
         case "End": // Jump to end
           e.preventDefault();
@@ -223,7 +231,7 @@ export function TimelineScrubber({
     isPlaying,
     play,
     pause,
-    reset,
+    handleReset,
     setTimestamp,
     endDate,
   ]);
@@ -244,11 +252,25 @@ export function TimelineScrubber({
   };
 
   // Previous/Next navigation for Advanced Timeline mode
+  // Find the nearest event to the current timestamp (not requiring exact match)
   const currentEventIndex = useMemo(() => {
     if (!advancedMode || destructionDates.length === 0) return -1;
-    return destructionDates.findIndex(
-      (event) => event.date.getTime() === currentTimestamp.getTime()
-    );
+
+    const currentTime = currentTimestamp.getTime();
+
+    // Find the index of the event closest to the current timestamp
+    let nearestIndex = 0;
+    let minDiff = Math.abs(destructionDates[0].date.getTime() - currentTime);
+
+    for (let i = 1; i < destructionDates.length; i++) {
+      const diff = Math.abs(destructionDates[i].date.getTime() - currentTime);
+      if (diff < minDiff) {
+        minDiff = diff;
+        nearestIndex = i;
+      }
+    }
+
+    return nearestIndex;
   }, [advancedMode, destructionDates, currentTimestamp]);
 
   const canGoPrevious = !!advancedMode && currentEventIndex > 0;
@@ -305,7 +327,7 @@ export function TimelineScrubber({
           syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
           onPlay={handlePlay}
           onPause={pause}
-          onReset={reset}
+          onReset={handleReset}
           onSpeedChange={setSpeed}
           onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
           onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
