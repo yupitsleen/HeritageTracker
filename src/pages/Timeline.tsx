@@ -384,7 +384,10 @@ export function Timeline() {
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
             {/* Filter Bar Container */}
-            <div className={`flex-shrink-0 ${t.containerBg.semiTransparent} shadow-md mb-2 p-2 rounded relative z-[1001]`}>
+            <div
+              className={`flex-shrink-0 mb-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+              style={{ zIndex: Z_INDEX.CONTENT }}
+            >
               {/* Unified FilterBar with search, filters, and actions */}
               <FilterBar
                 filters={filters}
