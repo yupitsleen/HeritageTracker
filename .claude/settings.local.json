@@ -22,7 +22,10 @@
       "Bash(Select-String -Pattern \"Test Files|Tests \")",
       "Bash(Select-Object -Last 2)",
       "Bash(Select-String -Pattern \"Test Files|Tests |passed|failed\")",
-      "Bash(Select-Object -Last 5)"
+      "Bash(Select-Object -Last 5)",
+      "Bash(Select-String -Pattern \"error|warning|failed\")",
+      "Bash(Select-Object -First 20)",
+      "Bash(Select-String -Pattern \"FAIL|✓.*Test Files\")"
     ],
     "deny": [],
     "ask": []
