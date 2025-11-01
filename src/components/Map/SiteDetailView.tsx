@@ -1,12 +1,13 @@
 import { useMemo, useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { GazaSite } from "../../types";
-import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
+import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, MARKER_CLASSNAMES, type TimePeriod } from "../../constants/map";
 import { SITE_MARKER_CONFIG } from "../../constants/timeline";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
 import { SitePopup } from "./SitePopup";
 import { MapMarkers } from "./MapMarkers";
+import { DateLabel } from "../Timeline/DateLabel";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import L from "leaflet";
@@ -112,7 +113,7 @@ export function SiteDetailView({
   // Create a custom marker icon for the highlighted site
   const markerIcon = useMemo(() => {
     return L.divIcon({
-      className: "custom-marker-icon",
+      className: MARKER_CLASSNAMES.CUSTOM_ICON,
       html: `
         <div class="w-5 h-5 bg-[#ed3039] border-[3px] border-white rounded-full shadow-md"></div>
       `,
@@ -126,9 +127,7 @@ export function SiteDetailView({
       {/* Date label - shown when provided (e.g., from Wayback imagery) */}
       {dateLabel && (
         <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-          <div className="px-3 py-0.75 bg-[#009639] text-white text-[15px] font-semibold rounded whitespace-nowrap shadow-lg opacity-70">
-            {dateLabel}
-          </div>
+          <DateLabel date={dateLabel} variant="green" size="md" />
         </div>
       )}
 

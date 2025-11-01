@@ -1,16 +1,16 @@
 import type { GazaSite } from "../../types";
+import type { WaybackImagery } from "../../types/waybackTimelineTypes";
 import { SiteDetailView } from "./SiteDetailView";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { DateLabel } from "../Timeline/DateLabel";
 
 interface ComparisonMapViewProps {
   sites: GazaSite[];
   highlightedSiteId: string | null;
-  beforeTileUrl: string;
-  afterTileUrl: string;
-  beforeMaxZoom: number;
-  afterMaxZoom: number;
-  beforeDateLabel?: string;
-  afterDateLabel?: string;
+  /** Earlier/before imagery configuration */
+  before: WaybackImagery;
+  /** Later/after imagery configuration */
+  after: WaybackImagery;
   onSiteClick?: (site: GazaSite) => void;
 }
 
@@ -32,12 +32,8 @@ interface ComparisonMapViewProps {
 export function ComparisonMapView({
   sites,
   highlightedSiteId,
-  beforeTileUrl,
-  afterTileUrl,
-  beforeMaxZoom,
-  afterMaxZoom,
-  beforeDateLabel,
-  afterDateLabel,
+  before,
+  after,
   onSiteClick,
 }: ComparisonMapViewProps) {
   const t = useThemeClasses();
@@ -49,18 +45,16 @@ export function ComparisonMapView({
         {/* Left Map - Earlier imagery (yellow scrubber) */}
         <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
-          {beforeDateLabel && (
+          {before.dateLabel && (
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-              <div className="px-3 py-0.75 bg-[#F4D03F] text-black text-[15px] font-semibold rounded whitespace-nowrap shadow-lg opacity-70">
-                {beforeDateLabel}
-              </div>
+              <DateLabel date={before.dateLabel} variant="yellow" size="md" />
             </div>
           )}
           <SiteDetailView
             sites={sites}
             highlightedSiteId={highlightedSiteId}
-            customTileUrl={beforeTileUrl}
-            customMaxZoom={beforeMaxZoom}
+            customTileUrl={before.tileUrl}
+            customMaxZoom={before.maxZoom}
             onSiteClick={onSiteClick}
             comparisonModeActive={true}
           />
@@ -69,18 +63,16 @@ export function ComparisonMapView({
         {/* Right Map - Later imagery (green scrubber) */}
         <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
-          {afterDateLabel && (
+          {after.dateLabel && (
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-              <div className="px-3 py-0.75 bg-[#009639] text-white text-[15px] font-semibold rounded whitespace-nowrap shadow-lg opacity-70">
-                {afterDateLabel}
-              </div>
+              <DateLabel date={after.dateLabel} variant="green" size="md" />
             </div>
           )}
           <SiteDetailView
             sites={sites}
             highlightedSiteId={highlightedSiteId}
-            customTileUrl={afterTileUrl}
-            customMaxZoom={afterMaxZoom}
+            customTileUrl={after.tileUrl}
+            customMaxZoom={after.maxZoom}
             onSiteClick={onSiteClick}
             comparisonModeActive={true}
           />

@@ -113,10 +113,8 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
+          before={{ tileUrl: "https://example.com/before", maxZoom: 19 }}
+          after={{ tileUrl: "https://example.com/after", maxZoom: 19 }}
         />
       );
       expect(container).toBeInTheDocument();
@@ -127,10 +125,8 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
+          before={{ tileUrl: "https://example.com/before", maxZoom: 19 }}
+          after={{ tileUrl: "https://example.com/after", maxZoom: 19 }}
         />
       );
 
@@ -139,14 +135,12 @@ describe("ComparisonMapView", () => {
     });
 
     it("handles empty sites array", () => {
-      const { container } = renderWithAnimation(
+      const { container} = renderWithAnimation(
         <ComparisonMapView
           sites={[]}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
+          before={{ tileUrl: "https://example.com/before", maxZoom: 19 }}
+          after={{ tileUrl: "https://example.com/after", maxZoom: 19 }}
         />
       );
       expect(container).toBeInTheDocument();
@@ -159,11 +153,15 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
-          beforeDateLabel="2023-10-01"
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+            dateLabel: "2023-10-01",
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+          }}
         />
       );
 
@@ -175,11 +173,15 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
-          afterDateLabel="2024-01-15"
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+            dateLabel: "2024-01-15",
+          }}
         />
       );
 
@@ -191,12 +193,16 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
-          beforeDateLabel="2023-10-01"
-          afterDateLabel="2024-01-15"
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+            dateLabel: "2023-10-01",
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+            dateLabel: "2024-01-15",
+          }}
         />
       );
 
@@ -209,20 +215,22 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+          }}
         />
       );
 
       // Check that the date label overlays (with yellow/green background) are not rendered
       // Note: Site popups may contain dates, but the overlay date labels should not be present
       const dateLabels = screen.queryAllByText(/^\d{4}-\d{2}-\d{2}$/);
-      const overlayLabels = dateLabels.filter(el =>
-        el.classList.contains("bg-[#009639]") ||
-        el.classList.contains("bg-[#b8860b]")
-      );
+      // DateLabel now uses inline styles, check for style attributes instead
+      const overlayLabels = dateLabels.filter(el => el.hasAttribute("style"));
       expect(overlayLabels.length).toBe(0);
     });
 
@@ -231,16 +239,21 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
-          beforeDateLabel="2023-10-01"
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+            dateLabel: "2023-10-01",
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+          }}
         />
       );
 
       const beforeLabel = screen.getByText("2023-10-01");
-      expect(beforeLabel).toHaveClass("bg-[#F4D03F]");
+      // DateLabel component now uses inline styles for background color
+      expect(beforeLabel).toHaveStyle({ backgroundColor: "#FDB927", opacity: "0.7" });
       expect(beforeLabel).toHaveClass("text-black");
     });
 
@@ -249,16 +262,21 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
-          afterDateLabel="2024-01-15"
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+            dateLabel: "2024-01-15",
+          }}
         />
       );
 
       const afterLabel = screen.getByText("2024-01-15");
-      expect(afterLabel).toHaveClass("bg-[#009639]");
+      // DateLabel component now uses inline styles for background color
+      expect(afterLabel).toHaveStyle({ backgroundColor: "#009639", opacity: "0.7" });
       expect(afterLabel).toHaveClass("text-white");
     });
 
@@ -267,12 +285,16 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
-          beforeDateLabel="2023-10-01"
-          afterDateLabel="2024-01-15"
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+            dateLabel: "2023-10-01",
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+            dateLabel: "2024-01-15",
+          }}
         />
       );
 
@@ -283,9 +305,9 @@ describe("ComparisonMapView", () => {
       expect(beforeLabel).toHaveClass("text-[15px]");
       expect(afterLabel).toHaveClass("text-[15px]");
 
-      // Both should have 70% opacity
-      expect(beforeLabel).toHaveClass("opacity-70");
-      expect(afterLabel).toHaveClass("opacity-70");
+      // Both should have 70% opacity (now via inline style)
+      expect(beforeLabel).toHaveStyle({ opacity: "0.7" });
+      expect(afterLabel).toHaveStyle({ opacity: "0.7" });
 
       // Both should have font-semibold
       expect(beforeLabel).toHaveClass("font-semibold");
@@ -301,12 +323,16 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
-          beforeTileUrl="https://wayback.example.com/before"
-          afterTileUrl="https://wayback.example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
-          beforeDateLabel={beforeReleaseDate}
-          afterDateLabel={afterReleaseDate}
+          before={{
+            tileUrl: "https://wayback.example.com/before",
+            maxZoom: 19,
+            dateLabel: beforeReleaseDate,
+          }}
+          after={{
+            tileUrl: "https://wayback.example.com/after",
+            maxZoom: 19,
+            dateLabel: afterReleaseDate,
+          }}
         />
       );
 
@@ -322,10 +348,14 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId="1"
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+          }}
         />
       );
 
@@ -342,10 +372,14 @@ describe("ComparisonMapView", () => {
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId="1"
-          beforeTileUrl="https://example.com/before"
-          afterTileUrl="https://example.com/after"
-          beforeMaxZoom={19}
-          afterMaxZoom={19}
+          before={{
+            tileUrl: "https://example.com/before",
+            maxZoom: 19,
+          }}
+          after={{
+            tileUrl: "https://example.com/after",
+            maxZoom: 19,
+          }}
           onSiteClick={onSiteClick}
         />
       );

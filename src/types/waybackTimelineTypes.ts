@@ -5,6 +5,19 @@
  */
 
 /**
+ * Wayback imagery configuration for comparison views
+ * Groups tile URL, max zoom, and optional date label together
+ */
+export interface WaybackImagery {
+  /** Tile URL for the satellite imagery (e.g., ESRI Wayback URL) */
+  tileUrl: string;
+  /** Maximum zoom level supported by this imagery */
+  maxZoom: number;
+  /** Optional date label to display (e.g., "2023-08-15") */
+  dateLabel?: string;
+}
+
+/**
  * Marker configuration
  */
 export interface WaybackMarkerConfig {

@@ -284,8 +284,8 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
       );
 
-      // Should have white scrubber circle with green border
-      const scrubber = container.querySelector(".border-\\[\\#009639\\]");
+      // Should have white scrubber circle with green border (now uses inline style)
+      const scrubber = container.querySelector('[style*="border-color"][style*="rgb(0, 150, 57)"]');
       expect(scrubber).toBeTruthy();
     });
   });
@@ -527,8 +527,9 @@ describe("WaybackSlider", () => {
         );
 
         // Should have yellow border scrubber (Palestinian flag yellow #FDB927)
-        const yellowScrubber = container.querySelector(".border-\\[\\#FDB927\\]");
-        expect(yellowScrubber).toBeInTheDocument();
+        // Now uses inline style instead of CSS class
+        const yellowScrubber = container.querySelector('[style*="border-color"][style*="rgb(253, 185, 39)"]');
+        expect(yellowScrubber).toBeTruthy();
       });
 
       it("renders green scrubber for current index", () => {
@@ -546,8 +547,9 @@ describe("WaybackSlider", () => {
         );
 
         // Should have green border scrubber (Palestinian flag green #009639)
-        const greenScrubber = container.querySelector(".border-\\[\\#009639\\]");
-        expect(greenScrubber).toBeInTheDocument();
+        // Now uses inline style instead of CSS class
+        const greenScrubber = container.querySelector('[style*="border-color"][style*="rgb(0, 150, 57)"]');
+        expect(greenScrubber).toBeTruthy();
       });
 
       it("shows correct date on yellow scrubber tooltip", () => {
@@ -565,7 +567,8 @@ describe("WaybackSlider", () => {
         );
 
         // Yellow tooltip should show release at beforeIndex (index 1 = "2014-06-15")
-        const yellowTooltips = container.querySelectorAll(".bg-\\[\\#FDB927\\]");
+        // Now uses inline style with DateLabel component
+        const yellowTooltips = container.querySelectorAll('[style*="background-color"][style*="rgb(253, 185, 39)"]');
         expect(yellowTooltips.length).toBeGreaterThan(0);
         expect(yellowTooltips[0]).toHaveTextContent("2014-06-15");
       });
@@ -585,12 +588,12 @@ describe("WaybackSlider", () => {
         );
 
         // Green tooltip should show release at currentIndex (index 4 = "2016-03-05")
-        // Note: There may be multiple green elements (progress bar, tooltip, etc)
-        // Look for the one with actual text content
-        const greenTooltips = container.querySelectorAll(".bg-\\[\\#009639\\]");
+        // Now uses inline style with DateLabel component
+        // Note: There may be multiple green elements (progress bar uses CSS class, tooltip uses inline style)
+        const greenTooltips = container.querySelectorAll('[style*="background-color"][style*="rgb(0, 150, 57)"]');
         expect(greenTooltips.length).toBeGreaterThan(0);
 
-        // Find the tooltip with text (not the progress bar)
+        // Find the tooltip with text (should be the DateLabel component)
         let foundTooltip = false;
         greenTooltips.forEach((el) => {
           if (el.textContent && el.textContent.includes("2016-03-05")) {
@@ -782,9 +785,9 @@ describe("WaybackSlider", () => {
           />
         );
 
-        // Should still render green scrubber
-        const greenScrubber = container.querySelector(".border-\\[\\#009639\\]");
-        expect(greenScrubber).toBeInTheDocument();
+        // Should still render green scrubber (now uses inline style)
+        const greenScrubber = container.querySelector('[style*="border-color"][style*="rgb(0, 150, 57)"]');
+        expect(greenScrubber).toBeTruthy();
 
         // Yellow scrubber should not be present (invalid beforeIndex)
         const scrubbers = container.querySelectorAll(".w-3.h-3.bg-white");

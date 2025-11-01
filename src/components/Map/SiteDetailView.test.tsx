@@ -241,10 +241,10 @@ describe("SiteDetailView", () => {
       );
 
       const label = screen.getByText("2024-01-15");
-      expect(label).toHaveClass("bg-[#009639]");
+      // DateLabel component now uses inline styles for background color
+      expect(label).toHaveStyle({ backgroundColor: "#009639", opacity: "0.7" });
       expect(label).toHaveClass("text-white");
       expect(label).toHaveClass("text-[15px]");
-      expect(label).toHaveClass("opacity-70");
       expect(label).toHaveClass("font-semibold");
     });
 

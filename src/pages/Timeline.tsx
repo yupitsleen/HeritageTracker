@@ -283,12 +283,15 @@ export function Timeline() {
 
   /**
    * Handle timeline dot click - highlight site and optionally sync map
-   * Using useRef to avoid recreating this callback when syncMapOnDotClick changes
+   * Using useRef to avoid recreating callback when dependencies change
    */
   const syncMapOnDotClickRef = useRef(syncMapOnDotClick);
+  const comparisonModeEnabledRef = useRef(comparisonModeEnabled);
+
   useEffect(() => {
     syncMapOnDotClickRef.current = syncMapOnDotClick;
-  }, [syncMapOnDotClick]);
+    comparisonModeEnabledRef.current = comparisonModeEnabled;
+  }, [syncMapOnDotClick, comparisonModeEnabled]);
 
   /**
    * Handle site selection from timeline
@@ -303,7 +306,7 @@ export function Timeline() {
       setHighlightedSiteId(siteId);
 
       // If sync is enabled and a site is selected, find and show the nearest Wayback release
-      // Use ref to get current value without recreating callback
+      // Use refs to get current values without recreating callback
       if (syncMapOnDotClickRef.current && siteId) {
         const site = filteredSites.find((s: GazaSite) => s.id === siteId);
         if (site?.dateDestroyed) {
@@ -314,14 +317,14 @@ export function Timeline() {
           setCurrentReleaseIndex(nearestReleaseIndex);
 
           // If comparison mode is enabled, also set "before" imagery (pre-destruction)
-          if (comparisonModeEnabled) {
+          if (comparisonModeEnabledRef.current) {
             const beforeReleaseIdx = findNearestWaybackReleaseBeforeDestruction(destructionDate);
             setBeforeReleaseIndex(beforeReleaseIdx);
           }
         }
       }
     },
-    [findNearestWaybackRelease, findNearestWaybackReleaseBeforeDestruction, filteredSites, comparisonModeEnabled]
+    [findNearestWaybackRelease, findNearestWaybackReleaseBeforeDestruction, filteredSites]
   );
 
   /**
@@ -411,12 +414,16 @@ export function Timeline() {
                   <ComparisonMapView
                     sites={filteredSites}
                     highlightedSiteId={highlightedSiteId}
-                    beforeTileUrl={beforeRelease?.tileUrl || ""}
-                    afterTileUrl={currentRelease?.tileUrl || ""}
-                    beforeMaxZoom={beforeRelease?.maxZoom || 19}
-                    afterMaxZoom={currentRelease?.maxZoom || 19}
-                    beforeDateLabel={beforeRelease?.releaseDate}
-                    afterDateLabel={currentRelease?.releaseDate}
+                    before={{
+                      tileUrl: beforeRelease?.tileUrl || "",
+                      maxZoom: beforeRelease?.maxZoom || 19,
+                      dateLabel: beforeRelease?.releaseDate,
+                    }}
+                    after={{
+                      tileUrl: currentRelease?.tileUrl || "",
+                      maxZoom: currentRelease?.maxZoom || 19,
+                      dateLabel: currentRelease?.releaseDate,
+                    }}
                     onSiteClick={setSelectedSite}
                   />
                 ) : (

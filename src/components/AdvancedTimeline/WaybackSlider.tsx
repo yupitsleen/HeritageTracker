@@ -3,8 +3,10 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
+import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
 import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { COLORS } from "../../config/colorThemes";
 
 /**
  * Callback type for Wayback release index changes
@@ -114,11 +116,11 @@ export function WaybackSlider({
 
     // In comparison mode, determine which scrubber to move based on proximity
     if (comparisonMode && onBeforeIndexChange) {
-      const distanceToAfter = Math.abs(currentPositionPercent - clickPercent);
-      const distanceToBefore = Math.abs(beforePositionPercent - clickPercent);
+      const distanceToGreenScrubber = Math.abs(currentPositionPercent - clickPercent);
+      const distanceToYellowScrubber = Math.abs(beforePositionPercent - clickPercent);
 
       // Move the scrubber that's closer to the click position
-      if (distanceToBefore < distanceToAfter) {
+      if (distanceToYellowScrubber < distanceToGreenScrubber) {
         onBeforeIndexChange(closestIndex);
       } else {
         onIndexChange(closestIndex);
@@ -294,12 +296,17 @@ export function WaybackSlider({
                     : 'left-1/2 -translate-x-1/2'
                 }`}
               >
-                <div className="px-2 py-0.5 bg-[#FDB927] text-black text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
-                  {beforeRelease?.releaseDate || "Unknown"}
-                </div>
+                <DateLabel
+                  date={beforeRelease?.releaseDate || "Unknown"}
+                  variant="yellow"
+                  size="sm"
+                />
               </div>
               {/* Scrubber indicator - Yellow */}
-              <div className="w-3 h-3 bg-white border-2 border-[#FDB927] rounded-full shadow-md" />
+              <div
+                className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
+                style={{ borderColor: COLORS.FLAG_YELLOW }}
+              />
             </div>
           )}
 
@@ -318,12 +325,17 @@ export function WaybackSlider({
                   : 'left-1/2 -translate-x-1/2'
               }`}
             >
-              <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
-                {currentRelease?.releaseDate || "Unknown"}
-              </div>
+              <DateLabel
+                date={currentRelease?.releaseDate || "Unknown"}
+                variant="green"
+                size="sm"
+              />
             </div>
             {/* Scrubber indicator - Green */}
-            <div className="w-3 h-3 bg-white border-2 border-[#009639] rounded-full shadow-md" />
+            <div
+              className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
+              style={{ borderColor: COLORS.FLAG_GREEN }}
+            />
           </div>
         </div>
       </div>
