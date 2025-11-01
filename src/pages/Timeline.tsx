@@ -519,6 +519,19 @@ export function Timeline() {
             </section>
 
             <section>
+              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Comparison Mode</h3>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li><strong>Toggle:</strong> Click "Comparison Mode" button above the timeline to enable side-by-side view</li>
+                <li><strong>Two Maps:</strong> View "before" imagery (left) and "after" imagery (right) simultaneously</li>
+                <li><strong>Yellow Scrubber:</strong> Controls the "before" date (appears below timeline with yellow tooltip)</li>
+                <li><strong>Green Scrubber:</strong> Controls the "after" date (above timeline with green tooltip)</li>
+                <li><strong>Click Timeline:</strong> Moves the closest scrubber to that date</li>
+                <li><strong>Auto-Sync:</strong> When clicking site dots with sync enabled, automatically sets before/after imagery around the destruction date</li>
+                <li>Perfect for comparing satellite imagery before and after destruction events</li>
+              </ul>
+            </section>
+
+            <section>
               <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Navigation Controls</h3>
               <ul className="text-sm space-y-1 list-disc list-inside">
                 <li><strong>Reset:</strong> Return to the first imagery version (2014)</li>
