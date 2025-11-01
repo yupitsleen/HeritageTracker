@@ -20,6 +20,7 @@ interface WaybackSliderProps {
   comparisonMode?: boolean;
   beforeIndex?: number;
   onBeforeIndexChange?: IndexChangeHandler;
+  onComparisonModeToggle?: () => void;
 }
 
 /**
@@ -39,7 +40,8 @@ export function WaybackSlider({
   totalSites,
   comparisonMode = false,
   beforeIndex = 0,
-  onBeforeIndexChange
+  onBeforeIndexChange,
+  onComparisonModeToggle
 }: WaybackSliderProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -152,6 +154,23 @@ export function WaybackSlider({
       {/* Header - Current date and position with step controls - centered */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
       <div className="flex items-center justify-center gap-3 mb-2 relative" dir="ltr">
+        {/* Comparison Mode Toggle - Top left */}
+        {onComparisonModeToggle && (
+          <div className="absolute left-0 top-0">
+            <Button
+              variant="secondary"
+              size="xs"
+              active={comparisonMode}
+              onClick={onComparisonModeToggle}
+              aria-label={translate("timeline.comparisonMode")}
+              title={translate("timeline.comparisonMode")}
+            >
+              {comparisonMode ? "✓ " : ""}
+              {translate("timeline.comparisonMode")}
+            </Button>
+          </div>
+        )}
+
         {/* Dataset info - absolutely positioned to the right of buttons, centered between buttons and info icon */}
         <div className={`absolute right-10 text-xs ${t.text.muted} pointer-events-none`}>
           {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}

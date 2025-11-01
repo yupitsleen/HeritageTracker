@@ -1,7 +1,5 @@
 import type { GazaSite } from "../../types";
 import { SiteDetailView } from "./SiteDetailView";
-import { Button } from "../Button";
-import { useTranslation } from "../../contexts/LocaleContext";
 
 interface ComparisonMapViewProps {
   sites: GazaSite[];
@@ -11,8 +9,6 @@ interface ComparisonMapViewProps {
   beforeMaxZoom: number;
   afterMaxZoom: number;
   onSiteClick?: (site: GazaSite) => void;
-  comparisonModeEnabled: boolean;
-  onComparisonModeToggle: () => void;
 }
 
 /**
@@ -36,29 +32,9 @@ export function ComparisonMapView({
   beforeMaxZoom,
   afterMaxZoom,
   onSiteClick,
-  comparisonModeEnabled,
-  onComparisonModeToggle,
 }: ComparisonMapViewProps) {
-  const translate = useTranslation();
-
   return (
     <div className="relative h-full">
-      {/* Comparison Mode Toggle - Top right corner overlay */}
-      <div className="absolute top-4 right-4 z-[1000]">
-        <Button
-          variant="secondary"
-          size="xs"
-          active={comparisonModeEnabled}
-          onClick={onComparisonModeToggle}
-          aria-label={translate("timeline.comparisonMode")}
-          title={translate("timeline.comparisonMode")}
-          className="shadow-lg"
-        >
-          {comparisonModeEnabled ? "✓ " : ""}
-          {translate("timeline.comparisonMode")}
-        </Button>
-      </div>
-
       {/* Side-by-side map layout */}
       <div className="flex h-full">
         {/* Left Map - Earlier imagery (yellow scrubber) */}

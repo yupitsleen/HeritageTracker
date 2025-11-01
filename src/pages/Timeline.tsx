@@ -413,8 +413,6 @@ export function Timeline() {
                     beforeMaxZoom={beforeRelease?.maxZoom || 19}
                     afterMaxZoom={currentRelease?.maxZoom || 19}
                     onSiteClick={setSelectedSite}
-                    comparisonModeEnabled={comparisonModeEnabled}
-                    onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
                   />
                 ) : (
                   <SiteDetailView
@@ -423,8 +421,6 @@ export function Timeline() {
                     customTileUrl={currentRelease?.tileUrl}
                     customMaxZoom={currentRelease?.maxZoom}
                     onSiteClick={setSelectedSite}
-                    comparisonModeEnabled={comparisonModeEnabled}
-                    onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
                   />
                 )}
               </Suspense>
@@ -440,6 +436,7 @@ export function Timeline() {
                 comparisonMode={comparisonModeEnabled}
                 beforeIndex={beforeReleaseIndex}
                 onBeforeIndexChange={setBeforeReleaseIndex}
+                onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
               />
             </div>
 
