@@ -449,6 +449,17 @@ npm run test:ui       # Vitest UI
 
 ## Recent Improvements (Nov 2025)
 
+**Phase 6 Complete: Timeline Navigation Enhancements**
+
+### Latest Changes (Nov 2025)
+
+1. **Timeline Navigation Improvements:**
+   - Fixed NEXT button to work from any scrubber position (no longer requires exact timestamp match)
+   - Timeline now starts 7 days before first destruction date (enables first site to be clickable)
+   - Added Next/Previous navigation buttons to Dashboard timeline (consistent UX across pages)
+   - Proper edge case handling: before first event, after last event, in between events
+   - RESET button correctly returns to timeline start (7 days before first event)
+
 **Phase 5 Complete: Comparison Mode & Timeline Enhancements**
 
 ### Key Changes

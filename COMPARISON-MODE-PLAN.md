@@ -315,7 +315,84 @@ All planned features have been successfully implemented and tested:
 
 ---
 
-## **Phase 6: Adaptive Zoom for Newer Imagery (Nov 2025)**
+## **Phase 6: Timeline Navigation Improvements (Nov 2025)**
+
+### **Feature: Enhanced Next/Previous Navigation**
+
+**Problem:** Timeline navigation buttons had several issues:
+1. NEXT button wasn't working - required exact timestamp match with destruction dates
+2. Timeline started exactly at first destruction date, making first site unclickable
+3. Dashboard timeline lacked Next/Previous navigation buttons
+
+**Solution:** Implemented smart timeline navigation with proper edge case handling and consistent UX across pages.
+
+### **Implementation Details**
+
+**File Changes:**
+
+1. **[AnimationContext.tsx](src/contexts/AnimationContext.tsx)** (lines 74-76)
+   - Start timeline 7 days **before** first destruction date
+   - Provides buffer zone for first site to be clickable/navigable
+   - Ensures consistent behavior across all sites
+
+2. **[TimelineScrubber.tsx](src/components/Timeline/TimelineScrubber.tsx)** (lines 254-320)
+   - Fixed `currentEventIndex` logic to find position relative to events
+   - Returns -1 when scrubber is before all events (special "before first event" state)
+   - NEXT from index -1 goes to first event (index 0)
+   - NEXT from any event goes to next event as expected
+   - Proper handling for "after all events" and "in the middle" cases
+
+3. **[DesktopLayout.tsx](src/components/Layout/DesktopLayout.tsx)** (lines 168-171)
+   - Added `advancedMode` prop to Dashboard timeline
+   - Enables Next/Previous navigation buttons on Dashboard page
+   - syncMapOnDotClick set to false (not needed for Dashboard)
+
+### **Navigation Logic**
+
+```typescript
+// Before all events: index = -1 (enables NEXT to first event)
+if (currentTime < destructionDates[0].date.getTime()) {
+  return -1;
+}
+
+// After all events: index = last event
+if (currentTime >= destructionDates[destructionDates.length - 1].date.getTime()) {
+  return destructionDates.length - 1;
+}
+
+// In the middle: find event we've passed or are closest to
+for (let i = 0; i < destructionDates.length; i++) {
+  if (currentTime < destructionDates[i].date.getTime()) {
+    return i - 1; // We're at the previous event
+  }
+}
+```
+
+### **Behavior Summary**
+
+| Scenario | PREVIOUS Button | NEXT Button | Scrubber Position |
+|----------|----------------|-------------|-------------------|
+| At timeline start (7 days before first) | Disabled | → First site | Before all events |
+| At first site | Disabled | → Second site | Index 0 |
+| At middle site | → Previous site | → Next site | Index N |
+| At last site | → Previous site | Disabled | Index Last |
+
+### **Test Coverage**
+
+- ✅ All 720 tests passing
+- ✅ Timeline navigation works on both Dashboard and Timeline pages
+- ✅ Edge cases handled: before first, after last, exact matches
+- ✅ RESET button returns to timeline start (7 days before first event)
+
+### **Commits**
+
+- `3662f76` - fix: enable NEXT button by finding nearest event instead of exact match
+- `37dbcf1` - feat: improve timeline navigation for first site
+- `a198442` - feat: add Next/Previous navigation to Dashboard timeline
+
+---
+
+## **Phase 7: Adaptive Zoom for Newer Imagery (Nov 2025)**
 
 ### **Feature: Smart Zoom Level Selection**
 
