@@ -31,6 +31,11 @@ vi.mock("react-leaflet", () => ({
       {children}
     </div>
   ),
+  CircleMarker: ({ children, center }: { children?: React.ReactNode; center: [number, number]; [key: string]: unknown }) => (
+    <div data-testid="circle-marker" data-center={JSON.stringify(center)}>
+      {children}
+    </div>
+  ),
   Popup: ({ children }: { children?: React.ReactNode }) => (
     <div data-testid="popup">{children}</div>
   ),
@@ -212,12 +217,18 @@ describe("SiteDetailView", () => {
     });
 
     it("does not render date label when not provided", () => {
-      const { container } = renderWithAnimation(
+      renderWithAnimation(
         <SiteDetailView sites={mockSites} highlightedSiteId={null} />
       );
 
-      // Check that no date labels are rendered
-      expect(container.textContent).not.toMatch(/\d{4}-\d{2}-\d{2}/);
+      // Check that the date label overlay (with green background) is not rendered
+      // Note: Site popups may contain dates, but the overlay date label should not be present
+      const dateLabels = screen.queryAllByText(/^\d{4}-\d{2}-\d{2}$/);
+      const overlayLabels = dateLabels.filter(el =>
+        el.classList.contains("bg-[#009639]") ||
+        el.classList.contains("bg-[#b8860b]")
+      );
+      expect(overlayLabels.length).toBe(0);
     });
 
     it("date label has green background and correct styling", () => {
@@ -351,12 +362,14 @@ describe("SiteDetailView", () => {
       expect(popup).toBeInTheDocument();
     });
 
-    it("does not render popup when no site is highlighted", () => {
+    it("renders all site markers when no site is highlighted", () => {
       renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
 
-      // No marker or popup should be present
+      // Should render circle markers for all sites (not the teardrop marker)
       expect(screen.queryByTestId("marker")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("popup")).not.toBeInTheDocument();
+      // Should have multiple circle markers (one for each site in mockSites)
+      const circleMarkers = screen.queryAllByTestId("circle-marker");
+      expect(circleMarkers.length).toBeGreaterThan(0);
     });
 
     it("calls onSiteClick when popup action is triggered", () => {

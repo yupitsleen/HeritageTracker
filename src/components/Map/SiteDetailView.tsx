@@ -6,6 +6,7 @@ import { SITE_MARKER_CONFIG } from "../../constants/timeline";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
 import { SitePopup } from "./SitePopup";
+import { MapMarkers } from "./MapMarkers";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import L from "leaflet";
@@ -159,13 +160,26 @@ export function SiteDetailView({
           minZoom={1}
         />
 
-        {/* Show marker for highlighted site with popup - only if markers are visible */}
-        {highlightedSite && mapMarkersVisible && (
-          <Marker position={highlightedSite.coordinates} icon={markerIcon}>
-            <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
-              <SitePopup site={highlightedSite} onViewMore={() => onSiteClick?.(highlightedSite)} />
-            </Popup>
-          </Marker>
+        {/* Show markers - only if markers are visible */}
+        {mapMarkersVisible && (
+          <>
+            {highlightedSite ? (
+              /* Show single marker for highlighted site when zoomed in */
+              <Marker position={highlightedSite.coordinates} icon={markerIcon}>
+                <Popup className="heritage-popup" maxWidth={320} maxHeight={400}>
+                  <SitePopup site={highlightedSite} onViewMore={() => onSiteClick?.(highlightedSite)} />
+                </Popup>
+              </Marker>
+            ) : (
+              /* Show all site markers when zoomed out (no site selected) */
+              <MapMarkers
+                sites={sites}
+                highlightedSiteId={highlightedSiteId}
+                onSiteClick={onSiteClick}
+                currentTimestamp={currentTimestamp}
+              />
+            )}
+          </>
         )}
       </MapContainer>
     </div>

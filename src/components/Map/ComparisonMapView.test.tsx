@@ -31,6 +31,11 @@ vi.mock("react-leaflet", () => ({
       {children}
     </div>
   ),
+  CircleMarker: ({ children, center }: { children?: React.ReactNode; center: [number, number]; [key: string]: unknown }) => (
+    <div data-testid="circle-marker" data-center={JSON.stringify(center)}>
+      {children}
+    </div>
+  ),
   Popup: ({ children }: { children?: React.ReactNode }) => (
     <div data-testid="popup">{children}</div>
   ),
@@ -200,7 +205,7 @@ describe("ComparisonMapView", () => {
     });
 
     it("does not render date labels when not provided", () => {
-      const { container } = renderWithAnimation(
+      renderWithAnimation(
         <ComparisonMapView
           sites={mockSites}
           highlightedSiteId={null}
@@ -211,8 +216,14 @@ describe("ComparisonMapView", () => {
         />
       );
 
-      // Check that no date labels are rendered (they should not contain any date text)
-      expect(container.textContent).not.toMatch(/\d{4}-\d{2}-\d{2}/);
+      // Check that the date label overlays (with yellow/green background) are not rendered
+      // Note: Site popups may contain dates, but the overlay date labels should not be present
+      const dateLabels = screen.queryAllByText(/^\d{4}-\d{2}-\d{2}$/);
+      const overlayLabels = dateLabels.filter(el =>
+        el.classList.contains("bg-[#009639]") ||
+        el.classList.contains("bg-[#b8860b]")
+      );
+      expect(overlayLabels.length).toBe(0);
     });
 
     it("before date label has yellow background (matching yellow scrubber)", () => {
