@@ -22,6 +22,9 @@ import { COLORS } from "../config/colorThemes";
 const SiteDetailView = lazy(() =>
   import("../components/Map/SiteDetailView").then((m) => ({ default: m.SiteDetailView }))
 );
+const ComparisonMapView = lazy(() =>
+  import("../components/Map/ComparisonMapView").then((m) => ({ default: m.ComparisonMapView }))
+);
 const TimelineScrubber = lazy(() =>
   import("../components/Timeline/TimelineScrubber").then((m) => ({ default: m.TimelineScrubber }))
 );
@@ -116,11 +119,21 @@ export function Timeline() {
   // Default to ON for better user experience on Advanced Timeline page
   const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
 
+  // Comparison Mode toggle - when enabled, shows two maps side-by-side
+  // Default to OFF for standard single-map view
+  const [comparisonModeEnabled, setComparisonModeEnabled] = useState(false);
+
+  // Before release index for comparison mode (earlier imagery)
+  const [beforeReleaseIndex, setBeforeReleaseIndex] = useState(0);
+
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  // Get current release
+  // Get current release (for "after" imagery or single map mode)
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
+
+  // Get before release (for "before" imagery in comparison mode)
+  const beforeRelease = releases.length > 0 ? releases[beforeReleaseIndex] : null;
 
   // Apply filters to sites (memoized for performance)
   const filteredSites = useMemo(() => {
@@ -222,6 +235,53 @@ export function Timeline() {
   );
 
   /**
+   * Find the nearest Wayback release that occurred BEFORE the destruction date
+   * This shows the satellite imagery from before the site was destroyed
+   *
+   * @param targetDate - The destruction date to search for
+   * @returns Index of the nearest release before destruction, or 0 if none found
+   * @throws Never throws - returns 0 for invalid inputs
+   */
+  const findNearestWaybackReleaseBeforeDestruction = useCallback(
+    (targetDate: Date): number => {
+      // Guard: Empty releases array
+      if (releases.length === 0) return 0;
+
+      // Guard: Invalid date
+      if (!targetDate || isNaN(targetDate.getTime())) {
+        console.warn('findNearestWaybackReleaseBeforeDestruction: Invalid target date provided, using first release');
+        return 0;
+      }
+
+      const targetTime = targetDate.getTime();
+      let nearestIndex = 0;
+
+      // Find the LATEST release that occurred BEFORE the target date
+      // We iterate through all releases in reverse and return the first one before the target
+      for (let i = releases.length - 1; i >= 0; i--) {
+        const releaseDate = new Date(releases[i].releaseDate);
+
+        // Guard: Invalid release date
+        if (isNaN(releaseDate.getTime())) {
+          console.warn(`findNearestWaybackReleaseBeforeDestruction: Invalid release date at index ${i}, skipping`);
+          continue;
+        }
+
+        const releaseTime = releaseDate.getTime();
+
+        // Return the first release that's before the target date
+        if (releaseTime < targetTime) {
+          nearestIndex = i;
+          break;
+        }
+      }
+
+      return nearestIndex;
+    },
+    [releases]
+  );
+
+  /**
    * Handle timeline dot click - highlight site and optionally sync map
    * Using useRef to avoid recreating this callback when syncMapOnDotClick changes
    */
@@ -234,6 +294,7 @@ export function Timeline() {
    * Handle site selection from timeline
    * When sync is enabled, automatically finds and displays the Wayback imagery
    * from right before the site was destroyed
+   * In comparison mode, also sets the "before" imagery
    *
    * @param siteId - ID of the selected site, or null to deselect
    */
@@ -247,12 +308,20 @@ export function Timeline() {
         const site = filteredSites.find((s: GazaSite) => s.id === siteId);
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
+
+          // Set "after" imagery (post-destruction)
           const nearestReleaseIndex = findNearestWaybackRelease(destructionDate);
           setCurrentReleaseIndex(nearestReleaseIndex);
+
+          // If comparison mode is enabled, also set "before" imagery (pre-destruction)
+          if (comparisonModeEnabled) {
+            const beforeReleaseIdx = findNearestWaybackReleaseBeforeDestruction(destructionDate);
+            setBeforeReleaseIndex(beforeReleaseIdx);
+          }
         }
       }
     },
-    [findNearestWaybackRelease, filteredSites]
+    [findNearestWaybackRelease, findNearestWaybackReleaseBeforeDestruction, filteredSites, comparisonModeEnabled]
   );
 
   /**
@@ -335,13 +404,29 @@ export function Timeline() {
               className={`flex-1 min-h-0 ${t.border.primary2} rounded shadow-xl overflow-hidden relative z-10`}
             >
               <Suspense fallback={<SkeletonMap />}>
-                <SiteDetailView
-                  sites={filteredSites}
-                  highlightedSiteId={highlightedSiteId}
-                  customTileUrl={currentRelease?.tileUrl}
-                  customMaxZoom={currentRelease?.maxZoom}
-                  onSiteClick={setSelectedSite}
-                />
+                {comparisonModeEnabled ? (
+                  <ComparisonMapView
+                    sites={filteredSites}
+                    highlightedSiteId={highlightedSiteId}
+                    beforeTileUrl={beforeRelease?.tileUrl || ""}
+                    afterTileUrl={currentRelease?.tileUrl || ""}
+                    beforeMaxZoom={beforeRelease?.maxZoom || 19}
+                    afterMaxZoom={currentRelease?.maxZoom || 19}
+                    onSiteClick={setSelectedSite}
+                    comparisonModeEnabled={comparisonModeEnabled}
+                    onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
+                  />
+                ) : (
+                  <SiteDetailView
+                    sites={filteredSites}
+                    highlightedSiteId={highlightedSiteId}
+                    customTileUrl={currentRelease?.tileUrl}
+                    customMaxZoom={currentRelease?.maxZoom}
+                    onSiteClick={setSelectedSite}
+                    comparisonModeEnabled={comparisonModeEnabled}
+                    onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
+                  />
+                )}
               </Suspense>
             </div>
 
@@ -352,6 +437,9 @@ export function Timeline() {
                 currentIndex={currentReleaseIndex}
                 onIndexChange={setCurrentReleaseIndex}
                 totalSites={filteredSites.length}
+                comparisonMode={comparisonModeEnabled}
+                beforeIndex={beforeReleaseIndex}
+                onBeforeIndexChange={setBeforeReleaseIndex}
               />
             </div>
 

@@ -16,6 +16,10 @@ interface WaybackSliderProps {
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
   totalSites?: number;
+  // Comparison mode support
+  comparisonMode?: boolean;
+  beforeIndex?: number;
+  onBeforeIndexChange?: IndexChangeHandler;
 }
 
 /**
@@ -28,17 +32,26 @@ interface WaybackSliderProps {
  * - Previous/Next step buttons
  * - Visual scrubber showing current position
  */
-export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSites }: WaybackSliderProps) {
+export function WaybackSlider({
+  releases,
+  currentIndex,
+  onIndexChange,
+  totalSites,
+  comparisonMode = false,
+  beforeIndex = 0,
+  onBeforeIndexChange
+}: WaybackSliderProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
   const translate = useTranslation();
   const timelineRef = useRef<HTMLDivElement>(null);
 
   const currentRelease = releases[currentIndex];
+  const beforeRelease = comparisonMode && beforeIndex !== undefined ? releases[beforeIndex] : null;
 
   // Calculate year markers and release positions
-  const { yearMarkers, releasePositions, currentPositionPercent } = useMemo(() => {
-    if (releases.length === 0) return { yearMarkers: [], releasePositions: [], currentPositionPercent: 0 };
+  const { yearMarkers, releasePositions, currentPositionPercent, beforePositionPercent } = useMemo(() => {
+    if (releases.length === 0) return { yearMarkers: [], releasePositions: [], currentPositionPercent: 0, beforePositionPercent: 0 };
 
     const firstDate = new Date(releases[0].releaseDate);
     const lastDate = new Date(releases[releases.length - 1].releaseDate);
@@ -71,8 +84,11 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
     // Current release position
     const currentPos = positions[currentIndex]?.position || 0;
 
-    return { yearMarkers: years, releasePositions: positions, currentPositionPercent: currentPos };
-  }, [releases, currentIndex]);
+    // Before release position (for comparison mode)
+    const beforePos = comparisonMode && beforeIndex !== undefined ? (positions[beforeIndex]?.position || 0) : 0;
+
+    return { yearMarkers: years, releasePositions: positions, currentPositionPercent: currentPos, beforePositionPercent: beforePos };
+  }, [releases, currentIndex, comparisonMode, beforeIndex]);
 
   // Handle timeline click - find nearest release
   const handleTimelineClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
@@ -94,8 +110,22 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
       }
     }
 
-    onIndexChange(closestIndex);
-  }, [releasePositions, onIndexChange]);
+    // In comparison mode, determine which scrubber to move based on proximity
+    if (comparisonMode && onBeforeIndexChange) {
+      const distanceToAfter = Math.abs(currentPositionPercent - clickPercent);
+      const distanceToBefore = Math.abs(beforePositionPercent - clickPercent);
+
+      // Move the scrubber that's closer to the click position
+      if (distanceToBefore < distanceToAfter) {
+        onBeforeIndexChange(closestIndex);
+      } else {
+        onIndexChange(closestIndex);
+      }
+    } else {
+      // Single mode: always move the "after" scrubber
+      onIndexChange(closestIndex);
+    }
+  }, [releasePositions, onIndexChange, comparisonMode, onBeforeIndexChange, currentPositionPercent, beforePositionPercent]);
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
@@ -229,7 +259,32 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
             );
           })}
 
-          {/* Current position scrubber indicator with floating date tooltip */}
+          {/* Before position scrubber indicator (yellow) - only in comparison mode */}
+          {comparisonMode && beforeRelease && (
+            <div
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+              style={{ left: `${beforePositionPercent}%` }}
+            >
+              {/* Floating date tooltip - positioned above scrubber with edge detection */}
+              <div
+                className={`absolute bottom-full mb-2 pointer-events-none ${
+                  beforePositionPercent < 10
+                    ? 'left-0'
+                    : beforePositionPercent > 90
+                    ? 'right-0'
+                    : 'left-1/2 -translate-x-1/2'
+                }`}
+              >
+                <div className="px-2 py-0.5 bg-[#FDB927] text-black text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
+                  {beforeRelease?.releaseDate || "Unknown"}
+                </div>
+              </div>
+              {/* Scrubber indicator - Yellow */}
+              <div className="w-3 h-3 bg-white border-2 border-[#FDB927] rounded-full shadow-md" />
+            </div>
+          )}
+
+          {/* Current position scrubber indicator with floating date tooltip (green) */}
           <div
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
             style={{ left: `${currentPositionPercent}%` }}
@@ -248,7 +303,7 @@ export function WaybackSlider({ releases, currentIndex, onIndexChange, totalSite
                 {currentRelease?.releaseDate || "Unknown"}
               </div>
             </div>
-            {/* Scrubber indicator */}
+            {/* Scrubber indicator - Green */}
             <div className="w-3 h-3 bg-white border-2 border-[#009639] rounded-full shadow-md" />
           </div>
         </div>

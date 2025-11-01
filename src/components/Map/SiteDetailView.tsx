@@ -6,7 +6,9 @@ import { SITE_MARKER_CONFIG } from "../../constants/timeline";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
 import { SitePopup } from "./SitePopup";
+import { Button } from "../Button";
 import { useAnimation } from "../../contexts/AnimationContext";
+import { useTranslation } from "../../contexts/LocaleContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -20,6 +22,9 @@ interface SiteDetailViewProps {
   customMaxZoom?: number;
   // Optional callback for when user clicks "See More" in popup
   onSiteClick?: (site: GazaSite) => void;
+  // Optional comparison mode toggle (for Timeline page)
+  comparisonModeEnabled?: boolean;
+  onComparisonModeToggle?: () => void;
 }
 
 /**
@@ -29,9 +34,18 @@ interface SiteDetailViewProps {
  * Supports historical imagery comparison (2014, Aug 2023, Current)
  * Can sync imagery periods with timeline playback when enabled
  */
-export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, customMaxZoom, onSiteClick }: SiteDetailViewProps) {
+export function SiteDetailView({
+  sites,
+  highlightedSiteId,
+  customTileUrl,
+  customMaxZoom,
+  onSiteClick,
+  comparisonModeEnabled,
+  onComparisonModeToggle
+}: SiteDetailViewProps) {
   // Get animation context for timeline sync and zoom toggle
   const { currentTimestamp, syncActive, zoomToSiteEnabled } = useAnimation();
+  const translate = useTranslation();
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("EARLY_2024");
@@ -98,6 +112,24 @@ export function SiteDetailView({ sites, highlightedSiteId, customTileUrl, custom
       {/* Time period toggle - hide when using custom Wayback imagery */}
       {!customTileUrl && (
         <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
+      )}
+
+      {/* Comparison Mode Toggle - Only show when using Wayback imagery on Timeline page */}
+      {customTileUrl && onComparisonModeToggle && (
+        <div className="absolute top-4 right-4 z-[1000]">
+          <Button
+            variant="secondary"
+            size="xs"
+            active={comparisonModeEnabled}
+            onClick={onComparisonModeToggle}
+            aria-label={translate("timeline.comparisonMode")}
+            title={translate("timeline.comparisonMode")}
+            className="shadow-lg"
+          >
+            {comparisonModeEnabled ? "✓ " : ""}
+            {translate("timeline.comparisonMode")}
+          </Button>
+        </div>
       )}
 
       <MapContainer
