@@ -7,6 +7,8 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
+    // Exclude E2E tests (Playwright tests)
+    exclude: ['**/node_modules/**', '**/e2e/**'],
     // Aggressive performance optimizations - maximize parallel execution
     pool: 'forks',
     poolOptions: {

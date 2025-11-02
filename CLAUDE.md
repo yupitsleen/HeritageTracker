@@ -8,12 +8,13 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 797 tests must pass ✓ (720 frontend + 77 backend)
+npm test        # 797 unit tests must pass ✓ (720 frontend + 77 backend)
+npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
 ```
 
-**Stack:** React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS v4 + Leaflet + D3.js + Supabase
+**Stack:** React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS v4 + Leaflet + D3.js + Supabase + Playwright
 
 **Current:** 45 Gaza sites documented | Production-ready with comparison mode
 
@@ -553,11 +554,194 @@ server/
 
 ---
 
+## End-to-End (E2E) Testing
+
+### Overview
+
+E2E tests use **Playwright** to catch visual and interaction bugs that unit tests can't detect.
+
+**Coverage:**
+- Filter bar visibility and z-index issues
+- Timeline navigation button presence
+- Comparison mode dual map rendering
+- Mobile responsive layouts
+- Route navigation and accessibility
+
+### Running E2E Tests
+
+```bash
+# Run all E2E tests (headless)
+npm run e2e
+
+# Run with UI mode (interactive debugging)
+npm run e2e:ui
+
+# Run in headed mode (see browser)
+npm run e2e:headed
+
+# Debug mode (step through tests)
+npm run e2e:debug
+
+# View test report
+npm run e2e:report
+
+# Run all tests (unit + E2E)
+npm run test:all
+```
+
+### E2E Test Files
+
+```
+e2e/
+├── smoke.spec.ts        # Core page loads, navigation, mock data
+├── filters.spec.ts      # Filter bar visibility and functionality
+├── timeline.spec.ts     # Timeline navigation buttons
+├── comparison.spec.ts   # Comparison mode dual maps
+└── mobile.spec.ts       # Mobile responsive layouts
+```
+
+### Writing E2E Tests
+
+**Pattern:**
+```typescript
+import { test, expect } from '@playwright/test';
+
+test.describe('Feature Name', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+  });
+
+  test('should do something', async ({ page }) => {
+    // Arrange
+    const button = page.getByRole('button', { name: /click me/i });
+
+    // Act
+    await button.click();
+
+    // Assert
+    await expect(button).toBeVisible();
+  });
+});
+```
+
+**Mobile Tests:**
+```typescript
+import { test, expect, devices } from '@playwright/test';
+
+test.describe('Mobile Feature', () => {
+  test.use({ ...devices['Pixel 5'] });
+
+  test('should work on mobile', async ({ page }) => {
+    await page.goto('/');
+    // Test mobile-specific behavior
+  });
+});
+```
+
+### E2E Test Strategy
+
+**What to Test:**
+- ✅ Critical user journeys (filter → view site → comparison mode)
+- ✅ Visual bugs (z-index, overlapping elements, hidden buttons)
+- ✅ Mobile responsive layouts
+- ✅ Route navigation
+- ✅ Map interactions (zoom, markers, tiles)
+- ❌ Business logic (covered by unit tests)
+- ❌ Data transformations (covered by unit tests)
+
+**Best Practices:**
+1. **Use Mock API** - E2E tests run with `VITE_USE_MOCK_API=true` (no backend needed)
+2. **Flexible Selectors** - Use `getByRole` > `getByText` > `locator` (avoid brittle IDs)
+3. **Wait for Loading** - Use `waitForLoadState('networkidle')` after navigation
+4. **Test User Intent** - Focus on visible behavior, not implementation details
+5. **Keep Tests Fast** - Run in parallel (default), avoid unnecessary waits
+
+### CI/CD Integration
+
+E2E tests run automatically on GitHub Actions:
+
+```yaml
+# .github/workflows/e2e-tests.yml
+- Run on push to main/develop/feature/*
+- Run on pull requests
+- Upload screenshots on failure
+- Upload HTML report artifacts
+```
+
+**View Results:**
+- Check "Actions" tab in GitHub
+- Download artifacts for failed test screenshots
+- View Playwright HTML report
+
+### Debugging Failed E2E Tests
+
+**Locally:**
+```bash
+# Run in debug mode (pause at breakpoints)
+npm run e2e:debug
+
+# Run in headed mode (see browser)
+npm run e2e:headed -- --grep "test name"
+
+# Run specific file
+npm run e2e -- e2e/filters.spec.ts
+```
+
+**In CI:**
+1. Check GitHub Actions logs
+2. Download "playwright-screenshots" artifact
+3. Download "playwright-report" artifact
+4. Unzip and open `index.html` to see full report
+
+**Common Issues:**
+- **Timeouts:** Increase timeout in test or use `page.waitForTimeout()`
+- **Element not found:** Check selector, element may be hidden or not loaded
+- **Flaky tests:** Add `waitForLoadState()` or retry logic
+- **CI failures:** Check if dev server started correctly
+
+### Performance Targets
+
+- **Smoke tests:** ~30 seconds (all critical pages)
+- **Full E2E suite:** ~2 minutes (parallel execution)
+- **CI pipeline:** +3 minutes to total build time
+
+---
+
 ## Recent Improvements (Nov 2025)
+
+**Phase 10 Complete: End-to-End Testing**
+
+### Latest Changes (Nov 2025)
+
+1. **E2E Test Suite with Playwright:**
+   - **5 Test Suites (50+ Tests):** Comprehensive coverage of critical user journeys
+     - `smoke.spec.ts` - Core page loads, navigation, accessibility
+     - `filters.spec.ts` - Filter bar visibility and z-index issues
+     - `timeline.spec.ts` - Timeline navigation buttons presence
+     - `comparison.spec.ts` - Comparison mode dual maps rendering
+     - `mobile.spec.ts` - Mobile responsive layouts and touch interactions
+   - **Mock API Integration:** All E2E tests run against mock data (no backend required)
+   - **CI/CD Ready:** GitHub Actions workflow with artifact uploads on failure
+   - **6 NPM Scripts:** `e2e`, `e2e:ui`, `e2e:headed`, `e2e:debug`, `e2e:report`, `test:all`
+
+2. **Test Coverage Highlights:**
+   - Filter dropdown visibility and clickability (catch z-index bugs)
+   - Timeline NEXT/PREV/RESET buttons (ensure buttons are present)
+   - Comparison mode with dual maps (verify side-by-side rendering)
+   - Mobile filter drawer (responsive UI testing)
+   - Map marker interactions and tile loading
+   - Route navigation and accessibility (keyboard, screen readers)
+
+3. **New Files Created (7 files):**
+   - `e2e/` - E2E test directory
+     - `smoke.spec.ts`, `filters.spec.ts`, `timeline.spec.ts`, `comparison.spec.ts`, `mobile.spec.ts`
+   - `playwright.config.ts` - Playwright configuration
+   - `.github/workflows/e2e-tests.yml` - CI/CD workflow
 
 **Phase 9 Complete: Backend Unit Testing**
 
-### Latest Changes (Nov 2025)
+### Previous Changes (Nov 2025)
 
 1. **Backend Test Suite (77 Tests):**
    - **Test Infrastructure:** Reusable mock utilities and test helpers
