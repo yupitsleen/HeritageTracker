@@ -8,7 +8,15 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "keywords": ["heritage", "tracker", "api", "express"],
+  "keywords": [
+    "heritage",
+    "tracker",
+    "api",
+    "express"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express-rate-limit": "^8.2.1"
+  }
 }

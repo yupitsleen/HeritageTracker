@@ -11,6 +11,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import rateLimit from 'express-rate-limit';
 import sql, { testConnection } from './db.js';
 import * as sitesController from './controllers/sitesController.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
@@ -41,6 +42,27 @@ app.use(
 
 // Parse JSON bodies
 app.use(express.json());
+
+// Rate limiting - General API protection
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 100 requests per window per IP
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: 'Too many requests from this IP, please try again later',
+});
+
+// Stricter rate limiting for write operations (POST, PATCH, DELETE)
+const strictLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // 20 requests per window per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many write requests from this IP, please try again later',
+});
+
+// Apply general rate limiter to all API routes
+app.use('/api/', generalLimiter);
 
 // Request logging (development only)
 if (process.env.NODE_ENV !== 'production') {
@@ -92,18 +114,19 @@ app.get('/api/sites/nearby', validateNearbyParams, sitesController.getSitesNearb
 app.get('/api/sites/:id', validateSiteId, sitesController.getSiteById);
 
 // POST /api/sites - Create new site
-app.post('/api/sites', validateSiteBody(false), sitesController.createSite);
+app.post('/api/sites', strictLimiter, validateSiteBody(false), sitesController.createSite);
 
 // PATCH /api/sites/:id - Update existing site
 app.patch(
   '/api/sites/:id',
+  strictLimiter,
   validateSiteId,
   validateSiteBody(true),
   sitesController.updateSite
 );
 
 // DELETE /api/sites/:id - Delete site
-app.delete('/api/sites/:id', validateSiteId, sitesController.deleteSite);
+app.delete('/api/sites/:id', strictLimiter, validateSiteId, sitesController.deleteSite);
 
 // ============================================================================
 // Error Handling

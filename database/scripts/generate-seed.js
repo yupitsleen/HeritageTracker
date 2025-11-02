@@ -1,36 +1,37 @@
 /**
- * Generate SQL seed file from mockSites.ts
+ * Generate SQL seed file from mockSites JSON
  *
- * This script reads the TypeScript mock data and converts it to SQL INSERT statements
+ * This script reads the JSON mock data and converts it to SQL INSERT statements
  * for seeding the local PostgreSQL database.
+ *
+ * SECURITY: Uses JSON.parse() instead of eval() for safer parsing
+ * Run `npm run db:extract-json` first to generate mockSites.json
  */
 
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Read and parse mockSites.ts
-const mockSitesPath = resolve(__dirname, '../../src/data/mockSites.ts');
-const mockSitesContent = readFileSync(mockSitesPath, 'utf-8');
+// Read mockSites from JSON (safer than eval)
+const mockSitesJsonPath = resolve(__dirname, '../seeds/mockSites.json');
 
-// Extract the mockSites array using a simple regex
-// This works because mockSites is exported as a const array
-const arrayMatch = mockSitesContent.match(/export const mockSites: GazaSite\[\] = (\[[\s\S]*\]);/);
-
-if (!arrayMatch) {
-  console.error('❌ Could not find mockSites array in mockSites.ts');
+if (!existsSync(mockSitesJsonPath)) {
+  console.error('❌ mockSites.json not found!');
+  console.error('   Please run: npm run db:extract-json');
+  console.error('   This will safely extract data from mockSites.ts to JSON\n');
   process.exit(1);
 }
 
-// Use eval to parse the array (safe because it's our own code)
-// Remove the trailing semicolon and parse
-const mockSitesString = arrayMatch[1];
+const mockSitesJson = readFileSync(mockSitesJsonPath, 'utf-8');
+const mockSites = JSON.parse(mockSitesJson);
 
-// Create a safer evaluation by creating a minimal context
-const mockSites = eval(`(${mockSitesString})`);
+if (!Array.isArray(mockSites)) {
+  console.error('❌ mockSites.json does not contain a valid array');
+  process.exit(1);
+}
 
 console.log(`📦 Found ${mockSites.length} sites to convert to SQL`);
 

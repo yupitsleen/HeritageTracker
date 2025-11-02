@@ -7,6 +7,7 @@
 
 import sql from '../db.js';
 import { dbToApi, dbArrayToApi } from '../utils/converters.js';
+import { SITE_FIELDS } from '../utils/queries.js';
 
 /**
  * Find all sites with optional WHERE clause
@@ -16,14 +17,7 @@ import { dbToApi, dbArrayToApi } from '../utils/converters.js';
  */
 export async function findAll(whereClause = '', params = []) {
   const query = `
-    SELECT
-      id, name, name_arabic, type, year_built, year_built_islamic,
-      ST_AsGeoJSON(coordinates)::json as coordinates,
-      status, date_destroyed, date_destroyed_islamic, last_updated,
-      description, historical_significance, cultural_value,
-      verified_by, sources, images, unesco_listed, artifact_count,
-      is_unique, religious_significance, community_gathering_place,
-      historical_events
+    SELECT ${SITE_FIELDS}
     FROM heritage_sites
     ${whereClause}
     ORDER BY date_destroyed DESC NULLS LAST, name ASC
@@ -43,14 +37,7 @@ export async function findAll(whereClause = '', params = []) {
  */
 export async function findPaginated(whereClause = '', params = [], limit, offset) {
   const query = `
-    SELECT
-      id, name, name_arabic, type, year_built, year_built_islamic,
-      ST_AsGeoJSON(coordinates)::json as coordinates,
-      status, date_destroyed, date_destroyed_islamic, last_updated,
-      description, historical_significance, cultural_value,
-      verified_by, sources, images, unesco_listed, artifact_count,
-      is_unique, religious_significance, community_gathering_place,
-      historical_events
+    SELECT ${SITE_FIELDS}
     FROM heritage_sites
     ${whereClause}
     ORDER BY date_destroyed DESC NULLS LAST, name ASC
@@ -84,18 +71,8 @@ export async function count(whereClause = '', params = []) {
  * @returns {Promise<Object|null>} GazaSite object or null
  */
 export async function findById(id) {
-  const rows = await sql`
-    SELECT
-      id, name, name_arabic, type, year_built, year_built_islamic,
-      ST_AsGeoJSON(coordinates)::json as coordinates,
-      status, date_destroyed, date_destroyed_islamic, last_updated,
-      description, historical_significance, cultural_value,
-      verified_by, sources, images, unesco_listed, artifact_count,
-      is_unique, religious_significance, community_gathering_place,
-      historical_events
-    FROM heritage_sites
-    WHERE id = ${id}
-  `;
+  const query = `SELECT ${SITE_FIELDS} FROM heritage_sites WHERE id = $1`;
+  const rows = await sql.unsafe(query, [id]);
 
   return rows.length > 0 ? dbToApi(rows[0]) : null;
 }
@@ -127,14 +104,7 @@ export async function insert(dbData) {
       ${dbData.religious_significance}, ${dbData.community_gathering_place},
       ${dbData.historical_events}
     )
-    RETURNING
-      id, name, name_arabic, type, year_built, year_built_islamic,
-      ST_AsGeoJSON(coordinates)::json as coordinates,
-      status, date_destroyed, date_destroyed_islamic, last_updated,
-      description, historical_significance, cultural_value,
-      verified_by, sources, images, unesco_listed, artifact_count,
-      is_unique, religious_significance, community_gathering_place,
-      historical_events
+    RETURNING ${SITE_FIELDS}
   `;
 
   return dbToApi(rows[0]);
@@ -176,14 +146,7 @@ export async function update(id, dbUpdates) {
     UPDATE heritage_sites
     SET ${setFields.join(', ')}
     WHERE id = $${paramIndex}
-    RETURNING
-      id, name, name_arabic, type, year_built, year_built_islamic,
-      ST_AsGeoJSON(coordinates)::json as coordinates,
-      status, date_destroyed, date_destroyed_islamic, last_updated,
-      description, historical_significance, cultural_value,
-      verified_by, sources, images, unesco_listed, artifact_count,
-      is_unique, religious_significance, community_gathering_place,
-      historical_events
+    RETURNING ${SITE_FIELDS}
   `;
 
   const rows = await sql.unsafe(query, [...values, id]);
@@ -213,25 +176,19 @@ export async function remove(id) {
  * @returns {Promise<Array>} Array of GazaSite objects with distance
  */
 export async function findNearPoint(lat, lng, radiusKm) {
-  const rows = await sql`
-    SELECT
-      id, name, name_arabic, type, year_built, year_built_islamic,
-      ST_AsGeoJSON(coordinates)::json as coordinates,
-      status, date_destroyed, date_destroyed_islamic, last_updated,
-      description, historical_significance, cultural_value,
-      verified_by, sources, images, unesco_listed, artifact_count,
-      is_unique, religious_significance, community_gathering_place,
-      historical_events,
-      ST_Distance(coordinates, ST_MakePoint(${lng}, ${lat})::geography) / 1000 as distance_km
+  const query = `
+    SELECT ${SITE_FIELDS},
+      ST_Distance(coordinates, ST_MakePoint($2, $1)::geography) / 1000 as distance_km
     FROM heritage_sites
     WHERE ST_DWithin(
       coordinates,
-      ST_MakePoint(${lng}, ${lat})::geography,
-      ${radiusKm * 1000}
+      ST_MakePoint($2, $1)::geography,
+      $3
     )
     ORDER BY distance_km ASC
   `;
 
+  const rows = await sql.unsafe(query, [lat, lng, radiusKm * 1000]);
   return dbArrayToApi(rows);
 }
 
