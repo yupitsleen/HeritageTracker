@@ -92,7 +92,7 @@ export function DesktopLayout({
       {/* Filter bar - Full width at top */}
       <div
         className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
-        style={{ zIndex: Z_INDEX.CONTENT }}
+        style={{ zIndex: Z_INDEX.FILTER_BAR }}
       >
         {/* Unified FilterBar with search, filters, and actions */}
         <FilterBar
