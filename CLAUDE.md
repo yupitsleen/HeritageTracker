@@ -48,9 +48,9 @@ style: standardize FilterBar opacity
 
 ```
 src/
-├── api/                          # Supabase integration
-│   ├── supabaseClient.ts         # Client configuration
-│   ├── sites.ts                  # CRUD operations
+├── api/                          # Backend integration (3 modes: Mock/Local/Supabase)
+│   ├── supabaseClient.ts         # Supabase client configuration
+│   ├── sites.ts                  # CRUD operations (mode-agnostic)
 │   ├── mockAdapter.ts            # Development mock data (45 sites)
 │   ├── queryHelpers.ts           # Filter/pagination helpers
 │   ├── types.ts                  # API types
@@ -113,8 +113,19 @@ src/
 │   ├── filters.ts                # Filter types
 │   ├── wayback.ts                # Wayback release types
 │   └── [30+ type files]
-└── data/
-    └── mockSites.ts              # 45 documented sites (1650 lines)
+├── data/
+│   └── mockSites.ts              # 45 documented sites (1650 lines)
+└── (root directories)
+    ├── database/                 # Local PostgreSQL setup
+    │   ├── migrations/           # SQL schema files
+    │   ├── scripts/              # Migration & seed runners
+    │   └── seeds/                # Auto-generated seed data
+    └── server/                   # Local HTTP backend (Express)
+        ├── index.js              # Server entry point
+        ├── db.js                 # Database connection pool
+        ├── sitesController.js    # Business logic
+        ├── middleware/           # Error handling, validation
+        └── utils/                # DB ↔ API converters
 ```
 
 ### State Management
@@ -145,17 +156,41 @@ const { data, isLoading } = useSitesQuery({
 });
 ```
 
-### Backend Pattern
+### Backend Pattern (3 Modes)
 
+**Mode 1: Mock API** (Default - Fastest)
 ```typescript
 // .env.development: VITE_USE_MOCK_API=true
-// .env.production: VITE_USE_MOCK_API=false
-
 export async function getAllSites(): Promise<GazaSite[]> {
   if (shouldUseMockData()) return mockGetAllSites();
-  return supabase.from("sites").select("*");
+  // Returns data from src/data/mockSites.ts (45 sites)
+  // No database required, 800ms simulated delay
 }
 ```
+
+**Mode 2: Local Backend** (Realistic Development)
+```typescript
+// .env.development: VITE_USE_LOCAL_BACKEND=true, VITE_API_URL=http://localhost:5000/api
+export async function getAllSites(): Promise<GazaSite[]> {
+  if (shouldUseLocalBackend()) {
+    const response = await fetch(`${VITE_API_URL}/sites`);
+    return response.json();
+  }
+  // Connects to local Express server → PostgreSQL
+  // Requires: docker-compose up -d
+}
+```
+
+**Mode 3: Supabase Cloud** (Production)
+```typescript
+// .env.production: VITE_USE_MOCK_API=false, VITE_SUPABASE_URL=xxx
+export async function getAllSites(): Promise<GazaSite[]> {
+  return supabase.from("heritage_sites").select("*");
+  // Connects to Supabase cloud database
+}
+```
+
+**Switching Modes:** Change environment variables, zero code changes needed!
 
 ---
 
@@ -503,14 +538,48 @@ npm run test:ui       # Vitest UI
 
 ## Environment Configuration
 
-### Development (.env.development)
+### Mode 1: Mock API (Default Development)
 
+**.env.development**
 ```env
 VITE_API_URL=http://localhost:5000/api
 VITE_USE_MOCK_API=true
+VITE_USE_LOCAL_BACKEND=false
+```
+- No database setup required
+- Uses `src/data/mockSites.ts` (45 sites)
+- 800ms simulated network delay
+- Perfect for quick development and testing
+
+### Mode 2: Local Backend (Realistic Development)
+
+**.env.development**
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_USE_MOCK_API=false
+VITE_USE_LOCAL_BACKEND=true
 ```
 
-### Production (.env.production)
+**Quick Setup:**
+```bash
+# One-time setup
+npm run db:setup        # Start PostgreSQL, run migrations, load 45 sites
+
+# Start servers (2 separate terminals)
+npm run server:dev      # Express backend on :5000
+npm run dev             # Vite frontend on :5173
+
+# Or run both together
+npm run dev:full        # Starts both servers concurrently
+```
+
+**Requirements:**
+- Docker Desktop running
+- Ports 5432 (PostgreSQL) and 5000 (Express) available
+
+### Mode 3: Production (Supabase Cloud)
+
+**.env.production**
 
 ```env
 VITE_API_URL=https://api.heritagetracker.org
@@ -518,6 +587,112 @@ VITE_USE_MOCK_API=false
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
+
+---
+
+## Local Backend Setup
+
+### Overview
+
+The local backend provides a realistic development environment with:
+- PostgreSQL database with PostGIS (geospatial queries)
+- Express REST API server
+- Same schema as Supabase (easy cloud migration)
+- 45 heritage sites from mockSites.ts
+
+### Quick Start
+
+```bash
+# 1. Start database and load data (one command)
+npm run db:setup
+
+# 2. Start backend server
+npm run server:dev
+
+# 3. Start frontend (separate terminal)
+npm run dev
+
+# 4. Update .env.development
+VITE_USE_MOCK_API=false
+VITE_USE_LOCAL_BACKEND=true
+```
+
+### Database Commands
+
+```bash
+npm run db:start          # Start PostgreSQL (Docker)
+npm run db:stop           # Stop PostgreSQL
+npm run db:reset          # Reset database (delete all data)
+npm run db:migrate        # Run migrations (create schema)
+npm run db:generate-seed  # Generate seed SQL from mockSites.ts
+npm run db:seed           # Load seed data (45 sites)
+npm run db:setup          # Complete setup (all of the above)
+npm run db:logs           # View database logs
+```
+
+### Backend Server Commands
+
+```bash
+npm run server:start      # Start Express server (production mode)
+npm run server:dev        # Start with nodemon (auto-reload)
+npm run dev:full          # Start both frontend + backend together
+```
+
+### Architecture
+
+**Database Layer (PostgreSQL + PostGIS)**
+- Location: `database/`
+- Schema: `migrations/001_initial_schema.sql` (285 lines)
+- Features: PostGIS, RLS, indexes, custom functions
+- Port: 5432
+
+**Backend Server (Express)**
+- Location: `server/`
+- Port: 5000
+- Endpoints: GET/POST/PATCH/DELETE `/api/sites`
+- Database: Uses `postgres` npm package
+
+**Frontend Integration**
+- `src/api/sites.ts` - Auto-detects backend mode
+- No code changes needed to switch modes
+- Same `GazaSite` types across all modes
+
+### Database Schema Highlights
+
+```sql
+-- PostGIS geography for accurate distance calculations
+coordinates GEOGRAPHY(POINT, 4326)
+
+-- Performance indexes
+CREATE INDEX idx_heritage_coordinates ON heritage_sites USING GIST(coordinates);
+CREATE INDEX idx_heritage_type ON heritage_sites(type);
+CREATE INDEX idx_heritage_status ON heritage_sites(status);
+
+-- Custom geospatial function
+SELECT * FROM sites_near_point(lat, lng, radius_km);
+
+-- Row-Level Security (Supabase compatible)
+ALTER TABLE heritage_sites ENABLE ROW LEVEL SECURITY;
+```
+
+### Troubleshooting
+
+**Docker not starting:**
+- Ensure Docker Desktop is running
+- Check port 5432 is available: `lsof -i :5432`
+
+**Migration fails:**
+- Reset database: `npm run db:reset`
+- Check logs: `npm run db:logs`
+
+**Backend server errors:**
+- Verify database is running: `docker ps`
+- Check connection: `psql postgresql://heritage_user:heritage_dev_password@localhost:5432/heritage_tracker`
+
+**Frontend not connecting:**
+- Verify `.env.development` has `VITE_USE_LOCAL_BACKEND=true`
+- Check backend is running: `curl http://localhost:5000/api/sites`
+- Restart Vite dev server
 
 ---
 
@@ -530,13 +705,18 @@ npm run build         # Creates dist/ folder
 npm run preview       # Preview production build locally
 ```
 
-### Supabase Setup
+### Supabase Setup (Cloud Migration)
 
 1. Create project at supabase.com
-2. Run SQL migration (see `supabase/migrations/`)
-3. Enable PostGIS extension
-4. Add RLS policies
-5. Update environment variables
+2. Run SQL migration from `database/migrations/001_initial_schema.sql` in Supabase SQL Editor
+3. Extensions, indexes, RLS policies automatically created by migration
+4. Update `.env.production`:
+   ```env
+   VITE_USE_MOCK_API=false
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```
+5. No code changes needed - same schema as local database!
 
 ### Vercel/Netlify
 
