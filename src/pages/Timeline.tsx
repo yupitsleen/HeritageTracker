@@ -465,6 +465,8 @@ export function Timeline() {
                   advancedMode={{
                     syncMapOnDotClick,
                     onSyncMapToggle: () => setSyncMapOnDotClick(!syncMapOnDotClick),
+                    showNavigation: true, // Show Previous/Next buttons
+                    hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
                   }}
                 />
               </Suspense>

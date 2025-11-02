@@ -167,7 +167,9 @@ export function DesktopLayout({
             onSiteHighlight={onSiteHighlight}
             advancedMode={{
               syncMapOnDotClick: false,
-              onSyncMapToggle: undefined, // Hide "Sync Map" button on Dashboard
+              showNavigation: true, // Show Previous/Next buttons
+              hidePlayControls: false, // Show Play/Pause/Speed controls
+              // No onSyncMapToggle - hides "Sync Map" button on Dashboard
             }}
           />
         </Suspense>
