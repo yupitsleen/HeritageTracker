@@ -117,15 +117,24 @@ src/
 │   └── mockSites.ts              # 45 documented sites (1650 lines)
 └── (root directories)
     ├── database/                 # Local PostgreSQL setup
-    │   ├── migrations/           # SQL schema files
+    │   ├── migrations/           # SQL schema files (285 lines)
     │   ├── scripts/              # Migration & seed runners
     │   └── seeds/                # Auto-generated seed data
     └── server/                   # Local HTTP backend (Express)
         ├── index.js              # Server entry point
         ├── db.js                 # Database connection pool
-        ├── sitesController.js    # Business logic
+        ├── package.json          # Server dependencies
+        ├── controllers/          # HTTP request handlers
+        │   └── sitesController.js
+        ├── services/             # Business logic & validation
+        │   └── sitesService.js
+        ├── repositories/         # Data access layer
+        │   └── sitesRepository.js
         ├── middleware/           # Error handling, validation
+        │   ├── errorHandler.js
+        │   └── validator.js
         └── utils/                # DB ↔ API converters
+            └── converters.js
 ```
 
 ### State Management
