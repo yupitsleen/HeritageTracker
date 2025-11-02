@@ -33,47 +33,121 @@ async function handleResponse<T>(response: Response): Promise<T> {
  */
 export class LocalBackendAdapter implements BackendAdapter {
   private baseUrl: string;
+  private abortControllers: Map<string, AbortController> = new Map();
 
   constructor(baseUrl?: string) {
     this.baseUrl = baseUrl || import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
   }
 
+  /**
+   * Cancel a pending request
+   * @param key - Request key to cancel
+   */
+  private cancelRequest(key: string): void {
+    const controller = this.abortControllers.get(key);
+    if (controller) {
+      controller.abort();
+      this.abortControllers.delete(key);
+    }
+  }
+
+  /**
+   * Create a new abort controller for a request
+   * @param key - Unique key for the request
+   * @returns AbortSignal to pass to fetch
+   */
+  private createAbortSignal(key: string): AbortSignal {
+    // Cancel any existing request with this key
+    this.cancelRequest(key);
+
+    // Create new controller
+    const controller = new AbortController();
+    this.abortControllers.set(key, controller);
+
+    return controller.signal;
+  }
+
+  /**
+   * Clean up abort controller after request completes
+   * @param key - Request key to clean up
+   */
+  private cleanupRequest(key: string): void {
+    this.abortControllers.delete(key);
+  }
+
   async getAllSites(params?: SitesQueryParams): Promise<GazaSite[]> {
-    const queryParams = buildQueryParams({
-      types: params?.types,
-      statuses: params?.statuses,
-      search: params?.search,
-      startDate: params?.dateDestroyedStart,
-      endDate: params?.dateDestroyedEnd,
-      unescoListed: params?.unescoListed,
-      page: params?.page,
-      pageSize: params?.pageSize,
-    });
+    const requestKey = 'getAllSites';
+    const signal = this.createAbortSignal(requestKey);
 
-    const url = `${this.baseUrl}/sites${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    const response = await fetch(url);
+    try {
+      const queryParams = buildQueryParams({
+        types: params?.types,
+        statuses: params?.statuses,
+        search: params?.search,
+        startDate: params?.dateDestroyedStart,
+        endDate: params?.dateDestroyedEnd,
+        unescoListed: params?.unescoListed,
+        page: params?.page,
+        pageSize: params?.pageSize,
+      });
 
-    return handleResponse<GazaSite[]>(response);
+      const url = `${this.baseUrl}/sites${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await fetch(url, { signal });
+
+      return handleResponse<GazaSite[]>(response);
+    } catch (error) {
+      // Don't throw error for cancelled requests
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.log('[LocalBackendAdapter] Request cancelled:', requestKey);
+        return [];
+      }
+      throw error;
+    } finally {
+      this.cleanupRequest(requestKey);
+    }
   }
 
   async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<GazaSite>> {
-    const queryParams = buildQueryParams({
-      types: params?.types,
-      statuses: params?.statuses,
-      search: params?.search,
-      startDate: params?.dateDestroyedStart,
-      endDate: params?.dateDestroyedEnd,
-      unescoListed: params?.unescoListed,
-      page: params?.page,
-      pageSize: params?.pageSize,
-      sortBy: params?.sortBy,
-      sortOrder: params?.sortOrder,
-    });
+    const requestKey = `getSitesPaginated-${params?.page || 1}`;
+    const signal = this.createAbortSignal(requestKey);
 
-    const url = `${this.baseUrl}/sites/paginated${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    const response = await fetch(url);
+    try {
+      const queryParams = buildQueryParams({
+        types: params?.types,
+        statuses: params?.statuses,
+        search: params?.search,
+        startDate: params?.dateDestroyedStart,
+        endDate: params?.dateDestroyedEnd,
+        unescoListed: params?.unescoListed,
+        page: params?.page,
+        pageSize: params?.pageSize,
+        sortBy: params?.sortBy,
+        sortOrder: params?.sortOrder,
+      });
 
-    return handleResponse<PaginatedResponse<GazaSite>>(response);
+      const url = `${this.baseUrl}/sites/paginated${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await fetch(url, { signal });
+
+      return handleResponse<PaginatedResponse<GazaSite>>(response);
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.log('[LocalBackendAdapter] Request cancelled:', requestKey);
+        return {
+          data: [],
+          pagination: {
+            page: params?.page || 1,
+            pageSize: params?.pageSize || 50,
+            totalItems: 0,
+            totalPages: 0,
+          },
+          success: true,
+          timestamp: new Date().toISOString(),
+        };
+      }
+      throw error;
+    } finally {
+      this.cleanupRequest(requestKey);
+    }
   }
 
   async getSiteById(id: string): Promise<GazaSite> {
@@ -82,16 +156,29 @@ export class LocalBackendAdapter implements BackendAdapter {
   }
 
   async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<GazaSite[]> {
-    const queryParams = buildQueryParams({
-      lat,
-      lng,
-      radius: radiusKm,
-    });
+    const requestKey = 'getSitesNearLocation';
+    const signal = this.createAbortSignal(requestKey);
 
-    const url = `${this.baseUrl}/sites/nearby?${queryParams.toString()}`;
-    const response = await fetch(url);
+    try {
+      const queryParams = buildQueryParams({
+        lat,
+        lng,
+        radius: radiusKm,
+      });
 
-    return handleResponse<GazaSite[]>(response);
+      const url = `${this.baseUrl}/sites/nearby?${queryParams.toString()}`;
+      const response = await fetch(url, { signal });
+
+      return handleResponse<GazaSite[]>(response);
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.log('[LocalBackendAdapter] Request cancelled:', requestKey);
+        return [];
+      }
+      throw error;
+    } finally {
+      this.cleanupRequest(requestKey);
+    }
   }
 
   async createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> {

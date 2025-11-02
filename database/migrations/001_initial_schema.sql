@@ -1,4 +1,5 @@
 -- Heritage Tracker Initial Database Schema
+-- Description: Initial schema with PostGIS extensions, heritage_sites table, and indexes
 -- Compatible with both local PostgreSQL and Supabase
 -- Version: 1.0
 -- Created: 2025-11-02

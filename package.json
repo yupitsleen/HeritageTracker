@@ -17,6 +17,7 @@
     "db:reset": "docker-compose down -v && docker-compose up -d",
     "db:logs": "docker logs heritage_tracker_db -f",
     "db:migrate": "node database/scripts/migrate.js",
+    "db:migrate:status": "node database/scripts/migration-status.js",
     "db:extract-json": "node database/scripts/extract-mock-data.js",
     "db:generate-seed": "node database/scripts/generate-seed.js",
     "db:seed": "node database/scripts/seed.js",

@@ -21,6 +21,9 @@ import {
   validatePagination,
   validateNearbyParams,
 } from './middleware/validator.js';
+import { requestIdMiddleware } from './middleware/requestId.js';
+import { loggerMiddleware } from './middleware/logger.js';
+import logger from './utils/logger.js';
 
 // Load environment variables
 dotenv.config();
@@ -43,6 +46,12 @@ app.use(
 // Parse JSON bodies
 app.use(express.json());
 
+// Request ID tracking - Assign unique ID to each request
+app.use(requestIdMiddleware);
+
+// Request logging - Log all requests with timing
+app.use(loggerMiddleware);
+
 // Rate limiting - General API protection
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -63,14 +72,6 @@ const strictLimiter = rateLimit({
 
 // Apply general rate limiter to all API routes
 app.use('/api/', generalLimiter);
-
-// Request logging (development only)
-if (process.env.NODE_ENV !== 'production') {
-  app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} ${req.method} ${req.path}`);
-    next();
-  });
-}
 
 // ============================================================================
 // Health Check Routes
@@ -145,52 +146,55 @@ app.use(errorHandler);
 async function startServer() {
   try {
     // Test database connection
-    console.log('Testing database connection...');
+    logger.info('Testing database connection...');
     const dbConnected = await testConnection();
 
     if (!dbConnected) {
-      console.error('❌ Failed to connect to database');
-      console.error('Make sure PostgreSQL is running: npm run db:start');
+      logger.error('Failed to connect to database');
+      logger.error('Make sure PostgreSQL is running: npm run db:start');
       process.exit(1);
     }
 
     // Start Express server
     app.listen(PORT, () => {
-      console.log('\n✅ Heritage Tracker API Server');
-      console.log(`   Port: ${PORT}`);
-      console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`   Frontend URL: ${process.env.CORS_ORIGIN || 'http://localhost:5173'}`);
-      console.log('\n📚 API Endpoints:');
-      console.log(`   GET    /api/sites              - Get all sites`);
-      console.log(`   GET    /api/sites/paginated    - Get paginated sites`);
-      console.log(`   GET    /api/sites/stats        - Get statistics`);
-      console.log(`   GET    /api/sites/nearby       - Get nearby sites`);
-      console.log(`   GET    /api/sites/:id          - Get site by ID`);
-      console.log(`   POST   /api/sites              - Create site`);
-      console.log(`   PATCH  /api/sites/:id          - Update site`);
-      console.log(`   DELETE /api/sites/:id          - Delete site`);
-      console.log('\n🔗 Health Check:');
-      console.log(`   http://localhost:${PORT}/health`);
-      console.log(`   http://localhost:${PORT}/api/health\n`);
+      logger.info({
+        port: PORT,
+        env: process.env.NODE_ENV || 'development',
+        frontendUrl: process.env.CORS_ORIGIN || 'http://localhost:5173',
+      }, 'Heritage Tracker API Server started');
+
+      logger.info('API Endpoints:');
+      logger.info('  GET    /api/sites              - Get all sites');
+      logger.info('  GET    /api/sites/paginated    - Get paginated sites');
+      logger.info('  GET    /api/sites/stats        - Get statistics');
+      logger.info('  GET    /api/sites/nearby       - Get nearby sites');
+      logger.info('  GET    /api/sites/:id          - Get site by ID');
+      logger.info('  POST   /api/sites              - Create site');
+      logger.info('  PATCH  /api/sites/:id          - Update site');
+      logger.info('  DELETE /api/sites/:id          - Delete site');
+      logger.info({
+        healthCheck: `http://localhost:${PORT}/health`,
+        apiHealth: `http://localhost:${PORT}/api/health`,
+      }, 'Health check endpoints ready');
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    logger.fatal({ err: error }, 'Failed to start server');
     process.exit(1);
   }
 }
 
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
-  console.log('\n\nShutting down server...');
+  logger.info('Received SIGINT, shutting down gracefully...');
   await sql.end();
-  console.log('Database connection closed');
+  logger.info('Database connection closed');
   process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
-  console.log('\n\nShutting down server...');
+  logger.info('Received SIGTERM, shutting down gracefully...');
   await sql.end();
-  console.log('Database connection closed');
+  logger.info('Database connection closed');
   process.exit(0);
 });
 

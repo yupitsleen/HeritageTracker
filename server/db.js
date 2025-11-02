@@ -7,6 +7,7 @@
 
 import postgres from 'postgres';
 import dotenv from 'dotenv';
+import logger from './utils/logger.js';
 
 dotenv.config();
 
@@ -32,10 +33,10 @@ const sql = postgres(config);
 export async function testConnection() {
   try {
     const result = await sql`SELECT NOW() as current_time`;
-    console.log('✅ Database connected:', result[0].current_time);
+    logger.info({ timestamp: result[0].current_time }, 'Database connected');
     return true;
   } catch (error) {
-    console.error('❌ Database connection failed:', error.message);
+    logger.error({ err: error }, 'Database connection failed');
     return false;
   }
 }
@@ -46,7 +47,7 @@ export async function testConnection() {
  */
 export async function closeConnection() {
   await sql.end();
-  console.log('Database connection pool closed');
+  logger.info('Database connection pool closed');
 }
 
 // Export sql instance
