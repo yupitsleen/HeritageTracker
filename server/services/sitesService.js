@@ -6,8 +6,9 @@
  */
 
 import * as sitesRepo from '../repositories/sitesRepository.js';
-import { apiToDb, buildWhereClause } from '../utils/converters.js';
+import { apiToDb } from '../utils/converters.js';
 import { VALID_TYPES, VALID_STATUSES, COORDINATE_BOUNDS } from '../constants/validation.js';
+import { ServiceError, ValidationError, NotFoundError, DatabaseError } from '../utils/errors.js';
 
 /**
  * Get all sites with optional filtering
@@ -16,10 +17,10 @@ import { VALID_TYPES, VALID_STATUSES, COORDINATE_BOUNDS } from '../constants/val
  */
 export async function getAllSites(filters = {}) {
   try {
-    const { whereClause, params } = buildWhereClause(filters);
-    return await sitesRepo.findAll(whereClause, params);
+    // Repository now handles filter building internally
+    return await sitesRepo.findAll(filters);
   } catch (error) {
-    throw new Error(`Failed to fetch sites: ${error.message}`);
+    throw new ServiceError('getAllSites', error, { filters });
   }
 }
 
@@ -34,12 +35,11 @@ export async function getPaginatedSites(filters = {}) {
     const pageSize = filters.pageSize || 50;
     const offset = (page - 1) * pageSize;
 
-    const { whereClause, params } = buildWhereClause(filters);
-
     // Get total count and data in parallel
+    // Repository now handles filter building internally
     const [total, sites] = await Promise.all([
-      sitesRepo.count(whereClause, params),
-      sitesRepo.findPaginated(whereClause, params, pageSize, offset),
+      sitesRepo.count(filters),
+      sitesRepo.findPaginated(filters, pageSize, offset),
     ]);
 
     const totalPages = Math.ceil(total / pageSize);
@@ -56,7 +56,7 @@ export async function getPaginatedSites(filters = {}) {
       },
     };
   } catch (error) {
-    throw new Error(`Failed to fetch paginated sites: ${error.message}`);
+    throw new ServiceError('getPaginatedSites', error, { filters, page, pageSize });
   }
 }
 
@@ -69,12 +69,22 @@ export async function getSiteById(id) {
   try {
     // Business rule: validate ID format
     if (!id || typeof id !== 'string') {
-      throw new Error('Invalid site ID');
+      throw new ValidationError('getSiteById', 'Invalid site ID', { id });
     }
 
-    return await sitesRepo.findById(id);
+    const site = await sitesRepo.findById(id);
+
+    if (!site) {
+      throw new NotFoundError('getSiteById', 'Site', id);
+    }
+
+    return site;
   } catch (error) {
-    throw new Error(`Failed to fetch site: ${error.message}`);
+    // Re-throw custom errors as-is
+    if (error instanceof ValidationError || error instanceof NotFoundError) {
+      throw error;
+    }
+    throw new ServiceError('getSiteById', error, { id });
   }
 }
 

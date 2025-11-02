@@ -64,6 +64,7 @@ export interface SitesQueryParams {
   dateDestroyedStart?: string;
   dateDestroyedEnd?: string;
   search?: string;
+  unescoListed?: boolean;
   page?: number;
   pageSize?: number;
   sortBy?: 'name' | 'dateDestroyed' | 'dateFounded' | 'type' | 'status';
