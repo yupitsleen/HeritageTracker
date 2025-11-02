@@ -39,10 +39,14 @@ export const BREAKPOINTS = {
 export const Z_INDEX = {
   /** Base layer (z-index: 0) */
   BASE: 0,
-  /** Content layer (z-index: 1) */
-  CONTENT: 1,
+  /** Background decorations like flag triangle (z-index: 1) - Above base background, below content */
+  BACKGROUND_DECORATION: 1,
+  /** Content layer (z-index: 10) */
+  CONTENT: 10,
   /** Sticky elements like headers (z-index: 100) */
   STICKY: 100,
+  /** Filter bar container (z-index: 500) - Above maps but below dropdowns */
+  FILTER_BAR: 500,
   /** Dropdown menus and popovers (z-index: 1000) */
   DROPDOWN: 1000,
   /** Tooltips (z-index: 1010) */

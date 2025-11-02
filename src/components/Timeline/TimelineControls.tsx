@@ -12,6 +12,7 @@ interface TimelineControlsProps {
   zoomToSiteEnabled: boolean;
   mapMarkersVisible: boolean;
   advancedMode: boolean;
+  hidePlayControls?: boolean;
   syncMapOnDotClick?: boolean;
   onPlay: () => void;
   onPause: () => void;
@@ -26,7 +27,7 @@ interface TimelineControlsProps {
  * Timeline playback and control buttons
  *
  * Features:
- * - Play/Pause/Reset controls (hidden in advanced mode)
+ * - Play/Pause/Reset controls (hidden when hidePlayControls is true)
  * - Speed control dropdown
  * - Zoom to Site toggle
  * - Sync Map toggle (advanced mode only)
@@ -42,6 +43,7 @@ export function TimelineControls({
   zoomToSiteEnabled,
   mapMarkersVisible,
   advancedMode,
+  hidePlayControls = false,
   syncMapOnDotClick,
   onPlay,
   onPause,
@@ -57,8 +59,8 @@ export function TimelineControls({
 
   return (
     <div className="flex items-center gap-1.5">
-      {/* Play/Pause buttons - hidden in advanced mode */}
-      {!advancedMode && (
+      {/* Play/Pause buttons - hidden when hidePlayControls is true */}
+      {!hidePlayControls && (
         <>
           {!isPlaying ? (
             <Button
@@ -134,8 +136,8 @@ export function TimelineControls({
         {mapMarkersVisible ? "✓" : ""} {translate("timeline.showMapMarkers")}
       </Button>
 
-      {/* Speed control - hidden in advanced mode */}
-      {!advancedMode && (
+      {/* Speed control - hidden when hidePlayControls is true */}
+      {!hidePlayControls && (
         <div className="flex items-center gap-1.5">
           <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
             {translate("timeline.speed")}:

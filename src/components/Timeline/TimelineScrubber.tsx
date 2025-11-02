@@ -36,7 +36,9 @@ export type ToggleHandler = () => void;
  */
 export interface AdvancedTimelineMode {
   syncMapOnDotClick: boolean;
-  onSyncMapToggle?: ToggleHandler; // Optional: allows hiding Sync Map button while keeping navigation
+  onSyncMapToggle?: ToggleHandler; // Optional: allows hiding Sync Map button
+  showNavigation?: boolean; // Optional: show Previous/Next navigation (default: true when advancedMode is set)
+  hidePlayControls?: boolean; // Optional: hide Play/Pause/Speed controls (default: false)
 }
 
 interface TimelineScrubberProps {
@@ -347,6 +349,7 @@ export function TimelineScrubber({
           zoomToSiteEnabled={zoomToSiteEnabled}
           mapMarkersVisible={mapMarkersVisible}
           advancedMode={!!advancedMode}
+          hidePlayControls={advancedMode?.hidePlayControls ?? false}
           syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
           onPlay={handlePlay}
           onPause={pause}
@@ -357,8 +360,8 @@ export function TimelineScrubber({
           onSyncMapToggle={advancedMode?.onSyncMapToggle}
         />
 
-        {/* Center: Previous/Next navigation (Advanced Timeline only) */}
-        {advancedMode && (
+        {/* Center: Previous/Next navigation (show when advancedMode.showNavigation is true, or by default when advancedMode is set) */}
+        {advancedMode && (advancedMode.showNavigation !== false) && (
           <TimelineNavigation
             canGoPrevious={canGoPrevious}
             canGoNext={canGoNext}

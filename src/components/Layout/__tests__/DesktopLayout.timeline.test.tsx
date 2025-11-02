@@ -105,13 +105,15 @@ describe("DesktopLayout - Timeline Integration", () => {
     });
 
     it("renders all control buttons except Sync Map on Dashboard", () => {
-      const { getByText, queryByText, queryByRole } = renderWithTheme(
+      const { getByText, queryByText, getByRole } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber
             sites={mockSites}
             advancedMode={{
               syncMapOnDotClick: false,
               onSyncMapToggle: undefined,
+              showNavigation: true, // Show Previous/Next buttons
+              hidePlayControls: false, // Show Play/Pause/Speed controls on Dashboard
             }}
           />
         </AnimationProvider>
@@ -124,10 +126,8 @@ describe("DesktopLayout - Timeline Integration", () => {
       expect(getByText(/⏮ Previous/i)).toBeInTheDocument();
       expect(getByText(/Next ⏭/i)).toBeInTheDocument();
 
-      // Should NOT show Play/Pause button controls in advanced mode
-      // Note: keyboard hint may contain "Play/Pause" text, so use button role
-      expect(queryByRole("button", { name: /^play$/i })).not.toBeInTheDocument();
-      expect(queryByRole("button", { name: /^pause$/i })).not.toBeInTheDocument();
+      // Should SHOW Play button when hidePlayControls is false
+      expect(getByRole("button", { name: /^play$/i })).toBeInTheDocument();
 
       // Should NOT show Sync Map button
       expect(queryByText(/Sync Map/i)).not.toBeInTheDocument();
@@ -187,7 +187,7 @@ describe("DesktopLayout - Timeline Integration", () => {
       expect(playButton).toBeInTheDocument();
     });
 
-    it("hides Play/Pause buttons in advanced mode", () => {
+    it("hides Play/Pause buttons when hidePlayControls is true", () => {
       const { queryByRole } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber
@@ -195,12 +195,13 @@ describe("DesktopLayout - Timeline Integration", () => {
             advancedMode={{
               syncMapOnDotClick: false,
               onSyncMapToggle: vi.fn(),
+              hidePlayControls: true, // Explicitly hide Play/Pause controls
             }}
           />
         </AnimationProvider>
       );
 
-      // Should NOT show Play/Pause button controls in advanced mode
+      // Should NOT show Play/Pause button controls when hidePlayControls is true
       // Note: keyboard hint may contain "Play/Pause" text, so use button role
       expect(queryByRole("button", { name: /^play$/i })).not.toBeInTheDocument();
       expect(queryByRole("button", { name: /^pause$/i })).not.toBeInTheDocument();

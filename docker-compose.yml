@@ -1,0 +1,43 @@
+# Docker Compose for Heritage Tracker Local Database
+#
+# This sets up a local PostgreSQL database with PostGIS extension
+# for development. The same schema works with Supabase for production.
+#
+# Quick Start:
+#   docker-compose up -d        # Start database
+#   docker-compose down         # Stop database
+#   docker-compose down -v      # Stop and remove data
+#
+# ARM64 Windows Note:
+#   Docker Desktop on ARM64 Windows may have startup issues.
+#   The platform: linux/amd64 line forces x86_64 emulation which
+#   can be slow. If Docker hangs, consider using native PostgreSQL
+#   installation or testing on an x86_64 machine.
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64  # Force x86_64 emulation for ARM64 Windows compatibility
+    container_name: heritage-tracker-db
+    environment:
+      POSTGRES_DB: heritage_tracker
+      POSTGRES_USER: heritage_user
+      POSTGRES_PASSWORD: heritage_dev_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U heritage_user -d heritage_tracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local

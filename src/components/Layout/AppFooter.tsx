@@ -21,7 +21,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
   return (
     <footer
       className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg transition-colors duration-200 ${t.flag.greenBg}`}
-      style={{ zIndex: Z_INDEX.BASE }}
+      style={{ zIndex: Z_INDEX.STICKY }}
     >
       {/* Desktop footer - ultra compact */}
       {!isMobile && (

@@ -1,0 +1,14 @@
+{
+  "name": "heritage-tracker-server",
+  "version": "1.0.0",
+  "description": "Local backend server for Heritage Tracker",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": ["heritage", "tracker", "api", "express"],
+  "author": "",
+  "license": "ISC"
+}

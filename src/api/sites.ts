@@ -18,6 +18,16 @@ import { mockGetAllSites, mockGetSiteById } from './mockAdapter';
 const shouldUseMockData = () => import.meta.env.VITE_USE_MOCK_API === 'true';
 
 /**
+ * Check if we should use local backend
+ */
+const shouldUseLocalBackend = () => import.meta.env.VITE_USE_LOCAL_BACKEND === 'true';
+
+/**
+ * Get the API base URL for local backend
+ */
+const getApiBaseUrl = () => import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+/**
  * Convert Supabase row to GazaSite format
  * Handles PostgreSQL -> TypeScript type conversions
  */
@@ -56,13 +66,52 @@ function convertSupabaseRow(row: Record<string, unknown>): GazaSite {
  * @returns Array of heritage sites
  */
 export async function getAllSites(params?: SitesQueryParams): Promise<GazaSite[]> {
-  // Use mock adapter in development
+  // Priority 1: Use mock adapter if enabled
   if (shouldUseMockData()) {
     console.log('📦 Using mock adapter for development');
     return mockGetAllSites();
   }
 
-  // Use Supabase in production
+  // Priority 2: Use local backend if enabled
+  if (shouldUseLocalBackend()) {
+    console.log('🔧 Using local backend');
+    const baseUrl = getApiBaseUrl();
+    const queryParams = new URLSearchParams();
+
+    if (params?.types?.length) {
+      params.types.forEach(type => queryParams.append('types', type));
+    }
+    if (params?.statuses?.length) {
+      params.statuses.forEach(status => queryParams.append('statuses', status));
+    }
+    if (params?.search) {
+      queryParams.append('search', params.search);
+    }
+    if (params?.dateDestroyedStart) {
+      queryParams.append('startDate', params.dateDestroyedStart);
+    }
+    if (params?.dateDestroyedEnd) {
+      queryParams.append('endDate', params.dateDestroyedEnd);
+    }
+    if (params?.page) {
+      queryParams.append('page', String(params.page));
+    }
+    if (params?.pageSize) {
+      queryParams.append('pageSize', String(params.pageSize));
+    }
+
+    const url = `${baseUrl}/sites${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+      throw new Error(`Failed to fetch sites: ${errorData.message || response.statusText}`);
+    }
+
+    return await response.json();
+  }
+
+  // Priority 3: Use Supabase in production
   if (!isSupabaseConfigured() || !supabase) {
     throw new Error('Supabase not configured');
   }
@@ -144,11 +193,28 @@ export async function getSitesPaginated(
  * @returns Single heritage site
  */
 export async function getSiteById(id: string): Promise<GazaSite> {
-  // Use mock adapter in development
+  // Priority 1: Use mock adapter if enabled
   if (shouldUseMockData()) {
     return mockGetSiteById(id);
   }
 
+  // Priority 2: Use local backend if enabled
+  if (shouldUseLocalBackend()) {
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/sites/${id}`);
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error(`Site with ID "${id}" not found`);
+      }
+      const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+      throw new Error(`Failed to fetch site: ${errorData.message || response.statusText}`);
+    }
+
+    return await response.json();
+  }
+
+  // Priority 3: Use Supabase in production
   if (!isSupabaseConfigured() || !supabase) {
     throw new Error('Supabase not configured');
   }
