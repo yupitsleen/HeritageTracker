@@ -312,6 +312,17 @@ For 100k+ sites, consider:
 
 ## Troubleshooting
 
+### Docker Desktop hangs on startup (ARM64 Windows)
+
+**Issue:** Docker Desktop gets stuck at "Starting..." on ARM64 Windows machines
+
+**Solution:**
+1. Quit Docker Desktop completely
+2. Restart Docker Desktop
+3. If still hangs after 2-3 minutes, this is a known compatibility issue
+4. **Workaround:** The `platform: linux/amd64` in docker-compose.yml forces x86_64 emulation but may be slow
+5. **Alternative:** Test on an x86_64 machine or use native PostgreSQL installation
+
 ### Database won't start
 
 ```
