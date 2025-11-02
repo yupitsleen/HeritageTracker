@@ -5,6 +5,8 @@
  * without requiring a real database connection.
  */
 
+import { vi } from 'vitest';
+
 /**
  * Mock site data for testing
  */
@@ -178,23 +180,29 @@ export function createMockResponse() {
     statusCode: 200,
     headers: {},
     body: null,
-    status: function(code) {
-      this.statusCode = code;
-      return this;
-    },
-    json: function(data) {
-      this.body = data;
-      return this;
-    },
-    setHeader: function(key, value) {
-      this.headers[key] = value;
-      return this;
-    },
-    send: function(data) {
-      this.body = data;
-      return this;
-    }
   };
+
+  // Use vi.fn() to create spies
+  res.status = vi.fn(function(code) {
+    res.statusCode = code;
+    return res;
+  });
+
+  res.json = vi.fn(function(data) {
+    res.body = data;
+    return res;
+  });
+
+  res.setHeader = vi.fn(function(key, value) {
+    res.headers[key] = value;
+    return res;
+  });
+
+  res.send = vi.fn(function(data) {
+    res.body = data;
+    return res;
+  });
+
   return res;
 }
 
@@ -202,12 +210,7 @@ export function createMockResponse() {
  * Create mock next function for middleware
  */
 export function createMockNext() {
-  return function next(error) {
-    if (error) {
-      next.error = error;
-    }
-    next.called = true;
-  };
+  return vi.fn();
 }
 
 /**

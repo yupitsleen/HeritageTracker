@@ -34,8 +34,8 @@ describe('validateSiteBody', () => {
       const middleware = validateSiteBody(false);
       middleware(req, res, next);
 
-      expect(next.called).toBe(true);
-      expect(next.error).toBeUndefined();
+      expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith();
     });
 
     it('rejects empty body', () => {
@@ -48,7 +48,7 @@ describe('validateSiteBody', () => {
 
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toContain('Request body is required');
-      expect(next.called).toBeUndefined();
+      expect(next).not.toHaveBeenCalled();
     });
 
     it('rejects missing required fields', () => {
@@ -66,7 +66,7 @@ describe('validateSiteBody', () => {
 
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toContain('Missing required fields');
-      expect(next.called).toBeUndefined();
+      expect(next).not.toHaveBeenCalled();
     });
   });
 
@@ -83,7 +83,7 @@ describe('validateSiteBody', () => {
       const middleware = validateSiteBody(true);
       middleware(req, res, next);
 
-      expect(next.called).toBe(true);
+      expect(next).toHaveBeenCalled();
     });
 
     it('validates provided fields', () => {
@@ -174,7 +174,7 @@ describe('validateSiteBody', () => {
         const middleware = validateSiteBody(false);
         middleware(req, res, next);
 
-        expect(next.called).toBe(true);
+        expect(next).toHaveBeenCalled();
       }
     });
 
@@ -225,7 +225,7 @@ describe('validateSiteBody', () => {
         const middleware = validateSiteBody(false);
         middleware(req, res, next);
 
-        expect(next.called).toBe(true);
+        expect(next).toHaveBeenCalled();
       }
     });
 
@@ -273,7 +273,7 @@ describe('validateSiteBody', () => {
       const middleware = validateSiteBody(false);
       middleware(req, res, next);
 
-      expect(next.called).toBe(true);
+      expect(next).toHaveBeenCalled();
     });
 
     it('rejects non-array coordinates', () => {
@@ -442,7 +442,7 @@ describe('validateSiteBody', () => {
       const middleware = validateSiteBody(false);
       middleware(req, res, next);
 
-      expect(next.called).toBe(true);
+      expect(next).toHaveBeenCalled();
     });
 
     it('rejects negative artifact count', () => {
@@ -479,7 +479,7 @@ describe('validateSiteId', () => {
 
     validateSiteId(req, res, next);
 
-    expect(next.called).toBe(true);
+    expect(next).toHaveBeenCalled();
   });
 
   it('rejects missing ID', () => {
@@ -513,7 +513,7 @@ describe('validatePagination', () => {
 
     validatePagination(req, res, next);
 
-    expect(next.called).toBe(true);
+    expect(next).toHaveBeenCalled();
   });
 
   it('accepts missing pagination (uses defaults)', () => {
@@ -523,7 +523,7 @@ describe('validatePagination', () => {
 
     validatePagination(req, res, next);
 
-    expect(next.called).toBe(true);
+    expect(next).toHaveBeenCalled();
   });
 
   it('rejects page less than 1', () => {
@@ -579,7 +579,7 @@ describe('validateNearbyParams', () => {
 
     validateNearbyParams(req, res, next);
 
-    expect(next.called).toBe(true);
+    expect(next).toHaveBeenCalled();
   });
 
   it('accepts without radius (uses default)', () => {
@@ -589,7 +589,7 @@ describe('validateNearbyParams', () => {
 
     validateNearbyParams(req, res, next);
 
-    expect(next.called).toBe(true);
+    expect(next).toHaveBeenCalled();
   });
 
   it('rejects missing lat', () => {
