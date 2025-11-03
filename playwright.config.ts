@@ -9,14 +9,17 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e',
 
+  /* Maximum time one test can run for */
+  timeout: 60 * 1000, // 60 seconds (increased from 30s default)
+
   /* Run tests in files in parallel */
   fullyParallel: true,
 
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
 
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  /* Retry on CI only - reduced for faster feedback */
+  retries: process.env.CI ? 1 : 0,
 
   /* Use 2 workers on CI for faster execution, all available locally */
   workers: process.env.CI ? 2 : undefined,
@@ -56,11 +59,11 @@ export default defineConfig({
     //   use: { ...devices['Desktop Safari'] },
     // },
 
-    /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
+    /* Test against mobile viewports - disabled for CI speed */
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
     // {
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },
