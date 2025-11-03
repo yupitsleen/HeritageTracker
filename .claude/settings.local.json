@@ -11,7 +11,10 @@
       "Bash(timeout /t 5 /nobreak)",
       "Bash(nul)",
       "Bash(systeminfo:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npm install:*)",
+      "Bash(npx playwright:*)",
+      "Bash(timeout /t 60 /nobreak)"
     ],
     "deny": [],
     "ask": []
