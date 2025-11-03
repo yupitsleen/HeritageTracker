@@ -53,8 +53,13 @@ function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Determine basename - should match Vite's base config
+  // Production (GitHub Pages): /HeritageTracker/
+  // Development/E2E: /
+  const basename = import.meta.env.PROD ? '/HeritageTracker' : '';
+
   return (
-    <BrowserRouter basename="/HeritageTracker">
+    <BrowserRouter basename={basename}>
       <LocaleProvider>
         <ThemeProvider>
           <CalendarProvider>

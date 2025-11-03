@@ -71,7 +71,9 @@ export default defineConfig({
     })
   ],
   // Test configuration moved to vitest.config.ts to avoid build errors
-  base: '/HeritageTracker/',
+  // Use different base URLs for development vs production
+  // In development and E2E tests, use root path. In production (GitHub Pages), use /HeritageTracker/
+  base: process.env.NODE_ENV === 'production' && !process.env.E2E_TEST ? '/HeritageTracker/' : '/',
   build: {
     rollupOptions: {
       output: {
