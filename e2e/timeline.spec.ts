@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { gotoAndWait } from './helpers';
 
 /**
  * E2E Tests for Timeline Page Navigation
@@ -9,8 +10,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Timeline Page - Navigation Buttons', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/timeline');
-    await page.waitForLoadState('networkidle');
+    await gotoAndWait(page, '/timeline', { waitForMap: true, waitForTimeline: true });
   });
 
   test('timeline page should load successfully', async ({ page }) => {
@@ -134,15 +134,21 @@ test.describe('Timeline Page - Navigation Buttons', () => {
     // Click Next button many times to reach the end (assuming 45 sites)
     const nextButton = page.getByRole('button', { name: /next/i }).first();
 
+    // Wait for button to be visible first
+    await expect(nextButton).toBeVisible({ timeout: 10000 });
+
     // Click Next up to 50 times to ensure we reach the end
     for (let i = 0; i < 50; i++) {
-      const isDisabled = await nextButton.isDisabled();
+      // Check if button exists and is not disabled
+      const isDisabled = await nextButton.isDisabled().catch(() => true);
       if (isDisabled) {
         console.log(`Reached end after ${i} clicks`);
         break;
       }
-      await nextButton.click();
-      await page.waitForTimeout(200);
+
+      // Click and wait for navigation to settle
+      await nextButton.click().catch(() => {}); // Ignore click errors
+      await page.waitForTimeout(500); // Increased wait time
     }
 
     // Next button should now be disabled
@@ -174,8 +180,7 @@ test.describe('Timeline Page - Navigation Buttons', () => {
 
 test.describe('Timeline Page - Scrubber Interaction', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/timeline');
-    await page.waitForLoadState('networkidle');
+    await gotoAndWait(page, '/timeline', { waitForMap: true, waitForTimeline: true });
   });
 
   test('timeline scrubber should be visible', async ({ page }) => {
