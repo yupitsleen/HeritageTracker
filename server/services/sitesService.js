@@ -6,7 +6,9 @@
  */
 
 import * as sitesRepo from '../repositories/sitesRepository.js';
-import { apiToDb, buildWhereClause } from '../utils/converters.js';
+import { apiToDb } from '../utils/converters.js';
+import { VALID_TYPES, VALID_STATUSES, COORDINATE_BOUNDS } from '../constants/validation.js';
+import { ServiceError, ValidationError, NotFoundError, DatabaseError } from '../utils/errors.js';
 
 /**
  * Get all sites with optional filtering
@@ -15,10 +17,10 @@ import { apiToDb, buildWhereClause } from '../utils/converters.js';
  */
 export async function getAllSites(filters = {}) {
   try {
-    const { whereClause, params } = buildWhereClause(filters);
-    return await sitesRepo.findAll(whereClause, params);
+    // Repository now handles filter building internally
+    return await sitesRepo.findAll(filters);
   } catch (error) {
-    throw new Error(`Failed to fetch sites: ${error.message}`);
+    throw new ServiceError('getAllSites', error, { filters });
   }
 }
 
@@ -33,12 +35,11 @@ export async function getPaginatedSites(filters = {}) {
     const pageSize = filters.pageSize || 50;
     const offset = (page - 1) * pageSize;
 
-    const { whereClause, params } = buildWhereClause(filters);
-
     // Get total count and data in parallel
+    // Repository now handles filter building internally
     const [total, sites] = await Promise.all([
-      sitesRepo.count(whereClause, params),
-      sitesRepo.findPaginated(whereClause, params, pageSize, offset),
+      sitesRepo.count(filters),
+      sitesRepo.findPaginated(filters, pageSize, offset),
     ]);
 
     const totalPages = Math.ceil(total / pageSize);
@@ -55,7 +56,7 @@ export async function getPaginatedSites(filters = {}) {
       },
     };
   } catch (error) {
-    throw new Error(`Failed to fetch paginated sites: ${error.message}`);
+    throw new ServiceError('getPaginatedSites', error, { filters, page, pageSize });
   }
 }
 
@@ -68,12 +69,22 @@ export async function getSiteById(id) {
   try {
     // Business rule: validate ID format
     if (!id || typeof id !== 'string') {
-      throw new Error('Invalid site ID');
+      throw new ValidationError('getSiteById', 'Invalid site ID', { id });
     }
 
-    return await sitesRepo.findById(id);
+    const site = await sitesRepo.findById(id);
+
+    if (!site) {
+      throw new NotFoundError('getSiteById', 'Site', id);
+    }
+
+    return site;
   } catch (error) {
-    throw new Error(`Failed to fetch site: ${error.message}`);
+    // Re-throw custom errors as-is
+    if (error instanceof ValidationError || error instanceof NotFoundError) {
+      throw error;
+    }
+    throw new ServiceError('getSiteById', error, { id });
   }
 }
 
@@ -244,38 +255,23 @@ function validateSiteData(siteData, partial = false) {
     if (
       typeof lat !== 'number' ||
       typeof lng !== 'number' ||
-      lat < -90 ||
-      lat > 90 ||
-      lng < -180 ||
-      lng > 180
+      lat < COORDINATE_BOUNDS.LAT_MIN ||
+      lat > COORDINATE_BOUNDS.LAT_MAX ||
+      lng < COORDINATE_BOUNDS.LNG_MIN ||
+      lng > COORDINATE_BOUNDS.LNG_MAX
     ) {
-      throw new Error('Invalid coordinates: must be [lat, lng] with valid ranges');
+      throw new Error(`Invalid coordinates: must be [lat, lng] with lat between ${COORDINATE_BOUNDS.LAT_MIN} and ${COORDINATE_BOUNDS.LAT_MAX}, lng between ${COORDINATE_BOUNDS.LNG_MIN} and ${COORDINATE_BOUNDS.LNG_MAX}`);
     }
   }
 
   // Validate type if provided
-  const validTypes = [
-    'mosque',
-    'church',
-    'archaeological_site',
-    'museum',
-    'library',
-    'monument',
-  ];
-  if (siteData.type && !validTypes.includes(siteData.type)) {
-    throw new Error(`Invalid site type. Must be one of: ${validTypes.join(', ')}`);
+  if (siteData.type && !VALID_TYPES.includes(siteData.type)) {
+    throw new Error(`Invalid site type. Must be one of: ${VALID_TYPES.join(', ')}`);
   }
 
   // Validate status if provided
-  const validStatuses = [
-    'destroyed',
-    'severely_damaged',
-    'partially_damaged',
-    'looted',
-    'threatened',
-  ];
-  if (siteData.status && !validStatuses.includes(siteData.status)) {
-    throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
+  if (siteData.status && !VALID_STATUSES.includes(siteData.status)) {
+    throw new Error(`Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}`);
   }
 
   // Validate arrays if provided

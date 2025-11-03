@@ -5,6 +5,17 @@
  * Returns 400 Bad Request for invalid data
  */
 
+import {
+  VALID_TYPES,
+  VALID_STATUSES,
+  COORDINATE_BOUNDS,
+  PAGINATION,
+  GEOSPATIAL,
+  REQUIRED_FIELDS,
+  BOOLEAN_FIELDS,
+  ARRAY_FIELDS,
+} from '../constants/validation.js';
+
 /**
  * Validate site creation/update request body
  * @param {boolean} partial - If true, only validate provided fields (for PATCH)
@@ -23,8 +34,7 @@ export function validateSiteBody(partial = false) {
 
     // Required fields for POST (full validation)
     if (!partial) {
-      const requiredFields = ['name', 'type', 'coordinates', 'status'];
-      const missingFields = requiredFields.filter((field) => !body[field]);
+      const missingFields = REQUIRED_FIELDS.filter((field) => !body[field]);
 
       if (missingFields.length > 0) {
         return res.status(400).json({
@@ -43,33 +53,18 @@ export function validateSiteBody(partial = false) {
     }
 
     // Validate type if provided
-    const validTypes = [
-      'mosque',
-      'church',
-      'archaeological_site',
-      'museum',
-      'library',
-      'monument',
-    ];
-    if (body.type !== undefined && !validTypes.includes(body.type)) {
+    if (body.type !== undefined && !VALID_TYPES.includes(body.type)) {
       return res.status(400).json({
         error: 'Validation Error',
-        message: `type must be one of: ${validTypes.join(', ')}`,
+        message: `type must be one of: ${VALID_TYPES.join(', ')}`,
       });
     }
 
     // Validate status if provided
-    const validStatuses = [
-      'destroyed',
-      'severely_damaged',
-      'partially_damaged',
-      'looted',
-      'threatened',
-    ];
-    if (body.status !== undefined && !validStatuses.includes(body.status)) {
+    if (body.status !== undefined && !VALID_STATUSES.includes(body.status)) {
       return res.status(400).json({
         error: 'Validation Error',
-        message: `status must be one of: ${validStatuses.join(', ')}`,
+        message: `status must be one of: ${VALID_STATUSES.join(', ')}`,
       });
     }
 
@@ -86,43 +81,30 @@ export function validateSiteBody(partial = false) {
       if (
         typeof lat !== 'number' ||
         typeof lng !== 'number' ||
-        lat < -90 ||
-        lat > 90 ||
-        lng < -180 ||
-        lng > 180
+        lat < COORDINATE_BOUNDS.LAT_MIN ||
+        lat > COORDINATE_BOUNDS.LAT_MAX ||
+        lng < COORDINATE_BOUNDS.LNG_MIN ||
+        lng > COORDINATE_BOUNDS.LNG_MAX
       ) {
         return res.status(400).json({
           error: 'Validation Error',
-          message: 'coordinates must be valid [lat, lng] with lat between -90 and 90, lng between -180 and 180',
+          message: `coordinates must be valid [lat, lng] with lat between ${COORDINATE_BOUNDS.LAT_MIN} and ${COORDINATE_BOUNDS.LAT_MAX}, lng between ${COORDINATE_BOUNDS.LNG_MIN} and ${COORDINATE_BOUNDS.LNG_MAX}`,
         });
       }
     }
 
     // Validate arrays if provided
-    if (body.verifiedBy !== undefined && !Array.isArray(body.verifiedBy)) {
-      return res.status(400).json({
-        error: 'Validation Error',
-        message: 'verifiedBy must be an array',
-      });
-    }
-
-    if (body.sources !== undefined && !Array.isArray(body.sources)) {
-      return res.status(400).json({
-        error: 'Validation Error',
-        message: 'sources must be an array',
-      });
-    }
-
-    if (body.historicalEvents !== undefined && !Array.isArray(body.historicalEvents)) {
-      return res.status(400).json({
-        error: 'Validation Error',
-        message: 'historicalEvents must be an array',
-      });
+    for (const field of ARRAY_FIELDS) {
+      if (body[field] !== undefined && !Array.isArray(body[field])) {
+        return res.status(400).json({
+          error: 'Validation Error',
+          message: `${field} must be an array`,
+        });
+      }
     }
 
     // Validate boolean fields if provided
-    const booleanFields = ['unescoListed', 'isUnique', 'religiousSignificance', 'communityGatheringPlace'];
-    for (const field of booleanFields) {
+    for (const field of BOOLEAN_FIELDS) {
       if (body[field] !== undefined && typeof body[field] !== 'boolean') {
         return res.status(400).json({
           error: 'Validation Error',
@@ -167,20 +149,20 @@ export function validatePagination(req, res, next) {
 
   if (page !== undefined) {
     const pageNum = parseInt(page, 10);
-    if (isNaN(pageNum) || pageNum < 1) {
+    if (isNaN(pageNum) || pageNum < PAGINATION.MIN_PAGE) {
       return res.status(400).json({
         error: 'Validation Error',
-        message: 'page must be a positive integer',
+        message: `page must be at least ${PAGINATION.MIN_PAGE}`,
       });
     }
   }
 
   if (pageSize !== undefined) {
     const pageSizeNum = parseInt(pageSize, 10);
-    if (isNaN(pageSizeNum) || pageSizeNum < 1 || pageSizeNum > 100) {
+    if (isNaN(pageSizeNum) || pageSizeNum < PAGINATION.MIN_PAGE_SIZE || pageSizeNum > PAGINATION.MAX_PAGE_SIZE) {
       return res.status(400).json({
         error: 'Validation Error',
-        message: 'pageSize must be between 1 and 100',
+        message: `pageSize must be between ${PAGINATION.MIN_PAGE_SIZE} and ${PAGINATION.MAX_PAGE_SIZE}`,
       });
     }
   }
@@ -204,26 +186,26 @@ export function validateNearbyParams(req, res, next) {
   const latNum = parseFloat(lat);
   const lngNum = parseFloat(lng);
 
-  if (isNaN(latNum) || latNum < -90 || latNum > 90) {
+  if (isNaN(latNum) || latNum < COORDINATE_BOUNDS.LAT_MIN || latNum > COORDINATE_BOUNDS.LAT_MAX) {
     return res.status(400).json({
       error: 'Validation Error',
-      message: 'lat must be a number between -90 and 90',
+      message: `lat must be a number between ${COORDINATE_BOUNDS.LAT_MIN} and ${COORDINATE_BOUNDS.LAT_MAX}`,
     });
   }
 
-  if (isNaN(lngNum) || lngNum < -180 || lngNum > 180) {
+  if (isNaN(lngNum) || lngNum < COORDINATE_BOUNDS.LNG_MIN || lngNum > COORDINATE_BOUNDS.LNG_MAX) {
     return res.status(400).json({
       error: 'Validation Error',
-      message: 'lng must be a number between -180 and 180',
+      message: `lng must be a number between ${COORDINATE_BOUNDS.LNG_MIN} and ${COORDINATE_BOUNDS.LNG_MAX}`,
     });
   }
 
   if (radius !== undefined) {
     const radiusNum = parseFloat(radius);
-    if (isNaN(radiusNum) || radiusNum <= 0 || radiusNum > 1000) {
+    if (isNaN(radiusNum) || radiusNum <= GEOSPATIAL.MIN_RADIUS_KM || radiusNum > GEOSPATIAL.MAX_RADIUS_KM) {
       return res.status(400).json({
         error: 'Validation Error',
-        message: 'radius must be a number between 0 and 1000 km',
+        message: `radius must be a number between ${GEOSPATIAL.MIN_RADIUS_KM} and ${GEOSPATIAL.MAX_RADIUS_KM} km`,
       });
     }
   }

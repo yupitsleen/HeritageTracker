@@ -5,6 +5,8 @@
  * Returns consistent error responses
  */
 
+import logger from '../utils/logger.js';
+
 /**
  * Global error handler
  * @param {Error} err - Error object
@@ -13,13 +15,20 @@
  * @param {Function} next - Express next function
  */
 export function errorHandler(err, req, res, next) {
-  // Log error for debugging
-  console.error('Error:', {
-    message: err.message,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-    path: req.path,
-    method: req.method,
-  });
+  // Use request logger if available, otherwise use root logger
+  const log = req.log || logger;
+
+  // Log error with full context
+  log.error(
+    {
+      err,
+      path: req.path,
+      method: req.method,
+      query: req.query,
+      body: req.body,
+    },
+    `Error: ${err.message}`
+  );
 
   // Determine status code
   const statusCode = err.statusCode || 500;
@@ -30,10 +39,11 @@ export function errorHandler(err, req, res, next) {
     ? 'Internal server error'
     : err.message;
 
-  // Send error response
+  // Send error response with request ID
   res.status(statusCode).json({
     error: err.name || 'Error',
     message,
+    requestId: req.id,
     ...(process.env.NODE_ENV === 'development' && {
       stack: err.stack,
       details: err.details,

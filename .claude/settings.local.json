@@ -1,11 +1,20 @@
 {
   "permissions": {
     "allow": [
+      "Bash(git ls-tree:*)",
       "Bash(npm test:*)",
+      "Bash(docker:*)",
       "Bash(npm run lint:*)",
+      "Bash(npm run build:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout /t 5 /nobreak)",
+      "Bash(nul)",
+      "Bash(systeminfo:*)",
       "Bash(git add:*)",
-      "Bash(git log:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm install:*)",
+      "Bash(npx playwright:*)",
+      "Bash(timeout /t 60 /nobreak)"
     ],
     "deny": [],
     "ask": []

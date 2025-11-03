@@ -10,6 +10,12 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:headed": "playwright test --headed",
+    "e2e:debug": "playwright test --debug",
+    "e2e:report": "playwright show-report",
+    "test:all": "npm test -- --run && npm run e2e",
     "server:start": "node server/index.js",
     "server:dev": "nodemon server/index.js",
     "db:start": "docker-compose up -d",
@@ -17,9 +23,11 @@
     "db:reset": "docker-compose down -v && docker-compose up -d",
     "db:logs": "docker logs heritage_tracker_db -f",
     "db:migrate": "node database/scripts/migrate.js",
+    "db:migrate:status": "node database/scripts/migration-status.js",
+    "db:extract-json": "node database/scripts/extract-mock-data.js",
     "db:generate-seed": "node database/scripts/generate-seed.js",
     "db:seed": "node database/scripts/seed.js",
-    "db:setup": "npm run db:start && timeout /t 5 && npm run db:migrate && npm run db:generate-seed && npm run db:seed",
+    "db:setup": "npm run db:start && timeout /t 5 && npm run db:migrate && npm run db:extract-json && npm run db:generate-seed && npm run db:seed",
     "dev:full": "concurrently \"npm run dev\" \"npm run server:dev\" --names \"vite,server\" --prefix-colors \"cyan,green\""
   },
   "dependencies": {
@@ -46,6 +54,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4.1.14",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
