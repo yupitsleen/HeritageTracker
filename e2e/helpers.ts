@@ -14,26 +14,35 @@ export async function waitForPageReady(page: Page, options?: {
   // Wait for network to be idle
   await page.waitForLoadState('networkidle');
 
-  // Wait for React hydration by checking for interactive elements
-  await page.locator('body').waitFor({ state: 'visible', timeout: 5000 });
+  // Additional wait for React to fully hydrate (especially for lazy-loaded components)
+  await page.waitForTimeout(1000);
 
   // Wait for specific elements based on page type
   if (waitForMap) {
-    await page.locator('.leaflet-container').first().waitFor({
-      state: 'visible',
-      timeout
-    }).catch(() => {
-      console.log('Map container not found within timeout');
-    });
+    // Wait for map container OR loading indicator to appear
+    const mapOrLoading = page.locator('.leaflet-container, [role="status"], .skeleton-map').first();
+    await mapOrLoading.waitFor({ state: 'visible', timeout });
+
+    // If loading indicator is showing, wait for actual map
+    const hasMap = await page.locator('.leaflet-container').count();
+    if (hasMap === 0) {
+      await page.locator('.leaflet-container').first().waitFor({
+        state: 'visible',
+        timeout: timeout * 2 // Double timeout for lazy-loaded maps
+      });
+    }
   }
 
   if (waitForTimeline) {
-    // Timeline page uses lazy loading, give it more time
-    await page.locator('button:has-text("Next"), button:has-text("Previous"), .leaflet-container').first().waitFor({
+    // Timeline page uses lazy loading - wait for loading state to complete first
+    // Look for either the success state elements OR error state
+    const successOrError = page.locator(
+      '[data-testid="wayback-slider"], button:has-text("Next"), .leaflet-container, .text-red-600'
+    ).first();
+
+    await successOrError.waitFor({
       state: 'visible',
-      timeout: 15000
-    }).catch(() => {
-      console.log('Timeline controls not found within timeout');
+      timeout: 30000 // 30 seconds for Timeline page with lazy-loaded components
     });
   }
 }

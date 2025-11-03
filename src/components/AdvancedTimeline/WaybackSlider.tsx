@@ -152,7 +152,7 @@ export function WaybackSlider({
   }
 
   return (
-    <div className={t.timeline.container}>
+    <div className={t.timeline.container} data-testid="wayback-slider">
       {/* Header - Current date and position with step controls - centered */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
       <div className="flex items-center justify-center gap-3 mb-2 relative" dir="ltr">
