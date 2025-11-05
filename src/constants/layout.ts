@@ -71,17 +71,20 @@ export const TABLE_CONFIG = {
   /** Default initial width for resizable table */
   DEFAULT_TABLE_WIDTH: 480,
 
-  /** Minimum width for resizable table */
-  MIN_TABLE_WIDTH: 480,
+  /** Minimum width for resizable table (only Site Name visible) */
+  MIN_TABLE_WIDTH: 200,
 
   /** Maximum width for resizable table */
   MAX_TABLE_WIDTH: 1100,
 
   /** Width breakpoints for progressive column display */
   COLUMN_BREAKPOINTS: {
-    dateDestroyedIslamic: 650,
-    yearBuilt: 800,
-    yearBuiltIslamic: 950,
+    type: 280,               // Show Type column at 280px+
+    status: 360,             // Show Status column at 360px+
+    dateDestroyed: 480,      // Show Date Destroyed column at 480px+
+    dateDestroyedIslamic: 650, // Show Islamic Date at 650px+
+    yearBuilt: 800,          // Show Year Built at 800px+
+    yearBuiltIslamic: 950,   // Show Islamic Year Built at 950px+
   },
 } as const;
 

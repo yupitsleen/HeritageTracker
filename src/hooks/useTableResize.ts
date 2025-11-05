@@ -18,6 +18,26 @@ export function useTableResize(
   const [tableWidth, setTableWidth] = useState(initialWidth);
   const [isResizing, setIsResizing] = useState(false);
 
+  // Clamp table width to current viewport constraints
+  useEffect(() => {
+    const handleViewportResize = () => {
+      setTableWidth((currentWidth) => {
+        // Get available width (viewport - padding)
+        const availableWidth = window.innerWidth - 48; // 48px for padding (px-4 on each side)
+        const effectiveMaxWidth = Math.min(maxWidth, availableWidth * 0.6); // Max 60% of viewport
+
+        // Clamp current width to new constraints
+        return Math.max(minWidth, Math.min(effectiveMaxWidth, currentWidth));
+      });
+    };
+
+    // Run on mount to set initial size
+    handleViewportResize();
+
+    window.addEventListener("resize", handleViewportResize);
+    return () => window.removeEventListener("resize", handleViewportResize);
+  }, [minWidth, maxWidth]);
+
   // Start resizing
   const handleResizeStart = useCallback(() => {
     setIsResizing(true);
@@ -49,15 +69,30 @@ export function useTableResize(
     };
   }, [isResizing, minWidth, maxWidth]);
 
-  // Calculate which columns to show based on table width
+  // Calculate which columns to show based on table width (progressive display)
   const getVisibleColumns = useCallback((): string[] => {
-    const columns = ["name", "type", "status", "dateDestroyed"];
-    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyedIslamic)
+    const columns = ["name"]; // Site Name is always visible
+
+    // Progressively add columns as width increases
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.type) {
+      columns.push("type");
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.status) {
+      columns.push("status");
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyed) {
+      columns.push("dateDestroyed");
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyedIslamic) {
       columns.push("dateDestroyedIslamic");
-    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuilt)
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuilt) {
       columns.push("yearBuilt");
-    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuiltIslamic)
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuiltIslamic) {
       columns.push("yearBuiltIslamic");
+    }
+
     return columns;
   }, [tableWidth]);
 
