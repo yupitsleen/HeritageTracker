@@ -173,8 +173,8 @@ export function WaybackSlider({
           </div>
         )}
 
-        {/* Dataset info - absolutely positioned to the right of buttons, centered between buttons and info icon */}
-        <div className={`absolute right-10 text-xs ${t.text.muted} pointer-events-none`}>
+        {/* Dataset info - absolutely positioned to the right of buttons, centered between buttons and info icon - hidden on mobile */}
+        <div className={`absolute right-10 text-xs ${t.text.muted} pointer-events-none hidden md:block`}>
           {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
         </div>
 
@@ -192,8 +192,11 @@ export function WaybackSlider({
           variant="secondary"
           size="xs"
           aria-label={translate("timeline.previous")}
+          title={translate("timeline.previousTitle")}
         >
-          ⏮ {translate("timeline.previous")}
+          {/* Icon only below xl, full text at xl+ */}
+          <span className="xl:hidden">⏮</span>
+          <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
         </Button>
 
         <Button
@@ -202,8 +205,11 @@ export function WaybackSlider({
           variant="secondary"
           size="xs"
           aria-label={translate("timeline.next")}
+          title={translate("timeline.nextTitle")}
         >
-          {translate("timeline.next")} ⏭
+          {/* Icon only below xl, full text at xl+ */}
+          <span className="xl:hidden">⏭</span>
+          <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
         </Button>
       </div>
 
