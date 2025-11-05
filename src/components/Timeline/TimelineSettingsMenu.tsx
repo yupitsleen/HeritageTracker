@@ -12,6 +12,8 @@ import { Button } from "../Button";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Z_INDEX } from "../../constants/layout";
+import type { AnimationSpeed } from "../../contexts/AnimationContext";
+import { getSpeedValues } from "../../config/animation";
 
 interface TimelineSettingsMenuProps {
   zoomToSiteEnabled: boolean;
@@ -20,6 +22,10 @@ interface TimelineSettingsMenuProps {
   onZoomToSiteToggle: () => void;
   onMapMarkersToggle: () => void;
   onSyncMapToggle?: () => void;
+  // Optional Speed control (for compact mode)
+  speed?: AnimationSpeed;
+  hidePlayControls?: boolean;
+  onSpeedChange?: (speed: AnimationSpeed) => void;
 }
 
 /**
@@ -35,10 +41,14 @@ export function TimelineSettingsMenu({
   onZoomToSiteToggle,
   onMapMarkersToggle,
   onSyncMapToggle,
+  speed,
+  hidePlayControls,
+  onSpeedChange,
 }: TimelineSettingsMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const translate = useTranslation();
   const t = useThemeClasses();
+  const speedOptions: AnimationSpeed[] = getSpeedValues();
 
   // Floating UI positioning - handles all edge cases automatically
   const { x, y, strategy, refs } = useFloating({
@@ -111,6 +121,34 @@ export function TimelineSettingsMenu({
             role="menu"
           >
             <div className="py-1">
+            {/* Speed control - only show if not hidden */}
+            {!hidePlayControls && speed !== undefined && onSpeedChange && (
+              <>
+                <div className="px-4 py-2 flex items-center justify-between">
+                  <label htmlFor="speed-control-menu" className={`text-sm ${t.text.body}`}>
+                    {translate("timeline.speed")}:
+                  </label>
+                  <select
+                    id="speed-control-menu"
+                    value={speed}
+                    onChange={(e) => {
+                      onSpeedChange(Number(e.target.value) as AnimationSpeed);
+                    }}
+                    className={`ml-2 ${t.timeline.speedSelect} ${t.input.base}`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {speedOptions.map((s) => (
+                      <option key={s} value={s}>
+                        {s}x
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {/* Divider after speed control */}
+                <div className={`border-t my-1 ${t.border.primary}`}></div>
+              </>
+            )}
+
             {/* Sync Map option (if available) */}
             {onSyncMapToggle && (
               <button
@@ -118,7 +156,7 @@ export function TimelineSettingsMenu({
                   onSyncMapToggle();
                   setIsOpen(false);
                 }}
-                className={`w-full text-left px-4 py-2 text-sm ${t.text.body} hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between`}
+                className={`w-full text-left px-4 py-2 text-sm ${t.text.body} ${t.bg.hover} flex items-center justify-between`}
               >
                 <span>{translate("timeline.syncMap")}</span>
                 {syncMapOnDotClick && <span className="text-green-600">✓</span>}
@@ -131,7 +169,7 @@ export function TimelineSettingsMenu({
                 onZoomToSiteToggle();
                 setIsOpen(false);
               }}
-              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between`}
+              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} ${t.bg.hover} flex items-center justify-between`}
             >
               <span>{translate("timeline.zoomToSite")}</span>
               {zoomToSiteEnabled && <span className="text-green-600">✓</span>}
@@ -143,7 +181,7 @@ export function TimelineSettingsMenu({
                 onMapMarkersToggle();
                 setIsOpen(false);
               }}
-              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between`}
+              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} ${t.bg.hover} flex items-center justify-between`}
             >
               <span>{translate("timeline.showMapMarkers")}</span>
               {mapMarkersVisible && <span className="text-green-600">✓</span>}

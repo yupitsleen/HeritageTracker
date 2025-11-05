@@ -70,8 +70,9 @@ export function TimelineControls({
               size="xs"
               icon={<PlayIcon className="w-3 h-3" />}
               aria-label={translate("timeline.play")}
+              title={translate("timeline.play")}
             >
-              {/* Keep text until 1280px, then icon-only */}
+              {/* Icon only below xl, full text at xl+ */}
               <span className="hidden xl:inline">{translate("timeline.play")}</span>
             </Button>
           ) : (
@@ -81,8 +82,9 @@ export function TimelineControls({
               size="xs"
               icon={<PauseIcon className="w-3 h-3" />}
               aria-label={translate("timeline.pause")}
+              title={translate("timeline.pause")}
             >
-              {/* Keep text until 1280px, then icon-only */}
+              {/* Icon only below xl, full text at xl+ */}
               <span className="hidden xl:inline">{translate("timeline.pause")}</span>
             </Button>
           )}
@@ -97,13 +99,29 @@ export function TimelineControls({
         size="xs"
         icon={<ArrowPathIcon className="w-3 h-3" />}
         aria-label={translate("common.reset")}
+        title={translate("common.reset")}
       >
-        {/* Keep text until 1280px, then icon-only */}
+        {/* Icon only below xl, full text at xl+ */}
         <span className="hidden xl:inline">{translate("common.reset")}</span>
       </Button>
 
-      {/* Desktop: Individual toggle buttons (lg and up) */}
-      <div className="hidden lg:flex lg:items-center lg:gap-1.5">
+      {/* Below 2xl: Settings menu for toggles and speed */}
+      <div className="2xl:hidden">
+        <TimelineSettingsMenu
+          zoomToSiteEnabled={zoomToSiteEnabled}
+          mapMarkersVisible={mapMarkersVisible}
+          syncMapOnDotClick={syncMapOnDotClick}
+          onZoomToSiteToggle={onZoomToSiteToggle}
+          onMapMarkersToggle={onMapMarkersToggle}
+          onSyncMapToggle={onSyncMapToggle}
+          speed={speed}
+          hidePlayControls={hidePlayControls}
+          onSpeedChange={onSpeedChange}
+        />
+      </div>
+
+      {/* 2xl and up: Full controls visible */}
+      <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">
         {/* Sync Map toggle - only show in advanced mode */}
         {advancedMode && onSyncMapToggle && (
           <Button
@@ -141,42 +159,29 @@ export function TimelineControls({
         >
           {mapMarkersVisible ? "✓" : ""} {translate("timeline.showMapMarkers")}
         </Button>
-      </div>
 
-      {/* Mobile/Tablet: Settings dropdown menu (below lg) */}
-      <div className="lg:hidden">
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={zoomToSiteEnabled}
-          mapMarkersVisible={mapMarkersVisible}
-          syncMapOnDotClick={syncMapOnDotClick}
-          onZoomToSiteToggle={onZoomToSiteToggle}
-          onMapMarkersToggle={onMapMarkersToggle}
-          onSyncMapToggle={onSyncMapToggle}
-        />
+        {/* Speed control - hidden when hidePlayControls is true, only show at 2xl+ to prevent overlap */}
+        {!hidePlayControls && (
+          <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">
+            <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
+              {translate("timeline.speed")}:
+            </label>
+            <select
+              id="speed-control"
+              value={speed}
+              onChange={(e) => onSpeedChange(Number(e.target.value) as AnimationSpeed)}
+              className={`${t.timeline.speedSelect} ${t.input.base}`}
+              aria-label="Animation speed control"
+            >
+              {speedOptions.map((s) => (
+                <option key={s} value={s}>
+                  {s}x
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
-
-      {/* Speed control - hidden when hidePlayControls is true */}
-      {!hidePlayControls && (
-        <div className="flex items-center gap-1.5">
-          {/* Hide "Speed:" label below 1280px */}
-          <label htmlFor="speed-control" className={`hidden xl:inline text-xs font-medium ${t.text.body}`}>
-            {translate("timeline.speed")}:
-          </label>
-          <select
-            id="speed-control"
-            value={speed}
-            onChange={(e) => onSpeedChange(Number(e.target.value) as AnimationSpeed)}
-            className={`${t.timeline.speedSelect} ${t.input.base}`}
-            aria-label="Animation speed control"
-          >
-            {speedOptions.map((s) => (
-              <option key={s} value={s}>
-                {s}x
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
     </div>
   );
 }

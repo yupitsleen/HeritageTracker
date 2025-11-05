@@ -29,7 +29,7 @@ export function TimelineNavigation({
   const translate = useTranslation();
 
   return (
-    <div className="flex items-center gap-1.5" dir="ltr">
+    <div className="flex items-center gap-3" dir="ltr">
       <Button
         onClick={onPrevious}
         disabled={!canGoPrevious}

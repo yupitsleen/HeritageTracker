@@ -330,9 +330,9 @@ export function TimelineScrubber({
     >
       {/* Controls */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
-      <div className="flex items-center justify-between mb-2 gap-2 relative" dir="ltr">
-        {/* Left: Play/Pause/Reset/Sync Map/Speed controls */}
-        <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-center justify-center mb-2 gap-2 relative" dir="ltr">
+        {/* Left: Play/Pause/Reset/Sync Map/Speed controls - absolutely positioned */}
+        <div className="absolute left-0 top-0 flex items-center gap-2 flex-wrap">
           <TimelineControls
             isPlaying={isPlaying}
             isAtStart={isAtStart}
@@ -352,20 +352,18 @@ export function TimelineScrubber({
           />
         </div>
 
-        {/* Center: Previous/Next navigation - always visible but responsive */}
+        {/* Center: Previous/Next navigation - centered in flex container */}
         {advancedMode && (advancedMode.showNavigation !== false) && (
-          <div className="flex items-center flex-shrink-0">
-            <TimelineNavigation
-              canGoPrevious={canGoPrevious}
-              canGoNext={canGoNext}
-              onPrevious={goToPreviousEvent}
-              onNext={goToNextEvent}
-            />
-          </div>
+          <TimelineNavigation
+            canGoPrevious={canGoPrevious}
+            canGoNext={canGoNext}
+            onPrevious={goToPreviousEvent}
+            onNext={goToNextEvent}
+          />
         )}
 
-        {/* Right: Info icon */}
-        <div className="flex-shrink-0">
+        {/* Right: Info icon - absolutely positioned */}
+        <div className="absolute right-0 top-0">
           <InfoIconWithTooltip
             tooltip={advancedMode
               ? translate("timeline.tooltipAdvanced")
