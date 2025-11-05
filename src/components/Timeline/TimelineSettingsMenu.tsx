@@ -80,6 +80,7 @@ export function TimelineSettingsMenu({
         floating &&
         !floating.contains(target) &&
         reference &&
+        reference instanceof HTMLElement &&
         !reference.contains(target)
       ) {
         setIsOpen(false);
@@ -93,20 +94,21 @@ export function TimelineSettingsMenu({
   return (
     <>
       {/* Settings button */}
-      <Button
-        ref={refs.setReference}
-        onClick={() => setIsOpen(!isOpen)}
-        variant="secondary"
-        size="xs"
-        icon={<Cog6ToothIcon className="w-3 h-3" />}
-        aria-label="Timeline settings"
-        aria-expanded={isOpen}
-        aria-haspopup="menu"
-        title="Timeline settings"
-      >
-        {/* Icon only on mobile, text on larger screens */}
-        <span className="hidden lg:inline">Settings</span>
-      </Button>
+      <div ref={refs.setReference}>
+        <Button
+          onClick={() => setIsOpen(!isOpen)}
+          variant="secondary"
+          size="xs"
+          icon={<Cog6ToothIcon className="w-3 h-3" />}
+          aria-label="Timeline settings"
+          aria-expanded={isOpen}
+          aria-haspopup="menu"
+          title="Timeline settings"
+        >
+          {/* Icon only on mobile, text on larger screens */}
+          <span className="hidden lg:inline">Settings</span>
+        </Button>
+      </div>
 
       {/* Dropdown menu - rendered via Portal to avoid clipping */}
       {isOpen && (

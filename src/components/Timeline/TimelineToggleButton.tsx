@@ -1,9 +1,10 @@
 import { Button } from "../Button";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import type { TranslationKey } from "../../types/i18n";
 
 interface TimelineToggleButtonProps {
-  label: string;
+  label: TranslationKey;
   isActive: boolean;
   onClick: () => void;
   variant: 'button' | 'menu-item';

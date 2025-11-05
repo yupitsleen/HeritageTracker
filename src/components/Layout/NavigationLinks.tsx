@@ -1,9 +1,10 @@
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
+import type { TranslationKey } from "../../types/i18n";
 
 interface NavigationItem {
   path: string;
-  translationKey: string;
+  translationKey: TranslationKey;
   variant: 'primary' | 'secondary' | 'danger';
   hideOnMobile?: boolean;
 }
