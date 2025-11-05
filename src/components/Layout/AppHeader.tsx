@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { cn } from "../../styles/theme";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -18,12 +19,30 @@ interface AppHeaderProps {
  * Black background with Palestinian flag colors
  * Includes dark mode toggle and navigation to all pages
  * Dashboard, Data, Timeline, Stats, About, and Donate pages
+ * Mobile: Hamburger menu for navigation
  */
 export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   const { isDark, toggleTheme } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Check if screen is mobile size (< 1024px lg breakpoint)
+  // Dashboard page redirects mobile users to Data page, so hide Dashboard nav on mobile
+  const [isMobileSize, setIsMobileSize] = useState(() => {
+    return typeof window !== 'undefined' && window.innerWidth < 1024;
+  });
+
+  // Update mobile size state on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileSize(window.innerWidth < 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Determine active page for highlighting
   const getActivePage = () => {
@@ -38,6 +57,12 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   };
 
   const activePage = getActivePage();
+
+  // Close mobile menu when navigating
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <div
@@ -62,16 +87,16 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
             </button>
           </h1>
 
-          {/* Center: Main action buttons - desktop only */}
-          <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Dashboard Navigation - Hidden on smaller screens (mobile redirects to Data page) */}
+          {/* Center: Main action buttons - hidden on small/medium screens, shown on large+ */}
+          <div className={`hidden xl:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
+            {/* Dashboard Navigation */}
             <Button
               onClick={() => navigate("/")}
               variant={activePage === "dashboard" ? "primary" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.dashboard")}
-              className={`${activePage === "dashboard" ? "ring-2 ring-white/50 border" : "border-0"} hidden lg:flex`}
+              className={activePage === "dashboard" ? "ring-2 ring-white/50 border" : "border-0"}
             >
               {t("header.dashboard")}
             </Button>
@@ -147,22 +172,148 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
                 onClick={onOpenHelp}
                 ariaLabel={t("common.help")}
                 title={t("common.help")}
-                className="hidden md:flex"
+                className="hidden xl:flex"
               />
             )}
 
-            {/* Language Selector - Dropdown showing all registered locales - always visible */}
-            <LanguageSelector />
+            {/* Language Selector - Dropdown showing all registered locales - desktop only */}
+            <div className="hidden xl:flex">
+              <LanguageSelector />
+            </div>
 
-            {/* Dark Mode Toggle - Discrete icon button */}
+            {/* Dark Mode Toggle - Discrete icon button - desktop only */}
+            <div className="hidden xl:flex">
+              <IconButton
+                icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+                onClick={toggleTheme}
+                ariaLabel={isDark ? t("common.settings") : t("common.settings")}
+                title={isDark ? t("common.settings") : t("common.settings")}
+              />
+            </div>
+
+            {/* Hamburger Menu Button - Mobile/Tablet only (< 1280px) */}
             <IconButton
-              icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
-              onClick={toggleTheme}
-              ariaLabel={isDark ? t("common.settings") : t("common.settings")}
-              title={isDark ? t("common.settings") : t("common.settings")}
+              icon={isMobileMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              ariaLabel={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              title={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              className="xl:hidden"
             />
           </div>
         </div>
+
+        {/* Mobile Menu Drawer - Slides down from top */}
+        {isMobileMenuOpen && (
+          <div
+            className="xl:hidden bg-[#000000] border-t border-gray-700 animate-slideDown"
+            style={{ zIndex: Z_INDEX.DROPDOWN }}
+          >
+            <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
+              {/* Dashboard - Hidden on mobile (< 1024px) since mobile users get redirected to Data page */}
+              {!isMobileSize && (
+                <Button
+                  onClick={() => handleNavigation("/")}
+                  variant={activePage === "dashboard" ? "primary" : "ghost"}
+                  size="sm"
+                  lightText
+                  className={`w-full justify-start ${activePage === "dashboard" ? "ring-2 ring-white/50" : ""}`}
+                >
+                  {t("header.dashboard")}
+                </Button>
+              )}
+
+              {/* Data */}
+              <Button
+                onClick={() => handleNavigation("/data")}
+                variant={activePage === "data" ? "primary" : "ghost"}
+                size="sm"
+                lightText
+                className={`w-full justify-start ${activePage === "data" ? "ring-2 ring-white/50" : ""}`}
+              >
+                {t("header.data")}
+              </Button>
+
+              {/* Timeline */}
+              <Button
+                onClick={() => handleNavigation("/timeline")}
+                variant={activePage === "timeline" ? "secondary" : "ghost"}
+                size="sm"
+                lightText
+                className={`w-full justify-start ${activePage === "timeline" ? "ring-2 ring-white/50" : ""}`}
+              >
+                {t("header.timeline")}
+              </Button>
+
+              {/* Donate */}
+              <Button
+                onClick={() => handleNavigation("/donate")}
+                variant={activePage === "donate" ? "danger" : "ghost"}
+                size="sm"
+                lightText
+                className={`w-full justify-start ${activePage === "donate" ? "ring-2 ring-white/50" : ""}`}
+              >
+                {t("header.helpPalestine")}
+              </Button>
+
+              {/* Stats */}
+              <Button
+                onClick={() => handleNavigation("/stats")}
+                variant={activePage === "stats" ? "primary" : "ghost"}
+                size="sm"
+                lightText
+                className={`w-full justify-start ${activePage === "stats" ? "ring-2 ring-white/50" : ""}`}
+              >
+                {t("header.statistics")}
+              </Button>
+
+              {/* About */}
+              <Button
+                onClick={() => handleNavigation("/about")}
+                variant={activePage === "about" ? "primary" : "ghost"}
+                size="sm"
+                lightText
+                className={`w-full justify-start ${activePage === "about" ? "ring-2 ring-white/50" : ""}`}
+              >
+                {t("header.about")}
+              </Button>
+
+              {/* Divider */}
+              <div className="border-t border-gray-700 my-2"></div>
+
+              {/* Utility Controls */}
+              <div className="flex items-center justify-between px-3">
+                <span className="text-sm text-gray-400">Language</span>
+                <LanguageSelector />
+              </div>
+
+              <div className="flex items-center justify-between px-3">
+                <span className="text-sm text-gray-400">Theme</span>
+                <IconButton
+                  icon={isDark ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
+                  onClick={toggleTheme}
+                  ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                  title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                />
+              </div>
+
+              {onOpenHelp && (
+                <Button
+                  onClick={() => {
+                    onOpenHelp();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  lightText
+                  className="w-full justify-start"
+                >
+                  <QuestionMarkCircleIcon className="w-5 h-5 mr-2" />
+                  {t("common.help")}
+                </Button>
+              )}
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Flag-colored horizontal line - RED, BLACK, RED, GREEN (4px high, 4 bars) */}
