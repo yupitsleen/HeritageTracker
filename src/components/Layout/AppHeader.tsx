@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
 import { IconButton } from "../Button/IconButton";
 import { LanguageSelector } from "../LanguageSelector";
+import { NavigationLinks } from "./NavigationLinks";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
 import { Z_INDEX } from "../../constants/layout";
 
@@ -89,78 +90,12 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
 
           {/* Center: Main action buttons - hidden on small/medium screens, shown on large+ */}
           <div className={`hidden xl:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Dashboard Navigation */}
-            <Button
-              onClick={() => navigate("/")}
-              variant={activePage === "dashboard" ? "primary" : "ghost"}
-              size="xs"
-              lightText
-              aria-label={t("header.dashboard")}
-              className={activePage === "dashboard" ? "ring-2 ring-white/50 border" : "border-0"}
-            >
-              {t("header.dashboard")}
-            </Button>
-
-            {/* Data Navigation */}
-            <Button
-              onClick={() => navigate("/data")}
-              variant={activePage === "data" ? "primary" : "ghost"}
-              size="xs"
-              lightText
-              aria-label={t("header.data")}
-              className={activePage === "data" ? "ring-2 ring-white/50 border" : "border-0"}
-            >
-              {t("header.data")}
-            </Button>
-
-            {/* Timeline Navigation */}
-            <Button
-              onClick={() => navigate("/timeline")}
-              variant={activePage === "timeline" ? "secondary" : "ghost"}
-              size="xs"
-              lightText
-              aria-label={t("header.timeline")}
-              title={t("header.timeline")}
-              className={activePage === "timeline" ? "ring-2 ring-white/50 border" : "border-0"}
-            >
-              {t("header.timeline")}
-            </Button>
-
-            {/* Donate Navigation */}
-            <Button
-              onClick={() => navigate("/donate")}
-              variant={activePage === "donate" ? "danger" : "ghost"}
-              size="xs"
-              lightText
-              aria-label={t("header.helpPalestine")}
-              className={activePage === "donate" ? "ring-2 ring-white/50 border" : "border-0"}
-            >
-              {t("header.helpPalestine")}
-            </Button>
-
-            {/* Stats Navigation */}
-            <Button
-              onClick={() => navigate("/stats")}
-              variant={activePage === "stats" ? "primary" : "ghost"}
-              size="xs"
-              lightText
-              aria-label={t("header.statistics")}
-              className={activePage === "stats" ? "ring-2 ring-white/50 border" : "border-0"}
-            >
-              {t("header.statistics")}
-            </Button>
-
-            {/* About Navigation */}
-            <Button
-              onClick={() => navigate("/about")}
-              variant={activePage === "about" ? "primary" : "ghost"}
-              size="xs"
-              lightText
-              aria-label={t("header.about")}
-              className={activePage === "about" ? "ring-2 ring-white/50 border" : "border-0"}
-            >
-              {t("header.about")}
-            </Button>
+            <NavigationLinks
+              activePage={activePage}
+              isMobileSize={isMobileSize}
+              onNavigate={(path) => navigate(path)}
+              layout="desktop"
+            />
           </div>
 
           {/* Right: Icon buttons */}
@@ -209,73 +144,13 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
             style={{ zIndex: Z_INDEX.DROPDOWN }}
           >
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              {/* Dashboard - Hidden on mobile (< 1024px) since mobile users get redirected to Data page */}
-              {!isMobileSize && (
-                <Button
-                  onClick={() => handleNavigation("/")}
-                  variant={activePage === "dashboard" ? "primary" : "ghost"}
-                  size="sm"
-                  lightText
-                  className={`w-full justify-start ${activePage === "dashboard" ? "ring-2 ring-white/50" : ""}`}
-                >
-                  {t("header.dashboard")}
-                </Button>
-              )}
-
-              {/* Data */}
-              <Button
-                onClick={() => handleNavigation("/data")}
-                variant={activePage === "data" ? "primary" : "ghost"}
-                size="sm"
-                lightText
-                className={`w-full justify-start ${activePage === "data" ? "ring-2 ring-white/50" : ""}`}
-              >
-                {t("header.data")}
-              </Button>
-
-              {/* Timeline */}
-              <Button
-                onClick={() => handleNavigation("/timeline")}
-                variant={activePage === "timeline" ? "secondary" : "ghost"}
-                size="sm"
-                lightText
-                className={`w-full justify-start ${activePage === "timeline" ? "ring-2 ring-white/50" : ""}`}
-              >
-                {t("header.timeline")}
-              </Button>
-
-              {/* Donate */}
-              <Button
-                onClick={() => handleNavigation("/donate")}
-                variant={activePage === "donate" ? "danger" : "ghost"}
-                size="sm"
-                lightText
-                className={`w-full justify-start ${activePage === "donate" ? "ring-2 ring-white/50" : ""}`}
-              >
-                {t("header.helpPalestine")}
-              </Button>
-
-              {/* Stats */}
-              <Button
-                onClick={() => handleNavigation("/stats")}
-                variant={activePage === "stats" ? "primary" : "ghost"}
-                size="sm"
-                lightText
-                className={`w-full justify-start ${activePage === "stats" ? "ring-2 ring-white/50" : ""}`}
-              >
-                {t("header.statistics")}
-              </Button>
-
-              {/* About */}
-              <Button
-                onClick={() => handleNavigation("/about")}
-                variant={activePage === "about" ? "primary" : "ghost"}
-                size="sm"
-                lightText
-                className={`w-full justify-start ${activePage === "about" ? "ring-2 ring-white/50" : ""}`}
-              >
-                {t("header.about")}
-              </Button>
+              {/* Navigation Links */}
+              <NavigationLinks
+                activePage={activePage}
+                isMobileSize={isMobileSize}
+                onNavigate={handleNavigation}
+                layout="mobile"
+              />
 
               {/* Divider */}
               <div className="border-t border-gray-700 my-2"></div>
