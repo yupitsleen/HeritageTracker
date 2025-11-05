@@ -330,9 +330,42 @@ export function TimelineScrubber({
     >
       {/* Controls */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
-      <div className="flex items-center mb-2 gap-2 flex-wrap relative" dir="ltr">
-        {/* Info icon in top right */}
-        <div className="absolute right-0 top-0">
+      <div className="flex items-center justify-between mb-2 gap-2 relative" dir="ltr">
+        {/* Left: Play/Pause/Reset/Sync Map/Speed controls */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <TimelineControls
+            isPlaying={isPlaying}
+            isAtStart={isAtStart}
+            speed={speed}
+            zoomToSiteEnabled={zoomToSiteEnabled}
+            mapMarkersVisible={mapMarkersVisible}
+            advancedMode={!!advancedMode}
+            hidePlayControls={advancedMode?.hidePlayControls ?? false}
+            syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
+            onPlay={handlePlay}
+            onPause={pause}
+            onReset={handleReset}
+            onSpeedChange={setSpeed}
+            onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
+            onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
+            onSyncMapToggle={advancedMode?.onSyncMapToggle}
+          />
+        </div>
+
+        {/* Center: Previous/Next navigation - always visible but responsive */}
+        {advancedMode && (advancedMode.showNavigation !== false) && (
+          <div className="flex items-center flex-shrink-0">
+            <TimelineNavigation
+              canGoPrevious={canGoPrevious}
+              canGoNext={canGoNext}
+              onPrevious={goToPreviousEvent}
+              onNext={goToNextEvent}
+            />
+          </div>
+        )}
+
+        {/* Right: Info icon */}
+        <div className="flex-shrink-0">
           <InfoIconWithTooltip
             tooltip={advancedMode
               ? translate("timeline.tooltipAdvanced")
@@ -340,35 +373,6 @@ export function TimelineScrubber({
             }
           />
         </div>
-
-        {/* Left: Play/Pause/Reset/Sync Map/Speed controls */}
-        <TimelineControls
-          isPlaying={isPlaying}
-          isAtStart={isAtStart}
-          speed={speed}
-          zoomToSiteEnabled={zoomToSiteEnabled}
-          mapMarkersVisible={mapMarkersVisible}
-          advancedMode={!!advancedMode}
-          hidePlayControls={advancedMode?.hidePlayControls ?? false}
-          syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
-          onPlay={handlePlay}
-          onPause={pause}
-          onReset={handleReset}
-          onSpeedChange={setSpeed}
-          onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
-          onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
-          onSyncMapToggle={advancedMode?.onSyncMapToggle}
-        />
-
-        {/* Center: Previous/Next navigation (show when advancedMode.showNavigation is true, or by default when advancedMode is set) */}
-        {advancedMode && (advancedMode.showNavigation !== false) && (
-          <TimelineNavigation
-            canGoPrevious={canGoPrevious}
-            canGoNext={canGoNext}
-            onPrevious={goToPreviousEvent}
-            onNext={goToNextEvent}
-          />
-        )}
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
@@ -403,8 +407,8 @@ export function TimelineScrubber({
         )}
       </div>
 
-      {/* Keyboard shortcuts hint */}
-      <div className={`mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
+      {/* Keyboard shortcuts hint - hidden below 1280px */}
+      <div className={`hidden xl:block mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
         {translate("timeline.keyboard")}: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> {translate("timeline.playPause")}
         {" • "}
         <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> {translate("timeline.step")}

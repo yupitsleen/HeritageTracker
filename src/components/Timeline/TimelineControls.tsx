@@ -4,6 +4,7 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Button } from "../Button";
 import { getSpeedValues } from "../../config/animation";
+import { TimelineSettingsMenu } from "./TimelineSettingsMenu";
 
 interface TimelineControlsProps {
   isPlaying: boolean;
@@ -70,7 +71,8 @@ export function TimelineControls({
               icon={<PlayIcon className="w-3 h-3" />}
               aria-label={translate("timeline.play")}
             >
-              {translate("timeline.play")}
+              {/* Keep text until 1280px, then icon-only */}
+              <span className="hidden xl:inline">{translate("timeline.play")}</span>
             </Button>
           ) : (
             <Button
@@ -80,7 +82,8 @@ export function TimelineControls({
               icon={<PauseIcon className="w-3 h-3" />}
               aria-label={translate("timeline.pause")}
             >
-              {translate("timeline.pause")}
+              {/* Keep text until 1280px, then icon-only */}
+              <span className="hidden xl:inline">{translate("timeline.pause")}</span>
             </Button>
           )}
         </>
@@ -95,51 +98,68 @@ export function TimelineControls({
         icon={<ArrowPathIcon className="w-3 h-3" />}
         aria-label={translate("common.reset")}
       >
-        {translate("common.reset")}
+        {/* Keep text until 1280px, then icon-only */}
+        <span className="hidden xl:inline">{translate("common.reset")}</span>
       </Button>
 
-      {/* Sync Map toggle - only show in advanced mode */}
-      {advancedMode && onSyncMapToggle && (
+      {/* Desktop: Individual toggle buttons (lg and up) */}
+      <div className="hidden lg:flex lg:items-center lg:gap-1.5">
+        {/* Sync Map toggle - only show in advanced mode */}
+        {advancedMode && onSyncMapToggle && (
+          <Button
+            onClick={onSyncMapToggle}
+            variant="secondary"
+            active={syncMapOnDotClick}
+            size="xs"
+            aria-label={translate("timeline.syncMap")}
+            title={translate("timeline.syncMap")}
+          >
+            {syncMapOnDotClick ? "✓" : ""} {translate("timeline.syncMap")}
+          </Button>
+        )}
+
+        {/* Zoom to Site toggle */}
         <Button
-          onClick={onSyncMapToggle}
+          onClick={onZoomToSiteToggle}
           variant="secondary"
-          active={syncMapOnDotClick}
+          active={zoomToSiteEnabled}
           size="xs"
-          aria-label={translate("timeline.syncMap")}
-          title={translate("timeline.syncMap")}
+          aria-label={translate("timeline.zoomToSite")}
+          title={translate("timeline.zoomToSite")}
         >
-          {syncMapOnDotClick ? "✓" : ""} {translate("timeline.syncMap")}
+          {zoomToSiteEnabled ? "✓" : ""} {translate("timeline.zoomToSite")}
         </Button>
-      )}
 
-      {/* Zoom to Site toggle */}
-      <Button
-        onClick={onZoomToSiteToggle}
-        variant="secondary"
-        active={zoomToSiteEnabled}
-        size="xs"
-        aria-label={translate("timeline.zoomToSite")}
-        title={translate("timeline.zoomToSite")}
-      >
-        {zoomToSiteEnabled ? "✓" : ""} {translate("timeline.zoomToSite")}
-      </Button>
+        {/* Show Map Markers toggle */}
+        <Button
+          onClick={onMapMarkersToggle}
+          variant="secondary"
+          active={mapMarkersVisible}
+          size="xs"
+          aria-label={translate("timeline.showMapMarkers")}
+          title={translate("timeline.showMapMarkers")}
+        >
+          {mapMarkersVisible ? "✓" : ""} {translate("timeline.showMapMarkers")}
+        </Button>
+      </div>
 
-      {/* Show Map Markers toggle */}
-      <Button
-        onClick={onMapMarkersToggle}
-        variant="secondary"
-        active={mapMarkersVisible}
-        size="xs"
-        aria-label={translate("timeline.showMapMarkers")}
-        title={translate("timeline.showMapMarkers")}
-      >
-        {mapMarkersVisible ? "✓" : ""} {translate("timeline.showMapMarkers")}
-      </Button>
+      {/* Mobile/Tablet: Settings dropdown menu (below lg) */}
+      <div className="lg:hidden">
+        <TimelineSettingsMenu
+          zoomToSiteEnabled={zoomToSiteEnabled}
+          mapMarkersVisible={mapMarkersVisible}
+          syncMapOnDotClick={syncMapOnDotClick}
+          onZoomToSiteToggle={onZoomToSiteToggle}
+          onMapMarkersToggle={onMapMarkersToggle}
+          onSyncMapToggle={onSyncMapToggle}
+        />
+      </div>
 
       {/* Speed control - hidden when hidePlayControls is true */}
       {!hidePlayControls && (
         <div className="flex items-center gap-1.5">
-          <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
+          {/* Hide "Speed:" label below 1280px */}
+          <label htmlFor="speed-control" className={`hidden xl:inline text-xs font-medium ${t.text.body}`}>
             {translate("timeline.speed")}:
           </label>
           <select

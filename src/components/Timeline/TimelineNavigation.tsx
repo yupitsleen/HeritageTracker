@@ -29,7 +29,7 @@ export function TimelineNavigation({
   const translate = useTranslation();
 
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5" dir="ltr">
+    <div className="flex items-center gap-1.5" dir="ltr">
       <Button
         onClick={onPrevious}
         disabled={!canGoPrevious}
@@ -38,7 +38,9 @@ export function TimelineNavigation({
         aria-label={translate("timeline.previousAriaLabel")}
         title={translate("timeline.previousTitle")}
       >
-        ⏮ {translate("timeline.previous")}
+        {/* Icon only below xl, full text at xl+ */}
+        <span className="xl:hidden">⏮</span>
+        <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
       </Button>
       <Button
         onClick={onNext}
@@ -48,7 +50,9 @@ export function TimelineNavigation({
         aria-label={translate("timeline.nextAriaLabel")}
         title={translate("timeline.nextTitle")}
       >
-        {translate("timeline.next")} ⏭
+        {/* Icon only below xl, full text at xl+ */}
+        <span className="xl:hidden">⏭</span>
+        <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
       </Button>
     </div>
   );
