@@ -6,21 +6,29 @@ import type { AnimationSpeed } from "../../contexts/AnimationContext";
 
 // Mock handlers
 const mockHandlers = {
-  onZoomToSiteToggle: vi.fn(),
-  onMapMarkersToggle: vi.fn(),
-  onSyncMapToggle: vi.fn(),
+  onZoomToSite: vi.fn(),
+  onMapMarkers: vi.fn(),
+  onSyncMap: vi.fn(),
   onSpeedChange: vi.fn(),
 };
+
+// Helper to create default props
+const createDefaultProps = () => ({
+  toggles: {
+    zoomToSite: true,
+    mapMarkers: true,
+  },
+  onToggle: {
+    zoomToSite: mockHandlers.onZoomToSite,
+    mapMarkers: mockHandlers.onMapMarkers,
+  },
+});
 
 describe("TimelineSettingsMenu", () => {
   describe("Smoke Tests", () => {
     it("renders without crashing", () => {
       const { container } = renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       expect(container).toBeInTheDocument();
@@ -28,11 +36,7 @@ describe("TimelineSettingsMenu", () => {
 
     it("renders settings button", () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       expect(screen.getByLabelText(/timeline settings/i)).toBeInTheDocument();
@@ -42,11 +46,7 @@ describe("TimelineSettingsMenu", () => {
   describe("Menu Open/Close", () => {
     it("opens menu when settings button is clicked", async () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);
@@ -61,11 +61,7 @@ describe("TimelineSettingsMenu", () => {
     it("REGRESSION: menu opens without t.hover.muted error", async () => {
       // This test ensures we don't regress the bug where t.hover.muted was undefined
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);
@@ -81,11 +77,7 @@ describe("TimelineSettingsMenu", () => {
 
     it("closes menu when clicking a menu item", async () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       // Open menu
@@ -110,11 +102,7 @@ describe("TimelineSettingsMenu", () => {
   describe("Menu Items", () => {
     it("displays Zoom to Site option", async () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);
@@ -127,11 +115,7 @@ describe("TimelineSettingsMenu", () => {
 
     it("displays Show Map Markers option", async () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);
@@ -142,13 +126,19 @@ describe("TimelineSettingsMenu", () => {
       });
     });
 
-    it("displays Sync Map option when onSyncMapToggle is provided", async () => {
+    it("displays Sync Map option when onSyncMap is provided", async () => {
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          syncMapOnDotClick={false}
-          {...mockHandlers}
+          toggles={{
+            zoomToSite: true,
+            mapMarkers: true,
+            syncMap: false,
+          }}
+          onToggle={{
+            zoomToSite: mockHandlers.onZoomToSite,
+            mapMarkers: mockHandlers.onMapMarkers,
+            syncMap: mockHandlers.onSyncMap,
+          }}
         />
       );
 
@@ -160,18 +150,9 @@ describe("TimelineSettingsMenu", () => {
       });
     });
 
-    it("does not display Sync Map when onSyncMapToggle is not provided", async () => {
-      // Destructure to exclude onSyncMapToggle
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { onSyncMapToggle, ...handlersWithoutSync } = mockHandlers;
-
+    it("does not display Sync Map when onSyncMap is not provided", async () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          onZoomToSiteToggle={handlersWithoutSync.onZoomToSiteToggle}
-          onMapMarkersToggle={handlersWithoutSync.onMapMarkersToggle}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);
@@ -188,9 +169,14 @@ describe("TimelineSettingsMenu", () => {
     it("shows checkmark when Zoom to Site is enabled", async () => {
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={false}
-          {...mockHandlers}
+          toggles={{
+            zoomToSite: true,
+            mapMarkers: false,
+          }}
+          onToggle={{
+            zoomToSite: mockHandlers.onZoomToSite,
+            mapMarkers: mockHandlers.onMapMarkers,
+          }}
         />
       );
 
@@ -206,9 +192,14 @@ describe("TimelineSettingsMenu", () => {
     it("shows checkmark when Map Markers is visible", async () => {
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={false}
-          mapMarkersVisible={true}
-          {...mockHandlers}
+          toggles={{
+            zoomToSite: false,
+            mapMarkers: true,
+          }}
+          onToggle={{
+            zoomToSite: mockHandlers.onZoomToSite,
+            mapMarkers: mockHandlers.onMapMarkers,
+          }}
         />
       );
 
@@ -223,15 +214,14 @@ describe("TimelineSettingsMenu", () => {
   });
 
   describe("Speed Control", () => {
-    it("displays speed control when speed prop is provided", async () => {
+    it("displays speed control when speedControl prop is provided", async () => {
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          speed={1 as AnimationSpeed}
-          hidePlayControls={false}
-          onSpeedChange={mockHandlers.onSpeedChange}
-          {...mockHandlers}
+          {...createDefaultProps()}
+          speedControl={{
+            speed: 1 as AnimationSpeed,
+            onChange: mockHandlers.onSpeedChange,
+          }}
         />
       );
 
@@ -243,16 +233,9 @@ describe("TimelineSettingsMenu", () => {
       });
     });
 
-    it("does not display speed control when hidePlayControls is true", async () => {
+    it("does not display speed control when speedControl is not provided", async () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          speed={1 as AnimationSpeed}
-          hidePlayControls={true}
-          onSpeedChange={mockHandlers.onSpeedChange}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);
@@ -269,12 +252,11 @@ describe("TimelineSettingsMenu", () => {
     it("speed control has correct value", async () => {
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          speed={2 as AnimationSpeed}
-          hidePlayControls={false}
-          onSpeedChange={mockHandlers.onSpeedChange}
-          {...mockHandlers}
+          {...createDefaultProps()}
+          speedControl={{
+            speed: 2 as AnimationSpeed,
+            onChange: mockHandlers.onSpeedChange,
+          }}
         />
       );
 
@@ -289,15 +271,19 @@ describe("TimelineSettingsMenu", () => {
   });
 
   describe("User Interactions", () => {
-    it("calls onZoomToSiteToggle when clicking Zoom to Site", async () => {
-      const onZoomToSiteToggle = vi.fn();
+    it("calls onZoomToSite when clicking Zoom to Site", async () => {
+      const onZoomToSite = vi.fn();
 
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          onZoomToSiteToggle={onZoomToSiteToggle}
-          onMapMarkersToggle={mockHandlers.onMapMarkersToggle}
+          toggles={{
+            zoomToSite: true,
+            mapMarkers: true,
+          }}
+          onToggle={{
+            zoomToSite: onZoomToSite,
+            mapMarkers: mockHandlers.onMapMarkers,
+          }}
         />
       );
 
@@ -311,18 +297,22 @@ describe("TimelineSettingsMenu", () => {
       const zoomButton = screen.getByText(/zoom to site/i);
       fireEvent.click(zoomButton);
 
-      expect(onZoomToSiteToggle).toHaveBeenCalledTimes(1);
+      expect(onZoomToSite).toHaveBeenCalledTimes(1);
     });
 
-    it("calls onMapMarkersToggle when clicking Show Map Markers", async () => {
-      const onMapMarkersToggle = vi.fn();
+    it("calls onMapMarkers when clicking Show Map Markers", async () => {
+      const onMapMarkers = vi.fn();
 
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          onZoomToSiteToggle={mockHandlers.onZoomToSiteToggle}
-          onMapMarkersToggle={onMapMarkersToggle}
+          toggles={{
+            zoomToSite: true,
+            mapMarkers: true,
+          }}
+          onToggle={{
+            zoomToSite: mockHandlers.onZoomToSite,
+            mapMarkers: onMapMarkers,
+          }}
         />
       );
 
@@ -336,20 +326,24 @@ describe("TimelineSettingsMenu", () => {
       const markersButton = screen.getByText(/show map markers/i);
       fireEvent.click(markersButton);
 
-      expect(onMapMarkersToggle).toHaveBeenCalledTimes(1);
+      expect(onMapMarkers).toHaveBeenCalledTimes(1);
     });
 
-    it("calls onSyncMapToggle when clicking Sync Map", async () => {
-      const onSyncMapToggle = vi.fn();
+    it("calls onSyncMap when clicking Sync Map", async () => {
+      const onSyncMap = vi.fn();
 
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          syncMapOnDotClick={false}
-          onZoomToSiteToggle={mockHandlers.onZoomToSiteToggle}
-          onMapMarkersToggle={mockHandlers.onMapMarkersToggle}
-          onSyncMapToggle={onSyncMapToggle}
+          toggles={{
+            zoomToSite: true,
+            mapMarkers: true,
+            syncMap: false,
+          }}
+          onToggle={{
+            zoomToSite: mockHandlers.onZoomToSite,
+            mapMarkers: mockHandlers.onMapMarkers,
+            syncMap: onSyncMap,
+          }}
         />
       );
 
@@ -363,7 +357,7 @@ describe("TimelineSettingsMenu", () => {
       const syncButton = screen.getByText(/sync map/i);
       fireEvent.click(syncButton);
 
-      expect(onSyncMapToggle).toHaveBeenCalledTimes(1);
+      expect(onSyncMap).toHaveBeenCalledTimes(1);
     });
 
     it("speed control is interactive and has correct options", async () => {
@@ -371,12 +365,11 @@ describe("TimelineSettingsMenu", () => {
 
       renderWithTheme(
         <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          speed={1 as AnimationSpeed}
-          hidePlayControls={false}
-          onSpeedChange={onSpeedChange}
-          {...mockHandlers}
+          {...createDefaultProps()}
+          speedControl={{
+            speed: 1 as AnimationSpeed,
+            onChange: onSpeedChange,
+          }}
         />
       );
 
@@ -403,11 +396,7 @@ describe("TimelineSettingsMenu", () => {
   describe("Accessibility", () => {
     it("has proper ARIA labels", () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       // Settings button should have aria-label
@@ -416,11 +405,7 @@ describe("TimelineSettingsMenu", () => {
 
     it("menu has proper role attribute", async () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);
@@ -433,11 +418,7 @@ describe("TimelineSettingsMenu", () => {
 
     it("settings button has aria-expanded attribute", () => {
       renderWithTheme(
-        <TimelineSettingsMenu
-          zoomToSiteEnabled={true}
-          mapMarkersVisible={true}
-          {...mockHandlers}
-        />
+        <TimelineSettingsMenu {...createDefaultProps()} />
       );
 
       const settingsButton = screen.getByLabelText(/timeline settings/i);

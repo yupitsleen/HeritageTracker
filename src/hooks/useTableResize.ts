@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { TABLE_CONFIG } from "../constants/layout";
+import { TABLE_CONFIG, LAYOUT } from "../constants/layout";
 
 /**
  * Hook to manage resizable table width
@@ -23,8 +23,8 @@ export function useTableResize(
     const handleViewportResize = () => {
       setTableWidth((currentWidth) => {
         // Get available width (viewport - padding)
-        const availableWidth = window.innerWidth - 48; // 48px for padding (px-4 on each side)
-        const effectiveMaxWidth = Math.min(maxWidth, availableWidth * 0.6); // Max 60% of viewport
+        const availableWidth = window.innerWidth - LAYOUT.CONTAINER_PADDING;
+        const effectiveMaxWidth = Math.min(maxWidth, availableWidth * LAYOUT.TABLE_MAX_WIDTH_RATIO);
 
         // Clamp current width to new constraints
         return Math.max(minWidth, Math.min(effectiveMaxWidth, currentWidth));
@@ -47,13 +47,24 @@ export function useTableResize(
   useEffect(() => {
     if (!isResizing) return;
 
+    let rafId: number | null = null;
+
     const handleMouseMove = (e: MouseEvent) => {
-      // Calculate new width from left edge of viewport to mouse position
-      // Subtract 24px for left padding (pl-6)
-      const newWidth = e.clientX - 24;
-      // Clamp to min/max bounds
-      const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
-      setTableWidth(clampedWidth);
+      // Cancel any pending animation frame
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+
+      // Use requestAnimationFrame for smooth, performant updates
+      rafId = requestAnimationFrame(() => {
+        // Calculate new width from left edge of viewport to mouse position
+        const newWidth = e.clientX - LAYOUT.TABLE_LEFT_PADDING;
+        // Clamp to min/max bounds
+        const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+
+        // Only update if value actually changed (avoid unnecessary re-renders)
+        setTableWidth((prev) => (clampedWidth !== prev ? clampedWidth : prev));
+      });
     };
 
     const handleMouseUp = () => {
@@ -64,6 +75,10 @@ export function useTableResize(
     document.addEventListener("mouseup", handleMouseUp);
 
     return () => {
+      // Cancel any pending animation frame on cleanup
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };

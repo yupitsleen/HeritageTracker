@@ -108,4 +108,13 @@ export const LAYOUT = {
 
   /** Total fixed height (header + footer) for viewport calculations */
   FIXED_HEIGHT: 140,
+
+  /** Container horizontal padding in pixels (px-4 on each side: 24px * 2) */
+  CONTAINER_PADDING: 48,
+
+  /** Left padding for table container in pixels (pl-6: 24px) */
+  TABLE_LEFT_PADDING: 24,
+
+  /** Maximum table width as ratio of viewport width (60% of available space) */
+  TABLE_MAX_WIDTH_RATIO: 0.6,
 } as const;

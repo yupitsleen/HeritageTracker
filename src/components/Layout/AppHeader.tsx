@@ -9,7 +9,8 @@ import { IconButton } from "../Button/IconButton";
 import { LanguageSelector } from "../LanguageSelector";
 import { NavigationLinks } from "./NavigationLinks";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
-import { Z_INDEX } from "../../constants/layout";
+import { Z_INDEX, BREAKPOINTS } from "../../constants/layout";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 interface AppHeaderProps {
   onOpenHelp?: () => void;
@@ -29,21 +30,9 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Check if screen is mobile size (< 1024px lg breakpoint)
+  // Check if screen is mobile size (< BREAKPOINTS.TABLET)
   // Dashboard page redirects mobile users to Data page, so hide Dashboard nav on mobile
-  const [isMobileSize, setIsMobileSize] = useState(() => {
-    return typeof window !== 'undefined' && window.innerWidth < 1024;
-  });
-
-  // Update mobile size state on resize
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileSize(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const isMobileSize = useMediaQuery(`(max-width: ${BREAKPOINTS.TABLET - 1}px)`);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {

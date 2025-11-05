@@ -17,16 +17,23 @@ import { getSpeedValues } from "../../config/animation";
 import { TimelineToggleButton } from "./TimelineToggleButton";
 
 interface TimelineSettingsMenuProps {
-  zoomToSiteEnabled: boolean;
-  mapMarkersVisible: boolean;
-  syncMapOnDotClick?: boolean;
-  onZoomToSiteToggle: () => void;
-  onMapMarkersToggle: () => void;
-  onSyncMapToggle?: () => void;
-  // Optional Speed control (for compact mode)
-  speed?: AnimationSpeed;
-  hidePlayControls?: boolean;
-  onSpeedChange?: (speed: AnimationSpeed) => void;
+  /** Toggle button states */
+  toggles: {
+    zoomToSite: boolean;
+    mapMarkers: boolean;
+    syncMap?: boolean;
+  };
+  /** Toggle button handlers */
+  onToggle: {
+    zoomToSite: () => void;
+    mapMarkers: () => void;
+    syncMap?: () => void;
+  };
+  /** Optional speed control configuration */
+  speedControl?: {
+    speed: AnimationSpeed;
+    onChange: (speed: AnimationSpeed) => void;
+  };
 }
 
 /**
@@ -36,15 +43,9 @@ interface TimelineSettingsMenuProps {
  * Automatically repositions on scroll/resize and flips when needed
  */
 export function TimelineSettingsMenu({
-  zoomToSiteEnabled,
-  mapMarkersVisible,
-  syncMapOnDotClick,
-  onZoomToSiteToggle,
-  onMapMarkersToggle,
-  onSyncMapToggle,
-  speed,
-  hidePlayControls,
-  onSpeedChange,
+  toggles,
+  onToggle,
+  speedControl,
 }: TimelineSettingsMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const translate = useTranslation();
@@ -122,8 +123,8 @@ export function TimelineSettingsMenu({
             role="menu"
           >
             <div className="py-1">
-            {/* Speed control - only show if not hidden */}
-            {!hidePlayControls && speed !== undefined && onSpeedChange && (
+            {/* Speed control - only show if provided */}
+            {speedControl && (
               <>
                 <div className="px-4 py-2 flex items-center justify-between">
                   <label htmlFor="speed-control-menu" className={`text-sm ${t.text.body}`}>
@@ -131,9 +132,9 @@ export function TimelineSettingsMenu({
                   </label>
                   <select
                     id="speed-control-menu"
-                    value={speed}
+                    value={speedControl.speed}
                     onChange={(e) => {
-                      onSpeedChange(Number(e.target.value) as AnimationSpeed);
+                      speedControl.onChange(Number(e.target.value) as AnimationSpeed);
                     }}
                     className={`ml-2 ${t.timeline.speedSelect} ${t.input.base}`}
                     onClick={(e) => e.stopPropagation()}
@@ -151,11 +152,11 @@ export function TimelineSettingsMenu({
             )}
 
             {/* Sync Map option (if available) */}
-            {onSyncMapToggle && (
+            {onToggle.syncMap && (
               <TimelineToggleButton
                 label="timeline.syncMap"
-                isActive={syncMapOnDotClick ?? false}
-                onClick={onSyncMapToggle}
+                isActive={toggles.syncMap ?? false}
+                onClick={onToggle.syncMap}
                 variant="menu-item"
                 onMenuClose={() => setIsOpen(false)}
               />
@@ -164,8 +165,8 @@ export function TimelineSettingsMenu({
             {/* Zoom to Site option */}
             <TimelineToggleButton
               label="timeline.zoomToSite"
-              isActive={zoomToSiteEnabled}
-              onClick={onZoomToSiteToggle}
+              isActive={toggles.zoomToSite}
+              onClick={onToggle.zoomToSite}
               variant="menu-item"
               onMenuClose={() => setIsOpen(false)}
             />
@@ -173,8 +174,8 @@ export function TimelineSettingsMenu({
             {/* Show Map Markers option */}
             <TimelineToggleButton
               label="timeline.showMapMarkers"
-              isActive={mapMarkersVisible}
-              onClick={onMapMarkersToggle}
+              isActive={toggles.mapMarkers}
+              onClick={onToggle.mapMarkers}
               variant="menu-item"
               onMenuClose={() => setIsOpen(false)}
             />
