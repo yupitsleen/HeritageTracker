@@ -64,14 +64,14 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
 
           {/* Center: Main action buttons - desktop only */}
           <div className={`hidden md:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Dashboard Navigation */}
+            {/* Dashboard Navigation - Hidden on smaller screens (mobile redirects to Data page) */}
             <Button
               onClick={() => navigate("/")}
               variant={activePage === "dashboard" ? "primary" : "ghost"}
               size="xs"
               lightText
               aria-label={t("header.dashboard")}
-              className={activePage === "dashboard" ? "ring-2 ring-white/50 border" : "border-0"}
+              className={`${activePage === "dashboard" ? "ring-2 ring-white/50 border" : "border-0"} hidden lg:flex`}
             >
               {t("header.dashboard")}
             </Button>
