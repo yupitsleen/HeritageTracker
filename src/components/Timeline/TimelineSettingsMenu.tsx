@@ -1,0 +1,157 @@
+import { useState, useEffect } from "react";
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import {
+  useFloating,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  FloatingPortal,
+} from "@floating-ui/react";
+import { Button } from "../Button";
+import { useTranslation } from "../../contexts/LocaleContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Z_INDEX } from "../../constants/layout";
+
+interface TimelineSettingsMenuProps {
+  zoomToSiteEnabled: boolean;
+  mapMarkersVisible: boolean;
+  syncMapOnDotClick?: boolean;
+  onZoomToSiteToggle: () => void;
+  onMapMarkersToggle: () => void;
+  onSyncMapToggle?: () => void;
+}
+
+/**
+ * Dropdown menu for timeline settings (responsive design)
+ *
+ * Uses Floating UI for intelligent positioning that prevents overflow
+ * Automatically repositions on scroll/resize and flips when needed
+ */
+export function TimelineSettingsMenu({
+  zoomToSiteEnabled,
+  mapMarkersVisible,
+  syncMapOnDotClick,
+  onZoomToSiteToggle,
+  onMapMarkersToggle,
+  onSyncMapToggle,
+}: TimelineSettingsMenuProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const translate = useTranslation();
+  const t = useThemeClasses();
+
+  // Floating UI positioning - handles all edge cases automatically
+  const { x, y, strategy, refs } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    placement: "bottom-end", // Prefer opening below button, aligned to right
+    middleware: [
+      offset(4), // 4px gap from button
+      flip({
+        fallbackPlacements: ["top-end", "bottom-start", "top-start"], // Try these if no space
+      }),
+      shift({ padding: 8 }), // Stay 8px away from viewport edges
+    ],
+    whileElementsMounted: autoUpdate, // Auto-reposition on scroll/resize
+  });
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const floating = refs.floating.current;
+      const reference = refs.reference.current;
+
+      if (
+        floating &&
+        !floating.contains(target) &&
+        reference &&
+        !reference.contains(target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, refs]);
+
+  return (
+    <>
+      {/* Settings button */}
+      <Button
+        ref={refs.setReference}
+        onClick={() => setIsOpen(!isOpen)}
+        variant="secondary"
+        size="xs"
+        icon={<Cog6ToothIcon className="w-3 h-3" />}
+        aria-label="Timeline settings"
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
+        title="Timeline settings"
+      >
+        {/* Icon only on mobile, text on larger screens */}
+        <span className="hidden lg:inline">Settings</span>
+      </Button>
+
+      {/* Dropdown menu - rendered via Portal to avoid clipping */}
+      {isOpen && (
+        <FloatingPortal>
+          <div
+            ref={refs.setFloating}
+            className={`min-w-[200px] max-w-[90vw] rounded shadow-lg border ${t.border.primary} ${t.bg.primary}`}
+            style={{
+              position: strategy,
+              top: y ?? 0,
+              left: x ?? 0,
+              zIndex: Z_INDEX.DROPDOWN,
+            }}
+            role="menu"
+          >
+            <div className="py-1">
+            {/* Sync Map option (if available) */}
+            {onSyncMapToggle && (
+              <button
+                onClick={() => {
+                  onSyncMapToggle();
+                  setIsOpen(false);
+                }}
+                className={`w-full text-left px-4 py-2 text-sm ${t.text.body} hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between`}
+              >
+                <span>{translate("timeline.syncMap")}</span>
+                {syncMapOnDotClick && <span className="text-green-600">✓</span>}
+              </button>
+            )}
+
+            {/* Zoom to Site option */}
+            <button
+              onClick={() => {
+                onZoomToSiteToggle();
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between`}
+            >
+              <span>{translate("timeline.zoomToSite")}</span>
+              {zoomToSiteEnabled && <span className="text-green-600">✓</span>}
+            </button>
+
+            {/* Show Map Markers option */}
+            <button
+              onClick={() => {
+                onMapMarkersToggle();
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between`}
+            >
+              <span>{translate("timeline.showMapMarkers")}</span>
+              {mapMarkersVisible && <span className="text-green-600">✓</span>}
+            </button>
+            </div>
+          </div>
+        </FloatingPortal>
+      )}
+    </>
+  );
+}
