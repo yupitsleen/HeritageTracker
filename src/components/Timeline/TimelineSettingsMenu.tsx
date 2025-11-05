@@ -14,6 +14,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Z_INDEX } from "../../constants/layout";
 import type { AnimationSpeed } from "../../contexts/AnimationContext";
 import { getSpeedValues } from "../../config/animation";
+import { TimelineToggleButton } from "./TimelineToggleButton";
 
 interface TimelineSettingsMenuProps {
   zoomToSiteEnabled: boolean;
@@ -151,41 +152,32 @@ export function TimelineSettingsMenu({
 
             {/* Sync Map option (if available) */}
             {onSyncMapToggle && (
-              <button
-                onClick={() => {
-                  onSyncMapToggle();
-                  setIsOpen(false);
-                }}
-                className={`w-full text-left px-4 py-2 text-sm ${t.text.body} ${t.bg.hover} flex items-center justify-between`}
-              >
-                <span>{translate("timeline.syncMap")}</span>
-                {syncMapOnDotClick && <span className="text-green-600">✓</span>}
-              </button>
+              <TimelineToggleButton
+                label="timeline.syncMap"
+                isActive={syncMapOnDotClick ?? false}
+                onClick={onSyncMapToggle}
+                variant="menu-item"
+                onMenuClose={() => setIsOpen(false)}
+              />
             )}
 
             {/* Zoom to Site option */}
-            <button
-              onClick={() => {
-                onZoomToSiteToggle();
-                setIsOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} ${t.bg.hover} flex items-center justify-between`}
-            >
-              <span>{translate("timeline.zoomToSite")}</span>
-              {zoomToSiteEnabled && <span className="text-green-600">✓</span>}
-            </button>
+            <TimelineToggleButton
+              label="timeline.zoomToSite"
+              isActive={zoomToSiteEnabled}
+              onClick={onZoomToSiteToggle}
+              variant="menu-item"
+              onMenuClose={() => setIsOpen(false)}
+            />
 
             {/* Show Map Markers option */}
-            <button
-              onClick={() => {
-                onMapMarkersToggle();
-                setIsOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2 text-sm ${t.text.body} ${t.bg.hover} flex items-center justify-between`}
-            >
-              <span>{translate("timeline.showMapMarkers")}</span>
-              {mapMarkersVisible && <span className="text-green-600">✓</span>}
-            </button>
+            <TimelineToggleButton
+              label="timeline.showMapMarkers"
+              isActive={mapMarkersVisible}
+              onClick={onMapMarkersToggle}
+              variant="menu-item"
+              onMenuClose={() => setIsOpen(false)}
+            />
             </div>
           </div>
         </FloatingPortal>

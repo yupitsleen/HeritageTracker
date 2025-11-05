@@ -5,6 +5,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Button } from "../Button";
 import { getSpeedValues } from "../../config/animation";
 import { TimelineSettingsMenu } from "./TimelineSettingsMenu";
+import { TimelineToggleButton } from "./TimelineToggleButton";
 
 interface TimelineControlsProps {
   isPlaying: boolean;
@@ -124,41 +125,29 @@ export function TimelineControls({
       <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">
         {/* Sync Map toggle - only show in advanced mode */}
         {advancedMode && onSyncMapToggle && (
-          <Button
+          <TimelineToggleButton
+            label="timeline.syncMap"
+            isActive={syncMapOnDotClick ?? false}
             onClick={onSyncMapToggle}
-            variant="secondary"
-            active={syncMapOnDotClick}
-            size="xs"
-            aria-label={translate("timeline.syncMap")}
-            title={translate("timeline.syncMap")}
-          >
-            {syncMapOnDotClick ? "✓" : ""} {translate("timeline.syncMap")}
-          </Button>
+            variant="button"
+          />
         )}
 
         {/* Zoom to Site toggle */}
-        <Button
+        <TimelineToggleButton
+          label="timeline.zoomToSite"
+          isActive={zoomToSiteEnabled}
           onClick={onZoomToSiteToggle}
-          variant="secondary"
-          active={zoomToSiteEnabled}
-          size="xs"
-          aria-label={translate("timeline.zoomToSite")}
-          title={translate("timeline.zoomToSite")}
-        >
-          {zoomToSiteEnabled ? "✓" : ""} {translate("timeline.zoomToSite")}
-        </Button>
+          variant="button"
+        />
 
         {/* Show Map Markers toggle */}
-        <Button
+        <TimelineToggleButton
+          label="timeline.showMapMarkers"
+          isActive={mapMarkersVisible}
           onClick={onMapMarkersToggle}
-          variant="secondary"
-          active={mapMarkersVisible}
-          size="xs"
-          aria-label={translate("timeline.showMapMarkers")}
-          title={translate("timeline.showMapMarkers")}
-        >
-          {mapMarkersVisible ? "✓" : ""} {translate("timeline.showMapMarkers")}
-        </Button>
+          variant="button"
+        />
 
         {/* Speed control - hidden when hidePlayControls is true, only show at 2xl+ to prevent overlap */}
         {!hidePlayControls && (
