@@ -14,7 +14,9 @@
       "Bash(git add:*)",
       "Bash(npm install:*)",
       "Bash(npx playwright:*)",
-      "Bash(timeout /t 60 /nobreak)"
+      "Bash(timeout /t 60 /nobreak)",
+      "Bash(tee:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

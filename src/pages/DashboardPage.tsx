@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback } from "react";
+import { lazy, Suspense, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
@@ -20,9 +20,6 @@ import { COLORS } from "../config/colorThemes";
 const DesktopLayout = lazy(() =>
   import("../components/Layout/DesktopLayout").then((m) => ({ default: m.DesktopLayout }))
 );
-const MobileLayout = lazy(() =>
-  import("../components/Layout/MobileLayout").then((m) => ({ default: m.MobileLayout }))
-);
 
 // Lazy load SiteDetailPanel (less frequently accessed)
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
@@ -34,8 +31,18 @@ interface DashboardPageProps {
 
 /**
  * DashboardPage - Main heritage tracker dashboard with table, maps, and timeline
+ * On mobile devices, redirects to Data page for better usability
  */
 export function DashboardPage({ isMobile }: DashboardPageProps) {
+  const navigate = useNavigate();
+
+  // Redirect to Data page on mobile devices
+  useEffect(() => {
+    if (isMobile) {
+      navigate("/data", { replace: true });
+    }
+  }, [isMobile, navigate]);
+
   // Fetch sites from API (using mock adapter in development)
   const { sites, isLoading, error, refetch } = useSites();
 
@@ -44,7 +51,6 @@ export function DashboardPage({ isMobile }: DashboardPageProps) {
   const { filteredSites, total } = useFilteredSites(sites, appState.filters);
   const tableResize = useTableResize();
   const { isDark } = useTheme();
-  const navigate = useNavigate();
 
   const t = useThemeClasses();
 
@@ -102,43 +108,33 @@ export function DashboardPage({ isMobile }: DashboardPageProps) {
           <LoadingSpinner fullScreen message="Loading heritage sites..." />
         ) : (
           // Lazy load layout components with Suspense for parallel chunk loading
+          // Note: Mobile devices are redirected to Data page via useEffect
           <Suspense fallback={<LoadingSpinner fullScreen message="Loading dashboard..." />}>
-            {isMobile ? (
-              <MobileLayout
-                filters={appState.filters}
-                onFilterChange={handleFilterChange}
-                filteredSites={filteredSites}
-                onSiteClick={appState.setSelectedSite}
-                onSiteHighlight={appState.setHighlightedSiteId}
-                highlightedSiteId={appState.highlightedSiteId}
-              />
-            ) : (
-              <DesktopLayout
-                filterProps={{
-                  filters: appState.filters,
-                  onFilterChange: handleFilterChange,
-                  hasActiveFilters: appState.hasActiveFilters,
-                  onClearAll: appState.clearAllFilters,
-                }}
-                siteData={{
-                  sites,
-                  filteredSites,
-                  totalSites: total,
-                }}
-                tableResize={{
-                  width: tableResize.tableWidth,
-                  isResizing: tableResize.isResizing,
-                  handleResizeStart: tableResize.handleResizeStart,
-                  getVisibleColumns: tableResize.getVisibleColumns,
-                }}
-                siteInteraction={{
-                  highlightedSiteId: appState.highlightedSiteId,
-                  onSiteClick: appState.setSelectedSite,
-                  onSiteHighlight: appState.setHighlightedSiteId,
-                  onExpandTable: handleExpandTable,
-                }}
-              />
-            )}
+            <DesktopLayout
+              filterProps={{
+                filters: appState.filters,
+                onFilterChange: handleFilterChange,
+                hasActiveFilters: appState.hasActiveFilters,
+                onClearAll: appState.clearAllFilters,
+              }}
+              siteData={{
+                sites,
+                filteredSites,
+                totalSites: total,
+              }}
+              tableResize={{
+                width: tableResize.tableWidth,
+                isResizing: tableResize.isResizing,
+                handleResizeStart: tableResize.handleResizeStart,
+                getVisibleColumns: tableResize.getVisibleColumns,
+              }}
+              siteInteraction={{
+                highlightedSiteId: appState.highlightedSiteId,
+                onSiteClick: appState.setSelectedSite,
+                onSiteHighlight: appState.setHighlightedSiteId,
+                onExpandTable: handleExpandTable,
+              }}
+            />
           </Suspense>
         )}
       </main>

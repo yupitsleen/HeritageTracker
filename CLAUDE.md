@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 797 unit tests must pass ✓ (720 frontend + 77 backend)
+npm test        # 1034 unit tests must pass ✓ (957 frontend + 77 backend)
 npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -33,11 +33,11 @@ style: standardize FilterBar opacity
 ```
 
 **Commit only when:**
-✓ Feature working ✓ 797/797 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
+✓ Feature working ✓ 1034/1034 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
 
 ### Quality Gates
 
-- **797/797 tests passing** before every commit (720 frontend + 77 backend)
+- **1034/1034 tests passing** before every commit (957 frontend + 77 backend)
 - Dev server stays running (HMR for instant feedback)
 - Apply DRY/KISS/SOLID principles
 - Check for existing components/hooks before creating new ones
@@ -78,14 +78,15 @@ src/
 │   ├── StatsPage.tsx             # Statistical analysis
 │   ├── AboutPage.tsx             # Project information
 │   └── DonatePage.tsx            # Donation information
-├── hooks/                        # 23+ custom hooks
+├── hooks/                        # 24+ custom hooks
 │   ├── useAppState.ts            # Centralized app state
 │   ├── useFilteredSites.ts       # Filter logic with memoization
 │   ├── useWaybackReleases.ts     # ESRI Wayback API integration
 │   ├── useSitesPaginated.ts      # Paginated data fetching
 │   ├── useSitesQuery.ts          # React Query caching (5min)
 │   ├── useThemeClasses.ts        # Theme-aware styling
-│   └── useDebounce.ts            # 300ms filter debouncing
+│   ├── useDebounce.ts            # 300ms filter debouncing
+│   └── useMediaQuery.ts          # Native matchMedia hook
 ├── contexts/                     # 4 contexts
 │   ├── AnimationContext.tsx      # Timeline animation state
 │   ├── CalendarContext.tsx       # Gregorian/Islamic calendar

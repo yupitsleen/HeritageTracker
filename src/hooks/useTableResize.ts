@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { TABLE_CONFIG } from "../constants/layout";
+import { TABLE_CONFIG, LAYOUT } from "../constants/layout";
 
 /**
  * Hook to manage resizable table width
@@ -18,6 +18,26 @@ export function useTableResize(
   const [tableWidth, setTableWidth] = useState(initialWidth);
   const [isResizing, setIsResizing] = useState(false);
 
+  // Clamp table width to current viewport constraints
+  useEffect(() => {
+    const handleViewportResize = () => {
+      setTableWidth((currentWidth) => {
+        // Get available width (viewport - padding)
+        const availableWidth = window.innerWidth - LAYOUT.CONTAINER_PADDING;
+        const effectiveMaxWidth = Math.min(maxWidth, availableWidth * LAYOUT.TABLE_MAX_WIDTH_RATIO);
+
+        // Clamp current width to new constraints
+        return Math.max(minWidth, Math.min(effectiveMaxWidth, currentWidth));
+      });
+    };
+
+    // Run on mount to set initial size
+    handleViewportResize();
+
+    window.addEventListener("resize", handleViewportResize);
+    return () => window.removeEventListener("resize", handleViewportResize);
+  }, [minWidth, maxWidth]);
+
   // Start resizing
   const handleResizeStart = useCallback(() => {
     setIsResizing(true);
@@ -27,13 +47,24 @@ export function useTableResize(
   useEffect(() => {
     if (!isResizing) return;
 
+    let rafId: number | null = null;
+
     const handleMouseMove = (e: MouseEvent) => {
-      // Calculate new width from left edge of viewport to mouse position
-      // Subtract 24px for left padding (pl-6)
-      const newWidth = e.clientX - 24;
-      // Clamp to min/max bounds
-      const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
-      setTableWidth(clampedWidth);
+      // Cancel any pending animation frame
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+
+      // Use requestAnimationFrame for smooth, performant updates
+      rafId = requestAnimationFrame(() => {
+        // Calculate new width from left edge of viewport to mouse position
+        const newWidth = e.clientX - LAYOUT.TABLE_LEFT_PADDING;
+        // Clamp to min/max bounds
+        const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+
+        // Only update if value actually changed (avoid unnecessary re-renders)
+        setTableWidth((prev) => (clampedWidth !== prev ? clampedWidth : prev));
+      });
     };
 
     const handleMouseUp = () => {
@@ -44,20 +75,39 @@ export function useTableResize(
     document.addEventListener("mouseup", handleMouseUp);
 
     return () => {
+      // Cancel any pending animation frame on cleanup
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isResizing, minWidth, maxWidth]);
 
-  // Calculate which columns to show based on table width
+  // Calculate which columns to show based on table width (progressive display)
   const getVisibleColumns = useCallback((): string[] => {
-    const columns = ["name", "type", "status", "dateDestroyed"];
-    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyedIslamic)
+    const columns = ["name"]; // Site Name is always visible
+
+    // Progressively add columns as width increases
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.type) {
+      columns.push("type");
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.status) {
+      columns.push("status");
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyed) {
+      columns.push("dateDestroyed");
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyedIslamic) {
       columns.push("dateDestroyedIslamic");
-    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuilt)
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuilt) {
       columns.push("yearBuilt");
-    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuiltIslamic)
+    }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuiltIslamic) {
       columns.push("yearBuiltIslamic");
+    }
+
     return columns;
   }, [tableWidth]);
 

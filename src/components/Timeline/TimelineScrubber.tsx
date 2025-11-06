@@ -330,37 +330,29 @@ export function TimelineScrubber({
     >
       {/* Controls */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
-      <div className="flex items-center mb-2 gap-2 flex-wrap relative" dir="ltr">
-        {/* Info icon in top right */}
-        <div className="absolute right-0 top-0">
-          <InfoIconWithTooltip
-            tooltip={advancedMode
-              ? translate("timeline.tooltipAdvanced")
-              : translate("timeline.tooltipDefault")
-            }
+      <div className="flex items-center justify-center mb-2 gap-2 relative" dir="ltr">
+        {/* Left: Play/Pause/Reset/Sync Map/Speed controls - absolutely positioned */}
+        <div className="absolute left-0 top-0 flex items-center gap-2 flex-wrap">
+          <TimelineControls
+            isPlaying={isPlaying}
+            isAtStart={isAtStart}
+            speed={speed}
+            zoomToSiteEnabled={zoomToSiteEnabled}
+            mapMarkersVisible={mapMarkersVisible}
+            advancedMode={!!advancedMode}
+            hidePlayControls={advancedMode?.hidePlayControls ?? false}
+            syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
+            onPlay={handlePlay}
+            onPause={pause}
+            onReset={handleReset}
+            onSpeedChange={setSpeed}
+            onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
+            onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
+            onSyncMapToggle={advancedMode?.onSyncMapToggle}
           />
         </div>
 
-        {/* Left: Play/Pause/Reset/Sync Map/Speed controls */}
-        <TimelineControls
-          isPlaying={isPlaying}
-          isAtStart={isAtStart}
-          speed={speed}
-          zoomToSiteEnabled={zoomToSiteEnabled}
-          mapMarkersVisible={mapMarkersVisible}
-          advancedMode={!!advancedMode}
-          hidePlayControls={advancedMode?.hidePlayControls ?? false}
-          syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
-          onPlay={handlePlay}
-          onPause={pause}
-          onReset={handleReset}
-          onSpeedChange={setSpeed}
-          onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
-          onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
-          onSyncMapToggle={advancedMode?.onSyncMapToggle}
-        />
-
-        {/* Center: Previous/Next navigation (show when advancedMode.showNavigation is true, or by default when advancedMode is set) */}
+        {/* Center: Previous/Next navigation - centered in flex container */}
         {advancedMode && (advancedMode.showNavigation !== false) && (
           <TimelineNavigation
             canGoPrevious={canGoPrevious}
@@ -369,6 +361,16 @@ export function TimelineScrubber({
             onNext={goToNextEvent}
           />
         )}
+
+        {/* Right: Info icon - absolutely positioned */}
+        <div className="absolute right-0 top-0">
+          <InfoIconWithTooltip
+            tooltip={advancedMode
+              ? translate("timeline.tooltipAdvanced")
+              : translate("timeline.tooltipDefault")
+            }
+          />
+        </div>
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
@@ -403,8 +405,8 @@ export function TimelineScrubber({
         )}
       </div>
 
-      {/* Keyboard shortcuts hint */}
-      <div className={`mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
+      {/* Keyboard shortcuts hint - hidden below 1280px */}
+      <div className={`hidden xl:block mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
         {translate("timeline.keyboard")}: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> {translate("timeline.playPause")}
         {" • "}
         <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> {translate("timeline.step")}

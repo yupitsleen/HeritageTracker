@@ -4,6 +4,8 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { Button } from "../Button";
 import { getSpeedValues } from "../../config/animation";
+import { TimelineSettingsMenu } from "./TimelineSettingsMenu";
+import { TimelineToggleButton } from "./TimelineToggleButton";
 
 interface TimelineControlsProps {
   isPlaying: boolean;
@@ -57,6 +59,66 @@ export function TimelineControls({
   const t = useThemeClasses();
   const speedOptions: AnimationSpeed[] = getSpeedValues();
 
+  // Render speed control dropdown
+  const renderSpeedControl = () => {
+    if (hidePlayControls) return null;
+
+    return (
+      <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">
+        <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
+          {translate("timeline.speed")}:
+        </label>
+        <select
+          id="speed-control"
+          value={speed}
+          onChange={(e) => onSpeedChange(Number(e.target.value) as AnimationSpeed)}
+          className={`${t.timeline.speedSelect} ${t.input.base}`}
+          aria-label="Animation speed control"
+        >
+          {speedOptions.map((s) => (
+            <option key={s} value={s}>
+              {s}x
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  };
+
+  // Render desktop toggle buttons
+  const renderDesktopToggles = () => (
+    <>
+      {/* Sync Map toggle - only show in advanced mode */}
+      {advancedMode && onSyncMapToggle && (
+        <TimelineToggleButton
+          label="timeline.syncMap"
+          isActive={syncMapOnDotClick ?? false}
+          onClick={onSyncMapToggle}
+          variant="button"
+        />
+      )}
+
+      {/* Zoom to Site toggle */}
+      <TimelineToggleButton
+        label="timeline.zoomToSite"
+        isActive={zoomToSiteEnabled}
+        onClick={onZoomToSiteToggle}
+        variant="button"
+      />
+
+      {/* Show Map Markers toggle */}
+      <TimelineToggleButton
+        label="timeline.showMapMarkers"
+        isActive={mapMarkersVisible}
+        onClick={onMapMarkersToggle}
+        variant="button"
+      />
+
+      {/* Speed control */}
+      {renderSpeedControl()}
+    </>
+  );
+
   return (
     <div className="flex items-center gap-1.5">
       {/* Play/Pause buttons - hidden when hidePlayControls is true */}
@@ -69,8 +131,10 @@ export function TimelineControls({
               size="xs"
               icon={<PlayIcon className="w-3 h-3" />}
               aria-label={translate("timeline.play")}
+              title={translate("timeline.play")}
             >
-              {translate("timeline.play")}
+              {/* Icon only below xl, full text at xl+ */}
+              <span className="hidden xl:inline">{translate("timeline.play")}</span>
             </Button>
           ) : (
             <Button
@@ -79,8 +143,10 @@ export function TimelineControls({
               size="xs"
               icon={<PauseIcon className="w-3 h-3" />}
               aria-label={translate("timeline.pause")}
+              title={translate("timeline.pause")}
             >
-              {translate("timeline.pause")}
+              {/* Icon only below xl, full text at xl+ */}
+              <span className="hidden xl:inline">{translate("timeline.pause")}</span>
             </Button>
           )}
         </>
@@ -94,69 +160,36 @@ export function TimelineControls({
         size="xs"
         icon={<ArrowPathIcon className="w-3 h-3" />}
         aria-label={translate("common.reset")}
+        title={translate("common.reset")}
       >
-        {translate("common.reset")}
+        {/* Icon only below xl, full text at xl+ */}
+        <span className="hidden xl:inline">{translate("common.reset")}</span>
       </Button>
 
-      {/* Sync Map toggle - only show in advanced mode */}
-      {advancedMode && onSyncMapToggle && (
-        <Button
-          onClick={onSyncMapToggle}
-          variant="secondary"
-          active={syncMapOnDotClick}
-          size="xs"
-          aria-label={translate("timeline.syncMap")}
-          title={translate("timeline.syncMap")}
-        >
-          {syncMapOnDotClick ? "✓" : ""} {translate("timeline.syncMap")}
-        </Button>
-      )}
+      {/* Below 2xl: Settings menu for toggles and speed */}
+      <div className="2xl:hidden">
+        <TimelineSettingsMenu
+          toggles={{
+            zoomToSite: zoomToSiteEnabled,
+            mapMarkers: mapMarkersVisible,
+            syncMap: syncMapOnDotClick,
+          }}
+          onToggle={{
+            zoomToSite: onZoomToSiteToggle,
+            mapMarkers: onMapMarkersToggle,
+            syncMap: onSyncMapToggle,
+          }}
+          speedControl={!hidePlayControls ? {
+            speed,
+            onChange: onSpeedChange,
+          } : undefined}
+        />
+      </div>
 
-      {/* Zoom to Site toggle */}
-      <Button
-        onClick={onZoomToSiteToggle}
-        variant="secondary"
-        active={zoomToSiteEnabled}
-        size="xs"
-        aria-label={translate("timeline.zoomToSite")}
-        title={translate("timeline.zoomToSite")}
-      >
-        {zoomToSiteEnabled ? "✓" : ""} {translate("timeline.zoomToSite")}
-      </Button>
-
-      {/* Show Map Markers toggle */}
-      <Button
-        onClick={onMapMarkersToggle}
-        variant="secondary"
-        active={mapMarkersVisible}
-        size="xs"
-        aria-label={translate("timeline.showMapMarkers")}
-        title={translate("timeline.showMapMarkers")}
-      >
-        {mapMarkersVisible ? "✓" : ""} {translate("timeline.showMapMarkers")}
-      </Button>
-
-      {/* Speed control - hidden when hidePlayControls is true */}
-      {!hidePlayControls && (
-        <div className="flex items-center gap-1.5">
-          <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
-            {translate("timeline.speed")}:
-          </label>
-          <select
-            id="speed-control"
-            value={speed}
-            onChange={(e) => onSpeedChange(Number(e.target.value) as AnimationSpeed)}
-            className={`${t.timeline.speedSelect} ${t.input.base}`}
-            aria-label="Animation speed control"
-          >
-            {speedOptions.map((s) => (
-              <option key={s} value={s}>
-                {s}x
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+      {/* 2xl and up: Full controls visible */}
+      <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">
+        {renderDesktopToggles()}
+      </div>
     </div>
   );
 }

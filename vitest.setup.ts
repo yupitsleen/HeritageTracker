@@ -2,6 +2,22 @@ import { afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
+// Mock matchMedia for useMediaQuery hook
+// matchMedia is not available in JSDOM test environment
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: (query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {}, // deprecated
+    removeListener: () => {}, // deprecated
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => true,
+  }),
+});
+
 // Mock ResizeObserver for D3/TimelineScrubber
 // ResizeObserver is not available in JSDOM test environment
 global.ResizeObserver = class ResizeObserver {
