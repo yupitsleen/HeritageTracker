@@ -36,22 +36,12 @@
 
 ---
 
-## File Guide
-
-### For Implementation (Start Here)
-
-| File | Purpose | When to Use |
-|------|---------|-------------|
-| **IMPLEMENTATION_GUIDE.md** | Step-by-step instructions to add sites | **READ FIRST** when implementing |
-| **NEW_SITES_FORMATTED.md** | 25 sites in copy-paste TypeScript format | Copy sites from here to mockSites.ts |
-| **SESSION_SUMMARY.md** | Executive overview of research session | Understand what was done & why |
-
-### For Reference
+## Documentation Files
 
 | File | Purpose |
 |------|---------|
-| **RESEARCH_PROGRESS.md** | Session log and methodology |
-| **NEW_SITES_STAGING.md** | Working document (research notes) |
+| **SESSION_SUMMARY.md** | Complete record of research and implementation |
+| **RESEARCH_PROGRESS.md** | Session log and methodology (useful for future expansions) |
 | **SOURCES.md** | Bibliography of all sources used |
 | **IMAGE_SOURCES.md** | Image attribution for existing 45 sites |
 | **research_document.md** | Original MVP research document |
@@ -237,12 +227,11 @@ All sources documented in `SOURCES.md` with proper attribution.
 
 ## Quick Links
 
-- [Implementation Guide](IMPLEMENTATION_GUIDE.md) - **Start here**
-- [New Sites (Formatted)](NEW_SITES_FORMATTED.md) - Copy sites from here
-- [Session Summary](SESSION_SUMMARY.md) - What was accomplished
-- [Research Progress](RESEARCH_PROGRESS.md) - Detailed session log
-- [Sources Bibliography](SOURCES.md) - All sources used
+- [Session Summary](SESSION_SUMMARY.md) - Complete research and implementation record
+- [Research Progress](RESEARCH_PROGRESS.md) - Detailed methodology and session log
+- [Sources Bibliography](SOURCES.md) - All sources used for verification
+- [Image Sources](IMAGE_SOURCES.md) - Image attribution
 
 ---
 
-**Last Session:** 2025-11-09 | **Next Action:** Follow IMPLEMENTATION_GUIDE.md
+**Session Completed:** 2025-11-09 | **Status:** All sites implemented and documented ✅
