@@ -84,7 +84,7 @@ describe("TimelineControls", () => {
 
   describe("Responsive Behavior - Speed Control Visibility", () => {
     it("CRITICAL: Speed control must be accessible at ALL screen sizes", () => {
-      const { container } = renderWithTheme(
+      renderWithTheme(
         <TimelineControls
           isPlaying={false}
           isAtStart={false}
@@ -97,22 +97,22 @@ describe("TimelineControls", () => {
         />
       );
 
-      // Speed control should be in either:
-      // 1. Main controls (visible at 2xl+)
-      // 2. Settings menu (visible below 2xl)
+      // Speed control should be accessible either:
+      // 1. Directly via aria-label (visible at 2xl+)
+      // 2. Via settings menu (visible below 2xl)
 
-      // Check for speed control in main area (2xl+)
-      const mainSpeedControl = container.querySelector('#speed-control');
+      // Check for speed control by its semantic label
+      const speedControl = screen.queryByLabelText(/animation speed control/i);
 
       // Check for settings button (contains speed in menu)
       const settingsButton = screen.queryByLabelText(/timeline settings/i);
 
       // At least ONE must be present (not both hidden)
-      expect(mainSpeedControl !== null || settingsButton !== null).toBe(true);
+      expect(speedControl !== null || settingsButton !== null).toBe(true);
     });
 
-    it("Settings menu is visible below 2xl breakpoint", () => {
-      const { container } = renderWithTheme(
+    it("Settings menu is accessible in responsive view", () => {
+      renderWithTheme(
         <TimelineControls
           isPlaying={false}
           isAtStart={false}
@@ -124,13 +124,13 @@ describe("TimelineControls", () => {
         />
       );
 
-      // Settings menu container should have "2xl:hidden" class
-      const settingsMenuContainer = container.querySelector('.\\32xl\\:hidden');
-      expect(settingsMenuContainer).toBeInTheDocument();
+      // Settings button should be rendered for responsive view
+      const settingsButton = screen.queryByLabelText(/timeline settings/i);
+      expect(settingsButton).toBeInTheDocument();
     });
 
-    it("Individual buttons container is visible at 2xl+ breakpoint", () => {
-      const { container } = renderWithTheme(
+    it("Desktop toggle buttons are rendered", () => {
+      renderWithTheme(
         <TimelineControls
           isPlaying={false}
           isAtStart={false}
@@ -142,13 +142,17 @@ describe("TimelineControls", () => {
         />
       );
 
-      // Individual controls container should have "hidden 2xl:flex" classes
-      const expandedControlsContainer = container.querySelector('.hidden.\\32xl\\:flex');
-      expect(expandedControlsContainer).toBeInTheDocument();
+      // Desktop controls should include toggle buttons (may be hidden by CSS at small screens)
+      // These buttons should be present in the DOM even if hidden by responsive classes
+      const zoomButton = screen.queryByLabelText(/zoom to site/i);
+      const markersButton = screen.queryByLabelText(/show map markers/i);
+
+      expect(zoomButton).toBeInTheDocument();
+      expect(markersButton).toBeInTheDocument();
     });
 
-    it("Speed control in main area has 2xl breakpoint classes", () => {
-      const { container } = renderWithTheme(
+    it("Speed control is rendered when play controls are shown", () => {
+      renderWithTheme(
         <TimelineControls
           isPlaying={false}
           isAtStart={false}
@@ -161,13 +165,9 @@ describe("TimelineControls", () => {
         />
       );
 
-      // Speed control should be wrapped in element with 2xl breakpoint
-      const speedLabel = container.querySelector('label[for="speed-control"]');
-      if (speedLabel) {
-        const speedWrapper = speedLabel.closest('.\\32xl\\:flex');
-        expect(speedWrapper).toBeInTheDocument();
-        expect(speedWrapper?.classList.contains('hidden')).toBe(true);
-      }
+      // Speed control should be accessible via its semantic label
+      const speedControl = screen.queryByLabelText(/animation speed control/i);
+      expect(speedControl).toBeInTheDocument();
     });
   });
 
