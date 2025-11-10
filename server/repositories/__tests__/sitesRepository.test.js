@@ -193,11 +193,11 @@ describe('Sites Repository', () => {
 
   describe('count', () => {
     it('counts all sites without filters', async () => {
-      sql.mockResolvedValueOnce([{ total: '45' }]);
+      sql.mockResolvedValueOnce([{ total: '70' }]);
 
       const result = await sitesRepo.count();
 
-      expect(result).toBe(45);
+      expect(result).toBe(70);
       expect(sql).toHaveBeenCalled();
     });
 

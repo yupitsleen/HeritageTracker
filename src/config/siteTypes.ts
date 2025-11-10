@@ -58,6 +58,27 @@ export const SITE_TYPE_REGISTRY: Record<string, SiteTypeConfig> = {
     icon: "heroicon:HomeModernIcon",
     description: "Architecturally or historically significant structure"
   },
+  "monument": {
+    id: "monument",
+    label: "Monument",
+    labelArabic: "نصب تذكاري",
+    icon: "heroicon:TrophyIcon",
+    description: "Memorial or commemorative structure"
+  },
+  "cemetery": {
+    id: "cemetery",
+    label: "Cemetery",
+    labelArabic: "مقبرة",
+    icon: "heroicon:MapIcon",
+    description: "Burial ground or memorial site"
+  },
+  "archive": {
+    id: "archive",
+    label: "Archive",
+    labelArabic: "أرشيف",
+    icon: "heroicon:ArchiveBoxIcon",
+    description: "Repository for historical documents and artifacts"
+  },
 };
 
 /**

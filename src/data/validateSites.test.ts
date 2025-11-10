@@ -46,6 +46,9 @@ describe("Site Data Validation", () => {
         "archaeological",
         "museum",
         "historic-building",
+        "monument",
+        "cemetery",
+        "archive",
       ];
 
       mockSites.forEach((site) => {

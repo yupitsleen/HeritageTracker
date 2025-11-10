@@ -71,4 +71,11 @@ export interface GazaSite {
   religiousSignificance?: boolean;
   communityGatheringPlace?: boolean;
   historicalEvents?: string[];
+
+  // Metadata for grouped collections
+  metadata?: {
+    isCollection?: boolean;
+    estimatedBuildingCount?: string;
+    collectionRationale?: string;
+  };
 }
