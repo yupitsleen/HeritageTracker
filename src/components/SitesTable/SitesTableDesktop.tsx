@@ -17,7 +17,7 @@ const VIRTUAL_SCROLL_THRESHOLD = 100;
 
 interface SitesTableDesktopProps {
   sites: GazaSite[];
-  onSiteClick: (site: GazaSite) => void;
+  onSiteClick?: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;

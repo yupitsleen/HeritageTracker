@@ -4,7 +4,7 @@ import { SitesTableDesktop } from "./SitesTableDesktop";
 
 interface SitesTableProps {
   sites: GazaSite[];
-  onSiteClick: (site: GazaSite) => void;
+  onSiteClick?: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;

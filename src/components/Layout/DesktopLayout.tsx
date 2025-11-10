@@ -117,7 +117,6 @@ export function DesktopLayout({
         >
           <SitesTable
             sites={filteredSites}
-            onSiteClick={onSiteClick}
             onSiteHighlight={onSiteHighlight}
             highlightedSiteId={highlightedSiteId}
             onExpandTable={onExpandTable}
