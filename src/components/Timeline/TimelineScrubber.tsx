@@ -266,6 +266,17 @@ export function TimelineScrubber({
 
     const currentTime = currentTimestamp.getTime();
 
+    // If we have a highlighted site, try to find its exact index first
+    // This handles multiple sites with the same destruction date
+    if (highlightedSiteId) {
+      const exactIndex = destructionDates.findIndex(
+        (event) => event.siteId === highlightedSiteId
+      );
+      if (exactIndex !== -1) {
+        return exactIndex;
+      }
+    }
+
     // Check if we're before all events
     if (currentTime < destructionDates[0].date.getTime()) {
       return -1; // Special value meaning "before first event"
@@ -276,9 +287,16 @@ export function TimelineScrubber({
       return destructionDates.length - 1; // At or after last event
     }
 
-    // We're somewhere in the middle - find the event we've passed or are closest to
+    // We're somewhere in the middle - find the event we've passed or are at
     for (let i = 0; i < destructionDates.length; i++) {
-      if (currentTime < destructionDates[i].date.getTime()) {
+      const eventTime = destructionDates[i].date.getTime();
+
+      if (currentTime === eventTime) {
+        // Exact match - we're at this event
+        return i;
+      }
+
+      if (currentTime < eventTime) {
         // We're before this event, so we're at the previous event
         return i - 1;
       }
@@ -297,7 +315,7 @@ export function TimelineScrubber({
     }
 
     return nearestIndex;
-  }, [advancedMode, destructionDates, currentTimestamp]);
+  }, [advancedMode, destructionDates, currentTimestamp, highlightedSiteId]);
 
   const canGoPrevious = !!advancedMode && currentEventIndex >= 0;
   const canGoNext = !!advancedMode && destructionDates.length > 0 && currentEventIndex < destructionDates.length - 1;

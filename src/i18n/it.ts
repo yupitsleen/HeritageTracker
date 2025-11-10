@@ -81,6 +81,13 @@ export const it: Translations = {
     jump: "Salta",
     tooltipDefault: "Fai clic su Riproduci per animare gli eventi di distruzione. Usa il filtro data per concentrarti su periodi di tempo specifici. Fai clic sui punti per vedere i dettagli del sito.",
     tooltipAdvanced: "Fai clic sui punti rossi per evidenziare i siti. Usa Precedente/Successivo per navigare tra gli eventi. Abilita 'Sincronizza Mappa' per mostrare automaticamente le immagini satellitari prima della distruzione di ogni sito.",
+    interval: "Intervallo",
+    intervalAsLargeAsPossible: "~Il più grande possibile",
+    intervalAsSmallAsPossible: "~Il più piccolo possibile",
+    interval1Month: "~2 mesi",
+    interval1Year: "~1 anno",
+    interval5Years: "~5 anni",
+    syncMapVersion: "Sincronizza Versione Mappa",
   },
 
   table: {

@@ -107,6 +107,17 @@ export interface WaybackLayoutConfig {
 }
 
 /**
+ * Comparison mode interval option
+ * Determines the time gap between before/after wayback images
+ */
+export type ComparisonInterval =
+  | "as_large_as_possible"
+  | "as_small_as_possible"
+  | "1_month"
+  | "1_year"
+  | "5_years";
+
+/**
  * Complete wayback timeline configuration
  */
 export interface WaybackTimelineConfig {
