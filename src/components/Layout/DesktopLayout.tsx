@@ -143,6 +143,7 @@ export function DesktopLayout({
               onSiteClick={onSiteClick}
               highlightedSiteId={highlightedSiteId}
               onSiteHighlight={onSiteHighlight}
+              disableAutoCentering={true}
             />
           </Suspense>
         </div>
