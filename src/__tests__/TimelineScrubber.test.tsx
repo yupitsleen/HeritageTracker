@@ -575,5 +575,44 @@ describe("TimelineScrubber", () => {
       // Should have called onSiteHighlight with first site's ID
       expect(mockOnSiteHighlight).toHaveBeenCalledWith("test-site-1");
     });
+
+    it("calls custom onReset handler when Reset button is clicked in advanced mode", async () => {
+      const user = userEvent.setup();
+      const mockOnReset = vi.fn();
+      const mockOnSyncMapToggle = vi.fn();
+
+      // Create stable advancedMode object
+      const advancedMode = {
+        syncMapOnDotClick: true,
+        onSyncMapToggle: mockOnSyncMapToggle,
+        hidePlayControls: false,
+        onReset: mockOnReset,
+      };
+
+      renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={advancedMode}
+          />
+        </AnimationProvider>
+      );
+
+      // Move timeline forward first so Reset button becomes enabled
+      // Click Next button to navigate away from start
+      const nextButton = screen.getByLabelText(/next destruction event/i);
+      await user.click(nextButton);
+
+      // Now find and click Reset button
+      const resetButton = screen.getByRole("button", { name: "Reset" });
+
+      // Button should now be enabled
+      expect(resetButton).not.toBeDisabled();
+
+      await user.click(resetButton);
+
+      // Should have called the custom reset handler
+      expect(mockOnReset).toHaveBeenCalledTimes(1);
+    });
   });
 });

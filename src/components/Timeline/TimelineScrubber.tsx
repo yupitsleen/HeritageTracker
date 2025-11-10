@@ -40,6 +40,7 @@ export interface AdvancedTimelineMode {
   showNavigation?: boolean; // Optional: show Previous/Next navigation (default: true when advancedMode is set)
   hidePlayControls?: boolean; // Optional: hide Play/Pause/Speed controls (default: false)
   hideMapSettings?: boolean; // Optional: hide Zoom to Site and Show Map Markers (moved to map on Dashboard)
+  onReset?: () => void; // Optional: custom reset handler for parent components (e.g., Timeline page to reset wayback sliders)
 }
 
 interface TimelineScrubberProps {
@@ -186,7 +187,11 @@ export function TimelineScrubber({
     if (onSiteHighlight) {
       onSiteHighlight(null); // Clear highlighted site to reset map to Gaza overview
     }
-  }, [reset, onSiteHighlight]);
+    // Call custom reset handler if provided (e.g., Timeline page resets wayback sliders)
+    if (advancedMode?.onReset) {
+      advancedMode.onReset();
+    }
+  }, [reset, onSiteHighlight, advancedMode]);
 
   // Keyboard controls
   useEffect(() => {

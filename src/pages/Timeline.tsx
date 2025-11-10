@@ -330,6 +330,18 @@ export function Timeline() {
   /**
 
   /**
+   * Reset wayback sliders to initial positions
+   * Green slider (after) goes to last release (most recent)
+   * Yellow slider (before) goes to first release (earliest)
+   */
+  const handleWaybackReset = useCallback(() => {
+    if (releases.length > 0) {
+      setCurrentReleaseIndex(releases.length - 1); // Most recent
+      setBeforeReleaseIndex(0); // Earliest
+    }
+  }, [releases]);
+
+  /**
    * Reload page to retry loading Wayback releases
    */
   const handleRetryClick = useCallback(() => {
@@ -468,6 +480,7 @@ export function Timeline() {
                     onSyncMapToggle: () => setSyncMapOnDotClick(!syncMapOnDotClick),
                     showNavigation: true, // Show Previous/Next buttons
                     hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
+                    onReset: handleWaybackReset, // Reset wayback sliders to initial positions
                   }}
                 />
               </Suspense>
