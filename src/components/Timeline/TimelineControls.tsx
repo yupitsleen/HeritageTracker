@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import { getSpeedValues } from "../../config/animation";
 import { TimelineSettingsMenu } from "./TimelineSettingsMenu";
 import { TimelineToggleButton } from "./TimelineToggleButton";
+import { Tooltip } from "../Tooltip";
 
 interface TimelineControlsProps {
   isPlaying: boolean;
@@ -125,17 +126,19 @@ export function TimelineControls({
       {!hidePlayControls && (
         <>
           {!isPlaying ? (
-            <Button
-              onClick={onPlay}
-              variant="primary"
-              size="xs"
-              icon={<PlayIcon className="w-3 h-3" />}
-              aria-label={translate("timeline.play")}
-              title={translate("timeline.play")}
-            >
-              {/* Icon only below xl, full text at xl+ */}
-              <span className="hidden xl:inline">{translate("timeline.play")}</span>
-            </Button>
+            <Tooltip content={translate("timeline.playTooltip")}>
+              <Button
+                onClick={onPlay}
+                variant="primary"
+                size="xs"
+                icon={<PlayIcon className="w-3 h-3" />}
+                aria-label={translate("timeline.play")}
+                title={translate("timeline.play")}
+              >
+                {/* Icon only below xl, full text at xl+ */}
+                <span className="hidden xl:inline">{translate("timeline.play")}</span>
+              </Button>
+            </Tooltip>
           ) : (
             <Button
               onClick={onPause}

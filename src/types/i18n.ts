@@ -98,6 +98,7 @@ export interface Translations {
   timeline: {
     play: string;
     pause: string;
+    playTooltip: string;
     speed: string;
     syncMap: string;
     zoomToSite: string;

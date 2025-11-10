@@ -56,6 +56,7 @@ export const en: Translations = {
   timeline: {
     play: "Play",
     pause: "Pause",
+    playTooltip: "Animate the map to show site destruction events over time",
     speed: "Speed",
     syncMap: "Sync Map",
     zoomToSite: "Zoom to Site",

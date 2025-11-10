@@ -56,6 +56,7 @@ export const ar: Translations = {
   timeline: {
     play: "تشغيل",
     pause: "إيقاف مؤقت",
+    playTooltip: "تحريك الخريطة لإظهار أحداث تدمير المواقع بمرور الوقت",
     speed: "السرعة",
     syncMap: "مزامنة الخريطة",
     zoomToSite: "التكبير إلى الموقع",
