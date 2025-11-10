@@ -8,6 +8,7 @@ import {
   translateStatus,
   translateSiteType,
   getSiteDisplayNames,
+  getEffectiveDestructionDate,
 } from "../../utils/format";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -83,6 +84,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
       <div className="space-y-2">
         {sortedSites.map((site, index) => {
           const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
+          const effectiveDestructionDate = getEffectiveDestructionDate(site);
 
           return (
             <div
@@ -128,7 +130,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
 
               {/* Date */}
               <div className={`text-xs ${t.text.body} whitespace-nowrap`}>
-                {formatDateCompact(site.dateDestroyed)}
+                {formatDateCompact(effectiveDestructionDate)}
               </div>
 
               {/* Chevron indicator */}
@@ -215,7 +217,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                     {translate("table.dateDestroyed")}:
                   </span>
                   <p className={`text-sm ${t.text.heading}`}>
-                    {formatDateLong(site.dateDestroyed, localeConfig.bcp47)}
+                    {formatDateLong(effectiveDestructionDate, localeConfig.bcp47)}
                   </p>
                   {site.dateDestroyedIslamic && (
                     <p className={`text-xs ${t.text.muted}`}>

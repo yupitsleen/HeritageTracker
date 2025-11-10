@@ -12,6 +12,7 @@ import 'leaflet.markercluster';
 import type { GazaSite } from '../../types';
 import { createMarkerIcon } from '../../utils/mapHelpers';
 import { getStatusHexColor } from '../../utils/colorHelpers';
+import { getEffectiveDestructionDate } from '../../utils/format';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { SitePopup } from './SitePopup';
 
@@ -125,7 +126,10 @@ export const MapMarkersWithClustering = memo(function MapMarkersWithClustering({
 
     return new Set(
       sites
-        .filter((site) => site.dateDestroyed && currentTimestamp >= new Date(site.dateDestroyed))
+        .filter((site) => {
+          const effectiveDestructionDate = getEffectiveDestructionDate(site);
+          return effectiveDestructionDate && currentTimestamp >= new Date(effectiveDestructionDate);
+        })
         .map((site) => site.id)
     );
   }, [sites, currentTimestamp]);

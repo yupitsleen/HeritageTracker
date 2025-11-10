@@ -2,7 +2,7 @@ import type { GazaSite } from "../../types";
 import { StatusBadge } from "../StatusBadge";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useLocale, useTranslation } from "../../contexts/LocaleContext";
-import { translateSiteType } from "../../utils/format";
+import { translateSiteType, getEffectiveDestructionDate } from "../../utils/format";
 
 interface SitePopupProps {
   site: GazaSite;
@@ -20,6 +20,9 @@ export function SitePopup({ site, onViewMore }: SitePopupProps) {
   const { localeConfig } = useLocale();
   const translate = useTranslation();
   const isRTL = localeConfig.direction === "rtl";
+
+  // Get effective destruction date (with fallback to sourceAssessmentDate)
+  const effectiveDestructionDate = getEffectiveDestructionDate(site);
 
   // Translate site type
   const siteTypeLabel = translateSiteType(translate, site.type);
@@ -49,10 +52,10 @@ export function SitePopup({ site, onViewMore }: SitePopupProps) {
           <span className="font-semibold">{translate("filters.yearBuilt")}: </span>
           {site.yearBuilt}
         </p>
-        {site.dateDestroyed && (
+        {effectiveDestructionDate && (
           <p className="leading-tight">
             <span className="font-semibold">{translate("table.dateDestroyed")}: </span>
-            {site.dateDestroyed}
+            {effectiveDestructionDate}
           </p>
         )}
       </div>

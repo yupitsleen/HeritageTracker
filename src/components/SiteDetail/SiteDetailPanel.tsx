@@ -1,6 +1,6 @@
 import type { GazaSite } from "../../types";
 import { StatusBadge } from "../StatusBadge";
-import { formatLabel, translateSiteType, translateStatus } from "../../utils/format";
+import { formatLabel, translateSiteType, translateStatus, getEffectiveDestructionDate } from "../../utils/format";
 import { cn } from "../../styles/theme";
 import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -21,6 +21,9 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
   // Translate site type and status
   const siteTypeLabel = translateSiteType(translate, site.type);
   const siteStatusLabel = translateStatus(translate, site.status);
+
+  // Get effective destruction date (with fallback to source assessment date)
+  const effectiveDestructionDate = getEffectiveDestructionDate(site);
 
   return (
     <div className="space-y-6">
@@ -50,10 +53,10 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
           )}
         </div>
         <InfoItem label={translate("siteDetail.status")} value={siteStatusLabel} t={t} />
-        {site.dateDestroyed && (
+        {effectiveDestructionDate && (
           <div>
             <span className={`text-sm font-semibold ${t.text.body}`}>{translate("siteDetail.dateDestroyed")}:</span>
-            <p className={`mt-1 ${t.text.heading}`}>{site.dateDestroyed}</p>
+            <p className={`mt-1 ${t.text.heading}`}>{effectiveDestructionDate}</p>
             {site.dateDestroyedIslamic && (
               <p className={`text-sm mt-1 ${t.text.muted}`}>{site.dateDestroyedIslamic}</p>
             )}
