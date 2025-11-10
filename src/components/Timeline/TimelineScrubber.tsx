@@ -294,18 +294,16 @@ export function TimelineScrubber({
     return nearestIndex;
   }, [advancedMode, destructionDates, currentTimestamp]);
 
-  const canGoPrevious = !!advancedMode && currentEventIndex >= 0;
+  const canGoPrevious = !!advancedMode && currentEventIndex > 0;
   const canGoNext = !!advancedMode && destructionDates.length > 0 && currentEventIndex < destructionDates.length - 1;
 
   const goToPreviousEvent = () => {
     if (canGoPrevious) {
       const targetIndex = currentEventIndex === -1 ? 0 : currentEventIndex - 1;
-      if (targetIndex >= 0) {
-        const prevEvent = destructionDates[targetIndex];
-        setTimestamp(prevEvent.date);
-        if (onSiteHighlight) {
-          onSiteHighlight(prevEvent.siteId);
-        }
+      const prevEvent = destructionDates[targetIndex];
+      setTimestamp(prevEvent.date);
+      if (onSiteHighlight) {
+        onSiteHighlight(prevEvent.siteId);
       }
     }
   };

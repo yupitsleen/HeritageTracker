@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderWithTheme } from "../test-utils/renderWithTheme";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { TimelineScrubber } from "../components/Timeline/TimelineScrubber";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
@@ -502,6 +504,76 @@ describe("TimelineScrubber", () => {
 
       expect(prevButton).toBeInTheDocument();
       expect(nextButton).toBeInTheDocument();
+    });
+
+    it("Previous button calls onSiteHighlight with correct site ID", async () => {
+      const user = userEvent.setup();
+      const mockOnSiteHighlight = vi.fn();
+      renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            onSiteHighlight={mockOnSiteHighlight}
+            advancedMode={{
+              syncMapOnDotClick: true,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Timeline starts before all events (index -1)
+      // Click Next button to move forward to first site (index 0)
+      const nextButton = screen.getByLabelText(/next destruction event/i);
+      await user.click(nextButton);
+
+      // Should have called onSiteHighlight with first site's ID
+      expect(mockOnSiteHighlight).toHaveBeenCalledWith("test-site-1");
+
+      // Reset mock
+      mockOnSiteHighlight.mockClear();
+
+      // Click Next again to move to second site (index 1)
+      await user.click(nextButton);
+
+      // Should have called onSiteHighlight with second site's ID
+      expect(mockOnSiteHighlight).toHaveBeenCalledWith("test-site-2");
+
+      // Reset mock
+      mockOnSiteHighlight.mockClear();
+
+      // Now click Previous button to go back to first site (index 0)
+      const prevButton = screen.getByLabelText(/previous destruction event/i);
+      await user.click(prevButton);
+
+      // Should have called onSiteHighlight with first site's ID
+      // This verifies the bug fix - Previous now correctly highlights the previous site
+      expect(mockOnSiteHighlight).toHaveBeenCalledWith("test-site-1");
+    });
+
+    it("Next button calls onSiteHighlight with correct site ID", async () => {
+      const user = userEvent.setup();
+      const mockOnSiteHighlight = vi.fn();
+      renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            onSiteHighlight={mockOnSiteHighlight}
+            advancedMode={{
+              syncMapOnDotClick: true,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Timeline starts before all events (index -1)
+      // Click Next button to move forward to first site (index 0)
+      const nextButton = screen.getByLabelText(/next destruction event/i);
+      await user.click(nextButton);
+
+      // Should have called onSiteHighlight with first site's ID
+      expect(mockOnSiteHighlight).toHaveBeenCalledWith("test-site-1");
     });
   });
 });

@@ -52,7 +52,7 @@ export function SiteDetailView({
   const t = useThemeClasses();
 
   // Time period state for historical imagery
-  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("EARLY_2024");
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("CURRENT");
 
   // Sync satellite imagery with timeline (only if syncActive is true)
   useEffect(() => {
