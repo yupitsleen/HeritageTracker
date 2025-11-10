@@ -133,13 +133,27 @@ export function WaybackSlider({
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      onIndexChange(currentIndex - 1);
+      const newIndex = currentIndex - 1;
+      onIndexChange(newIndex);
+
+      // In comparison mode, keep yellow slider one step before green slider
+      if (comparisonMode && onBeforeIndexChange) {
+        const newBeforeIndex = Math.max(0, newIndex - 1);
+        onBeforeIndexChange(newBeforeIndex);
+      }
     }
   };
 
   const handleNext = () => {
     if (currentIndex < releases.length - 1) {
-      onIndexChange(currentIndex + 1);
+      const newIndex = currentIndex + 1;
+      onIndexChange(newIndex);
+
+      // In comparison mode, keep yellow slider one step before green slider
+      if (comparisonMode && onBeforeIndexChange) {
+        const newBeforeIndex = Math.max(0, newIndex - 1);
+        onBeforeIndexChange(newBeforeIndex);
+      }
     }
   };
 

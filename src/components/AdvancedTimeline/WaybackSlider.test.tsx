@@ -745,6 +745,100 @@ describe("WaybackSlider", () => {
       });
     });
 
+    describe("Navigation Buttons in Comparison Mode", () => {
+      it("updates both scrubbers when Next button clicked", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        const nextButton = screen.getByRole("button", { name: /Next/i });
+        fireEvent.click(nextButton);
+
+        // Green slider should move to index 3
+        expect(onIndexChange).toHaveBeenCalledWith(3);
+        // Yellow slider should move to index 2 (one step before green)
+        expect(onBeforeIndexChange).toHaveBeenCalledWith(2);
+      });
+
+      it("updates both scrubbers when Previous button clicked", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={3}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={2}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        const prevButton = screen.getByRole("button", { name: /Previous/i });
+        fireEvent.click(prevButton);
+
+        // Green slider should move to index 2
+        expect(onIndexChange).toHaveBeenCalledWith(2);
+        // Yellow slider should move to index 1 (one step before green)
+        expect(onBeforeIndexChange).toHaveBeenCalledWith(1);
+      });
+
+      it("keeps yellow slider at 0 when Previous is clicked at green index 1", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={1}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={0}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        const prevButton = screen.getByRole("button", { name: /Previous/i });
+        fireEvent.click(prevButton);
+
+        // Green slider should move to index 0
+        expect(onIndexChange).toHaveBeenCalledWith(0);
+        // Yellow slider should stay at 0 (can't go below 0)
+        expect(onBeforeIndexChange).toHaveBeenCalledWith(0);
+      });
+
+      it("does not update yellow slider when comparison mode is off", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={2}
+            onIndexChange={onIndexChange}
+            comparisonMode={false}
+            beforeIndex={1}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        const nextButton = screen.getByRole("button", { name: /Next/i });
+        fireEvent.click(nextButton);
+
+        // Green slider should move
+        expect(onIndexChange).toHaveBeenCalledWith(3);
+        // Yellow slider should NOT move (comparison mode off)
+        expect(onBeforeIndexChange).not.toHaveBeenCalled();
+      });
+    });
+
     describe("Edge Cases", () => {
       it("handles missing onBeforeIndexChange gracefully", () => {
         const onIndexChange = vi.fn();
