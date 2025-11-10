@@ -105,11 +105,6 @@ export const FilterBar = memo(function FilterBar({
           </div>
         )}
 
-        {/* "Filters:" Label - Green */}
-        <span className="hidden md:inline-block text-[#009639] font-semibold text-sm">
-          Filters:
-        </span>
-
         {/* Search Bar - Always visible */}
         <div className="relative flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
           <Input
