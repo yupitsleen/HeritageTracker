@@ -9,7 +9,7 @@ import type { CSSProperties } from "react";
 
 interface SiteTableRowProps {
   site: GazaSite;
-  onSiteClick: (site: GazaSite) => void;
+  onSiteClick?: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   variant: "compact" | "expanded";
@@ -54,7 +54,7 @@ export function SiteTableRow({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onSiteClick(site);
+              onSiteClick?.(site);
             }}
             className="text-left w-full hover:underline"
           >

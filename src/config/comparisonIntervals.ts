@@ -6,6 +6,7 @@
  */
 
 import type { ComparisonInterval } from "../types/waybackTimelineTypes";
+import type { TranslationKey } from "../types/i18n";
 
 /**
  * Interval option configuration
@@ -14,7 +15,7 @@ export interface IntervalOption {
   /** Unique identifier */
   value: ComparisonInterval;
   /** Display label (English) - i18n key */
-  labelKey: string;
+  labelKey: TranslationKey;
   /** Sort order */
   order: number;
 }

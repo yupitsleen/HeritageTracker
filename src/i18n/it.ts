@@ -56,6 +56,7 @@ export const it: Translations = {
   timeline: {
     play: "Riproduci",
     pause: "Pausa",
+    playTooltip: "Riproduci animazione timeline",
     speed: "Velocità",
     syncMap: "Sincronizza Mappa",
     zoomToSite: "Zoom sul Sito",

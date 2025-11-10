@@ -124,6 +124,13 @@ export interface Translations {
     jump: string;
     tooltipDefault: string;
     tooltipAdvanced: string;
+    interval: string;
+    intervalAsLargeAsPossible: string;
+    intervalAsSmallAsPossible: string;
+    interval1Month: string;
+    interval1Year: string;
+    interval5Years: string;
+    syncMapVersion: string;
   };
 
   /** Table component */
