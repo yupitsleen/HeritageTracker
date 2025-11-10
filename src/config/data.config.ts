@@ -138,14 +138,14 @@ export const SITE_TYPE_REGISTRY: Record<string, SiteTypeConfig> = {
     id: "mosque",
     label: "Mosque",
     labelArabic: "مسجد",
-    icon: "☪",
+    icon: "heroicon:MoonIcon",
     description: "Islamic place of worship"
   },
   "church": {
     id: "church",
     label: "Church",
     labelArabic: "كنيسة",
-    icon: "✝",
+    icon: "heroicon:PlusIcon",
     description: "Christian place of worship"
   },
   "archaeological": {
@@ -168,6 +168,27 @@ export const SITE_TYPE_REGISTRY: Record<string, SiteTypeConfig> = {
     labelArabic: "مبنى تاريخي",
     icon: "heroicon:HomeModernIcon",
     description: "Architecturally or historically significant structure"
+  },
+  "cemetery": {
+    id: "cemetery",
+    label: "Cemetery",
+    labelArabic: "مقبرة",
+    icon: "heroicon:HeartIcon",
+    description: "Burial ground and memorial site"
+  },
+  "monument": {
+    id: "monument",
+    label: "Monument",
+    labelArabic: "نصب تذكاري",
+    icon: "heroicon:FlagIcon",
+    description: "Memorial or commemorative structure"
+  },
+  "archive": {
+    id: "archive",
+    label: "Archive",
+    labelArabic: "أرشيف",
+    icon: "heroicon:ArchiveBoxIcon",
+    description: "Repository for historical documents and records"
   },
 };
 

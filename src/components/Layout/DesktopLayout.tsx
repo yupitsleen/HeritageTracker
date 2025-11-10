@@ -117,7 +117,6 @@ export function DesktopLayout({
         >
           <SitesTable
             sites={filteredSites}
-            onSiteClick={onSiteClick}
             onSiteHighlight={onSiteHighlight}
             highlightedSiteId={highlightedSiteId}
             onExpandTable={onExpandTable}
@@ -143,6 +142,7 @@ export function DesktopLayout({
               onSiteClick={onSiteClick}
               highlightedSiteId={highlightedSiteId}
               onSiteHighlight={onSiteHighlight}
+              disableAutoCentering={true}
             />
           </Suspense>
         </div>
@@ -169,6 +169,7 @@ export function DesktopLayout({
               syncMapOnDotClick: false,
               showNavigation: true, // Show Previous/Next buttons
               hidePlayControls: false, // Show Play/Pause/Speed controls
+              hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to right map)
               // No onSyncMapToggle - hides "Sync Map" button on Dashboard
             }}
           />

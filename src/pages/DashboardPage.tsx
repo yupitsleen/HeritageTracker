@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
+import { useAnimation } from "../contexts/AnimationContext";
 import { useAppState } from "../hooks/useAppState";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useTableResize } from "../hooks/useTableResize";
@@ -25,23 +26,19 @@ const DesktopLayout = lazy(() =>
 // Note: About, Stats, and Donate are now dedicated pages at /about, /stats, /donate for better performance
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
-interface DashboardPageProps {
-  isMobile: boolean;
-}
-
 /**
  * DashboardPage - Main heritage tracker dashboard with table, maps, and timeline
- * On mobile devices, redirects to Data page for better usability
+ * Desktop only - mobile users see DataPage instead (see App.tsx routing)
  */
-export function DashboardPage({ isMobile }: DashboardPageProps) {
+export function DashboardPage() {
   const navigate = useNavigate();
+  const { setMapMarkersVisible } = useAnimation();
 
-  // Redirect to Data page on mobile devices
+  // Set map markers to hidden by default on Dashboard (only on initial mount)
   useEffect(() => {
-    if (isMobile) {
-      navigate("/data", { replace: true });
-    }
-  }, [isMobile, navigate]);
+    setMapMarkersVisible(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only on mount
 
   // Fetch sites from API (using mock adapter in development)
   const { sites, isLoading, error, refetch } = useSites();
@@ -81,20 +78,18 @@ export function DashboardPage({ isMobile }: DashboardPageProps) {
         Skip to main content
       </a>
 
-      {/* Palestinian Flag Red Triangle - Background Element (Desktop only) */}
-      {!isMobile && (
-        <div
-          className="fixed top-0 left-0 pointer-events-none opacity-50 transition-colors duration-200"
-          style={{
-            width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
-            height: '100vh', // Full viewport height
-            background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
-            clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
-            zIndex: Z_INDEX.BACKGROUND_DECORATION, // Above base background, below content
-          }}
-          aria-hidden="true"
-        />
-      )}
+      {/* Palestinian Flag Red Triangle - Background Element */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none opacity-50 transition-colors duration-200"
+        style={{
+          width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
+          height: '100vh', // Full viewport height
+          background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
+          clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
+          zIndex: Z_INDEX.BACKGROUND_DECORATION, // Above base background, below content
+        }}
+        aria-hidden="true"
+      />
 
       {/* Header with flag line */}
       <AppHeader
@@ -227,10 +222,8 @@ export function DashboardPage({ isMobile }: DashboardPageProps) {
         </div>
       </Modal>
 
-      {/* Footer */}
-      <AppFooter
-        isMobile={isMobile}
-      />
+      {/* Footer - Desktop only */}
+      <AppFooter isMobile={false} />
     </div>
   );
 }

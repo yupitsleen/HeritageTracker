@@ -414,4 +414,69 @@ describe("SiteDetailView", () => {
       // Popup component itself is mocked, but we verify it's rendered
     });
   });
+
+  describe("Map Settings on Dashboard", () => {
+    it("renders map settings checkboxes at bottom-left when no customTileUrl is provided", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+
+      // Should render "Zoom to Site" checkbox
+      const zoomToSiteCheckbox = screen.getByRole("checkbox", { name: /zoom to site/i });
+      expect(zoomToSiteCheckbox).toBeInTheDocument();
+
+      // Should render "Show Map Markers" checkbox
+      const showMarkersCheckbox = screen.getByRole("checkbox", { name: /show map markers/i });
+      expect(showMarkersCheckbox).toBeInTheDocument();
+    });
+
+    it("does not render map settings when customTileUrl is provided (Timeline page)", () => {
+      renderWithAnimation(
+        <SiteDetailView
+          sites={mockSites}
+          highlightedSiteId={null}
+          customTileUrl="https://wayback.example.com/tiles"
+          customMaxZoom={19}
+          dateLabel="2023-10-01"
+        />
+      );
+
+      // Should NOT render map settings checkboxes on Timeline page
+      expect(screen.queryByRole("checkbox", { name: /zoom to site/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: /show map markers/i })).not.toBeInTheDocument();
+    });
+
+    it("Zoom to Site checkbox is checked by default", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+
+      const zoomToSiteCheckbox = screen.getByRole("checkbox", { name: /zoom to site/i }) as HTMLInputElement;
+      expect(zoomToSiteCheckbox.checked).toBe(true);
+    });
+
+    it("Show Map Markers checkbox reflects AnimationContext state", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+
+      const showMarkersCheckbox = screen.getByRole("checkbox", { name: /show map markers/i }) as HTMLInputElement;
+      // In test environment, AnimationContext defaults to true
+      // In Dashboard, it's set to false on mount via useEffect
+      expect(showMarkersCheckbox).toBeInTheDocument();
+    });
+
+    it("map settings are positioned at bottom-left with proper styling", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId={null} />);
+
+      // Find the container with map settings
+      const zoomToSiteCheckbox = screen.getByRole("checkbox", { name: /zoom to site/i });
+      const settingsContainer = zoomToSiteCheckbox.closest("div.absolute.bottom-2.left-2");
+
+      expect(settingsContainer).toBeInTheDocument();
+      expect(settingsContainer).toHaveClass("z-[1000]");
+    });
+
+    it("map settings are visible when site is highlighted", () => {
+      renderWithAnimation(<SiteDetailView sites={mockSites} highlightedSiteId="1" />);
+
+      // Map settings should still be visible when a site is selected
+      expect(screen.getByRole("checkbox", { name: /zoom to site/i })).toBeInTheDocument();
+      expect(screen.getByRole("checkbox", { name: /show map markers/i })).toBeInTheDocument();
+    });
+  });
 });

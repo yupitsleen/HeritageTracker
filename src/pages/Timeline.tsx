@@ -14,6 +14,9 @@ import { AnimationProvider } from "../contexts/AnimationContext";
 import type { GazaSite } from "../types";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
+import type { ComparisonInterval } from "../types/waybackTimelineTypes";
+import { DEFAULT_COMPARISON_INTERVAL } from "../config/comparisonIntervals";
+import { calculateBeforeDate, findClosestReleaseIndex } from "../utils/intervalCalculations";
 import { Z_INDEX } from "../constants/layout";
 import { COLORS } from "../config/colorThemes";
 
@@ -126,6 +129,11 @@ export function Timeline() {
   // Before release index for comparison mode (earlier imagery)
   const [beforeReleaseIndex, setBeforeReleaseIndex] = useState(0);
 
+  // Comparison interval - controls time gap between before/after imagery
+  const [comparisonInterval, setComparisonInterval] = useState<ComparisonInterval>(
+    DEFAULT_COMPARISON_INTERVAL
+  );
+
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
@@ -235,63 +243,18 @@ export function Timeline() {
   );
 
   /**
-   * Find the nearest Wayback release that occurred BEFORE the destruction date
-   * This shows the satellite imagery from before the site was destroyed
-   *
-   * @param targetDate - The destruction date to search for
-   * @returns Index of the nearest release before destruction, or 0 if none found
-   * @throws Never throws - returns 0 for invalid inputs
-   */
-  const findNearestWaybackReleaseBeforeDestruction = useCallback(
-    (targetDate: Date): number => {
-      // Guard: Empty releases array
-      if (releases.length === 0) return 0;
-
-      // Guard: Invalid date
-      if (!targetDate || isNaN(targetDate.getTime())) {
-        console.warn('findNearestWaybackReleaseBeforeDestruction: Invalid target date provided, using first release');
-        return 0;
-      }
-
-      const targetTime = targetDate.getTime();
-      let nearestIndex = 0;
-
-      // Find the LATEST release that occurred BEFORE the target date
-      // We iterate through all releases in reverse and return the first one before the target
-      for (let i = releases.length - 1; i >= 0; i--) {
-        const releaseDate = new Date(releases[i].releaseDate);
-
-        // Guard: Invalid release date
-        if (isNaN(releaseDate.getTime())) {
-          console.warn(`findNearestWaybackReleaseBeforeDestruction: Invalid release date at index ${i}, skipping`);
-          continue;
-        }
-
-        const releaseTime = releaseDate.getTime();
-
-        // Return the first release that's before the target date
-        if (releaseTime < targetTime) {
-          nearestIndex = i;
-          break;
-        }
-      }
-
-      return nearestIndex;
-    },
-    [releases]
-  );
-
-  /**
    * Handle timeline dot click - highlight site and optionally sync map
    * Using useRef to avoid recreating callback when dependencies change
    */
   const syncMapOnDotClickRef = useRef(syncMapOnDotClick);
   const comparisonModeEnabledRef = useRef(comparisonModeEnabled);
+  const comparisonIntervalRef = useRef(comparisonInterval);
 
   useEffect(() => {
     syncMapOnDotClickRef.current = syncMapOnDotClick;
     comparisonModeEnabledRef.current = comparisonModeEnabled;
-  }, [syncMapOnDotClick, comparisonModeEnabled]);
+    comparisonIntervalRef.current = comparisonInterval;
+  }, [syncMapOnDotClick, comparisonModeEnabled, comparisonInterval]);
 
   /**
    * Handle site selection from timeline
@@ -316,18 +279,38 @@ export function Timeline() {
           const nearestReleaseIndex = findNearestWaybackRelease(destructionDate);
           setCurrentReleaseIndex(nearestReleaseIndex);
 
-          // If comparison mode is enabled, also set "before" imagery (pre-destruction)
+          // If comparison mode is enabled, also set "before" imagery using interval
           if (comparisonModeEnabledRef.current) {
-            const beforeReleaseIdx = findNearestWaybackReleaseBeforeDestruction(destructionDate);
+            // Calculate "before" date based on selected interval
+            const beforeDate = calculateBeforeDate(
+              destructionDate,
+              comparisonIntervalRef.current,
+              releases
+            );
+
+            // Find the closest Wayback release to the calculated "before" date
+            const beforeReleaseIdx = findClosestReleaseIndex(releases, beforeDate);
             setBeforeReleaseIndex(beforeReleaseIdx);
           }
         }
       }
     },
-    [findNearestWaybackRelease, findNearestWaybackReleaseBeforeDestruction, filteredSites]
+    [findNearestWaybackRelease, filteredSites, releases]
   );
 
   /**
+
+  /**
+   * Reset wayback sliders to initial positions
+   * Green slider (after) goes to last release (most recent)
+   * Yellow slider (before) goes to first release (earliest)
+   */
+  const handleWaybackReset = useCallback(() => {
+    if (releases.length > 0) {
+      setCurrentReleaseIndex(releases.length - 1); // Most recent
+      setBeforeReleaseIndex(0); // Earliest
+    }
+  }, [releases]);
 
   /**
    * Reload page to retry loading Wayback releases
@@ -452,6 +435,10 @@ export function Timeline() {
                 beforeIndex={beforeReleaseIndex}
                 onBeforeIndexChange={setBeforeReleaseIndex}
                 onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
+                comparisonInterval={comparisonInterval}
+                onIntervalChange={setComparisonInterval}
+                syncMapVersion={syncMapOnDotClick}
+                onSyncMapVersionToggle={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
               />
             </div>
 
@@ -465,9 +452,9 @@ export function Timeline() {
                   onSiteHighlight={handleSiteHighlight}
                   advancedMode={{
                     syncMapOnDotClick,
-                    onSyncMapToggle: () => setSyncMapOnDotClick(!syncMapOnDotClick),
                     showNavigation: true, // Show Previous/Next buttons
                     hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
+                    onReset: handleWaybackReset, // Reset wayback sliders to initial positions
                   }}
                 />
               </Suspense>

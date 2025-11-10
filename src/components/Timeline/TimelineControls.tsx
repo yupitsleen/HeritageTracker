@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import { getSpeedValues } from "../../config/animation";
 import { TimelineSettingsMenu } from "./TimelineSettingsMenu";
 import { TimelineToggleButton } from "./TimelineToggleButton";
+import { Tooltip } from "../Tooltip";
 
 interface TimelineControlsProps {
   isPlaying: boolean;
@@ -15,6 +16,7 @@ interface TimelineControlsProps {
   mapMarkersVisible: boolean;
   advancedMode: boolean;
   hidePlayControls?: boolean;
+  hideMapSettings?: boolean; // Hide Zoom to Site and Show Map Markers (moved to map)
   syncMapOnDotClick?: boolean;
   onPlay: () => void;
   onPause: () => void;
@@ -46,6 +48,7 @@ export function TimelineControls({
   mapMarkersVisible,
   advancedMode,
   hidePlayControls = false,
+  hideMapSettings = false,
   syncMapOnDotClick,
   onPlay,
   onPause,
@@ -64,7 +67,7 @@ export function TimelineControls({
     if (hidePlayControls) return null;
 
     return (
-      <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">
+      <div className="flex items-center gap-1.5">
         <label htmlFor="speed-control" className={`text-xs font-medium ${t.text.body}`}>
           {translate("timeline.speed")}:
         </label>
@@ -98,21 +101,25 @@ export function TimelineControls({
         />
       )}
 
-      {/* Zoom to Site toggle */}
-      <TimelineToggleButton
-        label="timeline.zoomToSite"
-        isActive={zoomToSiteEnabled}
-        onClick={onZoomToSiteToggle}
-        variant="button"
-      />
+      {/* Zoom to Site toggle - hide when hideMapSettings is true (moved to map) */}
+      {!hideMapSettings && (
+        <TimelineToggleButton
+          label="timeline.zoomToSite"
+          isActive={zoomToSiteEnabled}
+          onClick={onZoomToSiteToggle}
+          variant="button"
+        />
+      )}
 
-      {/* Show Map Markers toggle */}
-      <TimelineToggleButton
-        label="timeline.showMapMarkers"
-        isActive={mapMarkersVisible}
-        onClick={onMapMarkersToggle}
-        variant="button"
-      />
+      {/* Show Map Markers toggle - hide when hideMapSettings is true (moved to map) */}
+      {!hideMapSettings && (
+        <TimelineToggleButton
+          label="timeline.showMapMarkers"
+          isActive={mapMarkersVisible}
+          onClick={onMapMarkersToggle}
+          variant="button"
+        />
+      )}
 
       {/* Speed control */}
       {renderSpeedControl()}
@@ -125,17 +132,19 @@ export function TimelineControls({
       {!hidePlayControls && (
         <>
           {!isPlaying ? (
-            <Button
-              onClick={onPlay}
-              variant="primary"
-              size="xs"
-              icon={<PlayIcon className="w-3 h-3" />}
-              aria-label={translate("timeline.play")}
-              title={translate("timeline.play")}
-            >
-              {/* Icon only below xl, full text at xl+ */}
-              <span className="hidden xl:inline">{translate("timeline.play")}</span>
-            </Button>
+            <Tooltip content={translate("timeline.playTooltip")}>
+              <Button
+                onClick={onPlay}
+                variant="primary"
+                size="xs"
+                icon={<PlayIcon className="w-3 h-3" />}
+                aria-label={translate("timeline.play")}
+                title={translate("timeline.play")}
+              >
+                {/* Icon only below xl, full text at xl+ */}
+                <span className="hidden xl:inline">{translate("timeline.play")}</span>
+              </Button>
+            </Tooltip>
           ) : (
             <Button
               onClick={onPause}
@@ -166,25 +175,30 @@ export function TimelineControls({
         <span className="hidden xl:inline">{translate("common.reset")}</span>
       </Button>
 
-      {/* Below 2xl: Settings menu for toggles and speed */}
-      <div className="2xl:hidden">
-        <TimelineSettingsMenu
-          toggles={{
-            zoomToSite: zoomToSiteEnabled,
-            mapMarkers: mapMarkersVisible,
-            syncMap: syncMapOnDotClick,
-          }}
-          onToggle={{
-            zoomToSite: onZoomToSiteToggle,
-            mapMarkers: onMapMarkersToggle,
-            syncMap: onSyncMapToggle,
-          }}
-          speedControl={!hidePlayControls ? {
-            speed,
-            onChange: onSpeedChange,
-          } : undefined}
-        />
-      </div>
+      {/* Settings menu - only show on Timeline page (not Dashboard where map settings are hidden) */}
+      {!hideMapSettings && (
+        <div className="2xl:hidden">
+          <TimelineSettingsMenu
+            toggles={{
+              zoomToSite: zoomToSiteEnabled,
+              mapMarkers: mapMarkersVisible,
+              syncMap: syncMapOnDotClick,
+            }}
+            onToggle={{
+              zoomToSite: onZoomToSiteToggle,
+              mapMarkers: onMapMarkersToggle,
+              syncMap: onSyncMapToggle,
+            }}
+            speedControl={!hidePlayControls ? {
+              speed,
+              onChange: onSpeedChange,
+            } : undefined}
+          />
+        </div>
+      )}
+
+      {/* Speed control - always visible when map settings are hidden (Dashboard) */}
+      {hideMapSettings && renderSpeedControl()}
 
       {/* 2xl and up: Full controls visible */}
       <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">

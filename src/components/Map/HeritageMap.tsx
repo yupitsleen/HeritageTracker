@@ -15,6 +15,7 @@ interface HeritageMapProps {
   onSiteClick?: (site: GazaSite) => void;
   highlightedSiteId?: string | null;
   onSiteHighlight?: (siteId: string | null) => void;
+  disableAutoCentering?: boolean;
 }
 
 /**
@@ -29,6 +30,7 @@ export const HeritageMap = memo(function HeritageMap({
   onSiteClick,
   highlightedSiteId,
   onSiteHighlight,
+  disableAutoCentering = false,
 }: HeritageMapProps) {
   const { currentTimestamp, zoomToSiteEnabled } = useAnimation();
 
@@ -55,7 +57,7 @@ export const HeritageMap = memo(function HeritageMap({
         <ScrollWheelHandler />
 
         {/* Map center handler for highlighted sites */}
-        <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} zoomToSiteEnabled={zoomToSiteEnabled} />
+        <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} zoomToSiteEnabled={!disableAutoCentering && zoomToSiteEnabled} />
 
         {/* Zoom level logger for debugging */}
         <ZoomLogger />

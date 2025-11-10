@@ -56,6 +56,7 @@ export const en: Translations = {
   timeline: {
     play: "Play",
     pause: "Pause",
+    playTooltip: "Animate the map to show site destruction events over time",
     speed: "Speed",
     syncMap: "Sync Map",
     zoomToSite: "Zoom to Site",
@@ -81,6 +82,13 @@ export const en: Translations = {
     jump: "Jump",
     tooltipDefault: "Click Play to animate through destruction events. Use the date filter to focus on specific time periods. Click dots to see site details.",
     tooltipAdvanced: "Click red dots to highlight sites. Use Previous/Next to navigate between events. Enable 'Sync Map' to automatically show satellite imagery from before each site's destruction.",
+    interval: "Interval",
+    intervalAsLargeAsPossible: "~As large as possible",
+    intervalAsSmallAsPossible: "~As small as possible",
+    interval1Month: "~2 months",
+    interval1Year: "~1 year",
+    interval5Years: "~5 years",
+    syncMapVersion: "Sync Map Version",
   },
 
   table: {

@@ -225,6 +225,7 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         body: "text-gray-700",
         muted: "text-gray-600",
         subtle: "text-gray-500",
+        primary: "text-gray-900",
       },
       bg: {
         primary: "bg-white",
@@ -232,13 +233,17 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         tertiary: "bg-gray-100",
         hover: "hover:bg-gray-100",
         active: "bg-gray-200",
+        disabled: "bg-gray-100",
+        panel: "bg-white/90",
       },
       border: {
         default: `border-[${COLORS.BORDER_DEFAULT_LIGHT}]`,
         subtle: "border-gray-300",
         strong: "border-gray-400",
+        black: "border-black",
         primary: "border-black",
         primary2: "border-2 border-black",
+        muted: "border-gray-300",
       },
       input: {
         base: `bg-white border-[${COLORS.BORDER_BLACK}] text-gray-900 placeholder:text-gray-400`,
@@ -285,6 +290,7 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         body: "text-gray-300",
         muted: "text-gray-400",
         subtle: "text-gray-500",
+        primary: "text-gray-100",
       },
       bg: {
         primary: "bg-gray-800",
@@ -292,13 +298,17 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         tertiary: "bg-gray-700/50",
         hover: "hover:bg-gray-700",
         active: "bg-gray-600",
+        disabled: "bg-gray-700",
+        panel: "bg-gray-800/90",
       },
       border: {
         default: "border-gray-700",
         subtle: "border-gray-600",
         strong: "border-gray-500",
+        black: "border-black",
         primary: "border-white",
         primary2: "border-2 border-white",
+        muted: "border-gray-600",
       },
       input: {
         base: "bg-gray-700 border-gray-600 text-gray-100 placeholder:text-gray-400",

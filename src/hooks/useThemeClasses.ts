@@ -56,6 +56,10 @@ export function useThemeClasses() {
       hover: isDark ? "hover:bg-gray-700" : "hover:bg-gray-100",
       /** Active/selected state */
       active: isDark ? "bg-gray-600" : "bg-gray-200",
+      /** Disabled state background */
+      disabled: isDark ? "bg-gray-700" : "bg-gray-100",
+      /** Panel background (semi-transparent) */
+      panel: isDark ? "bg-gray-800/90" : "bg-white/90",
     },
 
     /**
@@ -74,6 +78,8 @@ export function useThemeClasses() {
       primary: isDark ? "border-white" : "border-black",
       /** Theme-aware border-2: white in dark mode, black in light mode */
       primary2: isDark ? "border-2 border-white" : "border-2 border-black",
+      /** Muted border */
+      muted: isDark ? "border-gray-600" : "border-gray-300",
     },
 
     /**

@@ -84,6 +84,7 @@ export interface ThemeColorScheme {
     body: string;
     muted: string;
     subtle: string;
+    primary: string;
   };
 
   /** Background color classes */
@@ -93,6 +94,8 @@ export interface ThemeColorScheme {
     tertiary: string;
     hover: string;
     active: string;
+    disabled: string;
+    panel: string;
   };
 
   /** Border color classes */
@@ -100,8 +103,10 @@ export interface ThemeColorScheme {
     default: string;
     subtle: string;
     strong: string;
+    black: string;
     primary: string;
     primary2: string;
+    muted: string;
   };
 
   /** Input/form color classes */

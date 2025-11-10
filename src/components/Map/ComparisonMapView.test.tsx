@@ -226,11 +226,19 @@ describe("ComparisonMapView", () => {
         />
       );
 
-      // Check that the date label overlays (with yellow/green background) are not rendered
-      // Note: Site popups may contain dates, but the overlay date labels should not be present
+      // When dateLabel is not provided, no date labels should be rendered
+      // Date labels have specific styling: yellow or green background with specific text colors
       const dateLabels = screen.queryAllByText(/^\d{4}-\d{2}-\d{2}$/);
-      // DateLabel now uses inline styles, check for style attributes instead
-      const overlayLabels = dateLabels.filter(el => el.hasAttribute("style"));
+
+      // DateLabel components have specific styling that distinguishes them from other date text
+      // Check for elements with the characteristic background colors (yellow or green)
+      const overlayLabels = dateLabels.filter(el => {
+        const computedStyle = window.getComputedStyle(el);
+        const bgColor = computedStyle.backgroundColor;
+        // Check for Palestinian flag colors (yellow: #FDB927, green: #007A3D)
+        return bgColor.includes('253, 185, 39') || bgColor.includes('0, 122, 61');
+      });
+
       expect(overlayLabels.length).toBe(0);
     });
 

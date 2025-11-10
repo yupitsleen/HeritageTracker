@@ -2,6 +2,11 @@ import {
   BuildingLibraryIcon,
   MagnifyingGlassIcon,
   HomeModernIcon,
+  FlagIcon,
+  ArchiveBoxIcon,
+  MoonIcon,
+  PlusIcon,
+  HeartIcon,
 } from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
 import { getSiteTypeConfig } from "../../config/data.config";
@@ -53,7 +58,7 @@ export function SiteTypeIcon({
 }: SiteTypeIconProps) {
   const typeConfig = getSiteTypeConfig(type);
 
-  // Support heroicon identifiers (for backward compatibility with existing types)
+  // Support heroicon identifiers
   // Format: "heroicon:BuildingLibraryIcon"
   if (typeConfig.icon.startsWith('heroicon:')) {
     const iconName = typeConfig.icon.replace('heroicon:', '');
@@ -63,6 +68,11 @@ export function SiteTypeIcon({
       'BuildingLibraryIcon': BuildingLibraryIcon,
       'MagnifyingGlassIcon': MagnifyingGlassIcon,
       'HomeModernIcon': HomeModernIcon,
+      'FlagIcon': FlagIcon,
+      'ArchiveBoxIcon': ArchiveBoxIcon,
+      'MoonIcon': MoonIcon,
+      'PlusIcon': PlusIcon,
+      'HeartIcon': HeartIcon,
     };
 
     const IconComponent = iconMap[iconName];

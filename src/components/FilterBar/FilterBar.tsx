@@ -12,6 +12,7 @@ import { Input } from "../Form/Input";
 import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
+import { StatusLegend } from "../Map/StatusLegend";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -96,35 +97,39 @@ export const FilterBar = memo(function FilterBar({
   return (
     <div className="space-y-2">
       {/* Main Filter Row */}
-      <div className="flex flex-wrap items-center justify-center gap-1.5">
-        {/* "Filters:" Label - Green */}
-        <span className="hidden md:inline-block text-[#009639] font-semibold text-sm">
-          Filters:
-        </span>
+      <div className="flex flex-wrap items-center justify-between gap-1.5">
+        {/* Results Count - Far left, super small */}
+        {showActions && (
+          <div className={cn("text-[10px] whitespace-nowrap", t.text.muted)}>
+            {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
+          </div>
+        )}
 
-        {/* Search Bar - Always visible */}
-        <div className="relative flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
-          <Input
-            type="text"
-            value={filters.searchTerm}
-            onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
-            placeholder={translate("filters.searchPlaceholder")}
-            className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
-          />
-          {filters.searchTerm.trim().length > 0 && (
-            <button
-              type="button"
-              onClick={() => onFilterChange({ searchTerm: "" })}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
-              aria-label={translate("filters.clearSearch")}
-            >
-              <CloseIcon className="w-4 h-4" aria-hidden="true" />
-            </button>
-          )}
-        </div>
+        {/* Center: Filters */}
+        <div className="flex flex-wrap items-center justify-center gap-1.5 flex-1">
+          {/* Search Bar - Always visible */}
+          <div className="relative flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
+            <Input
+              type="text"
+              value={filters.searchTerm}
+              onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
+              placeholder={translate("filters.searchPlaceholder")}
+              className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
+            />
+            {filters.searchTerm.trim().length > 0 && (
+              <button
+                type="button"
+                onClick={() => onFilterChange({ searchTerm: "" })}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
+                aria-label={translate("filters.clearSearch")}
+              >
+                <CloseIcon className="w-4 h-4" aria-hidden="true" />
+              </button>
+            )}
+          </div>
 
-        {/* Desktop Filter Buttons - Hidden on mobile */}
-        <div className="hidden md:flex md:items-center md:gap-1.5 md:flex-wrap">
+          {/* Desktop Filter Buttons - Hidden on mobile */}
+          <div className="hidden md:flex md:items-center md:gap-1.5 md:flex-wrap">
           {/* Type Filter */}
           <FilterButton label={translate("filters.selectTypes")} count={filters.selectedTypes.length}>
             <FilterCheckboxList
@@ -178,49 +183,45 @@ export const FilterBar = memo(function FilterBar({
               startEraDefault={defaultStartEra}
             />
           </FilterButton>
+          </div>
+
+          {/* Mobile Filters Button - Visible only on mobile */}
+          <button
+            type="button"
+            onClick={() => setIsMobileFiltersOpen(true)}
+            className={cn(
+              "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
+              "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
+              t.bg.primary,
+              t.border.subtle,
+              t.bg.hover,
+              t.text.body
+            )}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            <span>Filters</span>
+            {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
+          </button>
+
+          {/* Clear All Button */}
+          {showActions && hasActiveFilters && onClearAll && (
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={onClearAll}
+              className="whitespace-nowrap"
+            >
+              {translate("filters.clearAll")}
+            </Button>
+          )}
         </div>
 
-        {/* Mobile Filters Button - Visible only on mobile */}
-        <button
-          type="button"
-          onClick={() => setIsMobileFiltersOpen(true)}
-          className={cn(
-            "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
-            "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
-            t.bg.primary,
-            t.border.subtle,
-            t.bg.hover,
-            t.text.body
-          )}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
-          <span>Filters</span>
-          {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
-        </button>
-
-        {/* Actions - Centered with filters */}
-        {showActions && (
-          <>
-            {/* Clear All Button */}
-            {hasActiveFilters && onClearAll && (
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={onClearAll}
-                className="whitespace-nowrap"
-              >
-                {translate("filters.clearAll")}
-              </Button>
-            )}
-
-            {/* Results Count */}
-            <div className={cn("text-sm whitespace-nowrap", t.text.muted)}>
-              {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
-            </div>
-          </>
-        )}
+        {/* Status Legend - Far right, desktop only */}
+        <div className="hidden lg:flex">
+          <StatusLegend compact />
+        </div>
       </div>
 
       {/* Active Filter Tags Row */}

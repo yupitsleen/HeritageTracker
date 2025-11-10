@@ -104,8 +104,8 @@ describe("DesktopLayout - Timeline Integration", () => {
       expect(queryByText(/Sync Map/i)).not.toBeInTheDocument();
     });
 
-    it("renders all control buttons except Sync Map on Dashboard", () => {
-      const { getByText, queryByText, getByRole } = renderWithTheme(
+    it("hides map settings (Zoom to Site, Show Map Markers) when hideMapSettings is true", () => {
+      const { queryByText, getByText, getByRole, getAllByText } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber
             sites={mockSites}
@@ -114,6 +114,7 @@ describe("DesktopLayout - Timeline Integration", () => {
               onSyncMapToggle: undefined,
               showNavigation: true, // Show Previous/Next buttons
               hidePlayControls: false, // Show Play/Pause/Speed controls on Dashboard
+              hideMapSettings: true, // Hide map settings on Dashboard (moved to map)
             }}
           />
         </AnimationProvider>
@@ -121,16 +122,47 @@ describe("DesktopLayout - Timeline Integration", () => {
 
       // Should show these buttons
       expect(getByText(/Reset/i)).toBeInTheDocument();
-      expect(getByText(/Zoom to Site/i)).toBeInTheDocument();
-      expect(getByText(/Show Map Markers/i)).toBeInTheDocument();
       expect(getByText(/⏮ Previous/i)).toBeInTheDocument();
       expect(getByText(/Next ⏭/i)).toBeInTheDocument();
 
       // Should SHOW Play button when hidePlayControls is false
       expect(getByRole("button", { name: /^play$/i })).toBeInTheDocument();
 
+      // Should SHOW Speed control even when map settings are hidden
+      // Note: Speed label appears twice (responsive design), so use getAllByText
+      const speedLabels = getAllByText(/Speed:/i);
+      expect(speedLabels.length).toBeGreaterThan(0);
+
+      // Should NOT show map settings when hideMapSettings is true
+      expect(queryByText(/Zoom to Site/i)).not.toBeInTheDocument();
+      expect(queryByText(/Show Map Markers/i)).not.toBeInTheDocument();
+
       // Should NOT show Sync Map button
       expect(queryByText(/Sync Map/i)).not.toBeInTheDocument();
+
+      // Should NOT show Settings menu button when hideMapSettings is true
+      expect(queryByText(/Settings/i)).not.toBeInTheDocument();
+    });
+
+    it("shows map settings (Zoom to Site, Show Map Markers) when hideMapSettings is false or undefined", () => {
+      const { getByText } = renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            advancedMode={{
+              syncMapOnDotClick: false,
+              onSyncMapToggle: undefined,
+              showNavigation: true,
+              hidePlayControls: false,
+              hideMapSettings: false, // Explicitly show map settings
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Should show map settings when hideMapSettings is false
+      expect(getByText(/Zoom to Site/i)).toBeInTheDocument();
+      expect(getByText(/Show Map Markers/i)).toBeInTheDocument();
     });
   });
 

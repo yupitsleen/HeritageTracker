@@ -5,7 +5,9 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
 import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
+import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
 import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
 
 /**
@@ -23,6 +25,12 @@ interface WaybackSliderProps {
   beforeIndex?: number;
   onBeforeIndexChange?: IndexChangeHandler;
   onComparisonModeToggle?: () => void;
+  // Comparison interval support
+  comparisonInterval?: ComparisonInterval;
+  onIntervalChange?: (interval: ComparisonInterval) => void;
+  // Sync map version support
+  syncMapVersion?: boolean;
+  onSyncMapVersionToggle?: () => void;
 }
 
 /**
@@ -43,7 +51,11 @@ export function WaybackSlider({
   comparisonMode = false,
   beforeIndex = 0,
   onBeforeIndexChange,
-  onComparisonModeToggle
+  onComparisonModeToggle,
+  comparisonInterval,
+  onIntervalChange,
+  syncMapVersion = false,
+  onSyncMapVersionToggle
 }: WaybackSliderProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -133,13 +145,27 @@ export function WaybackSlider({
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      onIndexChange(currentIndex - 1);
+      const newIndex = currentIndex - 1;
+      onIndexChange(newIndex);
+
+      // In comparison mode, keep yellow slider one step before green slider
+      if (comparisonMode && onBeforeIndexChange) {
+        const newBeforeIndex = Math.max(0, newIndex - 1);
+        onBeforeIndexChange(newBeforeIndex);
+      }
     }
   };
 
   const handleNext = () => {
     if (currentIndex < releases.length - 1) {
-      onIndexChange(currentIndex + 1);
+      const newIndex = currentIndex + 1;
+      onIndexChange(newIndex);
+
+      // In comparison mode, keep yellow slider one step before green slider
+      if (comparisonMode && onBeforeIndexChange) {
+        const newBeforeIndex = Math.max(0, newIndex - 1);
+        onBeforeIndexChange(newBeforeIndex);
+      }
     }
   };
 
@@ -158,7 +184,7 @@ export function WaybackSlider({
       <div className="flex items-center justify-center gap-3 mb-2 relative" dir="ltr">
         {/* Comparison Mode Toggle - Top left */}
         {onComparisonModeToggle && (
-          <div className="absolute left-0 top-0">
+          <div className="absolute left-0 top-0 flex items-center gap-3">
             <Button
               variant="secondary"
               size="xs"
@@ -170,6 +196,30 @@ export function WaybackSlider({
               {comparisonMode ? "✓ " : ""}
               {translate("timeline.comparisonMode")}
             </Button>
+
+            {/* Interval Selector - only shown when comparison mode handlers are available */}
+            {comparisonInterval && onIntervalChange && (
+              <IntervalSelector
+                value={comparisonInterval}
+                onChange={onIntervalChange}
+                comparisonModeEnabled={comparisonMode}
+              />
+            )}
+
+            {/* Sync Map Version Toggle */}
+            {onSyncMapVersionToggle && (
+              <Button
+                variant="secondary"
+                size="xs"
+                active={syncMapVersion}
+                onClick={onSyncMapVersionToggle}
+                aria-label={translate("timeline.syncMapVersion")}
+                title={translate("timeline.syncMapVersion")}
+              >
+                {syncMapVersion ? "✓ " : ""}
+                {translate("timeline.syncMapVersion")}
+              </Button>
+            )}
           </div>
         )}
 

@@ -12,7 +12,7 @@ interface TableRowProps {
   site: GazaSite;
   isHighlighted: boolean;
   visibleColumns: Set<string>;
-  onSiteClick: (site: GazaSite) => void;
+  onSiteClick?: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   rowRef?: React.RefObject<HTMLTableRowElement | null>;
 }
@@ -66,28 +66,47 @@ export function TableRow({
       )}
       {visibleColumns.has("name") && (
         <td className={`pl-2 pr-1 ${COMPACT_TABLE.cellY}`}>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onSiteClick(site);
-            }}
-            className="text-left w-full hover:underline"
-          >
-            <div
-              className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}
-              dir={primaryDir}
+          {onSiteClick ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onSiteClick(site);
+              }}
+              className="text-left w-full hover:underline"
             >
-              {primary}
-            </div>
-            {secondary && (
               <div
-                className={`text-[10px] ${t.text.muted} mt-0.5`}
-                dir={secondaryDir}
+                className={`font-semibold ${COMPACT_TABLE.text} text-[#009639] hover:text-[#007b2f]`}
+                dir={primaryDir}
               >
-                {secondary}
+                {primary}
               </div>
-            )}
-          </button>
+              {secondary && (
+                <div
+                  className={`text-[10px] ${t.text.muted} mt-0.5`}
+                  dir={secondaryDir}
+                >
+                  {secondary}
+                </div>
+              )}
+            </button>
+          ) : (
+            <div className="w-full">
+              <div
+                className={`font-semibold ${COMPACT_TABLE.text} ${t.text.heading}`}
+                dir={primaryDir}
+              >
+                {primary}
+              </div>
+              {secondary && (
+                <div
+                  className={`text-[10px] ${t.text.muted} mt-0.5`}
+                  dir={secondaryDir}
+                >
+                  {secondary}
+                </div>
+              )}
+            </div>
+          )}
         </td>
       )}
       {visibleColumns.has("status") && (

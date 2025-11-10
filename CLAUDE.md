@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 1034 unit tests must pass ✓ (957 frontend + 77 backend)
+npm test        # 1053 unit tests must pass ✓ (976 frontend + 77 backend)
 npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -33,11 +33,11 @@ style: standardize FilterBar opacity
 ```
 
 **Commit only when:**
-✓ Feature working ✓ 1034/1034 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
+✓ Feature working ✓ 1053/1053 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
 
 ### Quality Gates
 
-- **1034/1034 tests passing** before every commit (957 frontend + 77 backend)
+- **1053/1053 tests passing** before every commit (976 frontend + 77 backend)
 - Dev server stays running (HMR for instant feedback)
 - Apply DRY/KISS/SOLID principles
 - Check for existing components/hooks before creating new ones
@@ -448,13 +448,18 @@ hooks/
 
 ### Current Coverage
 
-- **797 tests passing** across 60 test files
-  - **Frontend:** 720 tests (53 files) - Components, hooks, integration tests
+- **1,165 unit tests passing** across 76 test files (2 skipped)
+  - **Frontend:** 1,088 tests (69 files) - Components, hooks, integration tests
   - **Backend:** 77 tests (7 files) - Utils, middleware, business logic
+- **29 E2E tests passing** (chromium only)
+  - 27 tests skipped (21 mobile + 6 fixme)
+  - 6 tests marked as `.fixme()` - known issues to address
+  - Mobile E2E tests disabled (mobile features need additional work)
 - **Component tests:** Smoke tests, interaction tests, edge cases
-- **Hook tests:** State management, side effects, cleanup
+- **Hook tests:** State management, side effects, cleanup (includes critical hooks: useFilteredSites, useAppState, useHeritageStats)
 - **Integration tests:** Page rendering, routing, data flow
 - **Backend tests:** Error handling, data conversion, request validation
+- **E2E tests:** Page loads, navigation, mock data validation, accessibility
 - **Mock service worker:** API mocking with MSW 2.11.6
 
 ### Test Structure
@@ -530,9 +535,20 @@ describe("validateSiteBody", () => {
 ### Running Tests
 
 ```bash
-npm test              # All tests (watch mode)
+# Unit Tests
+npm test              # All unit tests (watch mode)
 npm test -- --run     # Single run (for CI)
 npm run test:ui       # Vitest UI
+
+# E2E Tests
+npm run e2e           # All E2E tests (headless)
+npm run e2e:ui        # E2E tests with UI (interactive debugging)
+npm run e2e:headed    # E2E tests in headed mode (see browser)
+npm run e2e:debug     # Debug mode (step through tests)
+npm run e2e:report    # View test report
+
+# Run All Tests
+npm run test:all      # Both unit + E2E tests
 
 # Run specific test suites
 npm test src          # Frontend tests only
@@ -741,7 +757,7 @@ npm run e2e -- e2e/filters.spec.ts
    - Full icons and Arabic translations for all new types
 
 4. **Quality Assurance:**
-   - All 1034/1034 tests passing ✅
+   - All 1053/1053 tests passing ✅
    - Updated test expectations across 7 files
    - Dev server runs without errors
    - Research documented in [docs/research/](docs/research/)

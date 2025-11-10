@@ -12,7 +12,7 @@ import { SiteTableRow } from './SiteTableRow';
 
 interface VirtualizedTableBodyProps {
   sites: GazaSite[];
-  onSiteClick: (site: GazaSite) => void;
+  onSiteClick?: (site: GazaSite) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   variant: 'compact' | 'expanded';

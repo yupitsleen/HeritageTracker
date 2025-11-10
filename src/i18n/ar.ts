@@ -56,6 +56,7 @@ export const ar: Translations = {
   timeline: {
     play: "تشغيل",
     pause: "إيقاف مؤقت",
+    playTooltip: "تحريك الخريطة لإظهار أحداث تدمير المواقع بمرور الوقت",
     speed: "السرعة",
     syncMap: "مزامنة الخريطة",
     zoomToSite: "التكبير إلى الموقع",
@@ -81,6 +82,13 @@ export const ar: Translations = {
     jump: "قفز",
     tooltipDefault: "انقر فوق تشغيل لتحريك أحداث التدمير. استخدم مرشح التاريخ للتركيز على فترات زمنية محددة. انقر فوق النقاط لمشاهدة تفاصيل الموقع.",
     tooltipAdvanced: "انقر فوق النقاط الحمراء لتسليط الضوء على المواقع. استخدم السابق/التالي للتنقل بين الأحداث. قم بتمكين 'مزامنة الخريطة' لإظهار صور الأقمار الصناعية تلقائيًا من قبل تدمير كل موقع.",
+    interval: "الفاصل الزمني",
+    intervalAsLargeAsPossible: "~أكبر ما يمكن",
+    intervalAsSmallAsPossible: "~أصغر ما يمكن",
+    interval1Month: "~شهرين",
+    interval1Year: "~سنة واحدة",
+    interval5Years: "~٥ سنوات",
+    syncMapVersion: "مزامنة إصدار الخريطة",
   },
 
   table: {
