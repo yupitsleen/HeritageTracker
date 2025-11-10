@@ -12,6 +12,7 @@ import { Input } from "../Form/Input";
 import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
+import { StatusLegend } from "../Map/StatusLegend";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -97,6 +98,13 @@ export const FilterBar = memo(function FilterBar({
     <div className="space-y-2">
       {/* Main Filter Row */}
       <div className="flex flex-wrap items-center justify-center gap-1.5">
+        {/* Results Count - Far left, super small */}
+        {showActions && (
+          <div className={cn("text-[10px] whitespace-nowrap order-first", t.text.muted)}>
+            {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
+          </div>
+        )}
+
         {/* "Filters:" Label - Green */}
         <span className="hidden md:inline-block text-[#009639] font-semibold text-sm">
           Filters:
@@ -200,26 +208,21 @@ export const FilterBar = memo(function FilterBar({
           {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
         </button>
 
-        {/* Actions - Centered with filters */}
-        {showActions && (
-          <>
-            {/* Clear All Button */}
-            {hasActiveFilters && onClearAll && (
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={onClearAll}
-                className="whitespace-nowrap"
-              >
-                {translate("filters.clearAll")}
-              </Button>
-            )}
+        {/* Status Legend - Desktop only, compact inline */}
+        <div className="hidden lg:flex">
+          <StatusLegend compact />
+        </div>
 
-            {/* Results Count */}
-            <div className={cn("text-sm whitespace-nowrap", t.text.muted)}>
-              {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
-            </div>
-          </>
+        {/* Clear All Button */}
+        {showActions && hasActiveFilters && onClearAll && (
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onClearAll}
+            className="whitespace-nowrap"
+          >
+            {translate("filters.clearAll")}
+          </Button>
         )}
       </div>
 

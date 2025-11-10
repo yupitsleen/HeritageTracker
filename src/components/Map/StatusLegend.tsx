@@ -1,10 +1,16 @@
 /**
  * Status color legend for map and timeline markers
+ * Compact inline version for desktop filter bar
  */
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 
-export function StatusLegend() {
+interface StatusLegendProps {
+  /** Compact mode for inline display in filter bar */
+  compact?: boolean;
+}
+
+export function StatusLegend({ compact = false }: StatusLegendProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
 
@@ -14,6 +20,25 @@ export function StatusLegend() {
     { key: "damaged", color: "#ca8a04" },
   ] as const;
 
+  if (compact) {
+    // Compact inline version for filter bar
+    return (
+      <div className="flex items-center gap-2">
+        <span className={`text-xs font-medium ${t.text.muted}`}>{translate("legend.colorKey")}</span>
+        {statusColors.map((status) => (
+          <div key={status.key} className="flex items-center gap-1">
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: status.color }}
+            />
+            <span className={`text-[10px] ${t.text.muted}`}>{translate(`siteStatus.${status.key}`)}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Original full version
   return (
     <div className={`flex items-center justify-center gap-4 mb-3 px-3 py-2 ${t.bg.primary} rounded-lg border ${t.border.default}`}>
       <span className={`text-xs font-semibold ${t.text.body}`}>{translate("legend.colorKey")}</span>
