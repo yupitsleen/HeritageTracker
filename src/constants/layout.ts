@@ -68,10 +68,10 @@ export const TABLE_CONFIG = {
   /** Width of the Type column (icon display) in pixels */
   TYPE_COLUMN_WIDTH: 60,
 
-  /** Default initial width for resizable table */
-  DEFAULT_TABLE_WIDTH: 480,
+  /** Default initial width for resizable table (Type and Site Name only) */
+  DEFAULT_TABLE_WIDTH: 280,
 
-  /** Minimum width for resizable table (only Site Name visible) */
+  /** Minimum width for resizable table (Type and Site Name visible) */
   MIN_TABLE_WIDTH: 200,
 
   /** Maximum width for resizable table */
@@ -79,7 +79,7 @@ export const TABLE_CONFIG = {
 
   /** Width breakpoints for progressive column display */
   COLUMN_BREAKPOINTS: {
-    type: 280,               // Show Type column at 280px+
+    type: 280,               // Unused - Type column always visible (kept for reference)
     status: 360,             // Show Status column at 360px+
     dateDestroyed: 480,      // Show Date Destroyed column at 480px+
     dateDestroyedIslamic: 650, // Show Islamic Date at 650px+

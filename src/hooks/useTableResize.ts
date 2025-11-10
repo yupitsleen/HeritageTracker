@@ -86,12 +86,10 @@ export function useTableResize(
 
   // Calculate which columns to show based on table width (progressive display)
   const getVisibleColumns = useCallback((): string[] => {
-    const columns = ["name"]; // Site Name is always visible
+    // Type and Site Name are always visible (at minimum width)
+    const columns = ["type", "name"];
 
     // Progressively add columns as width increases
-    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.type) {
-      columns.push("type");
-    }
     if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.status) {
       columns.push("status");
     }

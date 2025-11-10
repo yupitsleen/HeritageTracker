@@ -20,7 +20,8 @@ import { BREAKPOINTS } from "./constants/layout";
 function AppRouter({ isMobile }: { isMobile: boolean }) {
   return (
     <Routes>
-      <Route path="/" element={<DashboardPage isMobile={isMobile} />} />
+      {/* On mobile, show DataPage instead of DashboardPage (no AnimationProvider needed) */}
+      <Route path="/" element={isMobile ? <DataPage /> : <DashboardPage />} />
       <Route path="/data" element={<DataPage />} />
       <Route path="/timeline" element={<Timeline />} />
       <Route path="/about" element={<AboutPage />} />
