@@ -299,16 +299,25 @@ export function TimelineScrubber({
     return nearestIndex;
   }, [advancedMode, destructionDates, currentTimestamp]);
 
-  const canGoPrevious = !!advancedMode && currentEventIndex > 0;
+  const canGoPrevious = !!advancedMode && currentEventIndex >= 0;
   const canGoNext = !!advancedMode && destructionDates.length > 0 && currentEventIndex < destructionDates.length - 1;
 
   const goToPreviousEvent = () => {
     if (canGoPrevious) {
-      const targetIndex = currentEventIndex === -1 ? 0 : currentEventIndex - 1;
-      const prevEvent = destructionDates[targetIndex];
-      setTimestamp(prevEvent.date);
-      if (onSiteHighlight) {
-        onSiteHighlight(prevEvent.siteId);
+      if (currentEventIndex === 0) {
+        // At first event, go back to timeline start (before first event)
+        setTimestamp(startDate);
+        if (onSiteHighlight) {
+          onSiteHighlight(null); // Clear highlighted site
+        }
+      } else {
+        // Go to previous event
+        const targetIndex = currentEventIndex === -1 ? 0 : currentEventIndex - 1;
+        const prevEvent = destructionDates[targetIndex];
+        setTimestamp(prevEvent.date);
+        if (onSiteHighlight) {
+          onSiteHighlight(prevEvent.siteId);
+        }
       }
     }
   };

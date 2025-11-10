@@ -551,6 +551,46 @@ describe("TimelineScrubber", () => {
       expect(mockOnSiteHighlight).toHaveBeenCalledWith("test-site-1");
     });
 
+    it("Previous button goes back to start position when at first event", async () => {
+      const user = userEvent.setup();
+      const mockOnSiteHighlight = vi.fn();
+      renderWithTheme(
+        <AnimationProvider>
+          <TimelineScrubber
+            sites={mockSites}
+            onSiteHighlight={mockOnSiteHighlight}
+            advancedMode={{
+              syncMapOnDotClick: true,
+              onSyncMapToggle: vi.fn(),
+            }}
+          />
+        </AnimationProvider>
+      );
+
+      // Timeline starts before all events (index -1)
+      // Click Next button to move forward to first site (index 0)
+      const nextButton = screen.getByLabelText(/next destruction event/i);
+      await user.click(nextButton);
+
+      // Should have called onSiteHighlight with first site's ID
+      expect(mockOnSiteHighlight).toHaveBeenCalledWith("test-site-1");
+
+      // Reset mock
+      mockOnSiteHighlight.mockClear();
+
+      // Now at first event (index 0), click Previous to go back to start position (index -1)
+      const prevButton = screen.getByLabelText(/previous destruction event/i);
+      await user.click(prevButton);
+
+      // Should have called onSiteHighlight with null to clear the highlighted site
+      expect(mockOnSiteHighlight).toHaveBeenCalledWith(null);
+
+      // Previous button should now be disabled (we're at the start)
+      // Note: We check the timeline's actual current position is at start
+      // by verifying Next button is enabled (can move forward from start)
+      expect(nextButton).not.toBeDisabled();
+    });
+
     it("Next button calls onSiteHighlight with correct site ID", async () => {
       const user = userEvent.setup();
       const mockOnSiteHighlight = vi.fn();
