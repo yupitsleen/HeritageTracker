@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 1034 unit tests must pass ✓ (957 frontend + 77 backend)
+npm test        # 1045 unit tests must pass ✓ (968 frontend + 77 backend)
 npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -33,11 +33,11 @@ style: standardize FilterBar opacity
 ```
 
 **Commit only when:**
-✓ Feature working ✓ 1034/1034 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
+✓ Feature working ✓ 1045/1045 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
 
 ### Quality Gates
 
-- **1034/1034 tests passing** before every commit (957 frontend + 77 backend)
+- **1045/1045 tests passing** before every commit (968 frontend + 77 backend)
 - Dev server stays running (HMR for instant feedback)
 - Apply DRY/KISS/SOLID principles
 - Check for existing components/hooks before creating new ones
@@ -448,8 +448,8 @@ hooks/
 
 ### Current Coverage
 
-- **797 tests passing** across 60 test files
-  - **Frontend:** 720 tests (53 files) - Components, hooks, integration tests
+- **1045 tests passing** across 69 test files (2 skipped)
+  - **Frontend:** 968 tests (62 files) - Components, hooks, integration tests
   - **Backend:** 77 tests (7 files) - Utils, middleware, business logic
 - **Component tests:** Smoke tests, interaction tests, edge cases
 - **Hook tests:** State management, side effects, cleanup
@@ -741,7 +741,7 @@ npm run e2e -- e2e/filters.spec.ts
    - Full icons and Arabic translations for all new types
 
 4. **Quality Assurance:**
-   - All 1034/1034 tests passing ✅
+   - All 1045/1045 tests passing ✅
    - Updated test expectations across 7 files
    - Dev server runs without errors
    - Research documented in [docs/research/](docs/research/)
