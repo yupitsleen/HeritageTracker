@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
+import { useAnimation } from "../contexts/AnimationContext";
 import { useAppState } from "../hooks/useAppState";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useTableResize } from "../hooks/useTableResize";
@@ -35,6 +36,13 @@ interface DashboardPageProps {
  */
 export function DashboardPage({ isMobile }: DashboardPageProps) {
   const navigate = useNavigate();
+  const { setMapMarkersVisible } = useAnimation();
+
+  // Set map markers to hidden by default on Dashboard (only on initial mount)
+  useEffect(() => {
+    setMapMarkersVisible(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only on mount
 
   // Redirect to Data page on mobile devices
   useEffect(() => {
