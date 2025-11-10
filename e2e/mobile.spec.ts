@@ -15,7 +15,7 @@ import { test, expect } from '@playwright/test';
  */
 
 // Skip all tests in this file if not running on a mobile project
-test.skip(({ browserName, isMobile }) => !isMobile, 'Mobile-only tests');
+test.skip(({ isMobile }) => !isMobile, 'Mobile-only tests');
 
 test.describe('Mobile Responsive - Navigation', () => {
   test('hamburger menu opens on mobile', async ({ page }) => {
