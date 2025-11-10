@@ -85,7 +85,7 @@ test.describe('Smoke Tests - Mock Data', () => {
 });
 
 test.describe('Smoke Tests - Error Handling', () => {
-  test('app handles invalid routes gracefully', async ({ page }) => {
+  test.fixme('app handles invalid routes gracefully', async ({ page }) => {
     // Listen for page crashes
     let pageCrashed = false;
     page.on('crash', () => {

@@ -17,7 +17,12 @@
       "Bash(timeout /t 60 /nobreak)",
       "Bash(tee:*)",
       "Bash(find:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run preview:*)",
+      "Bash(Select-String -Pattern \"Test Files|Tests\\s\")",
+      "Bash(Select-Object -Last 2)",
+      "Bash(npm run e2e:*)"
     ],
     "deny": [],
     "ask": []

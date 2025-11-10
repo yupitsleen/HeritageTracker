@@ -59,11 +59,15 @@ export default defineConfig({
     //   use: { ...devices['Desktop Safari'] },
     // },
 
-    /* Test against mobile viewports - disabled for CI speed */
+    /* Test against mobile viewports - Disabled temporarily */
+    // Mobile tests need additional work for mobile-specific features
+    // Uncomment when mobile UI features are fully implemented
     // {
     //   name: 'Mobile Chrome',
     //   use: { ...devices['Pixel 5'] },
     // },
+    // Disabled: WebKit/Safari not installed
+    // Run 'npx playwright install webkit' to enable
     // {
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },

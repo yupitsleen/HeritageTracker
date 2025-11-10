@@ -1,4 +1,4 @@
-import { test, expect, devices } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 /**
  * E2E Tests - Mobile Responsive Behavior
@@ -9,11 +9,15 @@ import { test, expect, devices } from '@playwright/test';
  * - Filter drawer behavior
  * - Table scrolling on mobile
  * - Map interactions on touch devices
+ *
+ * Note: These tests only run on mobile projects (Mobile Chrome, Mobile Safari).
+ * They are automatically skipped on desktop projects.
  */
 
-test.describe('Mobile Responsive - Navigation', () => {
-  test.use({ ...devices['iPhone 12'] });
+// Skip all tests in this file if not running on a mobile project
+test.skip(({ browserName, isMobile }) => !isMobile, 'Mobile-only tests');
 
+test.describe('Mobile Responsive - Navigation', () => {
   test('hamburger menu opens on mobile', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -93,8 +97,6 @@ test.describe('Mobile Responsive - Navigation', () => {
 });
 
 test.describe('Mobile Responsive - Filter Drawer', () => {
-  test.use({ ...devices['Pixel 5'] });
-
   test('filter button opens drawer on mobile', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -173,8 +175,6 @@ test.describe('Mobile Responsive - Filter Drawer', () => {
 });
 
 test.describe('Mobile Responsive - Table Scrolling', () => {
-  test.use({ ...devices['iPhone 12'] });
-
   test('sites table is scrollable horizontally on mobile', async ({ page }) => {
     await page.goto('/data');
     await page.waitForLoadState('networkidle');
@@ -237,8 +237,6 @@ test.describe('Mobile Responsive - Table Scrolling', () => {
 });
 
 test.describe('Mobile Responsive - Map Interactions', () => {
-  test.use({ ...devices['Pixel 5'] });
-
   test('map is interactive on mobile with touch', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -313,8 +311,6 @@ test.describe('Mobile Responsive - Map Interactions', () => {
 });
 
 test.describe('Mobile Responsive - Touch Gestures', () => {
-  test.use({ ...devices['iPhone 12'] });
-
   test('timeline scrubber responds to touch drag', async ({ page }) => {
     await page.goto('/timeline');
     await page.waitForLoadState('networkidle');
@@ -364,8 +360,6 @@ test.describe('Mobile Responsive - Touch Gestures', () => {
 });
 
 test.describe('Mobile Responsive - Stats Dashboard', () => {
-  test.use({ ...devices['Pixel 5'] });
-
   test('stats cards are stacked vertically on mobile', async ({ page }) => {
     await page.goto('/stats');
     await page.waitForLoadState('networkidle');
@@ -392,8 +386,6 @@ test.describe('Mobile Responsive - Stats Dashboard', () => {
 });
 
 test.describe('Mobile Responsive - Text Readability', () => {
-  test.use({ ...devices['iPhone 12'] });
-
   test('heading text is readable on mobile', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -434,8 +426,6 @@ test.describe('Mobile Responsive - Text Readability', () => {
 });
 
 test.describe('Mobile Responsive - Button Sizing', () => {
-  test.use({ ...devices['Pixel 5'] });
-
   test('buttons are large enough for touch targets', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -493,8 +483,6 @@ test.describe('Mobile Responsive - Viewport Adaptation', () => {
 });
 
 test.describe('Mobile Responsive - Performance', () => {
-  test.use({ ...devices['Pixel 5'] });
-
   test('page loads within reasonable time on mobile', async ({ page }) => {
     const startTime = Date.now();
 

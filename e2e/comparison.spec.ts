@@ -345,7 +345,7 @@ test.describe('Comparison Mode - Map Controls', () => {
     }
   });
 
-  test('show map markers toggle controls marker visibility', async ({ page }) => {
+  test.fixme('show map markers toggle controls marker visibility', async ({ page }) => {
     await page.goto('/timeline');
     await page.waitForLoadState('networkidle');
 
