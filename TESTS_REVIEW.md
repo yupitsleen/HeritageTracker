@@ -9,14 +9,14 @@
 
 ## ✅ Progress Update (Latest Session)
 
-**Completed:** P0 (Critical) + P1 (High Priority) improvements
+**Completed:** P0 (Critical) + P1 (High Priority) improvements ✅
 
-### P0 - Critical Hook Testing (Previous Session):
+### P0 - Critical Hook Testing:
 1. ✅ [src/hooks/useFilteredSites.test.ts](src/hooks/useFilteredSites.test.ts) - **19 tests**
 2. ✅ [src/hooks/useAppState.test.ts](src/hooks/useAppState.test.ts) - **30 tests**
 3. ✅ [src/hooks/useHeritageStats.test.ts](src/hooks/useHeritageStats.test.ts) - **33 tests**
 
-### P1 - High Priority Improvements (Current Session):
+### P1 - High Priority Improvements:
 
 **1. Fixed Brittle Selectors (Unit Tests):**
 - ✅ [src/components/Timeline/TimelineControls.test.tsx](src/components/Timeline/TimelineControls.test.tsx)
@@ -66,27 +66,16 @@
 - Pass rate: 100% (all 1,165 tests passing)
 - Lint: Clean ✓
 
-**Committed:**
+**All Changes Committed:**
 ```
+feat/visualFixes f3b2925 (P1)
+test: improve test quality and expand E2E coverage (P1 improvements)
+
+feat/visualFixes 75412de (Docs)
+docs: update TESTS_REVIEW.md with P0 completion status
+
 feat/visualFixes 49fd647 (P0)
 test: add comprehensive tests for critical hooks (P0 improvements)
-```
-
-**Ready to Commit (P1):**
-```
-Modified Files (5):
-- src/components/Timeline/TimelineControls.test.tsx
-- src/components/Map/ComparisonMapView.test.tsx
-- e2e/smoke.spec.ts
-- TESTS_REVIEW.md
-
-New Files (3):
-- e2e/filters.spec.ts
-- e2e/comparison.spec.ts
-- e2e/mobile.spec.ts
-
-✅ All 1,165 tests passing
-✅ Lint clean
 ```
 
 ---
@@ -118,7 +107,15 @@ npm run test:all      # All tests (unit + E2E)
 3. ~~**P1 (High):** Brittle selectors in ComparisonMapView.test.tsx~~ ✅ **COMPLETED**
 4. ~~**P1 (High):** E2E coverage gaps (filters, comparison mode, mobile)~~ ✅ **COMPLETED**
 5. ~~**P1 (High):** Overly lenient E2E assertions~~ ✅ **COMPLETED**
-6. **P2 (Medium):** Refactoring for maintainability (see recommendations below)
+6. **P2 (Medium):** Refactoring for maintainability (optional improvements - see below)
+
+**P2 Items (Medium Priority - Optional):**
+- Test duplication in calculation tests (use `it.each()` pattern)
+- Inconsistent mock patterns (centralize Leaflet mocks)
+- Missing integration tests for critical flows
+- Slow tests due to unnecessary waits
+- Test organization improvements
+- Visual regression testing (future enhancement)
 
 **Before Starting:**
 - Read [CLAUDE.md](CLAUDE.md) - Testing philosophy and commit rules
