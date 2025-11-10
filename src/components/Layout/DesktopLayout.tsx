@@ -170,6 +170,7 @@ export function DesktopLayout({
               syncMapOnDotClick: false,
               showNavigation: true, // Show Previous/Next buttons
               hidePlayControls: false, // Show Play/Pause/Speed controls
+              hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to right map)
               // No onSyncMapToggle - hides "Sync Map" button on Dashboard
             }}
           />

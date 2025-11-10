@@ -10,6 +10,8 @@ import { MapMarkers } from "./MapMarkers";
 import { DateLabel } from "../Timeline/DateLabel";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
+import { useTranslation } from "../../contexts/LocaleContext";
+import { useThemeClasses } from "../../hooks/useThemeClasses";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -45,7 +47,9 @@ export function SiteDetailView({
   comparisonModeActive = false,
 }: SiteDetailViewProps) {
   // Get animation context for timeline sync and zoom toggle
-  const { currentTimestamp, syncActive, zoomToSiteEnabled, mapMarkersVisible } = useAnimation();
+  const { currentTimestamp, syncActive, zoomToSiteEnabled, mapMarkersVisible, setZoomToSiteEnabled, setMapMarkersVisible } = useAnimation();
+  const translate = useTranslation();
+  const t = useThemeClasses();
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("EARLY_2024");
@@ -181,6 +185,32 @@ export function SiteDetailView({
           </>
         )}
       </MapContainer>
+
+      {/* Map settings - only show on Dashboard (not on Timeline page with custom tiles) */}
+      {!customTileUrl && (
+        <div className={`absolute bottom-2 left-2 z-[1000] ${t.bg.panel} backdrop-blur-sm border ${t.border.primary} rounded px-2 py-1.5 shadow-md`}>
+          <div className="flex flex-col gap-1 text-xs">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity">
+              <input
+                type="checkbox"
+                checked={zoomToSiteEnabled}
+                onChange={(e) => setZoomToSiteEnabled(e.target.checked)}
+                className="w-3 h-3 cursor-pointer"
+              />
+              <span className={t.text.body}>{translate("timeline.zoomToSite")}</span>
+            </label>
+            <label className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity">
+              <input
+                type="checkbox"
+                checked={mapMarkersVisible}
+                onChange={(e) => setMapMarkersVisible(e.target.checked)}
+                className="w-3 h-3 cursor-pointer"
+              />
+              <span className={t.text.body}>{translate("timeline.showMapMarkers")}</span>
+            </label>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

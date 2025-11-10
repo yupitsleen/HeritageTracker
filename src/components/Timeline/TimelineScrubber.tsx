@@ -39,6 +39,7 @@ export interface AdvancedTimelineMode {
   onSyncMapToggle?: ToggleHandler; // Optional: allows hiding Sync Map button
   showNavigation?: boolean; // Optional: show Previous/Next navigation (default: true when advancedMode is set)
   hidePlayControls?: boolean; // Optional: hide Play/Pause/Speed controls (default: false)
+  hideMapSettings?: boolean; // Optional: hide Zoom to Site and Show Map Markers (moved to map on Dashboard)
 }
 
 interface TimelineScrubberProps {
@@ -341,6 +342,7 @@ export function TimelineScrubber({
             mapMarkersVisible={mapMarkersVisible}
             advancedMode={!!advancedMode}
             hidePlayControls={advancedMode?.hidePlayControls ?? false}
+            hideMapSettings={advancedMode?.hideMapSettings ?? false}
             syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
             onPlay={handlePlay}
             onPause={pause}

@@ -19,14 +19,14 @@ import { TimelineToggleButton } from "./TimelineToggleButton";
 interface TimelineSettingsMenuProps {
   /** Toggle button states */
   toggles: {
-    zoomToSite: boolean;
-    mapMarkers: boolean;
+    zoomToSite?: boolean;
+    mapMarkers?: boolean;
     syncMap?: boolean;
   };
   /** Toggle button handlers */
   onToggle: {
-    zoomToSite: () => void;
-    mapMarkers: () => void;
+    zoomToSite?: () => void;
+    mapMarkers?: () => void;
     syncMap?: () => void;
   };
   /** Optional speed control configuration */
@@ -164,23 +164,27 @@ export function TimelineSettingsMenu({
               />
             )}
 
-            {/* Zoom to Site option */}
-            <TimelineToggleButton
-              label="timeline.zoomToSite"
-              isActive={toggles.zoomToSite}
-              onClick={onToggle.zoomToSite}
-              variant="menu-item"
-              onMenuClose={() => setIsOpen(false)}
-            />
+            {/* Zoom to Site option - only show if handler provided */}
+            {onToggle.zoomToSite && (
+              <TimelineToggleButton
+                label="timeline.zoomToSite"
+                isActive={toggles.zoomToSite ?? false}
+                onClick={onToggle.zoomToSite}
+                variant="menu-item"
+                onMenuClose={() => setIsOpen(false)}
+              />
+            )}
 
-            {/* Show Map Markers option */}
-            <TimelineToggleButton
-              label="timeline.showMapMarkers"
-              isActive={toggles.mapMarkers}
-              onClick={onToggle.mapMarkers}
-              variant="menu-item"
-              onMenuClose={() => setIsOpen(false)}
-            />
+            {/* Show Map Markers option - only show if handler provided */}
+            {onToggle.mapMarkers && (
+              <TimelineToggleButton
+                label="timeline.showMapMarkers"
+                isActive={toggles.mapMarkers ?? false}
+                onClick={onToggle.mapMarkers}
+                variant="menu-item"
+                onMenuClose={() => setIsOpen(false)}
+              />
+            )}
             </div>
           </div>
         </FloatingPortal>

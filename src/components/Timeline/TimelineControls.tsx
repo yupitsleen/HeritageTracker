@@ -16,6 +16,7 @@ interface TimelineControlsProps {
   mapMarkersVisible: boolean;
   advancedMode: boolean;
   hidePlayControls?: boolean;
+  hideMapSettings?: boolean; // Hide Zoom to Site and Show Map Markers (moved to map)
   syncMapOnDotClick?: boolean;
   onPlay: () => void;
   onPause: () => void;
@@ -47,6 +48,7 @@ export function TimelineControls({
   mapMarkersVisible,
   advancedMode,
   hidePlayControls = false,
+  hideMapSettings = false,
   syncMapOnDotClick,
   onPlay,
   onPause,
@@ -99,21 +101,25 @@ export function TimelineControls({
         />
       )}
 
-      {/* Zoom to Site toggle */}
-      <TimelineToggleButton
-        label="timeline.zoomToSite"
-        isActive={zoomToSiteEnabled}
-        onClick={onZoomToSiteToggle}
-        variant="button"
-      />
+      {/* Zoom to Site toggle - hide when hideMapSettings is true (moved to map) */}
+      {!hideMapSettings && (
+        <TimelineToggleButton
+          label="timeline.zoomToSite"
+          isActive={zoomToSiteEnabled}
+          onClick={onZoomToSiteToggle}
+          variant="button"
+        />
+      )}
 
-      {/* Show Map Markers toggle */}
-      <TimelineToggleButton
-        label="timeline.showMapMarkers"
-        isActive={mapMarkersVisible}
-        onClick={onMapMarkersToggle}
-        variant="button"
-      />
+      {/* Show Map Markers toggle - hide when hideMapSettings is true (moved to map) */}
+      {!hideMapSettings && (
+        <TimelineToggleButton
+          label="timeline.showMapMarkers"
+          isActive={mapMarkersVisible}
+          onClick={onMapMarkersToggle}
+          variant="button"
+        />
+      )}
 
       {/* Speed control */}
       {renderSpeedControl()}
@@ -173,13 +179,13 @@ export function TimelineControls({
       <div className="2xl:hidden">
         <TimelineSettingsMenu
           toggles={{
-            zoomToSite: zoomToSiteEnabled,
-            mapMarkers: mapMarkersVisible,
+            zoomToSite: hideMapSettings ? undefined : zoomToSiteEnabled,
+            mapMarkers: hideMapSettings ? undefined : mapMarkersVisible,
             syncMap: syncMapOnDotClick,
           }}
           onToggle={{
-            zoomToSite: onZoomToSiteToggle,
-            mapMarkers: onMapMarkersToggle,
+            zoomToSite: hideMapSettings ? undefined : onZoomToSiteToggle,
+            mapMarkers: hideMapSettings ? undefined : onMapMarkersToggle,
             syncMap: onSyncMapToggle,
           }}
           speedControl={!hidePlayControls ? {
