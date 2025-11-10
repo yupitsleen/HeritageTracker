@@ -80,7 +80,7 @@ describe('Sites Service', () => {
 
   describe('getPaginatedSites', () => {
     it('returns paginated results with default values', async () => {
-      sitesRepo.count.mockResolvedValue(45);
+      sitesRepo.count.mockResolvedValue(70);
       sitesRepo.findPaginated.mockResolvedValue([mockSite]);
 
       const result = await sitesService.getPaginatedSites();
@@ -89,9 +89,9 @@ describe('Sites Service', () => {
       expect(result.pagination).toEqual({
         page: 1,
         pageSize: 50,
-        total: 45,
-        totalPages: 1,
-        hasNextPage: false,
+        total: 70,
+        totalPages: 2,
+        hasNextPage: true,
         hasPreviousPage: false,
       });
     });
@@ -544,7 +544,7 @@ describe('Sites Service', () => {
   describe('getSiteStatistics', () => {
     it('returns statistics from repository', async () => {
       const stats = {
-        total: 45,
+        total: 70,
         byType: { mosque: 10, church: 5 },
         byStatus: { destroyed: 20, damaged: 15 },
       };

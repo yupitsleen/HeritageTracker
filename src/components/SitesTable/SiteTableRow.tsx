@@ -1,6 +1,6 @@
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard } from "../../utils/format";
+import { formatDateStandard, getEffectiveDestructionDate } from "../../utils/format";
 import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -31,6 +31,9 @@ export function SiteTableRow({
 }: SiteTableRowProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+
+  // Get effective destruction date (with fallback to source assessment date)
+  const effectiveDestructionDate = getEffectiveDestructionDate(site);
 
   return (
     <tr
@@ -90,7 +93,7 @@ export function SiteTableRow({
       )}
       {isColumnVisible("dateDestroyed") && (
         <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
-          {formatDateStandard(site.dateDestroyed)}
+          {formatDateStandard(effectiveDestructionDate)}
         </td>
       )}
       {isColumnVisible("dateDestroyedIslamic") && (

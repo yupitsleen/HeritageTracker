@@ -3,6 +3,7 @@ import { Marker, CircleMarker, Popup } from "react-leaflet";
 import type { GazaSite } from "../../types";
 import { createMarkerIcon } from "../../utils/mapHelpers";
 import { getStatusHexColor } from "../../utils/colorHelpers";
+import { getEffectiveDestructionDate } from "../../utils/format";
 import { SitePopup } from "./SitePopup";
 
 interface MapMarkersProps {
@@ -41,7 +42,10 @@ export const MapMarkers = memo(function MapMarkers({
 
     return new Set(
       sites
-        .filter(site => site.dateDestroyed && currentTimestamp >= new Date(site.dateDestroyed))
+        .filter(site => {
+          const effectiveDestructionDate = getEffectiveDestructionDate(site);
+          return effectiveDestructionDate && currentTimestamp >= new Date(effectiveDestructionDate);
+        })
         .map(site => site.id)
     );
   }, [sites, currentTimestamp]);

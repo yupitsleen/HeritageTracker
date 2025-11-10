@@ -1,6 +1,6 @@
 import type { GazaSite } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard, translateStatus, getSiteDisplayNames } from "../../utils/format";
+import { formatDateStandard, translateStatus, getSiteDisplayNames, getEffectiveDestructionDate } from "../../utils/format";
 import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -37,6 +37,9 @@ export function TableRow({
 
   // Get display names based on text direction (RTL vs LTR)
   const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
+
+  // Get effective destruction date (with fallback to sourceAssessmentDate)
+  const effectiveDestructionDate = getEffectiveDestructionDate(site);
 
   return (
     <tr
@@ -99,7 +102,7 @@ export function TableRow({
       )}
       {visibleColumns.has("dateDestroyed") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {formatDateStandard(site.dateDestroyed)}
+          {formatDateStandard(effectiveDestructionDate)}
         </td>
       )}
       {visibleColumns.has("dateDestroyedIslamic") && (

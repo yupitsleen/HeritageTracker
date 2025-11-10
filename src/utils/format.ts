@@ -3,6 +3,7 @@
  */
 
 import type { TranslationKey } from "../types/i18n";
+import type { GazaSite } from "../types";
 
 /**
  * Formats kebab-case or snake_case strings to Title Case
@@ -223,4 +224,27 @@ export const formatYearRange = (
 ): string | null => {
   if (!start && !end) return null;
   return `${start || "Start"} - ${end || "End"}`;
+};
+
+/**
+ * Gets the effective destruction date for a site with fallback logic.
+ * Falls back to sourceAssessmentDate if dateDestroyed is not available.
+ *
+ * @param site - Site object with optional dateDestroyed and sourceAssessmentDate
+ * @returns The effective destruction date (dateDestroyed or sourceAssessmentDate), or undefined if neither exists
+ *
+ * @example
+ * getEffectiveDestructionDate({ dateDestroyed: "2023-10-15", sourceAssessmentDate: "2025-10-06" })
+ * // => "2023-10-15"
+ *
+ * getEffectiveDestructionDate({ sourceAssessmentDate: "2025-10-06" })
+ * // => "2025-10-06" (fallback)
+ *
+ * getEffectiveDestructionDate({})
+ * // => undefined (no dates available)
+ */
+export const getEffectiveDestructionDate = (
+  site: Pick<GazaSite, "dateDestroyed" | "sourceAssessmentDate">
+): string | undefined => {
+  return site.dateDestroyed || site.sourceAssessmentDate;
 };

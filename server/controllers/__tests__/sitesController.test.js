@@ -96,7 +96,7 @@ describe('Sites Controller', () => {
 
       const paginatedResult = {
         sites: [mockSiteAPI],
-        pagination: { page: 1, pageSize: 50, total: 45, totalPages: 1 },
+        pagination: { page: 1, pageSize: 50, total: 70, totalPages: 2 },
       };
 
       sitesService.getPaginatedSites.mockResolvedValue(paginatedResult);
@@ -389,7 +389,7 @@ describe('Sites Controller', () => {
       const next = createMockNext();
 
       const stats = {
-        total: 45,
+        total: 70,
         byType: { mosque: 10, church: 5 },
         byStatus: { destroyed: 20, damaged: 15 },
       };
