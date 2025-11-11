@@ -5,10 +5,10 @@
 
 /**
  * UNESCO verified count of damaged cultural sites in Gaza
- * Source: UNESCO press release, verified as of 2024
- * https://whc.unesco.org/en/news/2697
+ * Source: UNESCO Gaza Heritage Damage Assessment (October 2024)
+ * https://www.unesco.org/en/gaza/assessment
  */
-export const UNESCO_VERIFIED_SITES = 110;
+export const UNESCO_VERIFIED_SITES = 114;
 
 /**
  * External verification sources for heritage damage documentation
@@ -22,7 +22,7 @@ export const EXTERNAL_SOURCES = {
 /**
  * Last verification/update date for statistics
  */
-export const LAST_UPDATED = "October 2025";
+export const LAST_UPDATED = "November 2025";
 
 /**
  * Default oldest site age display value when no data available
