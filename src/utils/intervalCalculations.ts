@@ -59,7 +59,12 @@ export function calculateIntervalDate(
   switch (interval) {
     case "as_large_as_possible": {
       const date = new Date(baseDate);
-      date.setFullYear(date.getFullYear() - WAYBACK_FALLBACKS.LARGE_INTERVAL_YEARS);
+      const targetYear = date.getFullYear() - WAYBACK_FALLBACKS.LARGE_INTERVAL_YEARS;
+      const month = date.getMonth();
+      const day = date.getDate();
+
+      // Handle leap year edge case (Feb 29 -> Feb 28 in non-leap year)
+      date.setFullYear(targetYear, month, Math.min(day, new Date(targetYear, month + 1, 0).getDate()));
       return date;
     }
 
@@ -75,13 +80,23 @@ export function calculateIntervalDate(
 
     case "1_year": {
       const date = new Date(baseDate);
-      date.setFullYear(date.getFullYear() - 1);
+      const targetYear = date.getFullYear() - 1;
+      const month = date.getMonth();
+      const day = date.getDate();
+
+      // Handle leap year edge case (Feb 29 -> Feb 28 in non-leap year)
+      date.setFullYear(targetYear, month, Math.min(day, new Date(targetYear, month + 1, 0).getDate()));
       return date;
     }
 
     case "5_years": {
       const date = new Date(baseDate);
-      date.setFullYear(date.getFullYear() - 5);
+      const targetYear = date.getFullYear() - 5;
+      const month = date.getMonth();
+      const day = date.getDate();
+
+      // Handle leap year edge case (Feb 29 -> Feb 28 in non-leap year)
+      date.setFullYear(targetYear, month, Math.min(day, new Date(targetYear, month + 1, 0).getDate()));
       return date;
     }
 

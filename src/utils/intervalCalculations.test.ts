@@ -386,12 +386,13 @@ describe("calculateIntervalDate (Pure Function)", () => {
   });
 
   it("handles leap year dates correctly", () => {
-    const leapYearDate = new Date("2024-02-29"); // Leap year
+    const leapYearDate = new Date("2024-02-29T12:00:00Z"); // Leap year (noon UTC to avoid timezone issues)
     const result = calculateIntervalDate(leapYearDate, "1_year");
 
     // Non-leap year fallback (2023-02-28)
     expect(result.getFullYear()).toBe(2023);
-    expect(result.getMonth()).toBe(1); // February
+    expect(result.getMonth()).toBe(1); // February (0-indexed)
+    expect(result.getDate()).toBe(28); // Should adjust to last day of February
   });
 });
 
