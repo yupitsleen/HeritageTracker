@@ -24,7 +24,8 @@
       "Bash(Select-Object -Last 2)",
       "Bash(npm run e2e:*)",
       "Bash(git show:*)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

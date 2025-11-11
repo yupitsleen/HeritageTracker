@@ -1,12 +1,32 @@
 /**
- * Icon Registry - Dynamic Hero Icons Import
+ * Icon Registry - Tree-Shakable Hero Icons
  *
- * Provides dynamic access to Hero Icons without manual mapping.
- * Eliminates the need to update icon imports when adding new site types.
+ * Provides access to Hero Icons with optimal bundle size.
+ * Only imports icons that are actually used in the application.
+ *
+ * To add new icons:
+ * 1. Import from @heroicons/react/24/solid or outline
+ * 2. Add to ICON_REGISTRY_SOLID or ICON_REGISTRY_OUTLINE
  */
 
-import * as HeroIconsSolid from "@heroicons/react/24/solid";
-import * as HeroIconsOutline from "@heroicons/react/24/outline";
+// Import only the icons we use (tree-shakable)
+import {
+  BuildingLibraryIcon,
+  MagnifyingGlassIcon,
+  HomeModernIcon,
+  FlagIcon,
+  ArchiveBoxIcon,
+  MoonIcon,
+  PlusIcon,
+  HeartIcon,
+  HomeIcon as HomeIconSolid,
+} from "@heroicons/react/24/solid";
+
+import {
+  HomeIcon as HomeIconOutline,
+  InformationCircleIcon,
+  ExclamationCircleIcon,
+} from "@heroicons/react/24/outline";
 
 /**
  * Icon variant types
@@ -23,10 +43,34 @@ export type HeroIconComponent = React.ComponentType<{
 }>;
 
 /**
+ * Registry of solid icons
+ */
+const ICON_REGISTRY_SOLID: Record<string, HeroIconComponent> = {
+  BuildingLibraryIcon,
+  MagnifyingGlassIcon,
+  HomeModernIcon,
+  FlagIcon,
+  ArchiveBoxIcon,
+  MoonIcon,
+  PlusIcon,
+  HeartIcon,
+  HomeIcon: HomeIconSolid,
+};
+
+/**
+ * Registry of outline icons
+ */
+const ICON_REGISTRY_OUTLINE: Record<string, HeroIconComponent> = {
+  HomeIcon: HomeIconOutline,
+  InformationCircleIcon,
+  ExclamationCircleIcon,
+};
+
+/**
  * Get a Hero Icon component by name
  *
- * Dynamically retrieves icons from the @heroicons/react package without
- * requiring manual imports or mappings. Supports both solid and outline variants.
+ * Retrieves icons from the registry with tree-shaking support.
+ * Only icons that are imported will be included in the bundle.
  *
  * @param iconName - Name of the Hero Icon (e.g., "BuildingLibraryIcon")
  * @param variant - Icon variant: "solid" (default) or "outline"
@@ -50,22 +94,21 @@ export function getHeroIcon(
   iconName: string,
   variant: IconVariant = "solid"
 ): HeroIconComponent | null {
-  // Select the appropriate icon set
-  const iconSet = variant === "outline" ? HeroIconsOutline : HeroIconsSolid;
+  // Select the appropriate icon registry
+  const registry = variant === "outline" ? ICON_REGISTRY_OUTLINE : ICON_REGISTRY_SOLID;
 
-  // Access icon dynamically
-  const icon = (iconSet as Record<string, unknown>)[iconName];
+  // Look up icon
+  const icon = registry[iconName];
 
-  // Validate it's a React component (function or object with $$typeof for forwardRef)
-  if (typeof icon === "function" || typeof icon === "object") {
-    return icon as HeroIconComponent;
+  if (icon) {
+    return icon;
   }
 
   // Icon not found
   if (import.meta.env.DEV) {
     console.warn(
       `Hero Icon "${iconName}" not found in ${variant} variant. ` +
-        `Available icons: https://heroicons.com/`
+        `Available icons: ${Object.keys(registry).join(", ")}`
     );
   }
 
@@ -96,7 +139,7 @@ export function hasHeroIcon(
 /**
  * Get all available Hero Icon names
  *
- * Useful for debugging or autocomplete features.
+ * Returns only the icons that are registered (not all 200+ icons).
  *
  * @param variant - Icon variant: "solid" or "outline"
  * @returns Array of icon names
@@ -108,6 +151,6 @@ export function hasHeroIcon(
  * ```
  */
 export function getAllHeroIconNames(variant: IconVariant = "solid"): string[] {
-  const iconSet = variant === "outline" ? HeroIconsOutline : HeroIconsSolid;
-  return Object.keys(iconSet).filter((key) => key.endsWith("Icon"));
+  const registry = variant === "outline" ? ICON_REGISTRY_OUTLINE : ICON_REGISTRY_SOLID;
+  return Object.keys(registry);
 }
