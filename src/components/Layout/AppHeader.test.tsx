@@ -18,6 +18,13 @@ describe("AppHeader", () => {
       expect(container).toBeInTheDocument();
     });
 
+    it("displays the logo", () => {
+      renderWithTheme(<AppHeaderWithRouter />);
+      const logo = screen.getByAltText(/Heritage Tracker Logo/i);
+      expect(logo).toBeInTheDocument();
+      expect(logo).toHaveAttribute("src");
+    });
+
     it("displays the title", () => {
       renderWithTheme(<AppHeaderWithRouter />);
       expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
@@ -27,6 +34,15 @@ describe("AppHeader", () => {
       renderWithTheme(<AppHeaderWithRouter />);
       const titleButton = screen.getByRole("button", { name: /go to home page/i });
       expect(titleButton).toBeInTheDocument();
+    });
+
+    it("logo is clickable and part of home navigation", () => {
+      renderWithTheme(<AppHeaderWithRouter />);
+      const logo = screen.getByAltText(/Heritage Tracker Logo/i);
+      const titleButton = screen.getByRole("button", { name: /go to home page/i });
+
+      // Logo should be inside the clickable button
+      expect(titleButton).toContainElement(logo);
     });
   });
 
@@ -221,6 +237,12 @@ describe("AppHeader", () => {
 
       // Theme toggle
       expect(screen.getByLabelText(/settings/i)).toBeInTheDocument();
+    });
+
+    it("logo has proper alt text for screen readers", () => {
+      renderWithTheme(<AppHeaderWithRouter />);
+      const logo = screen.getByAltText(/Heritage Tracker Logo/i);
+      expect(logo).toBeInTheDocument();
     });
 
     it("mobile menu has proper navigation role", () => {

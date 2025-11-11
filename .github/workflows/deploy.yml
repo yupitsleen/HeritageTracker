@@ -51,7 +51,7 @@ jobs:
       - name: Check bundle size limit
         run: |
           BUNDLE_SIZE=$(du -sb dist/ | awk '{print $1}')
-          MAX_SIZE=$((1024 * 1024))  # 1MB limit
+          MAX_SIZE=$((1536 * 1024))  # 1.5MB limit (increased for logo assets)
           if [ $BUNDLE_SIZE -gt $MAX_SIZE ]; then
             echo "❌ Bundle size ($BUNDLE_SIZE bytes) exceeds limit ($MAX_SIZE bytes)"
             exit 1

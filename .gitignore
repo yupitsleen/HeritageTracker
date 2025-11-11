@@ -29,3 +29,6 @@ nul
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Test Coverage
+/coverage/
