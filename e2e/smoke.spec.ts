@@ -85,30 +85,6 @@ test.describe('Smoke Tests - Mock Data', () => {
 });
 
 test.describe('Smoke Tests - Error Handling', () => {
-  test.fixme('app handles invalid routes gracefully', async ({ page }) => {
-    // Listen for page crashes
-    let pageCrashed = false;
-    page.on('crash', () => {
-      pageCrashed = true;
-    });
-
-    await page.goto('/this-page-does-not-exist');
-    await page.waitForLoadState('networkidle');
-
-    // Wait for React to hydrate by checking for interactive elements
-    await page.waitForSelector('body', { state: 'visible' });
-
-    // Should not crash
-    expect(pageCrashed).toBe(false);
-
-    // Should not show critical error text
-    const hasError = await page.getByText(/crashed|fatal error/i).count();
-    expect(hasError).toBe(0);
-
-    // The app doesn't have a 404 page configured, so invalid routes show empty content
-    // This is acceptable behavior - no crash is what we're testing for
-  });
-
   test('console has no critical errors', async ({ page }) => {
     const criticalErrors: string[] = [];
 

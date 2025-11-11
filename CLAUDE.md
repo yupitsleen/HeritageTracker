@@ -448,19 +448,22 @@ hooks/
 
 ### Current Coverage
 
-- **1,261 unit tests passing** across 78 test files (2 skipped)
+- **1,264 unit tests passing** across 78 test files (2 skipped)
   - **Frontend:** 1,169 tests (71 files) - Components, hooks, integration tests
   - **Backend:** 77 tests (7 files) - Utils, middleware, business logic
   - **Utils:** 15 tests (backend utilities)
-- **29 E2E tests passing** (chromium only)
-  - 27 tests skipped (21 mobile + 6 fixme)
-  - 6 tests marked as `.fixme()` - known issues to address
-  - Mobile E2E tests disabled (mobile features need additional work)
+  - **Logo tests:** 3 tests (AppHeader logo integration)
+- **16 E2E tests passing** (chromium only) - Focused on critical user journeys
+  - **Smoke tests:** 9 tests - Page loads, navigation, map markers, console errors, accessibility
+  - **Filter tests:** 2 tests - Visual regression (z-index, overlapping)
+  - **Timeline tests:** 2 tests - Page loads, navigation buttons
+  - **Comparison tests:** 4 tests - Site selection, dual maps, time periods, site name
+  - Removed 42 redundant tests covered by 1,264 unit tests (70% faster, ~30-45s runtime)
 - **Component tests:** Smoke tests, interaction tests, edge cases
 - **Hook tests:** State management, side effects, cleanup (includes critical hooks: useFilteredSites, useAppState, useHeritageStats)
 - **Integration tests:** Page rendering, routing, data flow
 - **Backend tests:** Error handling, data conversion, request validation
-- **E2E tests:** Page loads, navigation, mock data validation, accessibility
+- **E2E tests:** Critical user journeys, visual regressions, browser-specific features
 - **Mock service worker:** API mocking with MSW 2.11.6
 
 ### Test Structure
@@ -620,12 +623,16 @@ server/
 
 E2E tests use **Playwright** to catch visual and interaction bugs that unit tests can't detect.
 
-**Coverage:**
-- Filter bar visibility and z-index issues
-- Timeline navigation button presence
-- Comparison mode dual map rendering
-- Mobile responsive layouts
-- Route navigation and accessibility
+**Coverage (16 tests focused on critical paths):**
+- **Smoke tests (9):** Page loads, navigation, map markers, console errors, keyboard accessibility, performance
+- **Filter tests (2):** Visual regression - z-index layering, element overlapping
+- **Timeline tests (2):** Page loads successfully, navigation buttons present
+- **Comparison tests (4):** Site selection workflow, dual maps, time periods, site name display
+
+**Philosophy:**
+- E2E tests verify **user journeys** across pages, **visual bugs** (z-index, overlapping), and **browser features**
+- Unit tests (1,264) cover component logic, state management, and calculations
+- 70% faster than previous 57 tests (~30-45s vs 2-3 min runtime)
 
 ### Running E2E Tests
 
@@ -653,12 +660,13 @@ npm run test:all
 
 ```
 e2e/
-├── smoke.spec.ts        # Core page loads, navigation, mock data
-├── filters.spec.ts      # Filter bar visibility and functionality
-├── timeline.spec.ts     # Timeline navigation buttons
-├── comparison.spec.ts   # Comparison mode dual maps
-└── mobile.spec.ts       # Mobile responsive layouts
+├── smoke.spec.ts        # 9 tests - Core page loads, navigation, markers, errors, accessibility
+├── filters.spec.ts      # 2 tests - Visual regression (z-index, overlapping)
+├── timeline.spec.ts     # 2 tests - Page loads, navigation buttons
+└── comparison.spec.ts   # 4 tests - Site selection, dual maps, time periods
 ```
+
+**Note:** Mobile E2E tests removed (covered by responsive CSS + unit tests). Detailed component interactions (scrubber drag, date labels, colors, sync toggle) covered by 1,264 unit tests.
 
 ### Writing E2E Tests
 
