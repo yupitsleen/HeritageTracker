@@ -3,7 +3,6 @@ import {
   getHeroIcon,
   hasHeroIcon,
   getAllHeroIconNames,
-  type IconVariant,
 } from "./iconRegistry";
 
 describe("iconRegistry", () => {
