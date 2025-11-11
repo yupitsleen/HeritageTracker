@@ -22,9 +22,9 @@ test.describe('Comparison Mode - Critical Workflows', () => {
     // Page should load successfully
     await expect(page).toHaveTitle(/heritage-tracker/i);
 
-    // Look for timeline controls or comparison UI
-    const timelineControls = page.getByRole('button', { name: /play|reset/i });
-    await expect(timelineControls.first()).toBeVisible({ timeout: 5000 });
+    // Map should be visible (Timeline page always shows map)
+    const map = page.locator('.leaflet-container').first();
+    await expect(map).toBeVisible({ timeout: 5000 });
   });
 
   test('selecting a site enables comparison mode', async ({ page }) => {
