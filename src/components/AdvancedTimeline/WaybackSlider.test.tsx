@@ -59,7 +59,8 @@ describe("WaybackSlider", () => {
       const onIndexChange = vi.fn();
       renderWithTheme(<WaybackSlider releases={[]} currentIndex={0} onIndexChange={onIndexChange} />);
 
-      expect(screen.getByText("No imagery releases available")).toBeInTheDocument();
+      expect(screen.getByRole("status")).toBeInTheDocument();
+      expect(screen.getByText(/No imagery releases available/i)).toBeInTheDocument();
     });
 
     it("renders navigation buttons correctly", () => {

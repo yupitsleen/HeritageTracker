@@ -127,7 +127,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
       </section>
 
       {/* Sources Section */}
-      {site.sources && site.sources.length > 0 && (
+      {site.sources?.length > 0 && (
         <section>
           <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.sources")}</h4>
           <div className="space-y-3">

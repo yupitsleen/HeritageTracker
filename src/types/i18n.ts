@@ -132,6 +132,7 @@ export interface Translations {
     interval5Years: string;
     syncMapVersion: string;
     unknownDate: string;
+    noImageryAvailable: string;
   };
 
   /** Table component */

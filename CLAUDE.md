@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 1208 unit tests must pass ✓ (1116 frontend + 77 backend + 15 backend utils)
+npm test        # 1261 unit tests must pass ✓ (1169 frontend + 77 backend + 15 backend utils)
 npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -33,11 +33,11 @@ style: standardize FilterBar opacity
 ```
 
 **Commit only when:**
-✓ Feature working ✓ 1208/1208 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
+✓ Feature working ✓ 1261/1261 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
 
 ### Quality Gates
 
-- **1208/1208 tests passing** before every commit (1116 frontend + 77 backend + 15 backend utils)
+- **1261/1261 tests passing** before every commit (1169 frontend + 77 backend + 15 backend utils)
 - Dev server stays running (HMR for instant feedback)
 - Apply DRY/KISS/SOLID principles
 - Check for existing components/hooks before creating new ones
@@ -448,9 +448,10 @@ hooks/
 
 ### Current Coverage
 
-- **1,182 unit tests passing** across 75 test files (2 skipped)
-  - **Frontend:** 1,105 tests (68 files) - Components, hooks, integration tests
+- **1,261 unit tests passing** across 78 test files (2 skipped)
+  - **Frontend:** 1,169 tests (71 files) - Components, hooks, integration tests
   - **Backend:** 77 tests (7 files) - Utils, middleware, business logic
+  - **Utils:** 15 tests (backend utilities)
 - **29 E2E tests passing** (chromium only)
   - 27 tests skipped (21 mobile + 6 fixme)
   - 6 tests marked as `.fixme()` - known issues to address
@@ -727,9 +728,65 @@ npm run e2e -- e2e/filters.spec.ts
 
 ## Recent Improvements (Nov 2025)
 
+**Phase 14 Complete: Code Quality & Maintainability Enhancements**
+
+### Latest Changes (Nov 11, 2025 - Session 4)
+
+1. **Code Review PR #46 - Final Non-E2E Issues Resolved:**
+   - **EmptyState Component (Issue #13):**
+     - Created reusable EmptyState component with size variants (sm/md/lg)
+     - Eliminates duplicated empty state patterns across components
+     - Added translations for "No imagery releases available" (en/ar/it)
+     - 20 comprehensive tests added (smoke, content, accessibility, edge cases)
+
+   - **Icon Registry (Issue #12):**
+     - Created dynamic icon registry for Hero Icons
+     - Eliminated 15 lines of manual icon mapping in SiteTypeIcon
+     - Supports all 200+ Hero Icons automatically via `getHeroIcon()`
+     - 33 comprehensive tests added (solid/outline variants, edge cases)
+     - No updates needed when adding new site types
+
+   - **Optional Chaining (Issue #16):**
+     - Standardized optional chaining syntax across codebase
+     - Updated 3 files: SiteDetailPanel, SitesTableMobile
+     - `site.sources?.length` pattern applied consistently
+
+   - **Test Coverage Expansion:**
+     - **Total: 1261 tests** (up from 1208, +53 tests)
+     - EmptyState: 20 new tests
+     - Icon Registry: 33 new tests
+     - All tests passing ✅ (including 2 skipped backend tests)
+
+2. **Files Created (5 new files):**
+   - src/components/EmptyState/EmptyState.tsx (115 lines)
+   - src/components/EmptyState/EmptyState.test.tsx (20 tests)
+   - src/components/EmptyState/index.ts
+   - src/config/iconRegistry.ts (110 lines)
+   - src/config/iconRegistry.test.ts (33 tests)
+
+3. **Files Modified (10 files):**
+   - src/components/AdvancedTimeline/WaybackSlider.tsx - Use EmptyState
+   - src/components/AdvancedTimeline/WaybackSlider.test.tsx - Updated tests
+   - src/components/Icons/SiteTypeIcon.tsx - Use dynamic icon registry
+   - src/components/SiteDetail/SiteDetailPanel.tsx - Optional chaining
+   - src/components/SitesTable/SitesTableMobile.tsx - Optional chaining (2x)
+   - src/i18n/en.ts, ar.ts, it.ts - Added translations
+   - src/types/i18n.ts - Added type definitions
+
+4. **Documentation Updates:**
+   - Updated CODE_REVIEW_PR46.md with Session 4 progress
+   - Updated CLAUDE.md test counts (1208 → 1261)
+   - **16 of 20 code review issues resolved (80% complete)**
+
+5. **Quality Assurance:**
+   - All 1261 tests passing ✅
+   - Production build successful ✅
+   - Zero breaking changes ✅
+   - ESLint passing ✅
+
 **Phase 13 Complete: Component Extraction & Code Organization**
 
-### Latest Changes (Nov 11, 2025 - Session 3)
+### Previous Changes (Nov 11, 2025 - Session 3)
 
 1. **Code Review PR #46 - Additional Improvements:**
    - **Component Extraction:**

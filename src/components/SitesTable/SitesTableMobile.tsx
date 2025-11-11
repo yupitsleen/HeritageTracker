@@ -245,7 +245,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                 </div>
 
                 {/* Sources */}
-                {site.sources && site.sources.length > 0 && (
+                {site.sources?.length > 0 && (
                   <div>
                     <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                       {translate("table.sources")}:
@@ -273,7 +273,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                 )}
 
                 {/* Verified By */}
-                {site.verifiedBy && site.verifiedBy.length > 0 && (
+                {site.verifiedBy?.length > 0 && (
                   <div>
                     <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                       {translate("table.verifiedBy")}:

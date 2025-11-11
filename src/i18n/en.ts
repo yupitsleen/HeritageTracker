@@ -90,6 +90,7 @@ export const en: Translations = {
     interval5Years: "5 years",
     syncMapVersion: "Sync Map Version",
     unknownDate: "Unknown",
+    noImageryAvailable: "No imagery releases available",
   },
 
   table: {

@@ -9,6 +9,7 @@ import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
 import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
 import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
+import { EmptyState } from "../EmptyState";
 
 /**
  * Callback type for Wayback release index changes
@@ -194,7 +195,10 @@ export function WaybackSlider({
   if (releases.length === 0) {
     return (
       <div className={t.timeline.container}>
-        <div className={`text-sm ${t.text.muted}`}>No imagery releases available</div>
+        <EmptyState
+          title={translate("timeline.noImageryAvailable")}
+          size="sm"
+        />
       </div>
     );
   }
