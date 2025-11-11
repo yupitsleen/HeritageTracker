@@ -13,7 +13,7 @@ test.describe('Smoke Tests - Core Pages', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for key elements
-    await expect(page).toHaveTitle(/heritage-tracker/i);
+    await expect(page).toHaveTitle(/heritage tracker/i);
 
     // Map should be visible
     const map = page.locator('.leaflet-container').first();
