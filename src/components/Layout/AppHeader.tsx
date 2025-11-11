@@ -11,6 +11,7 @@ import { NavigationLinks } from "./NavigationLinks";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
 import { Z_INDEX, BREAKPOINTS } from "../../constants/layout";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import logo from "../../assets/HeritageTrackerLogo.png";
 
 interface AppHeaderProps {
   onOpenHelp?: () => void;
@@ -93,16 +94,23 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
       {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
       <header className="bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
         <div className={cn("container mx-auto px-4", "py-1.5 relative flex items-center justify-between")}>
-          {/* Left: Title - clickable to return home */}
-          <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
+          {/* Left: Logo + Title - clickable to return home */}
+          <div className="flex items-center gap-3">
             <button
               onClick={() => navigate("/")}
-              className="cursor-pointer uppercase"
+              className="cursor-pointer flex items-center gap-3"
               aria-label="Go to home page"
             >
-              {t("header.title")}
+              <img
+                src={logo}
+                alt="Heritage Tracker Logo"
+                className="h-8 md:h-10 w-auto"
+              />
+              <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
+                {t("header.title")}
+              </h1>
             </button>
-          </h1>
+          </div>
 
           {/* Center: Main action buttons - hidden on small/medium screens, shown on large+ */}
           <div className={`hidden xl:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
