@@ -15,7 +15,10 @@ import { COLORS } from "../../config/colorThemes";
  */
 export type IndexChangeHandler = (index: number) => void;
 
-interface WaybackSliderProps {
+/**
+ * Base props for WaybackSlider
+ */
+interface BaseWaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
@@ -25,13 +28,32 @@ interface WaybackSliderProps {
   beforeIndex?: number;
   onBeforeIndexChange?: IndexChangeHandler;
   onComparisonModeToggle?: () => void;
-  // Comparison interval support
-  comparisonInterval?: ComparisonInterval;
-  onIntervalChange?: (interval: ComparisonInterval) => void;
   // Sync map version support
   syncMapVersion?: boolean;
   onSyncMapVersionToggle?: () => void;
 }
+
+/**
+ * Comparison interval props - both must be provided together
+ */
+interface WithComparisonInterval {
+  comparisonInterval: ComparisonInterval;
+  onIntervalChange: (interval: ComparisonInterval) => void;
+}
+
+/**
+ * No comparison interval props
+ */
+interface WithoutComparisonInterval {
+  comparisonInterval?: never;
+  onIntervalChange?: never;
+}
+
+/**
+ * WaybackSlider props - comparisonInterval and onIntervalChange must be provided together
+ */
+export type WaybackSliderProps = BaseWaybackSliderProps &
+  (WithComparisonInterval | WithoutComparisonInterval);
 
 /**
  * WaybackSlider - Interactive timeline for Wayback imagery releases
