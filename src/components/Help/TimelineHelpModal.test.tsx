@@ -35,7 +35,7 @@ describe("TimelineHelpModal", () => {
     it("renders overview description", () => {
       renderWithTheme(<TimelineHelpModal />);
       expect(
-        screen.getByText(/The Satellite Timeline provides access to 150\+ historical satellite imagery versions/i)
+        screen.getByText(/The Satellite Timeline provides access to 186 historical satellite imagery versions/i)
       ).toBeInTheDocument();
     });
 
