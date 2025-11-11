@@ -192,7 +192,7 @@ export const it: Translations = {
     resetTimeline: "Ripristina timeline",
     nextEvent: "Evento successivo",
     previousEvent: "Evento precedente",
-    waybackTooltip: "Naviga tra oltre 150 versioni storiche di immagini satellitari dal 2014 al 2025. Ogni linea grigia rappresenta una data di acquisizione dell'immagine. Fai clic ovunque sulla timeline per saltare a quella data. Passa il mouse sopre le linee grigie per vedere le date esatte.",
+    waybackTooltip: "Naviga tra 186 versioni storiche di immagini satellitari dal 2014 al 2025. Ogni linea grigia rappresenta una data di acquisizione dell'immagine. Fai clic ovunque sulla timeline per saltare a quella data. Passa il mouse sopre le linee grigie per vedere le date esatte.",
   },
 
   siteDetail: {

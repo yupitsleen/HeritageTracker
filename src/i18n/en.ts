@@ -192,7 +192,7 @@ export const en: Translations = {
     resetTimeline: "Reset timeline",
     nextEvent: "Next event",
     previousEvent: "Previous event",
-    waybackTooltip: "Navigate through 150+ historical satellite imagery versions from 2014-2025. Each gray line represents one imagery capture date. Click anywhere on the timeline to jump to that date. Hover over gray lines to see exact dates.",
+    waybackTooltip: "Navigate through 186 historical satellite imagery versions from 2014-2025. Each gray line represents one imagery capture date. Click anywhere on the timeline to jump to that date. Hover over gray lines to see exact dates.",
   },
 
   siteDetail: {
