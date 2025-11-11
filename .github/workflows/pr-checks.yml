@@ -62,14 +62,14 @@ jobs:
       - name: Check bundle size limit
         run: |
           BUNDLE_SIZE=${{ steps.bundle.outputs.bundle_size }}
-          MAX_SIZE=$((1024 * 1024))  # 1MB limit
+          MAX_SIZE=$((1536 * 1024))  # 1.5MB limit (increased for logo assets)
 
           if [ $BUNDLE_SIZE -gt $MAX_SIZE ]; then
-            echo "❌ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) exceeds limit (1MB)"
-            echo "::error::Bundle size exceeds 1MB limit"
+            echo "❌ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) exceeds limit (1.5MB)"
+            echo "::error::Bundle size exceeds 1.5MB limit"
             exit 1
           else
-            echo "✅ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) is within limit (1MB)"
+            echo "✅ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) is within limit (1.5MB)"
           fi
 
       - name: Comment PR with results
