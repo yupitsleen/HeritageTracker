@@ -1,11 +1,14 @@
-import { lazy, Suspense, useState, useCallback, useRef, useEffect, useMemo } from "react";
+import { lazy, Suspense, useState, useCallback, useEffect } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
+import { useFilteredSites } from "../hooks/useFilteredSites";
+import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
 import { Modal } from "../components/Modal/Modal";
 import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { Button } from "../components/Button";
 import { FilterBar } from "../components/FilterBar/FilterBar";
+import { TimelineHelpModal } from "../components/Help";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
@@ -62,57 +65,8 @@ export function Timeline() {
   // Filter state
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
 
-  // Pre-compute default date ranges ONCE at page level (not on every filter change)
-  const defaultDateRange = useMemo(() => {
-    const destructionDates = mockSites
-      .filter(site => site.dateDestroyed)
-      .map(site => new Date(site.dateDestroyed!));
-
-    if (destructionDates.length === 0) {
-      return {
-        defaultStartDate: new Date("2023-10-07"),
-        defaultEndDate: new Date(),
-      };
-    }
-
-    const timestamps = destructionDates.map(d => d.getTime());
-    return {
-      defaultStartDate: new Date(Math.min(...timestamps)),
-      defaultEndDate: new Date(Math.max(...timestamps)),
-    };
-  }, []); // Empty deps - only calculate once
-
-  const defaultYearRange = useMemo(() => {
-    const creationYears = mockSites
-      .filter(site => site.yearBuilt)
-      .map(site => {
-        const match = site.yearBuilt?.match(/^(?:BCE\s+)?(-?\d+)/);
-        return match ? parseInt(match[1], 10) * (site.yearBuilt?.startsWith('BCE') ? -1 : 1) : null;
-      })
-      .filter((year): year is number => year !== null);
-
-    if (creationYears.length === 0) {
-      return {
-        defaultStartYear: "",
-        defaultEndYear: new Date().getFullYear().toString(),
-        defaultStartEra: "CE" as const,
-      };
-    }
-
-    const minYear = Math.min(...creationYears);
-    const maxYear = Math.max(...creationYears);
-
-    const formatYear = (year: number): string => {
-      if (year < 0) return Math.abs(year).toString();
-      return year.toString();
-    };
-
-    return {
-      defaultStartYear: formatYear(minYear),
-      defaultEndYear: formatYear(maxYear),
-      defaultStartEra: minYear < 0 ? ("BCE" as const) : ("CE" as const),
-    };
-  }, []); // Empty deps - only calculate once
+  // Get default filter ranges (calculated once from all sites)
+  const { dateRange: defaultDateRange, yearRange: defaultYearRange } = useDefaultFilterRanges(mockSites);
 
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
@@ -143,47 +97,8 @@ export function Timeline() {
   // Get before release (for "before" imagery in comparison mode)
   const beforeRelease = releases.length > 0 ? releases[beforeReleaseIndex] : null;
 
-  // Apply filters to sites (memoized for performance)
-  const filteredSites = useMemo(() => {
-    return mockSites.filter(site => {
-      // Type filter
-      if (filters.selectedTypes.length > 0 && !filters.selectedTypes.includes(site.type)) {
-        return false;
-      }
-
-      // Status filter
-      if (filters.selectedStatuses.length > 0 && !filters.selectedStatuses.includes(site.status)) {
-        return false;
-      }
-
-      // Destruction date filter
-      if (filters.destructionDateStart && site.dateDestroyed) {
-        const destructionDate = new Date(site.dateDestroyed);
-        if (destructionDate < filters.destructionDateStart) {
-          return false;
-        }
-      }
-
-      if (filters.destructionDateEnd && site.dateDestroyed) {
-        const destructionDate = new Date(site.dateDestroyed);
-        if (destructionDate > filters.destructionDateEnd) {
-          return false;
-        }
-      }
-
-      // Search filter
-      if (filters.searchTerm) {
-        const searchLower = filters.searchTerm.toLowerCase();
-        const matchesName = site.name.toLowerCase().includes(searchLower);
-        const matchesArabicName = site.nameArabic?.toLowerCase().includes(searchLower);
-        if (!matchesName && !matchesArabicName) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }, [filters]);
+  // Apply filters to sites using shared hook
+  const { filteredSites } = useFilteredSites(mockSites, filters);
 
   // Filter handlers
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
@@ -243,20 +158,6 @@ export function Timeline() {
   );
 
   /**
-   * Handle timeline dot click - highlight site and optionally sync map
-   * Using useRef to avoid recreating callback when dependencies change
-   */
-  const syncMapOnDotClickRef = useRef(syncMapOnDotClick);
-  const comparisonModeEnabledRef = useRef(comparisonModeEnabled);
-  const comparisonIntervalRef = useRef(comparisonInterval);
-
-  useEffect(() => {
-    syncMapOnDotClickRef.current = syncMapOnDotClick;
-    comparisonModeEnabledRef.current = comparisonModeEnabled;
-    comparisonIntervalRef.current = comparisonInterval;
-  }, [syncMapOnDotClick, comparisonModeEnabled, comparisonInterval]);
-
-  /**
    * Handle site selection from timeline
    * When sync is enabled, automatically finds and displays the Wayback imagery
    * from right before the site was destroyed
@@ -269,8 +170,7 @@ export function Timeline() {
       setHighlightedSiteId(siteId);
 
       // If sync is enabled and a site is selected, find and show the nearest Wayback release
-      // Use refs to get current values without recreating callback
-      if (syncMapOnDotClickRef.current && siteId) {
+      if (syncMapOnDotClick && siteId) {
         const site = filteredSites.find((s: GazaSite) => s.id === siteId);
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
@@ -280,11 +180,11 @@ export function Timeline() {
           setCurrentReleaseIndex(nearestReleaseIndex);
 
           // If comparison mode is enabled, also set "before" imagery using interval
-          if (comparisonModeEnabledRef.current) {
+          if (comparisonModeEnabled) {
             // Calculate "before" date based on selected interval
             const beforeDate = calculateBeforeDate(
               destructionDate,
-              comparisonIntervalRef.current,
+              comparisonInterval,
               releases
             );
 
@@ -295,7 +195,14 @@ export function Timeline() {
         }
       }
     },
-    [findNearestWaybackRelease, filteredSites, releases]
+    [
+      syncMapOnDotClick,
+      comparisonModeEnabled,
+      comparisonInterval,
+      findNearestWaybackRelease,
+      filteredSites,
+      releases,
+    ]
   );
 
   /**
@@ -488,84 +395,7 @@ export function Timeline() {
         onClose={() => setIsHelpOpen(false)}
         zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
-        <div className="p-6">
-          <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Satellite Timeline</h2>
-
-          <div className={`space-y-4 ${t.text.body}`}>
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
-              <p className="text-sm">
-                The Satellite Timeline provides access to 150+ historical satellite imagery versions from
-                ESRI Wayback (2014-2025). This specialized view lets you see how the landscape has changed over time,
-                with precise timestamps for each satellite image capture.
-              </p>
-            </section>
-
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Satellite Map</h3>
-              <ul className="text-sm space-y-1 list-disc list-inside">
-                <li>Full-screen satellite view showing the entire region</li>
-                <li>Click on site markers to view detailed information</li>
-                <li>Markers update to match the currently selected satellite imagery date</li>
-                <li>Red markers indicate sites that were destroyed before or on the displayed date</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Wayback Timeline Slider</h3>
-              <ul className="text-sm space-y-1 list-disc list-inside">
-                <li><strong>Year Markers:</strong> Vertical labels (2014-2025) mark each calendar year</li>
-                <li><strong>Gray Lines:</strong> Each line represents one satellite imagery capture date (150+ total)</li>
-                <li><strong>Red Dots:</strong> Show when sites were destroyed (vertically stacked for visibility)</li>
-                <li><strong>Green Scrubber:</strong> Drag to view different dates, tooltip shows current date</li>
-                <li>Click anywhere on the timeline to jump to that date</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Comparison Mode</h3>
-              <ul className="text-sm space-y-1 list-disc list-inside">
-                <li><strong>Toggle:</strong> Click "Comparison Mode" button above the timeline to enable side-by-side view</li>
-                <li><strong>Two Maps:</strong> View "before" imagery (left) and "after" imagery (right) simultaneously</li>
-                <li><strong>Yellow Scrubber:</strong> Controls the "before" date (appears below timeline with yellow tooltip)</li>
-                <li><strong>Green Scrubber:</strong> Controls the "after" date (above timeline with green tooltip)</li>
-                <li><strong>Click Timeline:</strong> Moves the closest scrubber to that date</li>
-                <li><strong>Auto-Sync:</strong> When clicking site dots with sync enabled, automatically sets before/after imagery around the destruction date</li>
-                <li>Perfect for comparing satellite imagery before and after destruction events</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Navigation Controls</h3>
-              <ul className="text-sm space-y-1 list-disc list-inside">
-                <li><strong>Reset:</strong> Return to the first imagery version (2014)</li>
-                <li><strong>Previous (⏮):</strong> Go to the previous year marker</li>
-                <li><strong>Play/Pause (▶/⏸):</strong> Automatically advance through time</li>
-                <li><strong>Next (⏭):</strong> Jump to the next year marker</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Site Timeline (Bottom)</h3>
-              <ul className="text-sm space-y-1 list-disc list-inside">
-                <li>Shows destruction events for all heritage sites</li>
-                <li>Click a red dot to highlight the site on the map</li>
-                <li>Highlighted sites show with a black dot and enlarged marker</li>
-                <li>Use the "Sync map on dot click" toggle to automatically jump to the destruction date in Wayback imagery</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Tips</h3>
-              <ul className="text-sm space-y-1 list-disc list-inside">
-                <li>Compare satellite imagery before and after destruction events</li>
-                <li>Watch seasonal changes in the landscape over the years</li>
-                <li>Notice the density of gray lines - ESRI updates imagery more frequently in recent years</li>
-                <li>Use the footer links to access Statistics, About, and donation information</li>
-              </ul>
-            </section>
-          </div>
-        </div>
+        <TimelineHelpModal />
       </Modal>
 
       {/* Footer - Desktop only */}

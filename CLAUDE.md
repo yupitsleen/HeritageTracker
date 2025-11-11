@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 1053 unit tests must pass ✓ (976 frontend + 77 backend)
+npm test        # 1261 unit tests must pass ✓ (1169 frontend + 77 backend + 15 backend utils)
 npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -33,11 +33,11 @@ style: standardize FilterBar opacity
 ```
 
 **Commit only when:**
-✓ Feature working ✓ 1053/1053 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
+✓ Feature working ✓ 1261/1261 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
 
 ### Quality Gates
 
-- **1053/1053 tests passing** before every commit (976 frontend + 77 backend)
+- **1261/1261 tests passing** before every commit (1169 frontend + 77 backend + 15 backend utils)
 - Dev server stays running (HMR for instant feedback)
 - Apply DRY/KISS/SOLID principles
 - Check for existing components/hooks before creating new ones
@@ -448,9 +448,10 @@ hooks/
 
 ### Current Coverage
 
-- **1,165 unit tests passing** across 76 test files (2 skipped)
-  - **Frontend:** 1,088 tests (69 files) - Components, hooks, integration tests
+- **1,261 unit tests passing** across 78 test files (2 skipped)
+  - **Frontend:** 1,169 tests (71 files) - Components, hooks, integration tests
   - **Backend:** 77 tests (7 files) - Utils, middleware, business logic
+  - **Utils:** 15 tests (backend utilities)
 - **29 E2E tests passing** (chromium only)
   - 27 tests skipped (21 mobile + 6 fixme)
   - 6 tests marked as `.fixme()` - known issues to address
@@ -727,9 +728,148 @@ npm run e2e -- e2e/filters.spec.ts
 
 ## Recent Improvements (Nov 2025)
 
+**Phase 14 Complete: Code Quality & Maintainability Enhancements**
+
+### Latest Changes (Nov 11, 2025 - Session 4)
+
+1. **Code Review PR #46 - Final Non-E2E Issues Resolved:**
+   - **EmptyState Component (Issue #13):**
+     - Created reusable EmptyState component with size variants (sm/md/lg)
+     - Eliminates duplicated empty state patterns across components
+     - Added translations for "No imagery releases available" (en/ar/it)
+     - 20 comprehensive tests added (smoke, content, accessibility, edge cases)
+
+   - **Icon Registry (Issue #12):**
+     - Created dynamic icon registry for Hero Icons
+     - Eliminated 15 lines of manual icon mapping in SiteTypeIcon
+     - Supports all 200+ Hero Icons automatically via `getHeroIcon()`
+     - 33 comprehensive tests added (solid/outline variants, edge cases)
+     - No updates needed when adding new site types
+
+   - **Optional Chaining (Issue #16):**
+     - Standardized optional chaining syntax across codebase
+     - Updated 3 files: SiteDetailPanel, SitesTableMobile
+     - `site.sources?.length` pattern applied consistently
+
+   - **Test Coverage Expansion:**
+     - **Total: 1261 tests** (up from 1208, +53 tests)
+     - EmptyState: 20 new tests
+     - Icon Registry: 33 new tests
+     - All tests passing ✅ (including 2 skipped backend tests)
+
+2. **Files Created (5 new files):**
+   - src/components/EmptyState/EmptyState.tsx (115 lines)
+   - src/components/EmptyState/EmptyState.test.tsx (20 tests)
+   - src/components/EmptyState/index.ts
+   - src/config/iconRegistry.ts (110 lines)
+   - src/config/iconRegistry.test.ts (33 tests)
+
+3. **Files Modified (10 files):**
+   - src/components/AdvancedTimeline/WaybackSlider.tsx - Use EmptyState
+   - src/components/AdvancedTimeline/WaybackSlider.test.tsx - Updated tests
+   - src/components/Icons/SiteTypeIcon.tsx - Use dynamic icon registry
+   - src/components/SiteDetail/SiteDetailPanel.tsx - Optional chaining
+   - src/components/SitesTable/SitesTableMobile.tsx - Optional chaining (2x)
+   - src/i18n/en.ts, ar.ts, it.ts - Added translations
+   - src/types/i18n.ts - Added type definitions
+
+4. **Documentation Updates:**
+   - Updated CODE_REVIEW_PR46.md with Session 4 progress
+   - Updated CLAUDE.md test counts (1208 → 1261)
+   - **16 of 20 code review issues resolved (80% complete)**
+
+5. **Quality Assurance:**
+   - All 1261 tests passing ✅
+   - Production build successful ✅
+   - Zero breaking changes ✅
+   - ESLint passing ✅
+
+**Phase 13 Complete: Component Extraction & Code Organization**
+
+### Previous Changes (Nov 11, 2025 - Session 3)
+
+1. **Code Review PR #46 - Additional Improvements:**
+   - **Component Extraction:**
+     - Extracted TimelineHelpModal component from Timeline.tsx (~82 lines)
+     - Timeline.tsx reduced: 485 → 361 lines (26% reduction, 124 lines removed)
+     - Help content now reusable, testable, and maintainable
+
+   - **Test Coverage Expansion:**
+     - Added 11 comprehensive tests for TimelineHelpModal
+     - Coverage: Smoke tests, content verification, accessibility checks
+     - **Total: 1208 tests** (up from 1197, +11 tests)
+     - All tests passing ✅ (including 2 skipped backend tests)
+
+   - **Code Quality:**
+     - Issue #2 (Critical): Timeline.tsx complexity - PARTIAL (26% reduction)
+     - Issue #11 (Medium): Help modal extraction - COMPLETE
+     - Production build successful ✅
+     - Zero breaking changes
+
+2. **Files Created (3 new files):**
+   - src/components/Help/TimelineHelpModal.tsx (96 lines)
+   - src/components/Help/TimelineHelpModal.test.tsx (103 lines, 11 tests)
+   - src/components/Help/index.ts (barrel export)
+
+3. **Documentation Updates:**
+   - Updated CODE_REVIEW_PR46.md with Session 3 progress
+   - Updated CLAUDE.md test counts (1182 → 1208)
+   - 13 of 20 code review issues resolved (65% complete)
+
+**Phase 12 Complete: Code Quality & Accessibility Improvements**
+
+### Previous Changes (Nov 11, 2025 - Sessions 1-2)
+
+1. **Code Review PR #46 Implementation:**
+   - **TypeScript Improvements:**
+     - Fixed WaybackSlider optional props with discriminated union types
+     - `comparisonInterval` and `onIntervalChange` must be provided together or both omitted
+     - Eliminates TypeScript errors from mismatched optional prop combinations
+
+   - **Accessibility (WCAG 2.1 AA Compliance):**
+     - Added ARIA labels to FilterBar mobile button (`aria-label`, `aria-expanded`)
+     - Added `aria-hidden="true"` to decorative SVG icons
+     - Multi-language support for "Open filters menu" (English, Arabic, Italian)
+
+   - **DRY Principle Improvements:**
+     - Eliminated duplicated filter logic in Timeline.tsx (~40 lines removed)
+     - Created `useDefaultFilterRanges` hook for reusable date/year range calculations
+     - Removed useRef anti-pattern that obscured React data flow
+
+   - **Configuration Management:**
+     - Extracted magic numbers to `WAYBACK_FALLBACKS` constant
+     - Centralized fallback intervals: 10 years, 7 days, 30 days
+     - Eliminates hardcoded values across codebase
+
+   - **Documentation:**
+     - Expanded JSDoc in intervalCalculations.ts (7 → 60+ lines)
+     - Added comprehensive @example blocks and @see cross-references
+     - Documented all 5 interval types with behavior explanations
+
+2. **Test Coverage Expansion (Sessions 1-2):**
+   - **Total: 1197 tests** (up from 1053, +144 tests from Sessions 1-2)
+   - Added 10 edge case tests for interval calculations
+   - Added 7 tests for new useDefaultFilterRanges hook
+   - Added 15 tests for intervalCalculations SOLID refactoring
+   - All tests passing ✅ (including 2 skipped backend tests)
+
+3. **Quality Assurance:**
+   - ESLint passing (fixed `any` type in test file)
+   - Zero breaking changes across 3 commits
+   - All quality gates passed
+
+4. **Files Modified (15 files):**
+   - Timeline.tsx: Refactored with hooks, removed anti-patterns
+   - WaybackSlider.tsx: TypeScript discriminated unions
+   - FilterBar.tsx: ARIA accessibility improvements
+   - intervalCalculations.ts: JSDoc expansion, config usage
+   - useDefaultFilterRanges.ts: New hook created
+   - i18n files (en/ar/it): Translation additions
+   - Test files: Edge case coverage expansion
+
 **Phase 11 Complete: Heritage Site Expansion**
 
-### Latest Changes (Nov 9, 2025)
+### Previous Changes (Nov 9, 2025)
 
 1. **Site Database Expansion (45 → 70 sites):**
    - **21 individual UNESCO-verified sites added:**
@@ -757,7 +897,7 @@ npm run e2e -- e2e/filters.spec.ts
    - Full icons and Arabic translations for all new types
 
 4. **Quality Assurance:**
-   - All 1053/1053 tests passing ✅
+   - All tests passing ✅ (1053 at time of completion)
    - Updated test expectations across 7 files
    - Dev server runs without errors
    - Research documented in [docs/research/](docs/research/)
@@ -812,7 +952,7 @@ npm run e2e -- e2e/filters.spec.ts
      - Comprehensive boundary testing
 
 2. **Test Coverage:**
-   - **Total:** 797 tests passing (720 frontend + 77 backend)
+   - **Total:** 797 tests passing at time of completion (720 frontend + 77 backend)
    - **Backend coverage:** Utilities 100%, Middleware 100%
    - **Zero test failures** - All quality gates passed
    - Test patterns established for future expansion

@@ -1,15 +1,6 @@
-import {
-  BuildingLibraryIcon,
-  MagnifyingGlassIcon,
-  HomeModernIcon,
-  FlagIcon,
-  ArchiveBoxIcon,
-  MoonIcon,
-  PlusIcon,
-  HeartIcon,
-} from "@heroicons/react/24/solid";
 import type { GazaSite } from "../../types";
 import { getSiteTypeConfig } from "../../config/data.config";
+import { getHeroIcon } from "../../config/iconRegistry";
 
 interface SiteTypeIconProps {
   type: GazaSite["type"];
@@ -63,19 +54,9 @@ export function SiteTypeIcon({
   if (typeConfig.icon.startsWith('heroicon:')) {
     const iconName = typeConfig.icon.replace('heroicon:', '');
 
-    // Map known heroicons
-    const iconMap: Record<string, React.ComponentType<{ className?: string; 'aria-label'?: string; role?: string }>> = {
-      'BuildingLibraryIcon': BuildingLibraryIcon,
-      'MagnifyingGlassIcon': MagnifyingGlassIcon,
-      'HomeModernIcon': HomeModernIcon,
-      'FlagIcon': FlagIcon,
-      'ArchiveBoxIcon': ArchiveBoxIcon,
-      'MoonIcon': MoonIcon,
-      'PlusIcon': PlusIcon,
-      'HeartIcon': HeartIcon,
-    };
+    // Dynamically get icon from registry (no manual mapping needed!)
+    const IconComponent = getHeroIcon(iconName, "solid");
 
-    const IconComponent = iconMap[iconName];
     if (IconComponent) {
       return (
         <IconComponent
@@ -83,6 +64,14 @@ export function SiteTypeIcon({
           aria-label={typeConfig.label}
           role="img"
         />
+      );
+    }
+
+    // Fallback if icon not found
+    if (import.meta.env.DEV) {
+      console.warn(
+        `Site type "${type}" references unknown Hero Icon "${iconName}". ` +
+          `Falling back to Unicode icon.`
       );
     }
   }

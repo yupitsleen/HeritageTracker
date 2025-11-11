@@ -9,13 +9,17 @@ import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
 import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
 import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
+import { EmptyState } from "../EmptyState";
 
 /**
  * Callback type for Wayback release index changes
  */
 export type IndexChangeHandler = (index: number) => void;
 
-interface WaybackSliderProps {
+/**
+ * Base props for WaybackSlider
+ */
+interface BaseWaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
@@ -25,13 +29,32 @@ interface WaybackSliderProps {
   beforeIndex?: number;
   onBeforeIndexChange?: IndexChangeHandler;
   onComparisonModeToggle?: () => void;
-  // Comparison interval support
-  comparisonInterval?: ComparisonInterval;
-  onIntervalChange?: (interval: ComparisonInterval) => void;
   // Sync map version support
   syncMapVersion?: boolean;
   onSyncMapVersionToggle?: () => void;
 }
+
+/**
+ * Comparison interval props - both must be provided together
+ */
+interface WithComparisonInterval {
+  comparisonInterval: ComparisonInterval;
+  onIntervalChange: (interval: ComparisonInterval) => void;
+}
+
+/**
+ * No comparison interval props
+ */
+interface WithoutComparisonInterval {
+  comparisonInterval?: never;
+  onIntervalChange?: never;
+}
+
+/**
+ * WaybackSlider props - comparisonInterval and onIntervalChange must be provided together
+ */
+export type WaybackSliderProps = BaseWaybackSliderProps &
+  (WithComparisonInterval | WithoutComparisonInterval);
 
 /**
  * WaybackSlider - Interactive timeline for Wayback imagery releases
@@ -172,7 +195,10 @@ export function WaybackSlider({
   if (releases.length === 0) {
     return (
       <div className={t.timeline.container}>
-        <div className={`text-sm ${t.text.muted}`}>No imagery releases available</div>
+        <EmptyState
+          title={translate("timeline.noImageryAvailable")}
+          size="sm"
+        />
       </div>
     );
   }
@@ -353,7 +379,7 @@ export function WaybackSlider({
                 }`}
               >
                 <DateLabel
-                  date={beforeRelease?.releaseDate || "Unknown"}
+                  date={beforeRelease?.releaseDate || translate("timeline.unknownDate")}
                   variant="yellow"
                   size="sm"
                 />
@@ -382,7 +408,7 @@ export function WaybackSlider({
               }`}
             >
               <DateLabel
-                date={currentRelease?.releaseDate || "Unknown"}
+                date={currentRelease?.releaseDate || translate("timeline.unknownDate")}
                 variant="green"
                 size="sm"
               />

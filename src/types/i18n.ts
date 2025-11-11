@@ -131,6 +131,8 @@ export interface Translations {
     interval1Year: string;
     interval5Years: string;
     syncMapVersion: string;
+    unknownDate: string;
+    noImageryAvailable: string;
   };
 
   /** Table component */
@@ -176,6 +178,7 @@ export interface Translations {
     searchPlaceholder: string;
     search: string;
     clearSearch: string;
+    openFilters: string;
     typeFilter: string;
     statusFilter: string;
     allTypes: string;

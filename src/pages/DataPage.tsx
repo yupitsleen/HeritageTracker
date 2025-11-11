@@ -6,6 +6,7 @@ import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Modal } from "../components/Modal/Modal";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTheme } from "../contexts/ThemeContext";
+import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
 import type { GazaSite } from "../types";
@@ -21,57 +22,8 @@ export function DataPage() {
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
   const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
 
-  // Pre-compute default date ranges ONCE at page level (not on every filter change)
-  const defaultDateRange = useMemo(() => {
-    const destructionDates = mockSites
-      .filter(site => site.dateDestroyed)
-      .map(site => new Date(site.dateDestroyed!));
-
-    if (destructionDates.length === 0) {
-      return {
-        defaultStartDate: new Date("2023-10-07"),
-        defaultEndDate: new Date(),
-      };
-    }
-
-    const timestamps = destructionDates.map(d => d.getTime());
-    return {
-      defaultStartDate: new Date(Math.min(...timestamps)),
-      defaultEndDate: new Date(Math.max(...timestamps)),
-    };
-  }, []); // Empty deps - only calculate once
-
-  const defaultYearRange = useMemo(() => {
-    const creationYears = mockSites
-      .filter(site => site.yearBuilt)
-      .map(site => {
-        const match = site.yearBuilt?.match(/^(?:BCE\s+)?(-?\d+)/);
-        return match ? parseInt(match[1], 10) * (site.yearBuilt?.startsWith('BCE') ? -1 : 1) : null;
-      })
-      .filter((year): year is number => year !== null);
-
-    if (creationYears.length === 0) {
-      return {
-        defaultStartYear: "",
-        defaultEndYear: new Date().getFullYear().toString(),
-        defaultStartEra: "CE" as const,
-      };
-    }
-
-    const minYear = Math.min(...creationYears);
-    const maxYear = Math.max(...creationYears);
-
-    const formatYear = (year: number): string => {
-      if (year < 0) return Math.abs(year).toString();
-      return year.toString();
-    };
-
-    return {
-      defaultStartYear: formatYear(minYear),
-      defaultEndYear: formatYear(maxYear),
-      defaultStartEra: minYear < 0 ? ("BCE" as const) : ("CE" as const),
-    };
-  }, []); // Empty deps - only calculate once
+  // Use shared hook for default filter ranges (eliminates 50 lines of duplicated logic)
+  const { dateRange: defaultDateRange, yearRange: defaultYearRange } = useDefaultFilterRanges(mockSites);
 
   // Apply filters to sites (memoized for performance)
   const filteredSites = useMemo(() => {
