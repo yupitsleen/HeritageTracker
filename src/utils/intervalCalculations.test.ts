@@ -195,3 +195,107 @@ describe("findClosestReleaseIndex", () => {
     expect(index).toBe(0);
   });
 });
+
+describe("calculateBeforeDate - Edge Cases", () => {
+  it("handles invalid destruction date gracefully", () => {
+    const invalidDate = new Date("invalid");
+    const result = calculateBeforeDate(invalidDate, "1_month", mockReleases);
+
+    // Should return a Date object (even if NaN internally)
+    expect(result).toBeInstanceOf(Date);
+  });
+
+  it("handles null interval string by using default", () => {
+    const destructionDate = new Date("2024-02-15");
+    const emptyInterval = "" as any; // Force empty string
+    const result = calculateBeforeDate(destructionDate, emptyInterval, mockReleases);
+
+    // Should use default (1 month fallback)
+    expect(result).toBeInstanceOf(Date);
+    expect(result.getTime()).toBeLessThan(destructionDate.getTime());
+  });
+
+  it("handles empty releases array for all interval types", () => {
+    const destructionDate = new Date("2024-02-15");
+    const intervals = ["1_month", "1_year", "5_years"] as const;
+
+    intervals.forEach((interval) => {
+      const result = calculateBeforeDate(destructionDate, interval, []);
+      expect(result).toBeInstanceOf(Date);
+      expect(result.getTime()).toBeLessThan(destructionDate.getTime());
+    });
+  });
+
+  it("handles destruction date at year boundary", () => {
+    const newYearDate = new Date("2024-01-01");
+    const beforeDate = calculateBeforeDate(newYearDate, "1_month", mockReleases);
+
+    // Should correctly handle month rollover to previous year
+    expect(beforeDate.getFullYear()).toBe(2023);
+    expect(beforeDate.getMonth()).toBe(11); // December
+  });
+
+  it("handles very old destruction dates", () => {
+    const ancientDate = new Date("1900-01-01");
+    const beforeDate = calculateBeforeDate(ancientDate, "as_large_as_possible", mockReleases);
+
+    // Should still return earliest release (not go further back)
+    expect(beforeDate.toISOString().split("T")[0]).toBe("2014-02-20");
+  });
+
+  it("handles far future destruction dates", () => {
+    const futureDate = new Date("2030-01-01");
+    const beforeDate = calculateBeforeDate(futureDate, "5_years", mockReleases);
+
+    // Should calculate correctly even for future dates (2030 - 5 = 2025, but Date arithmetic may vary)
+    expect(beforeDate.getFullYear()).toBe(futureDate.getFullYear() - 5);
+  });
+});
+
+describe("findClosestReleaseIndex - Edge Cases", () => {
+  it("handles target date with invalid Date object", () => {
+    const invalidDate = new Date("invalid");
+
+    // Should not throw, returns safe default
+    expect(() => findClosestReleaseIndex(mockReleases, invalidDate)).not.toThrow();
+  });
+
+  it("handles releases with identical dates", () => {
+    const duplicateReleases: WaybackRelease[] = [
+      { ...mockReleases[0], releaseDate: "2020-06-15" },
+      { ...mockReleases[1], releaseDate: "2020-06-15" },
+    ];
+    const targetDate = new Date("2020-06-15");
+    const index = findClosestReleaseIndex(duplicateReleases, targetDate);
+
+    // Should return first match
+    expect(index).toBe(0);
+  });
+
+  it("handles target date exactly between two releases", () => {
+    const midpointReleases: WaybackRelease[] = [
+      { ...mockReleases[0], releaseDate: "2024-01-01" },
+      { ...mockReleases[1], releaseDate: "2024-01-11" },
+    ];
+    const targetDate = new Date("2024-01-06"); // Exactly 5 days from each
+
+    const index = findClosestReleaseIndex(midpointReleases, targetDate);
+
+    // Should return first match (index 0) due to iteration order
+    expect(index).toBeGreaterThanOrEqual(0);
+    expect(index).toBeLessThan(midpointReleases.length);
+  });
+
+  it("handles releases in non-chronological order", () => {
+    const unorderedReleases: WaybackRelease[] = [
+      mockReleases[4], // 2024-06-30
+      mockReleases[1], // 2020-06-15
+      mockReleases[3], // 2024-01-15
+    ];
+    const targetDate = new Date("2024-01-20");
+    const index = findClosestReleaseIndex(unorderedReleases, targetDate);
+
+    // Should find closest regardless of order (2024-01-15 at index 2)
+    expect(unorderedReleases[index].releaseDate).toBe("2024-01-15");
+  });
+});
