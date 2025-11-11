@@ -27,5 +27,31 @@ export default defineConfig({
         },
       },
     },
+    // Code coverage configuration
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'json'],
+      exclude: [
+        'node_modules/',
+        'e2e/',
+        'dist/',
+        '**/*.test.{ts,tsx}',
+        '**/*.spec.{ts,tsx}',
+        '**/test-utils/**',
+        '**/__tests__/**',
+        'vitest.setup.ts',
+        'vite.config.ts',
+        'vitest.config.ts',
+        'playwright.config.ts',
+        'server/**', // Backend code (separate coverage needed)
+        'database/**',
+      ],
+      include: ['src/**/*.{ts,tsx}'],
+      all: true,
+      lines: 80,
+      functions: 80,
+      branches: 80,
+      statements: 80,
+    },
   },
 })

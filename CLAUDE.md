@@ -541,6 +541,13 @@ npm test              # All unit tests (watch mode)
 npm test -- --run     # Single run (for CI)
 npm run test:ui       # Vitest UI
 
+# Code Coverage
+npm run test:coverage    # Run tests with coverage report (terminal + HTML)
+npm run test:coverage:ui # Run tests with coverage in UI mode
+# HTML report: coverage/index.html (open in browser)
+# Terminal report: Shows % coverage for all files
+# Coverage thresholds: 80% (lines, functions, branches, statements)
+
 # E2E Tests
 npm run e2e           # All E2E tests (headless)
 npm run e2e:ui        # E2E tests with UI (interactive debugging)
@@ -556,6 +563,41 @@ npm test src          # Frontend tests only
 npm test server       # Backend tests only
 npm test server/utils # Specific backend folder
 ```
+
+### Code Coverage
+
+**Tool:** Vitest + @vitest/coverage-v8 (built-in, zero config)
+
+**Reports:**
+- **HTML:** `coverage/index.html` - Interactive, color-coded, line-by-line coverage
+- **Terminal:** Shows % coverage table after each test run
+- **JSON:** `coverage/coverage-final.json` - Raw coverage data for CI/CD
+
+**Configuration:** (vitest.config.ts)
+- Provider: v8 (fast, accurate)
+- Thresholds: 80% for lines/functions/branches/statements
+- Excludes: test files, config files, backend code (separate coverage)
+- Includes: All src/**/*.{ts,tsx} files
+
+**Usage:**
+```bash
+# Generate coverage report
+npm run test:coverage
+
+# Open HTML report in browser
+# Windows: start coverage/index.html
+# Mac: open coverage/index.html
+# Linux: xdg-open coverage/index.html
+
+# View in UI mode (live coverage updates)
+npm run test:coverage:ui
+```
+
+**What to look for:**
+- Red lines = not covered by tests (need tests)
+- Yellow lines = partially covered (branches not tested)
+- Green lines = fully covered
+- 80%+ coverage = good, 90%+ = excellent
 
 ### Backend Test Files
 
