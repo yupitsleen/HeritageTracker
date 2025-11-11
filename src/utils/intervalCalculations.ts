@@ -6,6 +6,7 @@
 
 import type { ComparisonInterval } from "../types/waybackTimelineTypes";
 import type { WaybackRelease } from "../services/waybackService";
+import { WAYBACK_FALLBACKS } from "../config/waybackTimeline";
 
 /**
  * Calculate the "before" date based on the selected interval
@@ -28,9 +29,11 @@ export function calculateBeforeDate(
       if (releases.length > 0) {
         return new Date(releases[0].releaseDate);
       }
-      // Fallback: 10 years before destruction
+      // Fallback: Use configured large interval before destruction
       const fallbackDate = new Date(destructionTime);
-      fallbackDate.setFullYear(fallbackDate.getFullYear() - 10);
+      fallbackDate.setFullYear(
+        fallbackDate.getFullYear() - WAYBACK_FALLBACKS.LARGE_INTERVAL_YEARS
+      );
       return fallbackDate;
     }
 
@@ -48,16 +51,16 @@ export function calculateBeforeDate(
         );
       }
 
-      // Fallback: 1 week before destruction
+      // Fallback: Use configured small interval before destruction
       const fallbackDate = new Date(destructionTime);
-      fallbackDate.setDate(fallbackDate.getDate() - 7);
+      fallbackDate.setDate(fallbackDate.getDate() - WAYBACK_FALLBACKS.SMALL_INTERVAL_DAYS);
       return fallbackDate;
     }
 
     case "1_month": {
-      // 30 days before destruction
+      // Use configured days for one month before destruction
       const beforeDate = new Date(destructionTime);
-      beforeDate.setDate(beforeDate.getDate() - 30);
+      beforeDate.setDate(beforeDate.getDate() - WAYBACK_FALLBACKS.ONE_MONTH_DAYS);
       return beforeDate;
     }
 
@@ -76,9 +79,9 @@ export function calculateBeforeDate(
     }
 
     default: {
-      // Default to 1 month
+      // Default to 1 month (using configured days)
       const beforeDate = new Date(destructionTime);
-      beforeDate.setDate(beforeDate.getDate() - 30);
+      beforeDate.setDate(beforeDate.getDate() - WAYBACK_FALLBACKS.ONE_MONTH_DAYS);
       return beforeDate;
     }
   }

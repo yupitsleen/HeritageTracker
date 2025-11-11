@@ -318,3 +318,26 @@ export const WAYBACK_TIMELINE = {
   SCRUBBER_TOOLTIP_HEIGHT:
     DEFAULT_WAYBACK_TIMELINE_CONFIG.layoutConfig.scrubberTooltip.height,
 } as const;
+
+/**
+ * Wayback fallback intervals (for comparison mode)
+ * Used when no Wayback releases are available for interval calculation
+ */
+export const WAYBACK_FALLBACKS = {
+  /**
+   * Fallback interval for "as_large_as_possible" mode (in years)
+   * Used when no releases are available before destruction date
+   */
+  LARGE_INTERVAL_YEARS: 10,
+
+  /**
+   * Fallback interval for "as_small_as_possible" mode (in days)
+   * Used when no releases are available immediately before destruction
+   */
+  SMALL_INTERVAL_DAYS: 7,
+
+  /**
+   * Number of days in one month (used for "1_month" interval)
+   */
+  ONE_MONTH_DAYS: 30,
+} as const;

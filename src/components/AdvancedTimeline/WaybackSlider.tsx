@@ -353,7 +353,7 @@ export function WaybackSlider({
                 }`}
               >
                 <DateLabel
-                  date={beforeRelease?.releaseDate || "Unknown"}
+                  date={beforeRelease?.releaseDate || translate("timeline.unknownDate")}
                   variant="yellow"
                   size="sm"
                 />
@@ -382,7 +382,7 @@ export function WaybackSlider({
               }`}
             >
               <DateLabel
-                date={currentRelease?.releaseDate || "Unknown"}
+                date={currentRelease?.releaseDate || translate("timeline.unknownDate")}
                 variant="green"
                 size="sm"
               />

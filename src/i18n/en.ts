@@ -89,6 +89,7 @@ export const en: Translations = {
     interval1Year: "~1 year",
     interval5Years: "~5 years",
     syncMapVersion: "Sync Map Version",
+    unknownDate: "Unknown",
   },
 
   table: {

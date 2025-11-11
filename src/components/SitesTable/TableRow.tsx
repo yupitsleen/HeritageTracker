@@ -126,7 +126,7 @@ export function TableRow({
       )}
       {visibleColumns.has("dateDestroyedIslamic") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {site.dateDestroyedIslamic || "N/A"}
+          {site.dateDestroyedIslamic || translate("common.na")}
         </td>
       )}
       {visibleColumns.has("yearBuilt") && (
@@ -134,7 +134,7 @@ export function TableRow({
       )}
       {visibleColumns.has("yearBuiltIslamic") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {site.yearBuiltIslamic || "N/A"}
+          {site.yearBuiltIslamic || translate("common.na")}
         </td>
       )}
       {visibleColumns.has("lastUpdated") && (

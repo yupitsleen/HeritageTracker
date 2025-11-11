@@ -89,6 +89,7 @@ export const ar: Translations = {
     interval1Year: "~سنة واحدة",
     interval5Years: "~٥ سنوات",
     syncMapVersion: "مزامنة إصدار الخريطة",
+    unknownDate: "غير معروف",
   },
 
   table: {

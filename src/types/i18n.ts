@@ -131,6 +131,7 @@ export interface Translations {
     interval1Year: string;
     interval5Years: string;
     syncMapVersion: string;
+    unknownDate: string;
   };
 
   /** Table component */
