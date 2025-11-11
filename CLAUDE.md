@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 1182 unit tests must pass ✓ (1105 frontend + 77 backend)
+npm test        # 1208 unit tests must pass ✓ (1116 frontend + 77 backend + 15 backend utils)
 npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -33,11 +33,11 @@ style: standardize FilterBar opacity
 ```
 
 **Commit only when:**
-✓ Feature working ✓ 1182/1182 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
+✓ Feature working ✓ 1208/1208 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
 
 ### Quality Gates
 
-- **1182/1182 tests passing** before every commit (1105 frontend + 77 backend)
+- **1208/1208 tests passing** before every commit (1116 frontend + 77 backend + 15 backend utils)
 - Dev server stays running (HMR for instant feedback)
 - Apply DRY/KISS/SOLID principles
 - Check for existing components/hooks before creating new ones
@@ -727,9 +727,41 @@ npm run e2e -- e2e/filters.spec.ts
 
 ## Recent Improvements (Nov 2025)
 
+**Phase 13 Complete: Component Extraction & Code Organization**
+
+### Latest Changes (Nov 11, 2025 - Session 3)
+
+1. **Code Review PR #46 - Additional Improvements:**
+   - **Component Extraction:**
+     - Extracted TimelineHelpModal component from Timeline.tsx (~82 lines)
+     - Timeline.tsx reduced: 485 → 361 lines (26% reduction, 124 lines removed)
+     - Help content now reusable, testable, and maintainable
+
+   - **Test Coverage Expansion:**
+     - Added 11 comprehensive tests for TimelineHelpModal
+     - Coverage: Smoke tests, content verification, accessibility checks
+     - **Total: 1208 tests** (up from 1197, +11 tests)
+     - All tests passing ✅ (including 2 skipped backend tests)
+
+   - **Code Quality:**
+     - Issue #2 (Critical): Timeline.tsx complexity - PARTIAL (26% reduction)
+     - Issue #11 (Medium): Help modal extraction - COMPLETE
+     - Production build successful ✅
+     - Zero breaking changes
+
+2. **Files Created (3 new files):**
+   - src/components/Help/TimelineHelpModal.tsx (96 lines)
+   - src/components/Help/TimelineHelpModal.test.tsx (103 lines, 11 tests)
+   - src/components/Help/index.ts (barrel export)
+
+3. **Documentation Updates:**
+   - Updated CODE_REVIEW_PR46.md with Session 3 progress
+   - Updated CLAUDE.md test counts (1182 → 1208)
+   - 13 of 20 code review issues resolved (65% complete)
+
 **Phase 12 Complete: Code Quality & Accessibility Improvements**
 
-### Latest Changes (Nov 11, 2025)
+### Previous Changes (Nov 11, 2025 - Sessions 1-2)
 
 1. **Code Review PR #46 Implementation:**
    - **TypeScript Improvements:**
@@ -757,10 +789,11 @@ npm run e2e -- e2e/filters.spec.ts
      - Added comprehensive @example blocks and @see cross-references
      - Documented all 5 interval types with behavior explanations
 
-2. **Test Coverage Expansion:**
-   - **Total: 1182 tests** (up from 1053, +129 tests)
+2. **Test Coverage Expansion (Sessions 1-2):**
+   - **Total: 1197 tests** (up from 1053, +144 tests from Sessions 1-2)
    - Added 10 edge case tests for interval calculations
    - Added 7 tests for new useDefaultFilterRanges hook
+   - Added 15 tests for intervalCalculations SOLID refactoring
    - All tests passing ✅ (including 2 skipped backend tests)
 
 3. **Quality Assurance:**
