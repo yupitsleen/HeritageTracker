@@ -23,7 +23,8 @@
       "Bash(Select-String -Pattern \"Test Files|Tests\\s\")",
       "Bash(Select-Object -Last 2)",
       "Bash(npm run e2e:*)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "Bash(powershell -Command:*)"
     ],
     "deny": [],
     "ask": []
