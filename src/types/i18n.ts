@@ -177,6 +177,7 @@ export interface Translations {
     searchPlaceholder: string;
     search: string;
     clearSearch: string;
+    openFilters: string;
     typeFilter: string;
     statusFilter: string;
     allTypes: string;

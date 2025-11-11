@@ -207,7 +207,7 @@ describe("calculateBeforeDate - Edge Cases", () => {
 
   it("handles null interval string by using default", () => {
     const destructionDate = new Date("2024-02-15");
-    const emptyInterval = "" as any; // Force empty string
+    const emptyInterval = "" as ComparisonInterval; // Force empty string to test fallback
     const result = calculateBeforeDate(destructionDate, emptyInterval, mockReleases);
 
     // Should use default (1 month fallback)

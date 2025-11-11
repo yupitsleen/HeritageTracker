@@ -133,6 +133,7 @@ export const ar: Translations = {
     searchPlaceholder: "بحث...",
     search: "بحث",
     clearSearch: "مسح البحث",
+    openFilters: "فتح قائمة المرشحات",
     typeFilter: "تصفية النوع",
     statusFilter: "تصفية الحالة",
     allTypes: "جميع الأنواع",

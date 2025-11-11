@@ -133,6 +133,7 @@ export const it: Translations = {
     searchPlaceholder: "Cerca...",
     search: "Cerca",
     clearSearch: "Cancella ricerca",
+    openFilters: "Apri menu filtri",
     typeFilter: "Filtro Tipo",
     statusFilter: "Filtro Stato",
     allTypes: "Tutti i Tipi",
