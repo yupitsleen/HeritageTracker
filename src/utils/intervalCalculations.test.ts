@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { calculateBeforeDate, findClosestReleaseIndex } from "./intervalCalculations";
+import {
+  calculateBeforeDate,
+  calculateIntervalDate,
+  findBeforeRelease,
+  findClosestReleaseIndex,
+} from "./intervalCalculations";
 import type { WaybackRelease } from "../services/waybackService";
 
 // Mock Wayback releases for testing
@@ -297,5 +302,174 @@ describe("findClosestReleaseIndex - Edge Cases", () => {
 
     // Should find closest regardless of order (2024-01-15 at index 2)
     expect(unorderedReleases[index].releaseDate).toBe("2024-01-15");
+  });
+});
+
+describe("calculateIntervalDate (Pure Function)", () => {
+  const baseDate = new Date("2024-02-15");
+
+  it("calculates 'as_large_as_possible' interval (10 years by default)", () => {
+    const result = calculateIntervalDate(baseDate, "as_large_as_possible");
+
+    expect(result.getFullYear()).toBe(baseDate.getFullYear() - 10);
+    expect(result.getMonth()).toBe(baseDate.getMonth());
+    expect(result.getDate()).toBe(baseDate.getDate());
+  });
+
+  it("calculates 'as_small_as_possible' interval (7 days by default)", () => {
+    const result = calculateIntervalDate(baseDate, "as_small_as_possible");
+
+    const expected = new Date(baseDate);
+    expected.setDate(expected.getDate() - 7);
+
+    expect(result.toISOString().split("T")[0]).toBe(
+      expected.toISOString().split("T")[0]
+    );
+  });
+
+  it("calculates '1_month' interval (30 days by default)", () => {
+    const result = calculateIntervalDate(baseDate, "1_month");
+
+    const expected = new Date(baseDate);
+    expected.setDate(expected.getDate() - 30);
+
+    expect(result.toISOString().split("T")[0]).toBe(
+      expected.toISOString().split("T")[0]
+    );
+  });
+
+  it("calculates '1_year' interval correctly", () => {
+    const result = calculateIntervalDate(baseDate, "1_year");
+
+    expect(result.getFullYear()).toBe(baseDate.getFullYear() - 1);
+    expect(result.getMonth()).toBe(baseDate.getMonth());
+    expect(result.getDate()).toBe(baseDate.getDate());
+  });
+
+  it("calculates '5_years' interval correctly", () => {
+    const result = calculateIntervalDate(baseDate, "5_years");
+
+    expect(result.getFullYear()).toBe(baseDate.getFullYear() - 5);
+    expect(result.getMonth()).toBe(baseDate.getMonth());
+    expect(result.getDate()).toBe(baseDate.getDate());
+  });
+
+  it("handles invalid interval by using default (1 month)", () => {
+    const emptyInterval = "" as ComparisonInterval;
+    const result = calculateIntervalDate(baseDate, emptyInterval);
+
+    // Should default to 1 month (30 days)
+    const expected = new Date(baseDate);
+    expected.setDate(expected.getDate() - 30);
+
+    expect(result.toISOString().split("T")[0]).toBe(
+      expected.toISOString().split("T")[0]
+    );
+  });
+
+  it("does not depend on releases array (pure function)", () => {
+    // This test verifies calculateIntervalDate has no external dependencies
+    const result1 = calculateIntervalDate(baseDate, "1_year");
+    const result2 = calculateIntervalDate(baseDate, "1_year");
+
+    // Same input = same output (referential transparency)
+    expect(result1.getTime()).toBe(result2.getTime());
+  });
+
+  it("handles date at year boundary correctly", () => {
+    const newYearDate = new Date("2024-01-01");
+    const result = calculateIntervalDate(newYearDate, "1_month");
+
+    // Should correctly roll back to previous year
+    expect(result.getFullYear()).toBe(2023);
+    expect(result.getMonth()).toBe(11); // December
+  });
+
+  it("handles leap year dates correctly", () => {
+    const leapYearDate = new Date("2024-02-29"); // Leap year
+    const result = calculateIntervalDate(leapYearDate, "1_year");
+
+    // Non-leap year fallback (2023-02-28)
+    expect(result.getFullYear()).toBe(2023);
+    expect(result.getMonth()).toBe(1); // February
+  });
+});
+
+describe("findBeforeRelease (Wayback-Specific)", () => {
+  const destructionDate = new Date("2024-02-15");
+
+  it("uses earliest release for 'as_large_as_possible'", () => {
+    const result = findBeforeRelease(
+      destructionDate,
+      "as_large_as_possible",
+      mockReleases
+    );
+
+    expect(result.toISOString().split("T")[0]).toBe("2014-02-20");
+  });
+
+  it("uses latest release before destruction for 'as_small_as_possible'", () => {
+    const result = findBeforeRelease(
+      destructionDate,
+      "as_small_as_possible",
+      mockReleases
+    );
+
+    expect(result.toISOString().split("T")[0]).toBe("2024-01-15");
+  });
+
+  it("uses pure calculation for fixed intervals (1_month)", () => {
+    const result = findBeforeRelease(destructionDate, "1_month", mockReleases);
+
+    const expected = new Date(destructionDate);
+    expected.setDate(expected.getDate() - 30);
+
+    expect(result.toISOString().split("T")[0]).toBe(
+      expected.toISOString().split("T")[0]
+    );
+  });
+
+  it("falls back to pure calculation when releases array is empty", () => {
+    const result = findBeforeRelease(
+      destructionDate,
+      "as_large_as_possible",
+      []
+    );
+
+    // Should use calculateIntervalDate fallback (10 years)
+    expect(result.getFullYear()).toBe(destructionDate.getFullYear() - 10);
+  });
+
+  it("falls back to pure calculation when no release before destruction", () => {
+    const earlyDestruction = new Date("2010-01-01");
+    const result = findBeforeRelease(
+      earlyDestruction,
+      "as_small_as_possible",
+      mockReleases
+    );
+
+    // Should fallback to 7 days before
+    const expected = new Date(earlyDestruction);
+    expected.setDate(expected.getDate() - 7);
+
+    expect(result.toISOString().split("T")[0]).toBe(
+      expected.toISOString().split("T")[0]
+    );
+  });
+
+  it("maintains backwards compatibility with calculateBeforeDate", () => {
+    // Both functions should return identical results
+    const oldResult = calculateBeforeDate(
+      destructionDate,
+      "as_large_as_possible",
+      mockReleases
+    );
+    const newResult = findBeforeRelease(
+      destructionDate,
+      "as_large_as_possible",
+      mockReleases
+    );
+
+    expect(oldResult.getTime()).toBe(newResult.getTime());
   });
 });

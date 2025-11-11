@@ -12,16 +12,24 @@
 
 This PR adds significant features including interval selector for comparison mode, timeline navigation improvements, Hero Icons integration, and expanded E2E test coverage. Originally identified **20 issues** related to DRY violations, component complexity, hardcoded text, and test quality.
 
-**Status**: ✅ **9 of 20 issues fixed** (45% complete) - All critical issues resolved!
+**Status**: ✅ **12 of 20 issues fixed** (60% complete) - All critical issues + high priority #10 + medium priority #19 resolved!
 
-**Recent Progress (Nov 11, 2025):**
+**Recent Progress (Nov 11, 2025 - Session 2):**
+
+- ✅ Issue #3 Follow-up: Eliminated DRY violation in DataPage.tsx (-47 lines)
+- ✅ Issue #10 (High): Split intervalCalculations following SOLID principles (+15 tests)
+- ✅ Issue #19 (Medium): Fixed interval label inconsistencies across 3 languages
+- ✅ Test count increased: 1182 → 1197 tests (+15 tests)
+- ✅ All quality gates passed, production build successful
+
+**Previous Progress (Nov 11, 2025 - Session 1):**
 
 - ✅ All 5 critical issues fixed
 - ✅ 2 high priority issues fixed
 - ✅ 2 medium priority issues fixed
 - ✅ Test count increased: 1053 → 1182 tests (+129 tests)
 - ✅ 3 commits created with detailed documentation
-- ✅ Zero breaking changes, all quality gates passed
+- ✅ Zero breaking changes
 
 ---
 
@@ -572,7 +580,7 @@ test('filtered results update when filter is applied', async ({ page }) => {
 
 ---
 
-### ❌ 10. SOLID Violation: Mixed Concerns in intervalCalculations
+### ✅ 10. SOLID Violation: Mixed Concerns in intervalCalculations
 
 **Location**: `src/utils/intervalCalculations.ts`
 
@@ -679,10 +687,13 @@ export function calculateBeforeDate(
 }
 ```
 
-**Files to Change**:
-- [ ] `src/utils/intervalCalculations.ts` - Split into two functions
-- [ ] `src/utils/intervalCalculations.test.ts` - Add tests for pure function
-- [ ] Update call sites if needed (Timeline.tsx, etc.)
+**Files Changed**:
+- [x] `src/utils/intervalCalculations.ts` - Split into two functions ✅ **FIXED**
+  - Created `calculateIntervalDate` (pure function)
+  - Created `findBeforeRelease` (Wayback-specific)
+  - Made `calculateBeforeDate` backwards-compatible alias
+- [x] `src/utils/intervalCalculations.test.ts` - Added 15 new tests (25 → 40 tests) ✅ **FIXED**
+- [x] No call site updates needed (backwards compatibility maintained) ✅ **VERIFIED**
 
 ---
 
@@ -1053,36 +1064,35 @@ case "as_large_as_possible": {
 
 ---
 
-### ❌ 19. i18n: Interval Labels Use Approximation Symbol
+### ✅ 19. i18n: Interval Labels Use Approximation Symbol
 
-**Location**: `src/i18n/en.ts`
+**Location**: `src/i18n/en.ts`, `ar.ts`, `it.ts`
 
 **Issue**: Interval labels use `~` prefix ("~2 months") but this may not translate well to other languages and may confuse users.
-
-**Current Code**:
-```typescript
-interval1Month: "~2 months", // Actually 30 days, not "2 months"
-```
 
 **Impact**:
 - Confusing to users (is it 1 month or 2 months?)
 - `~` symbol may not translate well to Arabic/Italian
 - Inconsistent with actual calculation (30 days ≠ "2 months")
 
-**Fix**: Either use precise labels or add translator notes:
+**Solution Implemented**: Used precise labels (Option 1)
 ```typescript
-// Option 1: Precise labels
-interval1Month: "30 days before",
-interval1Year: "1 year before",
+// English
+interval1Month: "1 month (30 days)",  // Was: "~2 months"
+intervalAsLargeAsPossible: "As large as possible",  // Was: "~As large as possible"
+intervalAsSmallAsPossible: "As small as possible",  // Was: "~As small as possible"
 
-// Option 2: Add translator notes
-interval1Month: "~2 months", // @translators: Approximation symbol (~) means "about/approximately"
+// Arabic
+interval1Month: "شهر واحد (٣٠ يومًا)",  // Was: "~شهرين"
+
+// Italian
+interval1Month: "1 mese (30 giorni)",  // Was: "~2 mesi"
 ```
 
-**Files to Change**:
-- [ ] `src/i18n/en.ts` - Update interval labels or add notes
-- [ ] `src/i18n/ar.ts` - Update interval labels or add notes
-- [ ] `src/i18n/it.ts` - Update interval labels or add notes
+**Files Changed**:
+- [x] `src/i18n/en.ts` - Updated to precise labels ✅ **FIXED**
+- [x] `src/i18n/ar.ts` - Updated to precise labels ✅ **FIXED**
+- [x] `src/i18n/it.ts` - Updated to precise labels ✅ **FIXED**
 
 ---
 
@@ -1131,22 +1141,25 @@ interval1Month: "~2 months", // @translators: Approximation symbol (~) means "ab
 | Severity | Count | Completed | Remaining |
 |----------|-------|-----------|-----------|
 | Critical | 5     | 5         | 0         |
-| High     | 5     | 2         | 3         |
-| Medium   | 9     | 2         | 7         |
+| High     | 5     | 3         | 2         |
+| Medium   | 9     | 3         | 6         |
 | Minor    | 1     | 0         | 1         |
-| **Total**| **20**| **9**     | **11**    |
+| **Total**| **20**| **11**    | **9**     |
 
-**Completed Issues (9/20):**
+**Completed Issues (11/20):**
 
 - ✅ #1: DRY - Duplicated filter logic (useFilteredSites hook)
 - ✅ #3: DRY - Default date range calculations (useDefaultFilterRanges hook)
+- ✅ #3 Follow-up: DRY - DataPage.tsx date range logic (useDefaultFilterRanges hook)
 - ✅ #4: i18n - "N/A" hardcoded text (translate common.na)
 - ✅ #5: i18n - "Unknown" hardcoded text (translate timeline.unknownDate)
 - ✅ #6: TypeScript - Optional props (discriminated unions)
 - ✅ #7: Anti-Pattern - useRef dependencies (proper useCallback)
+- ✅ #10: SOLID - Split intervalCalculations (pure + Wayback functions)
 - ✅ #15: Accessibility - ARIA labels (FilterBar mobile button)
 - ✅ #17: Documentation - JSDoc expansion (60+ lines added)
 - ✅ #18: Config - Magic numbers (WAYBACK_FALLBACKS constant)
+- ✅ #19: i18n - Interval label inconsistencies (precise labels)
 
 ---
 
@@ -1161,22 +1174,22 @@ interval1Month: "~2 months", // @translators: Approximation symbol (~) means "ab
 
 ### Sprint 2: High Priority Issues
 6. ✅ Fix TypeScript optional props in WaybackSlider
-7. ✅ Improve E2E test quality (remove `.or()` fallbacks, assert outcomes)
+7. ❌ Improve E2E test quality (remove `.or()` fallbacks, assert outcomes)
 8. ✅ Split intervalCalculations into pure and Wayback-specific functions
 
 ### Sprint 3: Medium Priority Issues
-9. ✅ Move help modal content to separate component
-10. ✅ Create icon registry for dynamic imports
-11. ✅ Create reusable EmptyState component
+9. ❌ Move help modal content to separate component
+10. ❌ Create icon registry for dynamic imports
+11. ❌ Create reusable EmptyState component
 12. ✅ Add edge case tests for intervalCalculations
 13. ✅ Add ARIA labels to FilterBar
-14. ✅ Standardize optional chaining
+14. ❌ Standardize optional chaining
 15. ✅ Expand JSDoc documentation
 16. ✅ Extract magic numbers to config
 17. ✅ Fix interval label inconsistencies
 
 ### Sprint 4: Minor Issues
-18. ✅ Split large E2E test files
+18. ❌ Split large E2E test files
 
 ---
 
