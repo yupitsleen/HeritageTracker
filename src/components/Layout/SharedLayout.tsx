@@ -91,7 +91,7 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
             <section>
               <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
               <p className="text-sm">
-                Heritage Tracker documents cultural heritage sites in Gaza that have been damaged or destroyed.
+                Heritage Tracker documents 70 cultural heritage sites in Gaza (representing 140-160 buildings) that have been damaged or destroyed.
                 Use the interactive map, timeline, and filters to explore the data.
               </p>
             </section>
