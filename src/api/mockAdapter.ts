@@ -7,19 +7,18 @@
 
 import { mockSites } from '../data/mockSites';
 import type { ApiResponse, PaginatedResponse, GazaSite } from './types';
+import { API_MOCK_DELAY_MS } from '../constants/api';
 
 /**
  * Simulate network delay
  */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const MOCK_DELAY = 800; // 800ms to simulate network latency
-
 /**
  * Mock implementation of getAllSites
  */
 export async function mockGetAllSites(): Promise<GazaSite[]> {
-  await delay(MOCK_DELAY);
+  await delay(API_MOCK_DELAY_MS);
 
   // Simulate API response format
   const response: ApiResponse<GazaSite[]> = {
@@ -35,7 +34,7 @@ export async function mockGetAllSites(): Promise<GazaSite[]> {
  * Mock implementation of getSiteById
  */
 export async function mockGetSiteById(id: string): Promise<GazaSite> {
-  await delay(MOCK_DELAY);
+  await delay(API_MOCK_DELAY_MS);
 
   const site = mockSites.find(s => s.id === id);
 
@@ -59,7 +58,7 @@ export async function mockGetSitesPaginated(
   page: number = 1,
   pageSize: number = 10
 ): Promise<PaginatedResponse<GazaSite>> {
-  await delay(MOCK_DELAY);
+  await delay(API_MOCK_DELAY_MS);
 
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;

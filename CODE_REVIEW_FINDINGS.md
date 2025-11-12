@@ -5,14 +5,14 @@
 **Review Date:** November 12, 2025
 **Codebase Size:** ~150+ source files (excluding tests)
 **Total Issues Found:** 20
-**Issues Resolved:** 1/20 (5%)
+**Issues Resolved:** 2/20 (10%)
 **Severity Breakdown:**
 - **Critical:** 2 issues (1 resolved ✅)
-- **High:** 5 issues (0 resolved)
+- **High:** 5 issues (1 resolved ✅)
 - **Medium:** 8 issues (0 resolved)
 - **Low:** 5 issues (0 resolved)
 
-**Progress:** 🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 5%
+**Progress:** 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 10%
 
 ---
 
@@ -389,7 +389,7 @@
 - [x] #1 - Remove duplicate `useTableSort.ts` hook ✅ **COMPLETE**
 
 ### High Priority
-- [ ] #2 - Consolidate MOCK_DELAY constants to `src/constants/api.ts`
+- [x] #2 - Consolidate MOCK_DELAY constants to `src/constants/api.ts` ✅ **COMPLETE**
 - [ ] #3 - Implement centralized logging wrapper in `src/utils/logger.ts`
 - [ ] #6 - Split AnimationContext into focused contexts (Timeline, MapSync, MapSettings)
 - [ ] #7 - Refactor FilterBar into FilterBarMobile, FilterBarDesktop, ActiveFilterPills
