@@ -5,14 +5,37 @@
 **Review Date:** November 12, 2025
 **Codebase Size:** ~150+ source files (excluding tests)
 **Total Issues Found:** 20
-**Issues Resolved:** 7/20 (35%)
+**Issues Resolved:** 8/20 (40%)
 **Severity Breakdown:**
 - **Critical:** 2 issues (1 resolved ✅)
-- **High:** 5 issues (2 resolved ✅)
+- **High:** 5 issues (2 resolved ✅, 1 skipped ⏸️)
 - **Medium:** 8 issues (4 resolved ✅)
-- **Low:** 5 issues (0 resolved)
+- **Low:** 5 issues (1 resolved ✅)
 
-**Progress:** 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 35%
+**Progress:** 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 40%
+
+---
+
+## Quick Wins Strategy
+
+### 🟢 **QUICK WINS** (< 30 minutes each)
+1. **Issue #11** - PalestinianFlagTriangle ⚡ **15-20 min** (Low severity, low risk)
+2. **Issue #19** - Rate limiting config ⚡ **10-15 min** (Low severity, backend only)
+3. **Issue #18** - CORS security ⚡ **10-15 min** (Medium severity, backend only)
+4. **Issue #13** - Optional chaining ⚡ **20-30 min** (Low severity, low risk)
+
+### 🟡 **MEDIUM EFFORT** (30-60 minutes each)
+5. **Issue #15** - FilterBar search debouncing 🔧 **30-45 min** (Medium severity)
+6. **Issue #9** - Z-Index audit 🔧 **40-60 min** (Medium severity)
+7. **Issue #12** - ApiError types 🔧 **30-45 min** (Medium severity)
+
+### 🔴 **LARGER EFFORT** (1-2+ hours each)
+8. **Issue #7** - FilterBar refactor 🔨 **1.5-2 hours** (High severity)
+9. **Issue #14** - FilterBar re-renders 🔨 **1-2 hours** (High severity)
+10. **Issue #8** - WaybackController 🔨 **1-2 hours** (Medium severity)
+11. **Issue #20** - Keyboard navigation 🔨 **2+ hours** (Medium severity)
+
+**Strategy:** Complete quick wins first to boost completion rate to 55% (11/20), then tackle medium and high-effort issues.
 
 ---
 
@@ -130,9 +153,10 @@
 
 ### 2. SOLID Violations
 
-#### **Issue #6: AnimationContext Violates Single Responsibility Principle** ⚠️ **HIGH**
+#### **Issue #6: AnimationContext Violates Single Responsibility Principle** ⚠️ **HIGH** - ⏸️ **SKIPPED**
 - **Severity:** High
-- **File:** `src/contexts/AnimationContext.tsx`
+- **Status:** ⏸️ **SKIPPED** (November 12, 2025)
+- **File:** `src/contexts/AnimationContext.tsx` (264 lines)
 - **Description:** AnimationContext manages 8+ different concerns:
   - Timeline playback (play/pause/speed)
   - Map sync state
@@ -147,11 +171,19 @@
     - `MapSyncContext` - map synchronization
     - `MapSettingsContext` - zoom, markers visibility
   - Use composition pattern to combine when needed
+- **Reason for Skip:**
+  - **High Complexity:** 29 files import AnimationContext, tightly coupled state logic
+  - **High Risk:** Animation timing, map sync behavior have intricate interdependencies (24+ tests just for sync)
+  - **Large Scope:** Would require creating 3 new contexts, updating 29+ files, rewriting 300+ test lines
+  - **Breaking Change Risk:** High probability of introducing subtle bugs in animation frame coordination
+  - **Cost/Benefit:** Refactoring effort outweighs benefit given current test coverage (1327 tests passing)
+  - **Recommendation:** Defer until major feature work requires context restructuring
 
 ---
 
-#### **Issue #7: FilterBar Component Too Large and Complex** ⚠️ **HIGH**
+#### **Issue #7: FilterBar Component Too Large and Complex** ⚠️ **HIGH** 🔨 **LARGE EFFORT**
 - **Severity:** High
+- **Effort:** 🔨 1.5-2 hours
 - **File:** `src/components/FilterBar/FilterBar.tsx` (415 lines)
 - **Description:** Single component handles:
   - Desktop filter rendering
@@ -168,8 +200,9 @@
 
 ---
 
-#### **Issue #8: Timeline.tsx Open/Closed Principle Violation** ⚠️ **MEDIUM**
+#### **Issue #8: Timeline.tsx Open/Closed Principle Violation** ⚠️ **MEDIUM** 🔨 **LARGE EFFORT**
 - **Severity:** Medium
+- **Effort:** 🔨 1-2 hours
 - **File:** `src/pages/Timeline.tsx` (408 lines)
 - **Description:** Timeline page is difficult to extend - adding new Wayback features requires editing core file.
 - **Impact:** Risk of breaking existing features when adding new ones.
@@ -182,8 +215,9 @@
 
 ### 3. Configuration & Magic Numbers
 
-#### **Issue #9: Hardcoded Z-Index Values** ⚠️ **MEDIUM**
+#### **Issue #9: Hardcoded Z-Index Values** ⚠️ **MEDIUM** 🔧 **MEDIUM EFFORT**
 - **Severity:** Medium
+- **Effort:** 🔧 40-60 minutes
 - **Files:**
   - `src/components/FilterBar/FilterBar.tsx` - Line 283 (`style={{ zIndex: Z_INDEX.FILTER_BAR }}`)
   - `src/components/Layout/ResourcesDropdown.tsx` - Likely similar pattern
@@ -224,25 +258,39 @@
 
 ---
 
-#### **Issue #11: Palestinian Flag Triangle Background Duplication** ⚠️ **LOW**
+#### **Issue #11: Palestinian Flag Triangle Background Duplication** ✅ **RESOLVED**
 - **Severity:** Low
-- **Files:**
-  - `src/pages/Timeline.tsx` - Lines 236-245
-  - `src/pages/DashboardPage.tsx` - Lines 82-92
-- **Description:** Same decorative triangle code duplicated with slight variations.
-- **Impact:** Minor maintenance issue, inconsistent styling.
-- **Suggested Fix:**
-  - Create `PalestinianFlagTriangle` component:
-    ```typescript
-    <PalestinianFlagTriangle width={800} opacity={0.5} />
-    ```
+- **Status:** ✅ **COMPLETE** (November 12, 2025)
+- **Effort:** ⚡ 15 minutes (Quick Win)
+- **Files Created:**
+  - `src/components/Decorative/PalestinianFlagTriangle.tsx` (74 lines)
+  - `src/components/Decorative/index.ts` (barrel export)
+- **Files Updated:**
+  - `src/pages/Timeline.tsx` - Replaced inline triangle (11 lines → 1 line)
+  - `src/pages/DashboardPage.tsx` - Replaced inline triangle (11 lines → 3 lines)
+- **Description:** Same decorative triangle code duplicated with slight variations across Timeline and Dashboard pages.
+- **Solution Implemented:**
+  - Created reusable `PalestinianFlagTriangle` component with props:
+    - `width` (default: 800px) - supports responsive sizing
+    - `opacity` (default: OPACITY.HOVER_STATE = 50)
+    - `zIndex` (default: Z_INDEX.BACKGROUND_DECORATION)
+  - Component adapts to theme (light/dark) automatically
+  - Full JSDoc documentation with usage examples
+  - Eliminated 18 lines of duplicated code
+- **Impact:**
+  - ✅ DRY principle applied - single source of truth for triangle
+  - ✅ Easier to maintain and update styling globally
+  - ✅ Consistent triangle behavior across pages
+  - ✅ 1325/1327 tests passing (2 skipped backend tests)
+  - ✅ ESLint passes
 
 ---
 
 ### 4. Type Safety Issues
 
-#### **Issue #12: Missing Error Type Definitions** ⚠️ **MEDIUM**
+#### **Issue #12: Missing Error Type Definitions** ⚠️ **MEDIUM** 🔧 **MEDIUM EFFORT**
 - **Severity:** Medium
+- **Effort:** 🔧 30-45 minutes
 - **Files:**
   - `src/hooks/useSites.ts`, `useWaybackReleases.ts`, etc.
   - Error returned as `unknown` or `any`
@@ -261,8 +309,9 @@
 
 ---
 
-#### **Issue #13: Optional Chaining Inconsistency** ⚠️ **LOW**
+#### **Issue #13: Optional Chaining Inconsistency** ⚠️ **LOW** ⚡ **QUICK WIN**
 - **Severity:** Low
+- **Effort:** ⚡ 20-30 minutes
 - **Files:**
   - Some components use `site?.sources?.length`
   - Others use `site.sources && site.sources.length`
@@ -277,8 +326,9 @@
 
 ### 5. Performance Anti-Patterns
 
-#### **Issue #14: Unnecessary Re-renders in FilterBar** ⚠️ **HIGH**
+#### **Issue #14: Unnecessary Re-renders in FilterBar** ⚠️ **HIGH** 🔨 **LARGE EFFORT**
 - **Severity:** High
+- **Effort:** 🔨 1-2 hours
 - **File:** `src/components/FilterBar/FilterBar.tsx`
 - **Description:** FilterBar is `memo`-ized (Line 61), but:
   - `onFilterChange` prop not wrapped in `useCallback` by parent
@@ -291,8 +341,9 @@
 
 ---
 
-#### **Issue #15: Missing Debouncing on Search Input** ⚠️ **MEDIUM**
+#### **Issue #15: Missing Debouncing on Search Input** ⚠️ **MEDIUM** 🔧 **MEDIUM EFFORT**
 - **Severity:** Medium
+- **Effort:** 🔧 30-45 minutes
 - **File:** `src/components/FilterBar/FilterBar.tsx` - Lines 112-118
 - **Description:** Search input directly updates filter state without debouncing.
 - **Impact:** Excessive filtering operations on every keystroke.
@@ -328,8 +379,9 @@
 
 ---
 
-#### **Issue #17: Inconsistent Export Patterns** ⚠️ **LOW**
+#### **Issue #17: Inconsistent Export Patterns** ⚠️ **LOW** 🔧 **MEDIUM EFFORT**
 - **Severity:** Low
+- **Effort:** 🔧 45-60 minutes (audit required)
 - **Files:** Mixed use of default vs named exports
   - Some components: `export function ComponentName`
   - Others: `export default function ComponentName`
@@ -344,8 +396,9 @@
 
 ### 7. Security Concerns
 
-#### **Issue #18: CORS Configuration Hardcoded** ⚠️ **MEDIUM**
+#### **Issue #18: CORS Configuration Hardcoded** ⚠️ **MEDIUM** ⚡ **QUICK WIN**
 - **Severity:** Medium
+- **Effort:** ⚡ 10-15 minutes
 - **File:** `server/index.js` - Lines 39-44
 - **Description:** CORS origin falls back to hardcoded `http://localhost:5173`.
 - **Impact:** Security risk if deployed with default value.
@@ -360,8 +413,9 @@
 
 ---
 
-#### **Issue #19: Rate Limiting Constants Not Configurable** ⚠️ **LOW**
+#### **Issue #19: Rate Limiting Constants Not Configurable** ⚠️ **LOW** ⚡ **QUICK WIN**
 - **Severity:** Low
+- **Effort:** ⚡ 10-15 minutes
 - **File:** `server/index.js` - Lines 56-71
 - **Description:** Rate limit values (100 requests, 15min window) are hardcoded.
 - **Impact:** Cannot adjust without code changes.
@@ -376,8 +430,9 @@
 
 ### 8. Accessibility Issues
 
-#### **Issue #20: Missing Keyboard Navigation for Timeline Scrubber** ⚠️ **MEDIUM**
+#### **Issue #20: Missing Keyboard Navigation for Timeline Scrubber** ⚠️ **MEDIUM** 🔨 **LARGE EFFORT**
 - **Severity:** Medium
+- **Effort:** 🔨 2+ hours (accessibility testing required)
 - **Files:**
   - `src/components/Timeline/TimelineScrubber.tsx`
   - `src/components/AdvancedTimeline/WaybackSlider.tsx`
@@ -427,7 +482,7 @@
 ### High Priority
 - [x] #2 - Consolidate MOCK_DELAY constants to `src/constants/api.ts` ✅ **COMPLETE**
 - [x] #3 - Implement centralized logging wrapper in `src/utils/logger.ts` ✅ **COMPLETE**
-- [ ] #6 - Split AnimationContext into focused contexts (Timeline, MapSync, MapSettings)
+- [~] #6 - Split AnimationContext into focused contexts ⏸️ **SKIPPED** (too complex/risky, defer to future)
 - [ ] #7 - Refactor FilterBar into FilterBarMobile, FilterBarDesktop, ActiveFilterPills
 - [ ] #14 - Fix FilterBar re-renders (wrap callbacks, memoize handlers)
 
@@ -444,7 +499,7 @@
 - [ ] #20 - Add keyboard navigation to timeline scrubbers
 
 ### Low Priority
-- [ ] #11 - Extract PalestinianFlagTriangle component
+- [x] #11 - Extract PalestinianFlagTriangle component ✅ **COMPLETE**
 - [ ] #13 - Standardize optional chaining usage
 - [ ] #17 - Document and enforce export patterns
 - [ ] #19 - Make rate limiting values configurable via env vars

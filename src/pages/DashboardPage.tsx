@@ -16,7 +16,7 @@ import { DashboardHelpModal } from "../components/Help";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../config/colorThemes";
+import { PalestinianFlagTriangle } from "../components/Decorative";
 
 // Lazy load layout components for parallel chunk loading and faster initial paint
 const DesktopLayout = lazy(() =>
@@ -80,16 +80,9 @@ export function DashboardPage() {
       </a>
 
       {/* Palestinian Flag Red Triangle - Background Element */}
-      <div
-        className="fixed top-0 left-0 pointer-events-none opacity-50 transition-colors duration-200"
-        style={{
-          width: `${tableResize.tableWidth + 600}px`, // Extends from left edge well into first map
-          height: '100vh', // Full viewport height
-          background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
-          clipPath: `polygon(0 0, 0 100%, ${tableResize.tableWidth + 600}px 50%)`,
-          zIndex: Z_INDEX.BACKGROUND_DECORATION, // Above base background, below content
-        }}
-        aria-hidden="true"
+      <PalestinianFlagTriangle
+        width={tableResize.tableWidth + 600}
+        zIndex={Z_INDEX.BACKGROUND_DECORATION}
       />
 
       {/* Header with flag line */}

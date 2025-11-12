@@ -1,0 +1,1 @@
+export { PalestinianFlagTriangle } from './PalestinianFlagTriangle';
