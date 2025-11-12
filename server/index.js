@@ -52,10 +52,15 @@ app.use(requestIdMiddleware);
 // Request logging - Log all requests with timing
 app.use(loggerMiddleware);
 
+// Rate limiting configuration (configurable via environment variables)
+const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10); // 15 minutes default
+const RATE_LIMIT_MAX_REQUESTS = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10); // 100 requests default
+const RATE_LIMIT_STRICT_MAX = parseInt(process.env.RATE_LIMIT_STRICT_MAX || '20', 10); // 20 requests default for write ops
+
 // Rate limiting - General API protection
 const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per window per IP
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: RATE_LIMIT_MAX_REQUESTS,
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   message: 'Too many requests from this IP, please try again later',
@@ -63,8 +68,8 @@ const generalLimiter = rateLimit({
 
 // Stricter rate limiting for write operations (POST, PATCH, DELETE)
 const strictLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // 20 requests per window per IP
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: RATE_LIMIT_STRICT_MAX,
   standardHeaders: true,
   legacyHeaders: false,
   message: 'Too many write requests from this IP, please try again later',
