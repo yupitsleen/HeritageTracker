@@ -5,14 +5,14 @@
 **Review Date:** November 12, 2025
 **Codebase Size:** ~150+ source files (excluding tests)
 **Total Issues Found:** 20
-**Issues Resolved:** 4/20 (20%)
+**Issues Resolved:** 5/20 (25%)
 **Severity Breakdown:**
 - **Critical:** 2 issues (1 resolved ✅)
 - **High:** 5 issues (2 resolved ✅)
-- **Medium:** 8 issues (1 resolved ✅)
+- **Medium:** 8 issues (2 resolved ✅)
 - **Low:** 5 issues (0 resolved)
 
-**Progress:** 🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 20%
+**Progress:** 🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 25%
 
 ---
 
@@ -107,17 +107,24 @@
 
 ---
 
-#### **Issue #5: Repeated Help Modal Content** ⚠️ **MEDIUM**
+#### **Issue #5: Repeated Help Modal Content** ✅ **RESOLVED**
 - **Severity:** Medium
-- **Files:**
-  - `src/pages/DashboardPage.tsx` - Lines 163-221 (inline help content)
-  - `src/components/Help/TimelineHelpModal.tsx` - Extracted component exists
-- **Description:** DashboardPage has hardcoded help content instead of reusing extracted component.
-- **Impact:** Duplicate maintenance, inconsistent help text.
-- **Suggested Fix:**
-  - Create `DashboardHelpModal.tsx` component
-  - Extract lines 163-221 to new component
-  - Reuse in DashboardPage like Timeline does
+- **Status:** ✅ **COMPLETE** (November 12, 2025)
+- **Files Updated:**
+  - Created `src/components/Help/DashboardHelpModal.tsx` (92 lines)
+  - Created `src/components/Help/DashboardHelpModal.test.tsx` (13 tests)
+  - Updated `src/components/Help/index.ts` - Added export
+  - Updated `src/pages/DashboardPage.tsx` - Replaced inline content (59 lines removed)
+- **Solution Implemented:**
+  - Extracted hardcoded help content to reusable DashboardHelpModal component
+  - Follows same pattern as TimelineHelpModal (consistent structure)
+  - Added comprehensive test coverage (smoke, content, accessibility, edge cases)
+- **Impact:**
+  - ✅ 59 lines removed from DashboardPage.tsx (reduced complexity)
+  - ✅ Help content now reusable and easier to maintain
+  - ✅ Consistent help modal pattern across pages
+  - ✅ 13 new tests added (1297/1299 total tests passing)
+  - ✅ ESLint passes
 
 ---
 
@@ -412,7 +419,7 @@
 
 ### Medium Priority
 - [x] #4 - Remove duplicate filter range logic from useDefaultFilterRanges (delegate to specialized hooks) ✅ **COMPLETE**
-- [ ] #5 - Extract DashboardHelpModal component
+- [x] #5 - Extract DashboardHelpModal component ✅ **COMPLETE**
 - [ ] #8 - Extract WaybackController from Timeline.tsx
 - [ ] #9 - Audit all z-index usage, ensure Z_INDEX constant usage
 - [ ] #10 - Create OPACITY constants file
