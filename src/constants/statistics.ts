@@ -155,3 +155,113 @@ export function formatAgeRounded(age: number, roundTo = 100): string {
 export function formatAgeInThousandsPlus(age: number): string {
   return `${Math.floor(age / 1000)}k+`;
 }
+
+/**
+ * Escalation & Acceleration Statistics
+ * Compares Nakba era (1948-2023) with Gaza genocide (Oct 2023-present)
+ *
+ * Sources:
+ * - UN OCHA (housing destruction, January 2025)
+ * - UNOSAT (satellite imagery, December 2024)
+ * - Gaza Ministry of Health (casualties, verified by UN)
+ * - UNESCO (heritage sites)
+ * - Historical records
+ *
+ * See docs/research/ESCALATION_STATISTICS.md for detailed documentation
+ */
+export const ESCALATION_STATISTICS = {
+  /**
+   * Time periods for comparison
+   */
+  nakbaEra: {
+    start: "May 15, 1948",
+    end: "October 6, 2023",
+    years: 75.4,
+    days: 27548,
+  },
+  gazaGenocide: {
+    start: "October 7, 2023",
+    current: "November 11, 2025",
+    years: 2.1,
+    days: 766,
+  },
+
+  /**
+   * Time proportion: Gaza genocide is 2.8% of time since Nakba
+   */
+  timeProportion: "2.8%",
+
+  /**
+   * Deaths per day comparison
+   */
+  deathsPerDay: {
+    nakbaEra: 4,
+    gazaGenocide: 90,
+    accelerationFactor: 22.5,
+    description: "22.5x faster killing rate since Oct 7, 2023",
+  },
+
+  /**
+   * Deaths per month by era
+   */
+  deathsPerMonth: {
+    nakbaEraAverage: 166,
+    firstIntifada: 21, // 1987-1993
+    secondIntifada: 53, // 2000-2005
+    gazaWars: 49, // 2008-2014
+    gazaGenocide: 2760,
+    accelerationFactor: 16.6,
+    description: "17x deadlier than historical average",
+  },
+
+  /**
+   * Proportion of total destruction in 2.8% of time
+   */
+  proportions: {
+    deathsSince1948: "46%",
+    gazaHousingDestroyed: "92%",
+    heritageSitesDestroyed: "35%",
+    description: "In 2.8% of time, 46% of deaths occurred",
+  },
+
+  /**
+   * Heritage sites destroyed per year
+   */
+  heritageSitesPerYear: {
+    nakbaEra: 31, // ~2,350 sites ÷ 75 years
+    gazaGenocide: 54, // 114 sites ÷ 2.1 years
+    accelerationFactor: 1.7,
+    description: "75% faster heritage destruction rate",
+  },
+
+  /**
+   * Homes destroyed per year
+   */
+  homesPerYear: {
+    westBank: 536, // ~30,000 homes ÷ 56 years (1967-2023)
+    gazaGenocide: 207619, // 436,000 homes ÷ 2.1 years
+    accelerationFactor: 387,
+    description: "387x faster home destruction rate",
+  },
+
+  /**
+   * Housing destruction statistics for Gaza genocide
+   */
+  gazaHousing: {
+    totalHomesAffected: "436,000",
+    destroyed: "160,000",
+    damaged: "276,000",
+    percentAffected: "92%",
+    peopleHomeless: "500,000+",
+    source: "UN OCHA / UNOSAT",
+  },
+
+  /**
+   * Impact ratios (per heritage site destroyed)
+   */
+  ratios: {
+    homesPerHeritageSite: 6300, // 436,000 ÷ 69 sites
+    deathsPerHeritageSite: 1000, // 69,000 ÷ 69 sites
+    displacedPerHeritageSite: 7246, // 500,000 ÷ 69 sites
+  },
+} as const;

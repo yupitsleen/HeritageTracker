@@ -2,7 +2,7 @@ import { memo } from "react";
 import type { GazaSite } from "../../types";
 import { useHeritageStats } from "../../hooks/useHeritageStats";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import { LAST_UPDATED, HUMAN_CASUALTIES, EXTERNAL_SOURCES, TARGETED_CASUALTIES } from "../../constants/statistics";
+import { LAST_UPDATED, HUMAN_CASUALTIES, EXTERNAL_SOURCES, TARGETED_CASUALTIES, ESCALATION_STATISTICS } from "../../constants/statistics";
 
 interface StatsDashboardProps {
   sites: GazaSite[];
@@ -33,6 +33,123 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
             The systematic erasure of a people and their history
           </p>
         </div>
+
+        {/* Escalation & Acceleration - Shows systematic intensification */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>
+            Escalation & Acceleration: From Ethnic Cleansing to Genocide
+          </h2>
+          <p className={`text-sm md:text-base mb-3 ${t.text.heading}`}>
+            Since October 7, 2023, Israel has dramatically accelerated the pace of Palestinian deaths,
+            home destruction, and cultural erasure. In just <strong>{ESCALATION_STATISTICS.timeProportion}</strong> of
+            the time since the Nakba began, <strong>{ESCALATION_STATISTICS.proportions.deathsSince1948}</strong> of
+            all Palestinian deaths have occurred.
+          </p>
+
+          {/* Key Acceleration Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+            {/* Deaths Per Day */}
+            <div className={`${t.bg.tertiary} border-2 border-[#ed3039] rounded-lg p-3`}>
+              <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
+                {ESCALATION_STATISTICS.deathsPerDay.accelerationFactor}x
+              </div>
+              <div className={`text-xs md:text-sm font-semibold mb-2 ${t.text.heading}`}>
+                Faster Killing Rate
+              </div>
+              <div className={`text-xs space-y-1 ${t.text.heading}`}>
+                <p><strong>1948-2023:</strong> {ESCALATION_STATISTICS.deathsPerDay.nakbaEra} deaths/day</p>
+                <p><strong>Oct 2023-Now:</strong> {ESCALATION_STATISTICS.deathsPerDay.gazaGenocide} deaths/day</p>
+              </div>
+            </div>
+
+            {/* Homes Per Year */}
+            <div className={`${t.bg.tertiary} border-2 border-orange-400 rounded-lg p-3`}>
+              <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.culturalNumber}`}>
+                {ESCALATION_STATISTICS.homesPerYear.accelerationFactor}x
+              </div>
+              <div className={`text-xs md:text-sm font-semibold mb-2 ${t.text.heading}`}>
+                Faster Home Destruction
+              </div>
+              <div className={`text-xs space-y-1 ${t.text.heading}`}>
+                <p><strong>West Bank (1967-2023):</strong> {ESCALATION_STATISTICS.homesPerYear.westBank.toLocaleString()}/year</p>
+                <p><strong>Gaza (2023-2025):</strong> {ESCALATION_STATISTICS.homesPerYear.gazaGenocide.toLocaleString()}/year</p>
+              </div>
+            </div>
+
+            {/* Heritage Per Year */}
+            <div className={`${t.stats.culturalCardBg} border-2 border-[#009639] rounded-lg p-3`}>
+              <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.heritageNumber}`}>
+                {ESCALATION_STATISTICS.heritageSitesPerYear.accelerationFactor}x
+              </div>
+              <div className={`text-xs md:text-sm font-semibold mb-2 ${t.text.heading}`}>
+                Faster Heritage Erasure
+              </div>
+              <div className={`text-xs space-y-1 ${t.text.heading}`}>
+                <p><strong>1948-2023:</strong> {ESCALATION_STATISTICS.heritageSitesPerYear.nakbaEra} sites/year</p>
+                <p><strong>Oct 2023-Now:</strong> {ESCALATION_STATISTICS.heritageSitesPerYear.gazaGenocide} sites/year</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Gaza Housing Destruction */}
+          <div className={`${t.stats.destructionCardBg} border-2 border-[#ed3039] rounded-lg p-3 mb-3`}>
+            <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>
+              Housing Destruction in Gaza (Oct 2023 - Nov 2025)
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+              <div>
+                <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
+                  {ESCALATION_STATISTICS.gazaHousing.totalHomesAffected}
+                </div>
+                <div className={`text-xs md:text-sm ${t.text.heading}`}>Homes Affected</div>
+              </div>
+              <div>
+                <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
+                  {ESCALATION_STATISTICS.gazaHousing.destroyed}
+                </div>
+                <div className={`text-xs md:text-sm ${t.text.heading}`}>Destroyed</div>
+              </div>
+              <div>
+                <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
+                  {ESCALATION_STATISTICS.gazaHousing.damaged}
+                </div>
+                <div className={`text-xs md:text-sm ${t.text.heading}`}>Damaged</div>
+              </div>
+              <div>
+                <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
+                  {ESCALATION_STATISTICS.gazaHousing.percentAffected}
+                </div>
+                <div className={`text-xs md:text-sm ${t.text.heading}`}>Of All Housing</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Impact Statement */}
+          <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+            <p className={`text-sm md:text-base ${t.text.heading}`}>
+              <strong>This isn't random escalation—it's calculated genocide at industrial scale.</strong> The data shows systematic
+              intensification: 22.5x faster killing, 387x faster home destruction, 1.7x faster heritage erasure.
+              For every heritage site destroyed, {ESCALATION_STATISTICS.ratios.homesPerHeritageSite.toLocaleString()} homes were leveled
+              and {ESCALATION_STATISTICS.ratios.deathsPerHeritageSite.toLocaleString()} Palestinians were killed.
+            </p>
+          </div>
+
+          {/* Sources */}
+          <div className="mt-3 text-xs">
+            <p className={`font-semibold mb-1 ${t.text.heading}`}>Sources & Documentation:</p>
+            <p className={`${t.text.heading}`}>
+              <strong>Data:</strong> UN OCHA, UNOSAT, Gaza Ministry of Health, UNESCO.
+              See <a
+                href="https://github.com/yourusername/heritage-tracker/blob/main/docs/research/ESCALATION_STATISTICS.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:opacity-70 transition-opacity"
+              >
+                full documentation
+              </a> for methodology and calculations.
+            </p>
+          </div>
+        </section>
 
         {/* Human Toll - Critical Context */}
         <div className={`${t.stats.destructionBg} border-2 border-[#ed3039] rounded-lg p-3 md:p-6 mb-4 md:mb-6`}>
