@@ -5,14 +5,14 @@
 **Review Date:** November 12, 2025
 **Codebase Size:** ~150+ source files (excluding tests)
 **Total Issues Found:** 20
-**Issues Resolved:** 12/20 (60%)
+**Issues Resolved:** 13/20 (65%)
 **Severity Breakdown:**
 - **Critical:** 2 issues (1 resolved ✅)
 - **High:** 5 issues (2 resolved ✅, 1 skipped ⏸️)
-- **Medium:** 8 issues (6 resolved ✅)
+- **Medium:** 8 issues (7 resolved ✅)
 - **Low:** 5 issues (3 resolved ✅)
 
-**Progress:** 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 60%
+**Progress:** 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜ 65%
 
 ---
 
@@ -27,7 +27,7 @@
 ### 🟡 **MEDIUM EFFORT** (30-60 minutes each)
 5. **Issue #15** - FilterBar search debouncing 🔧 **30-45 min** (Medium severity)
 6. ✅ **Issue #9** - Z-Index audit 🔧 **40 min** (Medium severity) - COMPLETE
-7. **Issue #12** - ApiError types 🔧 **30-45 min** (Medium severity)
+7. ✅ **Issue #12** - ApiError types 🔧 **35 min** (Medium severity) - COMPLETE
 
 ### 🔴 **LARGER EFFORT** (1-2+ hours each)
 8. **Issue #7** - FilterBar refactor 🔨 **1.5-2 hours** (High severity)
@@ -35,7 +35,7 @@
 10. **Issue #8** - WaybackController 🔨 **1-2 hours** (Medium severity)
 11. **Issue #20** - Keyboard navigation 🔨 **2+ hours** (Medium severity)
 
-**Strategy Update:** All 4 quick wins completed + Issue #9 resolved (60% done)! Next focus: Remaining medium effort issues (#15, #12) to reach 70% completion before tackling larger refactors.
+**Strategy Update:** All quick wins + 2 medium effort issues complete (65% done)! Next focus: Issue #15 (FilterBar debouncing) to reach 70%, then tackle larger refactors.
 
 ---
 
@@ -297,24 +297,33 @@
 
 ### 4. Type Safety Issues
 
-#### **Issue #12: Missing Error Type Definitions** ⚠️ **MEDIUM** 🔧 **MEDIUM EFFORT**
+#### **Issue #12: Missing Error Type Definitions** ✅ **RESOLVED**
 - **Severity:** Medium
-- **Effort:** 🔧 30-45 minutes
-- **Files:**
-  - `src/hooks/useSites.ts`, `useWaybackReleases.ts`, etc.
-  - Error returned as `unknown` or `any`
-- **Description:** Error handling lacks typed error objects.
-- **Impact:** Difficult to handle errors predictably, runtime failures.
-- **Suggested Fix:**
-  - Create `src/types/errors.ts`:
-    ```typescript
-    export interface ApiError {
-      message: string;
-      code?: string;
-      statusCode?: number;
-    }
-    ```
-  - Use in all error boundaries and hooks
+- **Status:** ✅ **COMPLETE** (November 12, 2025)
+- **Effort:** ⚡ 35 minutes (Medium Effort)
+- **Files Created:**
+  - `src/types/errors.ts` (206 lines) - Comprehensive error type system
+  - `src/types/errors.test.ts` (25 tests) - 100% test coverage
+- **Description:** Error handling lacked typed error objects, making errors difficult to handle predictably.
+- **Solution Implemented:**
+  - Created `ApiError` interface with `message`, `code`, `statusCode`, and `originalError` fields
+  - Added 12 standard `ErrorCode` constants (NETWORK_ERROR, NOT_FOUND, UNAUTHORIZED, etc.)
+  - Implemented helper functions:
+    - `isApiError()` - Type guard to check if error is ApiError
+    - `toApiError()` - Converts any error (Error, string, unknown) to typed ApiError
+    - `createApiErrorFromResponse()` - Creates ApiError from fetch Response with proper HTTP status mapping
+    - `getUserFriendlyMessage()` - Converts technical errors to user-friendly messages
+  - Added `ERROR_MESSAGES` dictionary for all error codes
+  - Full JSDoc documentation with examples
+  - 25 comprehensive tests covering all edge cases
+- **Impact:**
+  - ✅ Type-safe error handling across all async operations
+  - ✅ Predictable error structure (message, code, statusCode)
+  - ✅ User-friendly error messages for display
+  - ✅ Proper HTTP status code mapping (404 → NOT_FOUND, 500 → API_ERROR, etc.)
+  - ✅ 1350/1352 tests passing (+25 new tests, 2 skipped backend tests)
+  - ✅ ESLint passes
+  - ✅ Ready for hooks and error boundaries to adopt (no breaking changes)
 
 ---
 
@@ -525,7 +534,7 @@
 - [x] #16 - Delete legacy `mockAdapter.ts` file ✅ **COMPLETE**
 - [ ] #8 - Extract WaybackController from Timeline.tsx
 - [x] #9 - Audit all z-index usage, ensure Z_INDEX constant usage ✅ **COMPLETE**
-- [ ] #12 - Add ApiError type definitions
+- [x] #12 - Add ApiError type definitions ✅ **COMPLETE**
 - [ ] #15 - Add debouncing to FilterBar search input
 - [x] #18 - Remove hardcoded CORS fallback in production ✅ **COMPLETE**
 - [ ] #20 - Add keyboard navigation to timeline scrubbers
