@@ -97,8 +97,10 @@ src/
 ├── api/                          # Backend integration (3 modes)
 │   ├── supabaseClient.ts         # Supabase client
 │   ├── sites.ts                  # CRUD operations (mode-agnostic)
-│   ├── mockAdapter.ts            # Development mock data (70 sites)
 │   └── adapters/                 # Backend adapter pattern
+│       ├── MockAdapter.ts        # Development mock data (70 sites)
+│       ├── LocalBackendAdapter.ts # Local PostgreSQL backend
+│       └── SupabaseAdapter.ts    # Supabase cloud backend
 ├── components/                   # 21 feature components
 │   ├── Layout/                   # Header, Footer, Desktop/Mobile layouts
 │   ├── FilterBar/                # Multi-select filters with pills/badges

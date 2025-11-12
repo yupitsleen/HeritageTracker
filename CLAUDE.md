@@ -52,7 +52,10 @@ src/
 ├── api/                          # Backend integration (3 modes: Mock/Local/Supabase)
 │   ├── supabaseClient.ts         # Supabase client configuration
 │   ├── sites.ts                  # CRUD operations (mode-agnostic)
-│   ├── mockAdapter.ts            # Development mock data (70 sites)
+│   ├── adapters/                 # Backend adapter pattern
+│   │   ├── MockAdapter.ts        # Development mock data (70 sites)
+│   │   ├── LocalBackendAdapter.ts # Local PostgreSQL backend
+│   │   └── SupabaseAdapter.ts    # Supabase cloud backend
 │   ├── queryHelpers.ts           # Filter/pagination helpers
 │   ├── types.ts                  # API types
 │   └── database.types.ts         # Auto-generated Supabase types
