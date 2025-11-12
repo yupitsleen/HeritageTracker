@@ -251,7 +251,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                       {translate("table.sources")}:
                     </span>
                     <ul className="mt-1 space-y-1">
-                      {site.sources.map((source, idx) => (
+                      {site.sources?.map((source, idx) => (
                         <li key={idx} className="text-sm">
                           <a
                             href={source.url}
@@ -278,7 +278,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                     <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
                       {translate("table.verifiedBy")}:
                     </span>
-                    <p className={`text-sm ${t.text.heading}`}>{site.verifiedBy.join(", ")}</p>
+                    <p className={`text-sm ${t.text.heading}`}>{site.verifiedBy?.join(", ")}</p>
                   </div>
                 )}
 

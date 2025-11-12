@@ -131,7 +131,7 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
         <section>
           <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.sources")}</h4>
           <div className="space-y-3">
-            {site.sources.map((source, index) => (
+            {site.sources?.map((source, index) => (
               <div
                 key={index}
                 className={`border-l-4 border-blue-500 pl-4 py-2 rounded-r ${t.bg.tertiary}`}
