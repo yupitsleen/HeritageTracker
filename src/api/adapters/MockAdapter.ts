@@ -57,7 +57,7 @@ export class MockAdapter implements BackendAdapter {
   }
 
   async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<GazaSite>> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     const page = params?.page || 1;
     const pageSize = params?.pageSize || 10;
@@ -101,7 +101,7 @@ export class MockAdapter implements BackendAdapter {
   }
 
   async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<GazaSite[]> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     // Simple distance calculation using Haversine formula
     const toRad = (deg: number) => (deg * Math.PI) / 180;

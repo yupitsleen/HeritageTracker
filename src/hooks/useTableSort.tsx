@@ -28,7 +28,8 @@ export type SortField =
  *   'desc'
  * );
  */
-export function useTableSort<T extends Record<string, unknown>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useTableSort<T extends Record<string, any>>(
   data: T[],
   initialField: keyof T,
   initialDirection: SortDirection = "asc"
@@ -66,9 +67,16 @@ export function useTableSort<T extends Record<string, unknown>>(
       if (aValue == null) return 1;
       if (bValue == null) return -1;
 
-      // Handle Date objects
-      if (aValue instanceof Date && bValue instanceof Date) {
-        const diff = (aValue as Date).getTime() - (bValue as Date).getTime();
+      // Handle Date objects (check for Date-like objects)
+      if (
+        typeof aValue === "object" &&
+        typeof bValue === "object" &&
+        "getTime" in aValue &&
+        "getTime" in bValue
+      ) {
+        const aTime = (aValue as Date).getTime();
+        const bTime = (bValue as Date).getTime();
+        const diff = aTime - bTime;
         return sortDirection === "asc" ? diff : -diff;
       }
 
@@ -103,10 +111,10 @@ export function useTableSort<T extends Record<string, unknown>>(
 
   return {
     sortedData,
-    sortedSites: sortedData, // Backwards compatibility alias
-    sortField,
+    sortedSites: sortedData as T[], // Backwards compatibility alias with explicit type
+    sortField: sortField as SortField, // Cast for backwards compatibility
     sortDirection,
-    handleSort,
+    handleSort: handleSort as (field: SortField) => void, // Cast for backwards compatibility
     SortIcon,
   };
 }

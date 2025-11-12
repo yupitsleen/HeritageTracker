@@ -56,7 +56,7 @@ export function SitesTableDesktop({
   const translate = useTranslation();
 
   // Sort logic
-  const { sortField, sortDirection, handleSort, sortedSites } = useTableSort(sites);
+  const { sortField, sortDirection, handleSort, sortedSites } = useTableSort<GazaSite>(sites, "dateDestroyed", "desc");
 
   // Scroll to highlighted row
   const { tableContainerRef, highlightedRowRef } = useTableScroll(highlightedSiteId);
