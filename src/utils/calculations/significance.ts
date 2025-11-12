@@ -1,4 +1,4 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { parseYearBuilt } from "../siteFilters";
 
 /**
@@ -12,7 +12,7 @@ import { parseYearBuilt } from "../siteFilters";
  * @param site - Gaza heritage site
  * @returns Significance score (normalized)
  */
-export function calculateSignificanceScore(site: GazaSite): number {
+export function calculateSignificanceScore(site: Site): number {
   let score = 1; // Base score
 
   const yearBuilt = parseYearBuilt(site.yearBuilt);

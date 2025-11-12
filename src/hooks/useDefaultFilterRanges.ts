@@ -1,4 +1,4 @@
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import { useDefaultDateRange } from "./useDefaultDateRange";
 import { useDefaultYearRange } from "./useDefaultYearRange";
 
@@ -22,7 +22,7 @@ import { useDefaultYearRange } from "./useDefaultYearRange";
  * @see useDefaultDateRange - For destruction date ranges
  * @see useDefaultYearRange - For creation year ranges
  */
-export function useDefaultFilterRanges(sites: GazaSite[]) {
+export function useDefaultFilterRanges(sites: Site[]) {
   const dateRange = useDefaultDateRange(sites);
   const yearRange = useDefaultYearRange(sites);
 

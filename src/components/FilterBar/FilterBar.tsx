@@ -1,6 +1,6 @@
 import { memo, useState, useMemo, useEffect, useCallback } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import type { GazaSite, FilterState } from "../../types";
+import type { Site, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
 import { formatLabel, formatDateRange, formatYearRange } from "../../utils/format";
 import { FilterButton } from "./FilterButton";
@@ -25,7 +25,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 interface FilterBarProps {
   filters: FilterState;
   onFilterChange: (updates: Partial<FilterState>) => void;
-  sites?: GazaSite[];
+  sites?: Site[];
   defaultDateRange?: {
     defaultStartDate: Date;
     defaultEndDate: Date;
@@ -152,11 +152,11 @@ export const FilterBar = memo(function FilterBar({
     onFilterChange({ destructionDateEnd: date });
   }, [onFilterChange]);
 
-  const handleCreationYearStartChange = useCallback((year: string | null) => {
+  const handleCreationYearStartChange = useCallback((year: number | null) => {
     onFilterChange({ creationYearStart: year });
   }, [onFilterChange]);
 
-  const handleCreationYearEndChange = useCallback((year: string | null) => {
+  const handleCreationYearEndChange = useCallback((year: number | null) => {
     onFilterChange({ creationYearEnd: year });
   }, [onFilterChange]);
 

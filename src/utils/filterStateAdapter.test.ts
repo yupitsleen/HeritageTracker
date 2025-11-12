@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type { FilterState as LegacyFilterState } from "../types/filters";
 import type { FilterState as RegistryFilterState } from "../types/filterConfig";
 import {
@@ -19,7 +19,7 @@ import {
 // Mock Data
 // ============================================================================
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "site-1",
     name: "Ancient Mosque",
@@ -519,7 +519,7 @@ describe("Edge Cases", () => {
   });
 
   it("should handle sites with missing optional fields", () => {
-    const minimalSite: GazaSite = {
+    const minimalSite: Site = {
       id: "minimal",
       name: "Minimal Site",
       type: "mosque",

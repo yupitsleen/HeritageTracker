@@ -5,7 +5,7 @@
  * These types wrap Supabase responses with pagination and metadata.
  */
 
-import type { GazaSite, Source, ImageWithAttribution } from '../types';
+import type { Site, Source, ImageWithAttribution } from '../types';
 
 /**
  * Standard API response wrapper
@@ -48,7 +48,7 @@ export interface ApiError {
 /**
  * Site response from API (may include additional metadata)
  */
-export interface ApiSite extends GazaSite {
+export interface ApiSite extends Site {
   createdAt?: string;
   updatedAt?: string;
   version?: number;
@@ -84,4 +84,4 @@ export function isApiError(response: unknown): response is ApiError {
   );
 }
 
-export type { GazaSite, Source, ImageWithAttribution };
+export type { Site, Source, ImageWithAttribution };

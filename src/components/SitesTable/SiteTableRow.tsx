@@ -1,4 +1,4 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard, getEffectiveDestructionDate } from "../../utils/format";
 import { Tooltip } from "../Tooltip";
@@ -8,8 +8,8 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import type { CSSProperties } from "react";
 
 interface SiteTableRowProps {
-  site: GazaSite;
-  onSiteClick?: (site: GazaSite) => void;
+  site: Site;
+  onSiteClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   variant: "compact" | "expanded";

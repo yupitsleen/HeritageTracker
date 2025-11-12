@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
@@ -17,7 +17,7 @@ import type { FilterState } from "./useAppState";
  * @returns Filtered sites and counts
  */
 export function useFilteredSites(
-  sites: GazaSite[],
+  sites: Site[],
   filters: FilterState
 ) {
   const {

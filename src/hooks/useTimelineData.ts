@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type { TimelineEvent } from "../utils/d3Timeline";
 
 /**
@@ -8,7 +8,7 @@ import type { TimelineEvent } from "../utils/d3Timeline";
  * - Sorts events chronologically
  * - Returns structured timeline events
  */
-export function useTimelineData(sites: GazaSite[]) {
+export function useTimelineData(sites: Site[]) {
   return useMemo(() => {
     const destructionDates: TimelineEvent[] = sites
       .filter((site) => site.dateDestroyed)

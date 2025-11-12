@@ -5,7 +5,7 @@
  * This enables easy switching between Mock, Local Backend, and Supabase.
  */
 
-import type { GazaSite } from '../../types';
+import type { Site } from '../../types';
 import type { PaginatedResponse, SitesQueryParams } from '../types';
 
 /**
@@ -16,32 +16,32 @@ export interface BackendAdapter {
   /**
    * Fetch all heritage sites (with optional filtering)
    */
-  getAllSites(params?: SitesQueryParams): Promise<GazaSite[]>;
+  getAllSites(params?: SitesQueryParams): Promise<Site[]>;
 
   /**
    * Fetch paginated heritage sites
    */
-  getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<GazaSite>>;
+  getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<Site>>;
 
   /**
    * Fetch a single heritage site by ID
    */
-  getSiteById(id: string): Promise<GazaSite>;
+  getSiteById(id: string): Promise<Site>;
 
   /**
    * Geospatial query: Find sites within radius of a point
    */
-  getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<GazaSite[]>;
+  getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<Site[]>;
 
   /**
    * Create a new heritage site (admin only - future feature)
    */
-  createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite>;
+  createSite(site: Omit<Site, 'id'>): Promise<Site>;
 
   /**
    * Update an existing heritage site (admin only - future feature)
    */
-  updateSite(id: string, updates: Partial<GazaSite>): Promise<GazaSite>;
+  updateSite(id: string, updates: Partial<Site>): Promise<Site>;
 
   /**
    * Delete a heritage site (admin only - future feature)

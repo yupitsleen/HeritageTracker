@@ -4,7 +4,7 @@
  * Defines extensible column system for CSV exports.
  */
 
-import type { GazaSite } from "./index";
+import type { Site } from "./index";
 
 /**
  * CSV column identifier
@@ -38,7 +38,7 @@ export interface CSVColumnConfig {
   labelArabic?: string;
 
   /** Extract value from site */
-  getValue: (site: GazaSite) => string | undefined | null;
+  getValue: (site: Site) => string | undefined | null;
 
   /** Whether column is included by default */
   defaultIncluded: boolean;

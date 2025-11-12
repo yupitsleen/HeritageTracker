@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import {
   calculateGlowContribution,
   calculateTotalHeritageValue,
@@ -48,7 +48,7 @@ export interface MapGlowState {
  * @param currentDate - Current timeline date position
  * @returns MapGlowState with pre-calculated values
  */
-export function useMapGlow(sites: GazaSite[], currentDate: Date): MapGlowState {
+export function useMapGlow(sites: Site[], currentDate: Date): MapGlowState {
   // Pre-calculate base glow contributions for all sites (expensive operation)
   // Only recalculates when sites array changes
   const glowContributions = useMemo<GlowContribution[]>(() => {

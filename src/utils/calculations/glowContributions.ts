@@ -1,4 +1,4 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { parseYearBuilt } from "../siteFilters";
 
 /**
@@ -18,7 +18,7 @@ import { parseYearBuilt } from "../siteFilters";
  * @param site - Gaza heritage site
  * @returns Numeric glow contribution value (100-2400+)
  */
-export function calculateGlowContribution(site: GazaSite): number {
+export function calculateGlowContribution(site: Site): number {
   let weight = 100; // Base value
 
   // Age factor (older = more weight)
@@ -57,7 +57,7 @@ export function calculateGlowContribution(site: GazaSite): number {
     case "museum":
       weight *= 1.6;
       break;
-    // Note: "library" not in current GazaSite type, but spec mentions it
+    // Note: "library" not in current Site type, but spec mentions it
     // mosque, church, historic-building use base weight
     default:
       break;
@@ -109,7 +109,7 @@ export function getGlowReductionPercentage(
  * @param site - Gaza heritage site
  * @returns Hex color code
  */
-export function getAgeColorCode(site: GazaSite): string {
+export function getAgeColorCode(site: Site): string {
   const yearBuilt = parseYearBuilt(site.yearBuilt);
 
   if (yearBuilt === null) {

@@ -1,10 +1,10 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { SitesTableMobile } from "./SitesTableMobile";
 import { SitesTableDesktop } from "./SitesTableDesktop";
 
 interface SitesTableProps {
-  sites: GazaSite[];
-  onSiteClick?: (site: GazaSite) => void;
+  sites: Site[];
+  onSiteClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;

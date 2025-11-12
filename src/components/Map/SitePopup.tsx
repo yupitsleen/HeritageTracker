@@ -1,11 +1,11 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { StatusBadge } from "../StatusBadge";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 import { translateSiteType, getEffectiveDestructionDate } from "../../utils/format";
 
 interface SitePopupProps {
-  site: GazaSite;
+  site: Site;
   onViewMore: () => void;
 }
 

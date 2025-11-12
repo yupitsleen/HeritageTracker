@@ -1,14 +1,14 @@
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Filter sites by type and status
  * Returns all sites if no filters are selected
  */
 export const filterSitesByTypeAndStatus = (
-  sites: GazaSite[],
-  selectedTypes: Array<GazaSite["type"]>,
-  selectedStatuses: Array<GazaSite["status"]>
-): GazaSite[] => {
+  sites: Site[],
+  selectedTypes: Array<Site["type"]>,
+  selectedStatuses: Array<Site["status"]>
+): Site[] => {
   return sites.filter((site) => {
     // Type filter (only filter if types are selected)
     if (selectedTypes.length > 0 && !selectedTypes.includes(site.type)) {
@@ -29,10 +29,10 @@ export const filterSitesByTypeAndStatus = (
  * Returns all sites if no date range is specified
  */
 export const filterSitesByDestructionDate = (
-  sites: GazaSite[],
+  sites: Site[],
   startDate: Date | null,
   endDate: Date | null
-): GazaSite[] => {
+): Site[] => {
   if (!startDate && !endDate) return sites;
 
   return sites.filter((site) => {
@@ -137,10 +137,10 @@ export const parseYearBuilt = (yearBuilt: string): number | null => {
  * Returns all sites if no year range is specified
  */
 export const filterSitesByCreationYear = (
-  sites: GazaSite[],
+  sites: Site[],
   startYear: number | null,
   endYear: number | null
-): GazaSite[] => {
+): Site[] => {
   if (!startYear && !endYear) return sites;
 
   return sites.filter((site) => {
@@ -168,9 +168,9 @@ export const filterSitesByCreationYear = (
  * Returns all sites if search term is empty
  */
 export const filterSitesBySearch = (
-  sites: GazaSite[],
+  sites: Site[],
   searchTerm: string
-): GazaSite[] => {
+): Site[] => {
   if (!searchTerm || searchTerm.trim().length === 0) return sites;
 
   const lowerSearch = searchTerm.toLowerCase().trim();

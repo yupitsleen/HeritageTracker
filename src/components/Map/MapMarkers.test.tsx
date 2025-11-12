@@ -3,7 +3,7 @@ import { fireEvent } from "@testing-library/react";
 import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { MapContainer } from "react-leaflet";
 import { MapMarkers } from "./MapMarkers";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 
 /**
  * Tests for MapMarkers component
@@ -13,7 +13,7 @@ import type { GazaSite } from "../../types";
  */
 
 // Helper to create mock sites
-const createMockSite = (overrides?: Partial<GazaSite>): GazaSite => ({
+const createMockSite = (overrides?: Partial<Site>): Site => ({
   id: "test-site-1",
   name: "Test Mosque",
   nameArabic: "مسجد الاختبار",

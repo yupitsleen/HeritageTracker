@@ -10,13 +10,13 @@
 
 import { useAsyncQuery } from './useAsyncQuery';
 import { getSiteById } from '../api/sites';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 
 /**
  * Hook return type
  */
 export interface UseSiteByIdReturn {
-  site: GazaSite | null;
+  site: Site | null;
   isLoading: boolean;
   error: Error | null;
   refetch: () => void;
@@ -41,7 +41,7 @@ export interface UseSiteByIdReturn {
  * ```
  */
 export function useSiteById(id: string | null | undefined): UseSiteByIdReturn {
-  const { data, isLoading, error, refetch } = useAsyncQuery<GazaSite, string | undefined>({
+  const { data, isLoading, error, refetch } = useAsyncQuery<Site, string | undefined>({
     queryFn: (params) => getSiteById(params!),
     params: id || undefined,
     enabled: !!id,

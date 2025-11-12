@@ -8,7 +8,7 @@
  * - Data exchange
  */
 
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import type { ExportConfig, ExportFunction } from "../../types/export";
 
 /**
@@ -24,7 +24,7 @@ interface JSONExport {
     siteCount: number;
     version: string;
   };
-  sites: GazaSite[];
+  sites: Site[];
 }
 
 /**
@@ -33,7 +33,7 @@ interface JSONExport {
  * @param sites - Array of sites to export
  * @returns JSON string with metadata wrapper
  */
-export const exportJSON: ExportFunction = (sites: GazaSite[]): string => {
+export const exportJSON: ExportFunction = (sites: Site[]): string => {
   const jsonExport: JSONExport = {
     metadata: {
       title: "Gaza Heritage Sites",

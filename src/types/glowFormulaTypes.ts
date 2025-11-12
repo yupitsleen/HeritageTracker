@@ -43,7 +43,7 @@ export interface SignificanceMultiplier {
   /** Multiplier value */
   multiplier: number;
 
-  /** Property name in GazaSite type */
+  /** Property name in Site type */
   propertyName: string;
 
   /** Description */

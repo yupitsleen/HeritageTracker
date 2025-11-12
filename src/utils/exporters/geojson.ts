@@ -10,7 +10,7 @@
  * @see https://tools.ietf.org/html/rfc7946
  */
 
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import type { ExportConfig, ExportFunction } from "../../types/export";
 
 /**
@@ -63,12 +63,12 @@ interface GeoJSONFeatureCollection {
 }
 
 /**
- * Convert a single GazaSite to a GeoJSON Feature
+ * Convert a single Site to a GeoJSON Feature
  *
  * IMPORTANT: GeoJSON uses [longitude, latitude] order (opposite of Leaflet)
  * Leaflet uses [lat, lng], GeoJSON uses [lng, lat]
  */
-function siteToGeoJSONFeature(site: GazaSite): GeoJSONFeature {
+function siteToGeoJSONFeature(site: Site): GeoJSONFeature {
   const [lat, lng] = site.coordinates; // Leaflet format: [lat, lng]
 
   return {
@@ -85,7 +85,7 @@ function siteToGeoJSONFeature(site: GazaSite): GeoJSONFeature {
       yearBuilt: site.yearBuilt,
       status: site.status,
       dateDestroyed: site.dateDestroyed,
-      // sourceUrl: site.sourceUrl, // Property does not exist on current GazaSite type
+      // sourceUrl: site.sourceUrl, // Property does not exist on current Site type
       unescoListed: site.unescoListed,
       // religiousSignificance: site.religiousSignificance,
       // architecturalStyle: site.architecturalStyle,
@@ -102,7 +102,7 @@ function siteToGeoJSONFeature(site: GazaSite): GeoJSONFeature {
  * @param sites - Array of sites to export
  * @returns GeoJSON string (RFC 7946 compliant)
  */
-export const exportGeoJSON: ExportFunction = (sites: GazaSite[]): string => {
+export const exportGeoJSON: ExportFunction = (sites: Site[]): string => {
   const featureCollection: GeoJSONFeatureCollection = {
     type: "FeatureCollection",
     features: sites.map(siteToGeoJSONFeature),

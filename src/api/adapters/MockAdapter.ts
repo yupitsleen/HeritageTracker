@@ -6,7 +6,7 @@
  */
 
 import { mockSites } from '../../data/mockSites';
-import type { GazaSite } from '../../types';
+import type { Site } from '../../types';
 import type { ApiResponse, PaginatedResponse, SitesQueryParams } from '../types';
 import type { BackendAdapter } from './types';
 import { API_MOCK_DELAY_MS } from '../../constants/api';
@@ -22,11 +22,11 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
  * Uses static data from mockSites.ts with simulated network delay
  */
 export class MockAdapter implements BackendAdapter {
-  async getAllSites(params?: SitesQueryParams): Promise<GazaSite[]> {
+  async getAllSites(params?: SitesQueryParams): Promise<Site[]> {
     await delay(API_MOCK_DELAY_MS);
 
     // Simulate API response format
-    const response: ApiResponse<GazaSite[]> = {
+    const response: ApiResponse<Site[]> = {
       data: mockSites,
       success: true,
       timestamp: new Date().toISOString(),
@@ -56,7 +56,7 @@ export class MockAdapter implements BackendAdapter {
     return filteredSites;
   }
 
-  async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<GazaSite>> {
+  async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<Site>> {
     await delay(API_MOCK_DELAY_MS);
 
     const page = params?.page || 1;
@@ -82,7 +82,7 @@ export class MockAdapter implements BackendAdapter {
     };
   }
 
-  async getSiteById(id: string): Promise<GazaSite> {
+  async getSiteById(id: string): Promise<Site> {
     await delay(API_MOCK_DELAY_MS);
 
     const site = mockSites.find(s => s.id === id);
@@ -91,7 +91,7 @@ export class MockAdapter implements BackendAdapter {
       throw new Error(`Site with ID "${id}" not found`);
     }
 
-    const response: ApiResponse<GazaSite> = {
+    const response: ApiResponse<Site> = {
       data: site,
       success: true,
       timestamp: new Date().toISOString(),
@@ -100,7 +100,7 @@ export class MockAdapter implements BackendAdapter {
     return response.data;
   }
 
-  async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<GazaSite[]> {
+  async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<Site[]> {
     await delay(API_MOCK_DELAY_MS);
 
     // Simple distance calculation using Haversine formula
@@ -128,11 +128,11 @@ export class MockAdapter implements BackendAdapter {
     return nearSites;
   }
 
-  async createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> {
+  async createSite(site: Omit<Site, 'id'>): Promise<Site> {
     await delay(API_MOCK_DELAY_MS);
 
     // Mock implementation - not persisted
-    const newSite: GazaSite = {
+    const newSite: Site = {
       ...site,
       id: `site-${Date.now()}`,
     };
@@ -141,13 +141,13 @@ export class MockAdapter implements BackendAdapter {
     return newSite;
   }
 
-  async updateSite(id: string, updates: Partial<GazaSite>): Promise<GazaSite> {
+  async updateSite(id: string, updates: Partial<Site>): Promise<Site> {
     await delay(API_MOCK_DELAY_MS);
 
     const existingSite = await this.getSiteById(id);
 
     // Mock implementation - not persisted
-    const updatedSite: GazaSite = {
+    const updatedSite: Site = {
       ...existingSite,
       ...updates,
       id, // Preserve original ID

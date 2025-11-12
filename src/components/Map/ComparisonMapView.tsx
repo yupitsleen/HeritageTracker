@@ -1,17 +1,17 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import type { WaybackImagery } from "../../types/waybackTimelineTypes";
 import { SiteDetailView } from "./SiteDetailView";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { DateLabel } from "../Timeline/DateLabel";
 
 interface ComparisonMapViewProps {
-  sites: GazaSite[];
+  sites: Site[];
   highlightedSiteId: string | null;
   /** Earlier/before imagery configuration */
   before: WaybackImagery;
   /** Later/after imagery configuration */
   after: WaybackImagery;
-  onSiteClick?: (site: GazaSite) => void;
+  onSiteClick?: (site: Site) => void;
 }
 
 /**

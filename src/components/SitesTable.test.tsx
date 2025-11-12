@@ -2,10 +2,10 @@ import { describe, it, expect, vi } from "vitest";
 import { renderWithTheme, screen } from "../test-utils/renderWithTheme";
 import userEvent from "@testing-library/user-event";
 import { SitesTable } from "./SitesTable/index";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import { CalendarProvider } from "../contexts/CalendarContext";
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "site-1",
     name: "Test Mosque",

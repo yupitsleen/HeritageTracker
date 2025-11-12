@@ -15,7 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getSitesPaginated } from '../api/sites';
 import { QUERY_CONFIG } from '../config/queryConfig';
 import type { SitesQueryParams } from '../api/types';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 
 /**
  * Fetch paginated sites with caching
@@ -63,7 +63,7 @@ export function useAllSitesQuery(params?: Omit<SitesQueryParams, 'page' | 'pageS
         page: 1,
         pageSize: 10000, // Fetch all sites (up to 10k)
       });
-      return response.data as GazaSite[];
+      return response.data as Site[];
     },
     staleTime: QUERY_CONFIG.STALE_TIME,
     gcTime: QUERY_CONFIG.GC_TIME,

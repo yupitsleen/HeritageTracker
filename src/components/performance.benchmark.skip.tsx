@@ -4,7 +4,7 @@ import { HeritageMap } from "./Map/HeritageMap";
 import { SitesTable } from "./SitesTable/index";
 import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import {
   filterSitesByTypeAndStatus,
   filterSitesByDestructionDate,
@@ -34,15 +34,15 @@ import {
 
 // Helper function to apply all filters
 const filterSites = (
-  sites: GazaSite[],
+  sites: Site[],
   filters: {
     searchQuery: string;
-    selectedTypes: Array<GazaSite["type"]>;
-    selectedStatuses: Array<GazaSite["status"]>;
+    selectedTypes: Array<Site["type"]>;
+    selectedStatuses: Array<Site["status"]>;
     destructionDateStart: Date | null;
     destructionDateEnd: Date | null;
   }
-): GazaSite[] => {
+): Site[] => {
   let filtered = sites;
 
   // Apply search filter
@@ -68,15 +68,15 @@ const filterSites = (
 };
 
 // Generate mock site data at scale (25 sites)
-const generateMockSites = (count: number): GazaSite[] => {
-  const types: Array<GazaSite["type"]> = [
+const generateMockSites = (count: number): Site[] => {
+  const types: Array<Site["type"]> = [
     "mosque",
     "church",
     "archaeological",
     "museum",
     "historic-building",
   ];
-  const statuses: Array<GazaSite["status"]> = ["destroyed", "heavily-damaged", "damaged"];
+  const statuses: Array<Site["status"]> = ["destroyed", "heavily-damaged", "damaged"];
 
   return Array.from({ length: count }, (_, i) => ({
     id: `site-${i + 1}`,

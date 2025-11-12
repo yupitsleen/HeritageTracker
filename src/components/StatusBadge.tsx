@@ -1,9 +1,9 @@
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import { getStatusColor, cn } from "../styles/theme";
 import { useTranslation } from "../contexts/LocaleContext";
 
 interface StatusBadgeProps {
-  status: GazaSite["status"];
+  status: Site["status"];
   className?: string;
 }
 
@@ -16,7 +16,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   const t = useTranslation();
 
   // Map status values to translation keys (kebab-case to camelCase)
-  const statusKeyMap: Record<GazaSite["status"], string> = {
+  const statusKeyMap: Record<Site["status"], string> = {
     destroyed: "siteStatus.destroyed",
     "heavily-damaged": "siteStatus.heavilyDamaged",
     damaged: "siteStatus.damaged",

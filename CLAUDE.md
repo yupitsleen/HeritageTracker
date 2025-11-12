@@ -111,7 +111,7 @@ src/
 ├── services/
 │   └── waybackService.ts         # ESRI Wayback API client
 ├── types/                        # TypeScript definitions
-│   ├── index.ts                  # Core types (GazaSite, FilterState)
+│   ├── index.ts                  # Core types (Site, FilterState)
 │   ├── filters.ts                # Filter types
 │   ├── wayback.ts                # Wayback release types
 │   └── [30+ type files]
@@ -172,7 +172,7 @@ const { data, isLoading } = useSitesQuery({
 **Mode 1: Mock API** (Default - Fastest)
 ```typescript
 // .env.development: VITE_USE_MOCK_API=true
-export async function getAllSites(): Promise<GazaSite[]> {
+export async function getAllSites(): Promise<Site[]> {
   if (shouldUseMockData()) return mockGetAllSites();
   // Returns data from src/data/mockSites.ts (70 sites)
   // No database required, 800ms simulated delay
@@ -182,7 +182,7 @@ export async function getAllSites(): Promise<GazaSite[]> {
 **Mode 2: Local Backend** (Realistic Development)
 ```typescript
 // .env.development: VITE_USE_LOCAL_BACKEND=true, VITE_API_URL=http://localhost:5000/api
-export async function getAllSites(): Promise<GazaSite[]> {
+export async function getAllSites(): Promise<Site[]> {
   if (shouldUseLocalBackend()) {
     const response = await fetch(`${VITE_API_URL}/sites`);
     return response.json();
@@ -195,7 +195,7 @@ export async function getAllSites(): Promise<GazaSite[]> {
 **Mode 3: Supabase Cloud** (Production)
 ```typescript
 // .env.production: VITE_USE_MOCK_API=false, VITE_SUPABASE_URL=xxx
-export async function getAllSites(): Promise<GazaSite[]> {
+export async function getAllSites(): Promise<Site[]> {
   return supabase.from("heritage_sites").select("*");
   // Connects to Supabase cloud database
 }
@@ -208,7 +208,7 @@ export async function getAllSites(): Promise<GazaSite[]> {
 ## Data Schema
 
 ```typescript
-interface GazaSite {
+interface Site {
   id: string;
   name: string;
   nameArabic?: string; // RTL Arabic support
@@ -1028,7 +1028,7 @@ npm run e2e -- e2e/filters.spec.ts
 
 3. **Type System Enhancements:**
    - Added new site types: `monument`, `cemetery`, `archive`
-   - Added `metadata` field to GazaSite interface for grouped collections
+   - Added `metadata` field to Site interface for grouped collections
    - Full icons and Arabic translations for all new types
 
 4. **Quality Assurance:**
@@ -1312,7 +1312,7 @@ npm run dev:full          # Start both frontend + backend together
 **Frontend Integration**
 - `src/api/sites.ts` - Auto-detects backend mode
 - No code changes needed to switch modes
-- Same `GazaSite` types across all modes
+- Same `Site` types across all modes
 
 ### Database Schema Highlights
 
@@ -1390,7 +1390,7 @@ npm run preview       # Preview production build locally
 
 ```typescript
 // 1. Add to src/data/mockSites.ts
-const newSite: GazaSite = {
+const newSite: Site = {
   id: "site-46",
   name: "Site Name",
   nameArabic: "اسم الموقع",

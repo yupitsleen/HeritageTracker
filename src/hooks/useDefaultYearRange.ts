@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import { parseYearBuilt } from "../utils/siteFilters";
 
 /**
@@ -14,7 +14,7 @@ import { parseYearBuilt } from "../utils/siteFilters";
  * const { defaultStartYear, defaultEndYear, defaultStartEra } = useDefaultYearRange(sites);
  * ```
  */
-export function useDefaultYearRange(sites: GazaSite[]) {
+export function useDefaultYearRange(sites: Site[]) {
   return useMemo(() => {
     const creationYears = sites
       .filter(site => site.yearBuilt)

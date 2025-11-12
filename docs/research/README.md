@@ -185,7 +185,7 @@ All sources documented in `SOURCES.md` with proper attribution.
 
 **A:** IMPLEMENTATION_GUIDE.md includes troubleshooting section. Common issues:
 - Update test expectations from 45 to 70 sites
-- Add `metadata` field to GazaSite type
+- Add `metadata` field to Site type
 - Add "historic_building" to type union
 
 ---

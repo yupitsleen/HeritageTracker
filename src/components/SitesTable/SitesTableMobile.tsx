@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import {
   formatDateCompact,
@@ -16,7 +16,7 @@ import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 import { useTableSort, type SortField } from "../../hooks/useTableSort";
 
 interface SitesTableMobileProps {
-  sites: GazaSite[];
+  sites: Site[];
 }
 
 /**
@@ -36,7 +36,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
   const isRTL = localeConfig.direction === "rtl";
 
   // Sort logic (shared with Desktop variant via hook)
-  const { sortField, sortDirection, handleSort, sortedSites } = useTableSort<GazaSite>(sites, "dateDestroyed", "desc");
+  const { sortField, sortDirection, handleSort, sortedSites } = useTableSort<Site>(sites, "dateDestroyed", "desc");
 
   // Mobile-specific state
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);

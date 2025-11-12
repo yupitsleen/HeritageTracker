@@ -6,10 +6,10 @@ import {
   getGlowRadius,
   interpolateColor,
 } from "../hooks/useMapGlow";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 // Test data helpers
-const createBaseSite = (overrides?: Partial<GazaSite>): GazaSite => ({
+const createBaseSite = (overrides?: Partial<Site>): Site => ({
   id: "test-site",
   name: "Test Site",
   type: "mosque",

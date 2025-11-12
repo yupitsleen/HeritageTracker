@@ -1,10 +1,10 @@
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Mock data: 3 sample Gaza heritage sites for development
  * Using real sites from our research for realistic testing
  */
-export const mockSites: GazaSite[] = [
+export const mockSites: Site[] = [
   {
     id: "great-omari-mosque",
     name: "Great Omari Mosque",

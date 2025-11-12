@@ -86,12 +86,12 @@ apikey: <supabase_anon_key>
 
 ## Data Types
 
-### GazaSite
+### Site
 
 The core heritage site data model.
 
 ```typescript
-interface GazaSite {
+interface Site {
   id: string;                          // Unique identifier (kebab-case)
   name: string;                        // English name
   nameArabic?: string;                 // Arabic name (RTL)
@@ -150,7 +150,7 @@ interface Source {
 
 ### Site Types (Reference)
 
-Valid values for `GazaSite.type`:
+Valid values for `Site.type`:
 - `mosque`
 - `church`
 - `archaeological`
@@ -162,7 +162,7 @@ Valid values for `GazaSite.type`:
 
 ### Site Statuses (Reference)
 
-Valid values for `GazaSite.status` (ordered by severity):
+Valid values for `Site.status` (ordered by severity):
 - `destroyed` - Completely destroyed, no structural integrity remaining
 - `heavily-damaged` - Major structural damage, may not be repairable
 - `looted` - Artifacts or valuables stolen or removed
@@ -260,7 +260,7 @@ GET /sites/paginated?page=2&pageSize=20&sortBy=dateDestroyed&sortOrder=desc
 ```json
 {
   "data": [
-    /* Array of GazaSite objects */
+    /* Array of Site objects */
   ],
   "pagination": {
     "page": 2,
@@ -300,7 +300,7 @@ GET /sites/great-omari-mosque
   "data": {
     "id": "great-omari-mosque",
     "name": "Great Omari Mosque",
-    /* ... full GazaSite object */
+    /* ... full Site object */
   },
   "success": true,
   "timestamp": "2025-10-24T19:30:00.000Z"
@@ -361,7 +361,7 @@ Create a new heritage site.
 {
   "data": {
     "id": "new-heritage-site",
-    /* ... full GazaSite object with generated ID */
+    /* ... full Site object with generated ID */
   },
   "success": true,
   "message": "Site created successfully",
@@ -379,7 +379,7 @@ Update an existing heritage site.
 
 **Authorization:** Required (JWT bearer token)
 
-**Request Body:** Partial `GazaSite` object (only fields to update)
+**Request Body:** Partial `Site` object (only fields to update)
 
 ```json
 {
@@ -393,7 +393,7 @@ Update an existing heritage site.
 ```json
 {
   "data": {
-    /* ... updated GazaSite object */
+    /* ... updated Site object */
   },
   "success": true,
   "message": "Site updated successfully",

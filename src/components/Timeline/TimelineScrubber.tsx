@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 // Optimized D3 imports - only import what we need
 import { scaleTime } from "d3-scale";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
@@ -44,7 +44,7 @@ export interface AdvancedTimelineMode {
 }
 
 interface TimelineScrubberProps {
-  sites: GazaSite[];
+  sites: Site[];
   highlightedSiteId?: string | null;
   onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback

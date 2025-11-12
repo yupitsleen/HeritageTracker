@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, MARKER_CLASSNAMES, type TimePeriod } from "../../constants/map";
 import { SITE_MARKER_CONFIG } from "../../constants/timeline";
 import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
@@ -16,7 +16,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 interface SiteDetailViewProps {
-  sites: GazaSite[];
+  sites: Site[];
   highlightedSiteId: string | null;
   // Optional custom tile URL (e.g., for Wayback imagery)
   customTileUrl?: string;
@@ -25,7 +25,7 @@ interface SiteDetailViewProps {
   // Optional date label to display at top of map
   dateLabel?: string;
   // Optional callback for when user clicks "See More" in popup
-  onSiteClick?: (site: GazaSite) => void;
+  onSiteClick?: (site: Site) => void;
   // Optional flag to indicate if comparison mode is active (disables adaptive zoom)
   comparisonModeActive?: boolean;
 }

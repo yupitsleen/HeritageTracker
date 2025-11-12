@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from "react";
 
 export type SortDirection = "asc" | "desc";
 
-// Backwards compatibility - specific sort fields for GazaSite
+// Backwards compatibility - specific sort fields for Site
 export type SortField =
   | "name"
   | "type"

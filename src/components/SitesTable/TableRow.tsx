@@ -1,4 +1,4 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard, translateStatus, getSiteDisplayNames, getEffectiveDestructionDate } from "../../utils/format";
 import { Tooltip } from "../Tooltip";
@@ -9,10 +9,10 @@ import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
 
 interface TableRowProps {
-  site: GazaSite;
+  site: Site;
   isHighlighted: boolean;
   visibleColumns: Set<string>;
-  onSiteClick?: (site: GazaSite) => void;
+  onSiteClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   rowRef?: React.RefObject<HTMLTableRowElement | null>;
 }

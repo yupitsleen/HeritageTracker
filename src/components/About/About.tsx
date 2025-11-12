@@ -1,9 +1,9 @@
 import { memo, useMemo } from "react";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 
 interface AboutProps {
-  sites: GazaSite[];
+  sites: Site[];
 }
 
 /**

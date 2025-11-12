@@ -7,17 +7,17 @@
 
 import { supabase, isSupabaseConfigured, getSupabaseClient } from '../supabaseClient';
 import { applyQueryFilters } from '../queryHelpers';
-import type { GazaSite } from '../../types';
+import type { Site } from '../../types';
 import type { Database } from '../database.types';
 import type { PaginatedResponse, SitesQueryParams } from '../types';
 import type { BackendAdapter } from './types';
 import { logger } from '../../utils/logger';
 
 /**
- * Convert Supabase row to GazaSite format
+ * Convert Supabase row to Site format
  * Handles PostgreSQL -> TypeScript type conversions
  */
-function convertSupabaseRow(row: Record<string, unknown>): GazaSite {
+function convertSupabaseRow(row: Record<string, unknown>): Site {
   return {
     id: row.id as string,
     name: row.name as string,
@@ -34,8 +34,8 @@ function convertSupabaseRow(row: Record<string, unknown>): GazaSite {
     historicalSignificance: row.historical_significance as string,
     culturalValue: row.cultural_value as string,
     verifiedBy: row.verified_by as string[],
-    images: row.images as GazaSite['images'],
-    sources: row.sources as GazaSite['sources'],
+    images: row.images as Site['images'],
+    sources: row.sources as Site['sources'],
     unescoListed: row.unesco_listed as boolean | undefined,
     artifactCount: row.artifact_count as number | undefined,
     isUnique: row.is_unique as boolean | undefined,
@@ -50,7 +50,7 @@ function convertSupabaseRow(row: Record<string, unknown>): GazaSite {
  * Uses Supabase client for cloud database access
  */
 export class SupabaseAdapter implements BackendAdapter {
-  async getAllSites(params?: SitesQueryParams): Promise<GazaSite[]> {
+  async getAllSites(params?: SitesQueryParams): Promise<Site[]> {
     if (!isSupabaseConfigured() || !supabase) {
       throw new Error('Supabase not configured');
     }
@@ -71,7 +71,7 @@ export class SupabaseAdapter implements BackendAdapter {
     return data.map(convertSupabaseRow);
   }
 
-  async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<GazaSite>> {
+  async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<Site>> {
     if (!isSupabaseConfigured() || !supabase) {
       throw new Error('Supabase not configured. Pagination only available with Supabase backend.');
     }
@@ -117,7 +117,7 @@ export class SupabaseAdapter implements BackendAdapter {
     };
   }
 
-  async getSiteById(id: string): Promise<GazaSite> {
+  async getSiteById(id: string): Promise<Site> {
     if (!isSupabaseConfigured() || !supabase) {
       throw new Error('Supabase not configured');
     }
@@ -139,7 +139,7 @@ export class SupabaseAdapter implements BackendAdapter {
     return convertSupabaseRow(data);
   }
 
-  async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<GazaSite[]> {
+  async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<Site[]> {
     const client = getSupabaseClient();
 
     const { data, error } = await client.rpc(
@@ -163,7 +163,7 @@ export class SupabaseAdapter implements BackendAdapter {
     return (data as Database['public']['Tables']['heritage_sites']['Row'][]).map(convertSupabaseRow);
   }
 
-  async createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> {
+  async createSite(site: Omit<Site, 'id'>): Promise<Site> {
     const client = getSupabaseClient();
 
     const insertData = {
@@ -208,7 +208,7 @@ export class SupabaseAdapter implements BackendAdapter {
     return convertSupabaseRow(data);
   }
 
-  async updateSite(id: string, updates: Partial<GazaSite>): Promise<GazaSite> {
+  async updateSite(id: string, updates: Partial<Site>): Promise<Site> {
     const client = getSupabaseClient();
 
     // Convert camelCase to snake_case for database

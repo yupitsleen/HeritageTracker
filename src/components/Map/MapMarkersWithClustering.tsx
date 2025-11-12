@@ -9,7 +9,7 @@ import { useEffect, useMemo, memo } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.markercluster';
-import type { GazaSite } from '../../types';
+import type { Site } from '../../types';
 import { createMarkerIcon } from '../../utils/mapHelpers';
 import { getStatusHexColor } from '../../utils/colorHelpers';
 import { getEffectiveDestructionDate } from '../../utils/format';
@@ -21,9 +21,9 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 interface MapMarkersWithClusteringProps {
-  sites: GazaSite[];
+  sites: Site[];
   highlightedSiteId?: string | null;
-  onSiteClick?: (site: GazaSite) => void;
+  onSiteClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   currentTimestamp?: Date;
 }
@@ -54,7 +54,7 @@ function createClusterGroup(): L.MarkerClusterGroup {
  * Create a single marker for a site
  */
 function createSiteMarker(
-  site: GazaSite,
+  site: Site,
   isHighlighted: boolean,
   isDestroyed: boolean
 ): L.Marker | L.CircleMarker {
@@ -81,7 +81,7 @@ function createSiteMarker(
  */
 function addPopupToMarker(
   marker: L.Marker | L.CircleMarker,
-  site: GazaSite,
+  site: Site,
   onViewMore: (() => void) | undefined
 ): void {
   const popupContent = renderToStaticMarkup(

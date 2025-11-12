@@ -5,7 +5,7 @@
  * Supports multiple filter types (text search, multi-select, date range).
  */
 
-import type { GazaSite } from "./index";
+import type { Site } from "./index";
 
 /**
  * Unique identifier for filter
@@ -40,7 +40,7 @@ export interface FilterConfig {
   placeholderArabic?: string;
 
   /** Filter function that determines if site matches */
-  filterFn: (site: GazaSite, value: FilterValue) => boolean;
+  filterFn: (site: Site, value: FilterValue) => boolean;
 
   /** Default value for filter */
   defaultValue: FilterValue;

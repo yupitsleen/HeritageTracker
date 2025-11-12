@@ -11,7 +11,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAsyncQuery } from './useAsyncQuery';
 import { getSitesPaginated } from '../api/sites';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 import type { SitesQueryParams, PaginatedResponse } from '../api/types';
 import { logger } from '../utils/logger';
 
@@ -19,7 +19,7 @@ import { logger } from '../utils/logger';
  * Hook return type
  */
 export interface UseSitesPaginatedReturn {
-  sites: GazaSite[];
+  sites: Site[];
   isLoading: boolean;
   error: Error | null;
   pagination: {
@@ -86,7 +86,7 @@ export function useSitesPaginated(
 
   // Fetch paginated data using shared async hook
   const { data, isLoading, error, refetch } = useAsyncQuery<
-    PaginatedResponse<GazaSite>,
+    PaginatedResponse<Site>,
     SitesQueryParams
   >({
     queryFn: getSitesPaginated,

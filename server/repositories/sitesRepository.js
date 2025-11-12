@@ -67,7 +67,7 @@ function buildWhereConditions(filters) {
 /**
  * Find all sites with optional filters
  * @param {Object} filters - Filter parameters (types, statuses, search, etc.)
- * @returns {Promise<Array>} Array of GazaSite objects
+ * @returns {Promise<Array>} Array of Site objects
  */
 export async function findAll(filters = {}) {
   const conditions = buildWhereConditions(filters);
@@ -97,7 +97,7 @@ export async function findAll(filters = {}) {
  * @param {Object} filters - Filter parameters
  * @param {number} limit - Number of results per page
  * @param {number} offset - Number of results to skip
- * @returns {Promise<Array>} Array of GazaSite objects
+ * @returns {Promise<Array>} Array of Site objects
  */
 export async function findPaginated(filters = {}, limit, offset) {
   const conditions = buildWhereConditions(filters);
@@ -153,7 +153,7 @@ export async function count(filters = {}) {
 /**
  * Find site by ID
  * @param {string} id - Site ID
- * @returns {Promise<Object|null>} GazaSite object or null
+ * @returns {Promise<Object|null>} Site object or null
  */
 export async function findById(id) {
   const rows = await sql`
@@ -168,7 +168,7 @@ export async function findById(id) {
 /**
  * Insert new site
  * @param {Object} dbData - Database-formatted site data
- * @returns {Promise<Object>} Created GazaSite object
+ * @returns {Promise<Object>} Created Site object
  */
 export async function insert(dbData) {
   const rows = await sql`
@@ -202,7 +202,7 @@ export async function insert(dbData) {
  * Update existing site
  * @param {string} id - Site ID
  * @param {Object} dbUpdates - Database-formatted update data
- * @returns {Promise<Object|null>} Updated GazaSite object or null
+ * @returns {Promise<Object|null>} Updated Site object or null
  */
 export async function update(id, dbUpdates) {
   // Build SET clauses as SQL fragments
@@ -258,7 +258,7 @@ export async function remove(id) {
  * @param {number} lat - Latitude
  * @param {number} lng - Longitude
  * @param {number} radiusKm - Radius in kilometers
- * @returns {Promise<Array>} Array of GazaSite objects with distance
+ * @returns {Promise<Array>} Array of Site objects with distance
  */
 export async function findNearPoint(lat, lng, radiusKm) {
   const radiusMeters = radiusKm * 1000;

@@ -1,4 +1,4 @@
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type { WaybackRelease } from "../services/waybackService";
 
 /**
@@ -46,7 +46,7 @@ export function findClosestReleaseIndex(releases: WaybackRelease[], targetDate: 
  * @returns Array of event marker groups with position and stacked sites
  */
 export function groupEventsByRelease(
-  sites: GazaSite[],
+  sites: Site[],
   releases: WaybackRelease[]
 ): EventMarkerGroup[] {
   if (sites.length === 0 || releases.length === 0) {

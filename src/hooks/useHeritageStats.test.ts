@@ -8,11 +8,11 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useHeritageStats } from './useHeritageStats';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 
 describe('useHeritageStats', () => {
   // Helper to create mock sites
-  const createMockSite = (overrides: Partial<GazaSite> = {}): GazaSite => ({
+  const createMockSite = (overrides: Partial<Site> = {}): Site => ({
     id: 'test-site',
     name: 'Test Site',
     type: 'mosque',

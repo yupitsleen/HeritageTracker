@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import {
   type FilterState,
   createEmptyFilterState,
@@ -15,8 +15,8 @@ import {
  */
 export function useFilterState() {
   // Applied filters
-  const [selectedTypes, setSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
-  const [selectedStatuses, setSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
+  const [selectedTypes, setSelectedTypes] = useState<Array<Site["type"]>>([]);
+  const [selectedStatuses, setSelectedStatuses] = useState<Array<Site["status"]>>([]);
   const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
   const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
@@ -24,8 +24,8 @@ export function useFilterState() {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Temporary filters (for modal - not applied until "Apply Filters" clicked)
-  const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<GazaSite["type"]>>([]);
-  const [tempSelectedStatuses, setTempSelectedStatuses] = useState<Array<GazaSite["status"]>>([]);
+  const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<Site["type"]>>([]);
+  const [tempSelectedStatuses, setTempSelectedStatuses] = useState<Array<Site["status"]>>([]);
   const [tempDestructionDateStart, setTempDestructionDateStart] = useState<Date | null>(null);
   const [tempDestructionDateEnd, setTempDestructionDateEnd] = useState<Date | null>(null);
   const [tempCreationYearStart, setTempCreationYearStart] = useState<number | null>(null);

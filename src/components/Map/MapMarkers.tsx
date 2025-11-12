@@ -1,15 +1,15 @@
 import { useMemo, memo } from "react";
 import { Marker, CircleMarker, Popup } from "react-leaflet";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { createMarkerIcon } from "../../utils/mapHelpers";
 import { getStatusHexColor } from "../../utils/colorHelpers";
 import { getEffectiveDestructionDate } from "../../utils/format";
 import { SitePopup } from "./SitePopup";
 
 interface MapMarkersProps {
-  sites: GazaSite[];
+  sites: Site[];
   highlightedSiteId?: string | null;
-  onSiteClick?: (site: GazaSite) => void;
+  onSiteClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   currentTimestamp?: Date;
 }

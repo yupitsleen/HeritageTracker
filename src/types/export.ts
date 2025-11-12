@@ -5,7 +5,7 @@
  * multiple formats (CSV, JSON, GeoJSON, etc.)
  */
 
-import type { GazaSite } from "./index";
+import type { Site } from "./index";
 
 /**
  * Export format identifier
@@ -52,7 +52,7 @@ export interface ExportConfig {
  * Export function signature
  * Takes array of sites and returns formatted string data
  */
-export type ExportFunction = (sites: GazaSite[]) => string;
+export type ExportFunction = (sites: Site[]) => string;
 
 /**
  * Complete exporter definition combining config and implementation
@@ -73,7 +73,7 @@ export interface ExportOptions {
   filename?: string;
 
   /** Sites to export */
-  sites: GazaSite[];
+  sites: Site[];
 
   /** Include metadata in export (date, source, etc.) */
   includeMetadata?: boolean;

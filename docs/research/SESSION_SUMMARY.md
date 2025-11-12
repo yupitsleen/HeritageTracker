@@ -303,7 +303,7 @@ Follow the `IMPLEMENTATION_GUIDE.md` to add these sites to your database.
 ### What Was Implemented
 
 1. ✅ **TypeScript Types Updated:**
-   - Added `metadata` field to GazaSite interface
+   - Added `metadata` field to Site interface
    - Added new site types: monument, cemetery, archive
    - Full icons and Arabic translations
 

@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { exportCSV, exportCSVWithOptions, getDefaultCSVColumnIds } from "./csv";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 
 // Mock site data
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "site-1",
     name: "Test Mosque",
@@ -74,7 +74,7 @@ describe("exportCSV", () => {
   });
 
   it("escapes CSV special characters", () => {
-    const siteWithComma: GazaSite = {
+    const siteWithComma: Site = {
       ...mockSites[0],
       name: 'Site, with "comma"',
     };
@@ -190,7 +190,7 @@ describe("exportCSVWithOptions", () => {
   });
 
   it("handles undefined/null values gracefully", () => {
-    const siteWithNulls: GazaSite = {
+    const siteWithNulls: Site = {
       ...mockSites[0],
       nameArabic: undefined,
       yearBuiltIslamic: undefined,
@@ -251,7 +251,7 @@ describe("getDefaultCSVColumnIds", () => {
 
 describe("CSV RFC 4180 Compliance", () => {
   it("escapes quotes by doubling them", () => {
-    const siteWithQuotes: GazaSite = {
+    const siteWithQuotes: Site = {
       ...mockSites[0],
       name: 'Site with "quotes"',
     };
@@ -261,7 +261,7 @@ describe("CSV RFC 4180 Compliance", () => {
   });
 
   it("wraps fields with commas in quotes", () => {
-    const siteWithComma: GazaSite = {
+    const siteWithComma: Site = {
       ...mockSites[0],
       description: "Description, with comma",
     };
@@ -274,7 +274,7 @@ describe("CSV RFC 4180 Compliance", () => {
   });
 
   it("wraps fields with newlines in quotes", () => {
-    const siteWithNewline: GazaSite = {
+    const siteWithNewline: Site = {
       ...mockSites[0],
       description: "Line 1\nLine 2",
     };

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { exportSites, getExportConfigs } from "../config/exportFormats";
 import type { ExportFormatId } from "../types/export";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Hook for table export functionality
@@ -16,7 +16,7 @@ import type { GazaSite } from "../types";
  *   useTableExport(sortedSites);
  * ```
  */
-export function useTableExport(sites: GazaSite[]) {
+export function useTableExport(sites: Site[]) {
   const [selectedExportFormat, setSelectedExportFormat] = useState<ExportFormatId>("csv");
 
   const exportConfigs = useMemo(() => getExportConfigs(), []);
