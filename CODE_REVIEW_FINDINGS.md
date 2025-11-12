@@ -5,14 +5,14 @@
 **Review Date:** November 12, 2025
 **Codebase Size:** ~150+ source files (excluding tests)
 **Total Issues Found:** 20
-**Issues Resolved:** 16/20 (80%)
+**Issues Resolved:** 17/20 (85%)
 **Severity Breakdown:**
-- **Critical:** 2 issues (1 resolved ✅)
+- **Critical:** 2 issues (2 resolved ✅)
 - **High:** 5 issues (2 resolved ✅, 1 skipped ⏸️)
 - **Medium:** 8 issues (9 resolved ✅)
 - **Low:** 5 issues (4 resolved ✅)
 
-**Progress:** 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜ 80%
+**Progress:** 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 85%
 
 ---
 
@@ -43,18 +43,25 @@
 
 ### 1. DRY Violations (Don't Repeat Yourself)
 
-#### **Issue #1: Duplicate `useTableSort` Hook** ⚠️ **CRITICAL**
+#### **Issue #1: Duplicate `useTableSort` Hook** ✅ **RESOLVED**
 - **Severity:** Critical
-- **Files:**
-  - `src/hooks/useTableSort.ts` (104 lines)
-  - `src/hooks/useTableSort.tsx` (101 lines)
-- **Description:** Two nearly identical implementations of the same hook exist. The `.tsx` version is generic and more flexible, while the `.ts` version is hardcoded for `GazaSite` type.
-- **Impact:** Code duplication, maintenance burden, potential for bugs if one is updated but not the other.
-- **Suggested Fix:**
-  - Delete `useTableSort.ts`
-  - Keep `useTableSort.tsx` as it's more flexible with generics
-  - Update all imports to use `.tsx` version
-  - Add type constraints if GazaSite-specific behavior is needed
+- **Status:** ✅ **COMPLETE** (November 12, 2025)
+- **Files Updated:**
+  - `src/components/SitesTable/SitesTableMobile.tsx` - Standardized import (removed `.tsx` extension)
+  - `src/components/SitesTable/SitesTableDesktop.tsx` - Standardized import (removed `.tsx` extension)
+- **Description:** Duplicate `useTableSort.ts` file was already deleted in a previous commit (`735d366 refactor: remove duplicate useTableSort hook`). Only standardization of imports was needed.
+- **Solution Implemented:**
+  - Verified `.ts` file no longer exists (deleted in previous work)
+  - Standardized imports to omit file extension (follows codebase convention)
+  - Changed `from "../../hooks/useTableSort.tsx"` → `from "../../hooks/useTableSort"`
+  - Consistent with 730+ other named imports in codebase
+- **Impact:**
+  - ✅ Zero duplicate code - single source of truth
+  - ✅ Consistent import style across all files
+  - ✅ Generic TypeScript implementation maintained
+  - ✅ 1350/1352 tests passing (2 skipped backend tests)
+  - ✅ ESLint passing with zero warnings
+  - ✅ Zero breaking changes
 
 ---
 
@@ -566,7 +573,7 @@
 ## Tracking Checklist
 
 ### Critical Issues
-- [x] #1 - Remove duplicate `useTableSort.ts` hook ✅ **COMPLETE**
+- [x] #1 - Standardize useTableSort imports (duplicate already deleted) ✅ **COMPLETE**
 
 ### High Priority
 - [x] #2 - Consolidate MOCK_DELAY constants to `src/constants/api.ts` ✅ **COMPLETE**

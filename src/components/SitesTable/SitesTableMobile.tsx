@@ -13,7 +13,7 @@ import {
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useLocale, useTranslation } from "../../contexts/LocaleContext";
-import { useTableSort, type SortField } from "../../hooks/useTableSort.tsx";
+import { useTableSort, type SortField } from "../../hooks/useTableSort";
 
 interface SitesTableMobileProps {
   sites: GazaSite[];
