@@ -1,5 +1,6 @@
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
+import { ResourcesDropdown } from "./ResourcesDropdown";
 import type { TranslationKey } from "../../types/i18n";
 
 interface NavigationItem {
@@ -20,7 +21,6 @@ const NAV_ITEMS: NavigationItem[] = [
   { path: '/', translationKey: 'header.dashboard', variant: 'primary', hideOnMobile: true },
   { path: '/data', translationKey: 'header.data', variant: 'primary' },
   { path: '/timeline', translationKey: 'header.timeline', variant: 'secondary' },
-  { path: '/donate', translationKey: 'header.helpPalestine', variant: 'danger' },
   { path: '/stats', translationKey: 'header.statistics', variant: 'primary' },
   { path: '/about', translationKey: 'header.about', variant: 'primary' },
 ];
@@ -30,6 +30,7 @@ const NAV_ITEMS: NavigationItem[] = [
  *
  * Renders navigation buttons for both desktop and mobile layouts.
  * Handles hiding Dashboard on mobile devices (< 1024px) since they get redirected to Data page.
+ * Includes Resources dropdown menu with 7 resource pages.
  *
  * @param activePage - Currently active page ('dashboard', 'data', etc.)
  * @param isMobileSize - Whether viewport is mobile size (< 1024px)
@@ -72,6 +73,13 @@ export function NavigationLinks({ activePage, isMobileSize, onNavigate, layout }
           </Button>
         );
       })}
+
+      {/* Resources Dropdown */}
+      <ResourcesDropdown
+        activePage={activePage}
+        onNavigate={onNavigate}
+        layout={layout}
+      />
     </>
   );
 }

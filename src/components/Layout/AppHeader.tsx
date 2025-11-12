@@ -68,9 +68,13 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
     if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "dashboard";
     if (path.includes("/data")) return "data";
     if (path.includes("/timeline")) return "timeline";
-    if (path.includes("/donate")) return "donate";
     if (path.includes("/stats")) return "stats";
     if (path.includes("/about")) return "about";
+    if (path.includes("/resources/")) {
+      // Return the specific resource page (e.g., "resources/donate")
+      const resourcePage = path.split("/resources/")[1];
+      return `resources/${resourcePage}`;
+    }
     return null;
   };
 

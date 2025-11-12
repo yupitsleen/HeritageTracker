@@ -273,8 +273,8 @@ export const About = memo(function About({ sites }: AboutProps) {
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-1 ${t.text.heading}`}>UNESCO</h3>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
-                UN agency providing official heritage damage assessments. Verified 110+ cultural
-                sites in Gaza (Aug 2024).
+                UN agency providing official heritage damage assessments. Verified 114 cultural
+                sites in Gaza (Oct 2024).
               </p>
               <a
                 href="https://www.unesco.org/en/gaza/assessment"
@@ -362,8 +362,8 @@ export const About = memo(function About({ sites }: AboutProps) {
           </div>
           <div className={`space-y-1.5 text-sm leading-relaxed ${t.text.body}`}>
             <p>
-              <strong>Focus:</strong> 110 UNESCO-verified sites (May 2025). 64.7% of Gaza's 320
-              archaeological sites damaged or destroyed.
+              <strong>Focus:</strong> 114 UNESCO-verified sites (Oct 2024). 64.7% of Gaza's 320
+              archaeological sites damaged or destroyed. Currently documenting 70 sites (representing 140-160 buildings).
             </p>
             <p>
               <strong>Legal alignment:</strong> 1954 Hague Convention, Rome Statute (ICC), UN
