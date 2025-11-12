@@ -131,7 +131,7 @@ describe("useDefaultFilterRanges", () => {
           id: "1",
           name: "Ancient Site",
           type: "archaeological_site",
-          yearBuilt: "BCE 800",
+          yearBuilt: "800 BCE",
           coordinates: [31.5, 34.5],
           status: "destroyed",
           lastUpdated: "2024-01-01",
