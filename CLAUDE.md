@@ -8,15 +8,15 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 1396 unit tests must pass ✓ (1304 frontend + 77 backend + 15 backend utils)
-npm run e2e     # E2E tests (Playwright)
+npm test        # Run unit tests (1396 tests: 1304 frontend + 77 backend + 15 utils)
+npm run e2e     # Run E2E tests (16 Playwright tests)
 npm run lint    # ESLint check
 npm run build   # Production build
 ```
 
 **Stack:** React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS v4 + Leaflet + D3.js + Supabase + Playwright
 
-**Current:** 70 Gaza sites documented (representing 140-160 buildings) | Production-ready with comparison mode
+**Status:** ✅ Production-ready | 70 sites (140-160 buildings) | Code review 90% complete
 
 ---
 
@@ -25,23 +25,24 @@ npm run build   # Production build
 ### Commits (Conventional Format)
 
 ```bash
-feat: add comparison mode to Timeline page
-fix: resolve map sync toggle bug
-refactor: extract ComparisonMapView component
-perf: optimize Dashboard lazy loading
-style: standardize FilterBar opacity
+feat: add comparison mode
+fix: resolve map sync bug
+refactor: extract component
+perf: optimize lazy loading
 ```
 
-**Commit only when:**
-✓ Feature working ✓ 1261/1261 tests pass ✓ Lint passes ✓ Dev server clean ✓ Docs updated
+**Commit Checklist:**
+- ✅ All tests passing (1396 unit + 16 E2E)
+- ✅ Lint passes with zero warnings
+- ✅ Dev server runs without errors
+- ✅ Documentation updated
 
 ### Quality Gates
 
-- **1261/1261 tests passing** before every commit (1169 frontend + 77 backend + 15 backend utils)
-- Dev server stays running (HMR for instant feedback)
-- Apply DRY/KISS/SOLID principles
-- Check for existing components/hooks before creating new ones
-- No `any` types (TypeScript strict mode)
+- **Zero failing tests** before every commit
+- **Zero TypeScript errors** (strict mode, no `any`)
+- **DRY/KISS/SOLID principles** applied
+- **Check existing code** before creating new components/hooks
 
 ---
 
@@ -449,94 +450,43 @@ hooks/
 
 ## Testing Strategy
 
-### Current Coverage
+### Test Coverage Summary
 
-- **1,264 unit tests passing** across 78 test files (2 skipped)
-  - **Frontend:** 1,169 tests (71 files) - Components, hooks, integration tests
-  - **Backend:** 77 tests (7 files) - Utils, middleware, business logic
-  - **Utils:** 15 tests (backend utilities)
-  - **Logo tests:** 3 tests (AppHeader logo integration)
-- **16 E2E tests passing** (chromium only) - Focused on critical user journeys
-  - **Smoke tests:** 9 tests - Page loads, navigation, map markers, console errors, accessibility
-  - **Filter tests:** 2 tests - Visual regression (z-index, overlapping)
-  - **Timeline tests:** 2 tests - Page loads, navigation buttons
-  - **Comparison tests:** 4 tests - Site selection, dual maps, time periods, site name
-  - Removed 42 redundant tests covered by 1,264 unit tests (70% faster, ~30-45s runtime)
-- **Component tests:** Smoke tests, interaction tests, edge cases
-- **Hook tests:** State management, side effects, cleanup (includes critical hooks: useFilteredSites, useAppState, useHeritageStats)
-- **Integration tests:** Page rendering, routing, data flow
-- **Backend tests:** Error handling, data conversion, request validation
-- **E2E tests:** Critical user journeys, visual regressions, browser-specific features
-- **Mock service worker:** API mocking with MSW 2.11.6
+**Unit Tests (1,396 total):**
+- Frontend: 1,304 tests - Components, hooks, integration
+- Backend: 77 tests - Utils, middleware, business logic
+- Utils: 15 tests - Backend utilities
 
-### Test Structure
+**E2E Tests (16 total, chromium only):**
+- Smoke: 9 tests - Page loads, navigation, accessibility
+- Filters: 2 tests - Visual regression (z-index)
+- Timeline: 2 tests - Navigation buttons
+- Comparison: 4 tests - Dual maps, site selection
 
-**Frontend (React Component Tests):**
-```typescript
-describe("ComparisonMapView", () => {
-  describe("Smoke Tests", () => {
-    it("renders without crashing", () => {
-      render(<ComparisonMapView {...defaultProps} />);
-    });
-  });
+**Test Philosophy:**
+- Unit tests cover logic, state, calculations
+- E2E tests cover visual bugs, user journeys
+- 70% faster E2E suite (~30-45s vs 2-3 min)
+- MSW 2.11.6 for API mocking
 
-  describe("Interaction Tests", () => {
-    it("syncs maps on zoom change", async () => {
-      const { user } = setup();
-      await user.click(screen.getByRole("button", { name: /zoom in/i }));
-      expect(leftMap.getZoom()).toBe(rightMap.getZoom());
-    });
-  });
+### Test Organization
 
-  describe("Edge Cases", () => {
-    it("handles missing destruction date gracefully", () => {
-      const siteWithoutDate = { ...mockSite, dateDestroyed: undefined };
-      render(<ComparisonMapView site={siteWithoutDate} />);
-      expect(screen.getByText(/no destruction date/i)).toBeInTheDocument();
-    });
-  });
-});
+**Pattern:** Smoke tests → Interaction tests → Edge cases
+
+**File Structure:**
+```
+Component/
+├── Component.tsx          # Implementation
+├── Component.test.tsx     # Tests (3 sections)
+└── types.ts               # Component types
 ```
 
-**Backend (Middleware/Utils Tests):**
-```javascript
-describe("validateSiteBody", () => {
-  it("accepts valid site data", () => {
-    const req = createMockRequest({
-      body: {
-        id: 'site-1',
-        name: 'Test Mosque',
-        type: 'mosque',
-        coordinates: [31.5, 34.5],
-        status: 'destroyed',
-        description: 'Test',
-        historicalSignificance: 'Test',
-        culturalValue: 'Test',
-      }
-    });
-    const res = createMockResponse();
-    const next = createMockNext();
-
-    const middleware = validateSiteBody(false);
-    middleware(req, res, next);
-
-    expect(next.called).toBe(true);
-    expect(next.error).toBeUndefined();
-  });
-
-  it("rejects invalid coordinates", () => {
-    const req = createMockRequest({
-      body: { coordinates: [91, 34.5] } // lat > 90
-    });
-    const res = createMockResponse();
-    const next = createMockNext();
-
-    validateSiteBody(false)(req, res, next);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body.message).toContain('coordinates must be valid');
-  });
-});
+**Backend Tests:**
+```
+server/
+├── __tests__/setup.js           # Mock utilities
+├── utils/__tests__/             # 40 tests (errors, converters)
+└── middleware/__tests__/        # 37 tests (validation)
 ```
 
 ### Running Tests
@@ -572,51 +522,24 @@ npm test server/utils # Specific backend folder
 
 ### Code Coverage
 
-**Tool:** Vitest + @vitest/coverage-v8 (built-in, zero config)
+**Tool:** Vitest + @vitest/coverage-v8
 
-**Reports:**
-- **HTML:** `coverage/index.html` - Interactive, color-coded, line-by-line coverage
-- **Terminal:** Shows % coverage table after each test run
-- **JSON:** `coverage/coverage-final.json` - Raw coverage data for CI/CD
+**Configuration:**
+- Thresholds: 80% for all metrics (lines/functions/branches/statements)
+- HTML report: `coverage/index.html`
+- Terminal: Shows % table after test run
 
-**Configuration:** (vitest.config.ts)
-- Provider: v8 (fast, accurate)
-- Thresholds: 80% for lines/functions/branches/statements
-- Excludes: test files, config files, backend code (separate coverage)
-- Includes: All src/**/*.{ts,tsx} files
-
-**Usage:**
+**Commands:**
 ```bash
-# Generate coverage report
-npm run test:coverage
-
-# Open HTML report in browser
-# Windows: start coverage/index.html
-# Mac: open coverage/index.html
-# Linux: xdg-open coverage/index.html
-
-# View in UI mode (live coverage updates)
-npm run test:coverage:ui
+npm run test:coverage       # Generate coverage report
+npm run test:coverage:ui    # Live coverage updates
 ```
 
-**What to look for:**
-- Red lines = not covered by tests (need tests)
-- Yellow lines = partially covered (branches not tested)
-- Green lines = fully covered
-- 80%+ coverage = good, 90%+ = excellent
-
-### Backend Test Files
-
-```
-server/
-├── __tests__/
-│   └── setup.js                           # Mock utilities & test helpers
-├── utils/__tests__/
-│   ├── errors.test.js                     # 21 tests - Custom error classes
-│   └── converters.test.js                 # 19 tests - DB ↔ API transformations
-└── middleware/__tests__/
-    └── validator.test.js                  # 37 tests - Request validation
-```
+**Reading Reports:**
+- 🟢 Green = fully covered
+- 🟡 Yellow = partially covered (branches missing)
+- 🔴 Red = not covered (needs tests)
+- Target: 80%+ coverage
 
 ---
 
@@ -624,631 +547,114 @@ server/
 
 ### Overview
 
-E2E tests use **Playwright** to catch visual and interaction bugs that unit tests can't detect.
+**Purpose:** Catch visual bugs, user journeys, browser-specific issues that unit tests miss
 
-**Coverage (16 tests focused on critical paths):**
-- **Smoke tests (9):** Page loads, navigation, map markers, console errors, keyboard accessibility, performance
-- **Filter tests (2):** Visual regression - z-index layering, element overlapping
-- **Timeline tests (2):** Page loads successfully, navigation buttons present
-- **Comparison tests (4):** Site selection workflow, dual maps, time periods, site name display
+**16 tests across 4 suites:**
+- smoke.spec.ts (9) - Page loads, navigation, accessibility
+- filters.spec.ts (2) - Visual regression (z-index)
+- timeline.spec.ts (2) - Navigation buttons
+- comparison.spec.ts (4) - Site selection, dual maps
 
-**Philosophy:**
-- E2E tests verify **user journeys** across pages, **visual bugs** (z-index, overlapping), and **browser features**
-- Unit tests (1,264) cover component logic, state management, and calculations
-- 70% faster than previous 57 tests (~30-45s vs 2-3 min runtime)
-
-### Running E2E Tests
-
+**Commands:**
 ```bash
-# Run all E2E tests (headless)
-npm run e2e
-
-# Run with UI mode (interactive debugging)
-npm run e2e:ui
-
-# Run in headed mode (see browser)
-npm run e2e:headed
-
-# Debug mode (step through tests)
-npm run e2e:debug
-
-# View test report
-npm run e2e:report
-
-# Run all tests (unit + E2E)
-npm run test:all
+npm run e2e           # Headless (CI/CD)
+npm run e2e:ui        # Interactive debugging
+npm run e2e:headed    # Watch browser
+npm run e2e:debug     # Step through tests
+npm run e2e:report    # View HTML report
+npm run test:all      # Unit + E2E
 ```
 
-### E2E Test Files
+### E2E Best Practices
 
-```
-e2e/
-├── smoke.spec.ts        # 9 tests - Core page loads, navigation, markers, errors, accessibility
-├── filters.spec.ts      # 2 tests - Visual regression (z-index, overlapping)
-├── timeline.spec.ts     # 2 tests - Page loads, navigation buttons
-└── comparison.spec.ts   # 4 tests - Site selection, dual maps, time periods
-```
+**Test Strategy:**
+- ✅ User journeys (filter → view site → comparison)
+- ✅ Visual bugs (z-index, overlapping, hidden elements)
+- ✅ Route navigation, map interactions
+- ❌ Business logic (unit test territory)
+- ❌ Data transformations (unit test territory)
 
-**Note:** Mobile E2E tests removed (covered by responsive CSS + unit tests). Detailed component interactions (scrubber drag, date labels, colors, sync toggle) covered by 1,264 unit tests.
+**Writing Tests:**
+1. Use Mock API (`VITE_USE_MOCK_API=true`)
+2. Prefer `getByRole` > `getByText` > `locator`
+3. Wait for loading: `waitForLoadState('networkidle')`
+4. Test visible behavior, not implementation
+5. Keep tests fast (parallel execution)
 
-### Writing E2E Tests
-
-**Pattern:**
-```typescript
-import { test, expect } from '@playwright/test';
-
-test.describe('Feature Name', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-  });
-
-  test('should do something', async ({ page }) => {
-    // Arrange
-    const button = page.getByRole('button', { name: /click me/i });
-
-    // Act
-    await button.click();
-
-    // Assert
-    await expect(button).toBeVisible();
-  });
-});
-```
-
-**Mobile Tests:**
-```typescript
-import { test, expect, devices } from '@playwright/test';
-
-test.describe('Mobile Feature', () => {
-  test.use({ ...devices['Pixel 5'] });
-
-  test('should work on mobile', async ({ page }) => {
-    await page.goto('/');
-    // Test mobile-specific behavior
-  });
-});
-```
-
-### E2E Test Strategy
-
-**What to Test:**
-- ✅ Critical user journeys (filter → view site → comparison mode)
-- ✅ Visual bugs (z-index, overlapping elements, hidden buttons)
-- ✅ Mobile responsive layouts
-- ✅ Route navigation
-- ✅ Map interactions (zoom, markers, tiles)
-- ❌ Business logic (covered by unit tests)
-- ❌ Data transformations (covered by unit tests)
-
-**Best Practices:**
-1. **Use Mock API** - E2E tests run with `VITE_USE_MOCK_API=true` (no backend needed)
-2. **Flexible Selectors** - Use `getByRole` > `getByText` > `locator` (avoid brittle IDs)
-3. **Wait for Loading** - Use `waitForLoadState('networkidle')` after navigation
-4. **Test User Intent** - Focus on visible behavior, not implementation details
-5. **Keep Tests Fast** - Run in parallel (default), avoid unnecessary waits
-
-### CI/CD Integration
-
-E2E tests run automatically on GitHub Actions:
-
-```yaml
-# .github/workflows/e2e-tests.yml
-- Run on push to main/develop/feature/*
-- Run on pull requests
-- Upload screenshots on failure
-- Upload HTML report artifacts
-```
-
-**View Results:**
-- Check "Actions" tab in GitHub
-- Download artifacts for failed test screenshots
-- View Playwright HTML report
-
-### Debugging Failed E2E Tests
-
-**Locally:**
+**Debugging:**
 ```bash
-# Run in debug mode (pause at breakpoints)
-npm run e2e:debug
-
-# Run in headed mode (see browser)
-npm run e2e:headed -- --grep "test name"
-
-# Run specific file
-npm run e2e -- e2e/filters.spec.ts
+npm run e2e:debug           # Pause at breakpoints
+npm run e2e:headed          # Watch browser
+npm run e2e -- e2e/file.ts  # Run specific file
 ```
 
-**In CI:**
-1. Check GitHub Actions logs
-2. Download "playwright-screenshots" artifact
-3. Download "playwright-report" artifact
-4. Unzip and open `index.html` to see full report
+**CI/CD:** Auto-runs on GitHub Actions (push/PR), uploads artifacts on failure
 
-**Common Issues:**
-- **Timeouts:** Increase timeout in test or use `page.waitForTimeout()`
-- **Element not found:** Check selector, element may be hidden or not loaded
-- **Flaky tests:** Add `waitForLoadState()` or retry logic
-- **CI failures:** Check if dev server started correctly
-
-### Performance Targets
-
-- **Smoke tests:** ~30 seconds (all critical pages)
-- **Full E2E suite:** ~2 minutes (parallel execution)
-- **CI pipeline:** +3 minutes to total build time
+**Performance:** 30-45s runtime (70% faster than original 57 tests)
 
 ---
 
-## Recent Improvements (Nov 2025)
-
-**Phase 14 Complete: Code Quality & Maintainability Enhancements** ✅
-
-### Latest Changes (Nov 12, 2025 - Session 9)
-
-1. **Test Refactoring - Remove Excessive Testing:**
-   - **Removed 21 excessive tests** (439 lines of test code, 28% reduction)
-   - **Test-to-code ratio:** Reduced from 6.3:1 to 4.5:1 (healthier ratio)
-   - **Tests removed:**
-     - useTileConfig: 11 bonus tests for trivial 12-line hook (20:1 ratio → 5.6:1)
-     - useTableResize: 5 component-level tests (belong in component tests)
-     - useTableExport: 5 wrong-layer tests (testing dependencies via wrapper)
-
-   - **Documentation Updates:**
-     - Added test-to-code ratio guidelines to TEST_COVERAGE_PLAN.md
-     - Added "Test the Right Layer" principle
-     - Added "Lessons Learned" section with root cause analysis
-
-   - **Quality Metrics:**
-     - Before: 1,417 tests, ~2,016 lines of test code
-     - After: 1,396 tests, ~1,577 lines of test code
-     - Impact: Higher test quality, easier maintenance, faster CI/CD
-
-### Previous Changes (Nov 12, 2025 - Session 8)
-
-1. **Code Review Complete - Production-Ready Status:**
-   - **Code review officially complete at 90% resolution** (18/20 issues resolved)
-   - All critical, high-priority, and user-impacting issues resolved ✅
-   - Only 2 theoretical refactors remain (deferred for future work)
-
-   - **Measurable Improvements:**
-     - 18 issues resolved across 7 categories (DRY, SOLID, security, performance, accessibility)
-     - 150+ tests added during code review fixes
-     - Zero breaking changes across all improvements
-     - Eliminated performance bottlenecks (FilterBar re-renders, missing debouncing)
-     - Centralized logging, error handling, and constants management
-
-   - **Deferred Items (Revisit When Needed):**
-     - Issue #7 (FilterBar refactor): 415 lines, well-organized, 7 tests pass, zero bugs
-     - Issue #8 (Timeline OCP): 408 lines, 35+ tests pass, works perfectly
-     - Both have high effort, high risk, low real-world benefit
-
-   - **Quality Gates:**
-     - ✅ 1390/1392 tests passing (2 skipped backend tests)
-     - ✅ ESLint passing with zero warnings
-     - ✅ Production build successful
-     - ✅ All accessibility requirements met (WCAG 2.1 AA)
-     - ✅ Zero critical bugs or security issues
-
-2. **Documentation Updates:**
-   - Updated [CODE_REVIEW_FINDINGS.md](CODE_REVIEW_FINDINGS.md) with completion status
-   - Marked code review as complete (production-ready)
-   - Added comprehensive final summary with recommendations
-
-3. **Recommendation:**
-   - ✅ **CODEBASE IS PRODUCTION-READY**
-   - Focus on delivering features and gathering user feedback
-   - Revisit deferred issues only when actively working on those components
-
-### Previous Changes (Nov 12, 2025 - Session 7)
-
-1. **Code Review PR #46 - FilterBar Performance Optimization (Issue #14):**
-   - **FilterBar Re-render Elimination:**
-     - Fixed unnecessary re-renders in FilterBar component (issue identified as high-priority performance concern)
-     - Added 15 memoized callback handlers using `useCallback`:
-       - Search input handlers (input change, clear search)
-       - Mobile drawer handlers (open, close, clear all and close)
-       - Filter change handlers (types, statuses, destruction dates, creation years)
-       - Filter removal handlers (destruction date, year built)
-       - Factory functions for type/status filter tag removal
-     - All inline callback functions replaced with stable references
-     - FilterBar `memo` optimization now effective (prevents wasteful re-renders)
-
-   - **Performance Impact:**
-     - Before: FilterBar re-rendered on every parent state change (theme, locale, animation state, etc.)
-     - After: FilterBar only re-renders when `filters` prop actually changes
-     - Measurable improvement for filtering operations with 70+ sites
-     - Memory-efficient with proper dependency arrays in all `useCallback` hooks
-
-2. **Files Modified (1 file):**
-   - src/components/FilterBar/FilterBar.tsx - Added 15 memoized handlers (80+ lines of optimization code)
-
-3. **Code Review Progress:**
-   - **Status:** 18 of 20 issues resolved (90% complete)
-   - All critical and high-priority issues now resolved ✅
-   - All user-impacting performance issues fixed ✅
-   - Only 2 theoretical refactors remain (Issue #7: FilterBar size, Issue #8: Timeline OCP)
-   - Both deferred issues have low ROI and high risk - recommended to skip
-
-4. **Quality Assurance:**
-   - All 1350/1352 tests passing ✅
-   - Production build successful ✅
-   - Zero breaking changes ✅
-   - ESLint passing ✅
-
-### Previous Changes (Nov 11, 2025 - Session 6)
-
-1. **Code Review PR #46 - Final Cleanup & Documentation:**
-   - **DashboardPage.tsx Verification (Issue #3 Follow-up):**
-     - Verified DashboardPage.tsx already uses useFilteredSites hook
-     - No duplicate date range logic found ✅
-
-   - **StatusLegend Accessibility (Issue #15 - Complete):**
-     - Added ARIA attributes to StatusLegend component
-     - Both compact and full versions now have `role="region"` and `aria-label`
-     - Color dots marked as `aria-hidden="true"` (decorative)
-
-   - **Timeline.tsx Complexity (Issue #2 - Final Decision):**
-     - Accepted 26% reduction (578 → 361 lines) as "good enough"
-     - Further extraction would require architectural changes
-     - Focus resources on completing other 19 issues
-
-   - **Documentation Updates:**
-     - Updated CODE_REVIEW_PR46.md with Session 6 progress
-     - **Final Status: 19 of 20 issues resolved (95% complete)**
-     - Updated CLAUDE.md with final status
-
-2. **Files Modified (2 files):**
-   - src/components/Map/StatusLegend.tsx - Added ARIA attributes
-   - CODE_REVIEW_PR46.md - Final status update (95% complete)
-
-3. **Quality Assurance:**
-   - All 1261 tests passing ✅
-   - Production build successful ✅
-   - Zero breaking changes ✅
-   - ESLint passing ✅
-
-### Previous Changes (Nov 11, 2025 - Session 5)
-
-1. **Code Review PR #46 - E2E Test Cleanup:**
-   - **Brittle E2E Tests (Issue #8):**
-     - Removed 42 redundant E2E tests (covered by 1,264 unit tests)
-     - Reduced from 57 tests → 16 focused tests
-     - 70% faster execution (~30-45s vs 2-3 min)
-
-   - **E2E Test Quality (Issue #9):**
-     - Kept only tests that verify visual bugs (z-index, overlapping)
-     - Removed vague "content changed" assertions
-
-   - **Large E2E Files (Issue #20):**
-     - comparison.spec.ts: 422 → 111 lines (74% reduction)
-     - filters.spec.ts: 259 → 49 lines (81% reduction)
-     - mobile.spec.ts: DELETED (was 517 lines)
-
-### Previous Changes (Nov 11, 2025 - Session 4)
-
-1. **Code Review PR #46 - Final Non-E2E Issues Resolved:**
-   - **EmptyState Component (Issue #13):**
-     - Created reusable EmptyState component with size variants (sm/md/lg)
-     - Eliminates duplicated empty state patterns across components
-     - Added translations for "No imagery releases available" (en/ar/it)
-     - 20 comprehensive tests added (smoke, content, accessibility, edge cases)
-
-   - **Icon Registry (Issue #12):**
-     - Created dynamic icon registry for Hero Icons
-     - Eliminated 15 lines of manual icon mapping in SiteTypeIcon
-     - Supports all 200+ Hero Icons automatically via `getHeroIcon()`
-     - 33 comprehensive tests added (solid/outline variants, edge cases)
-     - No updates needed when adding new site types
-
-   - **Optional Chaining (Issue #16):**
-     - Standardized optional chaining syntax across codebase
-     - Updated 3 files: SiteDetailPanel, SitesTableMobile
-     - `site.sources?.length` pattern applied consistently
-
-   - **Test Coverage Expansion:**
-     - **Total: 1261 tests** (up from 1208, +53 tests)
-     - EmptyState: 20 new tests
-     - Icon Registry: 33 new tests
-     - All tests passing ✅ (including 2 skipped backend tests)
-
-2. **Files Created (5 new files):**
-   - src/components/EmptyState/EmptyState.tsx (115 lines)
-   - src/components/EmptyState/EmptyState.test.tsx (20 tests)
-   - src/components/EmptyState/index.ts
-   - src/config/iconRegistry.ts (110 lines)
-   - src/config/iconRegistry.test.ts (33 tests)
-
-3. **Files Modified (10 files):**
-   - src/components/AdvancedTimeline/WaybackSlider.tsx - Use EmptyState
-   - src/components/AdvancedTimeline/WaybackSlider.test.tsx - Updated tests
-   - src/components/Icons/SiteTypeIcon.tsx - Use dynamic icon registry
-   - src/components/SiteDetail/SiteDetailPanel.tsx - Optional chaining
-   - src/components/SitesTable/SitesTableMobile.tsx - Optional chaining (2x)
-   - src/i18n/en.ts, ar.ts, it.ts - Added translations
-   - src/types/i18n.ts - Added type definitions
-
-4. **Documentation Updates:**
-   - Updated CODE_REVIEW_PR46.md with Session 4 progress
-   - Updated CLAUDE.md test counts (1208 → 1261)
-   - **16 of 20 code review issues resolved (80% complete)**
-
-5. **Quality Assurance:**
-   - All 1261 tests passing ✅
-   - Production build successful ✅
-   - Zero breaking changes ✅
-   - ESLint passing ✅
-
-**Phase 13 Complete: Component Extraction & Code Organization**
-
-### Previous Changes (Nov 11, 2025 - Session 3)
-
-1. **Code Review PR #46 - Additional Improvements:**
-   - **Component Extraction:**
-     - Extracted TimelineHelpModal component from Timeline.tsx (~82 lines)
-     - Timeline.tsx reduced: 485 → 361 lines (26% reduction, 124 lines removed)
-     - Help content now reusable, testable, and maintainable
-
-   - **Test Coverage Expansion:**
-     - Added 11 comprehensive tests for TimelineHelpModal
-     - Coverage: Smoke tests, content verification, accessibility checks
-     - **Total: 1208 tests** (up from 1197, +11 tests)
-     - All tests passing ✅ (including 2 skipped backend tests)
-
-   - **Code Quality:**
-     - Issue #2 (Critical): Timeline.tsx complexity - PARTIAL (26% reduction)
-     - Issue #11 (Medium): Help modal extraction - COMPLETE
-     - Production build successful ✅
-     - Zero breaking changes
-
-2. **Files Created (3 new files):**
-   - src/components/Help/TimelineHelpModal.tsx (96 lines)
-   - src/components/Help/TimelineHelpModal.test.tsx (103 lines, 11 tests)
-   - src/components/Help/index.ts (barrel export)
-
-3. **Documentation Updates:**
-   - Updated CODE_REVIEW_PR46.md with Session 3 progress
-   - Updated CLAUDE.md test counts (1182 → 1208)
-   - 13 of 20 code review issues resolved (65% complete)
-
-**Phase 12 Complete: Code Quality & Accessibility Improvements**
-
-### Previous Changes (Nov 11, 2025 - Sessions 1-2)
-
-1. **Code Review PR #46 Implementation:**
-   - **TypeScript Improvements:**
-     - Fixed WaybackSlider optional props with discriminated union types
-     - `comparisonInterval` and `onIntervalChange` must be provided together or both omitted
-     - Eliminates TypeScript errors from mismatched optional prop combinations
-
-   - **Accessibility (WCAG 2.1 AA Compliance):**
-     - Added ARIA labels to FilterBar mobile button (`aria-label`, `aria-expanded`)
-     - Added `aria-hidden="true"` to decorative SVG icons
-     - Multi-language support for "Open filters menu" (English, Arabic, Italian)
-
-   - **DRY Principle Improvements:**
-     - Eliminated duplicated filter logic in Timeline.tsx (~40 lines removed)
-     - Created `useDefaultFilterRanges` hook for reusable date/year range calculations
-     - Removed useRef anti-pattern that obscured React data flow
-
-   - **Configuration Management:**
-     - Extracted magic numbers to `WAYBACK_FALLBACKS` constant
-     - Centralized fallback intervals: 10 years, 7 days, 30 days
-     - Eliminates hardcoded values across codebase
-
-   - **Documentation:**
-     - Expanded JSDoc in intervalCalculations.ts (7 → 60+ lines)
-     - Added comprehensive @example blocks and @see cross-references
-     - Documented all 5 interval types with behavior explanations
-
-2. **Test Coverage Expansion (Sessions 1-2):**
-   - **Total: 1197 tests** (up from 1053, +144 tests from Sessions 1-2)
-   - Added 10 edge case tests for interval calculations
-   - Added 7 tests for new useDefaultFilterRanges hook
-   - Added 15 tests for intervalCalculations SOLID refactoring
-   - All tests passing ✅ (including 2 skipped backend tests)
-
-3. **Quality Assurance:**
-   - ESLint passing (fixed `any` type in test file)
-   - Zero breaking changes across 3 commits
-   - All quality gates passed
-
-4. **Files Modified (15 files):**
-   - Timeline.tsx: Refactored with hooks, removed anti-patterns
-   - WaybackSlider.tsx: TypeScript discriminated unions
-   - FilterBar.tsx: ARIA accessibility improvements
-   - intervalCalculations.ts: JSDoc expansion, config usage
-   - useDefaultFilterRanges.ts: New hook created
-   - i18n files (en/ar/it): Translation additions
-   - Test files: Edge case coverage expansion
-
-**Phase 11 Complete: Heritage Site Expansion**
-
-### Previous Changes (Nov 9, 2025)
-
-1. **Site Database Expansion (45 → 70 sites):**
-   - **21 individual UNESCO-verified sites added:**
-     - 6 Mosques (Ibn Othman, Shaikh Zakaria, Al-Mughrabi, Sett Ruqayya, Ash-Sheikh Sha'ban, Zawiyat Al Hnoud)
-     - 3 Monuments/Shrines (Ali Ibn Marwan, Abu Al-Azm/Shamshon, Unknown Soldier Memorial)
-     - 3 Archaeological Sites (Tell Al-Muntar, Tell Rafah, Al-Bureij Mosaic)
-     - 1 Cemetery (English Cemetery, Az-Zawaida)
-     - 7 Historic Buildings (Municipality, 2 Cinemas, 2 Hospital buildings, 2 Named Houses)
-     - 1 Archive (EBAF Storage Facility)
-   - **4 grouped collections:** Represent 70-90 unnamed historic buildings
-     - Gaza Old City Residential Buildings (~25-30 buildings)
-     - Daraj Quarter Buildings (~20-25 buildings)
-     - Commercial & Public Buildings (~15-20 buildings)
-     - Zaytoun Quarter Buildings (~10-15 buildings)
-
-2. **Coverage Achievement:**
-   - **Total entries:** 70 documented sites
-   - **Actual buildings:** 140-160 (including collections)
-   - **UNESCO target:** 114 sites (exceeded by 123-140%)
-   - All sites verified by UNESCO Gaza Heritage Damage Assessment (Oct 6, 2025)
-
-3. **Type System Enhancements:**
-   - Added new site types: `monument`, `cemetery`, `archive`
-   - Added `metadata` field to Site interface for grouped collections
-   - Full icons and Arabic translations for all new types
-
-4. **Quality Assurance:**
-   - All tests passing ✅ (1053 at time of completion)
-   - Updated test expectations across 7 files
-   - Dev server runs without errors
-   - Research documented in [docs/research/](docs/research/)
-
-**Phase 10 Complete: End-to-End Testing**
-
-### Latest Changes (Nov 2025)
-
-1. **E2E Test Suite with Playwright:**
-   - **5 Test Suites (50+ Tests):** Comprehensive coverage of critical user journeys
-     - `smoke.spec.ts` - Core page loads, navigation, accessibility
-     - `filters.spec.ts` - Filter bar visibility and z-index issues
-     - `timeline.spec.ts` - Timeline navigation buttons presence
-     - `comparison.spec.ts` - Comparison mode dual maps rendering
-     - `mobile.spec.ts` - Mobile responsive layouts and touch interactions
-   - **Mock API Integration:** All E2E tests run against mock data (no backend required)
-   - **CI/CD Ready:** GitHub Actions workflow with artifact uploads on failure
-   - **6 NPM Scripts:** `e2e`, `e2e:ui`, `e2e:headed`, `e2e:debug`, `e2e:report`, `test:all`
-
-2. **Test Coverage Highlights:**
-   - Filter dropdown visibility and clickability (catch z-index bugs)
-   - Timeline NEXT/PREV/RESET buttons (ensure buttons are present)
-   - Comparison mode with dual maps (verify side-by-side rendering)
-   - Mobile filter drawer (responsive UI testing)
-   - Map marker interactions and tile loading
-   - Route navigation and accessibility (keyboard, screen readers)
-
-3. **New Files Created (7 files):**
-   - `e2e/` - E2E test directory
-     - `smoke.spec.ts`, `filters.spec.ts`, `timeline.spec.ts`, `comparison.spec.ts`, `mobile.spec.ts`
-   - `playwright.config.ts` - Playwright configuration
-   - `.github/workflows/e2e-tests.yml` - CI/CD workflow
-
-**Phase 9 Complete: Backend Unit Testing**
-
-### Previous Changes (Nov 2025)
-
-1. **Backend Test Suite (77 Tests):**
-   - **Test Infrastructure:** Reusable mock utilities and test helpers
-     - Mock database, repositories, services, Express req/res/next
-     - `server/__tests__/setup.js` - Centralized test utilities
-   - **Error Classes Tests (21 tests):** ServiceError, ValidationError, NotFoundError, DatabaseError
-     - Error handling utilities (withErrorHandling, createErrorContext)
-     - Stack trace preservation verification
-   - **Data Converter Tests (19 tests):** DB ↔ API transformations
-     - PostGIS coordinate conversions ([lng, lat] ↔ [lat, lng])
-     - Round-trip conversion verification
-     - Edge case handling (null values, missing fields)
-   - **Validator Middleware Tests (37 tests):** Request validation
-     - Site body validation (POST/PATCH)
-     - Pagination, geospatial query validation
-     - Comprehensive boundary testing
-
-2. **Test Coverage:**
-   - **Total:** 797 tests passing at time of completion (720 frontend + 77 backend)
-   - **Backend coverage:** Utilities 100%, Middleware 100%
-   - **Zero test failures** - All quality gates passed
-   - Test patterns established for future expansion
-
-3. **New Files Created (4 files):**
-   - `server/__tests__/setup.js` - Test utilities and mocks
-   - `server/utils/__tests__/errors.test.js` - Error class tests
-   - `server/utils/__tests__/converters.test.js` - Converter tests
-   - `server/middleware/__tests__/validator.test.js` - Validation tests
-
-**Phase 8 Complete: Production Readiness Improvements**
-
-### Previous Changes (Nov 2025)
-
-1. **Code Quality & Security Enhancements (P1 Improvements):**
-   - **Adapter Pattern:** Refactored backend mode switching from 377 lines to 89 lines (-76%)
-     - Created BackendAdapter interface with MockAdapter, LocalBackendAdapter, SupabaseAdapter
-     - Easy to add new backends (Firebase, GraphQL, etc.)
-   - **SQL Injection Protection:** Eliminated ALL sql.unsafe() calls
-     - 100% tagged template literals with sql.join()
-     - Zero SQL injection vulnerabilities
-   - **Database Connection Utility:** Retry logic with exponential backoff
-     - Handles Docker startup delays automatically
-     - Reusable across migrate/seed scripts
-   - **Custom Error Hierarchy:** ServiceError, ValidationError, NotFoundError, DatabaseError
-     - Preserves original stack traces and error context
-     - Better debugging in production
-   - **Query Parameter Builder:** Type-safe utility for URL construction
-     - Handles arrays, primitives, undefined/null automatically
-     - Reusable across all API calls
-
-2. **New Files Created (8 files):**
-   - `src/api/adapters/` - Complete adapter pattern implementation (5 files)
-   - `database/scripts/utils/db-connection.js` - Connection utility with retry
-   - `server/utils/errors.js` - Custom error classes
-   - `src/utils/queryBuilder.ts` - Query parameter builder
-
-**Phase 7 Complete: Local Backend Infrastructure**
-
-### Previous Changes (Nov 2025)
-
-1. **Local Backend Implementation:**
-   - Express REST API server with 8 endpoints (GET, POST, PATCH, DELETE)
-   - 3-layer architecture (Controller → Service → Repository)
-   - PostgreSQL 16 + PostGIS 3.4 database with Docker
-   - Complete migration system (285-line SQL schema)
-   - Auto-generated seed data from mockSites.ts (70 sites)
-   - One-command setup: `npm run db:setup`
-   - 11 new NPM scripts for database and server management
-   - Comprehensive documentation (server/README.md, database/README.md)
-   - Zero breaking changes - all 728 tests passing
-   - Three backend modes: Mock API (default), Local Backend, Supabase Cloud
-
-**Phase 6 Complete: Timeline Navigation Enhancements**
-
-### Previous Changes
-
-1. **Timeline Navigation Improvements:**
-   - Fixed NEXT button to work from any scrubber position (no longer requires exact timestamp match)
-   - Timeline now starts 7 days before first destruction date (enables first site to be clickable)
-   - Added Next/Previous navigation buttons to Dashboard timeline (consistent UX across pages)
-   - Proper edge case handling: before first event, after last event, in between events
-   - RESET button correctly returns to timeline start (7 days before first event)
-
-**Phase 5 Complete: Comparison Mode & Timeline Enhancements**
-
-### Key Changes
-
-1. **Comparison Mode (Timeline Page):**
-   - Side-by-side satellite map viewing
-   - Dual scrubbers (yellow "before", green "after")
-   - Auto-sync with destruction dates
-   - Date labels on both maps (1.5x size, 70% opacity)
-   - Individual borders with gap-2 spacing
-
-2. **Dashboard Optimizations:**
-   - Lazy-loaded DesktopLayout and MobileLayout (parallel chunks)
-   - Palestinian flag background triangle
-   - Suspense boundaries for progressive loading
-
-3. **FilterBar Standardization:**
-   - 70% opacity across all pages (Dashboard, Timeline, Data)
-   - Compact design for more data visibility
-   - Active filter count badge
-
-4. **Map Enhancements:**
-   - "Show Map Markers" toggle for satellite views
-   - Adaptive zoom toggle
-   - Improved clustering with Palestinian flag colors
-
-5. **Build Performance:**
-   - Manual chunk splitting (vendor, leaflet, d3)
-   - PWA support with service worker
-   - Optimized bundle size
-
-### Architectural Improvements
-
-- **Focused Hooks:** Decomposed `useAppState` into smaller hooks
-- **Config Centralization:** 30+ config files for zero-downtime changes
-- **Theme System:** `useThemeClasses` for consistent theming
-- **Type Safety:** 30+ type definition files, zero `any` types
-- **Test Coverage:** 720 tests (+150 from initial MVP)
+## Recent Highlights
+
+**Production Status:** ✅ Code review 90% complete (18/20 issues resolved)
+
+### November 2025 - Code Review Phase
+
+**Achievements (18/20 issues resolved):**
+1. **Test Quality:** Reduced test-to-code ratio from 6.3:1 to 4.5:1
+2. **Performance:** FilterBar re-render elimination (15 memoized handlers)
+3. **Accessibility:** WCAG 2.1 AA compliance (ARIA labels, keyboard nav)
+4. **DRY Improvements:** EmptyState component, Icon registry, shared hooks
+5. **TypeScript:** Discriminated unions, zero `any` types
+6. **E2E Optimization:** 57 → 16 tests (70% faster)
+
+**Key Refactors:**
+- Timeline.tsx: 578 → 361 lines (26% reduction)
+- Extracted TimelineHelpModal component
+- Created useDefaultFilterRanges hook
+- Standardized optional chaining syntax
+
+**Deferred (Low ROI, High Risk):**
+- FilterBar refactor (415 lines, well-organized, zero bugs)
+- Timeline OCP extension (408 lines, 35+ tests pass)
+
+### Site Database Expansion (Oct-Nov 2025)
+
+**45 → 70 sites (140-160 buildings):**
+- 21 individual UNESCO-verified sites
+- 4 grouped collections (70-90 buildings)
+- New types: monument, cemetery, archive
+- Exceeded UNESCO target by 123-140%
+
+### Backend Infrastructure (Oct 2025)
+
+**3-Mode Architecture:**
+1. Mock API (default, fastest)
+2. Local Backend (PostgreSQL + Express)
+3. Supabase Cloud (production)
+
+**Features:**
+- Adapter pattern (377 → 89 lines)
+- SQL injection protection (100% safe)
+- Custom error hierarchy
+- One-command setup: `npm run db:setup`
+
+### Comparison Mode & Timeline (Sept 2025)
+
+**Major Features:**
+- Side-by-side satellite comparison
+- Dual scrubbers (before/after)
+- 186 ESRI Wayback releases (2014-2025)
+- Timeline navigation (NEXT/PREV/RESET)
+- Auto-sync with destruction dates
+
+**Performance:**
+- Lazy-loaded layouts
+- Manual chunk splitting
+- <2s initial page load
+- 60 FPS scrolling
+
+*For complete changelog, see [CHANGELOG.md](CHANGELOG.md)*
 
 ---
 
@@ -1308,107 +714,50 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 
 ## Local Backend Setup
 
-### Overview
-
-The local backend provides a realistic development environment with:
-- PostgreSQL database with PostGIS (geospatial queries)
-- Express REST API server
-- Same schema as Supabase (easy cloud migration)
-- 45 heritage sites from mockSites.ts
-
 ### Quick Start
 
 ```bash
-# 1. Start database and load data (one command)
-npm run db:setup
+npm run db:setup        # One-time setup (PostgreSQL + migrations + seed)
+npm run server:dev      # Start Express backend (:5000)
+npm run dev             # Start Vite frontend (:5173)
+# OR: npm run dev:full  # Start both together
+```
 
-# 2. Start backend server
-npm run server:dev
-
-# 3. Start frontend (separate terminal)
-npm run dev
-
-# 4. Update .env.development
+**Update `.env.development`:**
+```env
 VITE_USE_MOCK_API=false
 VITE_USE_LOCAL_BACKEND=true
 ```
 
-### Database Commands
+### Commands Reference
 
+**Database:**
 ```bash
 npm run db:start          # Start PostgreSQL (Docker)
 npm run db:stop           # Stop PostgreSQL
-npm run db:reset          # Reset database (delete all data)
-npm run db:migrate        # Run migrations (create schema)
-npm run db:generate-seed  # Generate seed SQL from mockSites.ts
+npm run db:reset          # Reset database
+npm run db:migrate        # Run migrations
 npm run db:seed           # Load seed data (70 sites)
-npm run db:setup          # Complete setup (all of the above)
-npm run db:logs           # View database logs
+npm run db:setup          # Complete setup
 ```
 
-### Backend Server Commands
-
+**Server:**
 ```bash
-npm run server:start      # Start Express server (production mode)
-npm run server:dev        # Start with nodemon (auto-reload)
-npm run dev:full          # Start both frontend + backend together
+npm run server:start      # Production mode
+npm run server:dev        # Development mode (auto-reload)
 ```
 
-### Architecture
+### Architecture Overview
 
-**Database Layer (PostgreSQL + PostGIS)**
-- Location: `database/`
-- Schema: `migrations/001_initial_schema.sql` (285 lines)
-- Features: PostGIS, RLS, indexes, custom functions
-- Port: 5432
+| Layer | Location | Details |
+|-------|----------|---------|
+| Database | `database/` | PostgreSQL 16 + PostGIS 3.4, Port 5432 |
+| Backend | `server/` | Express, 3-layer architecture, Port 5000 |
+| Frontend | `src/api/` | Auto-detects mode, same types across all modes |
 
-**Backend Server (Express)**
-- Location: `server/`
-- Port: 5000
-- Endpoints: GET/POST/PATCH/DELETE `/api/sites`
-- Database: Uses `postgres` npm package
+**Schema Features:** PostGIS geography, GIST indexes, Row-Level Security, geospatial functions
 
-**Frontend Integration**
-- `src/api/sites.ts` - Auto-detects backend mode
-- No code changes needed to switch modes
-- Same `Site` types across all modes
-
-### Database Schema Highlights
-
-```sql
--- PostGIS geography for accurate distance calculations
-coordinates GEOGRAPHY(POINT, 4326)
-
--- Performance indexes
-CREATE INDEX idx_heritage_coordinates ON heritage_sites USING GIST(coordinates);
-CREATE INDEX idx_heritage_type ON heritage_sites(type);
-CREATE INDEX idx_heritage_status ON heritage_sites(status);
-
--- Custom geospatial function
-SELECT * FROM sites_near_point(lat, lng, radius_km);
-
--- Row-Level Security (Supabase compatible)
-ALTER TABLE heritage_sites ENABLE ROW LEVEL SECURITY;
-```
-
-### Troubleshooting
-
-**Docker not starting:**
-- Ensure Docker Desktop is running
-- Check port 5432 is available: `lsof -i :5432`
-
-**Migration fails:**
-- Reset database: `npm run db:reset`
-- Check logs: `npm run db:logs`
-
-**Backend server errors:**
-- Verify database is running: `docker ps`
-- Check connection: `psql postgresql://heritage_user:heritage_dev_password@localhost:5432/heritage_tracker`
-
-**Frontend not connecting:**
-- Verify `.env.development` has `VITE_USE_LOCAL_BACKEND=true`
-- Check backend is running: `curl http://localhost:5000/api/sites`
-- Restart Vite dev server
+**Requirements:** Docker Desktop running, ports 5432 & 5000 available
 
 ---
 
@@ -1446,103 +795,36 @@ npm run preview       # Preview production build locally
 ## Common Tasks
 
 ### Adding a New Site
-
-```typescript
-// 1. Add to src/data/mockSites.ts
-const newSite: Site = {
-  id: "site-46",
-  name: "Site Name",
-  nameArabic: "اسم الموقع",
-  type: "mosque",
-  coordinates: [31.5, 34.5],
-  status: "destroyed",
-  yearBuilt: "1500",
-  dateDestroyed: "2024-01-15",
-  // ... other fields
-};
-
-// 2. Add sources with attribution
-sources: [
-  {
-    title: "UNESCO Report",
-    url: "https://...",
-    date: "2024-01-20",
-    organization: "UNESCO",
-  },
-];
-
-// 3. Run tests: npm test
-// 4. Verify in dev: npm run dev
-```
+1. Add to `src/data/mockSites.ts` with all required fields
+2. Include sources with proper attribution (UNESCO, etc.)
+3. Add Arabic name if available
+4. Run tests: `npm test` and verify in dev: `npm run dev`
 
 ### Creating a New Filter
-
-```typescript
-// 1. Add to src/config/filters.ts
-export const NEW_FILTER_OPTIONS = [
-  { value: "option1", label: "Option 1", labelAr: "خيار 1" },
-  { value: "option2", label: "Option 2", labelAr: "خيار 2" },
-];
-
-// 2. Update FilterState type in src/types/filters.ts
-export interface FilterState {
-  // ... existing filters
-  newFilter: string[];
-}
-
-// 3. Add filter logic to src/hooks/useFilteredSites.ts
-const matchesNewFilter =
-  filters.newFilter.length === 0 ||
-  filters.newFilter.includes(site.newField);
-
-// 4. Add UI to src/components/FilterBar/FilterBar.tsx
-<MultiSelectDropdown
-  label="New Filter"
-  options={NEW_FILTER_OPTIONS}
-  selectedValues={filters.newFilter}
-  onChange={(values) => setFilters({ ...filters, newFilter: values })}
-/>
-```
+1. Add options to `src/config/filters.ts`
+2. Update `FilterState` type in `src/types/filters.ts`
+3. Add filter logic to `src/hooks/useFilteredSites.ts`
+4. Add UI to `src/components/FilterBar/FilterBar.tsx`
 
 ### Adding a New Page
-
-```typescript
-// 1. Create src/pages/NewPage.tsx
-export default function NewPage() {
-  return <div>New Page Content</div>;
-}
-
-// 2. Add route to src/App.tsx
-<Routes>
-  <Route path="/new-page" element={<NewPage />} />
-</Routes>
-
-// 3. Add navigation link to src/components/Layout/AppHeader.tsx
-<NavLink to="/new-page">New Page</NavLink>
-
-// 4. Create tests in src/pages/NewPage.test.tsx
-```
+1. Create component in `src/pages/NewPage.tsx`
+2. Add route to `src/App.tsx`
+3. Add navigation link to `src/components/Layout/AppHeader.tsx`
+4. Create tests in `src/pages/NewPage.test.tsx`
 
 ---
 
 ## Troubleshooting
 
-### Common Issues
-
-**Issue:** Tests failing with "Query failed" error
-**Solution:** Check that `useQuery` hooks have proper error handling
-
-**Issue:** Map not rendering
-**Solution:** Verify Leaflet CSS is imported in `main.tsx`
-
-**Issue:** BC/BCE dates sorting incorrectly
-**Solution:** Use `normalizeYear()` helper in `src/utils/formatters.ts`
-
-**Issue:** Comparison mode maps not syncing
-**Solution:** Check that `syncMaps` prop is true and coordinates match
-
-**Issue:** FilterBar not updating
-**Solution:** Verify 300ms debounce delay, check console for errors
+| Issue | Solution |
+|-------|----------|
+| Tests failing | Check error handling in `useQuery` hooks |
+| Map not rendering | Verify Leaflet CSS imported in `main.tsx` |
+| BC/BCE dates incorrect | Use `normalizeYear()` from `src/utils/formatters.ts` |
+| Maps not syncing | Check `syncMaps` prop and coordinates |
+| FilterBar not updating | Verify 300ms debounce, check console |
+| Docker won't start | Ensure Docker Desktop running, check port 5432 |
+| Backend connection fails | Verify `.env.development` settings |
 
 ---
 
