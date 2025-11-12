@@ -4,6 +4,8 @@
  * API Documentation: https://github.com/vannizhang/wayback
  */
 
+import { logger } from '../utils/logger';
+
 export interface WaybackItem {
   itemID: string;
   itemTitle: string;
@@ -47,7 +49,7 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
       // Extract date from title (format: "World Imagery (Wayback 2025-09-25)")
       const dateMatch = item.itemTitle.match(/(\d{4}-\d{2}-\d{2})/);
       if (!dateMatch) {
-        console.error(`CRITICAL: Failed to parse Wayback release date from: "${item.itemTitle}". Using fallback date ${UNKNOWN_RELEASE_DATE}.`);
+        logger.error(`CRITICAL: Failed to parse Wayback release date from: "${item.itemTitle}". Using fallback date ${UNKNOWN_RELEASE_DATE}.`);
       }
       const releaseDate = dateMatch ? dateMatch[1] : UNKNOWN_RELEASE_DATE;
 
@@ -69,7 +71,7 @@ export async function fetchWaybackReleases(): Promise<WaybackRelease[]> {
     return releases;
   } catch (error) {
     // Log technical details for debugging
-    console.error("Wayback API error:", error);
+    logger.error("Wayback API error:", error);
     // Re-throw technical error - context layer will transform to user-friendly message
     throw error;
   }

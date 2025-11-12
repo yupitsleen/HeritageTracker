@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef, useMemo, type ReactNode } from "react";
 import type { GazaSite } from "../types";
 import { ANIMATION_CONFIG, getDefaultSpeed, isValidSpeed } from "../config/animation";
+import { logger } from "../utils/logger";
 
 /**
  * Timeline animation state management
@@ -150,7 +151,7 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     if (isValidSpeed(newSpeed)) {
       setSpeed(newSpeed);
     } else {
-      console.warn(`Invalid speed: ${newSpeed}. Using default speed.`);
+      logger.warn(`Invalid speed: ${newSpeed}. Using default speed.`);
       setSpeed(getDefaultSpeed().value);
     }
   }, []);

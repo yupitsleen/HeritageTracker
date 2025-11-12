@@ -7,6 +7,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './database.types';
+import { logger } from '../utils/logger';
 
 /**
  * Get Supabase configuration from environment variables
@@ -16,7 +17,7 @@ const getSupabaseConfig = () => {
   const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
   if (!url || !anonKey) {
-    console.warn(
+    logger.warn(
       'Supabase credentials not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY'
     );
   }

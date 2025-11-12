@@ -13,6 +13,7 @@ import { useAsyncQuery } from './useAsyncQuery';
 import { getSitesPaginated } from '../api/sites';
 import type { GazaSite } from '../types';
 import type { SitesQueryParams, PaginatedResponse } from '../api/types';
+import { logger } from '../utils/logger';
 
 /**
  * Hook return type
@@ -91,7 +92,7 @@ export function useSitesPaginated(
     queryFn: getSitesPaginated,
     params: queryParams,
     errorMessage: 'Failed to fetch paginated sites',
-    onError: (err) => console.error('useSitesPaginated error:', err),
+    onError: (err) => logger.error('useSitesPaginated error:', err),
   });
 
   // Update pagination metadata when data changes

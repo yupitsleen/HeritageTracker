@@ -21,7 +21,7 @@ import type { ComparisonInterval } from "../types/waybackTimelineTypes";
 import { DEFAULT_COMPARISON_INTERVAL } from "../config/comparisonIntervals";
 import { calculateBeforeDate, findClosestReleaseIndex } from "../utils/intervalCalculations";
 import { Z_INDEX } from "../constants/layout";
-import { COLORS } from "../config/colorThemes";
+import { PalestinianFlagTriangle } from "../components/Decorative";
 
 // Lazy load the map, timeline, and modal components
 // Note: About and Stats are now dedicated pages at /about and /stats for better performance
@@ -232,17 +232,7 @@ export function Timeline() {
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
       {/* Palestinian Flag Red Triangle - Background Element */}
-      {/* Z-index 0 to stay behind all content */}
-      <div
-        className="fixed top-0 left-0 pointer-events-none z-0 opacity-50 transition-colors duration-200"
-        style={{
-          width: '800px',
-          height: '100vh',
-          background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED,
-          clipPath: 'polygon(0 0, 0 100%, 800px 50%)',
-        }}
-        aria-hidden="true"
-      />
+      <PalestinianFlagTriangle width={800} zIndex={Z_INDEX.BASE} />
 
       {/* Header - shared across all pages */}
       <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />

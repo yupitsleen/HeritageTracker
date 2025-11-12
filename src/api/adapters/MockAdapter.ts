@@ -9,13 +9,13 @@ import { mockSites } from '../../data/mockSites';
 import type { GazaSite } from '../../types';
 import type { ApiResponse, PaginatedResponse, SitesQueryParams } from '../types';
 import type { BackendAdapter } from './types';
+import { API_MOCK_DELAY_MS } from '../../constants/api';
+import { logger } from '../../utils/logger';
 
 /**
  * Simulate network delay
  */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const MOCK_DELAY = 800; // 800ms to simulate network latency
 
 /**
  * Mock adapter implementation
@@ -23,7 +23,7 @@ const MOCK_DELAY = 800; // 800ms to simulate network latency
  */
 export class MockAdapter implements BackendAdapter {
   async getAllSites(params?: SitesQueryParams): Promise<GazaSite[]> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     // Simulate API response format
     const response: ApiResponse<GazaSite[]> = {
@@ -57,7 +57,7 @@ export class MockAdapter implements BackendAdapter {
   }
 
   async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<GazaSite>> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     const page = params?.page || 1;
     const pageSize = params?.pageSize || 10;
@@ -83,7 +83,7 @@ export class MockAdapter implements BackendAdapter {
   }
 
   async getSiteById(id: string): Promise<GazaSite> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     const site = mockSites.find(s => s.id === id);
 
@@ -101,7 +101,7 @@ export class MockAdapter implements BackendAdapter {
   }
 
   async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<GazaSite[]> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     // Simple distance calculation using Haversine formula
     const toRad = (deg: number) => (deg * Math.PI) / 180;
@@ -129,7 +129,7 @@ export class MockAdapter implements BackendAdapter {
   }
 
   async createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     // Mock implementation - not persisted
     const newSite: GazaSite = {
@@ -137,12 +137,12 @@ export class MockAdapter implements BackendAdapter {
       id: `site-${Date.now()}`,
     };
 
-    console.warn('MockAdapter: createSite not persisted (mock mode)');
+    logger.warn('MockAdapter: createSite not persisted (mock mode)');
     return newSite;
   }
 
   async updateSite(id: string, updates: Partial<GazaSite>): Promise<GazaSite> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     const existingSite = await this.getSiteById(id);
 
@@ -153,17 +153,17 @@ export class MockAdapter implements BackendAdapter {
       id, // Preserve original ID
     };
 
-    console.warn('MockAdapter: updateSite not persisted (mock mode)');
+    logger.warn('MockAdapter: updateSite not persisted (mock mode)');
     return updatedSite;
   }
 
   async deleteSite(id: string): Promise<void> {
-    await delay(MOCK_DELAY);
+    await delay(API_MOCK_DELAY_MS);
 
     // Verify site exists
     await this.getSiteById(id);
 
     // Mock implementation - not persisted
-    console.warn('MockAdapter: deleteSite not persisted (mock mode)');
+    logger.warn('MockAdapter: deleteSite not persisted (mock mode)');
   }
 }

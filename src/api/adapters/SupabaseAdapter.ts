@@ -11,6 +11,7 @@ import type { GazaSite } from '../../types';
 import type { Database } from '../database.types';
 import type { PaginatedResponse, SitesQueryParams } from '../types';
 import type { BackendAdapter } from './types';
+import { logger } from '../../utils/logger';
 
 /**
  * Convert Supabase row to GazaSite format
@@ -63,7 +64,7 @@ export class SupabaseAdapter implements BackendAdapter {
     const { data, error } = await query;
 
     if (error) {
-      console.error('Supabase error:', error);
+      logger.error('Supabase error:', error);
       throw new Error(`Failed to fetch sites: ${error.message}`);
     }
 
@@ -99,7 +100,7 @@ export class SupabaseAdapter implements BackendAdapter {
     const { data, error, count } = await query;
 
     if (error) {
-      console.error('Supabase pagination error:', error);
+      logger.error('Supabase pagination error:', error);
       throw new Error(`Failed to fetch paginated sites: ${error.message}`);
     }
 
@@ -131,7 +132,7 @@ export class SupabaseAdapter implements BackendAdapter {
       if (error.code === 'PGRST116') {
         throw new Error(`Site with ID "${id}" not found`);
       }
-      console.error('Supabase error:', error);
+      logger.error('Supabase error:', error);
       throw new Error(`Failed to fetch site: ${error.message}`);
     }
 
@@ -151,7 +152,7 @@ export class SupabaseAdapter implements BackendAdapter {
     );
 
     if (error) {
-      console.error('Geospatial query error:', error);
+      logger.error('Geospatial query error:', error);
       throw new Error(`Failed to find nearby sites: ${error.message}`);
     }
 
@@ -196,7 +197,7 @@ export class SupabaseAdapter implements BackendAdapter {
       .single();
 
     if (error) {
-      console.error('Failed to create site:', error);
+      logger.error('Failed to create site:', error);
       throw new Error(`Failed to create site: ${error.message}`);
     }
 
@@ -227,7 +228,7 @@ export class SupabaseAdapter implements BackendAdapter {
       .single();
 
     if (error) {
-      console.error(`Failed to update site ${id}:`, error);
+      logger.error(`Failed to update site ${id}:`, error);
       throw new Error(`Failed to update site: ${error.message}`);
     }
 
@@ -242,7 +243,7 @@ export class SupabaseAdapter implements BackendAdapter {
     const { error } = await supabase.from('heritage_sites').delete().eq('id', id);
 
     if (error) {
-      console.error(`Failed to delete site ${id}:`, error);
+      logger.error(`Failed to delete site ${id}:`, error);
       throw new Error(`Failed to delete site: ${error.message}`);
     }
   }
