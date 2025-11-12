@@ -1,4 +1,4 @@
-import { memo, useState, useMemo } from "react";
+import { memo, useState, useMemo, useEffect } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { GazaSite, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
@@ -17,6 +17,7 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
 import { useActiveFilters } from "../../hooks/useActiveFilters";
+import { useDebounce } from "../../hooks/useDebounce";
 import { Z_INDEX } from "../../constants/layout";
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -73,6 +74,24 @@ export const FilterBar = memo(function FilterBar({
   const t = useThemeClasses();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
+  // Local state for search input (for immediate UI feedback)
+  const [searchInputValue, setSearchInputValue] = useState(filters.searchTerm);
+
+  // Debounce search to avoid filtering on every keystroke (300ms delay)
+  const debouncedSearchTerm = useDebounce(searchInputValue, 300);
+
+  // Update filter when debounced value changes
+  useEffect(() => {
+    if (debouncedSearchTerm !== filters.searchTerm) {
+      onFilterChange({ searchTerm: debouncedSearchTerm });
+    }
+  }, [debouncedSearchTerm, filters.searchTerm, onFilterChange]);
+
+  // Sync local state when external searchTerm changes (e.g., clear all filters)
+  useEffect(() => {
+    setSearchInputValue(filters.searchTerm);
+  }, [filters.searchTerm]);
+
   // Use provided ranges or calculate from sites
   const computedDateRange = useDefaultDateRange(sites);
   const computedYearRange = useDefaultYearRange(sites);
@@ -107,19 +126,19 @@ export const FilterBar = memo(function FilterBar({
 
         {/* Center: Filters */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 flex-1">
-          {/* Search Bar - Always visible */}
+          {/* Search Bar - Always visible (with debouncing) */}
           <div className="relative flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
             <Input
               type="text"
-              value={filters.searchTerm}
-              onChange={(e) => onFilterChange({ searchTerm: e.target.value })}
+              value={searchInputValue}
+              onChange={(e) => setSearchInputValue(e.target.value)}
               placeholder={translate("filters.searchPlaceholder")}
               className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
             />
-            {filters.searchTerm.trim().length > 0 && (
+            {searchInputValue.trim().length > 0 && (
               <button
                 type="button"
-                onClick={() => onFilterChange({ searchTerm: "" })}
+                onClick={() => setSearchInputValue("")}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
                 aria-label={translate("filters.clearSearch")}
               >
