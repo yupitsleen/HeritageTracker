@@ -62,10 +62,11 @@
 
 ## 📊 Current Status
 
-- ✅ **1,374 existing tests** covering component interactions and critical hooks (+24 from Tasks 1.1-1.2)
+- ✅ **1,390 existing tests** covering component interactions and critical hooks (+40 from Priority 1 complete)
 - ✅ **74% branch coverage** - Excellent logic testing
 - ❌ **29% statement coverage** - Low due to untested infrastructure code (acceptable)
 - 🎯 **Focus:** User-facing features (CSV export, lazy loading, table interactions)
+- 🎉 **Priority 1 Complete:** All critical user-facing tests implemented!
 
 ---
 
@@ -142,36 +143,50 @@
 
 ---
 
-### Task 1.3: useTableResize Hook Tests (10 tests)
+### Task 1.3: useTableResize Hook Tests (16 tests)
 
-**File:** `src/hooks/__tests__/useTableResize.test.ts` (expand existing)
-**Current Coverage:** 46.05%
+**File:** `src/hooks/__tests__/useTableResize.test.ts` (new file)
+**Current Coverage:** 100%
 **Why Critical:** Users resize table columns; needs to handle edge cases
 
-**Tests to Add:**
+**Tests Added:**
 
-- [ ] **Column Width Constraints**
-  - [ ] Test 1: Enforces minimum column width (e.g., 50px)
-  - [ ] Test 2: Enforces maximum column width (e.g., 500px)
-  - [ ] Test 3: Prevents columns from becoming invisible (width < 10px)
+- [x] **Column Width Constraints**
+  - [x] Test 1: Enforces minimum column width (200px)
+  - [x] Test 2: Enforces maximum column width (1100px)
+  - [x] Test 3: Prevents columns from becoming invisible (width >= 10px)
 
-- [ ] **Mouse Drag Behavior**
-  - [ ] Test 4: Updates column width during mouse drag
-  - [ ] Test 5: Stops resizing on mouse up
-  - [ ] Test 6: Handles rapid mouse movements without lag
+- [x] **Mouse Drag Behavior**
+  - [x] Test 4: Updates column width during mouse drag
+  - [x] Test 5: Stops resizing on mouse up
+  - [x] Test 6: Handles rapid mouse movements without lag
 
-- [ ] **Multi-Column Interactions**
-  - [ ] Test 7: Resizing one column doesn't affect others
-  - [ ] Test 8: Table width updates correctly after resize
+- [x] **Multi-Column Interactions**
+  - [x] Test 7: Resizing one column doesn't affect others (isolated state)
+  - [x] Test 8: Table width updates correctly after resize
 
-- [ ] **Edge Cases**
-  - [ ] Test 9: Handles resize on first column
-  - [ ] Test 10: Handles resize on last column
+- [x] **Edge Cases**
+  - [x] Test 9: Handles resize on first column (leftmost)
+  - [x] Test 10: Handles resize on last column (rightmost)
+
+- [x] **Progressive Column Display** (bonus tests)
+  - [x] Test 11: Shows type and name at minimum width (200px)
+  - [x] Test 12: Shows status at 360px+
+  - [x] Test 13: Shows all columns at maximum width (1100px)
+
+- [x] **Viewport Resize Handling** (bonus tests)
+  - [x] Test 14: Clamps table width when viewport shrinks
+  - [x] Test 15: Maintains minimum width even on tiny viewports
+
+- [x] **Cleanup** (bonus test)
+  - [x] Test 16: Removes event listeners on unmount (no memory leaks)
 
 **Acceptance Criteria:**
 - ✅ Columns respect min/max width constraints
-- ✅ Resize is smooth and responsive
+- ✅ Resize is smooth and responsive (uses requestAnimationFrame)
 - ✅ No layout breaks when resizing edge columns
+- ✅ Progressive column display works correctly at all breakpoints
+- ✅ No memory leaks on unmount
 
 ---
 
@@ -283,17 +298,17 @@ These items are **not critical** for current workflow and can be deferred:
 
 | Priority | Tasks | Tests | Status |
 |----------|-------|-------|--------|
-| 🔴 Priority 1 | 3 tasks | 34 tests | 🟢 2/3 Complete (71%) |
+| 🔴 Priority 1 | 3 tasks | 40 tests | ✅ **COMPLETE** (100%) |
 | 🟡 Priority 2 | 3 tasks | 24 tests | ⚪ Not Started |
 | ⚪ Priority 3 | Deferred | N/A | ⏸️ Deferred |
-| **Total** | **6 tasks** | **58 tests** | **41% Complete (24/58 tests)** |
+| **Total** | **6 tasks** | **64 tests** | **63% Complete (40/64 tests)** |
 
 ### Detailed Progress
 
 #### Priority 1 (Critical)
 - [x] Task 1.1: CSV Export Tests (15/15 tests) ✅ **COMPLETE** - 100% coverage achieved!
 - [x] Task 1.2: useIntersectionObserver Tests (9/9 tests) ✅ **COMPLETE** - 100% coverage achieved!
-- [ ] Task 1.3: useTableResize Tests (0/10 tests)
+- [x] Task 1.3: useTableResize Tests (16/16 tests) ✅ **COMPLETE** - 100% coverage achieved!
 
 #### Priority 2 (Polish)
 - [ ] Task 2.1: timelineYearMarkers Tests (0/12 tests)
@@ -307,7 +322,7 @@ These items are **not critical** for current workflow and can be deferred:
 ### Coverage Targets
 - 🔄 Statement coverage: 29% → 45% (+16%) - In Progress
 - ✅ Branch coverage: 74% → 80% (+6%)
-- 🔄 Total tests: 1,365 → 1,422 (+57) - Currently at 1,374 (+24 tests from Tasks 1.1-1.2)
+- 🔄 Total tests: 1,365 → 1,422 (+57) - Currently at 1,390 (+40 tests from Priority 1 complete)
 
 ### Quality Gates
 - ✅ All Priority 1 tests passing
@@ -402,6 +417,7 @@ Before marking a task complete:
 
 ---
 
-**Last Updated:** 2025-11-12 (Session 2)
-**Completed:** Task 1.1 (CSV Export) ✅ | Task 1.2 (useIntersectionObserver) ✅
-**Next Session:** Start with Task 1.3 (useTableResize Hook Tests)
+**Last Updated:** 2025-11-12 (Session 3)
+**Completed:** Task 1.1 (CSV Export) ✅ | Task 1.2 (useIntersectionObserver) ✅ | Task 1.3 (useTableResize) ✅
+**Status:** 🎉 **All Priority 1 (Critical) tasks complete!**
+**Next Session:** Start Priority 2 (Polish) - Task 2.1 (timelineYearMarkers Tests)
