@@ -36,9 +36,15 @@ const PORT = process.env.PORT || 5000;
 // ============================================================================
 
 // CORS - Allow frontend to access API
+// In production, CORS_ORIGIN must be set (no fallback for security)
+const corsOrigin = process.env.CORS_ORIGIN;
+if (!corsOrigin && process.env.NODE_ENV === 'production') {
+  throw new Error('CORS_ORIGIN environment variable must be set in production');
+}
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: corsOrigin || 'http://localhost:5173', // Fallback only in development
     credentials: true,
   })
 );
