@@ -14,6 +14,8 @@
 ### Testing Requirements
 - **All new features require at least smoke tests**
 - **Avoid brittle tests** - Keep them resilient to future changes
+- **Avoid excessive tests** - Target 2:1 to 3:1 test-to-code ratio for most code
+- **Test the right layer** - Don't test dependencies via wrapper functions
 - **All tests (new and existing) must pass before committing**
 
 ### Commit Standards
@@ -58,6 +60,34 @@
   5. Mark tests as complete in this file (`[ ]` → `[x]`)
   6. Update progress tracking section
   7. Only commit when ALL quality gates pass
+
+---
+
+## 📏 Test-to-Code Ratio Guidelines
+
+### Healthy Ratios
+- **Simple utilities (formatters, helpers):** 1.5:1 to 2:1
+- **Business logic (hooks, services):** 2:1 to 3:1
+- **Complex features (CSV export, maps):** 3:1 to 5:1
+- **Critical user-facing features:** Up to 6:1 (CSV export with Arabic encoding)
+
+### Red Flags
+- **> 10:1 ratio:** Likely testing the wrong layer or over-testing trivial logic
+- **> 20:1 ratio:** Almost certainly excessive (e.g., useTileConfig was 20:1)
+
+### When to Stop Testing
+- ✅ All code paths covered (branches, edge cases)
+- ✅ All user-facing behaviors verified
+- ✅ All critical bugs prevented (regressions)
+- ❌ Testing framework internals (React hooks, browser APIs)
+- ❌ Testing dependencies (testing exportSites via useTableExport)
+- ❌ Testing implementation details (internal state, memoization)
+
+### Test the Right Layer
+- **Component tests:** UI behavior, user interactions, rendering
+- **Hook tests:** State management, side effects, cleanup
+- **Utility tests:** Input/output transformations, edge cases
+- **Integration tests:** Cross-layer communication, data flow
 
 ---
 
@@ -472,3 +502,44 @@ Verified each task by:
 **Test Count:** 1,417 tests passing (up from 1,390, +27 new tests)
 **Coverage:** 29.18% statements, 74.63% branches
 **Next Steps:** Focus on feature development; test infrastructure is solid
+
+---
+
+## 📚 Lessons Learned (November 2025)
+
+### What Went Well ✅
+1. **CSV Export Tests (Task 1.1):** All 15 tests were critical and well-designed
+   - Caught real bugs (Arabic encoding, special characters)
+   - Performance tests ensure scalability
+   - Data integrity tests prevent silent corruption
+
+2. **Test Organization:** Clear structure with descriptive test names
+   - Easy to trace back to task requirements
+   - Good use of describe blocks and meaningful assertions
+
+### What Went Wrong ❌
+1. **Over-testing trivial code:** useTileConfig had 20:1 ratio (243 lines of tests for 12 lines of code)
+   - **Root cause:** "Bonus tests" culture encouraged testing framework internals
+   - **Fix:** Removed 11 redundant tests, kept only 4 core tests
+   - **Result:** 15 tests → 4 tests (73% reduction, 176 lines saved)
+
+2. **Testing wrong layer:** useTableExport tested exportSites() logic via wrapper
+   - **Root cause:** Testing through dependencies instead of testing the dependency directly
+   - **Fix:** Removed 5 wrong-layer tests (filename generation, error handling)
+   - **Result:** 12 tests → 7 tests (42% reduction, 162 lines saved)
+
+3. **Component tests in hook files:** useTableResize tested UI breakpoints
+   - **Root cause:** Unclear boundaries between hook logic and component behavior
+   - **Fix:** Removed 5 component-level tests from hook tests
+   - **Result:** 16 tests → 11 tests (31% reduction, 101 lines saved)
+
+### Guidelines Added
+- **Test-to-code ratio targets:** 2:1 to 3:1 for most code, up to 6:1 for critical features
+- **Test the right layer:** Don't test dependencies via wrappers
+- **When to stop testing:** Avoid testing framework internals, implementation details
+
+### Impact
+- **Before refactor:** 1,417 tests
+- **After refactor:** 1,396 tests (-21 tests, -439 lines of test code)
+- **Test quality:** Higher (tests now focus on real bugs and user-facing behavior)
+- **Maintenance:** Easier (less brittle tests, clearer intent)
