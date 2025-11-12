@@ -3,8 +3,9 @@
 **Project:** Heritage Tracker
 **Current Coverage:** 29% statements, 74% branches
 **Target Coverage:** 45% statements, 80% branches
-**Total Tests to Add:** ~57 tests
+**Total Tests to Add:** 52 tests (12 tasks removed after audit)
 **Estimated Impact:** Fix critical CSV export bugs, improve lazy loading performance, enhance table interactions
+**Last Audit:** 2025-11-12 (Task 2.1 removed - feature does not exist)
 
 ---
 
@@ -192,48 +193,33 @@
 
 ## 🟡 Priority 2: Polish (Do After Priority 1)
 
-### Task 2.1: timelineYearMarkers Utility Tests (12 tests)
+### Task 2.1: timelineYearMarkers Utility Tests ~~(12 tests)~~ ❌ INVALID - SKIPPED
 
-**File:** `src/utils/__tests__/timelineYearMarkers.test.ts` (new file)
-**Current Coverage:** 0%
-**Why Important:** BC/BCE dates are tricky; incorrect markers confuse users
+**Status:** ❌ **SKIPPED - Feature Does Not Exist**
 
-**Tests to Add:**
+**Audit Findings (2025-11-12):**
+- **Timeline date markers ALREADY EXIST** - `src/utils/d3Timeline.ts:109` uses D3's `axisBottom().ticks(6)` for automatic tick generation
+- **BC/BCE markers NOT NEEDED** - All destruction dates (shown on timeline) are modern 2023-2024 CE
+- **BC/BCE dates only in yearBuilt field** - Construction dates (800 BCE, 2000 BCE, etc.) are NOT visualized on timeline
+- **Current implementation is correct** - D3 automatic ticking handles 2023-2024 perfectly
+- **No utility exists** - No `timelineYearMarkers.ts` file found in codebase
+- **Documentation mismatch** - CLAUDE.md mentions "year markers every 100/500/1000 years" but this was likely aspirational, not implemented
 
-- [ ] **BCE Date Handling**
-  - [ ] Test 1: Generates markers for BCE dates (-800, -600, -400)
-  - [ ] Test 2: BCE dates are in correct chronological order (oldest first)
-  - [ ] Test 3: Handles "BCE 1" correctly
+**Why Invalid:**
+The TimelineScrubber visualizes `dateDestroyed` (all 2023-2024), not `yearBuilt` (BC/BCE dates). Therefore, BC/BCE year marker logic is unnecessary for current functionality.
 
-- [ ] **CE Date Handling**
-  - [ ] Test 4: Generates markers for CE dates (1000, 1200, 1400)
-  - [ ] Test 5: CE dates are in correct chronological order
-
-- [ ] **BCE → CE Transition**
-  - [ ] Test 6: Handles transition from BCE to CE correctly (no "year 0")
-  - [ ] Test 7: Timeline shows BCE 1 → CE 1 correctly
-
-- [ ] **Marker Intervals**
-  - [ ] Test 8: Generates markers at 100-year intervals for recent dates
-  - [ ] Test 9: Generates markers at 500-year intervals for ancient dates
-  - [ ] Test 10: Generates markers at 1000-year intervals for very ancient dates
-
-- [ ] **Edge Cases**
-  - [ ] Test 11: Handles empty date range
-  - [ ] Test 12: Handles single date (no range)
-
-**Acceptance Criteria:**
-- ✅ BCE/CE dates display in correct chronological order
-- ✅ Timeline shows appropriate intervals (100/500/1000 years)
-- ✅ No confusion around BCE 1 → CE 1 transition
+**Recommendation:**
+Skip this task entirely. Focus testing efforts on existing features (Task 2.2, 2.3).
 
 ---
 
-### Task 2.2: useTableExport Hook Tests (8 tests)
+### Task 2.2: useTableExport Hook Tests (8 tests) ✅ VALID
 
-**File:** `src/hooks/__tests__/useTableExport.test.ts` (expand existing)
-**Current Coverage:** 61.11%
+**File:** `src/hooks/__tests__/useTableExport.test.ts` (new file - no existing tests found)
+**Current Coverage:** 0% (hook exists at `src/hooks/useTableExport.ts`)
 **Why Important:** Export button behavior must be reliable
+
+**Audit Status:** ✅ Feature exists, no tests currently (plan originally claimed 61.11% coverage but no test file found)
 
 **Tests to Add:**
 
@@ -258,11 +244,13 @@
 
 ---
 
-### Task 2.3: useTileConfig Hook Tests (4 tests)
+### Task 2.3: useTileConfig Hook Tests (4 tests) ✅ VALID
 
 **File:** `src/hooks/__tests__/useTileConfig.test.ts` (new file)
 **Current Coverage:** 0%
 **Why Important:** Map tiles must match user's language preference
+
+**Audit Status:** ✅ Feature exists at `src/hooks/useTileConfig.ts`, no tests currently
 
 **Tests to Add:**
 
@@ -299,9 +287,9 @@ These items are **not critical** for current workflow and can be deferred:
 | Priority | Tasks | Tests | Status |
 |----------|-------|-------|--------|
 | 🔴 Priority 1 | 3 tasks | 40 tests | ✅ **COMPLETE** (100%) |
-| 🟡 Priority 2 | 3 tasks | 24 tests | ⚪ Not Started |
+| 🟡 Priority 2 | 2 tasks (1 skipped) | 12 tests | ⚪ Not Started |
 | ⚪ Priority 3 | Deferred | N/A | ⏸️ Deferred |
-| **Total** | **6 tasks** | **64 tests** | **63% Complete (40/64 tests)** |
+| **Total** | **5 tasks** | **52 tests** | **77% Complete (40/52 tests)** |
 
 ### Detailed Progress
 
@@ -311,9 +299,9 @@ These items are **not critical** for current workflow and can be deferred:
 - [x] Task 1.3: useTableResize Tests (16/16 tests) ✅ **COMPLETE** - 100% coverage achieved!
 
 #### Priority 2 (Polish)
-- [ ] Task 2.1: timelineYearMarkers Tests (0/12 tests)
-- [ ] Task 2.2: useTableExport Tests (0/8 tests)
-- [ ] Task 2.3: useTileConfig Tests (0/4 tests)
+- [x] Task 2.1: timelineYearMarkers Tests ❌ **SKIPPED** - Feature does not exist (see audit findings)
+- [ ] Task 2.2: useTableExport Tests (0/8 tests) ✅ **VALID**
+- [ ] Task 2.3: useTileConfig Tests (0/4 tests) ✅ **VALID**
 
 ---
 
@@ -322,7 +310,7 @@ These items are **not critical** for current workflow and can be deferred:
 ### Coverage Targets
 - 🔄 Statement coverage: 29% → 45% (+16%) - In Progress
 - ✅ Branch coverage: 74% → 80% (+6%)
-- 🔄 Total tests: 1,365 → 1,422 (+57) - Currently at 1,390 (+40 tests from Priority 1 complete)
+- 🔄 Total tests: 1,390 → 1,442 (+52) - Currently at 1,390 (+40 tests from Priority 1 complete, 12 tests remaining in Priority 2)
 
 ### Quality Gates
 - ✅ All Priority 1 tests passing
@@ -417,7 +405,63 @@ Before marking a task complete:
 
 ---
 
-**Last Updated:** 2025-11-12 (Session 3)
+## 🔍 Audit Summary (2025-11-12)
+
+### Audit Methodology
+Verified each task by:
+1. Searching for the feature/utility file in codebase
+2. Checking if corresponding test file exists
+3. Reading implementation to confirm feature behavior matches task description
+4. Validating test count estimates and coverage claims
+
+### Audit Results
+
+| Task | Status | Finding | Action |
+|------|--------|---------|--------|
+| **Priority 1** | | | |
+| Task 1.1 (CSV Export) | ✅ VALID | Already completed - 15 tests passing | None |
+| Task 1.2 (useIntersectionObserver) | ✅ VALID | Already completed - 9 tests passing | None |
+| Task 1.3 (useTableResize) | ✅ VALID | Already completed - 16 tests passing | None |
+| **Priority 2** | | | |
+| Task 2.1 (timelineYearMarkers) | ❌ INVALID | Feature does not exist - timeline uses D3 automatic ticking | **SKIPPED** (-12 tests) |
+| Task 2.2 (useTableExport) | ✅ VALID | Hook exists, no tests (not 61.11% as claimed) | Corrected coverage claim |
+| Task 2.3 (useTileConfig) | ✅ VALID | Hook exists, no tests | Ready to implement |
+| **Priority 3** | | | |
+| Deferred items | ✅ VALID | All files exist, correctly deferred for future backend work | No action needed |
+
+### Key Findings
+
+**❌ Invalid Task Removed:**
+- **Task 2.1 (timelineYearMarkers)** - The test plan described a BC/BCE year marker utility that doesn't exist
+  - Timeline date markers already work via D3's `axisBottom().ticks(6)` (automatic)
+  - All destruction dates are modern (2023-2024 CE), so BC/BCE logic is unnecessary
+  - BC/BCE dates only appear in `yearBuilt` field, which timeline doesn't visualize
+  - Removed 12 planned tests from total
+
+**📊 Coverage Claim Corrected:**
+- **Task 2.2 (useTableExport)** - Plan claimed "61.11% coverage (expand existing)" but no test file exists
+  - Corrected to "0% coverage (new file)"
+  - Hook implementation is simple and straightforward, 8 tests are appropriate
+
+### Updated Test Plan Metrics
+
+**Before Audit:**
+- 6 tasks, 64 tests planned
+- 63% complete (40/64 tests)
+
+**After Audit:**
+- 5 tasks, 52 tests planned (1 task removed)
+- 77% complete (40/52 tests)
+
+### Next Steps
+1. Implement **Task 2.2: useTableExport Tests** (8 tests)
+2. Implement **Task 2.3: useTileConfig Tests** (4 tests)
+3. Verify coverage targets met
+4. Update documentation
+
+---
+
+**Last Updated:** 2025-11-12 (Audit Session)
 **Completed:** Task 1.1 (CSV Export) ✅ | Task 1.2 (useIntersectionObserver) ✅ | Task 1.3 (useTableResize) ✅
-**Status:** 🎉 **All Priority 1 (Critical) tasks complete!**
-**Next Session:** Start Priority 2 (Polish) - Task 2.1 (timelineYearMarkers Tests)
+**Status:** 🎉 **All Priority 1 (Critical) tasks complete!** | Task 2.1 audit: ❌ SKIPPED (feature does not exist)
+**Next Session:** Start Priority 2 (Polish) - Task 2.2 (useTableExport Tests - 8 tests)
