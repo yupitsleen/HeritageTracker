@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # 1261 unit tests must pass ✓ (1169 frontend + 77 backend + 15 backend utils)
+npm test        # 1396 unit tests must pass ✓ (1304 frontend + 77 backend + 15 backend utils)
 npm run e2e     # E2E tests (Playwright)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -780,7 +780,27 @@ npm run e2e -- e2e/filters.spec.ts
 
 **Phase 14 Complete: Code Quality & Maintainability Enhancements** ✅
 
-### Latest Changes (Nov 12, 2025 - Session 8)
+### Latest Changes (Nov 12, 2025 - Session 9)
+
+1. **Test Refactoring - Remove Excessive Testing:**
+   - **Removed 21 excessive tests** (439 lines of test code, 28% reduction)
+   - **Test-to-code ratio:** Reduced from 6.3:1 to 4.5:1 (healthier ratio)
+   - **Tests removed:**
+     - useTileConfig: 11 bonus tests for trivial 12-line hook (20:1 ratio → 5.6:1)
+     - useTableResize: 5 component-level tests (belong in component tests)
+     - useTableExport: 5 wrong-layer tests (testing dependencies via wrapper)
+
+   - **Documentation Updates:**
+     - Added test-to-code ratio guidelines to TEST_COVERAGE_PLAN.md
+     - Added "Test the Right Layer" principle
+     - Added "Lessons Learned" section with root cause analysis
+
+   - **Quality Metrics:**
+     - Before: 1,417 tests, ~2,016 lines of test code
+     - After: 1,396 tests, ~1,577 lines of test code
+     - Impact: Higher test quality, easier maintenance, faster CI/CD
+
+### Previous Changes (Nov 12, 2025 - Session 8)
 
 1. **Code Review Complete - Production-Ready Status:**
    - **Code review officially complete at 90% resolution** (18/20 issues resolved)
