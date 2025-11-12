@@ -1,4 +1,4 @@
-import { memo, useState, useMemo, useEffect } from "react";
+import { memo, useState, useMemo, useEffect, useCallback } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { GazaSite, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
@@ -113,6 +113,84 @@ export const FilterBar = memo(function FilterBar({
     [filters.creationYearStart, filters.creationYearEnd]
   );
 
+  // Memoized callback handlers to prevent unnecessary re-renders
+  const handleSearchInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInputValue(e.target.value);
+  }, []);
+
+  const handleClearSearch = useCallback(() => {
+    setSearchInputValue("");
+  }, []);
+
+  const handleOpenMobileFilters = useCallback(() => {
+    setIsMobileFiltersOpen(true);
+  }, []);
+
+  const handleCloseMobileFilters = useCallback(() => {
+    setIsMobileFiltersOpen(false);
+  }, []);
+
+  const handleMobileClearAllAndClose = useCallback(() => {
+    onClearAll?.();
+    setIsMobileFiltersOpen(false);
+  }, [onClearAll]);
+
+  // Filter change handlers (memoized with stable references)
+  const handleTypesChange = useCallback((types: string[]) => {
+    onFilterChange({ selectedTypes: types });
+  }, [onFilterChange]);
+
+  const handleStatusesChange = useCallback((statuses: string[]) => {
+    onFilterChange({ selectedStatuses: statuses });
+  }, [onFilterChange]);
+
+  const handleDestructionStartDateChange = useCallback((date: Date | null) => {
+    onFilterChange({ destructionDateStart: date });
+  }, [onFilterChange]);
+
+  const handleDestructionEndDateChange = useCallback((date: Date | null) => {
+    onFilterChange({ destructionDateEnd: date });
+  }, [onFilterChange]);
+
+  const handleCreationYearStartChange = useCallback((year: string | null) => {
+    onFilterChange({ creationYearStart: year });
+  }, [onFilterChange]);
+
+  const handleCreationYearEndChange = useCallback((year: string | null) => {
+    onFilterChange({ creationYearEnd: year });
+  }, [onFilterChange]);
+
+  const handleRemoveDestructionDateFilter = useCallback(() => {
+    onFilterChange({
+      destructionDateStart: null,
+      destructionDateEnd: null,
+    });
+  }, [onFilterChange]);
+
+  const handleRemoveYearBuiltFilter = useCallback(() => {
+    onFilterChange({
+      creationYearStart: null,
+      creationYearEnd: null,
+    });
+  }, [onFilterChange]);
+
+  // Factory function for creating memoized remove handlers for filter tags
+  const createRemoveTypeHandler = useCallback((typeToRemove: string) => {
+    return () => {
+      onFilterChange({
+        selectedTypes: filters.selectedTypes.filter((t) => t !== typeToRemove),
+      });
+    };
+  }, [onFilterChange, filters.selectedTypes]);
+
+  const createRemoveStatusHandler = useCallback((statusToRemove: string) => {
+    return () => {
+      onFilterChange({
+        selectedStatuses: filters.selectedStatuses.filter((s) => s !== statusToRemove),
+      });
+    };
+  }, [onFilterChange, filters.selectedStatuses]);
+
   return (
     <div className="space-y-2">
       {/* Main Filter Row */}
@@ -131,14 +209,14 @@ export const FilterBar = memo(function FilterBar({
             <Input
               type="text"
               value={searchInputValue}
-              onChange={(e) => setSearchInputValue(e.target.value)}
+              onChange={handleSearchInputChange}
               placeholder={translate("filters.searchPlaceholder")}
               className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
             />
             {searchInputValue.trim().length > 0 && (
               <button
                 type="button"
-                onClick={() => setSearchInputValue("")}
+                onClick={handleClearSearch}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
                 aria-label={translate("filters.clearSearch")}
               >
@@ -154,7 +232,7 @@ export const FilterBar = memo(function FilterBar({
             <FilterCheckboxList
               options={SITE_TYPES}
               selectedValues={filters.selectedTypes}
-              onChange={(types) => onFilterChange({ selectedTypes: types })}
+              onChange={handleTypesChange}
               formatLabel={formatLabel}
             />
           </FilterButton>
@@ -164,7 +242,7 @@ export const FilterBar = memo(function FilterBar({
             <FilterCheckboxList
               options={STATUS_OPTIONS}
               selectedValues={filters.selectedStatuses}
-              onChange={(statuses) => onFilterChange({ selectedStatuses: statuses })}
+              onChange={handleStatusesChange}
               formatLabel={formatLabel}
             />
           </FilterButton>
@@ -179,8 +257,8 @@ export const FilterBar = memo(function FilterBar({
               label=""
               startDate={filters.destructionDateStart}
               endDate={filters.destructionDateEnd}
-              onStartChange={(date) => onFilterChange({ destructionDateStart: date })}
-              onEndChange={(date) => onFilterChange({ destructionDateEnd: date })}
+              onStartChange={handleDestructionStartDateChange}
+              onEndChange={handleDestructionEndDateChange}
               defaultStartDate={defaultStartDate}
               defaultEndDate={defaultEndDate}
             />
@@ -194,8 +272,8 @@ export const FilterBar = memo(function FilterBar({
           >
             <YearRangeFilter
               label=""
-              onStartChange={(year) => onFilterChange({ creationYearStart: year })}
-              onEndChange={(year) => onFilterChange({ creationYearEnd: year })}
+              onStartChange={handleCreationYearStartChange}
+              onEndChange={handleCreationYearEndChange}
               supportBCE={true}
               startYearDefault={defaultStartYear}
               endYearDefault={defaultEndYear}
@@ -207,7 +285,7 @@ export const FilterBar = memo(function FilterBar({
           {/* Mobile Filters Button - Visible only on mobile */}
           <button
             type="button"
-            onClick={() => setIsMobileFiltersOpen(true)}
+            onClick={handleOpenMobileFilters}
             className={cn(
               "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
               "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
@@ -253,11 +331,7 @@ export const FilterBar = memo(function FilterBar({
             <FilterTag
               key={type}
               label={formatLabel(type)}
-              onRemove={() =>
-                onFilterChange({
-                  selectedTypes: filters.selectedTypes.filter((t) => t !== type),
-                })
-              }
+              onRemove={createRemoveTypeHandler(type)}
               ariaLabel={`Remove ${formatLabel(type)} filter`}
             />
           ))}
@@ -267,11 +341,7 @@ export const FilterBar = memo(function FilterBar({
             <FilterTag
               key={status}
               label={formatLabel(status)}
-              onRemove={() =>
-                onFilterChange({
-                  selectedStatuses: filters.selectedStatuses.filter((s) => s !== status),
-                })
-              }
+              onRemove={createRemoveStatusHandler(status)}
               ariaLabel={`Remove ${formatLabel(status)} filter`}
             />
           ))}
@@ -280,12 +350,7 @@ export const FilterBar = memo(function FilterBar({
           {dateRangeLabel && (
             <FilterTag
               label={dateRangeLabel}
-              onRemove={() =>
-                onFilterChange({
-                  destructionDateStart: null,
-                  destructionDateEnd: null,
-                })
-              }
+              onRemove={handleRemoveDestructionDateFilter}
               ariaLabel="Remove destruction date filter"
             />
           )}
@@ -294,12 +359,7 @@ export const FilterBar = memo(function FilterBar({
           {yearRangeLabel && (
             <FilterTag
               label={yearRangeLabel}
-              onRemove={() =>
-                onFilterChange({
-                  creationYearStart: null,
-                  creationYearEnd: null,
-                })
-              }
+              onRemove={handleRemoveYearBuiltFilter}
               ariaLabel="Remove year built filter"
             />
           )}
@@ -309,7 +369,7 @@ export const FilterBar = memo(function FilterBar({
       {/* Mobile Filters Drawer */}
       <Dialog
         open={isMobileFiltersOpen}
-        onClose={() => setIsMobileFiltersOpen(false)}
+        onClose={handleCloseMobileFilters}
         className="relative md:hidden"
         style={{ zIndex: Z_INDEX.MODAL }}
       >
@@ -332,7 +392,7 @@ export const FilterBar = memo(function FilterBar({
               </DialogTitle>
               <button
                 type="button"
-                onClick={() => setIsMobileFiltersOpen(false)}
+                onClick={handleCloseMobileFilters}
                 className={cn("p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none", t.bg.hover)}
                 aria-label="Close filters"
               >
@@ -350,7 +410,7 @@ export const FilterBar = memo(function FilterBar({
                 <FilterCheckboxList
                   options={SITE_TYPES}
                   selectedValues={filters.selectedTypes}
-                  onChange={(types) => onFilterChange({ selectedTypes: types })}
+                  onChange={handleTypesChange}
                   formatLabel={formatLabel}
                 />
               </div>
@@ -363,7 +423,7 @@ export const FilterBar = memo(function FilterBar({
                 <FilterCheckboxList
                   options={STATUS_OPTIONS}
                   selectedValues={filters.selectedStatuses}
-                  onChange={(statuses) => onFilterChange({ selectedStatuses: statuses })}
+                  onChange={handleStatusesChange}
                   formatLabel={formatLabel}
                 />
               </div>
@@ -377,8 +437,8 @@ export const FilterBar = memo(function FilterBar({
                   label=""
                   startDate={filters.destructionDateStart}
                   endDate={filters.destructionDateEnd}
-                  onStartChange={(date) => onFilterChange({ destructionDateStart: date })}
-                  onEndChange={(date) => onFilterChange({ destructionDateEnd: date })}
+                  onStartChange={handleDestructionStartDateChange}
+                  onEndChange={handleDestructionEndDateChange}
                   defaultStartDate={defaultStartDate}
                   defaultEndDate={defaultEndDate}
                 />
@@ -391,8 +451,8 @@ export const FilterBar = memo(function FilterBar({
                 </h3>
                 <YearRangeFilter
                   label=""
-                  onStartChange={(year) => onFilterChange({ creationYearStart: year })}
-                  onEndChange={(year) => onFilterChange({ creationYearEnd: year })}
+                  onStartChange={handleCreationYearStartChange}
+                  onEndChange={handleCreationYearEndChange}
                   supportBCE={true}
                   startYearDefault={defaultStartYear}
                   endYearDefault={defaultEndYear}
@@ -407,10 +467,7 @@ export const FilterBar = memo(function FilterBar({
                 <Button
                   variant="danger"
                   size="md"
-                  onClick={() => {
-                    onClearAll();
-                    setIsMobileFiltersOpen(false);
-                  }}
+                  onClick={handleMobileClearAllAndClose}
                   fullWidth
                 >
                   {translate("filters.clearAll")}
@@ -419,7 +476,7 @@ export const FilterBar = memo(function FilterBar({
               <Button
                 variant="primary"
                 size="md"
-                onClick={() => setIsMobileFiltersOpen(false)}
+                onClick={handleCloseMobileFilters}
                 fullWidth
               >
                 Apply
