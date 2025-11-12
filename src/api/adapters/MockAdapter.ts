@@ -10,6 +10,7 @@ import type { GazaSite } from '../../types';
 import type { ApiResponse, PaginatedResponse, SitesQueryParams } from '../types';
 import type { BackendAdapter } from './types';
 import { API_MOCK_DELAY_MS } from '../../constants/api';
+import { logger } from '../../utils/logger';
 
 /**
  * Simulate network delay
@@ -136,7 +137,7 @@ export class MockAdapter implements BackendAdapter {
       id: `site-${Date.now()}`,
     };
 
-    console.warn('MockAdapter: createSite not persisted (mock mode)');
+    logger.warn('MockAdapter: createSite not persisted (mock mode)');
     return newSite;
   }
 
@@ -152,7 +153,7 @@ export class MockAdapter implements BackendAdapter {
       id, // Preserve original ID
     };
 
-    console.warn('MockAdapter: updateSite not persisted (mock mode)');
+    logger.warn('MockAdapter: updateSite not persisted (mock mode)');
     return updatedSite;
   }
 
@@ -163,6 +164,6 @@ export class MockAdapter implements BackendAdapter {
     await this.getSiteById(id);
 
     // Mock implementation - not persisted
-    console.warn('MockAdapter: deleteSite not persisted (mock mode)');
+    logger.warn('MockAdapter: deleteSite not persisted (mock mode)');
   }
 }

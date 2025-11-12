@@ -2,6 +2,7 @@ import type { LocaleCode, Translations, TranslationKey } from "../types/i18n";
 import { en } from "./en";
 import { ar } from "./ar";
 import { it } from "./it";
+import { logger } from "../utils/logger";
 
 /**
  * Translation registry
@@ -49,7 +50,7 @@ export function translate(
   for (const k of keys) {
     value = value?.[k];
     if (value === undefined) {
-      console.warn(`Translation key not found: ${key} (locale: ${locale})`);
+      logger.warn(`Translation key not found: ${key} (locale: ${locale})`);
       return key;
     }
   }

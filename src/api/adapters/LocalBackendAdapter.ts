@@ -9,6 +9,7 @@ import type { GazaSite } from '../../types';
 import type { PaginatedResponse, SitesQueryParams } from '../types';
 import type { BackendAdapter } from './types';
 import { buildQueryParams } from '../../utils/queryBuilder';
+import { logger } from '../../utils/logger';
 
 /**
  * Handle fetch response and errors
@@ -98,7 +99,7 @@ export class LocalBackendAdapter implements BackendAdapter {
     } catch (error) {
       // Don't throw error for cancelled requests
       if (error instanceof Error && error.name === 'AbortError') {
-        console.log('[LocalBackendAdapter] Request cancelled:', requestKey);
+        logger.debug('[LocalBackendAdapter] Request cancelled:', requestKey);
         return [];
       }
       throw error;
@@ -131,7 +132,7 @@ export class LocalBackendAdapter implements BackendAdapter {
       return handleResponse<PaginatedResponse<GazaSite>>(response);
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
-        console.log('[LocalBackendAdapter] Request cancelled:', requestKey);
+        logger.debug('[LocalBackendAdapter] Request cancelled:', requestKey);
         return {
           data: [],
           pagination: {
@@ -172,7 +173,7 @@ export class LocalBackendAdapter implements BackendAdapter {
       return handleResponse<GazaSite[]>(response);
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
-        console.log('[LocalBackendAdapter] Request cancelled:', requestKey);
+        logger.debug('[LocalBackendAdapter] Request cancelled:', requestKey);
         return [];
       }
       throw error;

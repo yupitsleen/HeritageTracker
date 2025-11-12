@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '../utils/logger';
 
 export interface UseAsyncQueryOptions<TParams, TData> {
   queryFn: (params?: TParams) => Promise<TData>;
@@ -64,7 +65,7 @@ export function useAsyncQuery<TData, TParams = void>({
       const error = err instanceof Error ? err : new Error(errorMessage);
       setError(error);
       onError?.(error);
-      console.error('useAsyncQuery error:', error);
+      logger.error('useAsyncQuery error:', error);
     } finally {
       setIsLoading(false);
     }

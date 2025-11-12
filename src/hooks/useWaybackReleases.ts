@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchWaybackReleases, type WaybackRelease } from "../services/waybackService";
+import { logger } from "../utils/logger";
 
 /**
  * Simple hook to fetch Wayback releases
@@ -22,7 +23,7 @@ export function useWaybackReleases() {
         const userMessage =
           "Unable to load satellite imagery archive. Please check your connection and try again.";
         setError(userMessage);
-        console.error("Failed to load Wayback releases:", err);
+        logger.error("Failed to load Wayback releases:", err);
       } finally {
         setIsLoading(false);
       }
