@@ -92,7 +92,7 @@ export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesD
         {isOpen && (
           <div
             className="mt-1 bg-gray-800 rounded-md shadow-lg border border-gray-700 overflow-hidden"
-            style={{ zIndex: Z_INDEX.DROPDOWN }}
+            style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
           >
             {RESOURCE_ITEMS.map(({ path, translationKey }) => {
               const pageKey = path.replace('/resources/', 'resources/');
@@ -137,7 +137,7 @@ export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesD
       {isOpen && (
         <div
           className="absolute top-full mt-1 bg-gray-800 rounded-md shadow-lg border border-gray-700 overflow-hidden min-w-[200px]"
-          style={{ zIndex: Z_INDEX.DROPDOWN }}
+          style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
         >
           {RESOURCE_ITEMS.map(({ path, translationKey }) => {
             const pageKey = path.replace('/resources/', 'resources/');
