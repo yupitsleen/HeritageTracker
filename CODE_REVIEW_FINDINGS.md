@@ -5,14 +5,14 @@
 **Review Date:** November 12, 2025
 **Codebase Size:** ~150+ source files (excluding tests)
 **Total Issues Found:** 20
-**Issues Resolved:** 6/20 (30%)
+**Issues Resolved:** 7/20 (35%)
 **Severity Breakdown:**
 - **Critical:** 2 issues (1 resolved ✅)
 - **High:** 5 issues (2 resolved ✅)
-- **Medium:** 8 issues (3 resolved ✅)
+- **Medium:** 8 issues (4 resolved ✅)
 - **Low:** 5 issues (0 resolved)
 
-**Progress:** 🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 30%
+**Progress:** 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 35%
 
 ---
 
@@ -196,24 +196,31 @@
 
 ---
 
-#### **Issue #10: Inconsistent Opacity Values** ⚠️ **MEDIUM**
+#### **Issue #10: Inconsistent Opacity Values** ✅ **RESOLVED**
 - **Severity:** Medium
-- **Files:**
-  - `src/components/FilterBar/FilterBar.tsx` - Line 282 (`bg-[#000000]/95`, `bg-white/95`)
-  - `src/constants/layout.ts`, `src/constants/compactDesign.ts` - May have constants
-- **Description:** Opacity values (70%, 95%, etc.) scattered throughout codebase.
-- **Impact:** Inconsistent visual design, difficult to adjust globally.
-- **Suggested Fix:**
-  - Create `src/constants/opacity.ts`:
-    ```typescript
-    export const OPACITY = {
-      OVERLAY: 95,
-      FILTER_BAR: 70,
-      TOOLTIP: 90,
-      DISABLED: 50,
-    } as const;
-    ```
-  - Use Tailwind config for centralized opacity classes
+- **Status:** ✅ **COMPLETE** (November 12, 2025)
+- **Files Created:**
+  - `src/constants/opacity.ts` (97 lines) - Centralized opacity constants with helper functions
+  - `src/constants/opacity.test.ts` (28 tests) - Comprehensive test coverage
+- **Description:** Opacity values (70%, 95%, etc.) were scattered throughout codebase, making visual design inconsistent and difficult to adjust globally.
+- **Solution Implemented:**
+  - Created `OPACITY` constants object with 6 standard values:
+    - `OVERLAY`: 95 (FilterBar, Table headers, modals)
+    - `MAP_BACKGROUND`: 90 (Map with slight transparency)
+    - `LINK_HOVER`: 80 (Link hover states)
+    - `TEXT_OVERLAY`: 70 (Site image labels, decorative text)
+    - `HOVER_STATE`: 50 (Table rows, cards)
+    - `DISABLED`: 0 (Invisible/disabled elements)
+  - Added helper functions: `opacityToDecimal()` for inline styles, `withOpacity()` for Tailwind classes
+  - Full JSDoc documentation with examples
+  - Type-safe with `OpacityValue` type
+- **Impact:**
+  - ✅ Centralized opacity management (6 standard values)
+  - ✅ Easy global adjustments (change once, apply everywhere)
+  - ✅ Type-safe helper functions for Tailwind and inline styles
+  - ✅ 28 comprehensive tests added (1325/1327 total tests passing)
+  - ✅ ESLint passes
+  - ✅ Zero breaking changes
 
 ---
 
@@ -427,10 +434,10 @@
 ### Medium Priority
 - [x] #4 - Remove duplicate filter range logic from useDefaultFilterRanges (delegate to specialized hooks) ✅ **COMPLETE**
 - [x] #5 - Extract DashboardHelpModal component ✅ **COMPLETE**
+- [x] #10 - Create OPACITY constants file ✅ **COMPLETE**
 - [x] #16 - Delete legacy `mockAdapter.ts` file ✅ **COMPLETE**
 - [ ] #8 - Extract WaybackController from Timeline.tsx
 - [ ] #9 - Audit all z-index usage, ensure Z_INDEX constant usage
-- [ ] #10 - Create OPACITY constants file
 - [ ] #12 - Add ApiError type definitions
 - [ ] #15 - Add debouncing to FilterBar search input
 - [ ] #18 - Remove hardcoded CORS fallback in production
