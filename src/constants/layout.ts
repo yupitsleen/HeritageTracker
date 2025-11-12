@@ -43,12 +43,14 @@ export const Z_INDEX = {
   BACKGROUND_DECORATION: 1,
   /** Content layer (z-index: 10) */
   CONTENT: 10,
-  /** Sticky elements like headers (z-index: 100) */
-  STICKY: 100,
+  /** Sticky elements like headers (z-index: 1100) - Must be above dropdowns to create proper stacking context */
+  STICKY: 1100,
   /** Filter bar container (z-index: 500) - Above maps but below dropdowns */
   FILTER_BAR: 500,
   /** Dropdown menus and popovers (z-index: 1000) */
   DROPDOWN: 1000,
+  /** Header dropdown menus (z-index: 1200) - Must be above filter bar and other page content */
+  HEADER_DROPDOWN: 1200,
   /** Tooltips (z-index: 1010) */
   TOOLTIP: 1010,
   /** Fixed elements like sidebars (z-index: 1020) */

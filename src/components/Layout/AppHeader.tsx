@@ -169,7 +169,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
         {isMobileMenuOpen && (
           <div
             className="xl:hidden bg-[#000000] border-t border-gray-700 animate-slideDown"
-            style={{ zIndex: Z_INDEX.DROPDOWN }}
+            style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
           >
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
               {/* Navigation Links */}
