@@ -3,7 +3,7 @@ import type { GazaSite } from "../../types";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
-import { useTableSort } from "../../hooks/useTableSort";
+import { useTableSort } from "../../hooks/useTableSort.tsx";
 import { useTableScroll } from "../../hooks/useTableScroll";
 import { useTableExport } from "../../hooks/useTableExport";
 import { TableHeader } from "./TableHeader";

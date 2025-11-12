@@ -2,6 +2,17 @@ import { useState, useMemo, useCallback } from "react";
 
 export type SortDirection = "asc" | "desc";
 
+// Backwards compatibility - specific sort fields for GazaSite
+export type SortField =
+  | "name"
+  | "type"
+  | "status"
+  | "dateDestroyed"
+  | "dateDestroyedIslamic"
+  | "yearBuilt"
+  | "yearBuiltIslamic"
+  | "lastUpdated";
+
 /**
  * Generic table sorting hook
  * Provides sorting state management and sorted data
@@ -92,6 +103,7 @@ export function useTableSort<T extends Record<string, unknown>>(
 
   return {
     sortedData,
+    sortedSites: sortedData, // Backwards compatibility alias
     sortField,
     sortDirection,
     handleSort,
