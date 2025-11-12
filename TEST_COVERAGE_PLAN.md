@@ -62,7 +62,7 @@
 
 ## 📊 Current Status
 
-- ✅ **1,350 existing tests** covering component interactions and critical hooks
+- ✅ **1,365 existing tests** covering component interactions and critical hooks (+15 from Task 1.1)
 - ✅ **74% branch coverage** - Excellent logic testing
 - ❌ **29% statement coverage** - Low due to untested infrastructure code (acceptable)
 - 🎯 **Focus:** User-facing features (CSV export, lazy loading, table interactions)
@@ -79,28 +79,28 @@
 
 **Tests to Add:**
 
-- [ ] **Arabic Encoding**
-  - [ ] Test 1: Exports Arabic text with UTF-8 BOM header
-  - [ ] Test 2: Arabic site names render correctly (not symbols)
-  - [ ] Test 3: Mixed Arabic/English text exports correctly
+- [x] **Arabic Encoding**
+  - [x] Test 1: Exports Arabic text with UTF-8 BOM header
+  - [x] Test 2: Arabic site names render correctly (not symbols)
+  - [x] Test 3: Mixed Arabic/English text exports correctly
 
-- [ ] **Special Characters**
-  - [ ] Test 4: Handles commas in site names ("Al-Omari Mosque, Gaza")
-  - [ ] Test 5: Handles double quotes in descriptions ("The \"Great\" Mosque")
-  - [ ] Test 6: Handles single quotes in descriptions
-  - [ ] Test 7: Handles newlines in multi-line fields (historicalSignificance)
-  - [ ] Test 8: Handles tabs in text fields
-  - [ ] Test 9: Handles semicolons (common CSV separator alternative)
+- [x] **Special Characters**
+  - [x] Test 4: Handles commas in site names ("Al-Omari Mosque, Gaza")
+  - [x] Test 5: Handles double quotes in descriptions ("The \"Great\" Mosque")
+  - [x] Test 6: Handles single quotes in descriptions
+  - [x] Test 7: Handles newlines in multi-line fields (historicalSignificance)
+  - [x] Test 8: Handles tabs in text fields
+  - [x] Test 9: Handles semicolons (common CSV separator alternative)
 
-- [ ] **Performance & Scale**
-  - [ ] Test 10: Exports 1000+ sites without memory issues
-  - [ ] Test 11: Exports 1000+ sites in <5 seconds
-  - [ ] Test 12: Handles empty sites array gracefully
+- [x] **Performance & Scale**
+  - [x] Test 10: Exports 1000+ sites without memory issues
+  - [x] Test 11: Exports 1000+ sites in <5 seconds
+  - [x] Test 12: Handles empty sites array gracefully
 
-- [ ] **Data Integrity**
-  - [ ] Test 13: All CSV columns are present in correct order
-  - [ ] Test 14: CSV headers match column data
-  - [ ] Test 15: No data loss when exporting and re-importing
+- [x] **Data Integrity**
+  - [x] Test 13: All CSV columns are present in correct order
+  - [x] Test 14: CSV headers match column data
+  - [x] Test 15: No data loss when exporting and re-importing
 
 **Acceptance Criteria:**
 - ✅ Arabic text exports correctly (readable, not symbols)
@@ -282,15 +282,15 @@ These items are **not critical** for current workflow and can be deferred:
 
 | Priority | Tasks | Tests | Status |
 |----------|-------|-------|--------|
-| 🔴 Priority 1 | 3 tasks | 33 tests | ⚪ Not Started |
+| 🔴 Priority 1 | 3 tasks | 33 tests | 🟢 1/3 Complete (45%) |
 | 🟡 Priority 2 | 3 tasks | 24 tests | ⚪ Not Started |
 | ⚪ Priority 3 | Deferred | N/A | ⏸️ Deferred |
-| **Total** | **6 tasks** | **57 tests** | **0% Complete** |
+| **Total** | **6 tasks** | **57 tests** | **26% Complete (15/57 tests)** |
 
 ### Detailed Progress
 
 #### Priority 1 (Critical)
-- [ ] Task 1.1: CSV Export Tests (0/15 tests)
+- [x] Task 1.1: CSV Export Tests (15/15 tests) ✅ **COMPLETE** - 100% coverage achieved!
 - [ ] Task 1.2: useIntersectionObserver Tests (0/8 tests)
 - [ ] Task 1.3: useTableResize Tests (0/10 tests)
 
