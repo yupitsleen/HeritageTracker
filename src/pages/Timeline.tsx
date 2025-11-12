@@ -232,7 +232,7 @@ export function Timeline() {
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
       {/* Palestinian Flag Red Triangle - Background Element */}
-      <PalestinianFlagTriangle width={800} zIndex={0} />
+      <PalestinianFlagTriangle width={800} zIndex={Z_INDEX.BASE} />
 
       {/* Header - shared across all pages */}
       <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />

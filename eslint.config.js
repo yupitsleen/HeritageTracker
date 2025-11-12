@@ -19,5 +19,13 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Enforce consistent z-index usage
+      // NOTE: While ESLint doesn't have a built-in rule to detect inline z-index values,
+      // all z-index values should use the Z_INDEX constant from src/constants/layout.ts
+      // Valid: zIndex={Z_INDEX.MODAL}, style={{ zIndex: Z_INDEX.DROPDOWN }}
+      // Invalid: zIndex={100}, style={{ zIndex: 9999 }}
+      // Use grep to audit: grep -rn "zIndex.*[0-9]" src/ --include="*.tsx" --include="*.ts"
+    },
   },
 ])

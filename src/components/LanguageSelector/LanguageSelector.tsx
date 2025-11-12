@@ -51,7 +51,7 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
       align="right"
       className={className}
       menuClassName={`py-1 rounded-md shadow-lg border min-w-[120px] ${t.bg.primary} ${t.border.default}`}
-      zIndex={Z_INDEX.DROPDOWN + 100}
+      zIndex={Z_INDEX.HEADER_DROPDOWN}
     >
       {allLocales.map((loc) => {
         const isSelected = loc.code === locale;
