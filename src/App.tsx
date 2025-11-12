@@ -12,6 +12,7 @@ import { AboutPage } from "./pages/AboutPage";
 import { StatsPage } from "./pages/StatsPage";
 import { DonatePage } from "./pages/DonatePage";
 import { DataPage } from "./pages/DataPage";
+import { OrganizationsPage, ResearchPage, MediaPage, EducationPage, LegalPage, TrackersPage } from "./pages/resources";
 import { BREAKPOINTS } from "./constants/layout";
 
 /**
@@ -26,7 +27,18 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
       <Route path="/timeline" element={<Timeline />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/stats" element={<StatsPage />} />
+
+      {/* Legacy donate route - redirect to resources/donate */}
       <Route path="/donate" element={<DonatePage />} />
+
+      {/* Resources routes */}
+      <Route path="/resources/donate" element={<DonatePage />} />
+      <Route path="/resources/organizations" element={<OrganizationsPage />} />
+      <Route path="/resources/research" element={<ResearchPage />} />
+      <Route path="/resources/media" element={<MediaPage />} />
+      <Route path="/resources/education" element={<EducationPage />} />
+      <Route path="/resources/legal" element={<LegalPage />} />
+      <Route path="/resources/trackers" element={<TrackersPage />} />
     </Routes>
   );
 }

@@ -78,6 +78,16 @@ export interface Translations {
     statistics: string;
     helpPalestine: string;
     about: string;
+    resources: {
+      title: string;
+      donate: string;
+      organizations: string;
+      research: string;
+      media: string;
+      education: string;
+      legal: string;
+      trackers: string;
+    };
   };
 
   /** Map component */
@@ -343,6 +353,135 @@ export interface Translations {
   legend: {
     colorKey: string;
   };
+
+  /** Resources pages */
+  resources: {
+    organizations: {
+      title: string;
+      description: string;
+      heritageSection: string;
+      humanRightsSection: string;
+      humanitarianSection: string;
+      legalSection: string;
+      unescoDesc: string;
+      h4pDesc: string;
+      forensicDesc: string;
+      alhaqDesc: string;
+      btselemDesc: string;
+      amnestyDesc: string;
+      hrwDesc: string;
+      unrwaDesc: string;
+      mapDesc: string;
+      pcrfDesc: string;
+      icjDesc: string;
+      iccDesc: string;
+    };
+    research: {
+      title: string;
+      description: string;
+      officialReportsSection: string;
+      documentationSection: string;
+      academicSection: string;
+      databasesSection: string;
+      unescoReportDesc: string;
+      ochaDesc: string;
+      unrwaReportsDesc: string;
+      forensicProjectsDesc: string;
+      airwarsDesc: string;
+      euromedDesc: string;
+      palestineStudiesDesc: string;
+      holyLandJournalDesc: string;
+      meripDesc: string;
+      openMapsDesc: string;
+      rememberedDesc: string;
+    };
+    media: {
+      title: string;
+      description: string;
+      photoArchivesSection: string;
+      newsOutletsSection: string;
+      documentariesSection: string;
+      socialMediaSection: string;
+      palMuseumDesc: string;
+      photoCollectionDesc: string;
+      unrwaArchiveDesc: string;
+      alJazeeraDesc: string;
+      meeDesc: string;
+      eintifadaDesc: string;
+      mondoweissDesc: string;
+      "972Desc": string;
+      "5camerasDesc": string;
+      occupationMindDesc: string;
+      gazaFightsDesc: string;
+      eyeOnPalDesc: string;
+      pymDesc: string;
+    };
+    education: {
+      title: string;
+      description: string;
+      teachingResourcesSection: string;
+      historicalContextSection: string;
+      booksSection: string;
+      youthResourcesSection: string;
+      zinnDesc: string;
+      t4cDesc: string;
+      rethinkingDesc: string;
+      timelineDesc: string;
+      nakbaArchiveDesc: string;
+      ipsDesc: string;
+      khalidiDesc: string;
+      pappeDesc: string;
+      masalhaDesc: string;
+      hillPlitnickDesc: string;
+      pisforpalDesc: string;
+      sittisKeyDesc: string;
+    };
+    legal: {
+      title: string;
+      description: string;
+      internationalCourtsSection: string;
+      legalAdvocacySection: string;
+      unResolutionsSection: string;
+      advocacyCampaignsSection: string;
+      icjCaseDesc: string;
+      iccInvestigationDesc: string;
+      unRapporteurDesc: string;
+      ccrDesc: string;
+      palLegalDesc: string;
+      adalahDesc: string;
+      alhaqLegalDesc: string;
+      gaResolutionsDesc: string;
+      scResolutionsDesc: string;
+      unCommitteeDesc: string;
+      bdsDesc: string;
+      jvpDesc: string;
+      ampDesc: string;
+      uscprDesc: string;
+    };
+    trackers: {
+      title: string;
+      description: string;
+      palestineSection: string;
+      syriaSection: string;
+      yemenSection: string;
+      ukraineSection: string;
+      globalSection: string;
+      gazaMosquesDesc: string;
+      openMapsDesc: string;
+      vizPalDesc: string;
+      syrianArchiveDesc: string;
+      dayAfterDesc: string;
+      asorSyriaDesc: string;
+      yemenDataDesc: string;
+      yemenArchiveDesc: string;
+      conflictObsDesc: string;
+      ukraineLabDesc: string;
+      smithsonianDesc: string;
+      bellingcatDesc: string;
+      syrianArchiveOrgDesc: string;
+      mnemonicDesc: string;
+    };
+  };
 }
 
 /**
@@ -354,6 +493,7 @@ export interface Translations {
 export type TranslationKey =
   | `common.${keyof Translations["common"]}`
   | `header.${keyof Translations["header"]}`
+  | `header.resources.${keyof Translations["header"]["resources"]}`
   | `map.${keyof Translations["map"]}`
   | `timeline.${keyof Translations["timeline"]}`
   | `table.${keyof Translations["table"]}`
@@ -370,7 +510,13 @@ export type TranslationKey =
   | `loading.${keyof Translations["loading"]}`
   | `donate.${keyof Translations["donate"]}`
   | `footer.${keyof Translations["footer"]}`
-  | `legend.${keyof Translations["legend"]}`;
+  | `legend.${keyof Translations["legend"]}`
+  | `resources.organizations.${keyof Translations["resources"]["organizations"]}`
+  | `resources.research.${keyof Translations["resources"]["research"]}`
+  | `resources.media.${keyof Translations["resources"]["media"]}`
+  | `resources.education.${keyof Translations["resources"]["education"]}`
+  | `resources.legal.${keyof Translations["resources"]["legal"]}`
+  | `resources.trackers.${keyof Translations["resources"]["trackers"]}`;
 
 /**
  * Translation function type
