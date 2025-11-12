@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useMap, useMapEvents } from "react-leaflet";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 
 /**
  * MapUpdater - Updates map view (center and zoom) with smooth animation
@@ -25,7 +25,7 @@ export function MapCenterHandler({
   highlightedSiteId,
   zoomToSiteEnabled = true,
 }: {
-  sites: GazaSite[];
+  sites: Site[];
   highlightedSiteId?: string | null;
   zoomToSiteEnabled?: boolean;
 }) {

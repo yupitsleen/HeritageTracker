@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useDefaultDateRange } from "./useDefaultDateRange";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 describe("useDefaultDateRange", () => {
-  const mockSites: GazaSite[] = [
+  const mockSites: Site[] = [
     {
       id: "1",
       name: "Test Site 1",
@@ -43,7 +43,7 @@ describe("useDefaultDateRange", () => {
   });
 
   it("returns fallback dates when no sites have destruction dates", () => {
-    const sitesWithoutDates: GazaSite[] = [
+    const sitesWithoutDates: Site[] = [
       {
         ...mockSites[0],
         dateDestroyed: undefined,
@@ -64,7 +64,7 @@ describe("useDefaultDateRange", () => {
   });
 
   it("handles single site correctly", () => {
-    const singleSite: GazaSite[] = [mockSites[0]];
+    const singleSite: Site[] = [mockSites[0]];
     const { result } = renderHook(() => useDefaultDateRange(singleSite));
 
     expect(result.current.defaultStartDate).toEqual(new Date("2023-10-15"));

@@ -6,7 +6,7 @@ import { TimelineScrubber } from "../components/Timeline/TimelineScrubber";
 import { MapMarkers } from "../components/Map/MapMarkers";
 import { MapContainer } from "react-leaflet";
 import { SitesTable } from "../components/SitesTable";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Integration tests for component synchronization
@@ -30,7 +30,7 @@ global.ResizeObserver = class ResizeObserver {
 // Mock scrollIntoView for table tests (not available in jsdom)
 Element.prototype.scrollIntoView = vi.fn();
 
-const createMockSite = (overrides?: Partial<GazaSite>): GazaSite => ({
+const createMockSite = (overrides?: Partial<Site>): Site => ({
   id: "test-site-1",
   name: "Test Mosque",
   nameArabic: "مسجد الاختبار",

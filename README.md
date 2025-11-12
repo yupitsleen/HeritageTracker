@@ -1,14 +1,13 @@
-````markdown
 # Heritage Tracker
 
 **Documenting Palestinian cultural heritage destruction through interactive visualization**
 
-![Tests](https://img.shields.io/badge/tests-1280%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-1396%20passing-brightgreen)
 ![E2E Tests](https://img.shields.io/badge/E2E-16%20passing-blue)
-![Backend](https://img.shields.io/badge/backend-3%20modes-blue)
-![Scaling](https://img.shields.io/badge/scaling-production%20ready-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-80%25-green)
+![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)
 
-**Currently:** 70 Gaza heritage sites documented (representing 140-160 buildings) | Production-ready with comparison mode
+**Production Status:** 70 Gaza sites documented (140-160 buildings) | Code review 90% complete | Ready for deployment
 
 ---
 
@@ -16,204 +15,190 @@
 
 Document and visualize Palestinian cultural heritage destruction with evidence-based data to support transparency, legal advocacy, and preservation efforts.
 
-**The Context:** 64.7% of Gaza's cultural heritage destroyed (207 of 320 sites) | 114 sites UNESCO-verified | 70 sites documented | 1,700+ years of history
+**The Context:** 64.7% of Gaza's cultural heritage destroyed (207 of 320 sites) | 114 sites UNESCO-verified | 1,700+ years of history at risk
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-### Core Functionality
-
-- **Interactive map** - Leaflet with satellite/street toggle, clustering (50+ sites)
-- **Comparison mode** - Side-by-side satellite imagery with 186 ESRI Wayback releases (2014-2025)
-- **Timeline visualization** - D3.js horizontal scrubber with play/pause, BC/BCE support
-- **Advanced filtering** - Type, status, date ranges, debounced 300ms, 70% opacity UI
-- **Resizable table** - Virtual scrolling (100+ sites), progressive columns
-- **Detail modals** - Bilingual (English/Arabic), cross-component sync
-- **Multi-format export** - CSV/JSON/GeoJSON with Arabic names
+### Interactive Visualization
+- **Comparison Mode** - Side-by-side satellite imagery (186 ESRI Wayback releases, 2014-2025)
+- **Interactive Map** - Leaflet with clustering, satellite/street toggle, 50+ site markers
+- **Timeline** - D3.js horizontal scrubber with play/pause, BC/BCE support
+- **Advanced Filters** - Type, status, date ranges with 300ms debouncing
 - **Statistics Dashboard** - Impact metrics, artifact tracking, loss calculations
-- **About/Methodology** - Data sources and legal framework
 
-### Scaling (Production-Ready)
+### Data Management
+- **Resizable Table** - Virtual scrolling (60 FPS with 100+ sites), progressive columns
+- **Multi-format Export** - CSV/JSON/GeoJSON with bilingual support
+- **Bilingual UI** - English/Arabic with RTL support
+- **Detail Modals** - Cross-component state sync
 
-- **Pagination** - Smart page numbers, 50 items/page
-- **Virtual Scrolling** - TanStack Virtual, 60 FPS with 1000+ rows
-- **Map Clustering** - Palestinian flag colors, 50+ marker threshold
-- **React Query** - 5-minute caching, 5x faster repeat queries
+### Production-Ready Architecture
+- **3 Backend Modes** - Mock API, Local (PostgreSQL+PostGIS), Supabase Cloud
+- **Zero-Downtime Switching** - Change .env, no code changes needed
 - **Performance** - <2s page load, <500ms filters, 60 FPS scrolling
-
-### Backend Infrastructure
-
-- **3 backend modes** - Mock API (default), Local Backend (PostgreSQL + PostGIS), Supabase Cloud
-- **Local development** - Express REST API, Docker PostgreSQL, one-command setup
-- **Zero-downtime switching** - Change environment variables, no code changes
-- **Production-ready** - SQL injection protection, adapter pattern, custom error hierarchy
+- **Scaling** - Pagination, virtual scrolling, map clustering, React Query caching
+- **Security** - SQL injection protection, custom error hierarchy, adapter pattern
 
 ---
 
 ## 🛠️ Tech Stack
 
-**Core:** React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS v4
-**Mapping:** Leaflet + leaflet.markercluster + ESRI Wayback
-**Visualization:** D3.js
-**Performance:** TanStack Virtual + TanStack Query
-**Backend:** 3 modes (Mock/Local/Supabase) - PostgreSQL + PostGIS + Express
-**Testing:** Vitest (1,264 unit tests) + Playwright (16 E2E tests)
+| Category | Technologies |
+|----------|--------------|
+| **Frontend** | React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS v4 |
+| **Mapping** | Leaflet + leaflet.markercluster + ESRI Wayback |
+| **Visualization** | D3.js |
+| **Performance** | TanStack Virtual + TanStack Query |
+| **Backend** | PostgreSQL 16 + PostGIS 3.4 + Express |
+| **Testing** | Vitest (1,396 tests) + Playwright (16 E2E) + MSW 2.11.6 |
 
 ---
 
 ## 🚀 Quick Start
 
+### Installation
+
 ```bash
-# Install
 git clone https://github.com/yupitsleen/HeritageTracker.git
 cd HeritageTracker
 npm install
-
-# Develop
-npm run dev          # → http://localhost:5173
-npm test             # Run 1,264 unit tests
-npm run e2e          # Run 16 E2E tests (Playwright)
-npm run test:all     # Run all tests (unit + E2E)
-npm run lint         # Code quality check
-npm run build        # Production build
 ```
-````
 
-### Auto-Deployment
+### Development
 
 ```bash
-git push origin main  # Triggers CI/CD: Tests → Build → Deploy
+npm run dev          # → http://localhost:5173 (Vite HMR)
+npm test             # Run 1,396 unit tests
+npm run e2e          # Run 16 E2E tests (Playwright)
+npm run test:all     # Run all tests (unit + E2E)
+npm run lint         # ESLint check
+npm run build        # Production build
 ```
 
-View status: https://github.com/yupitsleen/HeritageTracker/actions
+### Backend Setup (Optional)
+
+**Mock API (Default)** - No setup required, uses `src/data/mockSites.ts`
+
+**Local Backend** - PostgreSQL + Express:
+```bash
+npm run db:setup     # One-time setup (Docker + migrations + seed)
+npm run server:dev   # Start Express backend (:5000)
+npm run dev:full     # Start frontend + backend together
+```
+
+**Supabase Cloud** - Update `.env.production` with credentials
+
+See [CLAUDE.md](CLAUDE.md) for detailed setup instructions.
 
 ---
 
-## 📁 Architecture
+## 📁 Project Structure
 
 ```
 src/
-├── api/                          # Backend integration (3 modes)
-│   ├── supabaseClient.ts         # Supabase client
-│   ├── sites.ts                  # CRUD operations (mode-agnostic)
-│   ├── mockAdapter.ts            # Development mock data (70 sites)
-│   └── adapters/                 # Backend adapter pattern
-├── components/                   # 21 feature components
-│   ├── Layout/                   # Header, Footer, Desktop/Mobile layouts
-│   ├── FilterBar/                # Multi-select filters with pills/badges
-│   ├── Map/                      # Leaflet + clustering + ComparisonMapView
-│   │   ├── ComparisonMapView.tsx # Side-by-side satellite comparison
-│   │   └── SiteDetailView.tsx    # Full-screen site details
-│   ├── Timeline/                 # D3.js scrubber with navigation
-│   ├── SitesTable/               # Virtual scrolling table
-│   ├── AdvancedTimeline/         # 186 ESRI Wayback releases + WaybackSlider
-│   └── [Stats, Help, EmptyState, Icons, etc.]
-├── hooks/                        # 24+ custom hooks
-│   ├── useSitesPaginated.ts      # Paginated fetching
-│   ├── useSitesQuery.ts          # React Query caching
-│   ├── useFilteredSites.ts       # Filter logic with memoization
-│   ├── useWaybackReleases.ts     # ESRI Wayback API integration
-│   └── useDebounce.ts            # Filter optimization
-├── contexts/                     # 4 contexts (theme, animation, calendar, locale)
-├── config/                       # 30+ configuration files
-├── data/mockSites.ts             # 70 documented sites (2356 lines)
-├── database/                     # Local PostgreSQL setup
-│   ├── migrations/               # SQL schema files (285 lines)
-│   └── seeds/                    # Auto-generated seed data
-├── server/                       # Local HTTP backend (Express)
-│   ├── controllers/              # HTTP request handlers
-│   ├── services/                 # Business logic & validation
-│   ├── repositories/             # Data access layer
-│   └── middleware/               # Error handling, validation
-└── utils/                        # Helpers & formatters
+├── api/                    # Backend integration (3 modes: Mock/Local/Supabase)
+├── components/             # 21 feature components
+│   ├── Map/                # Leaflet + ComparisonMapView
+│   ├── Timeline/           # D3.js scrubber
+│   ├── FilterBar/          # Multi-select filters
+│   └── SitesTable/         # Virtual scrolling table
+├── hooks/                  # 24+ custom hooks
+├── contexts/               # 4 contexts (theme, animation, calendar, locale)
+├── config/                 # 30+ configuration files
+├── data/mockSites.ts       # 70 documented sites (2,356 lines)
+├── database/               # PostgreSQL migrations (285 lines)
+└── server/                 # Express REST API (3-layer architecture)
 ```
 
-**Key Achievements:**
-
-- 1,280 tests passing (1,264 unit + 16 E2E)
-- 70 sites documented (exceeds UNESCO's 114-site target by 123-140%)
-- 3 backend modes with zero code changes to switch
-- Comparison mode with 186 satellite imagery releases
-- Production-ready scaling architecture
-
-See [CLAUDE.md](CLAUDE.md) for comprehensive developer guide.
+**Achievements:**
+- ✅ 1,396 tests passing (1,304 frontend + 77 backend + 15 utils)
+- ✅ 16 E2E tests (70% faster than original suite)
+- ✅ 70 sites documented (exceeds UNESCO target by 123-140%)
+- ✅ 3 backend modes with zero-code switching
+- ✅ Code review 90% complete
 
 ---
 
 ## 📖 Documentation
 
-- **[CLAUDE.md](./CLAUDE.md)** - Comprehensive developer guide (1,480 lines)
-- **[DEVELOPMENT_WORKFLOW.md](./DEVELOPMENT_WORKFLOW.md)** - Git workflow and quality gates
-- **[CODE_REVIEW_PR46.md](./CODE_REVIEW_PR46.md)** - Code quality improvements (95% complete)
-- **[database/README.md](./database/README.md)** - Local PostgreSQL setup guide
-- **[server/README.md](./server/README.md)** - Express backend documentation
+| Document | Description |
+|----------|-------------|
+| **[CLAUDE.md](CLAUDE.md)** | Developer guide (857 lines, 46% optimized) |
+| **[CHANGELOG.md](CHANGELOG.md)** | Complete project history (14 phases) |
+| **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)** | Git workflow and quality gates |
+| **[CODE_REVIEW_FINDINGS.md](CODE_REVIEW_FINDINGS.md)** | Code quality improvements (90% complete) |
+| **[database/README.md](database/README.md)** | PostgreSQL setup guide |
+| **[server/README.md](server/README.md)** | Express backend documentation |
 
 ---
 
 ## 🗺️ Roadmap
 
-### Phase 1-14: Production Ready ✅ COMPLETE
-
-- [x] Interactive map, timeline, filters with comparison mode
+### ✅ Phase 1-14: Production Ready (COMPLETE)
+- [x] Interactive map, timeline, filters, comparison mode
 - [x] 70 Gaza sites documented (140-160 buildings)
-- [x] 3 backend modes (Mock/Local/Supabase)
+- [x] 3 backend modes with adapter pattern
 - [x] Scaling architecture (pagination, virtual scrolling, clustering)
-- [x] 1,280 tests passing (1,264 unit + 16 E2E)
-- [x] Local backend infrastructure (PostgreSQL + Express)
-- [x] Code quality improvements (95% complete)
-- [ ] Deploy Supabase backend to production
-- [ ] Deploy frontend to Vercel/Netlify
+- [x] 1,396 unit tests + 16 E2E tests
+- [x] Local backend (PostgreSQL + Express)
+- [x] Code review 90% complete
 
-### Phase 15: Production Deployment (Next)
-
+### 🚧 Phase 15: Production Deployment (Next)
 - [ ] Deploy Supabase backend
-- [ ] Deploy frontend to Vercel
+- [ ] Deploy frontend to Vercel/Netlify
 - [ ] Configure CI/CD for automatic deployments
 - [ ] Set up monitoring and analytics
 
-### Phase 16: Content Expansion (Future)
-
+### 📋 Phase 16: Content Expansion (Future)
 - [ ] Complete Gaza heritage documentation
 - [ ] User contribution system with verification
 - [ ] Image research and integration
-
-### Phase 3: Broader Scope (Future)
-
 - [ ] West Bank sites
 - [ ] International museum holdings
-- [ ] Educational resources
 
 ---
 
 ## 📚 Data Sources
 
-All sites verified by multiple authoritative sources:
+All sites verified by authoritative sources:
 
 1. **UNESCO** - Official heritage damage verification
 2. **Forensic Architecture** - Satellite imagery and coordinates
 3. **Heritage for Peace** - Ground documentation
+4. **Palestinian Museum** - Cultural heritage records
+5. **Institute for Palestine Studies** - Historical documentation
 
-**Research Methodology:** Site descriptions are original syntheses from multiple verified sources. Research assistance by Claude (Anthropic). All factual claims cross-referenced and cited. See [research documentation](docs/research/research_document.md).
+**Research Methodology:** Site descriptions are original syntheses from multiple verified sources. Research assistance by Claude (Anthropic). All factual claims cross-referenced and cited.
+
+See [research documentation](docs/research/) for detailed source analysis.
 
 ---
 
 ## 🤝 Contributing
 
-**Ways to Help:**
+### Ways to Help
 
-- Data collection and source verification
-- Code contributions (check [issues](https://github.com/yupitsleen/HeritageTracker/issues))
-- Arabic translation
-- Testing and bug reports
+- 📊 Data collection and source verification
+- 💻 Code contributions ([open issues](https://github.com/yupitsleen/HeritageTracker/issues))
+- 🌍 Arabic translation and localization
+- 🐛 Testing and bug reports
 
-**Standards:**
+### Contribution Guidelines
 
-- Use conventional commits (`feat:`, `fix:`, `refactor:`, `perf:`, `style:`)
-- Write tests (minimum 5+ per component)
-- Ensure 1,280 tests pass before commit: `npm run lint && npm run test:all`
-- Follow patterns in [CLAUDE.md](CLAUDE.md) and [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)
-- All 1,261 unit tests must pass + 16 E2E tests
+**Before submitting:**
+1. Use conventional commits: `feat:`, `fix:`, `refactor:`, `perf:`
+2. Write tests (minimum 5+ per component)
+3. Run quality checks: `npm run lint && npm run test:all`
+4. Follow patterns in [CLAUDE.md](CLAUDE.md)
+
+**Quality Gates:**
+- ✅ All 1,396 unit tests passing
+- ✅ All 16 E2E tests passing
+- ✅ ESLint with zero warnings
+- ✅ TypeScript strict mode (no `any`)
+- ✅ 80%+ code coverage
 
 All changes auto-tested via CI/CD (GitHub Actions).
 
@@ -223,24 +208,45 @@ All changes auto-tested via CI/CD (GitHub Actions).
 
 **Documentation and educational project** for cultural heritage preservation:
 
-- All info from publicly available, verified sources
-- Full attribution and citations
-- Factual presentation without political advocacy
-- Respects cultural sensitivity and Palestinian heritage
+- ✅ All data from publicly available, verified sources
+- ✅ Full attribution and citations
+- ✅ Factual presentation without political advocacy
+- ✅ Respects cultural sensitivity and Palestinian heritage
+- ✅ Educational/non-profit use only
 
 ---
 
 ## 🌍 Related Projects
 
-- [Forensic Architecture](https://forensic-architecture.org/) - Spatial investigations
-- [Syria Heritage Initiative](https://uchicago.edu/shi/) - Syrian heritage documentation
-- [Nakba Archive](https://www.nakba-archive.org/) - Palestinian oral history
+- [Forensic Architecture](https://forensic-architecture.org/) - Spatial investigations and evidence analysis
+- [Syria Heritage Initiative](https://uchicago.edu/shi/) - Syrian cultural heritage documentation
+- [Nakba Archive](https://www.nakba-archive.org/) - Palestinian oral history preservation
+- [EAMENA](https://eamena.org/) - Endangered Archaeology in the Middle East & North Africa
 
 ---
 
 ## 🙏 Acknowledgments
 
-Built on documentation by UNESCO, Forensic Architecture, Heritage for Peace, Palestinian Museum, Institute for Palestine Studies, ICOMOS Palestine, and countless researchers.
+Built on documentation by UNESCO, Forensic Architecture, Heritage for Peace, Palestinian Museum, Institute for Palestine Studies, ICOMOS Palestine, and countless researchers dedicated to preserving cultural heritage.
+
+**Special Thanks:**
+- Anthropic's Claude for research assistance and code review
+- Open source community for critical tools (React, Leaflet, D3.js, PostgreSQL)
+
+---
+
+## 📊 Project Statistics
+
+- **70 sites** documented (140-160 buildings)
+- **1,396 tests** passing (1,304 frontend + 77 backend + 15 utils)
+- **16 E2E tests** (Playwright)
+- **2,356 lines** of heritage site data
+- **857 lines** of developer documentation
+- **3 backend modes** (Mock/Local/Supabase)
+- **186 Wayback releases** (2014-2025)
+- **24+ custom hooks**
+- **30+ config files**
+- **80%+ code coverage**
 
 ---
 
@@ -248,8 +254,4 @@ Built on documentation by UNESCO, Forensic Architecture, Heritage for Peace, Pal
 
 ---
 
-_Version 2.0.0-dev | 70 sites (140-160 buildings) | 1,280 tests | 3 backend modes | Comparison mode | Production-ready_
-
-```
-
-```
+*Version 2.0.0-dev | Production-ready | November 2025*

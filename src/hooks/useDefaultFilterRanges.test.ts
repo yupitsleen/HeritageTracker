@@ -1,12 +1,12 @@
 import { renderHook } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { useDefaultFilterRanges } from "./useDefaultFilterRanges";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 describe("useDefaultFilterRanges", () => {
   describe("Date Range", () => {
     it("returns earliest and latest destruction dates", () => {
-      const sites: GazaSite[] = [
+      const sites: Site[] = [
         {
           id: "1",
           name: "Site 1",
@@ -50,7 +50,7 @@ describe("useDefaultFilterRanges", () => {
     });
 
     it("returns default dates when no sites have destruction dates", () => {
-      const sites: GazaSite[] = [
+      const sites: Site[] = [
         {
           id: "1",
           name: "Site 1",
@@ -87,7 +87,7 @@ describe("useDefaultFilterRanges", () => {
 
   describe("Year Range", () => {
     it("returns earliest and latest creation years (CE)", () => {
-      const sites: GazaSite[] = [
+      const sites: Site[] = [
         {
           id: "1",
           name: "Site 1",
@@ -126,7 +126,7 @@ describe("useDefaultFilterRanges", () => {
     });
 
     it("handles BCE years correctly", () => {
-      const sites: GazaSite[] = [
+      const sites: Site[] = [
         {
           id: "1",
           name: "Ancient Site",
@@ -165,7 +165,7 @@ describe("useDefaultFilterRanges", () => {
     });
 
     it("returns default years when no sites have creation years", () => {
-      const sites: GazaSite[] = [
+      const sites: Site[] = [
         {
           id: "1",
           name: "Site 1",
@@ -193,7 +193,7 @@ describe("useDefaultFilterRanges", () => {
 
   describe("Memoization", () => {
     it("returns stable references when sites don't change", () => {
-      const sites: GazaSite[] = [
+      const sites: Site[] = [
         {
           id: "1",
           name: "Site 1",

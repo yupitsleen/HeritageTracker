@@ -1,9 +1,9 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { getSiteTypeConfig } from "../../config/data.config";
 import { getHeroIcon } from "../../config/iconRegistry";
 
 interface SiteTypeIconProps {
-  type: GazaSite["type"];
+  type: Site["type"];
   className?: string;
 }
 

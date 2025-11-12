@@ -7,7 +7,7 @@
 
 import { adapter } from './adapters';
 import type { PaginatedResponse, SitesQueryParams } from './types';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 
 /**
  * Fetch all heritage sites (with optional filtering)
@@ -15,7 +15,7 @@ import type { GazaSite } from '../types';
  * @param params Optional query parameters for filtering
  * @returns Array of heritage sites
  */
-export async function getAllSites(params?: SitesQueryParams): Promise<GazaSite[]> {
+export async function getAllSites(params?: SitesQueryParams): Promise<Site[]> {
   return adapter.getAllSites(params);
 }
 
@@ -27,7 +27,7 @@ export async function getAllSites(params?: SitesQueryParams): Promise<GazaSite[]
  */
 export async function getSitesPaginated(
   params?: SitesQueryParams
-): Promise<PaginatedResponse<GazaSite>> {
+): Promise<PaginatedResponse<Site>> {
   return adapter.getSitesPaginated(params);
 }
 
@@ -37,7 +37,7 @@ export async function getSitesPaginated(
  * @param id Site unique identifier
  * @returns Single heritage site
  */
-export async function getSiteById(id: string): Promise<GazaSite> {
+export async function getSiteById(id: string): Promise<Site> {
   return adapter.getSiteById(id);
 }
 
@@ -53,7 +53,7 @@ export async function getSitesNearLocation(
   lat: number,
   lng: number,
   radiusKm: number
-): Promise<GazaSite[]> {
+): Promise<Site[]> {
   return adapter.getSitesNearLocation(lat, lng, radiusKm);
 }
 
@@ -63,7 +63,7 @@ export async function getSitesNearLocation(
  * @param site Site data (without ID)
  * @returns Created site with ID
  */
-export async function createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> {
+export async function createSite(site: Omit<Site, 'id'>): Promise<Site> {
   return adapter.createSite(site);
 }
 
@@ -74,7 +74,7 @@ export async function createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> 
  * @param updates Partial site data to update
  * @returns Updated site
  */
-export async function updateSite(id: string, updates: Partial<GazaSite>): Promise<GazaSite> {
+export async function updateSite(id: string, updates: Partial<Site>): Promise<Site> {
   return adapter.updateSite(id, updates);
 }
 

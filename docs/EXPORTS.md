@@ -267,7 +267,7 @@ export function useAppState() {
 }
 
 // src/hooks/useFilteredSites.ts
-export function useFilteredSites(sites: GazaSite[], filters: FilterState) {
+export function useFilteredSites(sites: Site[], filters: FilterState) {
   return useMemo(() => filterSites(sites, filters), [sites, filters]);
 }
 ```

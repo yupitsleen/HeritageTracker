@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { renderWithTheme } from "../../../test-utils/renderWithTheme";
 import { TimelineScrubber } from "../../Timeline/TimelineScrubber";
 import { AnimationProvider } from "../../../contexts/AnimationContext";
-import type { GazaSite } from "../../../types";
+import type { Site } from "../../../types";
 
 // Mock ResizeObserver for jsdom environment
 global.ResizeObserver = class ResizeObserver {
@@ -32,7 +32,7 @@ vi.mock("d3", async () => {
   };
 });
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "test-site-1",
     name: "Test Site 1",

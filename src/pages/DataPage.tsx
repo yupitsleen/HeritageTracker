@@ -9,7 +9,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import { Z_INDEX } from "../constants/layout";
 
 // Lazy load Site Detail Panel
@@ -20,7 +20,7 @@ export function DataPage() {
   const { isDark } = useTheme();
 
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
-  const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
+  const [selectedSite, setSelectedSite] = useState<Site | null>(null);
 
   // Use shared hook for default filter ranges (eliminates 50 lines of duplicated logic)
   const { dateRange: defaultDateRange, yearRange: defaultYearRange } = useDefaultFilterRanges(mockSites);
@@ -61,7 +61,7 @@ export function DataPage() {
   };
 
   // Handle site click to open detail panel
-  const handleSiteClick = useCallback((site: GazaSite) => {
+  const handleSiteClick = useCallback((site: Site) => {
     setSelectedSite(site);
   }, []);
 

@@ -32,7 +32,7 @@ export interface ImageWithAttribution {
 }
 
 /**
- * Gaza heritage site (MVP simplified schema)
+ * Heritage site (MVP simplified schema)
  *
  * Islamic Calendar Dates:
  * - yearBuiltIslamic and dateDestroyedIslamic are manually entered and should be
@@ -40,7 +40,7 @@ export interface ImageWithAttribution {
  * - These dates are stored as formatted strings for display purposes
  * - All filtering logic uses Gregorian dates for consistency
  */
-export interface GazaSite {
+export interface Site {
   id: string;
   name: string;
   nameArabic?: string;

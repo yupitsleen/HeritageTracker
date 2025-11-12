@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useDefaultYearRange } from "./useDefaultYearRange";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 describe("useDefaultYearRange", () => {
-  const mockSites: GazaSite[] = [
+  const mockSites: Site[] = [
     {
       id: "1",
       name: "Ancient Site",
@@ -44,7 +44,7 @@ describe("useDefaultYearRange", () => {
   });
 
   it("returns fallback values when no sites have yearBuilt", () => {
-    const sitesWithoutYears: GazaSite[] = [
+    const sitesWithoutYears: Site[] = [
       {
         ...mockSites[0],
         yearBuilt: undefined,
@@ -69,7 +69,7 @@ describe("useDefaultYearRange", () => {
   });
 
   it("handles CE-only sites correctly", () => {
-    const ceSites: GazaSite[] = [
+    const ceSites: Site[] = [
       {
         ...mockSites[0],
         yearBuilt: "1200",
@@ -88,7 +88,7 @@ describe("useDefaultYearRange", () => {
   });
 
   it("formats negative years as absolute values (for BCE display)", () => {
-    const bceSites: GazaSite[] = [
+    const bceSites: Site[] = [
       {
         ...mockSites[0],
         yearBuilt: "500 BCE",

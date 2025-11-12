@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { renderWithTheme, screen, cleanup } from "../../test-utils/renderWithTheme";
 import { ComparisonMapView } from "./ComparisonMapView";
 import { AnimationProvider } from "../../contexts/AnimationContext";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 
 // Mock Leaflet library
 vi.mock("leaflet", () => ({
@@ -62,7 +62,7 @@ vi.mock("./TimeToggle", () => ({
   TimeToggle: () => <div data-testid="time-toggle" />,
 }));
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "1",
     name: "Great Omari Mosque",

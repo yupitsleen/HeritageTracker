@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type { FilterState } from "../types/filterConfig";
 import {
   getAllFilters,
@@ -18,7 +18,7 @@ import {
 // Mock Data
 // ============================================================================
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "site-1",
     name: "Ancient Mosque",
@@ -196,7 +196,7 @@ describe("Filter System", () => {
 
       const filtered = filterSites(mockSites, filterState);
       expect(filtered).toHaveLength(2);
-      expect(filtered.every((s: GazaSite) => s.type === "mosque" || s.type === "church")).toBe(true);
+      expect(filtered.every((s: Site) => s.type === "mosque" || s.type === "church")).toBe(true);
     });
   });
 

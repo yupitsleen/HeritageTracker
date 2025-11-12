@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import type { GazaSite, FilterState } from "../../types";
+import type { Site, FilterState } from "../../types";
 import { FilterBar } from "../FilterBar/FilterBar";
 import { SitesTable } from "../SitesTable";
 import { SkeletonMap } from "../Loading/Skeleton";
@@ -38,8 +38,8 @@ interface FilterProps {
 
 /** Site data props grouped together */
 interface SiteDataProps {
-  sites: GazaSite[];
-  filteredSites: GazaSite[];
+  sites: Site[];
+  filteredSites: Site[];
   totalSites: number;
 }
 
@@ -54,7 +54,7 @@ interface TableResizeProps {
 /** Site interaction props grouped together */
 interface SiteInteractionProps {
   highlightedSiteId: string | null;
-  onSiteClick: (site: GazaSite) => void;
+  onSiteClick: (site: Site) => void;
   onSiteHighlight: (siteId: string | null) => void;
   onExpandTable: () => void;
 }

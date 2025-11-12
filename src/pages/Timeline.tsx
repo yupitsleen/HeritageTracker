@@ -14,7 +14,7 @@ import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
 import { WaybackSlider } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
 import type { ComparisonInterval } from "../types/waybackTimelineTypes";
@@ -70,7 +70,7 @@ export function Timeline() {
 
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
-  const [selectedSite, setSelectedSite] = useState<GazaSite | null>(null);
+  const [selectedSite, setSelectedSite] = useState<Site | null>(null);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
   // Default to ON for better user experience on Advanced Timeline page
@@ -171,7 +171,7 @@ export function Timeline() {
 
       // If sync is enabled and a site is selected, find and show the nearest Wayback release
       if (syncMapOnDotClick && siteId) {
-        const site = filteredSites.find((s: GazaSite) => s.id === siteId);
+        const site = filteredSites.find((s: Site) => s.id === siteId);
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
 

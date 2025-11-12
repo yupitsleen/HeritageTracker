@@ -5,7 +5,7 @@
  * Perfect for realistic development environment
  */
 
-import type { GazaSite } from '../../types';
+import type { Site } from '../../types';
 import type { PaginatedResponse, SitesQueryParams } from '../types';
 import type { BackendAdapter } from './types';
 import { buildQueryParams } from '../../utils/queryBuilder';
@@ -76,7 +76,7 @@ export class LocalBackendAdapter implements BackendAdapter {
     this.abortControllers.delete(key);
   }
 
-  async getAllSites(params?: SitesQueryParams): Promise<GazaSite[]> {
+  async getAllSites(params?: SitesQueryParams): Promise<Site[]> {
     const requestKey = 'getAllSites';
     const signal = this.createAbortSignal(requestKey);
 
@@ -95,7 +95,7 @@ export class LocalBackendAdapter implements BackendAdapter {
       const url = `${this.baseUrl}/sites${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
       const response = await fetch(url, { signal });
 
-      return handleResponse<GazaSite[]>(response);
+      return handleResponse<Site[]>(response);
     } catch (error) {
       // Don't throw error for cancelled requests
       if (error instanceof Error && error.name === 'AbortError') {
@@ -108,7 +108,7 @@ export class LocalBackendAdapter implements BackendAdapter {
     }
   }
 
-  async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<GazaSite>> {
+  async getSitesPaginated(params?: SitesQueryParams): Promise<PaginatedResponse<Site>> {
     const requestKey = `getSitesPaginated-${params?.page || 1}`;
     const signal = this.createAbortSignal(requestKey);
 
@@ -129,7 +129,7 @@ export class LocalBackendAdapter implements BackendAdapter {
       const url = `${this.baseUrl}/sites/paginated${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
       const response = await fetch(url, { signal });
 
-      return handleResponse<PaginatedResponse<GazaSite>>(response);
+      return handleResponse<PaginatedResponse<Site>>(response);
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         logger.debug('[LocalBackendAdapter] Request cancelled:', requestKey);
@@ -151,12 +151,12 @@ export class LocalBackendAdapter implements BackendAdapter {
     }
   }
 
-  async getSiteById(id: string): Promise<GazaSite> {
+  async getSiteById(id: string): Promise<Site> {
     const response = await fetch(`${this.baseUrl}/sites/${id}`);
-    return handleResponse<GazaSite>(response);
+    return handleResponse<Site>(response);
   }
 
-  async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<GazaSite[]> {
+  async getSitesNearLocation(lat: number, lng: number, radiusKm: number): Promise<Site[]> {
     const requestKey = 'getSitesNearLocation';
     const signal = this.createAbortSignal(requestKey);
 
@@ -170,7 +170,7 @@ export class LocalBackendAdapter implements BackendAdapter {
       const url = `${this.baseUrl}/sites/nearby?${queryParams.toString()}`;
       const response = await fetch(url, { signal });
 
-      return handleResponse<GazaSite[]>(response);
+      return handleResponse<Site[]>(response);
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         logger.debug('[LocalBackendAdapter] Request cancelled:', requestKey);
@@ -182,7 +182,7 @@ export class LocalBackendAdapter implements BackendAdapter {
     }
   }
 
-  async createSite(site: Omit<GazaSite, 'id'>): Promise<GazaSite> {
+  async createSite(site: Omit<Site, 'id'>): Promise<Site> {
     const response = await fetch(`${this.baseUrl}/sites`, {
       method: 'POST',
       headers: {
@@ -191,10 +191,10 @@ export class LocalBackendAdapter implements BackendAdapter {
       body: JSON.stringify(site),
     });
 
-    return handleResponse<GazaSite>(response);
+    return handleResponse<Site>(response);
   }
 
-  async updateSite(id: string, updates: Partial<GazaSite>): Promise<GazaSite> {
+  async updateSite(id: string, updates: Partial<Site>): Promise<Site> {
     const response = await fetch(`${this.baseUrl}/sites/${id}`, {
       method: 'PATCH',
       headers: {
@@ -203,7 +203,7 @@ export class LocalBackendAdapter implements BackendAdapter {
       body: JSON.stringify(updates),
     });
 
-    return handleResponse<GazaSite>(response);
+    return handleResponse<Site>(response);
   }
 
   async deleteSite(id: string): Promise<void> {

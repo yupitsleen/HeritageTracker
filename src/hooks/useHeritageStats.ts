@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Heritage statistics calculation hook
  * Computes various metrics about site destruction, age, and cultural significance
  */
-export function useHeritageStats(sites: GazaSite[]) {
+export function useHeritageStats(sites: Site[]) {
   return useMemo(() => {
     const total = sites.length;
     const destroyed = sites.filter((s) => s.status === "destroyed").length;

@@ -8,12 +8,12 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useSitesPaginated } from './useSitesPaginated';
 import * as sitesApi from '../api/sites';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 
 // Mock the sites API
 vi.mock('../api/sites');
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: 'site-1',
     name: 'Test Mosque',
@@ -25,7 +25,7 @@ const mockSites: GazaSite[] = [
     description: 'Test description',
     significance: 'Test significance',
     sources: [],
-  } as GazaSite,
+  } as Site,
   {
     id: 'site-2',
     name: 'Test Church',
@@ -37,7 +37,7 @@ const mockSites: GazaSite[] = [
     description: 'Test description 2',
     significance: 'Test significance 2',
     sources: [],
-  } as GazaSite,
+  } as Site,
 ];
 
 describe('useSitesPaginated', () => {

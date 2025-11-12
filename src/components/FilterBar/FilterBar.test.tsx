@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { renderWithTheme, screen } from "../../test-utils/renderWithTheme";
 import { FilterBar } from "./FilterBar";
 import { CalendarProvider } from "../../contexts/CalendarContext";
-import type { GazaSite, FilterState } from "../../types";
+import type { Site, FilterState } from "../../types";
 
 describe("FilterBar", () => {
   const mockFilters: FilterState = {
@@ -42,7 +42,7 @@ describe("FilterBar", () => {
   });
 
   describe("Default Date Values", () => {
-    const mockSites: GazaSite[] = [
+    const mockSites: Site[] = [
       {
         id: "1",
         name: "Ancient Mosque",
@@ -121,7 +121,7 @@ describe("FilterBar", () => {
     });
 
     it("handles sites without destruction dates", () => {
-      const sitesWithoutDates: GazaSite[] = [
+      const sitesWithoutDates: Site[] = [
         {
           id: "1",
           name: "Test Site",
@@ -146,7 +146,7 @@ describe("FilterBar", () => {
     });
 
     it("handles sites with various year formats", () => {
-      const sitesWithVariousYears: GazaSite[] = [
+      const sitesWithVariousYears: Site[] = [
         {
           id: "1",
           name: "BCE Site",

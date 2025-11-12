@@ -37,7 +37,7 @@ describe('useSites', () => {
         { id: 'site-2', name: 'Test Site 2' },
       ];
 
-      vi.mocked(sitesApi.getAllSites).mockResolvedValue(mockSites as unknown as GazaSite[]);
+      vi.mocked(sitesApi.getAllSites).mockResolvedValue(mockSites as unknown as Site[]);
 
       const { result } = renderHook(() => useSites());
 
@@ -103,8 +103,8 @@ describe('useSites', () => {
       const secondData = [{ id: 'site-2', name: 'Second' }];
 
       vi.mocked(sitesApi.getAllSites)
-        .mockResolvedValueOnce(firstData as unknown as GazaSite[])
-        .mockResolvedValueOnce(secondData as unknown as GazaSite[]);
+        .mockResolvedValueOnce(firstData as unknown as Site[])
+        .mockResolvedValueOnce(secondData as unknown as Site[]);
 
       const { result } = renderHook(() => useSites());
 
@@ -130,7 +130,7 @@ describe('useSites', () => {
 
       vi.mocked(sitesApi.getAllSites)
         .mockRejectedValueOnce(mockError)
-        .mockResolvedValueOnce(mockData as unknown as GazaSite[]);
+        .mockResolvedValueOnce(mockData as unknown as Site[]);
 
       const { result } = renderHook(() => useSites());
 

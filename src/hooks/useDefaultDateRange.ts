@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Calculates default date range from sites' destruction dates
@@ -13,7 +13,7 @@ import type { GazaSite } from "../types";
  * const { defaultStartDate, defaultEndDate } = useDefaultDateRange(sites);
  * ```
  */
-export function useDefaultDateRange(sites: GazaSite[]) {
+export function useDefaultDateRange(sites: Site[]) {
   return useMemo(() => {
     const destructionDates = sites
       .filter(site => site.dateDestroyed)

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef, useMemo, type ReactNode } from "react";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import { ANIMATION_CONFIG, getDefaultSpeed, isValidSpeed } from "../config/animation";
 import { logger } from "../utils/logger";
 
@@ -49,7 +49,7 @@ const DEFAULT_TIMELINE_END = new Date(); // Current date
 
 interface AnimationProviderProps {
   children: ReactNode;
-  sites?: GazaSite[];
+  sites?: Site[];
 }
 
 export function AnimationProvider({ children, sites = [] }: AnimationProviderProps) {

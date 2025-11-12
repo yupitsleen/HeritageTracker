@@ -39,7 +39,7 @@ describe('useSiteById', () => {
 
     it('fetches when ID is provided', async () => {
       const mockSite = { id: 'site-1', name: 'Test Site' };
-      vi.mocked(sitesApi.getSiteById).mockResolvedValue(mockSite as unknown as GazaSite);
+      vi.mocked(sitesApi.getSiteById).mockResolvedValue(mockSite as unknown as Site);
 
       const { result } = renderHook(() => useSiteById('site-1'));
 
@@ -62,7 +62,7 @@ describe('useSiteById', () => {
     });
 
     it('sets loading to false after successful fetch', async () => {
-      vi.mocked(sitesApi.getSiteById).mockResolvedValue({ id: 'site-1' } as unknown as GazaSite);
+      vi.mocked(sitesApi.getSiteById).mockResolvedValue({ id: 'site-1' } as unknown as Site);
 
       const { result } = renderHook(() => useSiteById('site-1'));
 
@@ -86,7 +86,7 @@ describe('useSiteById', () => {
         type: 'mosque',
       };
 
-      vi.mocked(sitesApi.getSiteById).mockResolvedValue(mockSite as unknown as GazaSite);
+      vi.mocked(sitesApi.getSiteById).mockResolvedValue(mockSite as unknown as Site);
 
       const { result } = renderHook(() => useSiteById('great-omari-mosque'));
 
@@ -130,7 +130,7 @@ describe('useSiteById', () => {
 
   describe('Refetch Functionality', () => {
     it('provides refetch function', () => {
-      vi.mocked(sitesApi.getSiteById).mockResolvedValue({} as unknown as GazaSite);
+      vi.mocked(sitesApi.getSiteById).mockResolvedValue({} as unknown as Site);
 
       const { result } = renderHook(() => useSiteById('site-1'));
 
@@ -142,8 +142,8 @@ describe('useSiteById', () => {
       const secondData = { id: 'site-1', name: 'Updated' };
 
       vi.mocked(sitesApi.getSiteById)
-        .mockResolvedValueOnce(firstData as unknown as GazaSite)
-        .mockResolvedValueOnce(secondData as unknown as GazaSite);
+        .mockResolvedValueOnce(firstData as unknown as Site)
+        .mockResolvedValueOnce(secondData as unknown as Site);
 
       const { result } = renderHook(() => useSiteById('site-1'));
 
@@ -178,8 +178,8 @@ describe('useSiteById', () => {
       const site2 = { id: 'site-2', name: 'Site 2' };
 
       vi.mocked(sitesApi.getSiteById)
-        .mockResolvedValueOnce(site1 as unknown as GazaSite)
-        .mockResolvedValueOnce(site2 as unknown as GazaSite);
+        .mockResolvedValueOnce(site1 as unknown as Site)
+        .mockResolvedValueOnce(site2 as unknown as Site);
 
       const { result, rerender } = renderHook(
         ({ id }) => useSiteById(id),
@@ -206,7 +206,7 @@ describe('useSiteById', () => {
 
     it('clears data when ID changes to null', async () => {
       const mockSite = { id: 'site-1', name: 'Test' };
-      vi.mocked(sitesApi.getSiteById).mockResolvedValue(mockSite as unknown as GazaSite);
+      vi.mocked(sitesApi.getSiteById).mockResolvedValue(mockSite as unknown as Site);
 
       const { result, rerender } = renderHook(
         ({ id }) => useSiteById(id),

@@ -8,7 +8,7 @@
  * while maintaining backward compatibility.
  */
 
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type { FilterState as LegacyFilterState } from "../types/filters";
 import type { FilterState as RegistryFilterState } from "../types/filterConfig";
 import {
@@ -117,9 +117,9 @@ export function registryToLegacyState(
  * ```
  */
 export function filterSitesWithLegacyState(
-  sites: GazaSite[],
+  sites: Site[],
   legacyState: LegacyFilterState
-): GazaSite[] {
+): Site[] {
   const registryState = legacyToRegistryState(legacyState);
   return registryFilterSites(sites, registryState);
 }

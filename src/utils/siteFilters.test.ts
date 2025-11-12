@@ -5,9 +5,9 @@ import {
   filterSitesByCreationYear,
   parseYearBuilt,
 } from "./siteFilters";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "ancient-site",
     name: "Ancient Site",

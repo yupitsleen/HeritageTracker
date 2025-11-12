@@ -1,4 +1,4 @@
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Escape CSV field according to RFC 4180
@@ -19,7 +19,7 @@ export function escapeCSV(value: string | undefined | null): string {
  * Convert sites array to CSV format
  * Includes all site fields with proper escaping
  */
-export function sitesToCSV(sites: GazaSite[]): string {
+export function sitesToCSV(sites: Site[]): string {
   const headers = [
     "Name",
     "Name (Arabic)",
@@ -55,7 +55,7 @@ export function sitesToCSV(sites: GazaSite[]): string {
  * Trigger CSV download in browser
  * Generates timestamped filename: heritage-tracker-sites-YYYY-MM-DD.csv
  */
-export function downloadCSV(sites: GazaSite[], filename?: string) {
+export function downloadCSV(sites: Site[], filename?: string) {
   const csv = sitesToCSV(sites);
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");

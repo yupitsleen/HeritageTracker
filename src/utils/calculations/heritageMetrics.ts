@@ -1,4 +1,4 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { calculateGlowContribution } from "./glowContributions";
 
 /**
@@ -13,7 +13,7 @@ import { calculateGlowContribution } from "./glowContributions";
  * @param sites - Array of Gaza heritage sites
  * @returns Total heritage value
  */
-export function calculateTotalHeritageValue(sites: GazaSite[]): number {
+export function calculateTotalHeritageValue(sites: Site[]): number {
   return sites.reduce((sum, site) => sum + calculateGlowContribution(site), 0);
 }
 
@@ -25,7 +25,7 @@ export function calculateTotalHeritageValue(sites: GazaSite[]): number {
  * @returns Object with destroyed value and count
  */
 export function calculateDestroyedValue(
-  sites: GazaSite[],
+  sites: Site[],
   currentDate: Date
 ): { value: number; count: number } {
   const destroyedSites = sites.filter((site) => {
@@ -54,7 +54,7 @@ export function calculateDestroyedValue(
  * @returns Integrity percentage (0-100)
  */
 export function calculateHeritageIntegrity(
-  sites: GazaSite[],
+  sites: Site[],
   currentDate: Date
 ): number {
   const totalValue = calculateTotalHeritageValue(sites);

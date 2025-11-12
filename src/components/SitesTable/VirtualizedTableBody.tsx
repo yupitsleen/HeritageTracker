@@ -7,12 +7,12 @@
 
 import { useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import type { GazaSite } from '../../types';
+import type { Site } from '../../types';
 import { SiteTableRow } from './SiteTableRow';
 
 interface VirtualizedTableBodyProps {
-  sites: GazaSite[];
-  onSiteClick?: (site: GazaSite) => void;
+  sites: Site[];
+  onSiteClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   variant: 'compact' | 'expanded';

@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { renderWithTheme } from "../../test-utils/renderWithTheme";
 import { StatsDashboard } from "./StatsDashboard";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 
 // Mock sites data for testing
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "site-1",
     name: "Test Mosque",

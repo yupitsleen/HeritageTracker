@@ -20,7 +20,7 @@
  * ```
  */
 
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type {
   ExportConfig,
   ExportFormatId,
@@ -133,7 +133,7 @@ export function isFormatRegistered(formatId: ExportFormatId): boolean {
  * @returns Formatted data string
  * @throws Error if format not found
  */
-export function exportToFormat(sites: GazaSite[], formatId: ExportFormatId): string {
+export function exportToFormat(sites: Site[], formatId: ExportFormatId): string {
   const exporter = getExporter(formatId);
 
   if (!exporter) {

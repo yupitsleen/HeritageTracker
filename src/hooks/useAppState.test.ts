@@ -8,7 +8,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useAppState } from './useAppState';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 
 describe('useAppState', () => {
   describe('Smoke Tests', () => {
@@ -353,7 +353,7 @@ describe('useAppState', () => {
   });
 
   describe('Site Selection Management', () => {
-    const mockSite: GazaSite = {
+    const mockSite: Site = {
       id: 'test-site',
       name: 'Test Mosque',
       nameArabic: 'مسجد الاختبار',
@@ -426,7 +426,7 @@ describe('useAppState', () => {
   describe('Integration Tests', () => {
     it('manages complex state transitions', () => {
       const { result } = renderHook(() => useAppState());
-      const mockSite: GazaSite = {
+      const mockSite: Site = {
         id: 'test-site',
         name: 'Test Site',
         type: 'mosque',

@@ -9,7 +9,7 @@
  * Now supports customizable column selection via CSV_COLUMN_REGISTRY.
  */
 
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import type { ExportConfig, ExportFunction } from "../../types/export";
 import type { CSVColumnId, CSVExportOptions } from "../../types/csvColumns";
 import { getDefaultCSVColumns, getCSVColumnsByIds, getColumnIds } from "../../config/csvColumns";
@@ -35,7 +35,7 @@ function escapeCSV(value: string | undefined | null): string {
  * @param sites - Array of sites to export
  * @returns CSV string (RFC 4180 compliant)
  */
-export const exportCSV: ExportFunction = (sites: GazaSite[]): string => {
+export const exportCSV: ExportFunction = (sites: Site[]): string => {
   return exportCSVWithOptions(sites, {});
 };
 
@@ -46,7 +46,7 @@ export const exportCSV: ExportFunction = (sites: GazaSite[]): string => {
  * @param options - Export options (column selection, headers)
  * @returns CSV string (RFC 4180 compliant)
  */
-export function exportCSVWithOptions(sites: GazaSite[], options: CSVExportOptions = {}): string {
+export function exportCSVWithOptions(sites: Site[], options: CSVExportOptions = {}): string {
   const { columns: columnIds, includeHeaders = true } = options;
 
   // Get column configurations (default or custom)

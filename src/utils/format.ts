@@ -3,7 +3,7 @@
  */
 
 import type { TranslationKey } from "../types/i18n";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Formats kebab-case or snake_case strings to Title Case
@@ -244,7 +244,7 @@ export const formatYearRange = (
  * // => undefined (no dates available)
  */
 export const getEffectiveDestructionDate = (
-  site: Pick<GazaSite, "dateDestroyed" | "sourceAssessmentDate">
+  site: Pick<Site, "dateDestroyed" | "sourceAssessmentDate">
 ): string | undefined => {
   return site.dateDestroyed || site.sourceAssessmentDate;
 };

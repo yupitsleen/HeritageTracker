@@ -17,7 +17,7 @@
  * ```
  */
 
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 import type {
   FilterConfig,
   FilterId,
@@ -39,7 +39,7 @@ export const FILTER_REGISTRY: Record<FilterId, FilterConfig> = {
     labelArabic: "بحث",
     placeholder: "Search by name or description...",
     placeholderArabic: "البحث بالاسم أو الوصف...",
-    filterFn: (site: GazaSite, value: FilterValue): boolean => {
+    filterFn: (site: Site, value: FilterValue): boolean => {
       if (typeof value !== "string" || !value.trim()) {
         return true; // No filter applied
       }
@@ -63,7 +63,7 @@ export const FILTER_REGISTRY: Record<FilterId, FilterConfig> = {
     type: "multi-select",
     label: "Type",
     labelArabic: "نوع",
-    filterFn: (site: GazaSite, value: FilterValue): boolean => {
+    filterFn: (site: Site, value: FilterValue): boolean => {
       if (!Array.isArray(value) || value.length === 0) {
         return true; // No filter applied
       }
@@ -86,7 +86,7 @@ export const FILTER_REGISTRY: Record<FilterId, FilterConfig> = {
     type: "multi-select",
     label: "Status",
     labelArabic: "الحالة",
-    filterFn: (site: GazaSite, value: FilterValue): boolean => {
+    filterFn: (site: Site, value: FilterValue): boolean => {
       if (!Array.isArray(value) || value.length === 0) {
         return true; // No filter applied
       }
@@ -110,7 +110,7 @@ export const FILTER_REGISTRY: Record<FilterId, FilterConfig> = {
     labelArabic: "تاريخ الدمار",
     placeholder: "Start date",
     placeholderArabic: "تاريخ البدء",
-    filterFn: (site: GazaSite, value: FilterValue): boolean => {
+    filterFn: (site: Site, value: FilterValue): boolean => {
       if (
         typeof value !== "object" ||
         !value ||
@@ -157,7 +157,7 @@ export const FILTER_REGISTRY: Record<FilterId, FilterConfig> = {
     labelArabic: "سنة البناء",
     placeholder: "Min year",
     placeholderArabic: "السنة الدنيا",
-    filterFn: (site: GazaSite, value: FilterValue): boolean => {
+    filterFn: (site: Site, value: FilterValue): boolean => {
       if (
         typeof value !== "object" ||
         !value ||
@@ -317,7 +317,7 @@ export function getFilterLabel(
  * ```
  */
 export function applyFilter(
-  site: GazaSite,
+  site: Site,
   filterId: FilterId,
   value: FilterValue
 ): boolean {
@@ -347,7 +347,7 @@ export function applyFilter(
  * ```
  */
 export function applyAllFilters(
-  site: GazaSite,
+  site: Site,
   filterState: FilterState
 ): boolean {
   return Object.entries(filterState).every(([filterId, value]) => {
@@ -374,9 +374,9 @@ export function applyAllFilters(
  * ```
  */
 export function filterSites(
-  sites: GazaSite[],
+  sites: Site[],
   filterState: FilterState
-): GazaSite[] {
+): Site[] {
   return sites.filter((site) => applyAllFilters(site, filterState));
 }
 

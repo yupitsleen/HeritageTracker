@@ -1,6 +1,6 @@
 import { useMemo, memo } from "react";
 import { MapContainer } from "react-leaflet";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
 import { useMapGlow } from "../../hooks/useMapGlow";
 import { useAnimation } from "../../contexts/AnimationContext";
@@ -11,8 +11,8 @@ import { MapMarkers } from "./MapMarkers";
 import "leaflet/dist/leaflet.css";
 
 interface HeritageMapProps {
-  sites: GazaSite[];
-  onSiteClick?: (site: GazaSite) => void;
+  sites: Site[];
+  onSiteClick?: (site: Site) => void;
   highlightedSiteId?: string | null;
   onSiteHighlight?: (siteId: string | null) => void;
   disableAutoCentering?: boolean;

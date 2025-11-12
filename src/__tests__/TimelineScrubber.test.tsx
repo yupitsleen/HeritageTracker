@@ -4,7 +4,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TimelineScrubber } from "../components/Timeline/TimelineScrubber";
 import { AnimationProvider } from "../contexts/AnimationContext";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 // Mock ResizeObserver for jsdom environment
 global.ResizeObserver = class ResizeObserver {
@@ -34,7 +34,7 @@ vi.mock("d3", async () => {
   };
 });
 
-const mockSites: GazaSite[] = [
+const mockSites: Site[] = [
   {
     id: "test-site-1",
     name: "Test Site 1",
@@ -169,7 +169,7 @@ describe("TimelineScrubber", () => {
 
   // Edge case - sites without dateDestroyed
   it("handles sites without destruction dates", () => {
-    const sitesWithoutDates: GazaSite[] = [
+    const sitesWithoutDates: Site[] = [
       {
         id: "test-site-no-date",
         name: "Test Site No Date",

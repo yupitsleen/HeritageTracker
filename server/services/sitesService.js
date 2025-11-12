@@ -13,7 +13,7 @@ import { ServiceError, ValidationError, NotFoundError, DatabaseError } from '../
 /**
  * Get all sites with optional filtering
  * @param {Object} filters - Filter parameters
- * @returns {Promise<Array>} Array of GazaSite objects
+ * @returns {Promise<Array>} Array of Site objects
  */
 export async function getAllSites(filters = {}) {
   try {
@@ -63,7 +63,7 @@ export async function getPaginatedSites(filters = {}) {
 /**
  * Get site by ID
  * @param {string} id - Site ID
- * @returns {Promise<Object|null>} GazaSite object or null
+ * @returns {Promise<Object|null>} Site object or null
  */
 export async function getSiteById(id) {
   try {
@@ -90,8 +90,8 @@ export async function getSiteById(id) {
 
 /**
  * Create new site
- * @param {Object} siteData - GazaSite object
- * @returns {Promise<Object>} Created GazaSite object
+ * @param {Object} siteData - Site object
+ * @returns {Promise<Object>} Created Site object
  */
 export async function createSite(siteData) {
   try {
@@ -125,8 +125,8 @@ export async function createSite(siteData) {
 /**
  * Update existing site
  * @param {string} id - Site ID
- * @param {Object} updates - Partial GazaSite object with updates
- * @returns {Promise<Object|null>} Updated GazaSite object or null
+ * @param {Object} updates - Partial Site object with updates
+ * @returns {Promise<Object|null>} Updated Site object or null
  */
 export async function updateSite(id, updates) {
   try {
@@ -184,7 +184,7 @@ export async function deleteSite(id) {
  * @param {number} lat - Latitude
  * @param {number} lng - Longitude
  * @param {number} radiusKm - Radius in kilometers (default: 10)
- * @returns {Promise<Array>} Array of GazaSite objects with distance
+ * @returns {Promise<Array>} Array of Site objects with distance
  */
 export async function getSitesNearPoint(lat, lng, radiusKm = 10) {
   try {

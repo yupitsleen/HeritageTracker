@@ -1,4 +1,4 @@
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { StatusBadge } from "../StatusBadge";
 import { formatLabel, translateSiteType, translateStatus, getEffectiveDestructionDate } from "../../utils/format";
 import { cn } from "../../styles/theme";
@@ -7,7 +7,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 
 interface SiteDetailPanelProps {
-  site: GazaSite;
+  site: Site;
 }
 
 /**

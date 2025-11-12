@@ -1,4 +1,4 @@
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Get Tailwind CSS class for status color
@@ -8,7 +8,7 @@ import type { GazaSite } from "../types";
  * @param variant - Color variant (background or text)
  */
 export function getStatusColor(
-  status: GazaSite["status"],
+  status: Site["status"],
   variant: "bg" | "text" = "bg"
 ): string {
   const statusMap = {
@@ -30,7 +30,7 @@ export function getStatusColor(
  *
  * @param status - Site status
  */
-export function getStatusHexColor(status: GazaSite["status"]): string {
+export function getStatusHexColor(status: Site["status"]): string {
   const colorMap = {
     destroyed: "#b91c1c",        // Deep Palestine red
     "heavily-damaged": "#d97706", // Warm amber

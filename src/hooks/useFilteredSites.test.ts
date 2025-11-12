@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useFilteredSites } from './useFilteredSites';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 import type { FilterState } from './useAppState';
 
 // Mock the filter utilities
@@ -23,7 +23,7 @@ import * as siteFilters from '../utils/siteFilters';
 
 describe('useFilteredSites', () => {
   // Mock sites data for testing
-  const createMockSite = (overrides: Partial<GazaSite> = {}): GazaSite => ({
+  const createMockSite = (overrides: Partial<Site> = {}): Site => ({
     id: 'test-site-1',
     name: 'Test Mosque',
     nameArabic: 'مسجد الاختبار',
@@ -41,7 +41,7 @@ describe('useFilteredSites', () => {
     ...overrides,
   });
 
-  const mockSites: GazaSite[] = [
+  const mockSites: Site[] = [
     createMockSite({ id: 'site-1', type: 'mosque', status: 'destroyed' }),
     createMockSite({ id: 'site-2', type: 'church', status: 'damaged' }),
     createMockSite({ id: 'site-3', type: 'archaeological_site', status: 'destroyed' }),

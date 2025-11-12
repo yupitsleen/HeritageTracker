@@ -1,11 +1,11 @@
 import { memo } from "react";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 import { useHeritageStats } from "../../hooks/useHeritageStats";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { LAST_UPDATED, HUMAN_CASUALTIES, EXTERNAL_SOURCES, TARGETED_CASUALTIES, ESCALATION_STATISTICS } from "../../constants/statistics";
 
 interface StatsDashboardProps {
-  sites: GazaSite[];
+  sites: Site[];
 }
 
 /**

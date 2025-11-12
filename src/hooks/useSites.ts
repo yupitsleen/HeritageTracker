@@ -9,14 +9,14 @@
 
 import { useAsyncQuery } from './useAsyncQuery';
 import { getAllSites } from '../api/sites';
-import type { GazaSite } from '../types';
+import type { Site } from '../types';
 import type { SitesQueryParams } from '../api/types';
 
 /**
  * Hook return type
  */
 export interface UseSitesReturn {
-  sites: GazaSite[];
+  sites: Site[];
   isLoading: boolean;
   error: Error | null;
   refetch: () => void;
@@ -39,7 +39,7 @@ export interface UseSitesReturn {
  * ```
  */
 export function useSites(params?: SitesQueryParams): UseSitesReturn {
-  const { data, isLoading, error, refetch } = useAsyncQuery<GazaSite[], SitesQueryParams>({
+  const { data, isLoading, error, refetch } = useAsyncQuery<Site[], SitesQueryParams>({
     queryFn: getAllSites,
     params,
     errorMessage: 'Failed to fetch sites',

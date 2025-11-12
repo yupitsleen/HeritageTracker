@@ -23,7 +23,6 @@ const config = {
   connect_timeout: 10, // Connection timeout in seconds
 };
 
-// Create connection pool
 const sql = postgres(config);
 
 /**

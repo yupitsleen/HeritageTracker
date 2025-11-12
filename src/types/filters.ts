@@ -1,12 +1,12 @@
-import type { GazaSite } from "./index";
+import type { Site } from "./index";
 
 /**
  * Filter state interface
  * Represents the active filters applied to the sites list
  */
 export interface FilterState {
-  selectedTypes: Array<GazaSite["type"]>;
-  selectedStatuses: Array<GazaSite["status"]>;
+  selectedTypes: Array<Site["type"]>;
+  selectedStatuses: Array<Site["status"]>;
   destructionDateStart: Date | null;
   destructionDateEnd: Date | null;
   creationYearStart: number | null;

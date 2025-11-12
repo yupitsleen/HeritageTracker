@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { mockSites } from "./mockSites";
-import type { GazaSite } from "../types";
+import type { Site } from "../types";
 
 /**
  * Data validation tests to ensure all sites meet schema requirements
@@ -40,7 +40,7 @@ describe("Site Data Validation", () => {
     });
 
     it("all sites have valid types", () => {
-      const validTypes: Array<GazaSite["type"]> = [
+      const validTypes: Array<Site["type"]> = [
         "mosque",
         "church",
         "archaeological",
@@ -57,7 +57,7 @@ describe("Site Data Validation", () => {
     });
 
     it("all sites have valid status", () => {
-      const validStatuses: Array<GazaSite["status"]> = [
+      const validStatuses: Array<Site["status"]> = [
         "destroyed",
         "heavily-damaged",
         "damaged",

@@ -6,9 +6,9 @@
  */
 
 /**
- * Convert database row to API GazaSite format
+ * Convert database row to API Site format
  * @param {Object} row - Database row
- * @returns {Object} GazaSite object
+ * @returns {Object} Site object
  */
 export function dbToApi(row) {
   if (!row) return null;
@@ -43,8 +43,8 @@ export function dbToApi(row) {
 }
 
 /**
- * Convert API GazaSite format to database format
- * @param {Object} site - GazaSite object
+ * Convert API Site format to database format
+ * @param {Object} site - Site object
  * @returns {Object} Database row object
  */
 export function apiToDb(site) {
@@ -92,7 +92,7 @@ export function apiToDb(site) {
 /**
  * Convert array of database rows to API format
  * @param {Array} rows - Array of database rows
- * @returns {Array} Array of GazaSite objects
+ * @returns {Array} Array of Site objects
  */
 export function dbArrayToApi(rows) {
   return rows.map(dbToApi);

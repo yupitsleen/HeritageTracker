@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { renderWithTheme, screen } from "../../test-utils/renderWithTheme";
 import { SiteDetailPanel } from "./SiteDetailPanel";
-import type { GazaSite } from "../../types";
+import type { Site } from "../../types";
 
 describe("SiteDetailPanel", () => {
   it("renders without crashing with full site data", () => {
-    const mockSite: GazaSite = {
+    const mockSite: Site = {
       id: "test-site",
       name: "Test Heritage Site",
       nameArabic: "موقع تراثي اختباري",
@@ -54,7 +54,7 @@ describe("SiteDetailPanel", () => {
   });
 
   it("renders without crashing with minimal site data", () => {
-    const minimalSite: GazaSite = {
+    const minimalSite: Site = {
       id: "minimal-site",
       name: "Minimal Site",
       type: "archaeological",
