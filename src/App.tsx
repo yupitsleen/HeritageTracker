@@ -48,7 +48,7 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
  * ErrorBoundary wraps AnimationProvider to gracefully handle timeline errors
  * AnimationProvider only active on desktop (where timeline is shown)
  */
-function App() {
+export function App() {
   // Check if we're on mobile - initialize immediately from window.innerWidth
   const [isMobile, setIsMobile] = useState(() => {
     // Check during initial render (works in browser, defaults to false in SSR)
@@ -93,5 +93,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

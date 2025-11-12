@@ -1,6 +1,6 @@
 import { describe, it, beforeAll, afterAll } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import { App } from './App';
 
 describe('App - Mobile View', () => {
   let originalInnerWidth: number;
