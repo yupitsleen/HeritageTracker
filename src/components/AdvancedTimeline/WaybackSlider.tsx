@@ -1,4 +1,4 @@
-import { useMemo, useRef, useCallback } from "react";
+import { useMemo, useRef, useCallback, useEffect } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
@@ -65,6 +65,8 @@ export type WaybackSliderProps = BaseWaybackSliderProps &
  * - Clickable timeline bar to jump to any release
  * - Previous/Next step buttons
  * - Visual scrubber showing current position
+ * - Keyboard navigation (arrows, Home/End, PageUp/PageDown)
+ * - Screen reader support with ARIA attributes
  */
 export function WaybackSlider({
   releases,
@@ -166,7 +168,7 @@ export function WaybackSlider({
     }
   }, [releasePositions, onIndexChange, comparisonMode, onBeforeIndexChange, currentPositionPercent, beforePositionPercent]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
       const newIndex = currentIndex - 1;
       onIndexChange(newIndex);
@@ -177,9 +179,9 @@ export function WaybackSlider({
         onBeforeIndexChange(newBeforeIndex);
       }
     }
-  };
+  }, [currentIndex, onIndexChange, comparisonMode, onBeforeIndexChange]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentIndex < releases.length - 1) {
       const newIndex = currentIndex + 1;
       onIndexChange(newIndex);
@@ -190,7 +192,63 @@ export function WaybackSlider({
         onBeforeIndexChange(newBeforeIndex);
       }
     }
-  };
+  }, [currentIndex, releases.length, onIndexChange, comparisonMode, onBeforeIndexChange]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle if there are releases available
+      if (releases.length === 0) return;
+
+      switch (e.key) {
+        case "ArrowLeft": // Step backward by 1 release
+          e.preventDefault();
+          handlePrevious();
+          break;
+        case "ArrowRight": // Step forward by 1 release
+          e.preventDefault();
+          handleNext();
+          break;
+        case "Home": // Jump to first release
+          e.preventDefault();
+          onIndexChange(0);
+          if (comparisonMode && onBeforeIndexChange) {
+            onBeforeIndexChange(0);
+          }
+          break;
+        case "End": // Jump to last release
+          e.preventDefault();
+          onIndexChange(releases.length - 1);
+          if (comparisonMode && onBeforeIndexChange) {
+            onBeforeIndexChange(Math.max(0, releases.length - 2));
+          }
+          break;
+        case "PageUp": // Jump backward by 10 releases
+          e.preventDefault();
+          {
+            const newIndex = Math.max(0, currentIndex - 10);
+            onIndexChange(newIndex);
+            if (comparisonMode && onBeforeIndexChange) {
+              onBeforeIndexChange(Math.max(0, newIndex - 1));
+            }
+          }
+          break;
+        case "PageDown": // Jump forward by 10 releases
+          e.preventDefault();
+          {
+            const newIndex = Math.min(releases.length - 1, currentIndex + 10);
+            onIndexChange(newIndex);
+            if (comparisonMode && onBeforeIndexChange) {
+              onBeforeIndexChange(Math.max(0, newIndex - 1));
+            }
+          }
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentIndex, releases.length, comparisonMode, onIndexChange, onBeforeIndexChange, handlePrevious, handleNext]);
 
   if (releases.length === 0) {
     return (
@@ -204,7 +262,12 @@ export function WaybackSlider({
   }
 
   return (
-    <div className={t.timeline.container} data-testid="wayback-slider">
+    <div
+      className={t.timeline.container}
+      data-testid="wayback-slider"
+      role="region"
+      aria-label="Wayback Imagery Timeline"
+    >
       {/* Header - Current date and position with step controls - centered */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
       <div className="flex items-center justify-center gap-3 mb-2 relative" dir="ltr">
@@ -321,6 +384,13 @@ export function WaybackSlider({
           ref={timelineRef}
           className="relative h-3 cursor-pointer"
           onClick={handleTimelineClick}
+          role="slider"
+          aria-label="Wayback imagery timeline scrubber"
+          aria-valuemin={0}
+          aria-valuemax={releases.length - 1}
+          aria-valuenow={currentIndex}
+          aria-valuetext={`${currentRelease?.releaseDate || 'Unknown date'}, release ${currentIndex + 1} of ${releases.length}`}
+          tabIndex={0}
         >
           {/* Background track */}
           <div className={`absolute inset-0 rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
@@ -420,6 +490,15 @@ export function WaybackSlider({
             />
           </div>
         </div>
+      </div>
+
+      {/* Keyboard shortcuts hint - hidden below 1280px */}
+      <div className={`hidden xl:block mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
+        {translate("timeline.keyboard")}: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> {translate("timeline.step")}
+        {" • "}
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> {translate("timeline.jump")}
+        {" • "}
+        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>PgUp/PgDn</kbd> Jump ±10
       </div>
     </div>
   );
