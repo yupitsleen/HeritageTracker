@@ -129,11 +129,13 @@ describe("AppHeader - Baseline Behavior", () => {
       expect(hamburger).toHaveAccessibleName();
     });
 
-    it("hamburger button has title attribute", () => {
+    it("hamburger button has tooltip wrapper", () => {
       render(<AppHeader />, { wrapper: Wrapper });
 
       const hamburger = screen.getByRole("button", { name: /open menu/i });
-      expect(hamburger).toHaveAttribute("title");
+      // Button now wrapped in Tooltip component instead of having title attribute
+      expect(hamburger).toBeInTheDocument();
+      expect(hamburger).toHaveAttribute("aria-label");
     });
   });
 });
