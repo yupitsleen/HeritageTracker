@@ -149,12 +149,13 @@ const handleReset = () => {
 
 | Phase | Status | Completed | Total | Progress |
 |-------|--------|-----------|-------|----------|
-| **Phase 1** (High Priority) | ⏳ In Progress | 1/6 | ~15-20 elements | 17% |
+| **Phase 1** (High Priority) | ⏳ In Progress | 2/6 | ~15-20 elements | 33% |
 | **Phase 2** (Medium Priority) | ⏸️ Not Started | 0/7 | ~15-20 elements | 0% |
 | **Phase 3** (Low Priority) | ⏸️ Not Started | 0/4 | ~20-30 elements | 0% |
-| **TOTAL** | ⏳ In Progress | 1/17 sections | ~50-70 elements | 6% |
+| **TOTAL** | ⏳ In Progress | 2/17 sections | ~50-70 elements | 12% |
 
 **Recent Commits:**
+- `TBD` - Phase 1.2: Timeline Controls tooltips (2 elements: Pause, Reset)
 - `34883cb` - Phase 1.1: AppHeader tooltips (4 elements)
 - `4e5cac7` - Centralized tooltip config system
 - `77bbd7e` - Implementation guide and audit
@@ -191,18 +192,27 @@ These are critical because users have NO text label indicating functionality.
 
 ---
 
-#### 1.2 Timeline Controls ⏸️ NOT STARTED
+#### 1.2 Timeline Controls ✅ COMPLETE (Commit: TBD)
 **File:** [src/components/Timeline/TimelineControls.tsx](src/components/Timeline/TimelineControls.tsx)
 
-| Element | Line | Current State | Tooltip Text | Status |
-|---------|------|---------------|--------------|--------|
-| Play button | ~134-147 | Uses `Tooltip` | Already has tooltip from `timeline.playTooltip` | ✅ EXISTS |
-| Pause button | ~148-161 | Has `title` | "Pause timeline animation" | ⏸️ TODO |
-| Reset button | ~165-176 | Has `title` | "Reset timeline to beginning" | ⏸️ TODO |
+| Element | Line | Implementation | Tooltip Text | Status |
+|---------|------|----------------|--------------|--------|
+| Play button | 135-147 | Wrapped with Tooltip | `timeline.playTooltip` - "Animate the map to show site destruction events over time" | ✅ EXISTS |
+| Pause button | 149-161 | Wrapped with Tooltip | `TOOLTIPS.TIMELINE.PAUSE` - "Pause timeline animation" | ✅ DONE |
+| Reset button | 167-179 | Wrapped with Tooltip | `TOOLTIPS.TIMELINE.RESET` - "Reset timeline to start and clear site selection" | ✅ DONE |
+
+**Implementation Details:**
+- ✅ Imported `TOOLTIPS` config from `src/config/tooltips.ts`
+- ✅ Wrapped Pause button with `Tooltip` component
+- ✅ Wrapped Reset button with `Tooltip` component
+- ✅ Removed redundant `title` attributes (Tooltip component handles this)
+- ✅ Updated `TOOLTIPS.TIMELINE.RESET` text to accurately reflect behavior (resets to start AND clears site selection)
+- ✅ Updated test file `tooltips.test.ts` to match new tooltip text
+- ✅ All 1414 tests passing
 
 **Notes:**
-- Read the actual button handlers to verify what "reset" does
-- Check if play/pause tooltip is accurate
+- Play button already had tooltip (no changes needed)
+- Reset button does more than just "reset to beginning" - it also clears highlighted site to reset map zoom (verified in code at [TimelineScrubber.tsx:185-194](src/components/Timeline/TimelineScrubber.tsx#L185-L194))
 
 ---
 

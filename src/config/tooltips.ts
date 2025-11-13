@@ -42,7 +42,7 @@ export const NAVIGATION_TOOLTIPS = {
 export const TIMELINE_TOOLTIPS = {
   // Note: Play tooltip uses translation key: timeline.playTooltip
   PAUSE: "Pause timeline animation",
-  RESET: "Reset timeline to beginning",
+  RESET: "Reset timeline to start and clear site selection",
   PREV_EVENT: "Jump to previous destruction event",
   NEXT_EVENT: "Jump to next destruction event",
   SPEED: "Timeline animation playback speed",

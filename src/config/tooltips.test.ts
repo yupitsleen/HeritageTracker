@@ -55,7 +55,7 @@ describe("Tooltip Configuration", () => {
   describe("Timeline Tooltips", () => {
     it("has all timeline tooltips defined", () => {
       expect(TOOLTIPS.TIMELINE.PAUSE).toBe("Pause timeline animation");
-      expect(TOOLTIPS.TIMELINE.RESET).toBe("Reset timeline to beginning");
+      expect(TOOLTIPS.TIMELINE.RESET).toBe("Reset timeline to start and clear site selection");
       expect(TOOLTIPS.TIMELINE.PREV_EVENT).toBe("Jump to previous destruction event");
       expect(TOOLTIPS.TIMELINE.NEXT_EVENT).toBe("Jump to next destruction event");
       expect(TOOLTIPS.TIMELINE.SPEED).toBe("Timeline animation playback speed");
