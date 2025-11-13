@@ -150,11 +150,12 @@ const handleReset = () => {
 | Phase | Status | Completed | Total | Progress |
 |-------|--------|-----------|-------|----------|
 | **Phase 1** (High Priority) | ✅ Complete | 6/6 | ~15-20 elements | 100% |
-| **Phase 2** (Medium Priority) | ⏸️ Not Started | 0/7 | ~15-20 elements | 0% |
+| **Phase 2** (Medium Priority) | ⏳ In Progress | 1/7 | ~15-20 elements | 14% |
 | **Phase 3** (Low Priority) | ⏸️ Not Started | 0/4 | ~20-30 elements | 0% |
-| **TOTAL** | ⏳ In Progress | 6/17 sections | ~50-70 elements | 35% |
+| **TOTAL** | ⏳ In Progress | 7/17 sections | ~50-70 elements | 41% |
 
 **Recent Commits:**
+- `TBD` - Phase 2.1: FilterBar Filter Buttons tooltips (5 elements: Type, Status, Date, Year, Clear All)
 - `a7e6757` - Phase 1.6: FilterBar Controls tooltips (3 elements: Clear search, Mobile filters, Filter pills)
 - `8c00f6c` - Phase 1.5: SitesTable expand button tooltip (1 element)
 - `1675248` - Phase 1.4: WaybackSlider Navigation tooltips (2 elements: Previous, Next)
@@ -313,24 +314,33 @@ These are critical because users have NO text label indicating functionality.
 
 ---
 
-### PHASE 2: MEDIUM PRIORITY - Abbreviated Text Buttons ⏸️ NOT STARTED
+### PHASE 2: MEDIUM PRIORITY - Abbreviated Text Buttons ⏳ IN PROGRESS
 
 These have some text but benefit from explanatory tooltips.
 
-#### 2.1 FilterBar Filter Buttons ⏸️ NOT STARTED
+#### 2.1 FilterBar Filter Buttons ✅ COMPLETE (Commit: TBD)
 **File:** [src/components/FilterBar/FilterBar.tsx](src/components/FilterBar/FilterBar.tsx)
 
 | Element | Line | Button Text | Tooltip Text | Status |
 |---------|------|-------------|--------------|--------|
-| Type Filter | 231-283 | "Type" | "Filter by heritage site type (mosque, church, archaeological site, etc.)" | ⏸️ TODO |
-| Status Filter | 231-283 | "Status" | "Filter by damage status (destroyed, heavily damaged, etc.)" | ⏸️ TODO |
-| Destruction Date | 231-283 | "Date" | "Filter by date of destruction" | ⏸️ TODO |
-| Year Built | 231-283 | "Year" | "Filter by year built (supports BCE dates)" | ⏸️ TODO |
-| Clear All button | 308-317 | "Clear All" | "Remove all active filters" | ⏸️ TODO |
+| Type Filter | 235-246 | "Type" | `TOOLTIPS.FILTERS.TYPE_FILTER` - "Filter by heritage site type (mosque, church, archaeological site, etc.)" | ✅ DONE |
+| Status Filter | 248-260 | "Status" | `TOOLTIPS.FILTERS.STATUS_FILTER` - "Filter by damage status (destroyed, heavily damaged, etc.)" | ✅ DONE |
+| Destruction Date | 262-278 | "Date" | `TOOLTIPS.FILTERS.DATE_FILTER` - "Filter by date of destruction" | ✅ DONE |
+| Year Built | 280-296 | "Year" | `TOOLTIPS.FILTERS.YEAR_FILTER` - "Filter by year built (supports BCE dates)" | ✅ DONE |
+| Clear All button | 325-334 | "Clear All" | `TOOLTIPS.FILTERS.CLEAR_ALL` - "Remove all active filters" | ✅ DONE |
+
+**Implementation Details:**
+- ✅ Updated `FilterButton` component to support optional `tooltip` prop
+- ✅ Wrapped PopoverButton with Tooltip component (conditional rendering)
+- ✅ Added `tooltip` prop to all 4 filter buttons (Type, Status, Date, Year)
+- ✅ Wrapped Clear All button with Tooltip component
+- ✅ All tooltips use centralized config from `src/config/tooltips.ts`
+- ✅ All 1414 tests passing, linter clean
 
 **Notes:**
 - Desktop-only buttons (hidden on mobile)
-- Could help users understand filter capabilities
+- FilterButton component now supports tooltips for all future uses
+- Tooltips help users understand filter capabilities before opening dropdown
 
 ---
 

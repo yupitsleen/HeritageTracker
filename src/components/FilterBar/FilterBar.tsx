@@ -232,7 +232,11 @@ export const FilterBar = memo(function FilterBar({
           {/* Desktop Filter Buttons - Hidden on mobile */}
           <div className="hidden md:flex md:items-center md:gap-1.5 md:flex-wrap">
           {/* Type Filter */}
-          <FilterButton label={translate("filters.selectTypes")} count={filters.selectedTypes.length}>
+          <FilterButton
+            label={translate("filters.selectTypes")}
+            count={filters.selectedTypes.length}
+            tooltip={TOOLTIPS.FILTERS.TYPE_FILTER}
+          >
             <FilterCheckboxList
               options={SITE_TYPES}
               selectedValues={filters.selectedTypes}
@@ -242,7 +246,11 @@ export const FilterBar = memo(function FilterBar({
           </FilterButton>
 
           {/* Status Filter */}
-          <FilterButton label={translate("filters.selectStatus")} count={filters.selectedStatuses.length}>
+          <FilterButton
+            label={translate("filters.selectStatus")}
+            count={filters.selectedStatuses.length}
+            tooltip={TOOLTIPS.FILTERS.STATUS_FILTER}
+          >
             <FilterCheckboxList
               options={STATUS_OPTIONS}
               selectedValues={filters.selectedStatuses}
@@ -256,6 +264,7 @@ export const FilterBar = memo(function FilterBar({
             label={translate("filters.destructionDate")}
             count={filters.destructionDateStart || filters.destructionDateEnd ? 1 : 0}
             panelWidth="min-w-max"
+            tooltip={TOOLTIPS.FILTERS.DATE_FILTER}
           >
             <DateRangeFilter
               label=""
@@ -273,6 +282,7 @@ export const FilterBar = memo(function FilterBar({
             label={translate("filters.yearBuilt")}
             count={filters.creationYearStart || filters.creationYearEnd ? 1 : 0}
             panelWidth="min-w-max"
+            tooltip={TOOLTIPS.FILTERS.YEAR_FILTER}
           >
             <YearRangeFilter
               label=""
@@ -312,14 +322,16 @@ export const FilterBar = memo(function FilterBar({
 
           {/* Clear All Button */}
           {showActions && hasActiveFilters && onClearAll && (
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={onClearAll}
-              className="whitespace-nowrap"
-            >
-              {translate("filters.clearAll")}
-            </Button>
+            <Tooltip content={TOOLTIPS.FILTERS.CLEAR_ALL}>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={onClearAll}
+                className="whitespace-nowrap"
+              >
+                {translate("filters.clearAll")}
+              </Button>
+            </Tooltip>
           )}
         </div>
 
