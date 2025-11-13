@@ -149,10 +149,10 @@ const handleReset = () => {
 
 | Phase | Status | Completed | Total | Progress |
 |-------|--------|-----------|-------|----------|
-| **Phase 1** (High Priority) | ⏳ In Progress | 4/6 | ~15-20 elements | 67% |
+| **Phase 1** (High Priority) | ⏳ In Progress | 5/6 | ~15-20 elements | 83% |
 | **Phase 2** (Medium Priority) | ⏸️ Not Started | 0/7 | ~15-20 elements | 0% |
 | **Phase 3** (Low Priority) | ⏸️ Not Started | 0/4 | ~20-30 elements | 0% |
-| **TOTAL** | ⏳ In Progress | 4/17 sections | ~50-70 elements | 24% |
+| **TOTAL** | ⏳ In Progress | 5/17 sections | ~50-70 elements | 29% |
 
 **Recent Commits:**
 - `1675248` - Phase 1.4: WaybackSlider Navigation tooltips (2 elements: Previous, Next)
@@ -265,16 +265,25 @@ These are critical because users have NO text label indicating functionality.
 
 ---
 
-#### 1.5 SitesTable Controls ⏸️ NOT STARTED
+#### 1.5 SitesTable Controls ✅ COMPLETE (Commit: TBD)
 **File:** [src/components/SitesTable/SitesTableDesktop.tsx](src/components/SitesTable/SitesTableDesktop.tsx)
 
-| Element | Line | Current State | Tooltip Text | Status |
-|---------|------|---------------|--------------|--------|
-| Expand table button | 102-117 | Has `title` + `aria-label` | "Open full table view in new page" | ⏸️ TODO |
+| Element | Line | Implementation | Tooltip Text | Status |
+|---------|------|----------------|--------------|--------|
+| Expand table button | 102-119 | Wrapped with Tooltip | `table.expandTable` - "Expand table to see all columns" | ✅ DONE |
+
+**Implementation Details:**
+- ✅ Imported `Tooltip` component
+- ✅ Wrapped expand button with Tooltip component
+- ✅ Removed redundant `title` attribute (Tooltip component handles this)
+- ✅ Uses existing translation key from `table.expandTable`
+- ✅ Verified functionality: navigates to `/data` page (full table view)
+- ✅ All 1414 tests passing, linter clean
 
 **Notes:**
 - Icon is expand arrows (⇱ or similar)
-- Check translation: `table.expandTable`
+- Translation: `table.expandTable` = "Expand table to see all columns" (en/ar/it)
+- Button navigates to Data page (verified in DashboardPage.tsx:56-58)
 
 ---
 
