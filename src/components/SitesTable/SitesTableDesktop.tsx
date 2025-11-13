@@ -11,6 +11,7 @@ import { TableRow } from "./TableRow";
 import { ExportControls } from "./ExportControls";
 import { VirtualizedTableBody } from "./VirtualizedTableBody";
 import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { Tooltip } from "../Tooltip";
 
 // Threshold for enabling virtual scrolling
 const VIRTUAL_SCROLL_THRESHOLD = 100;
@@ -99,21 +100,22 @@ export function SitesTableDesktop({
             <div className="flex items-center justify-center gap-2 flex-1">
               <h2 className={`text-sm font-bold ${t.text.subheading}`}>{translate("table.heritageSites")}</h2>
               {onExpandTable && (
-                <button
-                  onClick={onExpandTable}
-                  className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
-                  title={translate("table.expandTable")}
-                  aria-label={translate("table.expandTable")}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                    />
-                  </svg>
-                </button>
+                <Tooltip content={translate("table.expandTable")}>
+                  <button
+                    onClick={onExpandTable}
+                    className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors"
+                    aria-label={translate("table.expandTable")}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                      />
+                    </svg>
+                  </button>
+                </Tooltip>
               )}
               <InfoIconWithTooltip
                 tooltip={translate("table.tooltip")}

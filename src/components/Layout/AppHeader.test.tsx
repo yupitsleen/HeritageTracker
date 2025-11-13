@@ -61,14 +61,14 @@ describe("AppHeader", () => {
 
     it("renders theme toggle button", () => {
       renderWithTheme(<AppHeaderWithRouter />);
-      // Theme toggle should be in the DOM
-      const themeButton = screen.getByLabelText(/settings/i);
+      // Theme toggle should be in the DOM (now with proper aria-label)
+      const themeButton = screen.getByLabelText(/switch to (light|dark) mode/i);
       expect(themeButton).toBeInTheDocument();
     });
 
     it("theme toggle changes theme when clicked", () => {
       renderWithTheme(<AppHeaderWithRouter />);
-      const themeButton = screen.getByLabelText(/settings/i);
+      const themeButton = screen.getByLabelText(/switch to (light|dark) mode/i);
 
       // Click should not throw error
       expect(() => fireEvent.click(themeButton)).not.toThrow();
@@ -132,8 +132,8 @@ describe("AppHeader", () => {
       const hamburgerButton = screen.getByLabelText(/open menu/i);
       fireEvent.click(hamburgerButton);
 
-      // Theme toggle should be in mobile menu
-      const themeButtons = screen.getAllByLabelText(/settings/i);
+      // Theme toggle should be in mobile menu (now with proper aria-label)
+      const themeButtons = screen.getAllByLabelText(/switch to (light|dark) mode/i);
       expect(themeButtons.length).toBeGreaterThan(0);
     });
 
@@ -164,10 +164,10 @@ describe("AppHeader", () => {
   describe("Help Button", () => {
     it("renders help button when onOpenHelp is provided", () => {
       const onOpenHelp = vi.fn();
-      const { container } = renderWithTheme(<AppHeaderWithRouter onOpenHelp={onOpenHelp} />);
+      renderWithTheme(<AppHeaderWithRouter onOpenHelp={onOpenHelp} />);
 
-      // Help button should be present (look for QuestionMarkCircleIcon)
-      const helpButton = container.querySelector('[title*="Help"]');
+      // Help button should be present with proper aria-label
+      const helpButton = screen.getByLabelText(/help/i);
       expect(helpButton).toBeInTheDocument();
     });
 
@@ -218,7 +218,7 @@ describe("AppHeader", () => {
   describe("Accessibility", () => {
     it("has proper ARIA labels on all buttons", () => {
       const onOpenHelp = vi.fn();
-      const { container } = renderWithTheme(<AppHeaderWithRouter onOpenHelp={onOpenHelp} />);
+      renderWithTheme(<AppHeaderWithRouter onOpenHelp={onOpenHelp} />);
 
       // Title/Home button
       expect(screen.getByLabelText(/go to home page/i)).toBeInTheDocument();
@@ -231,12 +231,11 @@ describe("AppHeader", () => {
       // Hamburger menu
       expect(screen.getByLabelText(/open menu/i)).toBeInTheDocument();
 
-      // Help button (use container query to avoid multiple matches)
-      const helpButton = container.querySelector('[title*="Help"]');
-      expect(helpButton).toBeInTheDocument();
+      // Help button (now with proper aria-label)
+      expect(screen.getByLabelText(/help/i)).toBeInTheDocument();
 
-      // Theme toggle
-      expect(screen.getByLabelText(/settings/i)).toBeInTheDocument();
+      // Theme toggle (now with proper aria-label)
+      expect(screen.getByLabelText(/switch to (light|dark) mode/i)).toBeInTheDocument();
     });
 
     it("logo has proper alt text for screen readers", () => {

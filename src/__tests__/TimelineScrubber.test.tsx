@@ -499,8 +499,9 @@ describe("TimelineScrubber", () => {
         </AnimationProvider>
       );
 
-      const prevButton = container.querySelector('[title*="Navigate to previous"]');
-      const nextButton = container.querySelector('[title*="Navigate to next"]');
+      // Buttons are wrapped in Tooltip components, so we check for aria-label instead
+      const prevButton = container.querySelector('[aria-label*="previous destruction event"]');
+      const nextButton = container.querySelector('[aria-label*="next destruction event"]');
 
       expect(prevButton).toBeInTheDocument();
       expect(nextButton).toBeInTheDocument();
