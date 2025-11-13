@@ -155,7 +155,7 @@ const handleReset = () => {
 | **TOTAL** | ⏳ In Progress | 6/17 sections | ~50-70 elements | 35% |
 
 **Recent Commits:**
-- Phase 1.6: FilterBar Controls tooltips (3 elements: Clear search, Mobile filters, Filter pills) - PENDING
+- `a7e6757` - Phase 1.6: FilterBar Controls tooltips (3 elements: Clear search, Mobile filters, Filter pills)
 - `8c00f6c` - Phase 1.5: SitesTable expand button tooltip (1 element)
 - `1675248` - Phase 1.4: WaybackSlider Navigation tooltips (2 elements: Previous, Next)
 - `44f24a3` - Phase 1.3: Timeline Navigation tooltips (2 elements: Previous, Next)
@@ -289,7 +289,7 @@ These are critical because users have NO text label indicating functionality.
 
 ---
 
-#### 1.6 FilterBar Controls ✅ COMPLETE (Commit: TBD)
+#### 1.6 FilterBar Controls ✅ COMPLETE (Commit: a7e6757)
 **File:** [src/components/FilterBar/FilterBar.tsx](src/components/FilterBar/FilterBar.tsx)
 
 | Element | Line | Implementation | Tooltip Text | Status |
