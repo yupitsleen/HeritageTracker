@@ -155,6 +155,7 @@ const handleReset = () => {
 | **TOTAL** | ⏳ In Progress | 5/17 sections | ~50-70 elements | 29% |
 
 **Recent Commits:**
+- `8c00f6c` - Phase 1.5: SitesTable expand button tooltip (1 element)
 - `1675248` - Phase 1.4: WaybackSlider Navigation tooltips (2 elements: Previous, Next)
 - `44f24a3` - Phase 1.3: Timeline Navigation tooltips (2 elements: Previous, Next)
 - `84eb53a` - Phase 1.2: Timeline Controls tooltips (2 elements: Pause, Reset)
@@ -265,7 +266,7 @@ These are critical because users have NO text label indicating functionality.
 
 ---
 
-#### 1.5 SitesTable Controls ✅ COMPLETE (Commit: TBD)
+#### 1.5 SitesTable Controls ✅ COMPLETE (Commit: 8c00f6c)
 **File:** [src/components/SitesTable/SitesTableDesktop.tsx](src/components/SitesTable/SitesTableDesktop.tsx)
 
 | Element | Line | Implementation | Tooltip Text | Status |
