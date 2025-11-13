@@ -51,8 +51,8 @@ describe("WaybackSlider", () => {
       );
 
       // Should render Previous and Next buttons
-      expect(screen.getByLabelText("Previous")).toBeInTheDocument();
-      expect(screen.getByLabelText("Next")).toBeInTheDocument();
+      expect(screen.getByLabelText("Go to previous satellite image release")).toBeInTheDocument();
+      expect(screen.getByLabelText("Go to next satellite image release")).toBeInTheDocument();
     });
 
     it("renders empty state when no releases provided", () => {
@@ -70,8 +70,8 @@ describe("WaybackSlider", () => {
       );
 
       // Should have Previous and Next buttons
-      expect(screen.getByLabelText("Previous")).toBeInTheDocument();
-      expect(screen.getByLabelText("Next")).toBeInTheDocument();
+      expect(screen.getByLabelText("Go to previous satellite image release")).toBeInTheDocument();
+      expect(screen.getByLabelText("Go to next satellite image release")).toBeInTheDocument();
     });
 
     it("renders year labels for timeline", () => {
