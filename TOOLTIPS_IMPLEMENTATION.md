@@ -155,7 +155,7 @@ const handleReset = () => {
 | **TOTAL** | ⏳ In Progress | 2/17 sections | ~50-70 elements | 12% |
 
 **Recent Commits:**
-- `TBD` - Phase 1.2: Timeline Controls tooltips (2 elements: Pause, Reset)
+- `84eb53a` - Phase 1.2: Timeline Controls tooltips (2 elements: Pause, Reset)
 - `34883cb` - Phase 1.1: AppHeader tooltips (4 elements)
 - `4e5cac7` - Centralized tooltip config system
 - `77bbd7e` - Implementation guide and audit
@@ -192,7 +192,7 @@ These are critical because users have NO text label indicating functionality.
 
 ---
 
-#### 1.2 Timeline Controls ✅ COMPLETE (Commit: TBD)
+#### 1.2 Timeline Controls ✅ COMPLETE (Commit: 84eb53a)
 **File:** [src/components/Timeline/TimelineControls.tsx](src/components/Timeline/TimelineControls.tsx)
 
 | Element | Line | Implementation | Tooltip Text | Status |
