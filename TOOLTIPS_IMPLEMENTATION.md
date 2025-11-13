@@ -149,12 +149,13 @@ const handleReset = () => {
 
 | Phase | Status | Completed | Total | Progress |
 |-------|--------|-----------|-------|----------|
-| **Phase 1** (High Priority) | ⏳ In Progress | 5/6 | ~15-20 elements | 83% |
+| **Phase 1** (High Priority) | ✅ Complete | 6/6 | ~15-20 elements | 100% |
 | **Phase 2** (Medium Priority) | ⏸️ Not Started | 0/7 | ~15-20 elements | 0% |
 | **Phase 3** (Low Priority) | ⏸️ Not Started | 0/4 | ~20-30 elements | 0% |
-| **TOTAL** | ⏳ In Progress | 5/17 sections | ~50-70 elements | 29% |
+| **TOTAL** | ⏳ In Progress | 6/17 sections | ~50-70 elements | 35% |
 
 **Recent Commits:**
+- Phase 1.6: FilterBar Controls tooltips (3 elements: Clear search, Mobile filters, Filter pills) - PENDING
 - `8c00f6c` - Phase 1.5: SitesTable expand button tooltip (1 element)
 - `1675248` - Phase 1.4: WaybackSlider Navigation tooltips (2 elements: Previous, Next)
 - `44f24a3` - Phase 1.3: Timeline Navigation tooltips (2 elements: Previous, Next)
@@ -288,18 +289,27 @@ These are critical because users have NO text label indicating functionality.
 
 ---
 
-#### 1.6 FilterBar Controls ⏸️ NOT STARTED
+#### 1.6 FilterBar Controls ✅ COMPLETE (Commit: TBD)
 **File:** [src/components/FilterBar/FilterBar.tsx](src/components/FilterBar/FilterBar.tsx)
 
-| Element | Line | Current State | Tooltip Text | Status |
-|---------|------|---------------|--------------|--------|
-| Clear search (X) | 208-226 | Has `aria-label` | "Clear search" | ⏸️ TODO |
-| Mobile filters button | 286-305 | Has `aria-label` | "Open filters panel" | ⏸️ TODO |
-| Filter pill remove buttons | 330-365 | Has `aria-label` | "Remove this filter" | ⏸️ TODO |
+| Element | Line | Implementation | Tooltip Text | Status |
+|---------|------|----------------|--------------|--------|
+| Clear search (X) | 219-228 | Wrapped with Tooltip | `TOOLTIPS.FILTERS.CLEAR_SEARCH` - "Clear search" | ✅ DONE |
+| Mobile filters button | 290-311 | Wrapped with Tooltip | `TOOLTIPS.FILTERS.OPEN_MOBILE` - "Open filters panel" | ✅ DONE |
+| Filter pill remove buttons | 23-32 (FilterTag.tsx) | Wrapped with Tooltip | `TOOLTIPS.FILTERS.REMOVE_PILL` - "Remove this filter" | ✅ DONE |
+
+**Implementation Details:**
+- ✅ Imported `Tooltip` component and `TOOLTIPS` config
+- ✅ Wrapped Clear search button with Tooltip component
+- ✅ Wrapped Mobile filters button with Tooltip component
+- ✅ Updated `FilterTag` component to wrap × button with Tooltip
+- ✅ All tooltips use centralized config from `src/config/tooltips.ts`
+- ✅ All 1414 tests passing, linter clean
 
 **Notes:**
-- Multiple filter pills may appear, tooltip should be generic
-- Check existing translations in `filters.*`
+- Filter pills are rendered in multiple places using the `FilterTag` component
+- Tooltip appears consistently on all filter pill remove buttons
+- Existing aria-labels preserved for accessibility
 
 ---
 

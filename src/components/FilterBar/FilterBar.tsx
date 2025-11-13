@@ -13,6 +13,7 @@ import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { StatusLegend } from "../Map/StatusLegend";
+import { Tooltip } from "../Tooltip";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -21,6 +22,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { Z_INDEX } from "../../constants/layout";
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { TOOLTIPS } from "../../config/tooltips";
 
 interface FilterBarProps {
   filters: FilterState;
@@ -214,14 +216,16 @@ export const FilterBar = memo(function FilterBar({
               className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
             />
             {searchInputValue.trim().length > 0 && (
-              <button
-                type="button"
-                onClick={handleClearSearch}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
-                aria-label={translate("filters.clearSearch")}
-              >
-                <CloseIcon className="w-4 h-4" aria-hidden="true" />
-              </button>
+              <Tooltip content={TOOLTIPS.FILTERS.CLEAR_SEARCH}>
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
+                  aria-label={translate("filters.clearSearch")}
+                >
+                  <CloseIcon className="w-4 h-4" aria-hidden="true" />
+                </button>
+              </Tooltip>
             )}
           </div>
 
@@ -283,26 +287,28 @@ export const FilterBar = memo(function FilterBar({
           </div>
 
           {/* Mobile Filters Button - Visible only on mobile */}
-          <button
-            type="button"
-            onClick={handleOpenMobileFilters}
-            className={cn(
-              "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
-              "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
-              t.bg.primary,
-              t.border.subtle,
-              t.bg.hover,
-              t.text.body
-            )}
-            aria-label={translate("filters.openFilters")}
-            aria-expanded={isMobileFiltersOpen}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-            </svg>
-            <span>Filters</span>
-            {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
-          </button>
+          <Tooltip content={TOOLTIPS.FILTERS.OPEN_MOBILE}>
+            <button
+              type="button"
+              onClick={handleOpenMobileFilters}
+              className={cn(
+                "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
+                "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                t.bg.primary,
+                t.border.subtle,
+                t.bg.hover,
+                t.text.body
+              )}
+              aria-label={translate("filters.openFilters")}
+              aria-expanded={isMobileFiltersOpen}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+              <span>Filters</span>
+              {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
+            </button>
+          </Tooltip>
 
           {/* Clear All Button */}
           {showActions && hasActiveFilters && onClearAll && (
