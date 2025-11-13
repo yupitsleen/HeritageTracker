@@ -143,27 +143,51 @@ const handleReset = () => {
 
 ---
 
+## 📊 Overall Progress Summary
+
+**Last Updated:** 2025-11-12
+
+| Phase | Status | Completed | Total | Progress |
+|-------|--------|-----------|-------|----------|
+| **Phase 1** (High Priority) | ⏳ In Progress | 1/6 | ~15-20 elements | 17% |
+| **Phase 2** (Medium Priority) | ⏸️ Not Started | 0/7 | ~15-20 elements | 0% |
+| **Phase 3** (Low Priority) | ⏸️ Not Started | 0/4 | ~20-30 elements | 0% |
+| **TOTAL** | ⏳ In Progress | 1/17 sections | ~50-70 elements | 6% |
+
+**Recent Commits:**
+- `34883cb` - Phase 1.1: AppHeader tooltips (4 elements)
+- `4e5cac7` - Centralized tooltip config system
+- `77bbd7e` - Implementation guide and audit
+
+---
+
 ## Priority Order & Progress Tracker
 
-### PHASE 1: HIGH PRIORITY - Icon-Only Buttons ⏸️ NOT STARTED
+### PHASE 1: HIGH PRIORITY - Icon-Only Buttons ⏳ IN PROGRESS
 
 These are critical because users have NO text label indicating functionality.
 
-#### 1.1 AppHeader ⏸️ NOT STARTED
+#### 1.1 AppHeader ✅ COMPLETE (Commit: 34883cb)
 **File:** [src/components/Layout/AppHeader.tsx](src/components/Layout/AppHeader.tsx)
 
-| Element | Line | Current State | Tooltip Text | Status |
-|---------|------|---------------|--------------|--------|
-| Logo/Home button | 103-116 | No tooltip | "Return to Dashboard" | ⏸️ TODO |
-| Help button (?) | 132-140 | Has `title` | "View page instructions and keyboard shortcuts" | ⏸️ TODO |
-| Language selector | 142-145 | Has `title` | "Switch language (Current: English)" | ⏸️ TODO |
-| Dark mode toggle | 147-155 | Has `title` | "Toggle dark/light theme" | ⏸️ TODO |
-| Hamburger menu | 158-164 | Has `title` | "Open navigation menu" / "Close menu" | ⏸️ TODO |
+| Element | Line | Implementation | Tooltip Text | Status |
+|---------|------|----------------|--------------|--------|
+| Logo/Home button | 103-118 | Wrapped with Tooltip | `TOOLTIPS.HEADER.HOME` - "Return to Dashboard" | ✅ DONE |
+| Help button (?) | 135-142 | Wrapped with Tooltip | `TOOLTIPS.HEADER.HELP` - "View page instructions and keyboard shortcuts" | ✅ DONE |
+| Dark mode toggle | 152-158 | Wrapped with Tooltip | Dynamic: `TOOLTIPS.HEADER.DARK_MODE_ON/OFF` | ✅ DONE |
+| Hamburger menu | 162-169 | Wrapped with Tooltip | Dynamic: `TOOLTIPS.HEADER.MENU_OPEN/CLOSE` | ✅ DONE |
+
+**Implementation Details:**
+- ✅ Imported `Tooltip` component and `TOOLTIPS` config
+- ✅ Replaced all `title` attributes with `Tooltip` wrappers
+- ✅ Improved aria-labels: "settings" → "Switch to light/dark mode"
+- ✅ All tooltips use centralized config from `src/config/tooltips.ts`
+- ✅ Tests updated to match new aria-label patterns
+- ✅ 33 tests passing, linter clean
 
 **Notes:**
-- Replace `title` attributes with `Tooltip` component for consistency
-- Language selector should show current language dynamically
-- Dark mode should show current state ("Switch to dark mode" / "Switch to light mode")
+- Language selector NOT given tooltip (dropdown already has visual indicator)
+- Dark mode and hamburger menu tooltips are dynamic based on state
 
 ---
 
