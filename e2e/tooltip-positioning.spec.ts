@@ -122,7 +122,7 @@ test.describe('Tooltip Positioning - Timeline Page', () => {
     expect(distance).toBeLessThan(500);
   });
 
-  test('Tooltip has proper box shape (not a long horizontal line)', async ({ page }) => {
+  test('Tooltip has proper box shape (not too horizontal or too vertical)', async ({ page }) => {
     const infoIcon = page.locator('svg.cursor-help').first();
     await expect(infoIcon).toBeVisible();
 
@@ -141,11 +141,13 @@ test.describe('Tooltip Positioning - Timeline Page', () => {
     console.log('Tooltip aspect ratio (width/height):', aspectRatio);
 
     // A nicely proportioned rectangle should have:
-    // - Width < 320px (max-w-80 = 320px)
-    // - Aspect ratio between 1:1 and 8:1 (not a long horizontal line)
-    // - If aspect ratio > 10, it's a single horizontal line (BAD)
-    expect(box!.width, 'Tooltip width should respect max-w-80 (320px)').toBeLessThanOrEqual(320);
-    expect(aspectRatio, 'Tooltip should not be a long horizontal line (aspect ratio should be < 10)').toBeLessThan(10);
+    // - Width ≤ 288px (max-w-[18rem] = 288px)
+    // - Aspect ratio between 0.5:1 and 8:1 (not too tall/narrow, not too wide/flat)
+    // - If aspect ratio > 10, it's a long horizontal line (BAD)
+    // - If aspect ratio < 0.5, it's a tall vertical line (BAD)
+    expect(box!.width, 'Tooltip width should respect max-w-[18rem] (288px)').toBeLessThanOrEqual(292); // 4px tolerance
+    expect(aspectRatio, 'Tooltip should not be a long horizontal line (aspect ratio should be < 8)').toBeLessThan(8);
+    expect(aspectRatio, 'Tooltip should not be too tall and narrow (aspect ratio should be > 0.5)').toBeGreaterThan(0.5);
 
     // Height should be reasonable (at least 24px for text + padding)
     expect(box!.height, 'Tooltip should have reasonable height for wrapped text').toBeGreaterThan(24);

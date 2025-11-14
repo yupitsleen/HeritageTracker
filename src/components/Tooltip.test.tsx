@@ -189,10 +189,10 @@ describe("Tooltip", () => {
         // Mock the tooltip's getBoundingClientRect for the positioning logic
         vi.spyOn(tooltipParent, "getBoundingClientRect").mockReturnValue({
           left: 0,
-          right: 256,
+          right: 288,
           top: 0,
           bottom: tooltipHeight,
-          width: 256,
+          width: 288,
           height: tooltipHeight,
           x: 0,
           y: 0,
@@ -231,8 +231,8 @@ describe("Tooltip", () => {
 
       const tooltip = screen.getByText("Mobile tooltip with very long text that should wrap properly");
 
-      // Should have max-width class (256px = 16rem)
-      expect(tooltip).toHaveClass("max-w-[16rem]");
+      // Should have max-width class (288px = 18rem)
+      expect(tooltip).toHaveClass("max-w-[18rem]");
     });
   });
 
@@ -446,7 +446,7 @@ describe("Tooltip", () => {
   });
 
   describe("Test 4: Text Formatting (Box/Rectangle Shape)", () => {
-    it("has maximum width constraint (256px)", () => {
+    it("has maximum width constraint (288px)", () => {
       render(
         <Tooltip content="This is a very long tooltip text that should wrap into multiple lines instead of stretching across the entire screen width which would be very difficult to read">
           <button>Trigger</button>
@@ -458,8 +458,8 @@ describe("Tooltip", () => {
 
       const tooltip = screen.getByText(/This is a very long tooltip/);
 
-      // Should have max-width class (256px = 16rem)
-      expect(tooltip).toHaveClass("max-w-[16rem]");
+      // Should have max-width class (288px = 18rem)
+      expect(tooltip).toHaveClass("max-w-[18rem]");
     });
 
     it("adjusts width to fit content (not fixed width)", () => {
@@ -475,7 +475,7 @@ describe("Tooltip", () => {
       const tooltip = screen.getByText("Short");
 
       // Should have max-w class (not fixed w-80), allowing width to shrink
-      expect(tooltip).toHaveClass("max-w-[16rem]");
+      expect(tooltip).toHaveClass("max-w-[18rem]");
       expect(tooltip).not.toHaveClass("w-80");
     });
 
@@ -588,7 +588,7 @@ describe("Tooltip", () => {
       const tooltip = screen.getByText("Mobile responsive tooltip");
 
       // Should have combined max-width class for mobile
-      expect(tooltip).toHaveClass("max-w-[16rem]");
+      expect(tooltip).toHaveClass("max-w-[18rem]");
     });
 
     it("does not create one long line across screen (short text)", () => {
@@ -605,7 +605,7 @@ describe("Tooltip", () => {
       const tooltipRect = tooltip.getBoundingClientRect();
 
       // Short text should create compact box, not stretch full width
-      // Max width is 256px, but actual width should be much less for "Home"
+      // Max width is 288px, but actual width should be much less for "Home"
       expect(tooltipRect.width).toBeLessThan(100); // Reasonable for 4-letter word
     });
 
@@ -627,8 +627,8 @@ describe("Tooltip", () => {
       // Should wrap to multiple lines, not exceed viewport width
       expect(tooltipRect.width).toBeLessThan(window.innerWidth);
 
-      // Should not be wider than max-width (256px)
-      expect(tooltipRect.width).toBeLessThanOrEqual(256);
+      // Should not be wider than max-width (288px)
+      expect(tooltipRect.width).toBeLessThanOrEqual(288);
     });
   });
 
@@ -662,7 +662,7 @@ describe("Tooltip", () => {
       const tooltip = screen.getByText(veryLongWord);
 
       // Should still respect max-width and break-words to handle long words
-      expect(tooltip).toHaveClass("max-w-[16rem]");
+      expect(tooltip).toHaveClass("max-w-[18rem]");
       expect(tooltip).toHaveClass("break-words");
     });
 
