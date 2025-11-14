@@ -10,7 +10,8 @@ import { TableHeader } from "./TableHeader";
 import { TableRow } from "./TableRow";
 import { ExportControls } from "./ExportControls";
 import { VirtualizedTableBody } from "./VirtualizedTableBody";
-import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { InfoIcon } from "../Icons/InfoIcon";
+import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { Tooltip } from "../Tooltip";
 
 // Threshold for enabling virtual scrolling
@@ -117,8 +118,10 @@ export function SitesTableDesktop({
                   </button>
                 </Tooltip>
               )}
-              <InfoIconWithTooltip
-                tooltip={translate("table.tooltip")}
+              <InfoIcon
+                title={translate("table.tooltip")}
+                aria-label={translate("table.tooltip")}
+                className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
               />
             </div>
             {variant === "expanded" && (

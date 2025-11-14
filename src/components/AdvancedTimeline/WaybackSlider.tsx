@@ -6,7 +6,8 @@ import { Button } from "../Button";
 import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
 import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
-import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { InfoIcon } from "../Icons/InfoIcon";
+import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
@@ -321,8 +322,10 @@ export function WaybackSlider({
 
         {/* Info icon in top right */}
         <div className="absolute right-0 top-0">
-          <InfoIconWithTooltip
-            tooltip={translate("timelinePage.waybackTooltip")}
+          <InfoIcon
+            title={translate("timelinePage.waybackTooltip")}
+            aria-label={translate("timelinePage.waybackTooltip")}
+            className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
           />
         </div>
 

@@ -12,7 +12,8 @@ import {
   calculateDefaultDateRange,
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
-import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { InfoIcon } from "../Icons/InfoIcon";
+import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { TimelineControls } from "./TimelineControls";
 import { TimelineNavigation } from "./TimelineNavigation";
 
@@ -396,11 +397,16 @@ export function TimelineScrubber({
 
         {/* Right: Info icon - absolutely positioned */}
         <div className="absolute right-0 top-0">
-          <InfoIconWithTooltip
-            tooltip={advancedMode
+          <InfoIcon
+            title={advancedMode
               ? translate("timeline.tooltipAdvanced")
               : translate("timeline.tooltipDefault")
             }
+            aria-label={advancedMode
+              ? translate("timeline.tooltipAdvanced")
+              : translate("timeline.tooltipDefault")
+            }
+            className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
           />
         </div>
       </div>
