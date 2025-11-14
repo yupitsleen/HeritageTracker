@@ -38,7 +38,7 @@ export function DateLabel({
   return (
     <div
       className={`px-2 py-0.5 ${textColor} ${fontSize} font-semibold rounded whitespace-nowrap shadow-lg`}
-      style={{ backgroundColor, opacity }}
+      style={{ backgroundColor, opacity, outline: '1px solid black' }}
     >
       {date}
     </div>

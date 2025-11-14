@@ -12,6 +12,7 @@ import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
 import { TOOLTIPS } from "../../config/tooltips";
+import { Z_INDEX } from "../../constants/layout";
 
 /**
  * Callback type for Wayback release index changes
@@ -452,6 +453,7 @@ export function WaybackSlider({
                     ? 'right-0'
                     : 'left-1/2 -translate-x-1/2'
                 }`}
+                style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
               >
                 <DateLabel
                   date={beforeRelease?.releaseDate || translate("timeline.unknownDate")}
@@ -481,6 +483,7 @@ export function WaybackSlider({
                   ? 'right-0'
                   : 'left-1/2 -translate-x-1/2'
               }`}
+              style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
             >
               <DateLabel
                 date={currentRelease?.releaseDate || translate("timeline.unknownDate")}

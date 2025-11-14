@@ -8,6 +8,7 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 import { TIMELINE_CONFIG, TOOLTIP_CONFIG } from "../../constants/timeline";
+import { Z_INDEX } from "../../constants/layout";
 import {
   calculateDefaultDateRange,
   calculateAdjustedDateRange,
@@ -429,14 +430,15 @@ export function TimelineScrubber({
         {/* Floating scrubber date tooltip - positioned below timeline */}
         {scrubberPosition !== null && (
           <div
-            className="absolute z-[9999] pointer-events-none"
+            className="absolute pointer-events-none"
             style={{
               left: `${scrubberPosition}px`,
               top: `${TOOLTIP_CONFIG.VERTICAL_OFFSET}px`,
               transform: `translateX(${TOOLTIP_CONFIG.HORIZONTAL_TRANSFORM})`,
+              zIndex: Z_INDEX.TIMELINE_TOOLTIP,
             }}
           >
-            <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
+            <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg" style={{ outline: '1px solid black' }}>
               {currentTimestamp.toISOString().split('T')[0]}
             </div>
           </div>

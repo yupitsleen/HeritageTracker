@@ -53,6 +53,8 @@ export const Z_INDEX = {
   HEADER_DROPDOWN: 1200,
   /** Tooltips (z-index: 1010) */
   TOOLTIP: 1010,
+  /** Timeline tooltips (z-index: 1300) - Must be above footer (STICKY: 1100) and header dropdowns (1200) */
+  TIMELINE_TOOLTIP: 1300,
   /** Fixed elements like sidebars (z-index: 1020) */
   FIXED: 1020,
   /** Modal overlays and dialogs (z-index: 9999) */
