@@ -8,7 +8,6 @@ import { Button } from "../Button";
 import { IconButton } from "../Button/IconButton";
 import { LanguageSelector } from "../LanguageSelector";
 import { NavigationLinks } from "./NavigationLinks";
-import { Tooltip } from "../Tooltip";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
 import { Z_INDEX, BREAKPOINTS } from "../../constants/layout";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
@@ -102,22 +101,21 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
         <div className={cn("container mx-auto px-4", "py-1.5 relative flex items-center justify-between")}>
           {/* Left: Logo + Title - clickable to return home */}
           <div className="flex items-center gap-3">
-            <Tooltip content={TOOLTIPS.HEADER.HOME}>
-              <button
-                onClick={() => navigate("/")}
-                className="cursor-pointer flex items-center gap-3"
-                aria-label="Go to home page"
-              >
-                <img
-                  src={logo}
-                  alt="Heritage Tracker Logo"
-                  className="h-8 md:h-10 w-auto"
-                />
-                <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-                  {t("header.title")}
-                </h1>
-              </button>
-            </Tooltip>
+            <button
+              onClick={() => navigate("/")}
+              className="cursor-pointer flex items-center gap-3"
+              aria-label="Go to home page"
+              title={TOOLTIPS.HEADER.HOME}
+            >
+              <img
+                src={logo}
+                alt="Heritage Tracker Logo"
+                className="h-8 md:h-10 w-auto"
+              />
+              <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
+                {t("header.title")}
+              </h1>
+            </button>
           </div>
 
           {/* Center: Main action buttons - hidden on small/medium screens, shown on large+ */}
@@ -134,14 +132,13 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
           <div className={`flex ${COMPACT_HEADER.buttonGap} items-center`}>
             {/* Help Button - Question mark icon - desktop only */}
             {onOpenHelp && (
-              <Tooltip content={TOOLTIPS.HEADER.HELP}>
-                <IconButton
-                  icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
-                  onClick={onOpenHelp}
-                  ariaLabel={t("common.help")}
-                  className="hidden xl:flex"
-                />
-              </Tooltip>
+              <IconButton
+                icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
+                onClick={onOpenHelp}
+                ariaLabel={t("common.help")}
+                title={TOOLTIPS.HEADER.HELP}
+                className="hidden xl:flex"
+              />
             )}
 
             {/* Language Selector - Dropdown showing all registered locales - desktop only */}
@@ -151,24 +148,22 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
 
             {/* Dark Mode Toggle - Discrete icon button - desktop only */}
             <div className="hidden xl:flex">
-              <Tooltip content={isDark ? TOOLTIPS.HEADER.DARK_MODE_ON : TOOLTIPS.HEADER.DARK_MODE_OFF}>
-                <IconButton
-                  icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
-                  onClick={toggleTheme}
-                  ariaLabel={isDark ? t("aria.switchToLightMode") : t("aria.switchToDarkMode")}
-                />
-              </Tooltip>
+              <IconButton
+                icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+                onClick={toggleTheme}
+                ariaLabel={isDark ? t("aria.switchToLightMode") : t("aria.switchToDarkMode")}
+                title={isDark ? TOOLTIPS.HEADER.DARK_MODE_ON : TOOLTIPS.HEADER.DARK_MODE_OFF}
+              />
             </div>
 
             {/* Hamburger Menu Button - Mobile/Tablet only (< 1280px) */}
-            <Tooltip content={isMobileMenuOpen ? TOOLTIPS.HEADER.MENU_CLOSE : TOOLTIPS.HEADER.MENU_OPEN}>
-              <IconButton
-                icon={isMobileMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                ariaLabel={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                className="xl:hidden"
-              />
-            </Tooltip>
+            <IconButton
+              icon={isMobileMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              ariaLabel={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              title={isMobileMenuOpen ? TOOLTIPS.HEADER.MENU_CLOSE : TOOLTIPS.HEADER.MENU_OPEN}
+              className="xl:hidden"
+            />
           </div>
         </div>
 
