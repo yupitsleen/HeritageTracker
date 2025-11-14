@@ -139,7 +139,6 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
                   icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
                   onClick={onOpenHelp}
                   ariaLabel={t("common.help")}
-                  title={TOOLTIPS.HEADER.HELP}
                   className="hidden xl:flex"
                 />
               </Tooltip>
@@ -157,7 +156,6 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
                   icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
                   onClick={toggleTheme}
                   ariaLabel={isDark ? t("aria.switchToLightMode") : t("aria.switchToDarkMode")}
-                  title={isDark ? TOOLTIPS.HEADER.DARK_MODE_ON : TOOLTIPS.HEADER.DARK_MODE_OFF}
                 />
               </Tooltip>
             </div>
@@ -168,7 +166,6 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
                 icon={isMobileMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 ariaLabel={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                title={isMobileMenuOpen ? TOOLTIPS.HEADER.MENU_CLOSE : TOOLTIPS.HEADER.MENU_OPEN}
                 className="xl:hidden"
               />
             </Tooltip>
