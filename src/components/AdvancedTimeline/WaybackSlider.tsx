@@ -11,7 +11,6 @@ import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
-import { Tooltip } from "../Tooltip";
 import { TOOLTIPS } from "../../config/tooltips";
 
 /**
@@ -330,34 +329,32 @@ export function WaybackSlider({
         </div>
 
         {/* Previous button */}
-        <Tooltip content={TOOLTIPS.WAYBACK.PREV_RELEASE}>
-          <Button
-            onClick={handlePrevious}
-            disabled={currentIndex === 0}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to previous satellite image release"
-          >
-            {/* Icon only below xl, full text at xl+ */}
-            <span className="xl:hidden">⏮</span>
-            <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
-          </Button>
-        </Tooltip>
+        <Button
+          onClick={handlePrevious}
+          disabled={currentIndex === 0}
+          variant="secondary"
+          size="xs"
+          aria-label="Go to previous satellite image release"
+          title={TOOLTIPS.WAYBACK.PREV_RELEASE}
+        >
+          {/* Icon only below xl, full text at xl+ */}
+          <span className="xl:hidden">⏮</span>
+          <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
+        </Button>
 
         {/* Next button */}
-        <Tooltip content={TOOLTIPS.WAYBACK.NEXT_RELEASE}>
-          <Button
-            onClick={handleNext}
-            disabled={currentIndex === releases.length - 1}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to next satellite image release"
-          >
-            {/* Icon only below xl, full text at xl+ */}
-            <span className="xl:hidden">⏭</span>
-            <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
-          </Button>
-        </Tooltip>
+        <Button
+          onClick={handleNext}
+          disabled={currentIndex === releases.length - 1}
+          variant="secondary"
+          size="xs"
+          aria-label="Go to next satellite image release"
+          title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
+        >
+          {/* Icon only below xl, full text at xl+ */}
+          <span className="xl:hidden">⏭</span>
+          <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
+        </Button>
       </div>
 
       {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}
