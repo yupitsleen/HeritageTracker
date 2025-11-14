@@ -77,7 +77,11 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     // This ensures the first site can be highlighted/zoomed when clicked or navigated to
     const startWithBuffer = new Date(earliestDate.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    return { startDate: startWithBuffer, endDate: latestDate };
+    // End timeline 7 days after the last destruction date
+    // This ensures the last site has buffer space at the end, matching the start buffer
+    const endWithBuffer = new Date(latestDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    return { startDate: startWithBuffer, endDate: endWithBuffer };
   }, [sites]);
 
   const [currentTimestamp, setCurrentTimestamp] = useState<Date>(startDate);

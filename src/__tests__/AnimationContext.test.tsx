@@ -162,6 +162,57 @@ describe("AnimationContext", () => {
     );
   });
 
+  // 7-day buffer validation
+  it("applies 7-day buffer at both start and end of timeline", () => {
+    // Create test sites with known destruction dates
+    const testSites = [
+      {
+        id: "1",
+        name: "First Site",
+        type: "mosque",
+        coordinates: [31.5, 34.5],
+        status: "destroyed",
+        dateDestroyed: "2024-01-01", // Earliest date
+        description: "Test site 1",
+        historicalSignificance: "Test",
+        culturalValue: "Test",
+        verifiedBy: [],
+        sources: [],
+      },
+      {
+        id: "2",
+        name: "Last Site",
+        type: "mosque",
+        coordinates: [31.5, 34.5],
+        status: "destroyed",
+        dateDestroyed: "2024-12-31", // Latest date
+        description: "Test site 2",
+        historicalSignificance: "Test",
+        culturalValue: "Test",
+        verifiedBy: [],
+        sources: [],
+      },
+    ];
+
+    const { result } = renderHook(() => useAnimation(), {
+      wrapper: ({ children }) => (
+        <AnimationProvider sites={testSites}>{children}</AnimationProvider>
+      ),
+    });
+
+    // Expected dates with 7-day buffer
+    const earliestDate = new Date("2024-01-01");
+    const latestDate = new Date("2024-12-31");
+    const expectedStart = new Date(earliestDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const expectedEnd = new Date(latestDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    // Verify 7-day buffer at start
+    expect(result.current.startDate.getTime()).toBe(expectedStart.getTime());
+
+    // Verify 7-day buffer at end
+    expect(result.current.endDate.getTime()).toBe(expectedEnd.getTime());
+  });
+
   // Sync Map functionality
   describe("Map Sync", () => {
     it("initializes with sync disabled", () => {
