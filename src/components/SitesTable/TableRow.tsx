@@ -142,7 +142,7 @@ export function TableRow({
       )}
       {visibleColumns.has("yearBuiltIslamic") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {site.yearBuiltIslamic || translate("common.na")}
+          {site.yearBuiltIslamic || "-"}
         </td>
       )}
       {visibleColumns.has("lastUpdated") && (
