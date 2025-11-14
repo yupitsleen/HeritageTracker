@@ -13,7 +13,6 @@ import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { StatusLegend } from "../Map/StatusLegend";
-import { Tooltip } from "../Tooltip";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -216,16 +215,15 @@ export const FilterBar = memo(function FilterBar({
               className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
             />
             {searchInputValue.trim().length > 0 && (
-              <Tooltip content={TOOLTIPS.FILTERS.CLEAR_SEARCH}>
-                <button
-                  type="button"
-                  onClick={handleClearSearch}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
-                  aria-label={translate("filters.clearSearch")}
-                >
-                  <CloseIcon className="w-4 h-4" aria-hidden="true" />
-                </button>
-              </Tooltip>
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
+                aria-label={translate("filters.clearSearch")}
+                title={TOOLTIPS.FILTERS.CLEAR_SEARCH}
+              >
+                <CloseIcon className="w-4 h-4" aria-hidden="true" />
+              </button>
             )}
           </div>
 
@@ -297,41 +295,39 @@ export const FilterBar = memo(function FilterBar({
           </div>
 
           {/* Mobile Filters Button - Visible only on mobile */}
-          <Tooltip content={TOOLTIPS.FILTERS.OPEN_MOBILE}>
-            <button
-              type="button"
-              onClick={handleOpenMobileFilters}
-              className={cn(
-                "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
-                "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
-                t.bg.primary,
-                t.border.subtle,
-                t.bg.hover,
-                t.text.body
-              )}
-              aria-label={translate("filters.openFilters")}
-              aria-expanded={isMobileFiltersOpen}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-              </svg>
-              <span>Filters</span>
-              {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
-            </button>
-          </Tooltip>
+          <button
+            type="button"
+            onClick={handleOpenMobileFilters}
+            className={cn(
+              "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
+              "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
+              t.bg.primary,
+              t.border.subtle,
+              t.bg.hover,
+              t.text.body
+            )}
+            aria-label={translate("filters.openFilters")}
+            aria-expanded={isMobileFiltersOpen}
+            title={TOOLTIPS.FILTERS.OPEN_MOBILE}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            <span>Filters</span>
+            {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
+          </button>
 
           {/* Clear All Button */}
           {showActions && hasActiveFilters && onClearAll && (
-            <Tooltip content={TOOLTIPS.FILTERS.CLEAR_ALL}>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={onClearAll}
-                className="whitespace-nowrap"
-              >
-                {translate("filters.clearAll")}
-              </Button>
-            </Tooltip>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={onClearAll}
+              className="whitespace-nowrap"
+              title={TOOLTIPS.FILTERS.CLEAR_ALL}
+            >
+              {translate("filters.clearAll")}
+            </Button>
           )}
         </div>
 
