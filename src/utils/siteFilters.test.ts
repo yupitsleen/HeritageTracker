@@ -16,6 +16,7 @@ const mockSites: Site[] = [
     coordinates: [31.5, 34.4],
     status: "destroyed",
     dateDestroyed: "2023-10-15",
+    lastUpdated: "2024-01-01",
     description: "Ancient site",
     historicalSignificance: "Test",
     culturalValue: "Test",
@@ -31,6 +32,7 @@ const mockSites: Site[] = [
     coordinates: [31.5, 34.4],
     status: "heavily-damaged",
     dateDestroyed: "2023-12-01",
+    lastUpdated: "2024-01-01",
     description: "Medieval site",
     historicalSignificance: "Test",
     culturalValue: "Test",
@@ -46,6 +48,7 @@ const mockSites: Site[] = [
     coordinates: [31.5, 34.4],
     status: "damaged",
     dateDestroyed: "2024-01-15",
+    lastUpdated: "2024-01-01",
     description: "Modern site",
     historicalSignificance: "Test",
     culturalValue: "Test",
@@ -54,6 +57,41 @@ const mockSites: Site[] = [
     sources: [],
   },
 ];
+
+// Additional test sites for sourceAssessmentDate testing
+const surveyOnlySite2025: Site = {
+  id: "survey-only-2025",
+  name: "Survey Only Site 2025",
+  type: "mosque",
+  yearBuilt: "1200",
+  coordinates: [31.5, 34.4],
+  status: "threatened",
+  sourceAssessmentDate: "2025-10-06",
+  lastUpdated: "2024-01-01",
+  description: "Site with only survey date in 2025",
+  historicalSignificance: "Test",
+  culturalValue: "Test",
+  verifiedBy: ["UNESCO"],
+  images: { before: { url: "/test.jpg", credit: "Test" } },
+  sources: [],
+};
+
+const surveyOnlySite2023: Site = {
+  id: "survey-only-2023",
+  name: "Survey Only Site 2023",
+  type: "church",
+  yearBuilt: "1500",
+  coordinates: [31.5, 34.4],
+  status: "damaged",
+  sourceAssessmentDate: "2023-11-15",
+  lastUpdated: "2024-01-01",
+  description: "Site with only survey date in 2023",
+  historicalSignificance: "Test",
+  culturalValue: "Test",
+  verifiedBy: ["UNESCO"],
+  images: { before: { url: "/test.jpg", credit: "Test" } },
+  sources: [],
+};
 
 describe("filterSitesByTypeAndStatus", () => {
   it("returns all sites when no filters selected", () => {
@@ -115,7 +153,92 @@ describe("filterSitesByDestructionDate", () => {
       new Date("2023-12-31")
     );
     expect(result).toHaveLength(1);
-    expect(result[0].id).toBe("medieval-site");
+    expect(result.map((s) => s.id)).toContain("medieval-site");
+  });
+
+  it("uses sourceAssessmentDate as fallback when dateDestroyed is not available", () => {
+    const result = filterSitesByDestructionDate(
+      [surveyOnlySite2025],
+      new Date("2025-01-01"),
+      new Date("2025-12-31")
+    );
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe("survey-only-2025");
+  });
+
+  it("filters out sites with sourceAssessmentDate outside the range", () => {
+    const sitesWithSurveys = [...mockSites, surveyOnlySite2025, surveyOnlySite2023];
+    const result = filterSitesByDestructionDate(
+      sitesWithSurveys,
+      new Date("2024-01-01"),
+      new Date("2024-12-31")
+    );
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe("modern-site");
+    expect(result.map((s) => s.id)).not.toContain("survey-only-2025");
+    expect(result.map((s) => s.id)).not.toContain("survey-only-2023");
+  });
+
+  it("excludes sites with neither dateDestroyed nor sourceAssessmentDate when filter is active", () => {
+    const siteWithoutDates: Site = {
+      id: "no-dates",
+      name: "No Dates Site",
+      type: "mosque",
+      yearBuilt: "1200",
+      coordinates: [31.5, 34.4],
+      status: "unknown",
+      lastUpdated: "2024-01-01",
+      description: "Test",
+      historicalSignificance: "Test",
+      culturalValue: "Test",
+      verifiedBy: ["UNESCO"],
+      images: { before: { url: "/test.jpg", credit: "Test" } },
+      sources: [],
+    };
+
+    const result = filterSitesByDestructionDate(
+      [...mockSites, surveyOnlySite2025, surveyOnlySite2023, siteWithoutDates],
+      new Date("2023-01-01"),
+      new Date("2025-12-31")
+    );
+    expect(result.map((s) => s.id)).not.toContain("no-dates");
+  });
+
+  it("prefers dateDestroyed over sourceAssessmentDate when both exist", () => {
+    const siteWithBoth: Site = {
+      id: "both-dates",
+      name: "Both Dates Site",
+      type: "mosque",
+      yearBuilt: "1200",
+      coordinates: [31.5, 34.4],
+      status: "destroyed",
+      dateDestroyed: "2023-06-15",
+      sourceAssessmentDate: "2025-10-06",
+      lastUpdated: "2024-01-01",
+      description: "Test",
+      historicalSignificance: "Test",
+      culturalValue: "Test",
+      verifiedBy: ["UNESCO"],
+      images: { before: { url: "/test.jpg", credit: "Test" } },
+      sources: [],
+    };
+
+    // Should use dateDestroyed (2023-06-15), not sourceAssessmentDate (2025-10-06)
+    const result = filterSitesByDestructionDate(
+      [siteWithBoth],
+      new Date("2023-01-01"),
+      new Date("2023-12-31")
+    );
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe("both-dates");
+
+    // Should NOT include site when filtering for 2025
+    const result2025 = filterSitesByDestructionDate(
+      [siteWithBoth],
+      new Date("2025-01-01"),
+      new Date("2025-12-31")
+    );
+    expect(result2025).toHaveLength(0);
   });
 });
 
