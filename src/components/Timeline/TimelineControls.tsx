@@ -121,8 +121,9 @@ export function TimelineControls({
         />
       )}
 
-      {/* Speed control */}
-      {renderSpeedControl()}
+      {/* Speed control - only show when map settings are visible (Timeline page) */}
+      {/* On Dashboard, speed control is rendered separately below (line 199) */}
+      {!hideMapSettings && renderSpeedControl()}
     </>
   );
 
