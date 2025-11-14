@@ -109,7 +109,7 @@ export function Tooltip({ content, children }: TooltipProps) {
   const tooltipContent = isVisible && (
     <div
       ref={tooltipRef}
-      className="px-3 py-2 bg-gray-900 text-white text-xs rounded-md shadow-lg max-w-[min(20rem,calc(100vw-2rem))] whitespace-normal text-center"
+      className="px-3 py-2 bg-gray-900 text-white text-xs rounded-md shadow-lg max-w-[16rem] break-words text-center"
       style={{
         position: 'fixed',
         top: `${position.top}px`,
@@ -120,6 +120,7 @@ export function Tooltip({ content, children }: TooltipProps) {
         visibility: isPositioned ? 'visible' : 'hidden', // Hide until positioned to prevent flash at (0,0)
         opacity: isPositioned ? 1 : 0, // Also fade in for smooth appearance
         transition: isPositioned ? 'opacity 150ms ease-in-out' : 'none', // Smooth fade-in after positioning
+        width: 'fit-content', // Shrink to fit content, don't stretch to max-width
       }}
     >
       {content}
