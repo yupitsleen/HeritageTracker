@@ -22,8 +22,11 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
   const siteTypeLabel = translateSiteType(translate, site.type);
   const siteStatusLabel = translateStatus(translate, site.status);
 
-  // Get effective destruction date (with fallback to source assessment date)
+  // Get effective destruction date (with fallback to source assessment date) - for timeline functionality only
   const effectiveDestructionDate = getEffectiveDestructionDate(site);
+
+  // For display: show actual destruction date or "Unknown"
+  const displayDestructionDate = site.dateDestroyed || null;
 
   return (
     <div className="space-y-6">
@@ -53,14 +56,17 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
           )}
         </div>
         <InfoItem label={translate("siteDetail.status")} value={siteStatusLabel} t={t} />
-        {effectiveDestructionDate && (
-          <div>
-            <span className={`text-sm font-semibold ${t.text.body}`}>{translate("siteDetail.dateDestroyed")}:</span>
-            <p className={`mt-1 ${t.text.heading}`}>{effectiveDestructionDate}</p>
-            {site.dateDestroyedIslamic && (
-              <p className={`text-sm mt-1 ${t.text.muted}`}>{site.dateDestroyedIslamic}</p>
-            )}
-          </div>
+        <div>
+          <span className={`text-sm font-semibold ${t.text.body}`}>{translate("siteDetail.dateDestroyed")}:</span>
+          <p className={`mt-1 ${t.text.heading}`}>
+            {displayDestructionDate || translate("common.unknown")}
+          </p>
+          {site.dateDestroyedIslamic && displayDestructionDate && (
+            <p className={`text-sm mt-1 ${t.text.muted}`}>{site.dateDestroyedIslamic}</p>
+          )}
+        </div>
+        {site.sourceAssessmentDate && (
+          <InfoItem label={translate("siteDetail.surveyDate")} value={site.sourceAssessmentDate} t={t} />
         )}
         <InfoItem label={translate("siteDetail.lastUpdated")} value={site.lastUpdated} t={t} />
       </div>

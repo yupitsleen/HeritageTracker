@@ -85,6 +85,7 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
         {sortedSites.map((site, index) => {
           const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
           const effectiveDestructionDate = getEffectiveDestructionDate(site);
+          const displayDestructionDate = site.dateDestroyed || null;
 
           return (
             <div
@@ -217,14 +218,26 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
                     {translate("table.dateDestroyed")}:
                   </span>
                   <p className={`text-sm ${t.text.heading}`}>
-                    {formatDateLong(effectiveDestructionDate, localeConfig.bcp47)}
+                    {displayDestructionDate ? formatDateLong(displayDestructionDate, localeConfig.bcp47) : translate("common.unknown")}
                   </p>
-                  {site.dateDestroyedIslamic && (
+                  {site.dateDestroyedIslamic && displayDestructionDate && (
                     <p className={`text-xs ${t.text.muted}`}>
                       {translate("table.islamic")}: {site.dateDestroyedIslamic}
                     </p>
                   )}
                 </div>
+
+                {/* Survey Date (if exists) */}
+                {site.sourceAssessmentDate && (
+                  <div>
+                    <span className={`text-xs font-semibold ${t.text.muted} uppercase`}>
+                      {translate("table.surveyDate")}:
+                    </span>
+                    <p className={`text-sm ${t.text.heading}`}>
+                      {formatDateLong(site.sourceAssessmentDate, localeConfig.bcp47)}
+                    </p>
+                  </div>
+                )}
 
                 {/* Description */}
                 <div>

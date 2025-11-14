@@ -9,6 +9,7 @@ export type SortField =
   | "status"
   | "dateDestroyed"
   | "dateDestroyedIslamic"
+  | "sourceAssessmentDate"
   | "yearBuilt"
   | "yearBuiltIslamic"
   | "lastUpdated";

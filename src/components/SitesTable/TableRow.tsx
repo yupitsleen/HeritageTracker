@@ -37,8 +37,11 @@ export function TableRow({
   // Get display names based on text direction (RTL vs LTR)
   const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
 
-  // Get effective destruction date (with fallback to sourceAssessmentDate)
+  // Get effective destruction date (with fallback to sourceAssessmentDate) - for timeline functionality only
   const effectiveDestructionDate = getEffectiveDestructionDate(site);
+
+  // For display: show actual destruction date or "Unknown"
+  const displayDestructionDate = site.dateDestroyed || null;
 
   return (
     <tr
@@ -118,12 +121,20 @@ export function TableRow({
       )}
       {visibleColumns.has("dateDestroyed") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {formatDateStandard(effectiveDestructionDate)}
+          {displayDestructionDate ? formatDateStandard(displayDestructionDate) : translate("common.unknown")}
         </td>
       )}
       {visibleColumns.has("dateDestroyedIslamic") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {site.dateDestroyedIslamic || translate("common.na")}
+          {displayDestructionDate
+            ? (site.dateDestroyedIslamic || translate("common.na"))
+            : translate("common.unknown")
+          }
+        </td>
+      )}
+      {visibleColumns.has("sourceAssessmentDate") && (
+        <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
+          {formatDateStandard(site.sourceAssessmentDate)}
         </td>
       )}
       {visibleColumns.has("yearBuilt") && (

@@ -72,7 +72,7 @@ export function SitesTableDesktop({
     if (!visibleColumns) {
       if (variant === "expanded") {
         // All columns visible in expanded mode
-        return new Set(["type", "name", "status", "dateDestroyed", "dateDestroyedIslamic", "yearBuilt", "yearBuiltIslamic", "lastUpdated"]);
+        return new Set(["type", "name", "status", "dateDestroyed", "dateDestroyedIslamic", "sourceAssessmentDate", "yearBuilt", "yearBuiltIslamic", "lastUpdated"]);
       }
       // Compact mode: only essential columns
       return new Set(["name", "status", "dateDestroyed"]);
