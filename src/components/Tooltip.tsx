@@ -109,7 +109,7 @@ export function Tooltip({ content, children }: TooltipProps) {
   const tooltipContent = isVisible && (
     <div
       ref={tooltipRef}
-      className="px-3 py-2 bg-gray-900 text-white text-xs rounded-md shadow-lg max-w-80 max-w-[calc(100vw-2rem)] whitespace-normal text-center"
+      className="px-3 py-2 bg-gray-900 text-white text-xs rounded-md shadow-lg max-w-[min(20rem,calc(100vw-2rem))] whitespace-normal text-center"
       style={{
         position: 'fixed',
         top: `${position.top}px`,
