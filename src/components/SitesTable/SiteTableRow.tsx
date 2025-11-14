@@ -1,7 +1,6 @@
 import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard, getEffectiveDestructionDate } from "../../utils/format";
-import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -74,11 +73,9 @@ export function SiteTableRow({
       )}
       {isColumnVisible("type") && (
         <td className={`${t.table.td} text-center`}>
-          <Tooltip content={getSiteTypeLabel(site.type)}>
-            <span className="inline-flex items-center justify-center">
-              <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
-            </span>
-          </Tooltip>
+          <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
+            <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
+          </span>
         </td>
       )}
       {isColumnVisible("status") && (

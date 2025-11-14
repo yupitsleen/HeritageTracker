@@ -1,7 +1,6 @@
 import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
 import { formatDateStandard, translateStatus, getSiteDisplayNames, getEffectiveDestructionDate } from "../../utils/format";
-import { Tooltip } from "../Tooltip";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -57,11 +56,9 @@ export function TableRow({
     >
       {visibleColumns.has("type") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} text-center`}>
-          <Tooltip content={getSiteTypeLabel(site.type)}>
-            <span className="inline-flex items-center justify-center">
-              <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
-            </span>
-          </Tooltip>
+          <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
+            <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
+          </span>
         </td>
       )}
       {visibleColumns.has("name") && (
