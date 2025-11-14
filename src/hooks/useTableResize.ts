@@ -99,6 +99,9 @@ export function useTableResize(
     if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.dateDestroyedIslamic) {
       columns.push("dateDestroyedIslamic");
     }
+    if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.sourceAssessmentDate) {
+      columns.push("sourceAssessmentDate");
+    }
     if (tableWidth >= TABLE_CONFIG.COLUMN_BREAKPOINTS.yearBuilt) {
       columns.push("yearBuilt");
     }

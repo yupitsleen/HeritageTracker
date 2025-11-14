@@ -87,6 +87,7 @@ export const TABLE_CONFIG = {
     status: 360,             // Show Status column at 360px+
     dateDestroyed: 480,      // Show Date Destroyed column at 480px+
     dateDestroyedIslamic: 650, // Show Islamic Date at 650px+
+    sourceAssessmentDate: 725, // Show Survey Date at 725px+
     yearBuilt: 800,          // Show Year Built at 800px+
     yearBuiltIslamic: 950,   // Show Islamic Year Built at 950px+
   },

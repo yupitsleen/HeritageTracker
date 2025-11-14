@@ -1,6 +1,6 @@
 import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard, translateStatus, getSiteDisplayNames, getEffectiveDestructionDate } from "../../utils/format";
+import { formatDateStandard, translateStatus, getSiteDisplayNames } from "../../utils/format";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -36,9 +36,6 @@ export function TableRow({
 
   // Get display names based on text direction (RTL vs LTR)
   const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
-
-  // Get effective destruction date (with fallback to sourceAssessmentDate) - for timeline functionality only
-  const effectiveDestructionDate = getEffectiveDestructionDate(site);
 
   // For display: show actual destruction date or "Unknown"
   const displayDestructionDate = site.dateDestroyed || null;

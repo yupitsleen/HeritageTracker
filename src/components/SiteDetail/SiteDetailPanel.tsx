@@ -1,6 +1,6 @@
 import type { Site } from "../../types";
 import { StatusBadge } from "../StatusBadge";
-import { formatLabel, translateSiteType, translateStatus, getEffectiveDestructionDate } from "../../utils/format";
+import { formatLabel, translateSiteType, translateStatus } from "../../utils/format";
 import { cn } from "../../styles/theme";
 import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -21,9 +21,6 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
   // Translate site type and status
   const siteTypeLabel = translateSiteType(translate, site.type);
   const siteStatusLabel = translateStatus(translate, site.status);
-
-  // Get effective destruction date (with fallback to source assessment date) - for timeline functionality only
-  const effectiveDestructionDate = getEffectiveDestructionDate(site);
 
   // For display: show actual destruction date or "Unknown"
   const displayDestructionDate = site.dateDestroyed || null;
