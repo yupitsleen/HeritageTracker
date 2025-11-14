@@ -89,42 +89,44 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
         </section>
       )}
 
-      {/* Images Section */}
-      <section>
-        <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.images")}</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Before image */}
-          {site.images?.before ? (
-            <SiteImage
-              image={site.images.before}
-              alt={`${site.name} - ${translate("siteDetail.beforeDestruction")}`}
-              label={translate("siteDetail.beforeDestruction")}
-            />
-          ) : (
-            <SiteImagePlaceholder label={translate("siteDetail.beforeDestruction")} />
-          )}
+      {/* Images Section - only show if at least one before/after image exists */}
+      {(site.images?.before || site.images?.after) && (
+        <section>
+          <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.images")}</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Before image */}
+            {site.images?.before ? (
+              <SiteImage
+                image={site.images.before}
+                alt={`${site.name} - ${translate("siteDetail.beforeDestruction")}`}
+                label={translate("siteDetail.beforeDestruction")}
+              />
+            ) : (
+              <SiteImagePlaceholder label={translate("siteDetail.beforeDestruction")} />
+            )}
 
-          {/* After image */}
-          {site.images?.after ? (
-            <SiteImage
-              image={site.images.after}
-              alt={`${site.name} - ${translate("siteDetail.afterDestruction")}`}
-              label={translate("siteDetail.afterDestruction")}
-            />
-          ) : (
-            <SiteImagePlaceholder label={translate("siteDetail.afterDestruction")} />
-          )}
+            {/* After image */}
+            {site.images?.after ? (
+              <SiteImage
+                image={site.images.after}
+                alt={`${site.name} - ${translate("siteDetail.afterDestruction")}`}
+                label={translate("siteDetail.afterDestruction")}
+              />
+            ) : (
+              <SiteImagePlaceholder label={translate("siteDetail.afterDestruction")} />
+            )}
 
-          {/* Satellite image (optional, only show if provided) */}
-          {site.images?.satellite && (
-            <SiteImage
-              image={site.images.satellite}
-              alt={`${site.name} - Satellite imagery`}
-              label="Satellite imagery"
-            />
-          )}
-        </div>
-      </section>
+            {/* Satellite image (optional, only show if provided) */}
+            {site.images?.satellite && (
+              <SiteImage
+                image={site.images.satellite}
+                alt={`${site.name} - Satellite imagery`}
+                label="Satellite imagery"
+              />
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Sources Section */}
       {site.sources?.length > 0 && (
