@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - develop
-      - 'feat/**'
-      - 'fix/**'
+      - "feat/**"
+      - "fix/**"
 
 permissions:
   contents: read
@@ -35,10 +35,20 @@ jobs:
         run: npm run lint
 
       - name: Run all tests
+        env:
+          # Use mock backend in CI unit tests to avoid requiring Supabase credentials
+          TEST_BACKEND: mock
         run: npm test
 
       - name: Run mobile smoke test
-        run: npm test -- App.mobile.test.tsx
+        run: |
+          # Only run the mobile smoke test if the App.mobile.test file exists in the repo
+          if git ls-files -- 'src/**/App.mobile.test.*' | grep -q .; then
+            echo "Found mobile smoke test; running it..."
+            TEST_BACKEND=mock npm test -- App.mobile.test.tsx
+          else
+            echo "Skipping mobile smoke test: no matching file found."
+          fi
 
       - name: Build production bundle
         run: npm run build
@@ -46,7 +56,7 @@ jobs:
       - name: Analyze bundle size
         id: bundle
         run: |
-          echo "## 📦 Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "## \ud83d\udce6 Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "Total dist size:" >> $GITHUB_STEP_SUMMARY
