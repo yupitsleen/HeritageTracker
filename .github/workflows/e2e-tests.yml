@@ -26,20 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-
-      - name: Setup Playwright (install browsers only — skip system deps)
-        uses: microsoft/playwright-github-action@v1
-        with:
-          install-deps: false
-          browsers: chromium,firefox,webkit
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
         run: npm run e2e

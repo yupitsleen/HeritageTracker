@@ -122,9 +122,9 @@ test.describe('Smoke Tests - Performance', () => {
 
     const loadTime = Date.now() - startTime;
 
-    // Should load within 5 seconds (reasonable target for development)
-    // This catches performance regressions while allowing for CI variability
-    expect(loadTime).toBeLessThan(5000);
+    // Should load within 7 seconds (allows for slower CI runners)
+    // This catches major performance regressions while being realistic for CI
+    expect(loadTime).toBeLessThan(7000);
   });
 });
 

@@ -46,6 +46,24 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run e2e
+        env:
+          CI: true
+          VITE_USE_MOCK_API: true
+          VITE_USE_LOCAL_BACKEND: false
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-deploy
+          path: playwright-report/
+          retention-days: 7
+
       - name: Analyze bundle size
         run: |
           echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
