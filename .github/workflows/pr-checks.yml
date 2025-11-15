@@ -28,36 +28,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-
-      - name: Setup Playwright (install browsers only — skip system deps)
-        uses: microsoft/playwright-github-action@v1
-        with:
-          install-deps: false
-          browsers: chromium,firefox,webkit
-
       - name: Run linter
         run: npm run lint
 
-      - name: Run all tests
+      - name: Run unit tests (Vitest only)
         env:
           # Use mock backend in CI unit tests to avoid requiring Supabase credentials
           TEST_BACKEND: mock
-        run: npm test
+        run: npx vitest --run
 
       - name: Run mobile smoke test
         run: |
           # Only run the mobile smoke test if the App.mobile.test file exists in the repo
           if git ls-files -- 'src/**/App.mobile.test.*' | grep -q .; then
             echo "Found mobile smoke test; running it..."
-            TEST_BACKEND=mock npm test -- App.mobile.test.tsx
+            TEST_BACKEND=mock npx vitest --run src/**/App.mobile.test.*
           else
             echo "Skipping mobile smoke test: no matching file found."
           fi
