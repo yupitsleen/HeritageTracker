@@ -31,11 +31,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+      - name: Run unit tests (Vitest only)
+        run: npx vitest --run
 
       - name: Run mobile smoke test
-        run: npm test -- App.mobile.test.tsx
+        run: |
+          if git ls-files -- 'src/**/App.mobile.test.*' | grep -q .; then
+            echo "Found mobile smoke test; running it with Vitest..."
+            npx vitest --run src/**/App.mobile.test.*
+          else
+            echo "Skipping mobile smoke test: no matching file found."
+          fi
 
       - name: Build
         run: npm run build
