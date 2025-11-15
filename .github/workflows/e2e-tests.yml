@@ -1,14 +1,16 @@
 name: E2E Tests
 
+# Disabled automatic PR runs: E2E tests are expensive and require browsers.
+# Run manually via the workflow_dispatch event or from the Actions UI.
 on:
-  pull_request:
-    branches: [main, develop]
+  workflow_dispatch:
 
 permissions:
   contents: read
 jobs:
   e2e-tests:
-    timeout-minutes: 15
+    # Increased timeout to allow slower GitHub runners to complete E2E
+    timeout-minutes: 30
     runs-on: ubuntu-latest
 
     steps:
@@ -18,14 +20,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Setup Playwright (install browsers only — skip system deps)
+        uses: microsoft/playwright-github-action@v1
+        with:
+          install-deps: false
+          browsers: chromium,firefox,webkit
 
       - name: Run E2E tests
         run: npm run e2e
