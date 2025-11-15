@@ -228,20 +228,29 @@ export const formatYearRange = (
 
 /**
  * Gets the effective destruction date for a site with fallback logic.
- * Falls back to sourceAssessmentDate if dateDestroyed is not available.
+ *
+ * **Terminology Note:**
+ * - `dateDestroyed`: Exact date when site was destroyed (preferred)
+ * - `sourceAssessmentDate`: Survey date when damage was documented (fallback)
+ * - Display term in UI: "Survey Date" (not "Source Assessment Date")
+ *
+ * See `Site.sourceAssessmentDate` JSDoc in types/index.ts for full documentation.
  *
  * @param site - Site object with optional dateDestroyed and sourceAssessmentDate
  * @returns The effective destruction date (dateDestroyed or sourceAssessmentDate), or undefined if neither exists
  *
  * @example
+ * // Prefers actual destruction date
  * getEffectiveDestructionDate({ dateDestroyed: "2023-10-15", sourceAssessmentDate: "2025-10-06" })
  * // => "2023-10-15"
  *
+ * // Falls back to survey date when destruction date unknown
  * getEffectiveDestructionDate({ sourceAssessmentDate: "2025-10-06" })
- * // => "2025-10-06" (fallback)
+ * // => "2025-10-06"
  *
+ * // Returns undefined when no dates available
  * getEffectiveDestructionDate({})
- * // => undefined (no dates available)
+ * // => undefined
  */
 export const getEffectiveDestructionDate = (
   site: Pick<Site, "dateDestroyed" | "sourceAssessmentDate">

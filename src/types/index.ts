@@ -49,10 +49,39 @@ export interface Site {
   yearBuiltIslamic?: string; // Manually verified Islamic calendar date
   coordinates: [number, number]; // [latitude, longitude] - Leaflet format
   status: string; // Now accepts any string - use STATUS_REGISTRY for valid statuses
+
+  /**
+   * Exact date when the site was destroyed or damaged (ISO date string).
+   *
+   * Use when the precise destruction date is known from sources.
+   * Leave undefined if only a survey/assessment date is available.
+   */
   dateDestroyed?: string;
+
   dateDestroyedIslamic?: string; // Manually verified Islamic calendar date
   lastUpdated: string; // ISO date string - tracks when WE last modified this data row
-  sourceAssessmentDate?: string; // ISO date string - when the verification source assessed the site (archival)
+
+  /**
+   * Survey Date - Date when verification source assessed/surveyed the site (ISO date string).
+   *
+   * **Purpose:** Archival timestamp for when damage was documented, not when it occurred.
+   *
+   * **Usage:**
+   * - Acts as fallback timeline date when `dateDestroyed` is unknown
+   * - Display as "Survey Date" in UI (not "Source Assessment Date")
+   * - Used by `getEffectiveDestructionDate()` for timeline positioning
+   *
+   * **Examples:**
+   * - Site destroyed in Oct 2023, surveyed in May 2024 → use `dateDestroyed`
+   * - Site damage date unknown, surveyed in Oct 2025 → use `sourceAssessmentDate`
+   *
+   * **Display Guidelines:**
+   * - Tables: Show in "Survey Date" column (separate from destruction date)
+   * - Site Detail: Show "Survey Date: [date]" when destruction date is "Unknown"
+   * - Timeline: Include dot for survey date (hollow if no destruction date)
+   */
+  sourceAssessmentDate?: string;
+
   description: string;
   historicalSignificance: string;
   culturalValue: string;
