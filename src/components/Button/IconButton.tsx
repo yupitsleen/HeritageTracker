@@ -6,8 +6,8 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   icon: ReactNode;
   /** Accessible label for screen readers */
   ariaLabel: string;
-  /** Tooltip text shown on hover */
-  title: string;
+  /** Tooltip text shown on hover (native browser tooltip) */
+  title?: string;
 }
 
 /**

@@ -28,6 +28,7 @@ export const en: Translations = {
     settings: "Settings",
     about: "About",
     na: "N/A",
+    unknown: "Unknown",
   },
 
   header: {
@@ -124,6 +125,7 @@ export const en: Translations = {
     destructionDate: "Destruction Date",
     destructionDateGregorian: "Destruction Date (Gregorian)",
     destructionDateIslamic: "Destruction Date (Islamic)",
+    surveyDate: "Survey Date",
     tooltip: "Click any site row to view detailed information. Click column headers to sort. Hover over site rows to highlight them on the map and timeline.",
     builtGregorian: "Built (Gregorian)",
     builtIslamic: "Built (Islamic)",
@@ -217,6 +219,7 @@ export const en: Translations = {
     yearBuilt: "Year Built",
     status: "Status",
     dateDestroyed: "Date Destroyed/Damaged",
+    surveyDate: "Survey Date",
     lastUpdated: "Last Updated",
     description: "Description",
     whatWasLost: "What Was Lost",

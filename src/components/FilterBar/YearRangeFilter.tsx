@@ -19,6 +19,7 @@ interface YearRangeFilterProps {
  * YearRangeFilter - Reusable year range picker with BC/BCE support
  * Handles year input and era selection (BCE/CE)
  * Converts years to internal format: BCE = negative, CE = positive
+ * Input fields are empty when no filter is active
  */
 export function YearRangeFilter({
   onStartChange,
@@ -26,16 +27,13 @@ export function YearRangeFilter({
   label,
   tooltip,
   supportBCE = true,
-  startYearDefault = "",
-  endYearDefault = new Date().getFullYear().toString(),
-  startEraDefault = "CE",
 }: YearRangeFilterProps) {
   const t = useThemeClasses();
 
-  // Local state for year input and era selection
-  const [startYearInput, setStartYearInput] = React.useState(startYearDefault);
-  const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">(startEraDefault);
-  const [endYearInput, setEndYearInput] = React.useState(endYearDefault);
+  // Local state for year input and era selection (empty by default)
+  const [startYearInput, setStartYearInput] = React.useState("");
+  const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">("CE");
+  const [endYearInput, setEndYearInput] = React.useState("");
   const [endYearEra, setEndYearEra] = React.useState<"CE" | "BCE">("CE");
 
   // Update parent state when year or era changes

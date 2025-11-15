@@ -1,23 +1,27 @@
 import { useMemo } from "react";
 import type { Site } from "../types";
 import type { TimelineEvent } from "../utils/d3Timeline";
+import { getEffectiveDestructionDate } from "../utils/format";
 
 /**
  * Extract and process timeline data from sites
- * - Filters sites with destruction dates
+ * - Filters sites with destruction dates (or sourceAssessmentDate as fallback)
  * - Sorts events chronologically
  * - Returns structured timeline events
  */
 export function useTimelineData(sites: Site[]) {
   return useMemo(() => {
     const destructionDates: TimelineEvent[] = sites
-      .filter((site) => site.dateDestroyed)
-      .map((site) => ({
-        date: new Date(site.dateDestroyed!),
-        siteName: site.name,
-        siteId: site.id,
-        status: site.status as "destroyed" | "heavily-damaged" | "damaged" | undefined,
-      }))
+      .filter((site) => getEffectiveDestructionDate(site)) // Use effective date (fallback to sourceAssessmentDate)
+      .map((site) => {
+        const effectiveDate = getEffectiveDestructionDate(site);
+        return {
+          date: new Date(effectiveDate!),
+          siteName: site.name,
+          siteId: site.id,
+          status: site.status as "destroyed" | "heavily-damaged" | "damaged" | undefined,
+        };
+      })
       .sort((a, b) => a.date.getTime() - b.date.getTime());
 
     // Calculate event density for future visualizations

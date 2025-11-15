@@ -28,6 +28,7 @@ export const it: Translations = {
     settings: "Impostazioni",
     about: "Informazioni",
     na: "N/D",
+    unknown: "Sconosciuto",
   },
 
   header: {
@@ -109,6 +110,7 @@ export const it: Translations = {
     status: "Stato",
     yearBuilt: "Anno di Costruzione",
     dateDestroyed: "Data di Distruzione",
+    surveyDate: "Data del Sondaggio",
     location: "Posizione",
     verifiedBy: "Verificato da",
     compact: "Compatto",
@@ -217,6 +219,7 @@ export const it: Translations = {
     yearBuilt: "Anno di Costruzione",
     status: "Stato",
     dateDestroyed: "Data Distruzione/Danneggiamento",
+    surveyDate: "Data del Sondaggio",
     lastUpdated: "Ultimo Aggiornamento",
     description: "Descrizione",
     whatWasLost: "Cosa È Andato Perso",

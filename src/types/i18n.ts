@@ -67,6 +67,7 @@ export interface Translations {
     settings: string;
     about: string;
     na: string; // "N/A"
+    unknown: string; // "Unknown"
   };
 
   /** Header navigation */
@@ -167,6 +168,7 @@ export interface Translations {
     destructionDate: string;
     destructionDateGregorian: string;
     destructionDateIslamic: string;
+    surveyDate: string;
     builtGregorian: string;
     builtIslamic: string;
     showing: string;
@@ -266,6 +268,7 @@ export interface Translations {
     yearBuilt: string;
     status: string;
     dateDestroyed: string;
+    surveyDate: string;
     lastUpdated: string;
     description: string;
     whatWasLost: string;

@@ -6,7 +6,6 @@ import { Button } from "../Button";
 import { getSpeedValues } from "../../config/animation";
 import { TimelineSettingsMenu } from "./TimelineSettingsMenu";
 import { TimelineToggleButton } from "./TimelineToggleButton";
-import { Tooltip } from "../Tooltip";
 import { TOOLTIPS } from "../../config/tooltips";
 
 interface TimelineControlsProps {
@@ -122,8 +121,9 @@ export function TimelineControls({
         />
       )}
 
-      {/* Speed control */}
-      {renderSpeedControl()}
+      {/* Speed control - only show when map settings are visible (Timeline page) */}
+      {/* On Dashboard, speed control is rendered separately below (line 199) */}
+      {!hideMapSettings && renderSpeedControl()}
     </>
   );
 
@@ -133,49 +133,46 @@ export function TimelineControls({
       {!hidePlayControls && (
         <>
           {!isPlaying ? (
-            <Tooltip content={translate("timeline.playTooltip")}>
-              <Button
-                onClick={onPlay}
-                variant="primary"
-                size="xs"
-                icon={<PlayIcon className="w-3 h-3" />}
-                aria-label={translate("timeline.play")}
-              >
-                {/* Icon only below xl, full text at xl+ */}
-                <span className="hidden xl:inline">{translate("timeline.play")}</span>
-              </Button>
-            </Tooltip>
+            <Button
+              onClick={onPlay}
+              variant="primary"
+              size="xs"
+              icon={<PlayIcon className="w-3 h-3" />}
+              aria-label={translate("timeline.play")}
+              title={translate("timeline.playTooltip")}
+            >
+              {/* Icon only below xl, full text at xl+ */}
+              <span className="hidden xl:inline">{translate("timeline.play")}</span>
+            </Button>
           ) : (
-            <Tooltip content={TOOLTIPS.TIMELINE.PAUSE}>
-              <Button
-                onClick={onPause}
-                variant="danger"
-                size="xs"
-                icon={<PauseIcon className="w-3 h-3" />}
-                aria-label={translate("timeline.pause")}
-              >
-                {/* Icon only below xl, full text at xl+ */}
-                <span className="hidden xl:inline">{translate("timeline.pause")}</span>
-              </Button>
-            </Tooltip>
+            <Button
+              onClick={onPause}
+              variant="danger"
+              size="xs"
+              icon={<PauseIcon className="w-3 h-3" />}
+              aria-label={translate("timeline.pause")}
+              title={TOOLTIPS.TIMELINE.PAUSE}
+            >
+              {/* Icon only below xl, full text at xl+ */}
+              <span className="hidden xl:inline">{translate("timeline.pause")}</span>
+            </Button>
           )}
         </>
       )}
 
       {/* Reset button */}
-      <Tooltip content={TOOLTIPS.TIMELINE.RESET}>
-        <Button
-          onClick={onReset}
-          disabled={isAtStart}
-          variant="secondary"
-          size="xs"
-          icon={<ArrowPathIcon className="w-3 h-3" />}
-          aria-label={translate("common.reset")}
-        >
-          {/* Icon only below xl, full text at xl+ */}
-          <span className="hidden xl:inline">{translate("common.reset")}</span>
-        </Button>
-      </Tooltip>
+      <Button
+        onClick={onReset}
+        disabled={isAtStart}
+        variant="secondary"
+        size="xs"
+        icon={<ArrowPathIcon className="w-3 h-3" />}
+        aria-label={translate("common.reset")}
+        title={TOOLTIPS.TIMELINE.RESET}
+      >
+        {/* Icon only below xl, full text at xl+ */}
+        <span className="hidden xl:inline">{translate("common.reset")}</span>
+      </Button>
 
       {/* Settings menu - only show on Timeline page (not Dashboard where map settings are hidden) */}
       {!hideMapSettings && (

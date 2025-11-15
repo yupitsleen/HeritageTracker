@@ -80,7 +80,9 @@ describe("DesktopLayout - Timeline Integration", () => {
 
       // Should NOT show "Sync Map" button when onSyncMapToggle is undefined
       // This allows hiding the button on Dashboard while keeping it on Timeline page
-      expect(queryByText(/Sync Map/i)).not.toBeInTheDocument();
+      expect(queryByText((content, element) => {
+        return element?.tagName === 'BUTTON' && /Sync Map/i.test(content);
+      })).not.toBeInTheDocument();
     });
 
     it("renders Previous/Next navigation buttons even when Sync Map is hidden", () => {
@@ -101,7 +103,9 @@ describe("DesktopLayout - Timeline Integration", () => {
       expect(getByText(/Next ⏭/i)).toBeInTheDocument();
 
       // But NOT show Sync Map button
-      expect(queryByText(/Sync Map/i)).not.toBeInTheDocument();
+      expect(queryByText((content, element) => {
+        return element?.tagName === 'BUTTON' && /Sync Map/i.test(content);
+      })).not.toBeInTheDocument();
     });
 
     it("hides map settings (Zoom to Site, Show Map Markers) when hideMapSettings is true", () => {
@@ -138,7 +142,9 @@ describe("DesktopLayout - Timeline Integration", () => {
       expect(queryByText(/Show Map Markers/i)).not.toBeInTheDocument();
 
       // Should NOT show Sync Map button
-      expect(queryByText(/Sync Map/i)).not.toBeInTheDocument();
+      expect(queryByText((content, element) => {
+        return element?.tagName === 'BUTTON' && /Sync Map/i.test(content);
+      })).not.toBeInTheDocument();
 
       // Should NOT show Settings menu button when hideMapSettings is true
       expect(queryByText(/Settings/i)).not.toBeInTheDocument();
@@ -181,7 +187,9 @@ describe("DesktopLayout - Timeline Integration", () => {
       );
 
       // Should show "Sync Map" button when onSyncMapToggle is a valid function
-      const syncButton = getByText(/Sync Map/i);
+      const syncButton = getByText((content, element) => {
+        return element?.tagName === 'BUTTON' && /Sync Map/i.test(content);
+      });
       expect(syncButton).toBeInTheDocument();
     });
 
@@ -199,7 +207,9 @@ describe("DesktopLayout - Timeline Integration", () => {
         </AnimationProvider>
       );
 
-      const syncButton = getByText(/Sync Map/i);
+      const syncButton = getByText((content, element) => {
+        return element?.tagName === 'BUTTON' && /Sync Map/i.test(content);
+      });
       syncButton.click();
 
       expect(mockToggle).toHaveBeenCalledTimes(1);

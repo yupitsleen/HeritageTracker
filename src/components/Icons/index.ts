@@ -6,16 +6,14 @@
  *
  * @example
  * ```tsx
- * import { InfoIcon, CloseIcon, ChevronIcon, InfoIconWithTooltip } from '@/components/Icons';
+ * import { InfoIcon, CloseIcon, ChevronIcon } from '@/components/Icons';
  *
- * <InfoIcon className="w-4 h-4 text-gray-500" />
+ * <InfoIcon className="w-4 h-4 text-gray-500" title="Helpful text" />
  * <CloseIcon className="w-6 h-6" aria-label="Close dialog" />
  * <ChevronIcon direction="down" className="w-4 h-4" />
- * <InfoIconWithTooltip tooltip="Helpful explanation text" />
  * ```
  */
 
 export { InfoIcon } from "./InfoIcon";
 export { CloseIcon } from "./CloseIcon";
 export { ChevronIcon } from "./ChevronIcon";
-export { InfoIconWithTooltip } from "./InfoIconWithTooltip";

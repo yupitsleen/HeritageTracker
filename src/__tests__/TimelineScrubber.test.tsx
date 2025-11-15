@@ -313,7 +313,7 @@ describe("TimelineScrubber", () => {
 
   describe("Sync Map Version Toggle", () => {
     it("renders Sync map version button in advanced mode", () => {
-      const { getByText } = renderWithTheme(
+      renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber
             sites={mockSites}
@@ -325,8 +325,8 @@ describe("TimelineScrubber", () => {
         </AnimationProvider>
       );
 
-      // Should show "Sync Map" button in advanced mode
-      const syncButton = getByText(/Sync Map/i);
+      // Should show "Sync Map" button in advanced mode (use getByRole to find the button specifically)
+      const syncButton = screen.getByRole("button", { name: /Sync Map/i });
       expect(syncButton).toBeInTheDocument();
     });
 

@@ -53,6 +53,8 @@ export const Z_INDEX = {
   HEADER_DROPDOWN: 1200,
   /** Tooltips (z-index: 1010) */
   TOOLTIP: 1010,
+  /** Timeline tooltips (z-index: 1300) - Must be above footer (STICKY: 1100) and header dropdowns (1200) */
+  TIMELINE_TOOLTIP: 1300,
   /** Fixed elements like sidebars (z-index: 1020) */
   FIXED: 1020,
   /** Modal overlays and dialogs (z-index: 9999) */
@@ -85,6 +87,7 @@ export const TABLE_CONFIG = {
     status: 360,             // Show Status column at 360px+
     dateDestroyed: 480,      // Show Date Destroyed column at 480px+
     dateDestroyedIslamic: 650, // Show Islamic Date at 650px+
+    sourceAssessmentDate: 725, // Show Survey Date at 725px+
     yearBuilt: 800,          // Show Year Built at 800px+
     yearBuiltIslamic: 950,   // Show Islamic Year Built at 950px+
   },

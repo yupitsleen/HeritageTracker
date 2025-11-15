@@ -1,4 +1,3 @@
-import { Tooltip } from "../Tooltip";
 import { InfoIcon } from "../Icons";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 
@@ -32,9 +31,11 @@ export function FilterLabel({ label, tooltip, className = "flex items-center gap
     <div className={className}>
       <label className={`text-sm font-semibold ${t.text.heading}`}>{label}</label>
       {tooltip && (
-        <Tooltip content={tooltip}>
-          <InfoIcon className={`w-4 h-4 ${t.icon.default}`} aria-label="More information" />
-        </Tooltip>
+        <InfoIcon
+          className={`w-4 h-4 ${t.icon.default} cursor-help`}
+          aria-label="More information"
+          title={tooltip}
+        />
       )}
     </div>
   );

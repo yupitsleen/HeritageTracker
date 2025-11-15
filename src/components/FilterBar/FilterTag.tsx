@@ -1,5 +1,4 @@
 import { cn } from "../../styles/theme";
-import { Tooltip } from "../Tooltip";
 import { TOOLTIPS } from "../../config/tooltips";
 
 interface FilterTagProps {
@@ -20,16 +19,15 @@ export function FilterTag({ label, onRemove, ariaLabel }: FilterTagProps) {
       "transition-colors duration-200"
     )}>
       {label}
-      <Tooltip content={TOOLTIPS.FILTERS.REMOVE_PILL}>
-        <button
-          type="button"
-          onClick={onRemove}
-          className="ml-0.5 text-gray-200 hover:text-[#ed3039] transition-colors text-sm font-bold leading-none focus:ring-2 focus:ring-[#ed3039] focus:outline-none rounded"
-          aria-label={ariaLabel}
-        >
-          ×
-        </button>
-      </Tooltip>
+      <button
+        type="button"
+        onClick={onRemove}
+        className="ml-0.5 text-gray-200 hover:text-[#ed3039] transition-colors text-sm font-bold leading-none focus:ring-2 focus:ring-[#ed3039] focus:outline-none rounded"
+        aria-label={ariaLabel}
+        title={TOOLTIPS.FILTERS.REMOVE_PILL}
+      >
+        ×
+      </button>
     </span>
   );
 }

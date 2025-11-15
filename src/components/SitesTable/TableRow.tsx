@@ -1,7 +1,6 @@
 import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard, translateStatus, getSiteDisplayNames, getEffectiveDestructionDate } from "../../utils/format";
-import { Tooltip } from "../Tooltip";
+import { formatDateStandard, translateStatus, getSiteDisplayNames } from "../../utils/format";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -38,8 +37,8 @@ export function TableRow({
   // Get display names based on text direction (RTL vs LTR)
   const { primary, secondary, primaryDir, secondaryDir } = getSiteDisplayNames(site, isRTL);
 
-  // Get effective destruction date (with fallback to sourceAssessmentDate)
-  const effectiveDestructionDate = getEffectiveDestructionDate(site);
+  // For display: show actual destruction date or "Unknown"
+  const displayDestructionDate = site.dateDestroyed || null;
 
   return (
     <tr
@@ -57,11 +56,9 @@ export function TableRow({
     >
       {visibleColumns.has("type") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} text-center`}>
-          <Tooltip content={getSiteTypeLabel(site.type)}>
-            <span className="inline-flex items-center justify-center">
-              <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
-            </span>
-          </Tooltip>
+          <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
+            <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
+          </span>
         </td>
       )}
       {visibleColumns.has("name") && (
@@ -121,12 +118,20 @@ export function TableRow({
       )}
       {visibleColumns.has("dateDestroyed") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {formatDateStandard(effectiveDestructionDate)}
+          {displayDestructionDate ? formatDateStandard(displayDestructionDate) : translate("common.unknown")}
         </td>
       )}
       {visibleColumns.has("dateDestroyedIslamic") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {site.dateDestroyedIslamic || translate("common.na")}
+          {displayDestructionDate
+            ? (site.dateDestroyedIslamic || translate("common.na"))
+            : translate("common.unknown")
+          }
+        </td>
+      )}
+      {visibleColumns.has("sourceAssessmentDate") && (
+        <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
+          {formatDateStandard(site.sourceAssessmentDate)}
         </td>
       )}
       {visibleColumns.has("yearBuilt") && (
@@ -134,7 +139,7 @@ export function TableRow({
       )}
       {visibleColumns.has("yearBuiltIslamic") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} ${COMPACT_TABLE.text} ${t.text.subheading}`}>
-          {site.yearBuiltIslamic || translate("common.na")}
+          {site.yearBuiltIslamic || "-"}
         </td>
       )}
       {visibleColumns.has("lastUpdated") && (

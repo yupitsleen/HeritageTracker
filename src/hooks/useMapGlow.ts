@@ -7,6 +7,7 @@ import {
   calculateHeritageIntegrity,
   getGlowReductionPercentage,
 } from "../utils/heritageCalculations";
+import { getEffectiveDestructionDate } from "../utils/format";
 
 /**
  * Hook to manage map glow state and calculations
@@ -59,8 +60,10 @@ export function useMapGlow(sites: Site[], currentDate: Date): MapGlowState {
       let currentGlow = baseGlow;
       let isDestroyed = false;
 
-      if (site.dateDestroyed) {
-        const destructionDate = new Date(site.dateDestroyed);
+      // Use effective destruction date (fallback to sourceAssessmentDate)
+      const effectiveDate = getEffectiveDestructionDate(site);
+      if (effectiveDate) {
+        const destructionDate = new Date(effectiveDate);
 
         // Check if destruction has occurred by current date
         if (destructionDate <= currentDate) {
@@ -79,7 +82,7 @@ export function useMapGlow(sites: Site[], currentDate: Date): MapGlowState {
         currentGlow,
         coordinates: site.coordinates,
         status: site.status as "destroyed" | "heavily-damaged" | "damaged",
-        dateDestroyed: site.dateDestroyed,
+        dateDestroyed: effectiveDate, // Store effective date for reference
         isDestroyed, // Add flag to track destruction state
       };
     });

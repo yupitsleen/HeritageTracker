@@ -1,4 +1,5 @@
 import type { Site } from "../types";
+import { getEffectiveDestructionDate } from "./format";
 
 /**
  * Filter sites by type and status
@@ -27,6 +28,7 @@ export const filterSitesByTypeAndStatus = (
 /**
  * Filter sites by destruction date range
  * Returns all sites if no date range is specified
+ * Uses effective destruction date (dateDestroyed or sourceAssessmentDate fallback)
  */
 export const filterSitesByDestructionDate = (
   sites: Site[],
@@ -36,9 +38,11 @@ export const filterSitesByDestructionDate = (
   if (!startDate && !endDate) return sites;
 
   return sites.filter((site) => {
-    if (!site.dateDestroyed) return true;
+    // Use effective destruction date (fallback to sourceAssessmentDate)
+    const effectiveDate = getEffectiveDestructionDate(site);
+    if (!effectiveDate) return false;
 
-    const destroyedDate = new Date(site.dateDestroyed);
+    const destroyedDate = new Date(effectiveDate);
 
     // Check start date
     if (startDate && destroyedDate < startDate) {

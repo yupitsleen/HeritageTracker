@@ -1,6 +1,6 @@
 import type { Site } from "../../types";
 import { StatusBadge } from "../StatusBadge";
-import { formatLabel, translateSiteType, translateStatus, getEffectiveDestructionDate } from "../../utils/format";
+import { formatLabel, translateSiteType, translateStatus } from "../../utils/format";
 import { cn } from "../../styles/theme";
 import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -22,8 +22,8 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
   const siteTypeLabel = translateSiteType(translate, site.type);
   const siteStatusLabel = translateStatus(translate, site.status);
 
-  // Get effective destruction date (with fallback to source assessment date)
-  const effectiveDestructionDate = getEffectiveDestructionDate(site);
+  // For display: show actual destruction date or "Unknown"
+  const displayDestructionDate = site.dateDestroyed || null;
 
   return (
     <div className="space-y-6">
@@ -53,14 +53,17 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
           )}
         </div>
         <InfoItem label={translate("siteDetail.status")} value={siteStatusLabel} t={t} />
-        {effectiveDestructionDate && (
-          <div>
-            <span className={`text-sm font-semibold ${t.text.body}`}>{translate("siteDetail.dateDestroyed")}:</span>
-            <p className={`mt-1 ${t.text.heading}`}>{effectiveDestructionDate}</p>
-            {site.dateDestroyedIslamic && (
-              <p className={`text-sm mt-1 ${t.text.muted}`}>{site.dateDestroyedIslamic}</p>
-            )}
-          </div>
+        <div>
+          <span className={`text-sm font-semibold ${t.text.body}`}>{translate("siteDetail.dateDestroyed")}:</span>
+          <p className={`mt-1 ${t.text.heading}`}>
+            {displayDestructionDate || translate("common.unknown")}
+          </p>
+          {site.dateDestroyedIslamic && displayDestructionDate && (
+            <p className={`text-sm mt-1 ${t.text.muted}`}>{site.dateDestroyedIslamic}</p>
+          )}
+        </div>
+        {site.sourceAssessmentDate && (
+          <InfoItem label={translate("siteDetail.surveyDate")} value={site.sourceAssessmentDate} t={t} />
         )}
         <InfoItem label={translate("siteDetail.lastUpdated")} value={site.lastUpdated} t={t} />
       </div>
@@ -89,42 +92,44 @@ export function SiteDetailPanel({ site }: SiteDetailPanelProps) {
         </section>
       )}
 
-      {/* Images Section */}
-      <section>
-        <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.images")}</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Before image */}
-          {site.images?.before ? (
-            <SiteImage
-              image={site.images.before}
-              alt={`${site.name} - ${translate("siteDetail.beforeDestruction")}`}
-              label={translate("siteDetail.beforeDestruction")}
-            />
-          ) : (
-            <SiteImagePlaceholder label={translate("siteDetail.beforeDestruction")} />
-          )}
+      {/* Images Section - only show if at least one before/after image exists */}
+      {(site.images?.before || site.images?.after) && (
+        <section>
+          <h4 className={`text-lg font-semibold mb-3 ${t.text.heading}`}>{translate("siteDetail.images")}</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Before image */}
+            {site.images?.before ? (
+              <SiteImage
+                image={site.images.before}
+                alt={`${site.name} - ${translate("siteDetail.beforeDestruction")}`}
+                label={translate("siteDetail.beforeDestruction")}
+              />
+            ) : (
+              <SiteImagePlaceholder label={translate("siteDetail.beforeDestruction")} />
+            )}
 
-          {/* After image */}
-          {site.images?.after ? (
-            <SiteImage
-              image={site.images.after}
-              alt={`${site.name} - ${translate("siteDetail.afterDestruction")}`}
-              label={translate("siteDetail.afterDestruction")}
-            />
-          ) : (
-            <SiteImagePlaceholder label={translate("siteDetail.afterDestruction")} />
-          )}
+            {/* After image */}
+            {site.images?.after ? (
+              <SiteImage
+                image={site.images.after}
+                alt={`${site.name} - ${translate("siteDetail.afterDestruction")}`}
+                label={translate("siteDetail.afterDestruction")}
+              />
+            ) : (
+              <SiteImagePlaceholder label={translate("siteDetail.afterDestruction")} />
+            )}
 
-          {/* Satellite image (optional, only show if provided) */}
-          {site.images?.satellite && (
-            <SiteImage
-              image={site.images.satellite}
-              alt={`${site.name} - Satellite imagery`}
-              label="Satellite imagery"
-            />
-          )}
-        </div>
-      </section>
+            {/* Satellite image (optional, only show if provided) */}
+            {site.images?.satellite && (
+              <SiteImage
+                image={site.images.satellite}
+                alt={`${site.name} - Satellite imagery`}
+                label="Satellite imagery"
+              />
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Sources Section */}
       {site.sources?.length > 0 && (

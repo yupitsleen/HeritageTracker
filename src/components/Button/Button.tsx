@@ -1,9 +1,9 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { useTheme } from '../../contexts/ThemeContext';
-import { PALESTINIAN_FLAG, SUBDUED_COLORS } from '../../config/colorThemes';
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { useTheme } from "../../contexts/ThemeContext";
+import { COLORS, PALESTINIAN_FLAG, SUBDUED_COLORS } from "../../config/colorThemes";
 
-export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
+export type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
+export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 /**
  * Get active state classes for toggle buttons
@@ -27,24 +27,20 @@ function getActiveHoverClasses(isDark: boolean): string {
  * Get text color based on theme and context
  */
 function getTextColor(isDark: boolean, lightText: boolean): string {
-  return isDark ? 'text-gray-300' : (lightText ? 'text-white' : 'text-gray-800');
+  return isDark ? "text-gray-300" : lightText ? "text-white" : "text-gray-800";
 }
 
 /**
  * Get variant-specific classes for inactive state
  */
-function getVariantClasses(
-  variant: ButtonVariant,
-  isDark: boolean,
-  textColor: string
-): string {
+function getVariantClasses(variant: ButtonVariant, isDark: boolean, textColor: string): string {
   const variants: Record<ButtonVariant, string> = {
     primary: isDark
-      ? `bg-transparent text-gray-300 border-gray-600 hover:bg-[${PALESTINIAN_FLAG.GREEN}] hover:text-white hover:border-[${PALESTINIAN_FLAG.GREEN}] hover:shadow-lg active:opacity-80`
-      : `bg-transparent ${textColor} border-gray-400 hover:bg-[${PALESTINIAN_FLAG.GREEN}] hover:text-white hover:border-[${PALESTINIAN_FLAG.GREEN}] hover:shadow-lg active:opacity-80`,
+      ? `bg-transparent text-gray-300 border-gray-600 hover:bg-[${COLORS.FLAG_GREEN}] hover:text-white hover:border-[${PALESTINIAN_FLAG.GREEN}] hover:shadow-lg active:opacity-80`
+      : `bg-transparent ${textColor} border-gray-400 hover:bg-[${COLORS.FLAG_GREEN_HOVER}] hover:text-black hover:border-[${PALESTINIAN_FLAG.GREEN}] hover:shadow-lg active:opacity-80`,
 
     secondary: isDark
-      ? 'bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80'
+      ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80"
       : `bg-transparent ${textColor} border-gray-800 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80`,
 
     danger: isDark
@@ -52,7 +48,7 @@ function getVariantClasses(
       : `bg-transparent ${textColor} border-gray-400 hover:bg-[${PALESTINIAN_FLAG.RED}] hover:text-white hover:border-[${PALESTINIAN_FLAG.RED}] hover:shadow-lg active:opacity-80`,
 
     ghost: isDark
-      ? 'bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90'
+      ? "bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90"
       : `bg-transparent hover:bg-gray-100 ${textColor} hover:text-black border-gray-300 hover:opacity-90`,
   };
 
@@ -94,25 +90,25 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * ```
  */
 export function Button({
-  variant = 'primary',
-  size = 'md',
+  variant = "primary",
+  size = "md",
   children,
   disabled = false,
   fullWidth = false,
   icon,
   active = false,
   lightText = false,
-  className = '',
+  className = "",
   ...props
 }: ButtonProps) {
   const { isDark } = useTheme();
 
   // Size classes - increased padding for more substantial feel
   const sizeClasses = {
-    xs: 'px-4 py-1.5 text-xs uppercase tracking-wide',
-    sm: 'px-5 py-2 text-xs uppercase tracking-wide',
-    md: 'px-6 py-2.5 text-sm uppercase tracking-wide',
-    lg: 'px-8 py-3 text-base uppercase tracking-wide',
+    xs: "px-4 py-1.5 text-xs uppercase tracking-wide",
+    sm: "px-5 py-2 text-xs uppercase tracking-wide",
+    md: "px-6 py-2.5 text-sm uppercase tracking-wide",
+    lg: "px-8 py-3 text-base uppercase tracking-wide",
   }[size];
 
   // Base classes (always applied) - sharp corners, subtle default, vibrant hover
@@ -120,9 +116,11 @@ export function Button({
     rounded-sm font-semibold border
     transition-all duration-200
     inline-flex items-center justify-center gap-2
-    ${fullWidth ? 'w-full' : ''}
+    ${fullWidth ? "w-full" : ""}
     ${sizeClasses}
-  `.trim().replace(/\s+/g, ' ');
+  `
+    .trim()
+    .replace(/\s+/g, " ");
 
   // Disabled state (overrides all variants)
   if (disabled) {
@@ -140,7 +138,7 @@ export function Button({
 
   // Calculate classes using helper functions
   const textColor = getTextColor(isDark, lightText);
-  const activeClasses = active ? getActiveClasses(isDark) : '';
+  const activeClasses = active ? getActiveClasses(isDark) : "";
   const variantClasses = active
     ? getActiveHoverClasses(isDark)
     : getVariantClasses(variant, isDark, textColor);

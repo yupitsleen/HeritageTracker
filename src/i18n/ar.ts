@@ -28,6 +28,7 @@ export const ar: Translations = {
     settings: "الإعدادات",
     about: "حول",
     na: "غير متوفر",
+    unknown: "غير معروف",
   },
 
   header: {
@@ -124,6 +125,7 @@ export const ar: Translations = {
     destructionDate: "تاريخ التدمير",
     destructionDateGregorian: "تاريخ التدمير (ميلادي)",
     destructionDateIslamic: "تاريخ التدمير (هجري)",
+    surveyDate: "تاريخ المسح",
     builtGregorian: "البناء (ميلادي)",
     builtIslamic: "البناء (هجري)",
     tooltip: "انقر فوق أي صف موقع لعرض معلومات مفصلة. انقر فوق رؤوس الأعمدة للفرز. مرر مؤشر الماوس فوق صفوف الموقع لتمييزها على الخريطة والجدول الزمني.",
@@ -217,6 +219,7 @@ export const ar: Translations = {
     yearBuilt: "سنة البناء",
     status: "الحالة",
     dateDestroyed: "تاريخ التدمير/التلف",
+    surveyDate: "تاريخ المسح",
     lastUpdated: "آخر تحديث",
     description: "الوصف",
     whatWasLost: "ما تم فقدانه",

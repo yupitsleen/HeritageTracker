@@ -8,11 +8,14 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
 import { TIMELINE_CONFIG, TOOLTIP_CONFIG } from "../../constants/timeline";
+import { Z_INDEX } from "../../constants/layout";
+import { COLORS } from "../../config/colorThemes";
 import {
   calculateDefaultDateRange,
   calculateAdjustedDateRange,
 } from "../../utils/timelineCalculations";
-import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { InfoIcon } from "../Icons/InfoIcon";
+import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { TimelineControls } from "./TimelineControls";
 import { TimelineNavigation } from "./TimelineNavigation";
 
@@ -396,11 +399,16 @@ export function TimelineScrubber({
 
         {/* Right: Info icon - absolutely positioned */}
         <div className="absolute right-0 top-0">
-          <InfoIconWithTooltip
-            tooltip={advancedMode
+          <InfoIcon
+            title={advancedMode
               ? translate("timeline.tooltipAdvanced")
               : translate("timeline.tooltipDefault")
             }
+            aria-label={advancedMode
+              ? translate("timeline.tooltipAdvanced")
+              : translate("timeline.tooltipDefault")
+            }
+            className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
           />
         </div>
       </div>
@@ -420,17 +428,26 @@ export function TimelineScrubber({
           className="mt-1"
           aria-hidden="true"
         />
-        {/* Floating scrubber date tooltip - positioned below timeline */}
+        {/*
+          Floating scrubber date tooltip - positioned below timeline
+
+          NOTE: This tooltip uses custom positioning instead of native browser tooltips.
+          Reason: Must follow the scrubber's dynamic position as user drags along timeline.
+          Native tooltips (title attribute) cannot track moving elements precisely.
+
+          All other tooltips in the app use native browser tooltips for simplicity.
+        */}
         {scrubberPosition !== null && (
           <div
-            className="absolute z-[9999] pointer-events-none"
+            className="absolute pointer-events-none"
             style={{
               left: `${scrubberPosition}px`,
               top: `${TOOLTIP_CONFIG.VERTICAL_OFFSET}px`,
               transform: `translateX(${TOOLTIP_CONFIG.HORIZONTAL_TRANSFORM})`,
+              zIndex: Z_INDEX.TIMELINE_TOOLTIP,
             }}
           >
-            <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg">
+            <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg" style={{ outline: `1px solid ${COLORS.BORDER_BLACK}` }}>
               {currentTimestamp.toISOString().split('T')[0]}
             </div>
           </div>

@@ -6,12 +6,13 @@ import { Button } from "../Button";
 import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
 import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
-import { InfoIconWithTooltip } from "../Icons/InfoIconWithTooltip";
+import { InfoIcon } from "../Icons/InfoIcon";
+import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
-import { Tooltip } from "../Tooltip";
 import { TOOLTIPS } from "../../config/tooltips";
+import { Z_INDEX } from "../../constants/layout";
 
 /**
  * Callback type for Wayback release index changes
@@ -321,40 +322,40 @@ export function WaybackSlider({
 
         {/* Info icon in top right */}
         <div className="absolute right-0 top-0">
-          <InfoIconWithTooltip
-            tooltip={translate("timelinePage.waybackTooltip")}
+          <InfoIcon
+            title={translate("timelinePage.waybackTooltip")}
+            aria-label={translate("timelinePage.waybackTooltip")}
+            className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
           />
         </div>
 
         {/* Previous button */}
-        <Tooltip content={TOOLTIPS.WAYBACK.PREV_RELEASE}>
-          <Button
-            onClick={handlePrevious}
-            disabled={currentIndex === 0}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to previous satellite image release"
-          >
-            {/* Icon only below xl, full text at xl+ */}
-            <span className="xl:hidden">⏮</span>
-            <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
-          </Button>
-        </Tooltip>
+        <Button
+          onClick={handlePrevious}
+          disabled={currentIndex === 0}
+          variant="secondary"
+          size="xs"
+          aria-label="Go to previous satellite image release"
+          title={TOOLTIPS.WAYBACK.PREV_RELEASE}
+        >
+          {/* Icon only below xl, full text at xl+ */}
+          <span className="xl:hidden">⏮</span>
+          <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
+        </Button>
 
         {/* Next button */}
-        <Tooltip content={TOOLTIPS.WAYBACK.NEXT_RELEASE}>
-          <Button
-            onClick={handleNext}
-            disabled={currentIndex === releases.length - 1}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to next satellite image release"
-          >
-            {/* Icon only below xl, full text at xl+ */}
-            <span className="xl:hidden">⏭</span>
-            <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
-          </Button>
-        </Tooltip>
+        <Button
+          onClick={handleNext}
+          disabled={currentIndex === releases.length - 1}
+          variant="secondary"
+          size="xs"
+          aria-label="Go to next satellite image release"
+          title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
+        >
+          {/* Icon only below xl, full text at xl+ */}
+          <span className="xl:hidden">⏭</span>
+          <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
+        </Button>
       </div>
 
       {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}
@@ -452,6 +453,7 @@ export function WaybackSlider({
                     ? 'right-0'
                     : 'left-1/2 -translate-x-1/2'
                 }`}
+                style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
               >
                 <DateLabel
                   date={beforeRelease?.releaseDate || translate("timeline.unknownDate")}
@@ -481,6 +483,7 @@ export function WaybackSlider({
                   ? 'right-0'
                   : 'left-1/2 -translate-x-1/2'
               }`}
+              style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
             >
               <DateLabel
                 date={currentRelease?.releaseDate || translate("timeline.unknownDate")}

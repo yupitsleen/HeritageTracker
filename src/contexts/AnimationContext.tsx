@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useCallback, useEffect, useRef, us
 import type { Site } from "../types";
 import { ANIMATION_CONFIG, getDefaultSpeed, isValidSpeed } from "../config/animation";
 import { logger } from "../utils/logger";
+import { getEffectiveDestructionDate } from "../utils/format";
 
 /**
  * Timeline animation state management
@@ -59,10 +60,10 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
       return { startDate: DEFAULT_TIMELINE_START, endDate: DEFAULT_TIMELINE_END };
     }
 
-    // Get all destruction dates
+    // Get all destruction dates (using effective date with sourceAssessmentDate fallback)
     const destructionDates = sites
-      .filter((site) => site.dateDestroyed)
-      .map((site) => new Date(site.dateDestroyed!).getTime());
+      .filter((site) => getEffectiveDestructionDate(site))
+      .map((site) => new Date(getEffectiveDestructionDate(site)!).getTime());
 
     if (destructionDates.length === 0) {
       return { startDate: DEFAULT_TIMELINE_START, endDate: DEFAULT_TIMELINE_END };
@@ -76,7 +77,11 @@ export function AnimationProvider({ children, sites = [] }: AnimationProviderPro
     // This ensures the first site can be highlighted/zoomed when clicked or navigated to
     const startWithBuffer = new Date(earliestDate.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    return { startDate: startWithBuffer, endDate: latestDate };
+    // End timeline 7 days after the last destruction date
+    // This ensures the last site has buffer space at the end, matching the start buffer
+    const endWithBuffer = new Date(latestDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    return { startDate: startWithBuffer, endDate: endWithBuffer };
   }, [sites]);
 
   const [currentTimestamp, setCurrentTimestamp] = useState<Date>(startDate);
