@@ -1,6 +1,6 @@
-# Timeline Dot Cluster Expansion Feature
+# Timeline Enhancement Feature Plan
 
-**Feature Request:** Interactive expansion of overlapping timeline dots for sites with identical destruction/survey dates
+**Feature Request:** Comprehensive timeline UX improvements to address data clustering, temporal distribution, and data quality visualization
 
 **Status:** 📋 Planning Phase
 **Created:** 2025-11-14
@@ -10,29 +10,104 @@
 
 ## Problem Statement
 
-### Current UX Issue
+### Current UX Issues
+
+**Issue 1: Overlapping Timeline Dots**
 Multiple sites sharing the same destruction date or survey date create overlapping dots on the timeline. When a user clicks on these overlapping dots:
 - Only one site is selected/highlighted
 - User has no indication that multiple sites exist at that date
 - Other sites at that location are hidden and undiscoverable
 
+**Issue 2: Temporal Data Clustering**
+The timeline shows extreme temporal clustering that creates poor UX:
+- **Data distribution analysis:**
+  - Oct-Dec 2023: 39 sites (57% of all sites) - heavily clustered
+  - Jan-Jul 2024: 7 sites (10%) - sparse, long gaps
+  - Survey dates: 69 sites using sourceAssessmentDate fallback (24 in May 2024, 25 in Oct 2025)
+- **Visual problems:**
+  - 85% of destruction events cluster in first 3 months (Oct-Dec 2023)
+  - Large empty periods (Feb-Jul 2024) waste timeline space
+  - Timeline spans 24 months but most events in ~90 days
+  - Dots are unclickable in dense clusters
+
+**Issue 3: Data Quality Transparency**
+No visual distinction between:
+- Confirmed destruction dates (`dateDestroyed`)
+- Survey/assessment dates (`sourceAssessmentDate`) - fallback when exact date unknown
+
 ### Impact
-- **Discoverability:** Users miss important sites
-- **Data Integrity:** Creates false impression of data completeness
-- **User Confusion:** No feedback that clustering exists
+- **Discoverability:** Users miss important sites in dense clusters
+- **Data Integrity:** Creates false impression of even temporal distribution
+- **User Confusion:** No feedback about clustering or data quality
+- **Usability:** Cannot click individual sites in dense areas
+- **Misleading visualization:** Oct 2025 cluster misleads users (those are survey dates, not destruction events)
 
 ---
 
-## Proposed Solution
+## Proposed Solution (4-Phase Plan)
 
-### User Experience Flow
+### Phase 1: Data Quality Indicators (PRIORITY 1)
+**Goal:** Distinguish between confirmed destruction dates vs survey date fallbacks
+
+**Visual Changes:**
+1. **Hollow dots for survey dates:**
+   - Sites with `dateDestroyed`: **Solid filled dot** (current style)
+   - Sites with only `sourceAssessmentDate`: **Hollow dot** (stroke only, transparent fill)
+   - Opacity/stroke style to make distinction clear
+
+2. **Enhanced tooltips:**
+   - Solid dot hover: "Confirmed destruction date: [date]"
+   - Hollow dot hover: "Survey date: [date] (exact destruction date unknown)"
+   - Timeline info icon tooltip: Explain the difference between solid/hollow dots
+
+3. **Legend/Key:**
+   - Add small legend near timeline: `● Destruction Date  ○ Survey Date`
+   - Position: Below keyboard shortcuts or near info icon
+
+**Implementation Location:**
+- File: `src/utils/d3Timeline.ts` (modify `renderEventMarkers()`)
+- File: `src/hooks/useTimelineData.ts` (add `dateType` field to TimelineEvent)
+- File: `src/components/Timeline/TimelineScrubber.tsx` (add legend)
+
+**Estimated Effort:** 2-3 hours
+
+---
+
+### Phase 2: Density-Based Sizing (PRIORITY 2)
+**Goal:** Make clustered dots visually larger to indicate multiple sites at same date
+
+**Visual Changes:**
+1. **Dynamic dot sizing based on cluster count:**
+   - 1 site: `eventMarkerRadius` (3px) - current default
+   - 2-3 sites: `eventMarkerRadius + 1` (4px)
+   - 4-5 sites: `eventMarkerRadius + 2` (5px)
+   - 6+ sites: `eventMarkerRadius + 3` (6px)
+
+2. **Subtle count badge (optional):**
+   - Show count number inside dot when 2+ sites share same date
+   - White text, 7px font, centered in dot
+   - Only visible when dot is large enough (4px+ radius)
+
+**Implementation Location:**
+- File: `src/utils/d3Timeline.ts` (modify `renderClusteredMarkers()`)
+- File: `src/hooks/useTimelineData.ts` (return cluster counts)
+
+**Estimated Effort:** 1-2 hours
+
+---
+
+### Phase 3: Interactive Cluster Expansion (PRIORITY 3)
+**Goal:** Allow users to click clustered dots and select individual sites
+
+**User Experience Flow:**
 
 1. **Detection:** User clicks on a timeline dot
 2. **Check:** System detects if multiple sites share that exact date
-3. **Expansion:** If multiple sites exist:
+3. **Expansion:** If multiple sites exist (2+):
    - Horizontal row of dots "pops up" above the clicked position
    - Each dot represents one site at that date
    - Animation: smooth expand-out effect (300ms, matching existing timeline animations)
+   - Dots maintain hollow/solid styling from Phase 1
 4. **Interaction:** User can:
    - Hover over each expanded dot to see site name tooltip
    - Click any dot to select that specific site
@@ -43,7 +118,7 @@ Multiple sites sharing the same destruction date or survey date create overlappi
    - Collapses expansion back to single dot
    - Selected dot remains highlighted with green stroke
 
-### Visual Design
+**Visual Design:**
 - **Expansion Direction:** Horizontally above the clicked dot (like a popup menu)
 - **Spacing:** 12-16px between expanded dots
 - **Animation:**
@@ -51,10 +126,80 @@ Multiple sites sharing the same destruction date or survey date create overlappi
   - Collapse: Reverse animation (200ms ease-in)
 - **Styling:**
   - Same colors as existing dots (status-based)
+  - Maintain hollow/solid distinction from Phase 1
   - Slightly larger radius while expanded (eventMarkerRadius + 1)
   - Background: Semi-transparent white/dark backdrop behind dots
   - Border: 1px stroke around container for definition
 - **Z-Index:** Above timeline (Z_INDEX.TIMELINE_TOOLTIP or new Z_INDEX.TIMELINE_CLUSTER)
+
+**Estimated Effort:** 16-19 hours (as detailed in original plan below)
+
+---
+
+### Phase 4: Adaptive Timeline Scale (PRIORITY 4 - TBD)
+**Goal:** Compress empty time periods and expand dense clusters for better space utilization
+
+**Status:** ⚠️ **DEFERRED** - High complexity, requires extensive testing and user validation
+
+**Concept:**
+- Implement piecewise linear scale (not fully logarithmic) that dynamically adjusts timeline width allocation based on event density
+- Add toggle: "Linear Scale" ↔ "Adaptive Scale"
+- Visual cues showing non-linear regions (shaded areas, axis annotations)
+
+**Why Deferred:**
+- **Complexity:** 2-3 days implementation + extensive testing
+- **User confusion risk:** Timelines are expected to be linear
+- **Maintenance burden:** Algorithm must handle varying data distributions
+- **Dependency:** Best implemented after Phases 1-3 prove successful
+
+**Decision Point:**
+- Re-evaluate after Phases 1-3 are complete and battle-tested
+- Consider user feedback on whether clustering is still an issue
+- A/B test if implemented
+
+**Estimated Effort (if approved):** 20-24 hours
+
+**Implementation Notes (if approved):**
+- Use piecewise linear scale, not full logarithmic
+- Divide timeline into segments (monthly buckets)
+- Allocate width proportional to event density (with min 20px per segment)
+- Add toggle in TimelineControls
+- Update axis rendering to show scale breaks
+- See detailed algorithm in "Phase 4 Implementation Details" section at end of document
+
+---
+
+## Phase 1 & 2 Combined: Quick Wins (3-5 hours total)
+
+These two phases can be implemented together quickly to provide immediate value:
+
+**Combined Changes:**
+1. Modify `TimelineEvent` interface to include `dateType: 'destruction' | 'survey'`
+2. Update `useTimelineData` hook to:
+   - Detect date type based on `dateDestroyed` vs `sourceAssessmentDate`
+   - Group events by date to calculate cluster sizes
+   - Return both individual events and cluster metadata
+3. Modify `renderEventMarkers()` in D3TimelineRenderer to:
+   - Render hollow dots for survey dates
+   - Size dots based on cluster count
+   - Update tooltip text to indicate date type
+4. Add legend component to TimelineScrubber
+
+**Files to Modify:**
+- `src/utils/d3Timeline.ts` (~50 lines changed)
+- `src/hooks/useTimelineData.ts` (~30 lines added)
+- `src/components/Timeline/TimelineScrubber.tsx` (~20 lines for legend)
+
+**Testing:**
+- Unit tests for `useTimelineData` cluster counting
+- Visual regression test for hollow/solid dots
+- Tooltip content tests
+
+---
+
+## Phase 3 Detailed Implementation: Cluster Expansion
+
+*(This section contains the original TIMELINE_DOT_CLUSTER_FEATURE.md content)*
 
 ---
 
@@ -138,6 +283,320 @@ onSiteHighlight: onSiteHighlight ? (event) => {
 ---
 
 ## Implementation Plan
+
+### PHASE 1 & 2: Data Quality + Density Indicators (3-5 hours)
+
+**Step 1.1: Update Type Definitions**
+
+**File:** `src/utils/d3Timeline.ts`
+
+```typescript
+export interface TimelineEvent {
+  date: Date;
+  siteName: string;
+  siteId: string;
+  status?: "destroyed" | "heavily-damaged" | "damaged";
+  dateType: "destruction" | "survey"; // NEW: Indicates data quality
+}
+```
+
+**Step 1.2: Modify useTimelineData Hook**
+
+**File:** `src/hooks/useTimelineData.ts`
+
+```typescript
+import { getEffectiveDestructionDate } from "../utils/format";
+
+export function useTimelineData(sites: Site[]) {
+  return useMemo(() => {
+    // Create individual events with dateType
+    const destructionDates: TimelineEvent[] = sites
+      .filter((site) => getEffectiveDestructionDate(site))
+      .map((site) => {
+        const effectiveDate = getEffectiveDestructionDate(site);
+        // NEW: Determine if this is a confirmed destruction date or survey fallback
+        const dateType = site.dateDestroyed ? "destruction" : "survey";
+
+        return {
+          date: new Date(effectiveDate!),
+          siteName: site.name,
+          siteId: site.id,
+          status: site.status as "destroyed" | "heavily-damaged" | "damaged" | undefined,
+          dateType, // NEW
+        };
+      })
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    // GROUP BY DATE: Create clusters for density-based sizing
+    const dateMap = new Map<string, TimelineEvent[]>();
+    destructionDates.forEach(event => {
+      const dateKey = event.date.toISOString();
+      if (!dateMap.has(dateKey)) {
+        dateMap.set(dateKey, []);
+      }
+      dateMap.get(dateKey)!.push(event);
+    });
+
+    // Create cluster metadata (count per date)
+    const clusterSizes = new Map<string, number>();
+    dateMap.forEach((events, dateKey) => {
+      clusterSizes.set(dateKey, events.length);
+    });
+
+    // Calculate event density
+    const eventDensity = destructionDates.length > 0
+      ? destructionDates.length /
+          ((destructionDates[destructionDates.length - 1].date.getTime() -
+            destructionDates[0].date.getTime()) /
+            (1000 * 60 * 60 * 24))
+      : 0;
+
+    return {
+      events: destructionDates,
+      clusterSizes, // NEW: Map of date → count
+      totalEvents: destructionDates.length,
+      eventDensity,
+    };
+  }, [sites]);
+}
+```
+
+**Step 1.3: Update D3 Timeline Renderer**
+
+**File:** `src/utils/d3Timeline.ts`
+
+Add cluster size parameter to render method:
+
+```typescript
+/**
+ * Render the complete timeline (axis, events, scrubber)
+ */
+render(
+  events: TimelineEvent[],
+  currentTimestamp: Date,
+  highlightedSiteId: string | null = null,
+  clusterSizes?: Map<string, number> // NEW: Optional cluster size map
+) {
+  this.highlightedSiteId = highlightedSiteId;
+  this.clusterSizes = clusterSizes; // Store for use in renderEventMarkers
+  this.svg.selectAll("*").remove();
+  this.renderAxis();
+  this.renderEventMarkers(events);
+  this.renderScrubber(currentTimestamp);
+}
+
+// Add private property
+private clusterSizes?: Map<string, number>;
+```
+
+Modify `renderEventMarkers()` for hollow dots + sizing:
+
+```typescript
+private renderEventMarkers(events: TimelineEvent[]) {
+  const { height, eventMarkerRadius, colors } = this.config;
+
+  const markerGroups = this.svg
+    .selectAll("g.event-marker-group")
+    .data(events)
+    .enter()
+    .append("g")
+    .attr("class", "event-marker-group");
+
+  const markers = markerGroups
+    .append("circle")
+    .attr("class", "event-marker")
+    .attr("cx", (d) => this.timeScale(d.date))
+    .attr("cy", height / 2)
+    .attr("r", (d) => {
+      // PHASE 2: Density-based sizing
+      const clusterSize = this.clusterSizes?.get(d.date.toISOString()) || 1;
+      let sizeBoost = 0;
+      if (clusterSize >= 6) sizeBoost = 3;
+      else if (clusterSize >= 4) sizeBoost = 2;
+      else if (clusterSize >= 2) sizeBoost = 1;
+
+      const baseRadius = eventMarkerRadius + sizeBoost;
+      return d.siteId === this.highlightedSiteId ? baseRadius + 2 : baseRadius;
+    })
+    .attr("fill", (d) => {
+      // PHASE 1: Hollow dots for survey dates
+      if (d.dateType === "survey") {
+        return "transparent"; // Hollow
+      }
+      return this.getMarkerColor(d.status); // Solid
+    })
+    .attr("stroke", (d) => {
+      if (d.siteId === this.highlightedSiteId) {
+        return "#009639"; // Green for highlighted
+      }
+      // Survey dates: lighter stroke
+      if (d.dateType === "survey") {
+        return "#6b7280"; // gray-500
+      }
+      return colors.eventMarkerStroke; // Black for destruction dates
+    })
+    .attr("stroke-width", (d) => {
+      if (d.siteId === this.highlightedSiteId) return 3;
+      // Slightly thicker stroke for hollow dots so they're visible
+      return d.dateType === "survey" ? 2 : 1.5;
+    })
+    .style("cursor", "pointer")
+    .style("transition", "all 0.2s");
+
+  // Date labels (existing code, update tooltip text)
+  markerGroups
+    .append("text")
+    .attr("class", "event-date-label")
+    .attr("x", (d) => this.timeScale(d.date))
+    .attr("y", height / 2 - eventMarkerRadius - 8)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "10px")
+    .attr("font-weight", "500")
+    .attr("fill", "#9ca3af")
+    .attr("opacity", 0)
+    .style("pointer-events", "none")
+    .text((d) => {
+      // PHASE 1: Indicate date type in label
+      const dateStr = timeFormat("%b %d, %Y")(d.date);
+      return d.dateType === "survey" ? `${dateStr} (survey)` : dateStr;
+    });
+
+  // Hover effects (existing code)
+  markerGroups
+    .on("mouseenter", function () {
+      const group = select(this);
+      group.select("circle")
+        .transition()
+        .duration(150)
+        .attr("r", eventMarkerRadius + 2)
+        .attr("stroke-width", 2);
+
+      group.select("text")
+        .transition()
+        .duration(150)
+        .attr("opacity", 1);
+    })
+    .on("mouseleave", function () {
+      const group = select(this);
+      group.select("circle")
+        .transition()
+        .duration(150)
+        .attr("r", eventMarkerRadius)
+        .attr("stroke-width", 1.5);
+
+      group.select("text")
+        .transition()
+        .duration(150)
+        .attr("opacity", 0);
+    })
+    .on("click", (_event, d) => {
+      this.onTimestampChange(d.date);
+      this.onPause();
+      if (this.onSiteHighlight) {
+        this.onSiteHighlight(d);
+      }
+    });
+
+  // PHASE 1: Enhanced tooltip with date type
+  markers
+    .append("title")
+    .text((d) => {
+      const dateStr = timeFormat("%B %d, %Y")(d.date);
+      const clusterSize = this.clusterSizes?.get(d.date.toISOString()) || 1;
+      const clusterInfo = clusterSize > 1 ? `\n(${clusterSize} sites at this date)` : "";
+      const dateTypeInfo = d.dateType === "survey"
+        ? "\nSurvey date (exact destruction date unknown)"
+        : "\nConfirmed destruction date";
+      const statusInfo = d.status ? `\nStatus: ${d.status.replace("-", " ")}` : "";
+
+      return `${d.siteName}\n${dateStr}${dateTypeInfo}${clusterInfo}${statusInfo}`;
+    });
+}
+```
+
+**Step 1.4: Update TimelineScrubber Component**
+
+**File:** `src/components/Timeline/TimelineScrubber.tsx`
+
+```typescript
+// Extract timeline data (now includes clusterSizes)
+const { events: allDestructionDates, clusterSizes } = useTimelineData(sites);
+
+// Pass clusterSizes to D3 renderer
+useEffect(() => {
+  // ... existing setup ...
+
+  rendererRef.current.render(
+    destructionDates,
+    currentTimestamp,
+    highlightedSiteId,
+    clusterSizes // NEW
+  );
+
+  // ... cleanup ...
+}, [
+  svgMounted,
+  timeScale,
+  destructionDates,
+  currentTimestamp,
+  highlightedSiteId,
+  clusterSizes, // NEW dependency
+  setTimestamp,
+  pause,
+  onSiteHighlight
+]);
+```
+
+**Step 1.5: Add Legend**
+
+**File:** `src/components/Timeline/TimelineScrubber.tsx`
+
+Add legend after keyboard shortcuts:
+
+```tsx
+{/* Keyboard shortcuts hint - hidden below 1280px */}
+<div className={`hidden xl:block mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
+  {translate("timeline.keyboard")}: <kbd>...</kbd>
+  {/* ... existing keyboard shortcuts ... */}
+</div>
+
+{/* NEW: Timeline legend - always visible */}
+<div className={`mt-1 text-[9px] text-center leading-tight ${t.text.muted} flex items-center justify-center gap-3`}>
+  <span className="flex items-center gap-1">
+    <svg width="10" height="10">
+      <circle cx="5" cy="5" r="3" fill="#dc2626" stroke="#000" strokeWidth="1" />
+    </svg>
+    Destruction Date
+  </span>
+  <span className="flex items-center gap-1">
+    <svg width="10" height="10">
+      <circle cx="5" cy="5" r="3" fill="transparent" stroke="#6b7280" strokeWidth="1.5" />
+    </svg>
+    Survey Date
+  </span>
+</div>
+```
+
+**Step 1.6: Update Info Tooltip**
+
+**File:** `src/locales/en.json` and `ar.json`
+
+Update timeline tooltips:
+
+```json
+{
+  "timeline": {
+    "tooltipDefault": "Drag scrubber or click dots to navigate timeline. ● = Confirmed destruction date, ○ = Survey date (when exact date unknown).",
+    "tooltipAdvanced": "Click Previous/Next to navigate between destruction events. Click dots to jump to specific sites. ● = Confirmed destruction date, ○ = Survey date."
+  }
+}
+```
+
+---
+
+### PHASE 3: Cluster Expansion (16-19 hours)
+
+*(Original Phase 1-8 content from TIMELINE_DOT_CLUSTER_FEATURE.md)*
 
 ### Phase 1: Data Grouping (Backend Logic)
 
@@ -976,14 +1435,31 @@ test('cluster expansion closes on outside click', async ({ page }) => {
 
 Use this checklist to track progress during implementation:
 
-### Phase 1: Data Grouping
+### ✅ PRIORITY 1: Phase 1 & 2 - Data Quality + Density (3-5 hours)
+- [ ] Update `TimelineEvent` interface to include `dateType: 'destruction' | 'survey'`
+- [ ] Modify `useTimelineData` to detect date type and calculate cluster sizes
+- [ ] Update `d3Timeline.ts` render method to accept `clusterSizes` parameter
+- [ ] Implement hollow dots for survey dates in `renderEventMarkers()`
+- [ ] Implement density-based sizing (1-6px based on cluster count)
+- [ ] Update tooltip text to indicate date type and cluster count
+- [ ] Add legend component to `TimelineScrubber.tsx`
+- [ ] Update timeline info tooltip text in locale files
+- [ ] Write unit tests for `useTimelineData` cluster counting
+- [ ] Write visual regression tests for hollow/solid dots
+- [ ] Manual testing with real data (verify Oct 2025 survey dates show as hollow)
+- [ ] Run all existing tests to ensure no regressions
+- [ ] Update CHANGELOG.md
+
+### 🔄 PRIORITY 3: Phase 3 - Cluster Expansion (16-19 hours)
+
+**Phase 3.1: Data Grouping**
 - [ ] Add `TimelineEventCluster` type to `d3Timeline.ts`
-- [ ] Modify `useTimelineData` to return clusters
+- [ ] Modify `useTimelineData` to return full cluster objects (not just sizes)
 - [ ] Write tests for cluster grouping
 - [ ] Verify backward compatibility (events still returned)
 - [ ] Run all existing tests to ensure no regressions
 
-### Phase 2: Cluster Expansion Component
+**Phase 3.2: Cluster Expansion Component**
 - [ ] Create `TimelineClusterExpansion.tsx`
 - [ ] Implement dot rendering with status colors
 - [ ] Add hover tooltips
@@ -993,7 +1469,7 @@ Use this checklist to track progress during implementation:
 - [ ] Write component unit tests
 - [ ] Verify accessibility (ARIA, keyboard nav)
 
-### Phase 3: D3 Integration
+**Phase 3.3: D3 Integration**
 - [ ] Add `onClusterClick` callback to D3TimelineRenderer
 - [ ] Implement `renderClusteredMarkers()` method
 - [ ] Add count badges to cluster dots
@@ -1001,7 +1477,7 @@ Use this checklist to track progress during implementation:
 - [ ] Write D3 renderer tests
 - [ ] Test with real site data
 
-### Phase 4: React Integration
+**Phase 3.4: React Integration**
 - [ ] Add `expandedCluster` state to TimelineScrubber
 - [ ] Wire up D3 `onClusterClick` callback
 - [ ] Render TimelineClusterExpansion overlay
@@ -1025,7 +1501,7 @@ Use this checklist to track progress during implementation:
 - [ ] Test rapid clicking behavior
 - [ ] Verify no interference with playback
 
-### Phase 7: Testing
+**Phase 3.7: Testing**
 - [ ] Run all unit tests (`npm test`)
 - [ ] Run E2E tests (`npm run e2e`)
 - [ ] Manual testing on Timeline page
@@ -1034,28 +1510,62 @@ Use this checklist to track progress during implementation:
 - [ ] Cross-browser testing
 - [ ] Mobile device testing
 
-### Phase 8: Documentation
+**Phase 3.8: Documentation**
 - [ ] Update CLAUDE.md with new feature
 - [ ] Add JSDoc comments to new functions
-- [ ] Update CHANGELOG.md
+- [ ] Update CHANGELOG.md with cluster expansion feature
 - [ ] Take screenshots for documentation
 - [ ] Update README if needed
+
+### ⚠️ PRIORITY 4: Phase 4 - Adaptive Scale (20-24 hours) - DEFERRED
+**Status:** Not started - awaiting approval after Phases 1-3 completion
+
+- [ ] Review Phases 1-3 user feedback and metrics
+- [ ] Decision: Proceed with adaptive scale implementation? (Y/N)
+- [ ] If YES:
+  - [ ] Implement piecewise linear scale algorithm
+  - [ ] Add "Linear/Adaptive" toggle to TimelineControls
+  - [ ] Update D3 scale generation logic
+  - [ ] Add visual indicators for non-linear regions
+  - [ ] Write extensive tests for scale calculations
+  - [ ] A/B test with users
+  - [ ] Update documentation
+- [ ] If NO:
+  - [ ] Document decision rationale
+  - [ ] Close this phase permanently
 
 ---
 
 ## Success Criteria
 
-Feature is complete when:
+**Phase 1 & 2 Complete When:**
+1. ✅ Hollow dots visually distinguish survey dates from destruction dates
+2. ✅ Larger dots indicate multiple sites at same date (2+ visible difference)
+3. ✅ Tooltips clearly explain date type ("destruction" vs "survey")
+4. ✅ Legend is visible and understandable
+5. ✅ No regressions in existing tests
+6. ✅ Manual testing confirms Oct 2025 cluster shows as hollow dots
 
-1. ✅ **Discoverability:** Users can see when multiple sites exist at same date
-2. ✅ **Interaction:** Users can click to expand and select specific sites
-3. ✅ **Visual Feedback:** Clear animations and hover states
+**Phase 3 Complete When:**
+
+1. ✅ **Discoverability:** Users can see when multiple sites exist at same date (count badge + size)
+2. ✅ **Interaction:** Users can click to expand and select specific sites from cluster
+3. ✅ **Visual Feedback:** Clear animations and hover states for expansion
 4. ✅ **No Regressions:** All existing tests pass
 5. ✅ **Accessibility:** WCAG 2.1 AA compliant (keyboard nav, ARIA labels)
 6. ✅ **Performance:** No noticeable lag with 70+ sites
 7. ✅ **Cross-Browser:** Works in Chrome, Firefox, Safari, Edge
 8. ✅ **Mobile:** Touch interactions work smoothly
 9. ✅ **Test Coverage:** >80% code coverage for new code
+10. ✅ **Maintains Phase 1 & 2:** Hollow/solid dots preserved in expansion UI
+
+**Phase 4 Complete When (if approved):**
+1. ✅ **Toggle works:** User can switch between linear and adaptive scales seamlessly
+2. ✅ **Visual clarity:** Non-linear regions are clearly marked/shaded
+3. ✅ **No confusion:** User testing confirms scale is understandable
+4. ✅ **Performance:** Scale calculations don't slow down timeline rendering
+5. ✅ **Responsive:** Works across all screen sizes
+6. ✅ **Test coverage:** Algorithm edge cases fully tested
 
 ---
 
@@ -1116,16 +1626,36 @@ Feature is complete when:
 **Actual Completion:** [TBD]
 
 **Time Estimates:**
-- Phase 1 (Data Grouping): 2 hours
-- Phase 2 (Component): 4 hours
-- Phase 3 (D3 Integration): 3 hours
-- Phase 4 (React Integration): 2 hours
-- Phase 5 (Layout): 1 hour
-- Phase 6 (Edge Cases): 3 hours
-- Phase 7 (Testing): 3 hours
-- Phase 8 (Documentation): 1 hour
 
-**Total Estimated:** ~19 hours
+**Phase 1 & 2 (Data Quality + Density):**
+- Type updates & hook modifications: 1 hour
+- D3 renderer updates (hollow dots, sizing): 1.5 hours
+- Legend & tooltip updates: 0.5 hours
+- Testing & validation: 1 hour
+- **Subtotal:** 3-5 hours
+
+**Phase 3 (Cluster Expansion):**
+- Phase 3.1 (Data Grouping): 2 hours
+- Phase 3.2 (Component): 4 hours
+- Phase 3.3 (D3 Integration): 3 hours
+- Phase 3.4 (React Integration): 2 hours
+- Phase 3.5 (Layout): 1 hour
+- Phase 3.6 (Edge Cases): 3 hours
+- Phase 3.7 (Testing): 3 hours
+- Phase 3.8 (Documentation): 1 hour
+- **Subtotal:** 16-19 hours
+
+**Phase 4 (Adaptive Scale - DEFERRED):**
+- Algorithm implementation: 8 hours
+- Toggle UI & integration: 4 hours
+- Visual indicators: 3 hours
+- Testing & edge cases: 5 hours
+- User testing & iteration: 4 hours
+- Documentation: 1 hour
+- **Subtotal:** 20-24 hours (if approved)
+
+**Total Estimated (Phases 1-3 only):** ~25-30 hours
+**Total Estimated (All phases):** ~45-50 hours
 
 ---
 
@@ -1133,15 +1663,88 @@ Feature is complete when:
 
 When starting a fresh Claude Code session, review:
 
-1. ✅ Read this document completely
+1. ✅ Read this document completely (focus on current priority phase)
 2. ✅ Check which phases are completed (see Implementation Checklist above)
 3. ✅ Run `npm test` to verify existing tests still pass
 4. ✅ Review recent changes in git: `git diff main`
 5. ✅ Check for any merge conflicts or dependencies
 6. ✅ Resume at the next unchecked task in Implementation Checklist
+7. ✅ **Priority order:** Phase 1 & 2 → Phase 3 → Phase 4 (if approved)
+
+**Current Priority:** Phase 1 & 2 (Data Quality + Density Indicators)
+
+---
+
+## Phase 4 Implementation Details (DEFERRED - Reference Only)
+
+**Piecewise Linear Scale Algorithm:**
+
+```typescript
+interface TimelineSegment {
+  startDate: Date;
+  endDate: Date;
+  eventCount: number;
+  density: number; // events per day
+  allocatedWidth: number; // pixels
+}
+
+function createAdaptiveScale(
+  events: TimelineEvent[],
+  containerWidth: number
+): ScaleTime<number, number> {
+  // 1. Divide timeline into monthly segments
+  const segments = groupEventsIntoSegments(events, 'month');
+
+  // 2. Calculate density score (events per day in segment)
+  segments.forEach(seg => {
+    const durationDays = (seg.endDate.getTime() - seg.startDate.getTime()) / (1000 * 60 * 60 * 24);
+    seg.density = seg.eventCount / durationDays;
+  });
+
+  // 3. Allocate width proportionally (with min/max constraints)
+  const totalDensity = segments.reduce((sum, s) => sum + s.density, 0);
+  const minWidthPerSegment = 20; // Minimum 20px even for empty segments
+  const availableWidth = containerWidth - (segments.length * minWidthPerSegment);
+
+  segments.forEach(seg => {
+    const proportionalWidth = (seg.density / totalDensity) * availableWidth;
+    seg.allocatedWidth = minWidthPerSegment + proportionalWidth;
+  });
+
+  // 4. Create piecewise scale
+  const domain: Date[] = [];
+  const range: number[] = [];
+  let currentX = TIMELINE_CONFIG.MARGIN;
+
+  segments.forEach(seg => {
+    domain.push(seg.startDate, seg.endDate);
+    range.push(currentX, currentX + seg.allocatedWidth);
+    currentX += seg.allocatedWidth;
+  });
+
+  return scaleTime().domain(domain).range(range);
+}
+```
+
+**Visual Indicators for Non-Linear Scale:**
+- Shaded regions or gradient behind timeline to indicate compressed areas
+- Axis tick marks with "~" symbol for scale breaks
+- Tooltip warning when scale is adaptive: "Timeline uses adaptive scale - empty periods compressed"
+
+**Toggle Implementation:**
+```tsx
+<button
+  onClick={() => setScaleMode(mode === 'linear' ? 'adaptive' : 'linear')}
+  className={t.button.base}
+  aria-label={`Switch to ${mode === 'linear' ? 'adaptive' : 'linear'} scale`}
+>
+  <ScaleIcon className="w-4 h-4" />
+  {mode === 'linear' ? 'Linear' : 'Adaptive'}
+</button>
+```
 
 ---
 
 **Last Updated:** 2025-11-14
-**Document Version:** 1.0
-**Status:** 📋 Ready for Implementation
+**Document Version:** 2.0
+**Status:** 📋 Ready for Implementation (Phase 1 & 2 Priority)
