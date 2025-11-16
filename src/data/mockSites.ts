@@ -27,15 +27,24 @@ export const mockSites: Site[] = [
     verifiedBy: ["UNESCO", "Heritage for Peace", "Forensic Architecture"],
     // Images need to be sourced with proper attribution
     // Example structure:
-    // images: {
-    //   before: {
-    //     url: "/images/great-omari-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //     sourceUrl: "https://...",
-    //     date: "2023-01-15"
-    //   }
-    // },
+    images: {
+      before: {
+        url: "/images/sites/great-omari-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/great-omari-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
     sources: [
       {
         organization: "UNESCO",
@@ -73,18 +82,24 @@ export const mockSites: Site[] = [
       "Irreplaceable Byzantine-era mosaics, ancient religious artifacts, and architectural elements. Served as a sanctuary and community center for Gaza's Christian minority.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
     // Images need to be sourced with proper attribution
-    // images: {
-    //   before: {
-    //     url: "/images/st-porphyrius-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    //   after: {
-    //     url: "/images/st-porphyrius-after.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    // },
+    images: {
+      before: {
+        url: "/images/sites/church-st-porphyrius-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/church-st-porphyrius-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
     sources: [
       {
         organization: "UNESCO",
@@ -123,18 +138,24 @@ export const mockSites: Site[] = [
       "Irreplaceable archaeological artifacts spanning multiple civilizations. The site was crucial for understanding ancient Gaza's role as a major port city and cultural crossroads.",
     verifiedBy: ["UNESCO", "Forensic Architecture", "Heritage for Peace"],
     // Images need to be sourced with proper attribution
-    // images: {
-    //   before: {
-    //     url: "/images/blakhiyya-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    //   satellite: {
-    //     url: "/images/blakhiyya-satellite.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    // },
+    images: {
+      before: {
+        url: "/images/sites/blakhiyya-archaeological-site-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/blakhiyya-archaeological-site-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
     sources: [
       {
         organization: "UNESCO",
@@ -173,18 +194,24 @@ export const mockSites: Site[] = [
       "Housed museum collections documenting Gaza's history from ancient to modern times. The building itself was an architectural treasure featuring distinctive Mamluk stonework and vaulted chambers.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
     // Images need to be sourced with proper attribution
-    // images: {
-    //   before: {
-    //     url: "/images/qasr-al-basha-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    //   after: {
-    //     url: "/images/qasr-al-basha-after.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    // },
+    images: {
+      before: {
+        url: "/images/sites/qasr-al-basha-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/qasr-al-basha-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
     sources: [
       {
         organization: "UNESCO",
@@ -222,18 +249,24 @@ export const mockSites: Site[] = [
       "The hammam represents traditional Ottoman architectural techniques and social customs. Its preservation was crucial for understanding daily life and public health practices in historic Gaza.",
     verifiedBy: ["Heritage for Peace", "Forensic Architecture"],
     // Images need to be sourced with proper attribution
-    // images: {
-    //   before: {
-    //     url: "/images/hammam-al-samra-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    //   after: {
-    //     url: "/images/hammam-al-samra-after.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    // },
+    images: {
+      before: {
+        url: "/images/sites/hammam-al-samra-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/hammam-al-samra-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
     sources: [
       {
         organization: "Heritage for Peace",
@@ -270,6 +303,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The mosque served as an important religious and cultural landmark in Gaza's Old City. Its connection to the Prophet Muhammad's family made it a significant site for Islamic heritage. The building was damaged by an Israeli airstrike in October 2023.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/sayed-al-hashim-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sayed-al-hashim-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -342,6 +394,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The mosque served as both a place of worship and a memorial site honoring Sheikh Ali ibn Marwan. Its location within a cemetery made it an important spiritual center for the local community. UNESCO confirmed the mosque as one of more than 100 damaged cultural properties based on satellite imagery.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/ibn-marwan-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibn-marwan-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -377,6 +448,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The church was completely destroyed by shelling in November 2023, though archaeologist Fadel Al Utol reported in January 2025 that the mosaics remained intact beneath debris. This site represented irreplaceable Byzantine artistic and religious heritage, with over 1,500 years of history.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/byzantine-church-jabaliya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/byzantine-church-jabaliya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -447,6 +537,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of the Rashad Shawa Cultural Center resulted in the loss of tens of thousands of books and irreplaceable cultural resources. The center was a vital institution for Gaza's intellectual and artistic community, and its loss significantly impacted educational and cultural life.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/rashad-shawa-cultural-center-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/rashad-shawa-cultural-center-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -520,6 +629,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Tell el-Ajjul provided irreplaceable evidence of Bronze Age trade, craftsmanship, and settlement patterns. The site's strategic location between Egypt and the Levant made it crucial for understanding ancient Near Eastern commerce and cultural exchange. Its damage represents a significant loss to Bronze Age archaeology.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/tell-el-ajjul-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/tell-el-ajjul-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -556,6 +684,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "As the largest archaeological site in the Gaza Strip, Tell es-Sakan provided unique evidence of Early Bronze Age Egyptian colonial architecture and the transition from Egyptian to Canaanite occupation. The site's exceptional preservation made it invaluable for understanding early urbanism and Egyptian-Levantine relations over 5,000 years ago.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/tell-es-sakan-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/tell-es-sakan-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -592,6 +739,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of the Central Archives by fire in late November 2023 represents the erasure of a large part of Palestinian memory and historical documentation. A UN investigation concluded that 'the interior of the building was likely set ablaze' by Israeli forces. The loss of these documents makes it significantly more difficult to reconstruct property ownership, urban history, and administrative continuity.",
     verifiedBy: ["ICOM UK", "International Council on Archives"],
+    images: {
+      before: {
+        url: "/images/sites/central-archives-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/central-archives-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "International Council on Archives",
@@ -629,14 +795,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "UNESCO granted enhanced protection (highest level of immunity) in December 2023, followed by World Heritage in Danger status in July 2024. The monastery's surrounding areas sustained damage including roads and infrastructure, threatening this irreplaceable archaeological treasure. The site features extensive Byzantine mosaics and architectural remains.",
     verifiedBy: ["UNESCO", "British Council", "Aliph Foundation"],
-    // Images need to be sourced with proper attribution
-    // images: {
-    //   before: {
-    //     url: "/images/saint-hilarion-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    // },
+    images: {
+      before: {
+        url: "/images/sites/saint-hilarion-monastery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/saint-hilarion-monastery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -679,18 +856,24 @@ export const mockSites: Site[] = [
       "Centre for Cultural Heritage Preservation",
     ],
     // Images need to be sourced with proper attribution
-    // images: {
-    //   before: {
-    //     url: "/images/ard-al-moharbeen-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    //   satellite: {
-    //     url: "/images/ard-al-moharbeen-satellite.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    // },
+    images: {
+      before: {
+        url: "/images/sites/anthedon-harbour-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/anthedon-harbour-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
     sources: [
       {
         organization: "UNESCO",
@@ -727,19 +910,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The museum's 3,000+ artifacts were looted by Israeli forces before the university building was demolished by explosives on January 17, 2024, after 70 days of occupation. University vice president Ahmed Alhussaina stated that such widespread destruction represents a deliberate act aimed at erasing Palestinian cultural memory and archaeological heritage. The loss includes irreplaceable historical artifacts and educational resources.",
     verifiedBy: ["PEN America", "Al-Israa University"],
-    // Images need to be sourced with proper attribution
-    // images: {
-    //   before: {
-    //     url: "/images/israa-university-before.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    //   after: {
-    //     url: "/images/israa-university-after.jpg",
-    //     credit: "Photographer Name / Organization",
-    //     license: "CC BY-SA 4.0",
-    //   },
-    // },
+    images: {
+      before: {
+        url: "/images/sites/israa-university-museum-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/israa-university-museum-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "PEN America",
@@ -776,6 +965,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The museum was destroyed on October 11, 2023, just days after the conflict began. The loss of its 30-year collection, including rare coins, ancient jewelry, and copper artifacts, represents an irreplaceable loss to understanding Rafah's archaeological heritage.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/rafah-museum-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/rafah-museum-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -812,6 +1020,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The mosque was completely obliterated in late October 2023, as documented by Heritage for Peace. Its destruction represents the loss of a major religious and cultural landmark for the Jabaliya refugee camp community.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/omari-mosque-jabaliya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/omari-mosque-jabaliya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -848,6 +1075,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The palace represents an important example of Ottoman domestic architecture and social organization. Its damage threatens the preservation of traditional building techniques and historical residential patterns in old Gaza.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/al-saqqa-palace-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-saqqa-palace-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -884,6 +1130,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The building served dual significance: as a historic architectural monument and as an active cultural institution promoting arts, language, and cross-cultural understanding. Its damage impacts both heritage preservation and contemporary cultural programming.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/al-ghussein-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-ghussein-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -920,6 +1185,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The market was not only an architectural monument but a living cultural space where traditional crafts, commerce, and social interaction continued for centuries. Its destruction represents the loss of both physical heritage and intangible cultural practices.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/al-qissariya-market-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-qissariya-market-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -956,6 +1240,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The cemetery is protected under international law as a war grave site. Damage to the cemetery affects graves of soldiers from the UK, Australia, New Zealand, India, and other Commonwealth nations, impacting international heritage and remembrance.",
     verifiedBy: ["UNESCO", "Commonwealth War Graves Commission"],
+    images: {
+      before: {
+        url: "/images/sites/commonwealth-war-cemetery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/commonwealth-war-cemetery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -991,6 +1294,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The museum's damage on November 3, 2023, represents the loss of both the collection and a community cultural resource. Small regional museums like this are crucial for local heritage education and community identity.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/mathaf-al-funduq-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/mathaf-al-funduq-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -1026,6 +1348,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The museum's damage represents the loss of irreplaceable regional artifacts and an important cultural institution for central Gaza communities. Its collections provided crucial links to understanding the area's ancient history.",
     verifiedBy: ["Heritage for Peace", "UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/deir-al-balah-museum-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/deir-al-balah-museum-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1062,6 +1403,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The site was subject to maritime archaeological survey by the Honor Frost Foundation in 2022. Damage to Tell Ruqeish impacts our understanding of ancient Gaza's coastal settlements and Iron Age cultural development.",
     verifiedBy: ["Heritage for Peace", "Forensic Architecture"],
+    images: {
+      before: {
+        url: "/images/sites/tell-ruqeish-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/tell-ruqeish-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Honor Frost Foundation",
@@ -1097,6 +1457,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of Samir Mansour Bookshop for a second time in October 2023 represents not only the loss of thousands of books and educational resources, but the erasure of a vital community cultural space and symbol of resilience.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/samir-mansour-bookshop-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/samir-mansour-bookshop-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -1133,6 +1512,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of Dar As-Sa'ada resulted in the loss of irreplaceable manuscripts, historical documents, and scholarly texts. UNESCO verified this site as one of the damaged cultural properties in Gaza.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/dar-assaada-manuscript-center-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/dar-assaada-manuscript-center-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1169,6 +1567,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Subat Al-Alami is one of several historic buildings that collectively document Gaza's Ottoman heritage. Its damage contributes to the degradation of the old city's historic character and architectural continuity.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/subat-al-alami-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/subat-al-alami-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1199,6 +1616,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The sabil is both an architectural monument and a symbol of communal care and Islamic urban traditions. Its damage threatens the preservation of this unique type of Ottoman public architecture.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/sabil-ar-rifaiya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sabil-ar-rifaiya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1229,6 +1665,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Historic houses like this are crucial for understanding daily life, social structures, and architectural evolution in Ottoman and late Ottoman-period Gaza. The building's damage threatens preservation of traditional domestic architecture.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/khader-tarazi-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/khader-tarazi-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1258,6 +1713,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of the storage facility on October 25, 2023, represents catastrophic loss of unstudied and uncatalogued artifacts. Many objects in storage had not yet been fully documented, photographed, or researched, making this loss especially devastating for Gaza's archaeology.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/ministry-storage-sheikh-radwan-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ministry-storage-sheikh-radwan-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1294,6 +1768,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Zofor Domri Mosque is one of several important Mamluk-period religious structures in Gaza. Its damage contributes to the erosion of Gaza's medieval Islamic architectural heritage.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/zofor-domri-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/zofor-domri-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1323,6 +1816,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The museum's destruction in January 2024 represents the loss of important collections documenting southern Gaza's distinct cultural traditions, including textiles, jewelry, household items, and agricultural tools specific to the region.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/akkad-museum-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/akkad-museum-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Wikipedia",
@@ -1357,6 +1869,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The center's destruction represents the loss not only of a physical space but of a vital cultural institution supporting living artistic practice. The loss impacts Gaza's contemporary cultural production and artists' ability to sustain creative work.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/shababeek-art-center-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/shababeek-art-center-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Museums Association",
@@ -1393,6 +1924,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The house is one of fewer surviving examples of early 20th-century architecture in Gaza, representing a transitional period between Ottoman and Mandate-era building styles. Its damage threatens preservation of this architectural period.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/al-mahatta-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-mahatta-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1422,6 +1972,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Katib Wilaya Mosque is one of Gaza's important medieval mosques, contributing to the historic character of Gaza City's old quarter. Its heavy damage threatens the preservation of Mamluk architectural heritage.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/katib-wilaya-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/katib-wilaya-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1457,6 +2026,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Al-Zeitoun Cultural Center's destruction early in the conflict represents the loss of an important community institution that fostered education, literacy, and cultural engagement in eastern Gaza City.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/al-zeitoun-cultural-center-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-zeitoun-cultural-center-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1486,6 +2074,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "As one of the historic family residences of Gaza's elite, the house is architecturally and historically significant. Its damage threatens preservation of 19th-century upper-class domestic architecture and the material heritage of Gaza's notable families.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/al-shawa-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-shawa-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1515,6 +2122,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The courthouse is one of few remaining examples of British Mandate architecture in Gaza. Its damage threatens preservation of this distinct architectural period and its role in Gaza's modern legal and administrative history.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/mahkama-courthouse-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/mahkama-courthouse-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1544,6 +2170,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The market was not only a historic architectural ensemble but a living cultural space where traditional commerce, crafts, and social interaction continued. Its heavy damage represents both architectural loss and the disruption of intangible cultural practices.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/khan-yunis-old-market-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/khan-yunis-old-market-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1573,6 +2218,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Historic cemeteries are important cultural heritage sites preserving genealogical records, funerary architecture, and community memory. Damage to Sheikh Radwan Cemetery threatens both physical monuments and the continuity of cultural and familial connections.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/sheikh-radwan-cemetery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sheikh-radwan-cemetery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1602,6 +2266,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Al-Muntar Hill represents both archaeological heritage (ancient settlement layers) and modern historical significance (Napoleonic fortifications). Damage to the site affects understanding of Gaza's long history from antiquity through the Napoleonic era.",
     verifiedBy: ["Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/napoleon-fort-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/napoleon-fort-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "Heritage for Peace",
@@ -1631,6 +2314,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The mosque's destruction represents the loss of significant Mamluk religious architecture and a community worship space that served Gaza's residents for seven centuries. It was one of several important medieval mosques in Gaza's historic core.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/al-katib-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-katib-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1667,6 +2369,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Exemplary Mamluk-era mosque architecture. Important community gathering place in one of Gaza's densely populated eastern neighborhoods.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/ibn-othman-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibn-othman-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1701,6 +2422,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Historic mosque serving the densely populated Daraj Quarter for nearly a millennium. Important component of Gaza's Old City Islamic architectural ensemble.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/shaikh-zakaria-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/shaikh-zakaria-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1728,6 +2468,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important symbol of Gaza's diverse Islamic heritage and North African community connections. Every historic mosque in Gaza has been either partially or completely destroyed according to archaeologists.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/al-mughrabi-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-mughrabi-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1755,6 +2514,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Historic neighborhood mosque serving local community for centuries. Part of Gaza's extensive network of religious sites.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/sett-ruqayya-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sett-ruqayya-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1782,6 +2560,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Historic neighborhood mosque serving local community. Part of Gaza's Islamic architectural heritage.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/ash-sheikh-shaban-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ash-sheikh-shaban-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1809,6 +2606,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important example of Sufi architectural and spiritual heritage in Gaza. Zawiyas traditionally provided hospitality, education, and spiritual guidance.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/zawiyat-al-hnoud-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/zawiyat-al-hnoud-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1836,6 +2652,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important monument in Gaza's Islamic heritage. Shrines traditionally served as places of prayer, pilgrimage, and community gathering.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/ali-ibn-marwan-shrine-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ali-ibn-marwan-shrine-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1863,6 +2698,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Unique monument demonstrating Gaza's multicultural and multi-religious heritage. Shrines of this type often became pilgrimage sites for diverse communities.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/abu-al-azm-shamshon-shrine-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/abu-al-azm-shamshon-shrine-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1890,6 +2744,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important site for public commemoration and national remembrance. Monuments like this serve as focal points for memorial ceremonies and collective memory.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/unknown-soldier-memorial-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/unknown-soldier-memorial-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1917,6 +2790,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important archaeological resource for understanding Gaza's ancient history. Contains stratigraphic evidence of Bronze Age, Iron Age, and later civilizations.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/tell-al-muntar-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/tell-al-muntar-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1944,6 +2836,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Critical archaeological resource for understanding southern Gaza's ancient history. Contains evidence of Egyptian, Canaanite, and later civilizations.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/tell-rafah-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/tell-rafah-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1971,6 +2882,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important example of Byzantine artistry and craftsmanship. Mosaic floors often depicted religious scenes, geometric patterns, and provided insight into Byzantine Christian life.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/al-bureij-mosaic-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-bureij-mosaic-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -1998,6 +2928,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "International war memorial and historical site. Commonwealth war cemeteries are protected under international heritage conventions and serve as places of remembrance.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/english-cemetery-az-zawaida-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/english-cemetery-az-zawaida-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2025,6 +2974,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important civic architecture from the early modern period of Gaza's development. Represents the establishment of formal municipal governance in Gaza.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/old-gaza-municipality-building-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/old-gaza-municipality-building-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2052,6 +3020,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important cultural building representing Gaza's modern urban development and entertainment culture. Cinema buildings often featured distinctive architectural styles.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/an-nassr-cinema-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/an-nassr-cinema-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2079,6 +3066,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Represents Gaza's vibrant cultural scene before decades of conflict. Cinema buildings were important architectural and social institutions.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/as-samer-cinema-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/as-samer-cinema-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2106,6 +3112,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important healthcare facility with architectural and institutional significance. Hospital buildings represent community welfare and medical advancement.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/baptist-hospital-emergency-building-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/baptist-hospital-emergency-building-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2133,6 +3158,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important healthcare facility with institutional significance. Surgical wings were critical components of Gaza's limited medical infrastructure.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/baptist-hospital-surgery-building-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/baptist-hospital-surgery-building-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2160,6 +3204,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Critical storage facility protecting irreplaceable archaeological collections. Depositories like this preserve cultural heritage for research and future generations.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/ebaf-storage-facility-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ebaf-storage-facility-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2187,6 +3250,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important example of traditional Gaza residential architecture. Part of the Old City's dense urban fabric that showcased Palestinian architectural heritage.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/hani-saba-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/hani-saba-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2214,6 +3296,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important cultural heritage center that was renovated before its destruction. Represents Gaza's modern political and social history as well as traditional architecture.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/raghib-al-alami-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/raghib-al-alami-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2241,6 +3342,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Critical examples of traditional Palestinian residential architecture. UNESCO verified these as part of 81 buildings of historical and/or artistic interest damaged or destroyed since October 7, 2023. As of 2024, approximately 63% of Gaza's 320+ heritage sites have sustained damage.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/historic-gaza-old-city-residential-a-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/historic-gaza-old-city-residential-a-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2273,6 +3393,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "These buildings formed the core of Gaza's Old City historic ensemble. The Daraj Quarter's architecture showcased traditional urban planning, with narrow streets, courtyard houses, and public buildings integrated into a dense urban fabric that had survived for centuries until the 2023-2024 conflict.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/historic-daraj-quarter-buildings-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/historic-daraj-quarter-buildings-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -2305,6 +3444,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Important examples of Gaza's transition to modern urban planning and architecture. Buildings from this period often featured distinctive facades, arched windows, and mixed Ottoman-European architectural influences representing Gaza's integration into global trade networks.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/historic-gaza-commercial-public-buildings-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/historic-gaza-commercial-public-buildings-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
