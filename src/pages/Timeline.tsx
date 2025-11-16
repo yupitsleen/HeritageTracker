@@ -88,6 +88,16 @@ export function Timeline() {
     DEFAULT_COMPARISON_INTERVAL
   );
 
+  // Map settings for before/after maps (independent controls)
+  const [beforeMapZoomToSite, setBeforeMapZoomToSite] = useState(true);
+  const [beforeMapShowMarkers, setBeforeMapShowMarkers] = useState(false);
+  const [afterMapZoomToSite, setAfterMapZoomToSite] = useState(true);
+  const [afterMapShowMarkers, setAfterMapShowMarkers] = useState(false);
+
+  // Map settings for single map mode
+  const [singleMapZoomToSite, setSingleMapZoomToSite] = useState(true);
+  const [singleMapShowMarkers, setSingleMapShowMarkers] = useState(false);
+
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
@@ -306,6 +316,18 @@ export function Timeline() {
                       dateLabel: currentRelease?.releaseDate,
                     }}
                     onSiteClick={setSelectedSite}
+                    beforeMapSettings={{
+                      zoomToSite: beforeMapZoomToSite,
+                      onZoomToSiteChange: setBeforeMapZoomToSite,
+                      showMarkers: beforeMapShowMarkers,
+                      onShowMarkersChange: setBeforeMapShowMarkers,
+                    }}
+                    afterMapSettings={{
+                      zoomToSite: afterMapZoomToSite,
+                      onZoomToSiteChange: setAfterMapZoomToSite,
+                      showMarkers: afterMapShowMarkers,
+                      onShowMarkersChange: setAfterMapShowMarkers,
+                    }}
                   />
                 ) : (
                   <SiteDetailView
@@ -316,6 +338,10 @@ export function Timeline() {
                     dateLabel={currentRelease?.releaseDate}
                     onSiteClick={setSelectedSite}
                     comparisonModeActive={false}
+                    zoomToSiteOverride={singleMapZoomToSite}
+                    onZoomToSiteChange={setSingleMapZoomToSite}
+                    mapMarkersOverride={singleMapShowMarkers}
+                    onMapMarkersChange={setSingleMapShowMarkers}
                   />
                 )}
               </Suspense>
@@ -351,6 +377,7 @@ export function Timeline() {
                     syncMapOnDotClick,
                     showNavigation: true, // Show Previous/Next buttons
                     hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
+                    hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to maps above)
                     onReset: handleWaybackReset, // Reset wayback sliders to initial positions
                   }}
                 />

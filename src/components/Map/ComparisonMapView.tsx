@@ -12,6 +12,20 @@ interface ComparisonMapViewProps {
   /** Later/after imagery configuration */
   after: WaybackImagery;
   onSiteClick?: (site: Site) => void;
+  /** Before map settings */
+  beforeMapSettings?: {
+    zoomToSite: boolean;
+    onZoomToSiteChange: (enabled: boolean) => void;
+    showMarkers: boolean;
+    onShowMarkersChange: (enabled: boolean) => void;
+  };
+  /** After map settings */
+  afterMapSettings?: {
+    zoomToSite: boolean;
+    onZoomToSiteChange: (enabled: boolean) => void;
+    showMarkers: boolean;
+    onShowMarkersChange: (enabled: boolean) => void;
+  };
 }
 
 /**
@@ -35,6 +49,8 @@ export function ComparisonMapView({
   before,
   after,
   onSiteClick,
+  beforeMapSettings,
+  afterMapSettings,
 }: ComparisonMapViewProps) {
   const t = useThemeClasses();
 
@@ -57,6 +73,10 @@ export function ComparisonMapView({
             customMaxZoom={before.maxZoom}
             onSiteClick={onSiteClick}
             comparisonModeActive={true}
+            zoomToSiteOverride={beforeMapSettings?.zoomToSite}
+            onZoomToSiteChange={beforeMapSettings?.onZoomToSiteChange}
+            mapMarkersOverride={beforeMapSettings?.showMarkers}
+            onMapMarkersChange={beforeMapSettings?.onShowMarkersChange}
           />
         </div>
 
@@ -75,6 +95,10 @@ export function ComparisonMapView({
             customMaxZoom={after.maxZoom}
             onSiteClick={onSiteClick}
             comparisonModeActive={true}
+            zoomToSiteOverride={afterMapSettings?.zoomToSite}
+            onZoomToSiteChange={afterMapSettings?.onZoomToSiteChange}
+            mapMarkersOverride={afterMapSettings?.showMarkers}
+            onMapMarkersChange={afterMapSettings?.onShowMarkersChange}
           />
         </div>
       </div>
