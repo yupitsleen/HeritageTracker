@@ -338,42 +338,61 @@ export const mockSites: Site[] = [
       },
     ],
   },
-  // commenting out because its an outler at this time and makes the timeline data harder to see
-  // {
-  //   id: "ibn-uthman-mosque",
-  //   name: "Ibn Uthman Mosque",
-  //   nameArabic: "مسجد ابن عثمان",
-  //   type: "mosque",
-  //   yearBuilt: "1399-1400 (14th century)",
-  //   yearBuiltIslamic: "802 AH",
-  //   coordinates: [31.5203, 34.4668],
-  //   status: "destroyed",
-  //   dateDestroyed: "2024-07-15", // Estimated July 2024
-  //   dateDestroyedIslamic: "9 Muharram 1446 AH", // Manually verified with Islamic calendar converter
-  //   description:
-  //     "The second largest archaeological mosque in the Gaza Strip, located along Suq Street in the Turukman Quarter of the Shuja'iyya district. The mosque covered 2,000 square meters with a 400 square meter main courtyard and featured two gates overlooking the Shuja'iyya market.",
-  //   historicalSignificance:
-  //     "Built between 1399-1400 CE during the Mamluk period, this mosque represented significant Islamic architectural heritage in Gaza. It was an important religious center in the Shuja'iyya neighborhood for over 600 years before its destruction.",
-  //   culturalValue:
-  //     "The Ibn Uthman Mosque was the second most important archaeological mosque in Gaza after the Great Omari Mosque. Its loss represents a significant blow to Gaza's Islamic architectural heritage and the cultural identity of the Shuja'iyya community.",
-  //   verifiedBy: ["UNESCO", "Heritage for Peace"],
-  //   sources: [
-  //     {
-  //       organization: "UNESCO",
-  //       title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
-  //       url: "https://www.unesco.org/en/gaza/assessment",
-  //       date: "2024-05-28",
-  //       type: "official",
-  //     },
-  //     {
-  //       organization: "Middle East Monitor",
-  //       title: "Israel destroys second largest historical mosque in Gaza",
-  //       url: "https://www.middleeastmonitor.com/20240704-israel-destroys-second-largest-historical-mosque-in-gaza/",
-  //       date: "2024-07-04",
-  //       type: "journalism",
-  //     },
-  //   ],
-  // },
+  {
+    id: "ibn-uthman-mosque",
+    name: "Ibn Uthman Mosque",
+    nameArabic: "مسجد ابن عثمان",
+    type: "mosque",
+    yearBuilt: "1399-1400 (14th century)",
+    yearBuiltIslamic: "802 AH",
+    coordinates: [31.5203, 34.4668],
+    status: "destroyed",
+    dateDestroyed: "2024-07-15",
+    dateDestroyedIslamic: "9 Muharram 1446 AH",
+    sourceAssessmentDate: "2024-07-04",
+    lastUpdated: "2025-11-15",
+    description:
+      "The second largest archaeological mosque in the Gaza Strip, located along Suq Street in the Turukman Quarter of the Shuja'iyya district. The mosque covered 2,000 square meters with a 400 square meter main courtyard and featured two gates overlooking the Shuja'iyya market.",
+    historicalSignificance:
+      "Built between 1399-1400 CE during the Mamluk period, this mosque represented significant Islamic architectural heritage in Gaza. It was an important religious center in the Shuja'iyya neighborhood for over 600 years before its destruction.",
+    culturalValue:
+      "The Ibn Uthman Mosque was the second most important archaeological mosque in Gaza after the Great Omari Mosque. Its loss represents a significant blow to Gaza's Islamic architectural heritage and the cultural identity of the Shuja'iyya community.",
+    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/ibn-uthman-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibn-uthman-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85",
+        date: "2025-10-23",
+        description: "Satellite imagery from 2025-10-23"
+      }
+    },
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2024-05-28",
+        type: "official",
+      },
+      {
+        organization: "Middle East Monitor",
+        title: "Israel destroys second largest historical mosque in Gaza",
+        url: "https://www.middleeastmonitor.com/20240704-israel-destroys-second-largest-historical-mosque-in-gaza/",
+        date: "2024-07-04",
+        type: "journalism",
+      },
+    ],
+  },
   {
     id: "ibn-marwan-mosque",
     name: "Ibn Marwan Mosque",
