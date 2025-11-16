@@ -67,7 +67,7 @@ export const en: Translations = {
   timeline: {
     play: "Play",
     pause: "Pause",
-    playTooltip: "Animate the map to show site destruction events over time",
+    playTooltip: "Animate the left map to show site destruction events over time",
     speed: "Speed",
     syncMap: "Sync Map",
     zoomToSite: "Zoom to Site",
@@ -91,8 +91,10 @@ export const en: Translations = {
     playPause: "Play/Pause",
     step: "Step",
     jump: "Jump",
-    tooltipDefault: "Click Play to animate through destruction events. Use the date filter to focus on specific time periods. Click dots to see site details.",
-    tooltipAdvanced: "Click red dots to highlight sites. Use Previous/Next to navigate between events. Enable 'Sync Map' to automatically show satellite imagery from before each site's destruction.",
+    tooltipDefault:
+      "Click Play to animate through destruction events on the left map. Use the date filter to focus on specific time periods. Click dots to see site details.",
+    tooltipAdvanced:
+      "Click the dots to highlight sites. Use Previous/Next to navigate between events.",
     interval: "Interval",
     intervalAsLargeAsPossible: "As large as possible",
     intervalAsSmallAsPossible: "As small as possible",
@@ -126,7 +128,8 @@ export const en: Translations = {
     destructionDateGregorian: "Destruction Date (Gregorian)",
     destructionDateIslamic: "Destruction Date (Islamic)",
     surveyDate: "Survey Date",
-    tooltip: "Click any site row to view detailed information. Click column headers to sort. Hover over site rows to highlight them on the map and timeline.",
+    tooltip:
+      "Click any site row to view detailed information. Click column headers to sort. Hover over site rows to highlight them on the map and timeline.",
     builtGregorian: "Built (Gregorian)",
     builtIslamic: "Built (Islamic)",
     showing: "Showing",
@@ -204,7 +207,8 @@ export const en: Translations = {
     resetTimeline: "Reset timeline",
     nextEvent: "Next event",
     previousEvent: "Previous event",
-    waybackTooltip: "Navigate through 186 historical satellite imagery versions from 2014-2025. Click anywhere on the timeline to jump to that date. Use Previous/Next buttons or hover over gray lines to see exact dates. Enable Comparison Mode to view before/after satellite imagery side-by-side.",
+    waybackTooltip:
+      "Navigate through 186 historical satellite imagery versions from 2014-2025. Click anywhere on the timeline to jump to that date. Use Previous/Next buttons or hover over gray lines to see exact dates. Enable Comparison Mode to view before/after satellite imagery side-by-side.",
   },
 
   siteDetail: {
@@ -284,7 +288,8 @@ export const en: Translations = {
     focus: "Focus:",
     donateButton: "Donate",
     disclaimer: "Note:",
-    disclaimerText: "Heritage Tracker is not affiliated with these organizations. Please research before donating.",
+    disclaimerText:
+      "Heritage Tracker is not affiliated with these organizations. Please research before donating.",
   },
 
   footer: {
@@ -303,128 +308,185 @@ export const en: Translations = {
   resources: {
     organizations: {
       title: "Organizations",
-      description: "Palestinian heritage, human rights, and humanitarian organizations working for justice and preservation.",
+      description:
+        "Palestinian heritage, human rights, and humanitarian organizations working for justice and preservation.",
       heritageSection: "Heritage & Documentation",
       humanRightsSection: "Human Rights Organizations",
       humanitarianSection: "Humanitarian Aid",
       legalSection: "Legal Institutions",
-      unescoDesc: "Leading international organization for cultural heritage protection and assessment.",
+      unescoDesc:
+        "Leading international organization for cultural heritage protection and assessment.",
       h4pDesc: "NGO dedicated to protecting cultural heritage in conflict zones.",
-      forensicDesc: "Research agency investigating human rights violations through spatial and architectural analysis.",
-      alhaqDesc: "Independent Palestinian non-governmental human rights organization established in 1979.",
-      btselemDesc: "Israeli human rights organization documenting human rights violations in occupied territories.",
+      forensicDesc:
+        "Research agency investigating human rights violations through spatial and architectural analysis.",
+      alhaqDesc:
+        "Independent Palestinian non-governmental human rights organization established in 1979.",
+      btselemDesc:
+        "Israeli human rights organization documenting human rights violations in occupied territories.",
       amnestyDesc: "Global human rights monitoring and advocacy for Palestinian rights.",
-      hrwDesc: "International human rights organization documenting abuses and advocating for change.",
-      unrwaDesc: "UN agency providing education, healthcare, and emergency aid to Palestinian refugees.",
+      hrwDesc:
+        "International human rights organization documenting abuses and advocating for change.",
+      unrwaDesc:
+        "UN agency providing education, healthcare, and emergency aid to Palestinian refugees.",
       mapDesc: "UK-based charity providing medical and humanitarian assistance to Palestinians.",
-      pcrfDesc: "Non-profit providing free medical care to children in the Middle East regardless of nationality or religion.",
+      pcrfDesc:
+        "Non-profit providing free medical care to children in the Middle East regardless of nationality or religion.",
       icjDesc: "UN's principal judicial organ hearing cases on international law violations.",
       iccDesc: "International tribunal investigating war crimes and crimes against humanity.",
     },
     research: {
       title: "Research & Reports",
-      description: "Academic research, official reports, and documentation projects on Palestinian heritage and human rights.",
+      description:
+        "Academic research, official reports, and documentation projects on Palestinian heritage and human rights.",
       officialReportsSection: "Official Reports & Assessments",
       documentationSection: "Documentation Projects",
       academicSection: "Academic Publications",
       databasesSection: "Databases & Archives",
-      unescoReportDesc: "Comprehensive damage assessment of cultural heritage sites in Gaza (October 2025).",
-      ochaDesc: "Real-time humanitarian situation reports and data on occupied Palestinian territory.",
+      unescoReportDesc:
+        "Comprehensive damage assessment of cultural heritage sites in Gaza (October 2025).",
+      ochaDesc:
+        "Real-time humanitarian situation reports and data on occupied Palestinian territory.",
       unrwaReportsDesc: "Detailed reports on humanitarian conditions and refugee needs.",
-      forensicProjectsDesc: "Evidence-based investigations using spatial analysis and open-source data.",
+      forensicProjectsDesc:
+        "Evidence-based investigations using spatial analysis and open-source data.",
       airwarsDesc: "Non-profit tracking civilian casualties from international airstrikes.",
-      euromedDesc: "Independent organization documenting human rights violations and legal advocacy.",
-      palestineStudiesDesc: "Leading academic journal on Palestinian history, politics, and culture since 1971.",
-      holyLandJournalDesc: "Peer-reviewed journal covering history, politics, and heritage of Palestine.",
+      euromedDesc:
+        "Independent organization documenting human rights violations and legal advocacy.",
+      palestineStudiesDesc:
+        "Leading academic journal on Palestinian history, politics, and culture since 1971.",
+      holyLandJournalDesc:
+        "Peer-reviewed journal covering history, politics, and heritage of Palestine.",
       meripDesc: "Independent non-profit providing critical analysis of Middle East affairs.",
-      openMapsDesc: "Interactive mapping platform documenting Palestinian towns, villages, and historical sites.",
-      rememberedDesc: "Comprehensive database of destroyed Palestinian villages and refugee stories.",
+      openMapsDesc:
+        "Interactive mapping platform documenting Palestinian towns, villages, and historical sites.",
+      rememberedDesc:
+        "Comprehensive database of destroyed Palestinian villages and refugee stories.",
     },
     media: {
       title: "Media & Documentation",
-      description: "Photo archives, documentaries, news sources, and social media accounts documenting Palestinian life and heritage.",
+      description:
+        "Photo archives, documentaries, news sources, and social media accounts documenting Palestinian life and heritage.",
       photoArchivesSection: "Photo & Film Archives",
       newsOutletsSection: "News Outlets",
       documentariesSection: "Documentary Films",
       socialMediaSection: "Social Media Documentation",
       palMuseumDesc: "Digital archive preserving Palestinian cultural heritage and history.",
-      photoCollectionDesc: "Curated collection of historical and contemporary Palestinian photographs.",
+      photoCollectionDesc:
+        "Curated collection of historical and contemporary Palestinian photographs.",
       unrwaArchiveDesc: "70+ years of photographs and films documenting Palestinian refugee life.",
-      alJazeeraDesc: "Comprehensive coverage of Palestinian news, politics, and humanitarian situation.",
-      meeDesc: "Independent news organization covering Middle East with focus on Palestinian affairs.",
+      alJazeeraDesc:
+        "Comprehensive coverage of Palestinian news, politics, and humanitarian situation.",
+      meeDesc:
+        "Independent news organization covering Middle East with focus on Palestinian affairs.",
       eintifadaDesc: "Non-profit providing news, analysis, and commentary on Palestinian struggle.",
-      mondoweissDesc: "News website devoted to covering American foreign policy in the Middle East.",
+      mondoweissDesc:
+        "News website devoted to covering American foreign policy in the Middle East.",
       "972Desc": "Magazine providing news and analysis from Israeli and Palestinian journalists.",
-      "5camerasDesc": "Oscar-nominated documentary following Palestinian farmer's nonviolent resistance (2011).",
+      "5camerasDesc":
+        "Oscar-nominated documentary following Palestinian farmer's nonviolent resistance (2011).",
       occupationMindDesc: "Documentary examining US media coverage of Israel-Palestine conflict.",
       gazaFightsDesc: "Documentary on Gaza's 2018-2019 Great March of Return protests.",
-      eyeOnPalDesc: "Instagram account documenting daily life, protests, and humanitarian situation in Palestine.",
+      eyeOnPalDesc:
+        "Instagram account documenting daily life, protests, and humanitarian situation in Palestine.",
       pymDesc: "Transnational, independent grassroots organization of Palestinian youth activists.",
     },
     education: {
       title: "Educational Resources",
-      description: "Teaching materials, historical context, books, and curricula for learning about Palestinian history and heritage.",
+      description:
+        "Teaching materials, historical context, books, and curricula for learning about Palestinian history and heritage.",
       teachingResourcesSection: "Teaching Resources & Curricula",
       historicalContextSection: "Historical Context & Timelines",
       booksSection: "Books & Publications",
       youthResourcesSection: "Youth & Children's Resources",
-      zinnDesc: "Free downloadable lessons and resources for teaching Palestine in K-12 classrooms.",
-      t4cDesc: "Non-profit providing social justice teaching resources including Palestine curriculum.",
-      rethinkingDesc: "Publisher of educational materials promoting social and environmental justice in education.",
-      timelineDesc: "Interactive visual timeline of key events in Palestinian history from 1799 to present.",
-      nakbaArchiveDesc: "Digital archive documenting the 1948 Nakba through survivor testimonies and historical records.",
-      ipsDesc: "Oldest institute in the world devoted exclusively to documentation and research on Palestinian affairs.",
-      khalidiDesc: "Definitive history of modern Palestine from leading historian at Columbia University.",
-      pappeDesc: "Groundbreaking historical account of systematic expulsion of Palestinians in 1947-1949.",
+      zinnDesc:
+        "Free downloadable lessons and resources for teaching Palestine in K-12 classrooms.",
+      t4cDesc:
+        "Non-profit providing social justice teaching resources including Palestine curriculum.",
+      rethinkingDesc:
+        "Publisher of educational materials promoting social and environmental justice in education.",
+      timelineDesc:
+        "Interactive visual timeline of key events in Palestinian history from 1799 to present.",
+      nakbaArchiveDesc:
+        "Digital archive documenting the 1948 Nakba through survivor testimonies and historical records.",
+      ipsDesc:
+        "Oldest institute in the world devoted exclusively to documentation and research on Palestinian affairs.",
+      khalidiDesc:
+        "Definitive history of modern Palestine from leading historian at Columbia University.",
+      pappeDesc:
+        "Groundbreaking historical account of systematic expulsion of Palestinians in 1947-1949.",
       masalhaDesc: "Comprehensive history challenging colonial narratives about Palestine's past.",
-      hillPlitnickDesc: "Analysis of how Palestinian rights are treated as exception in progressive movements.",
-      pisforpalDesc: "Alphabet book introducing children to Palestinian culture, food, and history.",
+      hillPlitnickDesc:
+        "Analysis of how Palestinian rights are treated as exception in progressive movements.",
+      pisforpalDesc:
+        "Alphabet book introducing children to Palestinian culture, food, and history.",
       sittisKeyDesc: "Children's story about Palestinian family memory and connection to homeland.",
     },
     legal: {
       title: "Legal & Advocacy",
-      description: "International court cases, legal advocacy organizations, UN resolutions, and advocacy campaigns for Palestinian rights.",
+      description:
+        "International court cases, legal advocacy organizations, UN resolutions, and advocacy campaigns for Palestinian rights.",
       internationalCourtsSection: "International Courts & Tribunals",
       legalAdvocacySection: "Legal Advocacy Organizations",
       unResolutionsSection: "UN Resolutions & Reports",
       advocacyCampaignsSection: "Advocacy Campaigns",
-      icjCaseDesc: "Historic case alleging violations of Genocide Convention in Gaza, filed December 2023.",
-      iccInvestigationDesc: "Ongoing investigation into alleged war crimes in occupied Palestinian territory since 2021.",
-      unRapporteurDesc: "UN expert monitoring and reporting on human rights situation in occupied territories.",
+      icjCaseDesc:
+        "Historic case alleging violations of Genocide Convention in Gaza, filed December 2023.",
+      iccInvestigationDesc:
+        "Ongoing investigation into alleged war crimes in occupied Palestinian territory since 2021.",
+      unRapporteurDesc:
+        "UN expert monitoring and reporting on human rights situation in occupied territories.",
       ccrDesc: "Non-profit legal advocacy organization defending constitutional and human rights.",
-      palLegalDesc: "Organization protecting the rights of Palestine advocates in the United States.",
+      palLegalDesc:
+        "Organization protecting the rights of Palestine advocates in the United States.",
       adalahDesc: "Legal center working to protect rights of Palestinian citizens of Israel.",
-      alhaqLegalDesc: "Palestinian human rights organization providing legal representation and documentation.",
-      gaResolutionsDesc: "Collection of General Assembly resolutions on Palestinian rights and self-determination.",
-      scResolutionsDesc: "Security Council resolutions on Israel-Palestine conflict including Resolution 242.",
+      alhaqLegalDesc:
+        "Palestinian human rights organization providing legal representation and documentation.",
+      gaResolutionsDesc:
+        "Collection of General Assembly resolutions on Palestinian rights and self-determination.",
+      scResolutionsDesc:
+        "Security Council resolutions on Israel-Palestine conflict including Resolution 242.",
       unCommitteeDesc: "Committee supporting inalienable rights of Palestinian people since 1975.",
-      bdsDesc: "Palestinian-led movement for boycott, divestment, and sanctions until international law compliance.",
-      jvpDesc: "Organization of Jewish Americans advocating for Palestinian rights and end to occupation.",
-      ampDesc: "Grassroots organization educating the public about Palestine and supporting activism.",
+      bdsDesc:
+        "Palestinian-led movement for boycott, divestment, and sanctions until international law compliance.",
+      jvpDesc:
+        "Organization of Jewish Americans advocating for Palestinian rights and end to occupation.",
+      ampDesc:
+        "Grassroots organization educating the public about Palestine and supporting activism.",
       uscprDesc: "National coalition working to change US policy toward Palestine/Israel.",
     },
     trackers: {
       title: "Other Heritage Trackers",
-      description: "Similar projects documenting heritage destruction and conflict in other regions, plus global documentation platforms.",
+      description:
+        "Similar projects documenting heritage destruction and conflict in other regions, plus global documentation platforms.",
       palestineSection: "Palestine-Specific Trackers",
       syriaSection: "Syria Heritage Trackers",
       yemenSection: "Yemen Conflict Documentation",
       ukraineSection: "Ukraine Heritage Protection",
       globalSection: "Global Heritage & Conflict Documentation",
-      gazaMosquesDesc: "Dedicated documentation of mosque destruction in Gaza with satellite imagery.",
-      openMapsDesc: "Interactive maps of Palestinian geography, demolished villages, and cultural sites.",
-      vizPalDesc: "Data-driven storytelling about Palestine through infographics and visualizations.",
+      gazaMosquesDesc:
+        "Dedicated documentation of mosque destruction in Gaza with satellite imagery.",
+      openMapsDesc:
+        "Interactive maps of Palestinian geography, demolished villages, and cultural sites.",
+      vizPalDesc:
+        "Data-driven storytelling about Palestine through infographics and visualizations.",
       syrianArchiveDesc: "Database of endangered Syrian heritage sites with damage assessments.",
-      dayAfterDesc: "Syrian civil society organization working on heritage protection and post-conflict planning.",
+      dayAfterDesc:
+        "Syrian civil society organization working on heritage protection and post-conflict planning.",
       asorSyriaDesc: "Weekly reports on cultural heritage destruction in Syria since 2014.",
       yemenDataDesc: "Independent project documenting airstrikes and civilian casualties in Yemen.",
-      yemenArchiveDesc: "Digital archive preserving documentation of Yemen conflict for accountability.",
+      yemenArchiveDesc:
+        "Digital archive preserving documentation of Yemen conflict for accountability.",
       conflictObsDesc: "US government initiative documenting atrocities and war crimes in Ukraine.",
-      ukraineLabDesc: "Real-time monitoring of cultural heritage sites at risk in Ukraine using satellite imagery.",
-      smithsonianDesc: "Initiative protecting cultural heritage threatened by conflict and natural disasters worldwide.",
-      bellingcatDesc: "Investigative journalism network using open-source data to document conflicts globally.",
-      syrianArchiveOrgDesc: "Preserving and verifying digital documentation of human rights violations in Syria.",
-      mnemonicDesc: "Organization archiving digital documentation from conflict zones for justice and accountability.",
+      ukraineLabDesc:
+        "Real-time monitoring of cultural heritage sites at risk in Ukraine using satellite imagery.",
+      smithsonianDesc:
+        "Initiative protecting cultural heritage threatened by conflict and natural disasters worldwide.",
+      bellingcatDesc:
+        "Investigative journalism network using open-source data to document conflicts globally.",
+      syrianArchiveOrgDesc:
+        "Preserving and verifying digital documentation of human rights violations in Syria.",
+      mnemonicDesc:
+        "Organization archiving digital documentation from conflict zones for justice and accountability.",
     },
   },
 };
