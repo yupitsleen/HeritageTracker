@@ -10,8 +10,10 @@ These scripts use **Playwright** (headless Chromium) to programmatically capture
 - **Before:** 2014 (oldest Wayback release)
 - **After:** 2025 (newest Wayback release)
 - **Format:** JPEG (90% quality)
-- **Resolution:** 1200x800px
+- **Resolution:** 240x160px (cropped from 1200x800px)
 - **Zoom Level:** 17 (detailed street-level view)
+- **Crop:** Center 20% of image for tight focus on site
+- **Marker:** None (clean satellite view)
 
 ## Files
 

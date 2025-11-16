@@ -62,9 +62,6 @@
           // Add layer to map
           tileLayer.addTo(map);
 
-          // Add marker for the site
-          L.marker([lat, lng]).addTo(map);
-
           // Timeout fallback in case load event doesn't fire
           setTimeout(() => {
             console.warn('Timeout reached, resolving anyway');

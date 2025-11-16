@@ -32,11 +32,15 @@ const MAP_WIDTH = 1200;
 const MAP_HEIGHT = 800;
 const ZOOM_LEVEL = 17; // Close zoom to show detail
 
+// Crop settings - crop to center 20% of image for tighter focus
+const CROP_ENABLED = true;
+const CROP_PERCENTAGE = 0.20; // 20% of original size
+
 // ESRI attribution
 const ATTRIBUTION = {
   credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
   license: "Fair Use - Educational",
-  sourceUrl: "https://www.arcgis.com/home/item.html?id=08b4d8a8c0c44c559e021deae91f3a85"
+  sourceUrl: "https://livingatlas.arcgis.com/wayback/"
 };
 
 /**
@@ -112,13 +116,30 @@ async function captureScreenshot(page, site, tileUrl, outputPath) {
       tileUrl
     });
 
-    // Take screenshot of the map div
-    const mapElement = await page.locator('#map');
-    await mapElement.screenshot({
+    // Take screenshot with optional cropping
+    // Calculate crop dimensions (center 60% of image)
+    let screenshotOptions = {
       path: outputPath,
       type: 'jpeg',
       quality: 90
-    });
+    };
+
+    if (CROP_ENABLED) {
+      const cropWidth = Math.floor(MAP_WIDTH * CROP_PERCENTAGE);
+      const cropHeight = Math.floor(MAP_HEIGHT * CROP_PERCENTAGE);
+      const x = Math.floor((MAP_WIDTH - cropWidth) / 2);
+      const y = Math.floor((MAP_HEIGHT - cropHeight) / 2);
+
+      screenshotOptions.clip = {
+        x,
+        y,
+        width: cropWidth,
+        height: cropHeight
+      };
+    }
+
+    // Use page.screenshot instead of locator.screenshot for clip to work
+    await page.screenshot(screenshotOptions);
 
     console.log(`  ✓ Saved: ${outputPath}`);
     return true;
