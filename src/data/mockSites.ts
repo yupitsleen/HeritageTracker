@@ -30,7 +30,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/great-omari-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -38,7 +38,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/great-omari-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -86,7 +86,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/church-st-porphyrius-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -94,7 +94,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/church-st-porphyrius-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -143,7 +143,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/blakhiyya-archaeological-site-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -151,7 +151,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/blakhiyya-archaeological-site-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -200,7 +200,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/qasr-al-basha-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -208,7 +208,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/qasr-al-basha-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -256,7 +256,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/hammam-al-samra-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -264,7 +264,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/hammam-al-samra-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -311,7 +311,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sayed-al-hashim-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -319,7 +319,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sayed-al-hashim-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -367,7 +367,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ibn-uthman-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -375,7 +375,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ibn-uthman-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -423,7 +423,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ibn-marwan-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -431,7 +431,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ibn-marwan-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -478,7 +478,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/byzantine-church-jabaliya-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -486,7 +486,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/byzantine-church-jabaliya-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -533,7 +533,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-qarara-cultural-museum-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -541,7 +541,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-qarara-cultural-museum-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -587,7 +587,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/rashad-shawa-cultural-center-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -595,7 +595,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/rashad-shawa-cultural-center-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -644,7 +644,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/anthedon-harbour-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -652,7 +652,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/anthedon-harbour-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -699,7 +699,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-el-ajjul-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -707,7 +707,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-el-ajjul-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -755,7 +755,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-es-sakan-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -763,7 +763,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-es-sakan-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -811,7 +811,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/central-archives-gaza-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -819,7 +819,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/central-archives-gaza-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -868,7 +868,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/saint-hilarion-monastery-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -876,7 +876,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/saint-hilarion-monastery-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -930,7 +930,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ard-al-moharbeen-cemetery-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -938,7 +938,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ard-al-moharbeen-cemetery-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -985,7 +985,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/israa-university-museum-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -993,7 +993,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/israa-university-museum-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1041,7 +1041,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/rafah-museum-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1049,7 +1049,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/rafah-museum-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1097,7 +1097,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/omari-mosque-jabaliya-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1105,7 +1105,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/omari-mosque-jabaliya-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1153,7 +1153,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-saqqa-palace-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1161,7 +1161,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-saqqa-palace-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1209,7 +1209,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-ghussein-house-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1217,7 +1217,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-ghussein-house-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1265,7 +1265,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-qissariya-market-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1273,7 +1273,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-qissariya-market-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1321,7 +1321,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/commonwealth-war-cemetery-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1329,7 +1329,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/commonwealth-war-cemetery-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1376,7 +1376,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/mathaf-al-funduq-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1384,7 +1384,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/mathaf-al-funduq-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1431,7 +1431,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/deir-al-balah-museum-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1439,7 +1439,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/deir-al-balah-museum-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1487,7 +1487,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-ruqeish-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1495,7 +1495,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-ruqeish-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1542,7 +1542,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/samir-mansour-bookshop-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1550,7 +1550,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/samir-mansour-bookshop-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1598,7 +1598,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/dar-assaada-manuscript-center-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1606,7 +1606,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/dar-assaada-manuscript-center-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1654,7 +1654,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/subat-al-alami-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1662,7 +1662,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/subat-al-alami-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1704,7 +1704,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sabil-ar-rifaiya-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1712,7 +1712,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sabil-ar-rifaiya-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1754,7 +1754,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/khader-tarazi-house-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1762,7 +1762,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/khader-tarazi-house-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1803,7 +1803,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ministry-storage-sheikh-radwan-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1811,7 +1811,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ministry-storage-sheikh-radwan-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1859,7 +1859,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/zofor-domri-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1867,7 +1867,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/zofor-domri-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1908,7 +1908,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/akkad-museum-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1916,7 +1916,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/akkad-museum-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -1962,7 +1962,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/shababeek-art-center-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -1970,7 +1970,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/shababeek-art-center-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2018,7 +2018,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-mahatta-house-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2026,7 +2026,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-mahatta-house-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2067,7 +2067,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/katib-wilaya-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2075,7 +2075,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/katib-wilaya-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2122,7 +2122,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-zeitoun-cultural-center-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2130,7 +2130,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-zeitoun-cultural-center-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2171,7 +2171,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-shawa-house-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2179,7 +2179,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-shawa-house-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2220,7 +2220,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/mahkama-courthouse-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2228,7 +2228,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/mahkama-courthouse-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2269,7 +2269,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/khan-yunis-old-market-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2277,7 +2277,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/khan-yunis-old-market-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2318,7 +2318,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sheikh-radwan-cemetery-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2326,7 +2326,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sheikh-radwan-cemetery-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2367,7 +2367,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/napoleon-fort-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2375,7 +2375,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/napoleon-fort-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2416,7 +2416,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-katib-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2424,7 +2424,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-katib-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2472,7 +2472,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ibn-othman-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2480,7 +2480,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ibn-othman-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2526,7 +2526,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/shaikh-zakaria-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2534,7 +2534,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/shaikh-zakaria-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2573,7 +2573,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-mughrabi-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2581,7 +2581,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-mughrabi-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2620,7 +2620,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sett-ruqayya-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2628,7 +2628,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/sett-ruqayya-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2667,7 +2667,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ash-sheikh-shaban-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2675,7 +2675,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ash-sheikh-shaban-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2714,7 +2714,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/zawiyat-al-hnoud-mosque-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2722,7 +2722,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/zawiyat-al-hnoud-mosque-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2761,7 +2761,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ali-ibn-marwan-shrine-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2769,7 +2769,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ali-ibn-marwan-shrine-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2808,7 +2808,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/abu-al-azm-shamshon-shrine-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2816,7 +2816,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/abu-al-azm-shamshon-shrine-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2855,7 +2855,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/unknown-soldier-memorial-gaza-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2863,7 +2863,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/unknown-soldier-memorial-gaza-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2902,7 +2902,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-al-muntar-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2910,7 +2910,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-al-muntar-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2949,7 +2949,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-rafah-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -2957,7 +2957,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/tell-rafah-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -2996,7 +2996,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-bureij-mosaic-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3004,7 +3004,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/al-bureij-mosaic-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3043,7 +3043,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/english-cemetery-az-zawaida-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3051,7 +3051,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/english-cemetery-az-zawaida-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3090,7 +3090,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/old-gaza-municipality-building-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3098,7 +3098,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/old-gaza-municipality-building-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3137,7 +3137,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/an-nassr-cinema-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3145,7 +3145,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/an-nassr-cinema-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3184,7 +3184,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/as-samer-cinema-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3192,7 +3192,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/as-samer-cinema-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3231,7 +3231,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/baptist-hospital-emergency-building-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3239,7 +3239,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/baptist-hospital-emergency-building-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3278,7 +3278,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/baptist-hospital-surgery-building-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3286,7 +3286,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/baptist-hospital-surgery-building-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3325,7 +3325,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ebaf-storage-facility-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3333,7 +3333,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/ebaf-storage-facility-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3372,7 +3372,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/hani-saba-house-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3380,7 +3380,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/hani-saba-house-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3419,7 +3419,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/raghib-al-alami-house-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3427,7 +3427,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/raghib-al-alami-house-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3466,7 +3466,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/historic-gaza-old-city-residential-a-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3474,7 +3474,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/historic-gaza-old-city-residential-a-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3518,7 +3518,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/historic-daraj-quarter-buildings-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3526,7 +3526,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/historic-daraj-quarter-buildings-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }
@@ -3570,7 +3570,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/historic-gaza-commercial-public-buildings-before.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2014-02-20",
         description: "Satellite imagery from 2014-02-20"
       },
@@ -3578,7 +3578,7 @@ export const mockSites: Site[] = [
         url: "/images/sites/historic-gaza-commercial-public-buildings-after.jpg",
         credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/wayback/",
+        sourceUrl: "https://livingatlas.arcgis.com/",
         date: "2025-10-23",
         description: "Satellite imagery from 2025-10-23"
       }

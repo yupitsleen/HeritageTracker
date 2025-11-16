@@ -40,7 +40,7 @@ const CROP_PERCENTAGE = 0.20; // 20% of original size
 const ATTRIBUTION = {
   credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
   license: "Fair Use - Educational",
-  sourceUrl: "https://livingatlas.arcgis.com/wayback/"
+  sourceUrl: "https://livingatlas.arcgis.com/"
 };
 
 /**
