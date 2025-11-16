@@ -28,6 +28,14 @@ interface SiteDetailViewProps {
   onSiteClick?: (site: Site) => void;
   // Optional flag to indicate if comparison mode is active (disables adaptive zoom)
   comparisonModeActive?: boolean;
+  // Optional override for zoom to site setting (used in comparison mode for independent control)
+  zoomToSiteOverride?: boolean;
+  // Optional callback for zoom to site change (used in comparison mode for independent control)
+  onZoomToSiteChange?: (enabled: boolean) => void;
+  // Optional override for map markers visibility (used in comparison mode for independent control)
+  mapMarkersOverride?: boolean;
+  // Optional callback for map markers change (used in comparison mode for independent control)
+  onMapMarkersChange?: (enabled: boolean) => void;
 }
 
 /**
@@ -45,11 +53,21 @@ export function SiteDetailView({
   dateLabel,
   onSiteClick,
   comparisonModeActive = false,
+  zoomToSiteOverride,
+  onZoomToSiteChange,
+  mapMarkersOverride,
+  onMapMarkersChange,
 }: SiteDetailViewProps) {
   // Get animation context for timeline sync and zoom toggle
-  const { currentTimestamp, syncActive, zoomToSiteEnabled, mapMarkersVisible, setZoomToSiteEnabled, setMapMarkersVisible } = useAnimation();
+  const { currentTimestamp, syncActive, zoomToSiteEnabled: contextZoomToSite, mapMarkersVisible: contextMapMarkers, setZoomToSiteEnabled: contextSetZoomToSite, setMapMarkersVisible: contextSetMapMarkers } = useAnimation();
   const translate = useTranslation();
   const t = useThemeClasses();
+
+  // Use override values if provided (comparison mode), otherwise use context values
+  const zoomToSiteEnabled = zoomToSiteOverride !== undefined ? zoomToSiteOverride : contextZoomToSite;
+  const mapMarkersVisible = mapMarkersOverride !== undefined ? mapMarkersOverride : contextMapMarkers;
+  const setZoomToSiteEnabled = onZoomToSiteChange || contextSetZoomToSite;
+  const setMapMarkersVisible = onMapMarkersChange || contextSetMapMarkers;
 
   // Time period state for historical imagery
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("CURRENT");
@@ -186,8 +204,8 @@ export function SiteDetailView({
         )}
       </MapContainer>
 
-      {/* Map settings - only show on Dashboard (not on Timeline page with custom tiles) */}
-      {!customTileUrl && (
+      {/* Map settings - show on Dashboard (no custom tiles) or when override props provided (comparison/timeline mode) */}
+      {(!customTileUrl || (onZoomToSiteChange !== undefined && onMapMarkersChange !== undefined)) && (
         <div className={`absolute bottom-2 left-2 z-[1000] ${t.bg.panel} backdrop-blur-sm border ${t.border.primary} rounded px-2 py-1.5 shadow-md`}>
           <div className="flex flex-col gap-1 text-xs">
             <label className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity">
