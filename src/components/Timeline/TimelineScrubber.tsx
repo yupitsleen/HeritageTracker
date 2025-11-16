@@ -107,14 +107,16 @@ export function TimelineScrubber({
   // Calculate date range from dataset (oldest and newest destruction dates)
   const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
     const defaults = calculateDefaultDateRange(allDestructionDates, startDate, endDate);
-    // No filtering - show all events (filtering happens at page level via FilterBar)
-    const adjusted = calculateAdjustedDateRange(allDestructionDates, false, startDate, endDate);
+    // When showUnknownDestructionDates is false, we're filtering the timeline
+    // so the scale should adjust to show only the visible events
+    const hasActiveFilter = !showUnknownDestructionDates;
+    const adjusted = calculateAdjustedDateRange(allDestructionDates, hasActiveFilter, startDate, endDate);
 
     return {
       ...defaults,
       ...adjusted,
     };
-  }, [allDestructionDates, startDate, endDate]);
+  }, [allDestructionDates, startDate, endDate, showUnknownDestructionDates]);
 
   // Use all destruction dates (no filtering in timeline component)
   const destructionDates = allDestructionDates;

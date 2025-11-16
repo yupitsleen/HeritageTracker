@@ -112,6 +112,7 @@ export function TimelineControls({
           isActive={showUnknownDestructionDates ?? false}
           onClick={onShowUnknownDestructionDatesToggle}
           variant="button"
+          tooltip="timeline.showUnknownDatesTooltip"
         />
       )}
 

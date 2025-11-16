@@ -71,6 +71,7 @@ export const it: Translations = {
     speed: "Velocità",
     syncMap: "Sincronizza Mappa",
     showUnknownDates: "Mostra Date Sconosciute",
+    showUnknownDatesTooltip: "I siti senza date di distruzione vengono mostrati utilizzando la data del sondaggio",
     zoomToSite: "Zoom sul Sito",
     showMapMarkers: "Mostra Marcatori Mappa",
     comparisonMode: "Modalità Confronto",

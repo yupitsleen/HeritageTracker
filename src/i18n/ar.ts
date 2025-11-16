@@ -71,6 +71,7 @@ export const ar: Translations = {
     speed: "السرعة",
     syncMap: "مزامنة الخريطة",
     showUnknownDates: "إظهار التواريخ غير المعروفة",
+    showUnknownDatesTooltip: "المواقع بدون تواريخ تدمير تُعرض باستخدام تاريخ المسح بدلاً من ذلك",
     zoomToSite: "التكبير إلى الموقع",
     showMapMarkers: "إظهار علامات الخريطة",
     comparisonMode: "وضع المقارنة",

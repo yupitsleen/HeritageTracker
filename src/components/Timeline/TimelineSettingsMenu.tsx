@@ -174,6 +174,7 @@ export function TimelineSettingsMenu({
                 onClick={onToggle.showUnknownDates}
                 variant="menu-item"
                 onMenuClose={() => setIsOpen(false)}
+                tooltip="timeline.showUnknownDatesTooltip"
               />
             )}
 

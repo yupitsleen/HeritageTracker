@@ -60,6 +60,7 @@ export function filterEventsByDateRange(
 /**
  * Calculate adjusted timeline range based on filtered events
  * Returns date range that matches the filtered events, or falls back to original range
+ * Applies 7-day buffer on both ends to match AnimationContext behavior
  *
  * @param filteredEvents - Array of filtered timeline events
  * @param hasActiveFilter - Whether any date filter is active
@@ -83,10 +84,17 @@ export function calculateAdjustedDateRange(
     return { adjustedStartDate: fallbackStart, adjustedEndDate: fallbackEnd };
   }
 
-  // Active filter with events - use filtered event range
+  // Active filter with events - use filtered event range with 7-day buffer
   const timestamps = filteredEvents.map((event) => event.date.getTime());
+  const earliestDate = new Date(Math.min(...timestamps));
+  const latestDate = new Date(Math.max(...timestamps));
+
+  // Add 7-day buffer on both ends (matches AnimationContext behavior)
+  const BUFFER_DAYS = 7;
+  const bufferMs = BUFFER_DAYS * 24 * 60 * 60 * 1000;
+
   return {
-    adjustedStartDate: new Date(Math.min(...timestamps)),
-    adjustedEndDate: new Date(Math.max(...timestamps)),
+    adjustedStartDate: new Date(earliestDate.getTime() - bufferMs),
+    adjustedEndDate: new Date(latestDate.getTime() + bufferMs),
   };
 }

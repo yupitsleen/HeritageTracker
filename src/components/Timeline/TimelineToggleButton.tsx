@@ -9,6 +9,7 @@ interface TimelineToggleButtonProps {
   onClick: () => void;
   variant: 'button' | 'menu-item';
   onMenuClose?: () => void;
+  tooltip?: TranslationKey; // Optional tooltip (title attribute)
 }
 
 /**
@@ -29,10 +30,12 @@ export function TimelineToggleButton({
   onClick,
   variant,
   onMenuClose,
+  tooltip,
 }: TimelineToggleButtonProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
   const translatedLabel = translate(label);
+  const translatedTooltip = tooltip ? translate(tooltip) : translatedLabel;
 
   const handleClick = () => {
     onClick();
@@ -46,6 +49,7 @@ export function TimelineToggleButton({
       <button
         onClick={handleClick}
         className={`w-full text-left px-4 py-2 text-sm ${t.text.body} ${t.bg.hover} flex items-center justify-between`}
+        title={translatedTooltip}
       >
         <span>{translatedLabel}</span>
         {isActive && <span className="text-green-600">✓</span>}
@@ -61,7 +65,7 @@ export function TimelineToggleButton({
       active={isActive}
       size="xs"
       aria-label={translatedLabel}
-      title={translatedLabel}
+      title={translatedTooltip}
     >
       {isActive ? "✓" : ""} {translatedLabel}
     </Button>
