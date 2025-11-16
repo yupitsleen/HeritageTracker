@@ -18,6 +18,7 @@ interface TimelineControlsProps {
   hidePlayControls?: boolean;
   hideMapSettings?: boolean; // Hide Zoom to Site and Show Map Markers (moved to map)
   syncMapOnDotClick?: boolean;
+  showUnknownDestructionDates?: boolean;
   onPlay: () => void;
   onPause: () => void;
   onReset: () => void;
@@ -25,6 +26,7 @@ interface TimelineControlsProps {
   onZoomToSiteToggle: () => void;
   onMapMarkersToggle: () => void;
   onSyncMapToggle?: () => void;
+  onShowUnknownDestructionDatesToggle?: () => void;
 }
 
 /**
@@ -50,6 +52,7 @@ export function TimelineControls({
   hidePlayControls = false,
   hideMapSettings = false,
   syncMapOnDotClick,
+  showUnknownDestructionDates,
   onPlay,
   onPause,
   onReset,
@@ -57,6 +60,7 @@ export function TimelineControls({
   onZoomToSiteToggle,
   onMapMarkersToggle,
   onSyncMapToggle,
+  onShowUnknownDestructionDatesToggle,
 }: TimelineControlsProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
@@ -98,6 +102,17 @@ export function TimelineControls({
           isActive={syncMapOnDotClick ?? false}
           onClick={onSyncMapToggle}
           variant="button"
+        />
+      )}
+
+      {/* Show Unknown Dates toggle - only show in advanced mode */}
+      {advancedMode && onShowUnknownDestructionDatesToggle && (
+        <TimelineToggleButton
+          label="timeline.showUnknownDates"
+          isActive={showUnknownDestructionDates ?? false}
+          onClick={onShowUnknownDestructionDatesToggle}
+          variant="button"
+          tooltip="timeline.showUnknownDatesTooltip"
         />
       )}
 
@@ -182,11 +197,13 @@ export function TimelineControls({
               zoomToSite: zoomToSiteEnabled,
               mapMarkers: mapMarkersVisible,
               syncMap: syncMapOnDotClick,
+              showUnknownDates: showUnknownDestructionDates,
             }}
             onToggle={{
               zoomToSite: onZoomToSiteToggle,
               mapMarkers: onMapMarkersToggle,
               syncMap: onSyncMapToggle,
+              showUnknownDates: onShowUnknownDestructionDatesToggle,
             }}
             speedControl={!hidePlayControls ? {
               speed,

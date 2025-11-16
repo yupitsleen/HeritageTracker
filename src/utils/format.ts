@@ -257,3 +257,30 @@ export const getEffectiveDestructionDate = (
 ): string | undefined => {
   return site.dateDestroyed || site.sourceAssessmentDate;
 };
+
+/**
+ * Checks if a site has an unknown destruction date.
+ * A site has an unknown destruction date if it only has a sourceAssessmentDate
+ * but no actual dateDestroyed.
+ *
+ * @param site - Site object with optional dateDestroyed and sourceAssessmentDate
+ * @returns true if the site has only a survey date (unknown exact destruction date)
+ *
+ * @example
+ * // Site with exact destruction date - NOT unknown
+ * hasUnknownDestructionDate({ dateDestroyed: "2023-10-15", sourceAssessmentDate: "2025-10-06" })
+ * // => false
+ *
+ * // Site with only survey date - IS unknown
+ * hasUnknownDestructionDate({ sourceAssessmentDate: "2025-10-06" })
+ * // => true
+ *
+ * // Site with no dates at all - NOT unknown (excluded from timeline entirely)
+ * hasUnknownDestructionDate({})
+ * // => false
+ */
+export const hasUnknownDestructionDate = (
+  site: Pick<Site, "dateDestroyed" | "sourceAssessmentDate">
+): boolean => {
+  return !site.dateDestroyed && !!site.sourceAssessmentDate;
+};

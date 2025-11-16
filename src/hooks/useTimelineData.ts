@@ -1,18 +1,32 @@
 import { useMemo } from "react";
 import type { Site } from "../types";
 import type { TimelineEvent } from "../utils/d3Timeline";
-import { getEffectiveDestructionDate } from "../utils/format";
+import { getEffectiveDestructionDate, hasUnknownDestructionDate } from "../utils/format";
 
 /**
  * Extract and process timeline data from sites
  * - Filters sites with destruction dates (or sourceAssessmentDate as fallback)
+ * - Optionally filters out sites with unknown destruction dates (only survey date)
  * - Sorts events chronologically
  * - Returns structured timeline events
+ *
+ * @param sites - Array of heritage sites
+ * @param showUnknownDestructionDates - If false, excludes sites with only sourceAssessmentDate
  */
-export function useTimelineData(sites: Site[]) {
+export function useTimelineData(sites: Site[], showUnknownDestructionDates = true) {
   return useMemo(() => {
     const destructionDates: TimelineEvent[] = sites
-      .filter((site) => getEffectiveDestructionDate(site)) // Use effective date (fallback to sourceAssessmentDate)
+      .filter((site) => {
+        // Must have at least one date (destruction or survey)
+        if (!getEffectiveDestructionDate(site)) return false;
+
+        // If toggle is off, exclude sites with unknown destruction dates
+        if (!showUnknownDestructionDates && hasUnknownDestructionDate(site)) {
+          return false;
+        }
+
+        return true;
+      })
       .map((site) => {
         const effectiveDate = getEffectiveDestructionDate(site);
         return {
@@ -38,5 +52,5 @@ export function useTimelineData(sites: Site[]) {
       totalEvents: destructionDates.length,
       eventDensity,
     };
-  }, [sites]);
+  }, [sites, showUnknownDestructionDates]);
 }

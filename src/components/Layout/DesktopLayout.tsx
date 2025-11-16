@@ -59,11 +59,18 @@ interface SiteInteractionProps {
   onExpandTable: () => void;
 }
 
+/** Timeline settings props grouped together */
+interface TimelineSettingsProps {
+  showUnknownDestructionDates: boolean;
+  onShowUnknownDestructionDatesChange: (show: boolean) => void;
+}
+
 interface DesktopLayoutProps {
   filterProps: FilterProps;
   siteData: SiteDataProps;
   tableResize: TableResizeProps;
   siteInteraction: SiteInteractionProps;
+  timelineSettings: TimelineSettingsProps;
 }
 
 /**
@@ -75,6 +82,7 @@ export function DesktopLayout({
   siteData,
   tableResize,
   siteInteraction,
+  timelineSettings,
 }: DesktopLayoutProps) {
   const t = useThemeClasses();
   const { isDark } = useTheme();
@@ -84,6 +92,7 @@ export function DesktopLayout({
   const { filters, onFilterChange, onClearAll, defaultDateRange, defaultYearRange } = filterProps;
   const { sites, filteredSites, totalSites } = siteData;
   const { highlightedSiteId, onSiteClick, onSiteHighlight, onExpandTable } = siteInteraction;
+  const { showUnknownDestructionDates, onShowUnknownDestructionDatesChange } = timelineSettings;
 
   return (
     <div className="hidden md:flex md:flex-col md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
@@ -165,6 +174,8 @@ export function DesktopLayout({
             sites={filteredSites}
             highlightedSiteId={highlightedSiteId}
             onSiteHighlight={onSiteHighlight}
+            showUnknownDestructionDates={showUnknownDestructionDates}
+            onShowUnknownDestructionDatesChange={onShowUnknownDestructionDatesChange}
             advancedMode={{
               syncMapOnDotClick: false,
               showNavigation: true, // Show Previous/Next buttons
