@@ -52,6 +52,9 @@ interface TimelineScrubberProps {
   onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
   advancedMode?: AdvancedTimelineMode;
+  // Show/hide sites with unknown destruction dates (only survey date)
+  showUnknownDestructionDates?: boolean;
+  onShowUnknownDestructionDatesChange?: (show: boolean) => void;
 }
 
 /**
@@ -70,6 +73,8 @@ export function TimelineScrubber({
   highlightedSiteId,
   onSiteHighlight,
   advancedMode,
+  showUnknownDestructionDates = true,
+  onShowUnknownDestructionDatesChange,
 }: TimelineScrubberProps) {
   const {
     currentTimestamp,
@@ -96,8 +101,8 @@ export function TimelineScrubber({
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
   const [scrubberPosition, setScrubberPosition] = useState<number | null>(null);
 
-  // Extract timeline data using custom hook
-  const { events: allDestructionDates } = useTimelineData(sites);
+  // Extract timeline data using custom hook with unknown dates filter
+  const { events: allDestructionDates } = useTimelineData(sites, showUnknownDestructionDates);
 
   // Calculate date range from dataset (oldest and newest destruction dates)
   const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
@@ -377,6 +382,7 @@ export function TimelineScrubber({
             hidePlayControls={advancedMode?.hidePlayControls ?? false}
             hideMapSettings={advancedMode?.hideMapSettings ?? false}
             syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
+            showUnknownDestructionDates={showUnknownDestructionDates}
             onPlay={handlePlay}
             onPause={pause}
             onReset={handleReset}
@@ -384,6 +390,7 @@ export function TimelineScrubber({
             onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
             onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
             onSyncMapToggle={advancedMode?.onSyncMapToggle}
+            onShowUnknownDestructionDatesToggle={onShowUnknownDestructionDatesChange ? () => onShowUnknownDestructionDatesChange(!showUnknownDestructionDates) : undefined}
           />
         </div>
 

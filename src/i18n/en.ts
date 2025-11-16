@@ -70,6 +70,7 @@ export const en: Translations = {
     playTooltip: "Animate the left map to show site destruction events over time",
     speed: "Speed",
     syncMap: "Sync Map",
+    showUnknownDates: "Show Unknown Dates",
     zoomToSite: "Zoom to Site",
     showMapMarkers: "Show Map Markers",
     comparisonMode: "Comparison Mode",

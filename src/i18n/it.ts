@@ -70,6 +70,7 @@ export const it: Translations = {
     playTooltip: "Riproduci animazione timeline",
     speed: "Velocità",
     syncMap: "Sincronizza Mappa",
+    showUnknownDates: "Mostra Date Sconosciute",
     zoomToSite: "Zoom sul Sito",
     showMapMarkers: "Mostra Marcatori Mappa",
     comparisonMode: "Modalità Confronto",

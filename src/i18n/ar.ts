@@ -70,6 +70,7 @@ export const ar: Translations = {
     playTooltip: "تحريك الخريطة لإظهار أحداث تدمير المواقع بمرور الوقت",
     speed: "السرعة",
     syncMap: "مزامنة الخريطة",
+    showUnknownDates: "إظهار التواريخ غير المعروفة",
     zoomToSite: "التكبير إلى الموقع",
     showMapMarkers: "إظهار علامات الخريطة",
     comparisonMode: "وضع المقارنة",

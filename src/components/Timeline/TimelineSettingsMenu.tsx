@@ -22,12 +22,14 @@ interface TimelineSettingsMenuProps {
     zoomToSite?: boolean;
     mapMarkers?: boolean;
     syncMap?: boolean;
+    showUnknownDates?: boolean;
   };
   /** Toggle button handlers */
   onToggle: {
     zoomToSite?: () => void;
     mapMarkers?: () => void;
     syncMap?: () => void;
+    showUnknownDates?: () => void;
   };
   /** Optional speed control configuration */
   speedControl?: {
@@ -159,6 +161,17 @@ export function TimelineSettingsMenu({
                 label="timeline.syncMap"
                 isActive={toggles.syncMap ?? false}
                 onClick={onToggle.syncMap}
+                variant="menu-item"
+                onMenuClose={() => setIsOpen(false)}
+              />
+            )}
+
+            {/* Show Unknown Dates option (if available) */}
+            {onToggle.showUnknownDates && (
+              <TimelineToggleButton
+                label="timeline.showUnknownDates"
+                isActive={toggles.showUnknownDates ?? false}
+                onClick={onToggle.showUnknownDates}
                 variant="menu-item"
                 onMenuClose={() => setIsOpen(false)}
               />

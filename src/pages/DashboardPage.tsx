@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
@@ -40,6 +40,10 @@ export function DashboardPage() {
     setMapMarkersVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run only on mount
+
+  // Show sites with unknown destruction dates toggle
+  // Default to false (hide sites that only have sourceAssessmentDate)
+  const [showUnknownDestructionDates, setShowUnknownDestructionDates] = useState(false);
 
   // Fetch sites from API (using mock adapter in development)
   const { sites, isLoading, error, refetch } = useSites();
@@ -122,6 +126,10 @@ export function DashboardPage() {
                 onSiteClick: appState.setSelectedSite,
                 onSiteHighlight: appState.setHighlightedSiteId,
                 onExpandTable: handleExpandTable,
+              }}
+              timelineSettings={{
+                showUnknownDestructionDates,
+                onShowUnknownDestructionDatesChange: setShowUnknownDestructionDates,
               }}
             />
           </Suspense>

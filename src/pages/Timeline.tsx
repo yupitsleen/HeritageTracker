@@ -98,6 +98,10 @@ export function Timeline() {
   const [singleMapZoomToSite, setSingleMapZoomToSite] = useState(true);
   const [singleMapShowMarkers, setSingleMapShowMarkers] = useState(false);
 
+  // Show sites with unknown destruction dates toggle
+  // Default to false (hide sites that only have sourceAssessmentDate)
+  const [showUnknownDestructionDates, setShowUnknownDestructionDates] = useState(false);
+
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
@@ -373,6 +377,8 @@ export function Timeline() {
                   sites={filteredSites}
                   highlightedSiteId={highlightedSiteId}
                   onSiteHighlight={handleSiteHighlight}
+                  showUnknownDestructionDates={showUnknownDestructionDates}
+                  onShowUnknownDestructionDatesChange={setShowUnknownDestructionDates}
                   advancedMode={{
                     syncMapOnDotClick,
                     showNavigation: true, // Show Previous/Next buttons
