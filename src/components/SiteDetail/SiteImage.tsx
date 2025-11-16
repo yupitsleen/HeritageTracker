@@ -14,12 +14,25 @@ interface SiteImageProps {
  * Displays image with proper credit and licensing information below
  */
 export function SiteImage({ image, alt, label, className }: SiteImageProps) {
+  // Handle both absolute URLs and relative paths
+  const getImageUrl = (url: string) => {
+    // If it's an absolute URL (http/https), return as-is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    // For relative paths, prepend the base URL
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    // Remove leading slash from url if present to avoid double slashes
+    const cleanUrl = url.startsWith('/') ? url.slice(1) : url;
+    return `${baseUrl}${cleanUrl}`;
+  };
+
   return (
     <div className={cn("space-y-2", className)}>
       {/* Image */}
       <div className="relative">
         <img
-          src={image.url}
+          src={getImageUrl(image.url)}
           alt={alt}
           className="w-full h-64 object-cover rounded-lg shadow-md"
           onError={(e) => {
