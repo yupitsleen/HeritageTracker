@@ -112,6 +112,8 @@ export interface Translations {
     playTooltip: string;
     speed: string;
     syncMap: string;
+    showUnknownDates: string;
+    showUnknownDatesTooltip: string;
     zoomToSite: string;
     showMapMarkers: string;
     comparisonMode: string;
