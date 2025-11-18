@@ -17,7 +17,7 @@ interface SharedLayoutProps {
  * SharedLayout - Consistent header, footer, and background for all pages
  *
  * Features:
- * - Palestinian flag red triangle background (desktop only)
+ * - White background with red vertical bar on left edge
  * - App header with navigation
  * - App footer with links
  * - Skip to content link for accessibility
@@ -47,15 +47,14 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
         Skip to main content
       </a>
 
-      {/* Palestinian Flag Red Triangle - Background Element (All pages, desktop only) */}
+      {/* Red Vertical Bar - Background Element (All pages) */}
       {/* Z-index 0 to stay behind all content (footer=5, header=sticky, content=auto) */}
       <div
-        className="fixed top-0 left-0 pointer-events-none z-0 opacity-50 transition-colors duration-200"
+        className="fixed top-0 left-0 pointer-events-none z-0 transition-colors duration-200"
         style={{
-          width: '800px', // Extends from left edge
+          width: '48px', // Half inch (approx 48px)
           height: '100vh',
           background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
-          clipPath: 'polygon(0 0, 0 100%, 800px 50%)',
         }}
         aria-hidden="true"
       />

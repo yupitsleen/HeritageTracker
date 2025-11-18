@@ -4,7 +4,6 @@ import { FilterBar } from "../FilterBar/FilterBar";
 import { SitesTable } from "../SitesTable";
 import { SkeletonMap } from "../Loading/Skeleton";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Z_INDEX } from "../../constants/layout";
 
@@ -85,7 +84,6 @@ export function DesktopLayout({
   timelineSettings,
 }: DesktopLayoutProps) {
   const t = useThemeClasses();
-  const { isDark } = useTheme();
   const translate = useTranslation();
 
   // Destructure grouped props for easier access
@@ -100,7 +98,7 @@ export function DesktopLayout({
 
       {/* Filter bar - Full width at top */}
       <div
-        className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+        className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 bg-[#000000]/95`}
         style={{ zIndex: Z_INDEX.FILTER_BAR }}
       >
         {/* Unified FilterBar with search, filters, and actions */}
@@ -144,7 +142,7 @@ export function DesktopLayout({
         </aside>
 
         {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-        <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
+        <div className={`flex-1 min-w-0 h-full ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
           <Suspense fallback={<SkeletonMap />}>
             <HeritageMap
               sites={filteredSites}
@@ -157,7 +155,7 @@ export function DesktopLayout({
         </div>
 
         {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-        <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
+        <div className={`flex-1 min-w-0 h-full ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
           <Suspense fallback={<SkeletonMap />}>
             <SiteDetailView
               sites={filteredSites}

@@ -74,10 +74,10 @@ export function useThemeClasses() {
       strong: isDark ? "border-gray-500" : "border-gray-400",
       /** Black border (consistent across themes) */
       black: `border-[${COLORS.BORDER_BLACK}]`,
-      /** Theme-aware border: white in dark mode, black in light mode */
-      primary: isDark ? "border-white" : "border-black",
-      /** Theme-aware border-2: white in dark mode, black in light mode */
-      primary2: isDark ? "border-2 border-white" : "border-2 border-black",
+      /** Theme-aware border: black in both modes (2px) */
+      primary: "border-2 border-black",
+      /** Theme-aware border-2: black in both modes (2px) */
+      primary2: "border-2 border-black",
       /** Muted border */
       muted: isDark ? "border-gray-600" : "border-gray-300",
     },
@@ -116,6 +116,8 @@ export function useThemeClasses() {
       default: isDark ? "text-gray-300" : "text-gray-400",
       /** Muted icon color */
       muted: isDark ? "text-gray-400" : "text-gray-500",
+      /** Site type icon color - brighter red for both modes */
+      siteType: "text-[#d4202a]",
     },
 
     /**
@@ -143,7 +145,7 @@ export function useThemeClasses() {
      */
     layout: {
       /** Main app background */
-      appBackground: isDark ? "bg-gray-600" : "bg-gray-500",
+      appBackground: isDark ? "bg-[#f5f5f5]" : "bg-[#fefefe]",
       /** Loading/fallback text */
       loadingText: isDark ? "text-gray-300" : "text-gray-600",
       /** Modal heading */
@@ -158,8 +160,8 @@ export function useThemeClasses() {
     timeline: {
       /** Timeline container - Ultra compact */
       container: isDark
-        ? "backdrop-blur-sm border border-white rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-[#000000]/95"
-        : "backdrop-blur-sm border border-black rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-white/95",
+        ? "backdrop-blur-sm border-2 border-black rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-[#2d5a38]/95"
+        : "backdrop-blur-sm border-2 border-black rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-[#007b2f]/95",
       /** Current date display */
       currentDate: isDark ? "text-xs font-semibold text-center flex-1 text-[#fefefe]" : "text-xs font-semibold text-center flex-1",
       /** Clear date filter button (visible state) */

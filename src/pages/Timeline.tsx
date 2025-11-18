@@ -21,7 +21,6 @@ import type { ComparisonInterval } from "../types/waybackTimelineTypes";
 import { DEFAULT_COMPARISON_INTERVAL } from "../config/comparisonIntervals";
 import { calculateBeforeDate, findClosestReleaseIndex } from "../utils/intervalCalculations";
 import { Z_INDEX } from "../constants/layout";
-import { PalestinianFlagTriangle } from "../components/Decorative";
 
 // Lazy load the map, timeline, and modal components
 // Note: About and Stats are now dedicated pages at /about and /stats for better performance
@@ -245,14 +244,23 @@ export function Timeline() {
       data-theme={isDark ? "dark" : "light"}
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
-      {/* Palestinian Flag Red Triangle - Background Element */}
-      <PalestinianFlagTriangle width={800} zIndex={Z_INDEX.BASE} />
+      {/* Red Vertical Bar - Background Element */}
+      {/* Z-index 0 to stay behind all content (footer=5, header=sticky, content=auto) */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none z-0 transition-colors duration-200"
+        style={{
+          width: '48px', // Half inch (approx 48px)
+          height: '100vh',
+          background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
+        }}
+        aria-hidden="true"
+      />
 
       {/* Header - shared across all pages */}
       <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
 
       {/* Main content */}
-      {/* Relative positioning creates stacking context above z-0 triangle */}
+      {/* Relative positioning creates stacking context above z-0 red bar */}
       {/* pb-8 adds bottom padding to prevent footer overlap */}
       <main className="h-[calc(100vh-58px)] p-4 pb-8 flex flex-col gap-2 relative">
         {/* Loading state */}
@@ -283,7 +291,7 @@ export function Timeline() {
           <AnimationProvider sites={filteredSites}>
             {/* Filter Bar Container */}
             <div
-              className={`flex-shrink-0 mb-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+              className={`flex-shrink-0 mb-2 p-2 backdrop-blur-sm ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 bg-[#000000]/95`}
               style={{ zIndex: Z_INDEX.FILTER_BAR }}
             >
               {/* Unified FilterBar with search, filters, and actions */}

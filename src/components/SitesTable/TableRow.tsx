@@ -57,7 +57,7 @@ export function TableRow({
       {visibleColumns.has("type") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} text-center`}>
           <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
-            <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.text.body}`} />
+            <SiteTypeIcon type={site.type} className={`w-4 h-4 ${t.icon.siteType}`} />
           </span>
         </td>
       )}

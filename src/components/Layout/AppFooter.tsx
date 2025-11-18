@@ -10,8 +10,7 @@ interface AppFooterProps {
 
 /**
  * Application footer with attribution and navigation
- * Green background with Palestinian flag colors
- * Muted in dark mode
+ * Transparent background to show main page background
  * Stats, About, and Donate now navigate to dedicated pages for better performance
  */
 export function AppFooter({ isMobile }: AppFooterProps) {
@@ -20,7 +19,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
 
   return (
     <footer
-      className={`fixed bottom-0 left-0 right-0 text-[#fefefe] shadow-lg transition-colors duration-200 ${t.flag.greenBg}`}
+      className={`fixed bottom-0 left-0 right-0 shadow-lg transition-colors duration-200 bg-transparent ${t.text.primary}`}
       style={{ zIndex: Z_INDEX.STICKY }}
     >
       {/* Desktop footer - ultra compact */}

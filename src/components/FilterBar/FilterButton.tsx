@@ -44,10 +44,7 @@ export function FilterButton({ label, count, children, icon, panelWidth = "w-64"
             className={cn(
               "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
               "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009639]",
-              t.bg.primary,
-              t.border.subtle,
-              t.bg.hover,
-              t.text.body,
+              "bg-[#000000]/95 border-white hover:bg-[#1a1a1a] text-white",
               open && "ring-2 ring-[#009639] border-[#009639]"
             )}
             title={tooltip}
