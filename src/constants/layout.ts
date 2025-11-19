@@ -39,12 +39,16 @@ export const BREAKPOINTS = {
 export const Z_INDEX = {
   /** Base layer (z-index: 0) */
   BASE: 0,
-  /** Background decorations like flag triangle (z-index: 1) - Above base background, below content */
-  BACKGROUND_DECORATION: 1,
+  /** Red vertical line on left edge (z-index: 1250) - Above header and footer for visual continuity */
+  RED_VERTICAL_LINE: 1250,
+  /** Background decorations like flag triangle (z-index: 1150) - Above base background, below content */
+  BACKGROUND_DECORATION: 1150,
   /** Content layer (z-index: 10) */
   CONTENT: 10,
   /** Sticky elements like headers (z-index: 1100) - Must be above dropdowns to create proper stacking context */
-  STICKY: 1100,
+  STICKY: 1100, // footer and main header
+  /** Header and footer (z-index: 1100) - Alias for STICKY for semantic clarity */
+  FOOTER_HEADER: 1100,
   /** Filter bar container (z-index: 500) - Above maps but below dropdowns */
   FILTER_BAR: 500,
   /** Dropdown menus and popovers (z-index: 1000) */
@@ -83,13 +87,13 @@ export const TABLE_CONFIG = {
 
   /** Width breakpoints for progressive column display */
   COLUMN_BREAKPOINTS: {
-    type: 280,               // Unused - Type column always visible (kept for reference)
-    status: 360,             // Show Status column at 360px+
-    dateDestroyed: 480,      // Show Date Destroyed column at 480px+
+    type: 280, // Unused - Type column always visible (kept for reference)
+    status: 360, // Show Status column at 360px+
+    dateDestroyed: 480, // Show Date Destroyed column at 480px+
     dateDestroyedIslamic: 650, // Show Islamic Date at 650px+
     sourceAssessmentDate: 725, // Show Survey Date at 725px+
-    yearBuilt: 800,          // Show Year Built at 800px+
-    yearBuiltIslamic: 950,   // Show Islamic Year Built at 950px+
+    yearBuilt: 800, // Show Year Built at 800px+
+    yearBuiltIslamic: 950, // Show Islamic Year Built at 950px+
   },
 } as const;
 

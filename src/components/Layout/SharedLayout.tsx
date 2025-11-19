@@ -48,13 +48,14 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
       </a>
 
       {/* Red Vertical Bar - Background Element (All pages) */}
-      {/* Z-index 0 to stay behind all content (footer=5, header=sticky, content=auto) */}
+      {/* Z-index 1250 to appear above header and footer for visual continuity */}
       <div
-        className="fixed top-0 left-0 pointer-events-none z-0 transition-colors duration-200"
+        className="fixed top-0 left-0 pointer-events-none transition-colors duration-200"
         style={{
           width: '48px', // Half inch (approx 48px)
           height: '100vh',
           background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
+          zIndex: Z_INDEX.RED_VERTICAL_LINE,
         }}
         aria-hidden="true"
       />
