@@ -468,7 +468,7 @@ describe("SiteDetailView", () => {
       const settingsContainer = zoomToSiteCheckbox.closest("div.absolute.bottom-2.left-2");
 
       expect(settingsContainer).toBeInTheDocument();
-      expect(settingsContainer).toHaveClass("z-[1000]");
+      expect(settingsContainer).toHaveStyle({ zIndex: 1000 });
     });
 
     it("map settings are visible when site is highlighted", () => {

@@ -245,11 +245,12 @@ export function Timeline() {
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
       {/* Red Vertical Bar - Background Element */}
-      {/* Z-index 0 to stay behind all content (footer=5, header=sticky, content=auto) */}
+      {/* Z-index BASE to stay behind all content */}
       <div
-        className="fixed top-0 left-0 pointer-events-none z-0 transition-colors duration-200"
+        className="fixed top-0 left-0 pointer-events-none transition-colors duration-200"
         style={{
           width: '48px', // Half inch (approx 48px)
+          zIndex: Z_INDEX.BASE,
           height: '100vh',
           background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
         }}
@@ -260,7 +261,7 @@ export function Timeline() {
       <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
 
       {/* Main content */}
-      {/* Relative positioning creates stacking context above z-0 red bar */}
+      {/* Relative positioning creates stacking context above BASE red bar */}
       {/* pb-8 adds bottom padding to prevent footer overlap */}
       <main className="h-[calc(100vh-58px)] p-4 pb-8 flex flex-col gap-2 relative">
         {/* Loading state */}
@@ -310,7 +311,8 @@ export function Timeline() {
 
             {/* Full-screen satellite map with Wayback imagery */}
             <div
-              className={`flex-1 min-h-0 ${comparisonModeEnabled ? '' : `${t.border.primary2} rounded shadow-xl overflow-hidden`} relative z-10`}
+              className={`flex-1 min-h-0 ${comparisonModeEnabled ? '' : `${t.border.primary2} rounded shadow-xl overflow-hidden`} relative`}
+              style={{ zIndex: Z_INDEX.CONTENT }}
             >
               <Suspense fallback={<SkeletonMap />}>
                 {comparisonModeEnabled ? (
@@ -360,7 +362,7 @@ export function Timeline() {
             </div>
 
             {/* Wayback Release Slider - Visual timeline with year markers */}
-            <div className="flex-shrink-0 relative z-10">
+            <div className="flex-shrink-0 relative" style={{ zIndex: Z_INDEX.CONTENT }}>
               <WaybackSlider
                 releases={releases}
                 currentIndex={currentReleaseIndex}
@@ -378,7 +380,7 @@ export function Timeline() {
             </div>
 
             {/* Timeline Scrubber - Site filtering with advanced mode sync */}
-            <div className="flex-shrink-0 min-h-[100px] relative z-10">
+            <div className="flex-shrink-0 min-h-[100px] relative" style={{ zIndex: Z_INDEX.CONTENT }}>
               <Suspense fallback={<SkeletonMap />}>
                 <TimelineScrubber
                   key="advanced-timeline-scrubber"

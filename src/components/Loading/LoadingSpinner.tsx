@@ -6,6 +6,7 @@
  */
 
 import { useTranslation } from "../../contexts/LocaleContext";
+import { Z_INDEX } from "../../constants/layout";
 
 interface LoadingSpinnerProps {
   /**
@@ -53,11 +54,13 @@ export function LoadingSpinner({
   const displayMessage = message || translate("loading.message");
 
   const containerClasses = fullScreen
-    ? 'fixed inset-0 bg-white bg-opacity-90 z-50 flex flex-col items-center justify-center'
+    ? 'fixed inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center'
     : 'flex flex-col items-center justify-center py-12';
 
+  const containerStyle = fullScreen ? { zIndex: Z_INDEX.OVERLAY } : undefined;
+
   return (
-    <div className={containerClasses} role="status" aria-live="polite">
+    <div className={containerClasses} style={containerStyle} role="status" aria-live="polite">
       {/* Spinning loader with Palestinian flag green */}
       <div
         className={`

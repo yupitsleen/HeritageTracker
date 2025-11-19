@@ -7,6 +7,7 @@
 
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Z_INDEX } from "../../constants/layout";
 
 interface ErrorMessageProps {
   /**
@@ -47,11 +48,13 @@ export function ErrorMessage({
   const displayTitle = title || translate("errors.somethingWrong");
 
   const containerClasses = fullScreen
-    ? `fixed inset-0 ${t.containerBg.opaque} z-50 flex items-center justify-center p-4`
+    ? `fixed inset-0 ${t.containerBg.opaque} flex items-center justify-center p-4`
     : 'flex items-center justify-center py-12 px-4';
 
+  const containerStyle = fullScreen ? { zIndex: Z_INDEX.OVERLAY } : undefined;
+
   return (
-    <div className={containerClasses} role="alert" aria-live="assertive">
+    <div className={containerClasses} style={containerStyle} role="alert" aria-live="assertive">
       <div className={`max-w-md w-full ${t.bg.primary} border-2 border-red-200 rounded-xl p-6 shadow-lg`}>
         {/* Error icon */}
         <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">

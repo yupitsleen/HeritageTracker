@@ -12,6 +12,7 @@ import { ExportControls } from "./ExportControls";
 import { VirtualizedTableBody } from "./VirtualizedTableBody";
 import { InfoIcon } from "../Icons/InfoIcon";
 import { INFO_ICON_COLORS } from "../../constants/tooltip";
+import { Z_INDEX } from "../../constants/layout";
 
 // Threshold for enabling virtual scrolling
 const VIRTUAL_SCROLL_THRESHOLD = 100;
@@ -94,7 +95,10 @@ export function SitesTableDesktop({
       style={{ height: 'calc(100% - 4px)' }}
     >
       {/* Title section - sticky */}
-      <div className={`sticky top-0 z-20 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}>
+      <div
+        className={`sticky top-0 backdrop-blur-sm flex-shrink-0 shadow-sm rounded-t-lg transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+        style={{ zIndex: Z_INDEX.TABLE_HEADER }}
+      >
         <div className="px-2 pt-2 pb-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center gap-2 flex-1">

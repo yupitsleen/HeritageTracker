@@ -3,6 +3,7 @@ import { HISTORICAL_IMAGERY, type TimePeriod } from "../../constants/map";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Z_INDEX } from "../../constants/layout";
 
 interface TimeToggleProps {
   selectedPeriod: TimePeriod;
@@ -70,7 +71,10 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
   }, []);
 
   return (
-    <div className={`absolute top-2 right-2 z-[1000] ${t.containerBg.opaque} backdrop-blur-sm rounded-lg shadow-md overflow-hidden`}>
+    <div
+      className={`absolute top-2 right-2 ${t.containerBg.opaque} backdrop-blur-sm rounded-lg shadow-md overflow-hidden`}
+      style={{ zIndex: Z_INDEX.MAP_CONTROLS }}
+    >
       <div className="flex">
         {periods.map((period) => (
           <button

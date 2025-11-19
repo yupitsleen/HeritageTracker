@@ -45,6 +45,16 @@ export const Z_INDEX = {
   BACKGROUND_DECORATION: 1150,
   /** Content layer (z-index: 10) */
   CONTENT: 10,
+  /** Table sticky headers (z-index: 20) - Above content, used for sticky table headers and resize handles */
+  TABLE_HEADER: 20,
+  /** Modal content area (z-index: 10) - Alias for CONTENT for semantic clarity in modals */
+  MODAL_CONTENT: 10,
+  /** Modal close button (z-index: 30) - Above modal content */
+  MODAL_CLOSE_BUTTON: 30,
+  /** Mobile table sticky column headers (z-index: 40) - Above regular table headers */
+  TABLE_STICKY_HEADER: 40,
+  /** Fullscreen overlays (z-index: 50) - Loading spinners, error messages */
+  OVERLAY: 50,
   /** Sticky elements like headers (z-index: 1100) - Must be above dropdowns to create proper stacking context */
   STICKY: 1100, // footer and main header
   /** Header and footer (z-index: 1100) - Alias for STICKY for semantic clarity */
@@ -53,10 +63,12 @@ export const Z_INDEX = {
   FILTER_BAR: 500,
   /** Dropdown menus and popovers (z-index: 1000) */
   DROPDOWN: 1000,
-  /** Header dropdown menus (z-index: 1200) - Must be above filter bar and other page content */
-  HEADER_DROPDOWN: 1200,
+  /** Map controls and overlays (z-index: 1000) - Map toggles, date labels, settings panels */
+  MAP_CONTROLS: 1000,
   /** Tooltips (z-index: 1010) */
   TOOLTIP: 1010,
+  /** Header dropdown menus (z-index: 1200) - Must be above filter bar and other page content */
+  HEADER_DROPDOWN: 1200,
   /** Timeline tooltips (z-index: 1300) - Must be above footer (STICKY: 1100) and header dropdowns (1200) */
   TIMELINE_TOOLTIP: 1300,
   /** Fixed elements like sidebars (z-index: 1020) */

@@ -1,5 +1,5 @@
 import { useTranslation } from "../../contexts/LocaleContext";
-import { TABLE_CONFIG } from "../../constants/layout";
+import { TABLE_CONFIG, Z_INDEX } from "../../constants/layout";
 import { COMPACT_TABLE } from "../../constants/compactDesign";
 import { SortIcon } from "./SortIcon";
 import type { SortField, SortDirection } from "../../hooks/useTableSort";
@@ -26,7 +26,10 @@ export function TableHeader({
   const translate = useTranslation();
 
   return (
-    <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-900 to-gray-950 text-white">
+    <thead
+      className="sticky top-0 bg-gradient-to-r from-gray-900 to-gray-950 text-white"
+      style={{ zIndex: Z_INDEX.CONTENT }}
+    >
       <tr>
         {visibleColumns.has("type") && (
           <th

@@ -83,12 +83,13 @@ export function DashboardPage() {
       </a>
 
       {/* Red Vertical Bar - Background Element */}
-      {/* Z-index 0 to stay behind all content (footer=5, header=sticky, content=auto) */}
+      {/* Z-index BASE to stay behind all content */}
       <div
-        className="fixed top-0 left-0 pointer-events-none z-0 transition-colors duration-200"
+        className="fixed top-0 left-0 pointer-events-none transition-colors duration-200"
         style={{
           width: '48px', // Half inch (approx 48px)
           height: '100vh',
+          zIndex: Z_INDEX.BASE,
           background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
         }}
         aria-hidden="true"

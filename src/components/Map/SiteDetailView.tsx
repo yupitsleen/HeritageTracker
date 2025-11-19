@@ -12,6 +12,7 @@ import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { Z_INDEX } from "../../constants/layout";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -148,7 +149,10 @@ export function SiteDetailView({
     <div className="relative h-full">
       {/* Date label - shown when provided (e.g., from Wayback imagery) */}
       {dateLabel && (
-        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
+        <div
+          className="absolute top-2 left-1/2 transform -translate-x-1/2 pointer-events-none"
+          style={{ zIndex: Z_INDEX.MAP_CONTROLS }}
+        >
           <DateLabel date={dateLabel} variant="green" size="md" />
         </div>
       )}
@@ -206,7 +210,10 @@ export function SiteDetailView({
 
       {/* Map settings - show on Dashboard (no custom tiles) or when override props provided (comparison/timeline mode) */}
       {(!customTileUrl || (onZoomToSiteChange !== undefined && onMapMarkersChange !== undefined)) && (
-        <div className={`absolute bottom-2 left-2 z-[1000] ${t.bg.panel} backdrop-blur-sm border ${t.border.primary} rounded px-2 py-1.5 shadow-md`}>
+        <div
+          className={`absolute bottom-2 left-2 ${t.bg.panel} backdrop-blur-sm border ${t.border.primary} rounded px-2 py-1.5 shadow-md`}
+          style={{ zIndex: Z_INDEX.MAP_CONTROLS }}
+        >
           <div className="flex flex-col gap-1 text-xs">
             <label className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity">
               <input

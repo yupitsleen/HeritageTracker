@@ -81,19 +81,20 @@ export const Modal = memo(function Modal({ isOpen, onClose, children, title, zIn
         ref={modalRef}
         tabIndex={-1}
         className={cn(
-          "relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto",
+          "relative w-full max-w-4xl max-h-[90vh] overflow-y-auto",
           "rounded-2xl shadow-2xl transform transition-all will-change-transform",
           t.card.base
         )}
-        style={{ contain: 'layout style paint' }}
+        style={{ contain: 'layout style paint', zIndex: Z_INDEX.MODAL_CONTENT }}
       >
         {/* Close button - positioned at top right of content */}
         <button
           onClick={onClose}
           className={cn(
-            "absolute top-4 right-8 z-30 p-2 cursor-pointer",
+            "absolute top-4 right-8 p-2 cursor-pointer",
             t.text.muted
           )}
+          style={{ zIndex: Z_INDEX.MODAL_CLOSE_BUTTON }}
           aria-label="Close modal"
         >
           <CloseIcon className="w-6 h-6" />

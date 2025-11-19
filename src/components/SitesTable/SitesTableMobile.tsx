@@ -14,6 +14,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 import { useTableSort, type SortField } from "../../hooks/useTableSort";
+import { Z_INDEX } from "../../constants/layout";
 
 interface SitesTableMobileProps {
   sites: Site[];
@@ -61,7 +62,10 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
       </div>
 
       {/* Sticky column headers with sorting */}
-      <div className={`sticky top-[85px] ${t.bg.primary} z-40 border-b-2 ${t.border.subtle} pb-2 mb-2 shadow-sm`}>
+      <div
+        className={`sticky top-[85px] ${t.bg.primary} border-b-2 ${t.border.subtle} pb-2 mb-2 shadow-sm`}
+        style={{ zIndex: Z_INDEX.TABLE_STICKY_HEADER }}
+      >
         <div className="grid grid-cols-[1fr_auto] gap-3 px-3 py-2">
           <div
             className={`text-xs font-bold ${t.text.body} uppercase cursor-pointer hover:${t.text.heading} select-none flex items-center gap-1`}

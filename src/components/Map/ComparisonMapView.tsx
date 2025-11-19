@@ -3,6 +3,7 @@ import type { WaybackImagery } from "../../types/waybackTimelineTypes";
 import { SiteDetailView } from "./SiteDetailView";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { DateLabel } from "../Timeline/DateLabel";
+import { Z_INDEX } from "../../constants/layout";
 
 interface ComparisonMapViewProps {
   sites: Site[];
@@ -62,7 +63,10 @@ export function ComparisonMapView({
         <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {before.dateLabel && (
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
+            <div
+              className="absolute top-2 left-1/2 transform -translate-x-1/2 pointer-events-none"
+              style={{ zIndex: Z_INDEX.MAP_CONTROLS }}
+            >
               <DateLabel date={before.dateLabel} variant="yellow" size="md" />
             </div>
           )}
@@ -84,7 +88,10 @@ export function ComparisonMapView({
         <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {after.dateLabel && (
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
+            <div
+              className="absolute top-2 left-1/2 transform -translate-x-1/2 pointer-events-none"
+              style={{ zIndex: Z_INDEX.MAP_CONTROLS }}
+            >
               <DateLabel date={after.dateLabel} variant="green" size="md" />
             </div>
           )}

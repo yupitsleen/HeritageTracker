@@ -119,8 +119,8 @@ export function DesktopLayout({
       <div className="flex gap-2 flex-1 min-h-0 px-4 pt-2">
         {/* Left Column - Sites Table (Resizable) */}
         <aside
-          className="flex-shrink-0 relative flex flex-col z-10"
-          style={{ width: `${tableResize.width}px` }}
+          className="flex-shrink-0 relative flex flex-col"
+          style={{ width: `${tableResize.width}px`, zIndex: Z_INDEX.CONTENT }}
         >
           <SitesTable
             sites={filteredSites}
@@ -132,9 +132,10 @@ export function DesktopLayout({
 
           {/* Resize handle */}
           <div
-            className={`absolute top-0 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${
+            className={`absolute top-0 right-0 w-2 h-full cursor-col-resize hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${
               tableResize.isResizing ? "bg-[#ed3039] bg-opacity-50" : ""
             }`}
+            style={{ zIndex: Z_INDEX.TABLE_HEADER }}
             onMouseDown={tableResize.handleResizeStart}
             title={translate("aria.dragToResizeTable")}
             aria-label={translate("aria.resizeTable")}
@@ -142,7 +143,10 @@ export function DesktopLayout({
         </aside>
 
         {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-        <div className={`flex-1 min-w-0 h-full ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
+        <div
+          className={`flex-1 min-w-0 h-full ${t.border.primary} rounded shadow-lg overflow-hidden relative`}
+          style={{ zIndex: Z_INDEX.CONTENT }}
+        >
           <Suspense fallback={<SkeletonMap />}>
             <HeritageMap
               sites={filteredSites}
@@ -155,7 +159,10 @@ export function DesktopLayout({
         </div>
 
         {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-        <div className={`flex-1 min-w-0 h-full ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
+        <div
+          className={`flex-1 min-w-0 h-full ${t.border.primary} rounded shadow-lg overflow-hidden relative`}
+          style={{ zIndex: Z_INDEX.CONTENT }}
+        >
           <Suspense fallback={<SkeletonMap />}>
             <SiteDetailView
               sites={filteredSites}
@@ -166,7 +173,10 @@ export function DesktopLayout({
       </div>
 
       {/* Timeline Scrubber - Full width at bottom, mb-6 to clear fixed footer */}
-      <div className="mx-4 mt-1.5 mb-6 flex-shrink-0 h-[100px] relative z-10">
+      <div
+        className="mx-4 mt-1.5 mb-6 flex-shrink-0 h-[100px] relative"
+        style={{ zIndex: Z_INDEX.CONTENT }}
+      >
         <Suspense fallback={<SkeletonMap />}>
           <TimelineScrubber
             sites={filteredSites}
