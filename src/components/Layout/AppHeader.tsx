@@ -97,7 +97,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
     >
       {/* Header - BLACK background, ultra compact */}
       {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
-      <header className="bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
+      <header className="bg-[#000000] text-[#fefefe] shadow-lg">
         <div className={cn("container mx-auto px-4", "py-1.5 relative flex items-center justify-between")}>
           {/* Left: Logo + Title - clickable to return home */}
           <div className="flex items-center gap-3">
@@ -107,11 +107,17 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               aria-label="Go to home page"
               title={TOOLTIPS.HEADER.HOME}
             >
-              <img
-                src={logo}
-                alt="Heritage Tracker Logo"
-                className="h-8 md:h-10 w-auto"
-              />
+              <div className="bg-[#000000] flex items-center justify-center">
+                <img
+                  src={logo}
+                  alt="Heritage Tracker Logo"
+                  className="h-8 md:h-10 w-auto"
+                  style={{
+                    filter: 'brightness(0.95) contrast(1.1)',
+                    isolation: 'isolate'
+                  }}
+                />
+              </div>
               <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
                 {t("header.title")}
               </h1>
@@ -220,14 +226,6 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
           </div>
         )}
       </header>
-
-      {/* Flag-colored horizontal line - RED, BLACK, RED, GREEN (4px high, 4 bars) */}
-      <div className="flex h-1">
-        <div className="flex-1 bg-[#ed3039]"></div>
-        <div className="flex-1 bg-[#000000]"></div>
-        <div className="flex-1 bg-[#ed3039]"></div>
-        <div className="flex-1 bg-[#009639]"></div>
-      </div>
     </div>
   );
 }

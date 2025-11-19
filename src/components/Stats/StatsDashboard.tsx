@@ -22,7 +22,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
   const stats = useHeritageStats(sites);
 
   return (
-    <div style={{ contain: 'layout style paint' }}>
+    <div style={{ contain: 'layout style paint' }} className="[&_*]:!text-black">
       <div className="p-3 md:p-6">
         {/* Header */}
         <div className="mb-4 md:mb-6 text-center">

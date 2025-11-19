@@ -431,8 +431,8 @@ export function Timeline() {
 
       {/* Footer - Desktop only */}
       <AppFooter
-        
         isMobile={false}
+        transparent={true}
       />
     </div>
   );

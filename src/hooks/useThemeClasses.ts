@@ -47,19 +47,19 @@ export function useThemeClasses() {
      */
     bg: {
       /** Primary background (cards, containers) */
-      primary: isDark ? "bg-gray-800" : "bg-white",
+      primary: isDark ? "bg-gray-900" : "bg-white",
       /** Secondary background (nested containers) */
-      secondary: isDark ? "bg-gray-700" : "bg-gray-50",
+      secondary: isDark ? "bg-gray-800" : "bg-gray-50",
       /** Tertiary background (subtle emphasis) - border-only in light mode, subtle fill in dark mode */
-      tertiary: isDark ? "bg-gray-700/50" : "",
+      tertiary: isDark ? "bg-gray-800/50" : "",
       /** Hover state background */
-      hover: isDark ? "hover:bg-gray-700" : "hover:bg-gray-100",
+      hover: isDark ? "hover:bg-gray-800" : "hover:bg-gray-100",
       /** Active/selected state */
-      active: isDark ? "bg-gray-600" : "bg-gray-200",
+      active: isDark ? "bg-gray-700" : "bg-gray-200",
       /** Disabled state background */
-      disabled: isDark ? "bg-gray-700" : "bg-gray-100",
+      disabled: isDark ? "bg-gray-800" : "bg-gray-100",
       /** Panel background (semi-transparent) */
-      panel: isDark ? "bg-gray-800/90" : "bg-white/90",
+      panel: isDark ? "bg-gray-900/90" : "bg-white/90",
     },
 
     /**
@@ -126,7 +126,7 @@ export function useThemeClasses() {
     card: {
       /** Card background and border */
       base: isDark
-        ? "bg-gray-800 border-gray-700"
+        ? "bg-gray-900 border-gray-700"
         : "bg-white border-gray-200",
     },
 
@@ -145,7 +145,7 @@ export function useThemeClasses() {
      */
     layout: {
       /** Main app background */
-      appBackground: isDark ? "bg-[#f5f5f5]" : "bg-[#fefefe]",
+      appBackground: isDark ? "bg-[#fefefe] text-black" : "bg-[#fefefe]",
       /** Loading/fallback text */
       loadingText: isDark ? "text-gray-300" : "text-gray-600",
       /** Modal heading */
@@ -182,7 +182,7 @@ export function useThemeClasses() {
     tooltip: {
       /** Base tooltip styling with border and shadow */
       base: isDark
-        ? "bg-gray-900 text-white border-gray-600"
+        ? "bg-gray-950 text-white border-gray-600"
         : "bg-white text-black border-gray-300",
       /** Tooltip border only */
       border: isDark ? "border-gray-600" : "border-gray-300",
@@ -195,9 +195,9 @@ export function useThemeClasses() {
      */
     marker: {
       /** Minor release marker (thin gray line) */
-      minor: isDark ? "bg-gray-700" : "bg-gray-400",
+      minor: isDark ? "bg-gray-800" : "bg-gray-400",
       /** Major release marker (thicker gray line) */
-      major: isDark ? "bg-gray-600" : "bg-gray-300",
+      major: isDark ? "bg-gray-700" : "bg-gray-300",
       /** Opacity for minor markers */
       minorOpacity: "opacity-50",
       /** Opacity for major markers */
@@ -233,7 +233,7 @@ export function useThemeClasses() {
      */
     kbd: {
       /** Keyboard key display */
-      base: isDark ? "bg-gray-700" : "bg-gray-200",
+      base: isDark ? "bg-gray-800" : "bg-gray-200",
     },
 
     /**

@@ -91,7 +91,7 @@ export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesD
 
         {isOpen && (
           <div
-            className="mt-1 bg-gray-800 rounded-md shadow-lg border border-gray-700 overflow-hidden"
+            className="mt-1 bg-gray-900 rounded-md shadow-lg border border-gray-700 overflow-hidden"
             style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
           >
             {RESOURCE_ITEMS.map(({ path, translationKey }) => {
@@ -105,7 +105,7 @@ export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesD
                   className={`w-full text-left px-4 py-2 text-sm transition-colors ${
                     isActive
                       ? 'bg-[#ed3039] text-white'
-                      : 'text-gray-200 hover:bg-gray-700'
+                      : 'text-gray-200 hover:bg-gray-800'
                   }`}
                 >
                   {t(translationKey)}
@@ -136,7 +136,7 @@ export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesD
 
       {isOpen && (
         <div
-          className="absolute top-full mt-1 bg-gray-800 rounded-md shadow-lg border border-gray-700 overflow-hidden min-w-[200px]"
+          className="absolute top-full mt-1 bg-gray-900 rounded-md shadow-lg border border-gray-700 overflow-hidden min-w-[200px]"
           style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
         >
           {RESOURCE_ITEMS.map(({ path, translationKey }) => {
@@ -150,7 +150,7 @@ export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesD
                 className={`w-full text-left px-4 py-2 text-sm transition-colors ${
                   isActive
                     ? 'bg-[#ed3039] text-white'
-                    : 'text-gray-200 hover:bg-gray-700'
+                    : 'text-gray-200 hover:bg-gray-800'
                 }`}
               >
                 {t(translationKey)}

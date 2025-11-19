@@ -171,7 +171,7 @@ export function DashboardPage() {
       </Modal>
 
       {/* Footer - Desktop only */}
-      <AppFooter isMobile={false} />
+      <AppFooter isMobile={false} transparent={true} />
     </div>
   );
 }

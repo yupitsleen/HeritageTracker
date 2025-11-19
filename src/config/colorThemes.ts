@@ -293,13 +293,13 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         primary: "text-gray-100",
       },
       bg: {
-        primary: "bg-gray-800",
-        secondary: "bg-gray-700",
-        tertiary: "bg-gray-700/50",
-        hover: "hover:bg-gray-700",
-        active: "bg-gray-600",
-        disabled: "bg-gray-700",
-        panel: "bg-gray-800/90",
+        primary: "bg-gray-900",
+        secondary: "bg-gray-800",
+        tertiary: "bg-gray-800/50",
+        hover: "hover:bg-gray-800",
+        active: "bg-gray-700",
+        disabled: "bg-gray-800",
+        panel: "bg-gray-900/90",
       },
       border: {
         default: "border-gray-700",
@@ -311,7 +311,7 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         muted: "border-gray-600",
       },
       input: {
-        base: "bg-gray-700 border-gray-600 text-gray-100 placeholder:text-gray-400",
+        base: "bg-gray-800 border-gray-600 text-gray-100 placeholder:text-gray-400",
         focus: `focus:outline-none focus:ring-2 focus:ring-[${COLORS.FLAG_GREEN}] focus:border-transparent`,
       },
       icon: {
@@ -319,21 +319,21 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         muted: "text-gray-400",
       },
       card: {
-        base: "bg-gray-800 border-gray-700",
+        base: "bg-gray-900 border-gray-700",
       },
       layout: {
-        appBackground: "bg-gray-600",
+        appBackground: "bg-gray-700",
         loadingText: "text-gray-300",
         modalHeading: "text-gray-100",
       },
       tooltip: {
-        base: "bg-gray-900 text-white border-gray-600",
+        base: "bg-gray-950 text-white border-gray-600",
         border: "border-gray-600",
         text: "text-white",
       },
       marker: {
-        minor: "bg-gray-700",
-        major: "bg-gray-600",
+        minor: "bg-gray-800",
+        major: "bg-gray-700",
       },
       containerBg: {
         semiTransparent: "bg-black/50",
@@ -341,7 +341,7 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         solid: "bg-black",
       },
       kbd: {
-        base: "bg-gray-700",
+        base: "bg-gray-800",
       },
     },
   },

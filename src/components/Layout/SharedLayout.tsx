@@ -66,7 +66,7 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
 
       {/* Main Content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}
-      <main id="main-content" className="relative">
+      <main id="main-content" className={`relative ${isDark ? 'text-black' : ''}`}>
         {children}
       </main>
 

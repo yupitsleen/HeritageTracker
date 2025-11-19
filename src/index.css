@@ -79,11 +79,11 @@ button:active {
 
 /* Dark mode support for Leaflet popups */
 [data-theme="dark"] .leaflet-popup-content-wrapper {
-  @apply bg-gray-800 text-gray-100;
+  @apply bg-gray-900 text-gray-100;
 }
 
 [data-theme="dark"] .leaflet-popup-tip {
-  @apply bg-gray-800;
+  @apply bg-gray-900;
 }
 
 /* Optimize SVG timeline rendering */

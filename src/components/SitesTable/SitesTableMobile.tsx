@@ -95,17 +95,17 @@ export function SitesTableMobile({ sites }: SitesTableMobileProps) {
               } ${
                 index % 2 === 0
                   ? isDark
-                    ? "bg-gray-800/50"
+                    ? "bg-gray-900/50"
                     : "bg-[#fee2e2]"
                   : isDark
-                  ? "bg-gray-900/50"
+                  ? "bg-gray-950/50"
                   : "bg-white"
               }`}
             >
               {/* Collapsed row - clickable to expand */}
               <div
                 className={`grid grid-cols-[1fr_auto_auto] gap-3 p-3 items-center cursor-pointer transition-colors ${
-                  isDark ? "hover:bg-gray-700/50" : "hover:bg-[#fecaca]"
+                  isDark ? "hover:bg-gray-800/50" : "hover:bg-[#fecaca]"
                 }`}
                 onClick={() => setExpandedRowId(expandedRowId === site.id ? null : site.id)}
               >

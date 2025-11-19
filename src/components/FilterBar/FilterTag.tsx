@@ -15,7 +15,7 @@ export function FilterTag({ label, onRemove, ariaLabel }: FilterTagProps) {
   return (
     <span className={cn(
       "inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs rounded",
-      "bg-gray-500 hover:bg-gray-600 text-white font-medium border border-gray-600",
+      "bg-gray-600 hover:bg-gray-700 text-white font-medium border border-gray-700",
       "transition-colors duration-200"
     )}>
       {label}

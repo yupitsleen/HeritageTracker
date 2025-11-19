@@ -40,7 +40,7 @@ function getVariantClasses(variant: ButtonVariant, isDark: boolean, textColor: s
       : `bg-transparent ${textColor} border-gray-400 hover:bg-[${COLORS.FLAG_GREEN_HOVER}] hover:text-black hover:border-[${PALESTINIAN_FLAG.GREEN}] hover:shadow-lg active:opacity-80`,
 
     secondary: isDark
-      ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80"
+      ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-700 hover:text-white hover:border-gray-500 hover:shadow-lg active:opacity-80"
       : `bg-transparent ${textColor} border-gray-800 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80`,
 
     danger: isDark
@@ -48,7 +48,7 @@ function getVariantClasses(variant: ButtonVariant, isDark: boolean, textColor: s
       : `bg-transparent ${textColor} border-gray-400 hover:bg-[${PALESTINIAN_FLAG.RED}] hover:text-white hover:border-[${PALESTINIAN_FLAG.RED}] hover:shadow-lg active:opacity-80`,
 
     ghost: isDark
-      ? "bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90"
+      ? "bg-transparent hover:bg-gray-800 text-gray-300 border-gray-600 hover:opacity-90"
       : `bg-transparent hover:bg-gray-100 ${textColor} hover:text-black border-gray-300 hover:opacity-90`,
   };
 

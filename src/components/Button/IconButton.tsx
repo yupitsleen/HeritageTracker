@@ -38,7 +38,7 @@ export function IconButton({
 
   const buttonClasses = `p-2 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
     isDark
-      ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
+      ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-700 hover:text-white hover:border-gray-500"
       : "bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
   } ${className}`;
 

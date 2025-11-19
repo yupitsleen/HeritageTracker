@@ -26,11 +26,11 @@ export function TableHeader({
   const translate = useTranslation();
 
   return (
-    <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+    <thead className="sticky top-0 z-10 bg-gradient-to-r from-gray-900 to-gray-950 text-white">
       <tr>
         {visibleColumns.has("type") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none text-center transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none text-center transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("type")}
             style={{ width: `${TABLE_CONFIG.TYPE_COLUMN_WIDTH}px` }}
           >
@@ -40,7 +40,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("name") && (
           <th
-            className={`pl-2 pr-1 ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`pl-2 pr-1 ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("name")}
             style={{ width: variant === "compact" ? "200px" : "auto", maxWidth: variant === "compact" ? "200px" : "none" }}
           >
@@ -50,7 +50,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("status") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("status")}
           >
             {translate("table.status")}
@@ -59,7 +59,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("dateDestroyed") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("dateDestroyed")}
           >
             {variant === "compact"
@@ -70,7 +70,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("dateDestroyedIslamic") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("dateDestroyedIslamic")}
           >
             {translate("table.destructionDateIslamic")}
@@ -79,7 +79,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("sourceAssessmentDate") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("sourceAssessmentDate")}
           >
             {translate("table.surveyDate")}
@@ -88,7 +88,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("yearBuilt") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("yearBuilt")}
           >
             {translate("table.builtGregorian")}
@@ -97,7 +97,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("yearBuiltIslamic") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("yearBuiltIslamic")}
           >
             {translate("table.builtIslamic")}
@@ -106,7 +106,7 @@ export function TableHeader({
         )}
         {visibleColumns.has("lastUpdated") && (
           <th
-            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
+            className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-800/30`}
             onClick={() => onSort("lastUpdated")}
           >
             {translate("table.lastUpdated")}

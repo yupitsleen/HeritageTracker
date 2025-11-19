@@ -110,17 +110,6 @@ describe("AppHeader - Baseline Behavior", () => {
     });
   });
 
-  describe("Flag Line Decoration", () => {
-    it("renders Palestinian flag colored line", () => {
-      const { container } = render(<AppHeader />, { wrapper: Wrapper });
-
-      // Flag line has 4 colored sections
-      const flagLine = container.querySelector(".flex.h-1");
-      expect(flagLine).toBeInTheDocument();
-      expect(flagLine?.children).toHaveLength(4);
-    });
-  });
-
   describe("Accessibility", () => {
     it("has proper ARIA labels on hamburger button", () => {
       render(<AppHeader />, { wrapper: Wrapper });

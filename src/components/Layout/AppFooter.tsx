@@ -6,20 +6,23 @@ import { Z_INDEX } from "../../constants/layout";
 
 interface AppFooterProps {
   isMobile: boolean;
+  transparent?: boolean; // If true, use transparent background. If false, use green background.
 }
 
 /**
  * Application footer with attribution and navigation
- * Transparent background to show main page background
+ * Can be transparent (Dashboard/Timeline) or green (all other pages)
  * Stats, About, and Donate now navigate to dedicated pages for better performance
  */
-export function AppFooter({ isMobile }: AppFooterProps) {
+export function AppFooter({ isMobile, transparent = false }: AppFooterProps) {
   const t = useThemeClasses();
   const translate = useTranslation();
 
   return (
     <footer
-      className={`fixed bottom-0 left-0 right-0 shadow-lg transition-colors duration-200 bg-transparent ${t.text.primary}`}
+      className={`fixed bottom-0 left-0 right-0 shadow-lg transition-colors duration-200 ${
+        transparent ? 'bg-transparent' : 'bg-[#009639]'
+      } ${transparent ? t.text.primary : 'text-white'}`}
       style={{ zIndex: Z_INDEX.STICKY }}
     >
       {/* Desktop footer - ultra compact */}
@@ -32,7 +35,9 @@ export function AppFooter({ isMobile }: AppFooterProps) {
                 href="https://github.com/yupitsleen/HeritageTracker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-[#fefefe]/80 transition-colors"
+                className={`underline transition-colors ${
+                  transparent ? 'hover:text-[#fefefe]/80' : 'hover:text-white/80'
+                }`}
                 aria-label={translate("aria.viewGithub")}
               >
                 {translate("footer.github")}
@@ -50,7 +55,9 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               {translate("footer.title")} •{" "}
               <Link
                 to="/donate"
-                className="underline hover:text-[#fefefe]/80 transition-colors"
+                className={`underline transition-colors ${
+                  transparent ? 'hover:text-[#fefefe]/80' : 'hover:text-white/80'
+                }`}
                 aria-label={translate("aria.helpPalestineDonate")}
               >
                 {translate("footer.donate")}
@@ -58,7 +65,9 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               {" • "}
               <Link
                 to="/stats"
-                className="underline hover:text-[#fefefe]/80 transition-colors"
+                className={`underline transition-colors ${
+                  transparent ? 'hover:text-[#fefefe]/80' : 'hover:text-white/80'
+                }`}
                 aria-label={translate("aria.viewStatistics")}
               >
                 {translate("footer.stats")}
@@ -66,7 +75,9 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               {" • "}
               <Link
                 to="/about"
-                className="underline hover:text-[#fefefe]/80 transition-colors"
+                className={`underline transition-colors ${
+                  transparent ? 'hover:text-[#fefefe]/80' : 'hover:text-white/80'
+                }`}
                 aria-label={translate("aria.aboutHeritageTracker")}
               >
                 {translate("footer.about")}
@@ -76,7 +87,9 @@ export function AppFooter({ isMobile }: AppFooterProps) {
                 href="https://github.com/yupitsleen/HeritageTracker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-[#fefefe]/80 transition-colors"
+                className={`underline transition-colors ${
+                  transparent ? 'hover:text-[#fefefe]/80' : 'hover:text-white/80'
+                }`}
                 aria-label={translate("aria.viewGithub")}
               >
                 {translate("footer.github")}
