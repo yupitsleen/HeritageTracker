@@ -15,7 +15,8 @@ import { SharedLayout } from "../components/Layout/SharedLayout";
 export function StatsPage() {
   return (
     <SharedLayout>
-      <div className="container mx-auto px-4 py-6 pb-24 max-w-7xl">
+      {/* pl-14 (56px) provides clearance for 48px red bar */}
+      <div className="container mx-auto px-4 pl-14 py-6 pb-24 max-w-7xl">
         <StatsDashboard sites={mockSites} />
       </div>
     </SharedLayout>

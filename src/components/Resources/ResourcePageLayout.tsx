@@ -22,7 +22,8 @@ export function ResourcePageLayout({ title, description, children }: ResourcePag
 
   return (
     <SharedLayout>
-      <div className={`container mx-auto px-4 py-6 pb-24 max-w-7xl ${bg} ${text}`}>
+      {/* pl-14 (56px) provides clearance for 48px red bar */}
+      <div className={`container mx-auto px-4 pl-14 py-6 pb-24 max-w-7xl ${bg} ${text}`}>
         {/* Page Header */}
         <header className="mb-8">
           <h1 className="text-4xl font-bold mb-4">{title}</h1>

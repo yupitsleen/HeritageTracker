@@ -83,13 +83,13 @@ export function DashboardPage() {
       </a>
 
       {/* Red Vertical Bar - Background Element */}
-      {/* Z-index BASE to stay behind all content */}
+      {/* Z-index 1250 to appear above header and footer for visual continuity */}
       <div
         className="fixed top-0 left-0 pointer-events-none transition-colors duration-200"
         style={{
           width: '48px', // Half inch (approx 48px)
           height: '100vh',
-          zIndex: Z_INDEX.BASE,
+          zIndex: Z_INDEX.RED_VERTICAL_LINE,
           background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
         }}
         aria-hidden="true"
@@ -101,7 +101,8 @@ export function DashboardPage() {
       />
 
       {/* Main Content - Non-blocking render with skeleton UI while loading */}
-      <main id="main-content" className="pb-24 md:pb-0 relative">
+      {/* pl-14 (56px) provides clearance for 48px red bar */}
+      <main id="main-content" className="pb-24 md:pb-0 relative pl-14">
         {isLoading ? (
           // Show skeleton UI immediately while data loads
           <LoadingSpinner fullScreen message="Loading heritage sites..." />

@@ -245,12 +245,12 @@ export function Timeline() {
       className={`min-h-screen relative transition-colors duration-200 ${t.layout.appBackground}`}
     >
       {/* Red Vertical Bar - Background Element */}
-      {/* Z-index BASE to stay behind all content */}
+      {/* Z-index 1250 to appear above header and footer for visual continuity */}
       <div
         className="fixed top-0 left-0 pointer-events-none transition-colors duration-200"
         style={{
           width: '48px', // Half inch (approx 48px)
-          zIndex: Z_INDEX.BASE,
+          zIndex: Z_INDEX.RED_VERTICAL_LINE,
           height: '100vh',
           background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
         }}
@@ -261,9 +261,10 @@ export function Timeline() {
       <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
 
       {/* Main content */}
-      {/* Relative positioning creates stacking context above BASE red bar */}
+      {/* Relative positioning creates stacking context above red bar */}
       {/* pb-8 adds bottom padding to prevent footer overlap */}
-      <main className="h-[calc(100vh-58px)] p-4 pb-8 flex flex-col gap-2 relative">
+      {/* pl-14 (56px) provides clearance for 48px red bar */}
+      <main className="h-[calc(100vh-58px)] p-4 pb-8 pl-14 flex flex-col gap-2 relative">
         {/* Loading state */}
         {isLoading && (
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
