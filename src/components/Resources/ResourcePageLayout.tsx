@@ -18,12 +18,12 @@ interface ResourcePageLayoutProps {
  * - Consistent padding and spacing
  */
 export function ResourcePageLayout({ title, description, children }: ResourcePageLayoutProps) {
-  const { text, bg } = useThemeClasses();
+  const t = useThemeClasses();
 
   return (
     <SharedLayout>
       {/* pl-14 (56px) provides clearance for 48px red bar */}
-      <div className={`container mx-auto px-4 pl-14 py-6 pb-24 max-w-7xl ${bg} ${text}`}>
+      <div className={`container mx-auto px-4 pl-14 py-6 pb-24 max-w-7xl ${t.text.body}`}>
         {/* Page Header */}
         <header className="mb-8">
           <h1 className="text-4xl font-bold mb-4">{title}</h1>
