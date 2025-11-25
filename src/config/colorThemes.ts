@@ -322,7 +322,7 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
         base: "bg-gray-900 border-gray-700",
       },
       layout: {
-        appBackground: "bg-black",
+        appBackground: "bg-[#121212]",
         loadingText: "text-gray-300",
         modalHeading: "text-gray-100",
       },

@@ -145,7 +145,7 @@ export function useThemeClasses() {
      */
     layout: {
       /** Main app background */
-      appBackground: isDark ? "bg-black" : "bg-[#fefefe]",
+      appBackground: isDark ? "bg-[#121212]" : "bg-[#fefefe]",
       /** Loading/fallback text */
       loadingText: isDark ? "text-gray-300" : "text-gray-600",
       /** Modal heading */
