@@ -98,7 +98,7 @@ export function DesktopLayout({
 
       {/* Filter bar - Full width at top */}
       <div
-        className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 bg-[#000000]/95`}
+        className={`flex-shrink-0 mr-4 mt-4 p-2 backdrop-blur-sm ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 bg-[#000000]/95`}
         style={{ zIndex: Z_INDEX.FILTER_BAR }}
       >
         {/* Unified FilterBar with search, filters, and actions */}
@@ -116,7 +116,7 @@ export function DesktopLayout({
       </div>
 
       {/* Three-column layout: Table | Map | SiteDetailView (all same height) */}
-      <div className="flex gap-2 flex-1 min-h-0 px-4 pt-2">
+      <div className="flex gap-2 flex-1 min-h-0 pr-4 pt-2">
         {/* Left Column - Sites Table (Resizable) */}
         <aside
           className="flex-shrink-0 relative flex flex-col"
@@ -172,9 +172,9 @@ export function DesktopLayout({
         </div>
       </div>
 
-      {/* Timeline Scrubber - Full width at bottom, mb-6 to clear fixed footer */}
+      {/* Timeline Scrubber - Full width at bottom, mb-8 to clear fixed footer */}
       <div
-        className="mx-4 mt-1.5 mb-6 flex-shrink-0 h-[100px] relative"
+        className="mr-4 mt-1.5 mb-8 flex-shrink-0 h-[100px] relative"
         style={{ zIndex: Z_INDEX.CONTENT }}
       >
         <Suspense fallback={<SkeletonMap />}>

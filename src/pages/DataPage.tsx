@@ -65,10 +65,10 @@ export function DataPage() {
 
   return (
     <SharedLayout>
-      <div className="h-[calc(100vh-100px)] flex flex-col mb-8 pt-4 pl-14">
+      <div className="h-[calc(100vh-58px)] flex flex-col pt-4 pl-14 pb-8">
         {/* Filter Bar Container */}
         <div
-          className={`flex-shrink-0 mx-4 mb-4 p-2 backdrop-blur-sm ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 bg-[#000000]/95`}
+          className={`flex-shrink-0 mr-4 mt-2 mb-4 p-2 backdrop-blur-sm ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 bg-[#000000]/95`}
           style={{ zIndex: Z_INDEX.CONTENT }}
         >
           {/* Unified FilterBar with search, filters, and actions */}
@@ -86,7 +86,7 @@ export function DataPage() {
         </div>
 
         {/* Data Table */}
-        <div className="flex-1 min-h-0 px-4">
+        <div className="flex-1 min-h-0 pr-4">
           <SitesTable
             sites={filteredSites}
             onSiteClick={handleSiteClick}
