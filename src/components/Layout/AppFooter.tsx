@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { cn } from "../../styles/theme";
+import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Z_INDEX } from "../../constants/layout";
+import { COLORS } from "../../config/colorThemes";
 
 interface AppFooterProps {
   isMobile: boolean;
@@ -11,19 +13,32 @@ interface AppFooterProps {
 
 /**
  * Application footer with attribution and navigation
- * Can be transparent (Dashboard/Timeline) or green (all other pages)
+ * Uses Palestinian flag green that matches timeline/wayback components:
+ * - Light mode: #009639 (FLAG_GREEN)
+ * - Dark mode: #2d5a38 (FLAG_GREEN_DARK)
  * Stats, About, and Donate now navigate to dedicated pages for better performance
  */
 export function AppFooter({ isMobile, transparent = false }: AppFooterProps) {
+  const { isDark } = useTheme();
   const t = useThemeClasses();
   const translate = useTranslation();
+
+  // Use same green as timeline/wayback components
+  const backgroundColor = transparent
+    ? 'transparent'
+    : isDark
+      ? COLORS.FLAG_GREEN_DARK
+      : COLORS.FLAG_GREEN;
 
   return (
     <footer
       className={`fixed bottom-0 left-0 right-0 shadow-lg transition-colors duration-200 ${
-        transparent ? 'bg-transparent' : 'bg-[#009639]'
-      } ${transparent ? t.text.primary : 'text-white'}`}
-      style={{ zIndex: Z_INDEX.STICKY }}
+        transparent ? t.text.primary : 'text-white'
+      }`}
+      style={{
+        zIndex: Z_INDEX.STICKY,
+        backgroundColor,
+      }}
     >
       {/* Desktop footer - ultra compact */}
       {!isMobile && (

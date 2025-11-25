@@ -67,17 +67,17 @@ export function useThemeClasses() {
      */
     border: {
       /** Default border color */
-      default: isDark ? "border-gray-700" : `border-[${COLORS.BORDER_DEFAULT_LIGHT}]`,
+      default: isDark ? "border-white" : `border-[${COLORS.BORDER_DEFAULT_LIGHT}]`,
       /** Subtle border */
       subtle: isDark ? "border-gray-600" : "border-gray-300",
       /** Strong/emphasis border */
       strong: isDark ? "border-gray-500" : "border-gray-400",
       /** Black border (consistent across themes) */
       black: `border-[${COLORS.BORDER_BLACK}]`,
-      /** Theme-aware border: black in both modes (2px) */
-      primary: "border-2 border-black",
-      /** Theme-aware border-2: black in both modes (2px) */
-      primary2: "border-2 border-black",
+      /** Theme-aware border: white in dark mode, black in light mode (2px) */
+      primary: isDark ? "border-2 border-white" : "border-2 border-black",
+      /** Theme-aware border-2: white in dark mode, black in light mode (2px) */
+      primary2: isDark ? "border-2 border-white" : "border-2 border-black",
       /** Muted border */
       muted: isDark ? "border-gray-600" : "border-gray-300",
     },
@@ -145,7 +145,7 @@ export function useThemeClasses() {
      */
     layout: {
       /** Main app background */
-      appBackground: isDark ? "bg-[#fefefe] text-black" : "bg-[#fefefe]",
+      appBackground: isDark ? "bg-black" : "bg-[#fefefe]",
       /** Loading/fallback text */
       loadingText: isDark ? "text-gray-300" : "text-gray-600",
       /** Modal heading */
@@ -160,7 +160,7 @@ export function useThemeClasses() {
     timeline: {
       /** Timeline container - Ultra compact */
       container: isDark
-        ? "backdrop-blur-sm border-2 border-black rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-[#2d5a38]/95"
+        ? "backdrop-blur-sm border-2 border-white rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-[#2d5a38]/95"
         : "backdrop-blur-sm border-2 border-black rounded px-2 pt-1.5 pb-1 shadow-lg transition-colors duration-200 bg-[#007b2f]/95",
       /** Current date display */
       currentDate: isDark ? "text-xs font-semibold text-center flex-1 text-[#fefefe]" : "text-xs font-semibold text-center flex-1",

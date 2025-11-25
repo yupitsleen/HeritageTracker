@@ -6,7 +6,6 @@ import { AppHeader } from "./AppHeader";
 import { AppFooter } from "./AppFooter";
 import { Modal } from "../Modal/Modal";
 import { Z_INDEX } from "../../constants/layout";
-import { COLORS } from "../../config/colorThemes";
 
 interface SharedLayoutProps {
   children: ReactNode;
@@ -62,7 +61,7 @@ export function SharedLayout({
         style={{
           width: '48px', // Half inch (approx 48px)
           height: '100vh',
-          background: isDark ? COLORS.FLAG_RED_DARK : COLORS.FLAG_RED, // Muted red in dark mode
+          background: isDark ? 'rgba(139, 42, 48, 0.98)' : 'rgba(237, 48, 57, 0.98)', // 98% opacity, muted red in dark mode
           zIndex: Z_INDEX.RED_VERTICAL_LINE,
         }}
         aria-hidden="true"

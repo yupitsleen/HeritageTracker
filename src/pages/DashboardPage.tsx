@@ -90,7 +90,7 @@ export function DashboardPage() {
           width: '48px', // Half inch (approx 48px)
           height: '100vh',
           zIndex: Z_INDEX.RED_VERTICAL_LINE,
-          background: isDark ? '#8b2a30' : '#ed3039', // Muted red in dark mode
+          background: isDark ? 'rgba(139, 42, 48, 0.98)' : 'rgba(237, 48, 57, 0.98)', // 98% opacity, muted red in dark mode
         }}
         aria-hidden="true"
       />
@@ -173,7 +173,7 @@ export function DashboardPage() {
       </Modal>
 
       {/* Footer - Desktop only */}
-      <AppFooter isMobile={false} transparent={true} />
+      <AppFooter isMobile={false} />
     </div>
   );
 }
