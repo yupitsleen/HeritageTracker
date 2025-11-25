@@ -342,6 +342,11 @@ export interface Translations {
     donateButton: string;
     disclaimer: string;
     disclaimerText: string;
+    organizationsSection: string;
+    unrwaDesc: string;
+    mapDesc: string;
+    pcrfDesc: string;
+    msfDesc: string;
   };
 
   /** Footer component */
