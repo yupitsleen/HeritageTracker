@@ -54,7 +54,7 @@ BACKGROUND: '#fefefe' (off-white)
 // Dark Mode
 FLAG_GREEN_DARK: '#2d5a38'
 FLAG_RED_DARK: '#8b2a30'
-BACKGROUND: '#000000' (black)
+BACKGROUND: '#121212' (dark gray, Material Design standard)
 ```
 
 ### Location in Code
@@ -71,7 +71,7 @@ export const COLORS = {
 
 // src/hooks/useThemeClasses.ts
 layout: {
-  appBackground: isDark ? "bg-black" : "bg-[#fefefe]",
+  appBackground: isDark ? "bg-[#121212]" : "bg-[#fefefe]",
 }
 ```
 
@@ -123,9 +123,18 @@ layout: {
 - Must update both light and dark mode colors
 
 **Borders:**
+
 - Dark mode: `border-white`
 - Light mode: `border-black`
 - Primary borders use 2px width (`border-2`)
+
+**Spacing & Layout:**
+
+- Red bar clearance: All pages use `pl-14` (56px) on main content
+- Component margins: Use `mr-4` for right margin, NOT `mx-4` (to avoid double left spacing)
+- Footer clearance: Components use `mb-8` (32px) for consistent spacing above footer
+- FilterBar top spacing: `mt-4` (16px) on Dashboard/Data pages to match Timeline
+- Height calculations: Timeline/Data pages use `h-[calc(100vh-58px)]` to account for header
 
 ---
 
@@ -222,14 +231,14 @@ src/
 
 ## 9. Example: Changing Background Color
 
-**Goal:** Change dark mode background to pure black
+**Goal:** Change dark mode background to dark gray
 
 **Files to update:**
 1. `src/config/colorThemes.ts` (line 325)
    ```typescript
    darkScheme: {
      layout: {
-       appBackground: "bg-black",  // Changed from bg-gray-700
+       appBackground: "bg-[#121212]",  // Material Design dark gray
      }
    }
    ```
@@ -237,13 +246,13 @@ src/
 2. `src/hooks/useThemeClasses.ts` (line 148)
    ```typescript
    layout: {
-     appBackground: isDark ? "bg-black" : "bg-[#fefefe]",  // Update isDark case
+     appBackground: isDark ? "bg-[#121212]" : "bg-[#fefefe]",  // Update isDark case
    }
    ```
 
 **Testing:**
 - Light mode: Should be `#fefefe` (off-white)
-- Dark mode: Should be `#000000` (black)
+- Dark mode: Should be `#121212` (dark gray)
 
 ---
 
@@ -310,5 +319,51 @@ src/
 
 ---
 
+### Session 3: Spacing Consistency & Dark Mode Refinement (Afternoon)
+
+**Changes Made:**
+
+1. **Spacing Consistency (Commit: `ef2c824`)**
+   - Fixed spacing between red vertical bar and page components
+   - Changed horizontal margins from `mx-4` to `mr-4` (removes double left spacing)
+   - Updated FilterBar top margin: `mt-2` → `mt-4` in DesktopLayout
+   - Increased timeline-footer spacing: `mb-6` → `mb-8` on Dashboard
+   - Fixed Data page height: `h-[calc(100vh-100px)]` → `h-[calc(100vh-58px)]` with `pb-8`
+   - **Result:** All pages now have consistent 56px left spacing and 32px footer clearance
+
+2. **Dark Mode Background Refinement (Commit: `8d6ed02`)**
+   - Changed from pure black `#000000` to dark gray `#121212`
+   - Uses Material Design recommended color
+   - Provides softer viewing experience (7% brightness)
+   - Discernibly different from pure black but maintains dark aesthetic
+
+3. **Translation Fixes (Commit: `1bfcaf6`)**
+   - Added missing `donate` translation keys: `organizationsSection`, `unrwaDesc`, `mapDesc`, `pcrfDesc`, `msfDesc`
+   - Updated `src/types/i18n.ts` interface
+   - Added Italian translations
+   - Fixed TypeScript build errors in production
+
+**Files Modified:**
+
+- `src/components/Layout/DesktopLayout.tsx`
+- `src/pages/DataPage.tsx`
+- `src/config/colorThemes.ts`
+- `src/hooks/useThemeClasses.ts`
+- `src/types/i18n.ts`
+- `src/i18n/it.ts`
+
+**Key Insights:**
+
+- Always use `mr-4` instead of `mx-4` for components inside `pl-14` containers to avoid double left margin
+- Height calculations should use `h-[calc(100vh-58px)]` for Timeline/Data pages to match header height
+- Use `mb-8` (32px) for bottom spacing before footer across all pages for consistency
+
+---
+
 **Last Updated:** November 25, 2025
-**Latest Commit:** (pending) - style: fix dark mode text color for About/Stats/Donate pages
+
+**Latest Commits:**
+
+- `1bfcaf6` - fix: add missing translation keys for DonatePage
+- `8d6ed02` - style: change dark mode background from pure black to dark gray
+- `ef2c824` - style: improve spacing consistency across Dashboard, Data, and Timeline pages
