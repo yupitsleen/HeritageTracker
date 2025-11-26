@@ -4,6 +4,7 @@ import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Modal } from "../components/Modal/Modal";
+import { DataPageHelpModal } from "../components/Help";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTheme } from "../contexts/ThemeContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
@@ -66,7 +67,7 @@ export function DataPage() {
   }, []);
 
   return (
-    <SharedLayout>
+    <SharedLayout helpContent={<DataPageHelpModal />}>
       <div className="h-[calc(100vh-58px)] flex flex-col pt-4 pb-8">
         {/* Filter Bar Container */}
         <div
