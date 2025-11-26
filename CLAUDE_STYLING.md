@@ -124,9 +124,11 @@ layout: {
 
 **Borders:**
 
-- Dark mode: `border-white`
-- Light mode: `border-black`
-- Primary borders use 2px width (`border-2`)
+- Dark mode: `border-2 border-white` (2px white borders)
+- Light mode: `border-2 border-black` (2px black borders)
+- All major component borders use 2px width for consistency
+- Default border class (`t.border.default`) now includes `border-2` by default
+- Subtle/muted borders use 1px width (`border` class)
 
 **Spacing & Layout:**
 
@@ -357,6 +359,41 @@ src/
 - Always use `mr-4` instead of `mx-4` for components inside `pl-14` containers to avoid double left margin
 - Height calculations should use `h-[calc(100vh-58px)]` for Timeline/Data pages to match header height
 - Use `mb-8` (32px) for bottom spacing before footer across all pages for consistency
+
+---
+
+### Session 4: Border Consistency (Evening)
+
+**Changes Made:**
+
+1. **Border Thickness Standardization**
+   - Updated `t.border.default` to use `border-2` in both light and dark modes
+   - Changed from `border-white` (1px) to `border-2 border-white` (2px) in dark mode
+   - Changed from custom color (1px) to `border-2 border-black` (2px) in light mode
+   - Result: All major component borders now have consistent 2px thickness across themes
+
+2. **Code Cleanup**
+   - Removed redundant `border` and `border-2` classes throughout the codebase
+   - Updated components: About, Donate, StatusLegend, ExportControls, StatsDashboard
+   - Simplified class usage: `border ${t.border.default}` → `${t.border.default}`
+
+3. **Border Class Semantics**
+   - `t.border.default`: 2px borders (black in light mode, white in dark mode)
+   - `t.border.primary` / `t.border.primary2`: 2px borders (same as default)
+   - `t.border.subtle` / `t.border.muted`: 1px borders (gray colors)
+
+**Files Modified:**
+- `src/hooks/useThemeClasses.ts` (border definitions)
+- `src/components/About/About.tsx`
+- `src/components/Donate/DonateModal.tsx`
+- `src/components/Map/StatusLegend.tsx`
+- `src/components/SitesTable/ExportControls.tsx`
+- `src/components/Stats/StatsDashboard.tsx`
+
+**Testing:**
+- All 1464 tests passing
+- Lint clean (zero warnings)
+- Border thickness now consistent: 2px white (dark mode) matches 2px black (light mode)
 
 ---
 

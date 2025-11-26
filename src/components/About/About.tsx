@@ -270,7 +270,7 @@ export const About = memo(function About({ sites }: AboutProps) {
             Data Sources
           </h2>
           <div className="space-y-2 md:space-y-3">
-            <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
+            <div className={`${t.border.default} rounded-lg p-2 md:p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-1 ${t.text.heading}`}>UNESCO</h3>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
                 UN agency providing official heritage damage assessments. Verified 114 cultural
@@ -286,7 +286,7 @@ export const About = memo(function About({ sites }: AboutProps) {
               </a>
             </div>
 
-            <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
+            <div className={`${t.border.default} rounded-lg p-2 md:p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-1 ${t.text.heading}`}>
                 Forensic Architecture
               </h3>
@@ -304,7 +304,7 @@ export const About = memo(function About({ sites }: AboutProps) {
               </a>
             </div>
 
-            <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
+            <div className={`${t.border.default} rounded-lg p-2 md:p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-1 ${t.text.heading}`}>
                 Heritage for Peace
               </h3>
@@ -352,7 +352,7 @@ export const About = memo(function About({ sites }: AboutProps) {
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
             Comprehensive research (Oct 2025) synthesizing data from multiple authoritative sources.
           </p>
-          <div className={`rounded-lg p-3 mb-3 ${t.bg.tertiary} ${t.border.default} border`}>
+          <div className={`rounded-lg p-3 mb-3 ${t.bg.tertiary} ${t.border.default}`}>
             <p className={`text-sm font-medium mb-1 ${t.text.body}`}>
               <strong>Research:</strong> Claude (Anthropic) with project team
             </p>

@@ -46,7 +46,7 @@ export function StatusLegend({ compact = false }: StatusLegendProps) {
   // Original full version
   return (
     <div
-      className={`flex items-center justify-center gap-4 mb-3 px-3 py-2 ${t.bg.primary} rounded-lg border ${t.border.default}`}
+      className={`flex items-center justify-center gap-4 mb-3 px-3 py-2 ${t.bg.primary} rounded-lg ${t.border.default}`}
       role="region"
       aria-label={translate("legend.colorKey")}
     >

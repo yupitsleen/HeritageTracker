@@ -66,10 +66,10 @@ export function useThemeClasses() {
      * Border color classes
      */
     border: {
-      /** Default border color */
-      default: isDark ? "border-white" : `border-[${COLORS.BORDER_DEFAULT_LIGHT}]`,
-      /** Subtle border */
-      subtle: isDark ? "border-gray-600" : "border-gray-300",
+      /** Default border color (2px for consistency across themes) */
+      default: isDark ? "border-2 border-white" : "border-2 border-black",
+      /** Subtle border (1px, lighter colors) */
+      subtle: isDark ? "border border-gray-600" : "border border-gray-300",
       /** Strong/emphasis border */
       strong: isDark ? "border-gray-500" : "border-gray-400",
       /** Black border (consistent across themes) */
@@ -78,8 +78,8 @@ export function useThemeClasses() {
       primary: isDark ? "border-2 border-white" : "border-2 border-black",
       /** Theme-aware border-2: white in dark mode, black in light mode (2px) */
       primary2: isDark ? "border-2 border-white" : "border-2 border-black",
-      /** Muted border */
-      muted: isDark ? "border-gray-600" : "border-gray-300",
+      /** Muted border (1px, muted colors) */
+      muted: isDark ? "border border-gray-600" : "border border-gray-300",
     },
 
     /**

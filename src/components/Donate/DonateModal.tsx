@@ -59,7 +59,7 @@ export function DonateModal() {
           {DONATION_ORGANIZATIONS.map((org) => (
             <div
               key={org.name}
-              className={`rounded-lg p-3 hover:border-[#009639] hover:shadow-md transition-all duration-200 border ${t.border.default} ${t.bg.tertiary}`}
+              className={`rounded-lg p-3 hover:border-[#009639] hover:shadow-md transition-all duration-200 ${t.border.default} ${t.bg.tertiary}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 text-left">
@@ -87,7 +87,7 @@ export function DonateModal() {
           ))}
         </div>
 
-        <div className={`mt-4 p-3 rounded-lg ${t.bg.tertiary} border ${t.border.default} text-left`}>
+        <div className={`mt-4 p-3 rounded-lg ${t.bg.tertiary} ${t.border.default} text-left`}>
           <p className={`text-xs ${t.text.body}`}>
             <strong>{translate("donate.disclaimer")}</strong> {translate("donate.disclaimerText")}
           </p>

@@ -125,7 +125,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
           </div>
 
           {/* Impact Statement */}
-          <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+          <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3`}>
             <p className={`text-sm md:text-base ${t.text.heading}`}>
               <strong>This isn't random escalation—it's calculated genocide at industrial scale.</strong> The data shows systematic
               intensification: 22.5x faster killing, 387x faster home destruction, 1.7x faster heritage erasure.
@@ -192,7 +192,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
             {/* Journalists */}
-            <div className={`${t.bg.tertiary} border-2 ${t.border.default} rounded-lg p-3`}>
+            <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3`}>
               <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
                 {TARGETED_CASUALTIES.journalists.killed}
               </div>
@@ -207,7 +207,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
             </div>
 
             {/* Aid Workers */}
-            <div className={`${t.bg.tertiary} border-2 ${t.border.default} rounded-lg p-3`}>
+            <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3`}>
               <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
                 {TARGETED_CASUALTIES.aidWorkers.killed}
               </div>
@@ -222,7 +222,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
             </div>
 
             {/* Healthcare Workers */}
-            <div className={`${t.bg.tertiary} border-2 ${t.border.default} rounded-lg p-3`}>
+            <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3`}>
               <div className={`text-2xl md:text-3xl font-bold mb-1 ${t.stats.destructionNumber}`}>
                 {TARGETED_CASUALTIES.healthcareWorkers.killed}
               </div>
@@ -238,7 +238,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
           </div>
 
           {/* Historical Comparison */}
-          <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3 mb-3`}>
+          <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3 mb-3`}>
             <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>
               Unprecedented in Modern Conflict
             </h3>
@@ -413,7 +413,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
             Gaza's heritage destruction, proportionally applied to other cities:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+            <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>Rome</h3>
               <p className={`text-xs md:text-sm mb-2 ${t.text.heading}`}>
                 The Pantheon, Colosseum, and 8 medieval churches—destroyed in 14 months.
@@ -422,7 +422,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
                 Equivalent to Gaza's losses
               </p>
             </div>
-            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+            <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>Paris</h3>
               <p className={`text-xs md:text-sm mb-2 ${t.text.heading}`}>
                 Notre-Dame, Sainte-Chapelle, The Louvre, and 12 historic churches—leveled.
@@ -431,7 +431,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
                 Equivalent to Gaza's losses
               </p>
             </div>
-            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+            <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>New York</h3>
               <p className={`text-xs md:text-sm mb-2 ${t.text.heading}`}>
                 St. Patrick's Cathedral, Trinity Church, The Met, MoMA, and colonial-era sites—erased.
@@ -446,7 +446,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
         {/* Legal Context */}
         <section className="mb-4 md:mb-6">
           <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Legal Framework</h2>
-          <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3 md:p-4 space-y-1.5 md:space-y-2 text-xs md:text-sm ${t.text.heading}`}>
+          <div className={`${t.bg.tertiary} ${t.border.default} rounded-lg p-3 md:p-4 space-y-1.5 md:space-y-2 text-xs md:text-sm ${t.text.heading}`}>
             <p>
               <strong>1954 Hague Convention:</strong> Prohibits targeting cultural heritage during
               armed conflict. Cultural property must be protected and preserved.
