@@ -67,7 +67,7 @@ export function DataPage() {
 
   return (
     <SharedLayout>
-      <div className="h-[calc(100vh-100px)] flex flex-col mb-8 pt-4">
+      <div className="h-[calc(100vh-58px)] flex flex-col pt-4 pb-8">
         {/* Filter Bar Container */}
         <div
           className={`flex-shrink-0 mx-4 mb-4 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}

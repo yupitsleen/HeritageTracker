@@ -167,8 +167,8 @@ export function DesktopLayout({
         </div>
       </div>
 
-      {/* Timeline Scrubber - Full width at bottom, mb-6 to clear fixed footer */}
-      <div className="mx-4 mt-1.5 mb-6 flex-shrink-0 h-[100px] relative z-10">
+      {/* Timeline Scrubber - Full width at bottom, mb-8 to clear fixed footer */}
+      <div className="mx-4 mt-1.5 mb-8 flex-shrink-0 h-[100px] relative z-10">
         <Suspense fallback={<SkeletonMap />}>
           <TimelineScrubber
             sites={filteredSites}
