@@ -288,11 +288,16 @@ export const it: Translations = {
     title: "Aiuta la Palestina",
     description:
       "Organizzazioni affidabili che forniscono aiuti umanitari essenziali ai palestinesi.",
+    organizationsSection: "Organizzazioni di Soccorso",
     focus: "Focus:",
     donateButton: "Dona",
     disclaimer: "Nota:",
     disclaimerText:
       "Heritage Tracker non è affiliato con queste organizzazioni. Effettua ricerche prima di donare.",
+    unrwaDesc: "Agenzia ONU che fornisce istruzione, assistenza sanitaria e aiuti di emergenza ai rifugiati palestinesi.",
+    mapDesc: "Servizi medici e forniture per i palestinesi nei territori occupati.",
+    pcrfDesc: "Assistenza medica gratuita per bambini feriti e malati in Palestina.",
+    msfDesc: "Assistenza medica di emergenza e servizi chirurgici a Gaza e in Cisgiordania.",
   },
 
   footer: {

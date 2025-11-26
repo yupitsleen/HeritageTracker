@@ -287,11 +287,16 @@ export const en: Translations = {
   donate: {
     title: "Help Palestine",
     description: "Reputable organizations providing essential humanitarian aid to Palestinians.",
+    organizationsSection: "Relief Organizations",
     focus: "Focus:",
     donateButton: "Donate",
     disclaimer: "Note:",
     disclaimerText:
       "Heritage Tracker is not affiliated with these organizations. Please research before donating.",
+    unrwaDesc: "UN agency providing education, healthcare, and emergency aid to Palestinian refugees.",
+    mapDesc: "Medical services and supplies for Palestinians in occupied territories.",
+    pcrfDesc: "Free medical care for injured and sick children in Palestine.",
+    msfDesc: "Emergency medical care and surgical services in Gaza and West Bank.",
   },
 
   footer: {
