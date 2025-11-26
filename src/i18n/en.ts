@@ -71,7 +71,8 @@ export const en: Translations = {
     speed: "Speed",
     syncMap: "Sync Map",
     showUnknownDates: "Show Unknown Dates",
-    showUnknownDatesTooltip: "Sites without destruction dates are shown using their survey date instead",
+    showUnknownDatesTooltip:
+      "Sites without destruction dates are shown using their survey date instead",
     zoomToSite: "Zoom to Site",
     showMapMarkers: "Show Map Markers",
     comparisonMode: "Comparison Mode",
@@ -96,7 +97,7 @@ export const en: Translations = {
     tooltipDefault:
       "Click Play to animate through destruction events on the left map. Use the date filter to focus on specific time periods. Click dots to see site details.",
     tooltipAdvanced:
-      "Click the dots to highlight sites. Use Previous/Next to navigate between events.",
+      "Click the dots (representing the destruction date of a particular site) to see them on the map and table sites. Use Previous/Next to navigate between events. Click Play to watch an animation on the left map. Adjust the speed to see the animation faster/slower.",
     interval: "Interval",
     intervalAsLargeAsPossible: "As large as possible",
     intervalAsSmallAsPossible: "As small as possible",
@@ -131,7 +132,11 @@ export const en: Translations = {
     destructionDateIslamic: "Destruction Date (Islamic)",
     surveyDate: "Survey Date",
     tooltip:
-      "Click any site row to view detailed information. Click column headers to sort. Hover over site rows to highlight them on the map and timeline.",
+      "Click any site row to view detailed information. Use column headers to sort.",
+    tooltipDashboard:
+      "Click any site row to jump to them on the map and timeline. Drag the right side of the table to expand, or click the Expand button to go to the Data page.",
+    tooltipDataPage:
+      "Browse and filter all heritage sites. Click any row to view detailed information. Use column headers to sort. Export filtered data using the export button above.",
     builtGregorian: "Built (Gregorian)",
     builtIslamic: "Built (Islamic)",
     showing: "Showing",
@@ -293,7 +298,8 @@ export const en: Translations = {
     disclaimer: "Note:",
     disclaimerText:
       "Heritage Tracker is not affiliated with these organizations. Please research before donating.",
-    unrwaDesc: "UN agency providing education, healthcare, and emergency aid to Palestinian refugees.",
+    unrwaDesc:
+      "UN agency providing education, healthcare, and emergency aid to Palestinian refugees.",
     mapDesc: "Medical services and supplies for Palestinians in occupied territories.",
     pcrfDesc: "Free medical care for injured and sick children in Palestine.",
     msfDesc: "Emergency medical care and surgical services in Gaza and West Bank.",

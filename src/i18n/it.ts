@@ -96,7 +96,7 @@ export const it: Translations = {
     tooltipDefault:
       "Fai clic su Riproduci per animare gli eventi di distruzione. Usa il filtro data per concentrarti su periodi di tempo specifici. Fai clic sui punti per vedere i dettagli del sito.",
     tooltipAdvanced:
-      "Fai clic sui punti per evidenziare i siti. Usa Precedente/Successivo per navigare tra gli eventi.",
+      "Fai clic sui punti (che rappresentano la data di distruzione di un particolare sito) per vederli sulla mappa e sui siti della tabella. Usa Precedente/Successivo per navigare tra gli eventi. Fai clic su Riproduci per guardare un'animazione sulla mappa di sinistra. Regola la velocità per vedere l'animazione più veloce/più lenta.",
     interval: "Intervallo",
     intervalAsLargeAsPossible: "Il più grande possibile",
     intervalAsSmallAsPossible: "Il più piccolo possibile",
@@ -133,7 +133,11 @@ export const it: Translations = {
     builtGregorian: "Costruito (Gregoriano)",
     builtIslamic: "Costruito (Islamico)",
     tooltip:
-      "Fai clic su qualsiasi riga del sito per visualizzare informazioni dettagliate. Fai clic sulle intestazioni delle colonne per ordinare. Passa il mouse sopra le righe del sito per evidenziarle sulla mappa e sulla timeline.",
+      "Fai clic su qualsiasi riga del sito per visualizzare informazioni dettagliate. Usa le intestazioni delle colonne per ordinare.",
+    tooltipDashboard:
+      "Fai clic su qualsiasi riga del sito per saltare ad essi sulla mappa e sulla timeline. Trascina il lato destro della tabella per espandere, o fai clic sul pulsante Espandi per andare alla pagina Dati.",
+    tooltipDataPage:
+      "Sfoglia e filtra tutti i siti del patrimonio. Fai clic su qualsiasi riga per visualizzare informazioni dettagliate. Usa le intestazioni delle colonne per ordinare. Esporta i dati filtrati usando il pulsante di esportazione sopra.",
     showing: "Visualizzazione",
     site: "sito",
     sites: "siti",

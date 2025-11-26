@@ -7,6 +7,7 @@ import { Modal } from "../components/Modal/Modal";
 import { DataPageHelpModal } from "../components/Help";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTheme } from "../contexts/ThemeContext";
+import { useTranslation } from "../contexts/LocaleContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
@@ -19,6 +20,7 @@ const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPa
 export function DataPage() {
   const t = useThemeClasses();
   const { isDark } = useTheme();
+  const translate = useTranslation();
 
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
   const [selectedSite, setSelectedSite] = useState<Site | null>(null);
@@ -96,6 +98,7 @@ export function DataPage() {
             onSiteHighlight={() => {}}
             highlightedSiteId={null}
             variant="expanded"
+            tooltipText={translate("table.tooltipDataPage")}
           />
         </div>
       </div>

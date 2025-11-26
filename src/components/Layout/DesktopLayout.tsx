@@ -130,6 +130,7 @@ export function DesktopLayout({
             highlightedSiteId={highlightedSiteId}
             onExpandTable={onExpandTable}
             visibleColumns={tableResize.getVisibleColumns()}
+            tooltipText={translate("table.tooltipDashboard")}
           />
 
           {/* Resize handle */}

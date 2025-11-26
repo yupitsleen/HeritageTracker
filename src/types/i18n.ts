@@ -181,6 +181,8 @@ export interface Translations {
     coordinates: string;
     sources: string;
     tooltip: string;
+    tooltipDashboard: string;
+    tooltipDataPage: string;
     lastUpdated: string;
   };
 
