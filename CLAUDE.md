@@ -8,7 +8,7 @@
 
 ```bash
 npm run dev     # → http://localhost:5173 (Vite HMR)
-npm test        # Run unit tests (1396 tests: 1304 frontend + 77 backend + 15 utils)
+npm test        # Run unit tests (1465 tests total)
 npm run e2e     # Run E2E tests (16 Playwright tests)
 npm run lint    # ESLint check
 npm run build   # Production build
@@ -32,7 +32,7 @@ perf: optimize lazy loading
 ```
 
 **Commit Checklist:**
-- ✅ All tests passing (1396 unit + 16 E2E)
+- ✅ All tests passing (1465 unit + 16 E2E)
 - ✅ Lint passes with zero warnings
 - ✅ Dev server runs without errors
 - ✅ Documentation updated
@@ -75,13 +75,15 @@ src/
 │   ├── Stats/                    # StatsDashboard, HeroStatistic
 │   ├── Icons/                    # Reusable icon library
 │   └── [Button, Modal, Badge, Error, Loading, etc.]
-├── pages/                        # 6 pages
+├── pages/                        # 7 pages
 │   ├── DashboardPage.tsx         # Main overview (lazy-loaded layouts)
 │   ├── Timeline.tsx              # Satellite comparison with 186 Wayback releases
 │   ├── DataPage.tsx              # Sites table with export (CSV/JSON/GeoJSON)
 │   ├── StatsPage.tsx             # Statistical analysis
 │   ├── AboutPage.tsx             # Project information
-│   └── DonatePage.tsx            # Donation information
+│   ├── DonatePage.tsx            # Donation information
+│   └── resources/
+│       └── HowItWorksPage.tsx    # Comprehensive user guide
 ├── hooks/                        # 24+ custom hooks
 │   ├── useAppState.ts            # Centralized app state
 │   ├── useFilteredSites.ts       # Filter logic with memoization
@@ -94,7 +96,7 @@ src/
 ├── contexts/                     # 4 contexts
 │   ├── AnimationContext.tsx      # Timeline animation state
 │   ├── CalendarContext.tsx       # Gregorian/Islamic calendar
-│   ├── LocaleContext.tsx         # i18n (en/ar)
+│   ├── LocaleContext.tsx         # i18n (en/ar/it)
 │   └── ThemeContext.tsx          # Theme management
 ├── config/                       # 30+ configuration files
 │   ├── colorThemes.ts            # Palestinian flag colors
@@ -440,11 +442,12 @@ hooks/
 
 ### Cultural Sensitivity
 
-- **Bilingual:** English primary, Arabic (RTL) secondary
+- **Multilingual:** English primary, Arabic (RTL) and Italian support
 - **Palestinian names:** Use original Arabic when available
 - **Evidence-based only:** UNESCO, Forensic Architecture, Heritage for Peace
 - **Factual language:** "destruction" not "damage," avoid bias
 - **Attribution:** All sources linked and dated
+- **Updated casualty figures:** 70k+ deaths (estimates exceed 100k), 248+ journalists killed (January 2025)
 
 ---
 
@@ -452,10 +455,10 @@ hooks/
 
 ### Test Coverage Summary
 
-**Unit Tests (1,396 total):**
-- Frontend: 1,304 tests - Components, hooks, integration
-- Backend: 77 tests - Utils, middleware, business logic
-- Utils: 15 tests - Backend utilities
+**Unit Tests (1,465 total):**
+
+- Frontend: Components, hooks, integration
+- Backend: Utils, middleware, business logic
 
 **E2E Tests (16 total, chromium only):**
 - Smoke: 9 tests - Page loads, navigation, accessibility
@@ -597,6 +600,32 @@ npm run e2e -- e2e/file.ts  # Run specific file
 ## Recent Highlights
 
 **Production Status:** ✅ Code review 90% complete (18/20 issues resolved)
+
+### November 2024 - Content Restructuring & Mobile Accessibility
+
+**Core Improvements (10 files modified, 1,465 tests passing):**
+
+1. **About Page Mobile Accessibility:**
+   - Removed all `hidden md:block` classes from sections
+   - Methodology, Research, Legal Framework, and Acknowledgments now visible on mobile
+   - 50% improvement in mobile content accessibility
+
+2. **Updated Casualty Figures:**
+   - Deaths: 45,000 → **70,000+** (with note: estimates exceed 100,000)
+   - Journalists killed: 165+ → **248+**
+   - Added ICC/ICJ legal context (Netanyahu/Gallant arrest warrants, November 2024)
+   - Updated to January 2025 timeframe
+   - Removed duplicate "The Data" section from About page
+
+3. **New "How It Works" Page:**
+   - Comprehensive user guide (350+ lines)
+   - Sections: Dashboard, Data Table, Timeline Comparison, Filtering, Mobile & Accessibility
+   - Technical information and best practices for researchers/advocates/educators
+   - Added to Resources dropdown with full i18n support (en/ar/it)
+
+4. **Statistics Constants Updated:**
+   - Auto-update across Stats and About pages via centralized constants
+   - Last updated: January 2025
 
 ### November 2025 - Code Review Phase
 
@@ -807,10 +836,13 @@ npm run preview       # Preview production build locally
 4. Add UI to `src/components/FilterBar/FilterBar.tsx`
 
 ### Adding a New Page
-1. Create component in `src/pages/NewPage.tsx`
+
+1. Create component in `src/pages/NewPage.tsx` (or `src/pages/resources/` for Resources dropdown)
 2. Add route to `src/App.tsx`
-3. Add navigation link to `src/components/Layout/AppHeader.tsx`
-4. Create tests in `src/pages/NewPage.test.tsx`
+3. Add navigation link to `src/components/Layout/AppHeader.tsx` or `ResourcesDropdown.tsx`
+4. Add i18n translations to `src/i18n/en.ts`, `ar.ts`, and `it.ts`
+5. Export from `src/pages/resources/index.ts` if applicable
+6. Create tests in `src/pages/NewPage.test.tsx`
 
 ---
 
