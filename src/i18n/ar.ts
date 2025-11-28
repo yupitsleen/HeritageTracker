@@ -41,6 +41,7 @@ export const ar: Translations = {
     about: "حول",
     resources: {
       title: "الموارد",
+      howItWorks: "كيف يعمل",
       donate: "تبرع",
       organizations: "المنظمات",
       research: "البحوث والتقارير",

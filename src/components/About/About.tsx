@@ -1,10 +1,5 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import type { Site } from "../../types";
-
-interface AboutProps {
-  sites: Site[];
-}
 
 /**
  * About/Methodology page explaining the project's purpose, data sources, and verification process
@@ -17,30 +12,8 @@ interface AboutProps {
  * - Memoized component to prevent unnecessary re-renders
  * - Uses semantic theme classes for cleaner, more maintainable styling
  */
-export const About = memo(function About({ sites }: AboutProps) {
+export const About = memo(function About() {
   const t = useThemeClasses();
-
-  // Calculate stats dynamically from site data
-  const stats = useMemo(() => {
-    const total = sites.length;
-    const destroyed = sites.filter((s) => s.status === "destroyed").length;
-    const damaged = sites.filter(
-      (s) => s.status === "damaged" || s.status === "heavily-damaged"
-    ).length;
-
-    // Calculate oldest site age
-    const parseAge = (yearBuilt: string): number => {
-      const match = yearBuilt.match(/(\d+)\s*(BCE|BC|CE)?/);
-      if (!match) return 0;
-      const year = parseInt(match[1]);
-      const isBCE = match[2] === "BCE" || match[2] === "BC";
-      return isBCE ? year : 2025 - year;
-    };
-    const ages = sites.map((s) => parseAge(s.yearBuilt)).filter((age) => age > 0);
-    const oldestSiteAge = Math.max(...ages, 0);
-
-    return { total, destroyed, damaged, oldestSiteAge };
-  }, [sites]);
 
   return (
     <div style={{ contain: "layout style paint" }}>
@@ -70,7 +43,7 @@ export const About = memo(function About({ sites }: AboutProps) {
           </p>
 
           <p className={`text-sm md:text-base leading-relaxed mb-3 md:mb-4 ${t.text.body}`}>
-            Since October 2023, Gaza has witnessed both: over 45,000 Palestinians killed, with
+            Since October 2023, Gaza has witnessed both: over 70,000 Palestinians killed by January 2025 (independent research estimates exceed 100,000), with
             heritage sites systematically targeted—1,400-year-old mosques reduced to rubble, museums
             looted and demolished, libraries containing irreplaceable manuscripts burned. This is
             not collateral damage. This is the deliberate erasure of Palestinian existence from the
@@ -150,10 +123,14 @@ export const About = memo(function About({ sites }: AboutProps) {
               </p>
 
               <p>
-                <strong>Scale:</strong> Beyond the heritage sites documented here, Israel has
+                <strong>Scale:</strong> Beyond the heritage sites documented here, Israel
                 destroyed over 60% of all buildings in Gaza, displaced 90% of the population, killed
-                over 45,000 Palestinians (70% women and children), and rendered the territory
+                over 70,000 Palestinians by January 2025 (70% women and children; independent research estimates exceed 100,000), and rendered the territory
                 largely uninhabitable.
+              </p>
+
+              <p>
+                <strong>International Legal Actions:</strong> The International Court of Justice ordered Israel to prevent genocide in January 2024. The International Criminal Court issued arrest warrants for Israeli Prime Minister Benjamin Netanyahu and former Defense Minister Yoav Gallant in November 2024 for war crimes and crimes against humanity.
               </p>
             </div>
           </div>
@@ -163,8 +140,8 @@ export const About = memo(function About({ sites }: AboutProps) {
             <h3 className={`text-xl font-bold mb-3 ${t.text.heading}`}>United States</h3>
             <div className={`space-y-3 text-base ${t.text.body}`}>
               <p>
-                The United States has provided critical material, financial, and political support
-                enabling these operations, making it directly complicit in the destruction.
+                The United States provided critical material, financial, and political support
+                enabling these operations between October 2023 and January 2025, making it directly complicit in the destruction.
               </p>
 
               <div className="border-l-4 border-[#009639] pl-4 my-3">
@@ -173,7 +150,7 @@ export const About = memo(function About({ sites }: AboutProps) {
                 </p>
                 <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
                   <li>
-                    <strong>$18+ billion</strong> in military aid to Israel since October 2023
+                    <strong>$18+ billion</strong> in military aid to Israel between October 2023 and January 2025
                   </li>
                   <li>
                     <strong>Weapons transfers:</strong> 2,000-pound bombs, F-35 fighter jets,
@@ -240,9 +217,9 @@ export const About = memo(function About({ sites }: AboutProps) {
           </div>
         </section>
 
-        {/* Methodology Section (desktop only) */}
-        <section className="hidden md:block mb-6">
-          <h2 className={`text-xl font-bold mb-3 ${t.text.heading}`}>Methodology</h2>
+        {/* Methodology Section */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Methodology</h2>
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
             Every site has been verified by authoritative sources. Requirements:
           </p>
@@ -316,39 +293,9 @@ export const About = memo(function About({ sites }: AboutProps) {
           </div>
         </section>
 
-        {/* The Data Section (desktop only) */}
-        <section className="hidden md:block mb-8">
-          <h2 className={`text-3xl font-bold mb-4 ${t.text.heading}`}>The Data</h2>
-          <div className={`${t.bg.tertiary} rounded-lg p-6 space-y-4`}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#009639]">{stats.total}</div>
-                <div className={`text-base ${t.text.body}`}>Sites Documented</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#ed3039]">{stats.destroyed}</div>
-                <div className={`text-base ${t.text.body}`}>Completely Destroyed</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#ca8a04]">{stats.damaged}</div>
-                <div className={`text-base ${t.text.body}`}>Damaged</div>
-              </div>
-              <div className="text-center">
-                <div className={`text-3xl font-bold ${t.text.heading}`}>
-                  {stats.oldestSiteAge > 0 ? `${Math.floor(stats.oldestSiteAge / 100) / 10}k` : "—"}
-                </div>
-                <div className={`text-base ${t.text.body}`}>Years of History</div>
-              </div>
-            </div>
-            <p className={`text-base text-center mt-4 ${t.text.body}`}>
-              As of January 2025 • {stats.total} documented heritage sites
-            </p>
-          </div>
-        </section>
-
-        {/* Research Section (desktop only) */}
-        <section className="hidden md:block mb-6">
-          <h2 className={`text-xl font-bold mb-3 ${t.text.heading}`}>Research & Data Collection</h2>
+        {/* Research Section */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Research & Data Collection</h2>
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
             Comprehensive research (Oct 2025) synthesizing data from multiple authoritative sources.
           </p>
@@ -384,9 +331,9 @@ export const About = memo(function About({ sites }: AboutProps) {
           </div>
         </section>
 
-        {/* Legal Framework Section (desktop only) */}
-        <section className="hidden md:block mb-6">
-          <h2 className={`text-xl font-bold mb-3 ${t.text.heading}`}>Legal & Ethical Framework</h2>
+        {/* Legal Framework Section */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Legal & Ethical Framework</h2>
           <div className={`space-y-1.5 text-sm leading-relaxed ${t.text.body}`}>
             <p>
               <strong>Documentation:</strong> Factual information from verified sources.
@@ -444,9 +391,9 @@ export const About = memo(function About({ sites }: AboutProps) {
           </p>
         </section>
 
-        {/* Acknowledgments Section (desktop only) */}
-        <section className="hidden md:block mb-6">
-          <h2 className={`text-xl font-bold mb-3 ${t.text.heading}`}>Acknowledgments</h2>
+        {/* Acknowledgments Section */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Acknowledgments</h2>
           <p className={`text-sm leading-relaxed ${t.text.body}`}>
             This project builds on work by UNESCO, Forensic Architecture, Heritage for Peace,
             Palestinian Museum, Institute for Palestine Studies, ICOM, and countless researchers and

@@ -12,6 +12,7 @@ interface ResourceItem {
 }
 
 const RESOURCE_ITEMS: ResourceItem[] = [
+  { path: '/resources/how-it-works', translationKey: 'header.resources.howItWorks' },
   { path: '/resources/donate', translationKey: 'header.resources.donate' },
   { path: '/resources/organizations', translationKey: 'header.resources.organizations' },
   { path: '/resources/research', translationKey: 'header.resources.research' },

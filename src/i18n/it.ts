@@ -41,6 +41,7 @@ export const it: Translations = {
     about: "Informazioni",
     resources: {
       title: "Risorse",
+      howItWorks: "Come Funziona",
       donate: "Dona",
       organizations: "Organizzazioni",
       research: "Ricerca e Rapporti",
