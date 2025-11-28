@@ -24,6 +24,7 @@ interface SitesTableDesktopProps {
   onExpandTable?: () => void;
   variant: "compact" | "expanded";
   visibleColumns?: string[]; // For resizable table - which columns to show
+  tooltipText?: string; // Optional custom tooltip text for the info icon
 }
 
 /**
@@ -51,6 +52,7 @@ export function SitesTableDesktop({
   onExpandTable,
   variant,
   visibleColumns,
+  tooltipText,
 }: SitesTableDesktopProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -117,8 +119,8 @@ export function SitesTableDesktop({
                 </button>
               )}
               <InfoIcon
-                title={translate("table.tooltip")}
-                aria-label={translate("table.tooltip")}
+                title={tooltipText || translate("table.tooltip")}
+                aria-label={tooltipText || translate("table.tooltip")}
                 className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
               />
             </div>

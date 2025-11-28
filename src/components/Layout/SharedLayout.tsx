@@ -11,6 +11,7 @@ import { COLORS } from "../../config/colorThemes";
 interface SharedLayoutProps {
   children: ReactNode;
   showFooter?: boolean; // Optional - some pages might not want footer
+  helpContent?: ReactNode; // Optional - page-specific help content
 }
 
 /**
@@ -24,7 +25,7 @@ interface SharedLayoutProps {
  * - Help modal (shared across all pages)
  * - Donate now navigates to dedicated page at /donate for better performance
  */
-export function SharedLayout({ children, showFooter = true }: SharedLayoutProps) {
+export function SharedLayout({ children, showFooter = true, helpContent }: SharedLayoutProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
 
@@ -84,48 +85,50 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
         onClose={() => setIsHelpOpen(false)}
         zIndex={Z_INDEX.MODAL_DROPDOWN}
       >
-        <div className="p-6">
-          <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Heritage Tracker</h2>
+        {helpContent || (
+          <div className="p-6">
+            <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Heritage Tracker</h2>
 
-          <div className={`space-y-4 ${t.text.body}`}>
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
-              <p className="text-sm">
-                Heritage Tracker documents 70 cultural heritage sites in Gaza (representing 140-160 buildings) that have been damaged or destroyed.
-                Use the interactive map, timeline, and filters to explore the data.
-              </p>
-            </section>
+            <div className={`space-y-4 ${t.text.body}`}>
+              <section>
+                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
+                <p className="text-sm">
+                  Heritage Tracker documents 70 cultural heritage sites in Gaza (representing 140-160 buildings) that have been damaged or destroyed.
+                  Use the interactive map, timeline, and filters to explore the data.
+                </p>
+              </section>
 
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Navigation</h3>
-              <ul className="text-sm list-disc list-inside space-y-1">
-                <li><strong>Statistics:</strong> View comprehensive statistics and charts</li>
-                <li><strong>About:</strong> Learn about the project, methodology, and data sources</li>
-                <li><strong>Timeline:</strong> Explore satellite imagery over time</li>
-                <li><strong>Help Palestine:</strong> Support relief efforts</li>
-              </ul>
-            </section>
+              <section>
+                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Navigation</h3>
+                <ul className="text-sm list-disc list-inside space-y-1">
+                  <li><strong>Statistics:</strong> View comprehensive statistics and charts</li>
+                  <li><strong>About:</strong> Learn about the project, methodology, and data sources</li>
+                  <li><strong>Timeline:</strong> Explore satellite imagery over time</li>
+                  <li><strong>Help Palestine:</strong> Support relief efforts</li>
+                </ul>
+              </section>
 
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Interactive Features</h3>
-              <ul className="text-sm list-disc list-inside space-y-1">
-                <li><strong>Map:</strong> Click markers to view site details</li>
-                <li><strong>Timeline:</strong> Click dots to highlight sites destroyed on specific dates</li>
-                <li><strong>Table:</strong> Sort and filter the complete dataset</li>
-                <li><strong>Filters:</strong> Filter by site type, status, and date range</li>
-              </ul>
-            </section>
+              <section>
+                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Interactive Features</h3>
+                <ul className="text-sm list-disc list-inside space-y-1">
+                  <li><strong>Map:</strong> Click markers to view site details</li>
+                  <li><strong>Timeline:</strong> Click dots to highlight sites destroyed on specific dates</li>
+                  <li><strong>Table:</strong> Sort and filter the complete dataset</li>
+                  <li><strong>Filters:</strong> Filter by site type, status, and date range</li>
+                </ul>
+              </section>
 
-            <section>
-              <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Keyboard Navigation</h3>
-              <ul className="text-sm list-disc list-inside space-y-1">
-                <li><strong>Tab:</strong> Navigate between interactive elements</li>
-                <li><strong>Enter/Space:</strong> Activate buttons and links</li>
-                <li><strong>Escape:</strong> Close modals and dialogs</li>
-              </ul>
-            </section>
+              <section>
+                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Keyboard Navigation</h3>
+                <ul className="text-sm list-disc list-inside space-y-1">
+                  <li><strong>Tab:</strong> Navigate between interactive elements</li>
+                  <li><strong>Enter/Space:</strong> Activate buttons and links</li>
+                  <li><strong>Escape:</strong> Close modals and dialogs</li>
+                </ul>
+              </section>
+            </div>
           </div>
-        </div>
+        )}
       </Modal>
     </div>
   );

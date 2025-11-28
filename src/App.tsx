@@ -6,6 +6,7 @@ import { AnimationProvider } from "./contexts/AnimationContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LocaleProvider } from "./contexts/LocaleContext";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
+import { ScrollToTop } from "./components/ScrollToTop";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Timeline } from "./pages/Timeline";
 import { AboutPage } from "./pages/AboutPage";
@@ -73,6 +74,7 @@ export function App() {
 
   return (
     <BrowserRouter basename={basename}>
+      <ScrollToTop />
       <LocaleProvider>
         <ThemeProvider>
           <CalendarProvider>

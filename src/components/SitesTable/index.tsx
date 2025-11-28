@@ -10,6 +10,7 @@ interface SitesTableProps {
   onExpandTable?: () => void;
   variant?: "compact" | "expanded" | "mobile";
   visibleColumns?: string[]; // For resizable table - which columns to show
+  tooltipText?: string; // Optional custom tooltip text for the info icon
 }
 
 /**
@@ -30,6 +31,7 @@ export function SitesTable({
   onExpandTable,
   variant = "compact",
   visibleColumns,
+  tooltipText,
 }: SitesTableProps) {
   // Route to appropriate variant component
   if (variant === "mobile") {
@@ -45,6 +47,7 @@ export function SitesTable({
       onExpandTable={onExpandTable}
       variant={variant}
       visibleColumns={visibleColumns}
+      tooltipText={tooltipText}
     />
   );
 }
