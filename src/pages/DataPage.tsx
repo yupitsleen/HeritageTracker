@@ -70,10 +70,10 @@ export function DataPage() {
 
   return (
     <SharedLayout helpContent={<DataPageHelpModal />}>
-      <div className="h-[calc(100vh-58px)] flex flex-col pt-4 pb-8">
+      <div className="h-[calc(100vh-58px)] flex flex-col pb-8">
         {/* Filter Bar Container */}
         <div
-          className={`flex-shrink-0 mx-4 mb-4 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+          className={`flex-shrink-0 mx-4 mt-2 mb-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
           style={{ zIndex: Z_INDEX.CONTENT }}
         >
           {/* Unified FilterBar with search, filters, and actions */}

@@ -254,7 +254,7 @@ export function Timeline() {
       {/* Main content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}
       {/* pb-8 adds bottom padding to prevent footer overlap */}
-      <main className="h-[calc(100vh-58px)] p-4 pb-8 flex flex-col gap-2 relative">
+      <main className="h-[calc(100vh-58px)] px-4 pb-8 flex flex-col gap-2 relative">
         {/* Loading state */}
         {isLoading && (
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
@@ -283,7 +283,7 @@ export function Timeline() {
           <AnimationProvider sites={filteredSites}>
             {/* Filter Bar Container */}
             <div
-              className={`flex-shrink-0 mb-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+              className={`flex-shrink-0 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
               style={{ zIndex: Z_INDEX.FILTER_BAR }}
             >
               {/* Unified FilterBar with search, filters, and actions */}
