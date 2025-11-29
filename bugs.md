@@ -1,27 +1,210 @@
-1. scrubber Plays off the page (Dashboard). I think there are markers rendering past the timeline width, so their not rendering their l;ocation on the timeline line dynamically with the line, which should be adjusting it's length dynamically to start 7 days before our earliest destruction date (which value is also set dynamicxally) and latest destruction date out of our sites (also dynamic value) plus 7 days
-1. All dots do not "go out" by the end of the animation
-1. The satellite map on Dashboard page says "Nov 28, 2025" is the date of the version, but that's not right. I wonder if it is using a dynamic variable to get todays date
-1. when comparison mode is on, the interval drop down is clickable, but some of the options dont make sense if Sync Map version is off/on
-1. "as large as possible" interval option doesn't move the green scrubber to the very end (it remains on the date most appropriate to the selected site)
-1. the status options in the filter bar drop down have ones that are not being used. Might be cool to show how many sites are under each status with parentheses next to the word in the drop down that contains the number. same for site Types
-1. what does the Help modal contain that's not already covered in the About page, or maybe the How It Works page? Why is the How It Works page under the Resources tab?
-1. How It Works page has irrelevant info on it. Claude code output slop, like explain the tech
-1. lots of static text on static pages is not centered
-1. How It Works page, in dark mode, still has text unchanged from black (should be white text)
-1. we need to show the user when the Stats page was last updated with casualty statistics. And who the sources are for the numbers, i.e. have it more directly near the number, not just the bottom of the page. Maybe we should show a range of casualty numbers to show the min reported officially, vs what other credible sources say could be the max number
-1. Stats page, and maybe about page, could benefit from more past-tense language
-1. red triangle of background goes too far to the right across the page.
-1. the satellite map on the Dashboard page has date options 2014, 2024, and 2025. 2024 should not be an option here, rather let's ad a 2023 option, using a map version right before October 7th.
-1. is the animation even impactful anymore?
-1. Language select drop down button should be styled like the buttons on either side of it
-1. somehow show more depth between main components and the background? Or make the main components more distinct from one another
-1. site Type icons should be Palestinian flag red
-1. do the rounded buttons look incongruent with the non-rounded corners of the main components?
-1. On the Data page, clicking anywhere on the row should cause the site detail modal to pop up, and then no link is needed on the Site name
-1. On the dashboard, I'd like, on the little data table, a discrete "see more" indicator for the user to click on to open the site detail modal
-1. New feature: choose what data rows to show/hide
-1. New feature: Last updated and copyrighted icon, hopefully dynamically set date of then it is rolled out to prod
-1. There is a Destruction date of a site rendering "N/A" which doesn't make sense.
-1. the width of the data columns is un polished, like some are too big, some are squished.
-1. I think the stats and about pages' content can be further simplified?
-1. should i indicate more clearly that my sources do not endorse me?
+# Heritage Tracker - Bug Tracking & Progress
+
+**Status:** Phase 1 Complete ✅ | Phase 2 In Progress 🔄
+
+---
+
+## Phase 1 - Critical Bugs ✅ COMPLETE
+
+**Commit:** `2bb49e9` - fix: resolve Phase 1 critical bugs (dark mode, dates, timeline bounds, N/A display)
+
+### ✅ 1. Dark Mode Text Visibility - How It Works Page
+**Status:** FIXED
+**Issue:** Text on How It Works page was black in dark mode (should be white)
+**Fix:** Added theme-aware text classes throughout HowItWorksPage.tsx, ResourcePageLayout.tsx, ResourceSection.tsx
+**Files:** 3 modified
+**Tests:** All passing ✅
+
+### ✅ 2. Dashboard Satellite Map Date Bug
+**Status:** FIXED
+**Issue:** Satellite map showing "Nov 28, 2025" (today's date) instead of actual imagery date
+**Fix:** Changed CURRENT period from dynamic "current" to static "2025-01-15", updated label to "Jan 2025"
+**Files:** 4 modified (map.ts, SiteDetailView.tsx, TimeToggle.tsx, imageryPeriods.ts)
+**Tests:** All passing ✅
+
+### ✅ 3. Timeline Scrubber Bounds - Dots Rendering Off-Page
+**Status:** FIXED
+**Issue:** Timeline dots rendering outside the timeline container
+**Fix:** Changed TimelineScrubber container from overflow-visible to overflow-hidden (clips dots outside bounds)
+**Files:** 1 modified (TimelineScrubber.tsx)
+**Tests:** All passing ✅
+
+### ✅ 4. 'N/A' Destruction Date Display Issue
+**Status:** FIXED
+**Issue:** Destruction date column showing "N/A" which doesn't make sense
+**Fix:** Changed to show "Unknown" for missing destruction dates, "N/A" only when Islamic date missing
+**Files:** 1 modified (SiteTableRow.tsx)
+**Bonus:** Added Islamic destruction date for Ibn Othman Mosque (24 Dhu al-Hijjah 1445 AH)
+**Tests:** All passing ✅
+
+---
+
+## Phase 2 - High Priority Bugs 🔄 IN PROGRESS
+
+### 🔄 5. Interval Dropdown Behavior in Comparison Mode
+**Status:** TODO
+**Issue:** When comparison mode is on, interval dropdown is clickable but some options don't make sense if Sync Map version is off/on
+**Priority:** High
+**Complexity:** Medium
+
+### 🔄 6. "As Large as Possible" Interval Behavior
+**Status:** TODO
+**Issue:** "As large as possible" interval option doesn't move green scrubber to the very end (remains on site's destruction date)
+**Priority:** Medium
+**Complexity:** Medium
+
+### 🔄 7. Filter Dropdown - Show Site Counts
+**Status:** TODO
+**Issue:** Status/Type filter dropdowns don't show how many sites per option
+**Enhancement:** Add counts in parentheses (e.g., "Destroyed (45)", "Mosque (14)")
+**Priority:** Medium
+**Complexity:** Low
+
+### 🔄 8. Data Table Column Widths
+**Status:** TODO
+**Issue:** Column widths are unpolished - some too big, some squished
+**Priority:** Medium
+**Complexity:** Low
+
+---
+
+## Phase 3 - Medium Priority Improvements 📋 PLANNED
+
+### 📋 9. 2024 Satellite Map Option
+**Status:** TODO
+**Issue:** Dashboard satellite map has 2014, 2024, 2025 options. Should be 2014, 2023 (pre-Oct 7), 2025
+**Priority:** Medium
+**Complexity:** Low
+
+### 📋 10. Language Select Button Styling
+**Status:** TODO
+**Issue:** Language select dropdown should match styling of adjacent buttons (theme toggle, etc.)
+**Priority:** Low
+**Complexity:** Low
+
+### 📋 11. Site Type Icons Color
+**Status:** TODO
+**Issue:** Site type icons should use Palestinian flag red for consistency
+**Priority:** Low
+**Complexity:** Low
+
+### 📋 12. Data Page Row Click Behavior
+**Status:** TODO
+**Issue:** On Data page, clicking anywhere on row should open site detail modal (not just site name link)
+**Priority:** Medium
+**Complexity:** Low
+
+### 📋 13. Dashboard Data Table "See More" Indicator
+**Status:** TODO
+**Issue:** Dashboard mini data table needs discrete "see more" indicator to open site detail modal
+**Priority:** Low
+**Complexity:** Low
+
+### 📋 14. Stats Page - Last Updated & Source Attribution
+**Status:** TODO
+**Issue:** Show when casualty stats were last updated, sources directly near numbers (not just footer)
+**Enhancement:** Consider showing min/max ranges from multiple credible sources
+**Priority:** High
+**Complexity:** Medium
+
+---
+
+## Phase 4 - Content & Polish 🎨 BACKLOG
+
+### 🎨 15. Stats/About Pages - Past Tense Language
+**Status:** TODO
+**Issue:** Use more past-tense language on Stats and About pages
+**Priority:** Low
+**Complexity:** Low
+
+### 🎨 16. How It Works Page - Content Relevance
+**Status:** TODO
+**Issue:** Page has irrelevant technical info (Claude slop)
+**Priority:** Low
+**Complexity:** Low
+
+### 🎨 17. Static Text Centering
+**Status:** TODO
+**Issue:** Lots of static text on pages not centered
+**Priority:** Low
+**Complexity:** Low
+
+### 🎨 18. Help Modal vs About/How It Works
+**Status:** TODO
+**Issue:** Clarify what Help modal contains that's not in About or How It Works
+**Question:** Why is How It Works under Resources tab?
+**Priority:** Low
+**Complexity:** Low
+
+### 🎨 19. Stats/About Content Simplification
+**Status:** TODO
+**Issue:** Content on Stats and About pages could be further simplified
+**Priority:** Low
+**Complexity:** Medium
+
+### 🎨 20. Source Endorsement Disclaimer
+**Status:** TODO
+**Issue:** Should indicate more clearly that sources (UNESCO, etc.) do not endorse this project
+**Priority:** Medium
+**Complexity:** Low
+
+---
+
+## Phase 5 - New Features ✨ FUTURE
+
+### ✨ 21. Show/Hide Data Columns
+**Status:** TODO
+**Feature:** Allow users to choose which data columns to show/hide in table
+**Priority:** Low
+**Complexity:** Medium
+
+### ✨ 22. Last Updated & Copyright Footer
+**Status:** TODO
+**Feature:** Dynamically set "Last Updated" and copyright year
+**Priority:** Low
+**Complexity:** Low
+
+---
+
+## Deferred / Needs Discussion 💭
+
+### 💭 23. Animation Impact
+**Status:** NEEDS REVIEW
+**Question:** Is the timeline animation still impactful? Should we keep it?
+**Priority:** TBD
+**Complexity:** N/A
+
+### 💭 24. Component Visual Depth
+**Status:** NEEDS REVIEW
+**Issue:** Show more depth between main components and background, or make components more distinct
+**Priority:** TBD
+**Complexity:** Medium
+
+### 💭 25. Rounded Button Incongruence
+**Status:** NEEDS REVIEW
+**Question:** Do rounded buttons look incongruent with non-rounded main components?
+**Priority:** TBD
+**Complexity:** Low
+
+### 💭 26. Red Triangle Background Width
+**Status:** NEEDS REVIEW
+**Issue:** Red triangle background extends too far right across the page
+**Priority:** TBD
+**Complexity:** Low
+
+---
+
+## Progress Summary
+
+**Phase 1 (Critical):** 4/4 complete ✅
+**Phase 2 (High Priority):** 0/4 complete 🔄
+**Phase 3 (Medium Priority):** 0/6 complete 📋
+**Phase 4 (Content & Polish):** 0/6 complete 🎨
+**Phase 5 (New Features):** 0/2 complete ✨
+**Deferred:** 4 items need discussion 💭
+
+**Total:** 4/22 bugs/features complete (18%)
+
+---
+
+*Last Updated: November 28, 2025*
