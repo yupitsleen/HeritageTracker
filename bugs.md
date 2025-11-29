@@ -20,7 +20,7 @@
 1. On the Data page, clicking anywhere on the row should cause the site detail modal to pop up, and then no link is needed on the Site name
 1. On the dashboard, I'd like, on the little data table, a discrete "see more" indicator for the user to click on to open the site detail modal
 1. New feature: choose what data rows to show/hide
-1. New feature: Last updated and copyrighted icon, hopefully dynamicall set date of then it is rolled out to prod
+1. New feature: Last updated and copyrighted icon, hopefully dynamically set date of then it is rolled out to prod
 1. There is a Destruction date of a site rendering "N/A" which doesn't make sense.
 1. the width of the data columns is un polished, like some are too big, some are squished.
 1. I think the stats and about pages' content can be further simplified?

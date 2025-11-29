@@ -244,11 +244,13 @@ Built on documentation by UNESCO, Forensic Architecture, Heritage for Peace, Pal
 ## 📊 Project Statistics
 
 - **70 sites** documented (140-160 buildings)
-- **1,396 tests** passing (1,304 frontend + 77 backend + 15 utils)
+- **1,465 tests** passing (frontend + backend)
 - **16 E2E tests** (Playwright)
+- **7 pages** (Dashboard, Timeline, Data, Stats, About, Donate, HowItWorks)
 - **2,356 lines** of heritage site data
 - **857 lines** of developer documentation
 - **3 backend modes** (Mock/Local/Supabase)
+- **3 languages** (English/Arabic/Italian)
 - **186 Wayback releases** (2014-2025)
 - **24+ custom hooks**
 - **30+ config files**
