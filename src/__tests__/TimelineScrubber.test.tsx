@@ -230,9 +230,9 @@ describe("TimelineScrubber", () => {
       const svg = container.querySelector("svg");
       expect(svg).toBeInTheDocument();
 
-      // Container should have overflow-visible class somewhere in the tree
-      const overflowVisibleElements = container.querySelectorAll(".overflow-visible");
-      expect(overflowVisibleElements.length).toBeGreaterThan(0);
+      // Container should have overflow-hidden class to clip dots outside bounds
+      const overflowHiddenElements = container.querySelectorAll(".overflow-hidden");
+      expect(overflowHiddenElements.length).toBeGreaterThan(0);
     });
 
     it("positions tooltip below timeline to avoid covering controls", () => {
@@ -390,16 +390,16 @@ describe("TimelineScrubber", () => {
       expect(timelineSvg).toHaveAttribute("aria-hidden", "true");
     });
 
-    it("container has overflow-visible to prevent tooltip clipping", () => {
+    it("container has overflow-hidden to clip dots outside timeline bounds", () => {
       const { container } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber sites={mockSites} />
         </AnimationProvider>
       );
 
-      // Find elements with overflow-visible class (should be in the DOM tree)
-      const overflowVisibleElements = container.querySelectorAll(".overflow-visible");
-      expect(overflowVisibleElements.length).toBeGreaterThan(0);
+      // Find elements with overflow-hidden class (should be in the DOM tree)
+      const overflowHiddenElements = container.querySelectorAll(".overflow-hidden");
+      expect(overflowHiddenElements.length).toBeGreaterThan(0);
     });
   });
 

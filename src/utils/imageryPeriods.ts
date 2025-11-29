@@ -13,16 +13,18 @@ const SORTED_PERIODS = (() => {
   const periods = Object.entries(HISTORICAL_IMAGERY) as [TimePeriod, typeof HISTORICAL_IMAGERY[TimePeriod]][];
 
   // Pre-compute dated periods with timestamps (avoid Date creation in hot path)
+  // All periods now have actual dates (no "current" string anymore)
   const datedPeriods = periods
-    .filter(([, period]) => period.date !== "current")
     .map(([key, period]) => ({
       key,
       timestamp: new Date(period.date).getTime(),
     }))
     .sort((a, b) => a.timestamp - b.timestamp);
 
-  // Extract current period key if it exists
-  const currentPeriod = periods.find(([, period]) => period.date === "current")?.[0];
+  // The last period key (typically "CURRENT") for dates beyond the last timestamp
+  const currentPeriod = datedPeriods.length > 0
+    ? datedPeriods[datedPeriods.length - 1].key
+    : undefined;
 
   // Cache last dated period timestamp for efficient CURRENT period detection
   const lastTimestamp = datedPeriods.length > 0
@@ -65,7 +67,8 @@ export function getImageryPeriodForDate(date: Date): TimePeriod {
     }
   }
 
-  // If "current" period exists and timestamp is strictly after last dated period, use "current"
+  // If timestamp is strictly after the last dated period, return the last period (typically "CURRENT")
+  // This ensures dates beyond the latest imagery still show the most recent imagery
   if (SORTED_PERIODS.currentPeriod && timestamp > SORTED_PERIODS.lastTimestamp) {
     return SORTED_PERIODS.currentPeriod;
   }

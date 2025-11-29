@@ -423,7 +423,7 @@ export function TimelineScrubber({
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
-      <div className="relative overflow-visible" style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}>
+      <div className="relative overflow-hidden" style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}>
         <svg
           ref={(node) => {
             if (node && node !== svgRef.current) {

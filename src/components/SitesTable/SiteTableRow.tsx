@@ -1,9 +1,10 @@
 import type { Site } from "../../types";
 import { getStatusHexColor } from "../../styles/theme";
-import { formatDateStandard, getEffectiveDestructionDate } from "../../utils/format";
+import { formatDateStandard } from "../../utils/format";
 import { SiteTypeIcon, getSiteTypeLabel } from "../Icons/SiteTypeIcon";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTranslation } from "../../contexts/LocaleContext";
 import type { CSSProperties } from "react";
 
 interface SiteTableRowProps {
@@ -30,9 +31,10 @@ export function SiteTableRow({
 }: SiteTableRowProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
 
-  // Get effective destruction date (with fallback to source assessment date)
-  const effectiveDestructionDate = getEffectiveDestructionDate(site);
+  // For display: show actual destruction date or "Unknown"
+  const displayDestructionDate = site.dateDestroyed || null;
 
   return (
     <tr
@@ -90,12 +92,15 @@ export function SiteTableRow({
       )}
       {isColumnVisible("dateDestroyed") && (
         <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
-          {formatDateStandard(effectiveDestructionDate)}
+          {displayDestructionDate ? formatDateStandard(displayDestructionDate) : translate("common.unknown")}
         </td>
       )}
       {isColumnVisible("dateDestroyedIslamic") && (
         <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
-          {site.dateDestroyedIslamic || "N/A"}
+          {displayDestructionDate
+            ? (site.dateDestroyedIslamic || translate("common.na"))
+            : translate("common.unknown")
+          }
         </td>
       )}
       {isColumnVisible("yearBuilt") && (
@@ -103,7 +108,7 @@ export function SiteTableRow({
       )}
       {isColumnVisible("yearBuiltIslamic") && (
         <td className={`${t.table.td} text-sm ${t.text.subheading}`}>
-          {site.yearBuiltIslamic || "N/A"}
+          {site.yearBuiltIslamic || "-"}
         </td>
       )}
     </tr>
