@@ -103,6 +103,23 @@ export const FilterBar = memo(function FilterBar({
   // Use custom hook for derived filter state (memoized)
   const { hasActiveFilters, activeFilterCount } = useActiveFilters(filters);
 
+  // Calculate counts for each type and status
+  const typeCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    sites.forEach((site) => {
+      counts[site.type] = (counts[site.type] || 0) + 1;
+    });
+    return counts;
+  }, [sites]);
+
+  const statusCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    sites.forEach((site) => {
+      counts[site.status] = (counts[site.status] || 0) + 1;
+    });
+    return counts;
+  }, [sites]);
+
   // Memoized formatted ranges for filter pills
   const dateRangeLabel = useMemo(
     () => formatDateRange(filters.destructionDateStart, filters.destructionDateEnd),
@@ -240,6 +257,7 @@ export const FilterBar = memo(function FilterBar({
               selectedValues={filters.selectedTypes}
               onChange={handleTypesChange}
               formatLabel={formatLabel}
+              counts={typeCounts}
             />
           </FilterButton>
 
@@ -254,6 +272,7 @@ export const FilterBar = memo(function FilterBar({
               selectedValues={filters.selectedStatuses}
               onChange={handleStatusesChange}
               formatLabel={formatLabel}
+              counts={statusCounts}
             />
           </FilterButton>
 
@@ -426,6 +445,7 @@ export const FilterBar = memo(function FilterBar({
                   selectedValues={filters.selectedTypes}
                   onChange={handleTypesChange}
                   formatLabel={formatLabel}
+                  counts={typeCounts}
                 />
               </div>
 
@@ -439,6 +459,7 @@ export const FilterBar = memo(function FilterBar({
                   selectedValues={filters.selectedStatuses}
                   onChange={handleStatusesChange}
                   formatLabel={formatLabel}
+                  counts={statusCounts}
                 />
               </div>
 

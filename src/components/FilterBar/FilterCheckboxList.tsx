@@ -10,6 +10,8 @@ interface FilterCheckboxListProps<T extends string> {
   onChange: (values: T[]) => void;
   /** Optional label formatter */
   formatLabel?: (value: string) => string;
+  /** Optional counts per option (e.g., "mosque": 14) */
+  counts?: Record<string, number>;
 }
 
 /**
@@ -33,6 +35,7 @@ export function FilterCheckboxList<T extends string>({
   selectedValues,
   onChange,
   formatLabel = (v) => v,
+  counts,
 }: FilterCheckboxListProps<T>) {
   const t = useThemeClasses();
 
@@ -48,6 +51,7 @@ export function FilterCheckboxList<T extends string>({
     <div className="space-y-2">
       {options.map((option) => {
         const isSelected = selectedValues.includes(option);
+        const count = counts?.[option];
         return (
           <label
             key={option}
@@ -63,8 +67,13 @@ export function FilterCheckboxList<T extends string>({
               onChange={() => toggleOption(option)}
               className="w-4 h-4 rounded border-2 text-[#009639] focus:ring-[#009639] focus:ring-2 cursor-pointer"
             />
-            <span className={cn("text-sm select-none", t.text.body)}>
+            <span className={cn("text-sm select-none flex-1", t.text.body)}>
               {formatLabel(option)}
+              {count !== undefined && (
+                <span className={cn("ml-1.5 text-xs font-mono", t.text.muted)}>
+                  ({count})
+                </span>
+              )}
             </span>
           </label>
         );

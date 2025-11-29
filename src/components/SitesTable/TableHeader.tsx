@@ -42,7 +42,7 @@ export function TableHeader({
           <th
             className={`pl-2 pr-1 ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("name")}
-            style={{ width: variant === "compact" ? "200px" : "auto", maxWidth: variant === "compact" ? "200px" : "none" }}
+            style={{ minWidth: variant === "compact" ? "180px" : "220px", maxWidth: variant === "expanded" ? "400px" : "none" }}
           >
             {translate("table.siteName")}
             <SortIcon field="name" currentField={sortField} direction={sortDirection} />
@@ -52,6 +52,7 @@ export function TableHeader({
           <th
             className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("status")}
+            style={{ width: "130px" }}
           >
             {translate("table.status")}
             <SortIcon field="status" currentField={sortField} direction={sortDirection} />
@@ -61,6 +62,7 @@ export function TableHeader({
           <th
             className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("dateDestroyed")}
+            style={{ width: "130px" }}
           >
             {variant === "compact"
               ? translate("table.destructionDate")
@@ -72,6 +74,7 @@ export function TableHeader({
           <th
             className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("dateDestroyedIslamic")}
+            style={{ width: "150px" }}
           >
             {translate("table.destructionDateIslamic")}
             <SortIcon field="dateDestroyedIslamic" currentField={sortField} direction={sortDirection} />
@@ -81,6 +84,7 @@ export function TableHeader({
           <th
             className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("sourceAssessmentDate")}
+            style={{ width: "130px" }}
           >
             {translate("table.surveyDate")}
             <SortIcon field="sourceAssessmentDate" currentField={sortField} direction={sortDirection} />
@@ -90,6 +94,7 @@ export function TableHeader({
           <th
             className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("yearBuilt")}
+            style={{ width: "140px" }}
           >
             {translate("table.builtGregorian")}
             <SortIcon field="yearBuilt" currentField={sortField} direction={sortDirection} />
@@ -99,6 +104,7 @@ export function TableHeader({
           <th
             className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("yearBuiltIslamic")}
+            style={{ width: "120px" }}
           >
             {translate("table.builtIslamic")}
             <SortIcon field="yearBuiltIslamic" currentField={sortField} direction={sortDirection} />
@@ -108,6 +114,7 @@ export function TableHeader({
           <th
             className={`${COMPACT_TABLE.headerX} ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("lastUpdated")}
+            style={{ width: "130px" }}
           >
             {translate("table.lastUpdated")}
             <SortIcon field="lastUpdated" currentField={sortField} direction={sortDirection} />

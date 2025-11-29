@@ -12,6 +12,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -25,6 +26,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={false}
+          syncMapVersion={false}
         />
       );
 
@@ -40,6 +42,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -53,6 +56,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -73,6 +77,7 @@ describe("IntervalSelector", () => {
           value="1_year"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -90,6 +95,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -107,6 +113,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={false}
+          syncMapVersion={false}
         />
       );
 
@@ -131,6 +138,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -144,6 +152,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={false}
+          syncMapVersion={true}
         />
       );
 
@@ -151,13 +160,29 @@ describe("IntervalSelector", () => {
       expect(select).toBeDisabled();
     });
 
-    it("is enabled when comparison mode is enabled", () => {
+    it("is disabled when sync map version is disabled", () => {
       const onChange = vi.fn();
       renderWithTheme(
         <IntervalSelector
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={false}
+        />
+      );
+
+      const select = screen.getByLabelText(/interval/i) as HTMLSelectElement;
+      expect(select).toBeDisabled();
+    });
+
+    it("is enabled when both comparison mode and sync map version are enabled", () => {
+      const onChange = vi.fn();
+      renderWithTheme(
+        <IntervalSelector
+          value="1_month"
+          onChange={onChange}
+          comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -174,6 +199,7 @@ describe("IntervalSelector", () => {
           value="as_large_as_possible"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -188,6 +214,7 @@ describe("IntervalSelector", () => {
           value="as_small_as_possible"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -202,6 +229,7 @@ describe("IntervalSelector", () => {
           value="1_month"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -216,6 +244,7 @@ describe("IntervalSelector", () => {
           value="1_year"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 
@@ -230,6 +259,7 @@ describe("IntervalSelector", () => {
           value="5_years"
           onChange={onChange}
           comparisonModeEnabled={true}
+          syncMapVersion={true}
         />
       );
 

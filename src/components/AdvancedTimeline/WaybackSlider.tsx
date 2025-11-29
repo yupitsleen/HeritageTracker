@@ -295,6 +295,7 @@ export function WaybackSlider({
                 value={comparisonInterval}
                 onChange={onIntervalChange}
                 comparisonModeEnabled={comparisonMode}
+                syncMapVersion={syncMapVersion}
               />
             )}
 
