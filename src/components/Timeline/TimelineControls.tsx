@@ -17,6 +17,7 @@ interface TimelineControlsProps {
   advancedMode: boolean;
   hidePlayControls?: boolean;
   hideMapSettings?: boolean; // Hide Zoom to Site and Show Map Markers (moved to map)
+  hideShowUnknownDatesToggle?: boolean; // Hide Show Unknown Dates toggle (when moved to FilterBar)
   syncMapOnDotClick?: boolean;
   showUnknownDestructionDates?: boolean;
   onPlay: () => void;
@@ -51,6 +52,7 @@ export function TimelineControls({
   advancedMode,
   hidePlayControls = false,
   hideMapSettings = false,
+  hideShowUnknownDatesToggle = false,
   syncMapOnDotClick,
   showUnknownDestructionDates,
   onPlay,
@@ -105,8 +107,8 @@ export function TimelineControls({
         />
       )}
 
-      {/* Show Unknown Dates toggle - only show in advanced mode */}
-      {advancedMode && onShowUnknownDestructionDatesToggle && (
+      {/* Show Unknown Dates toggle - only show in advanced mode when not hidden */}
+      {advancedMode && onShowUnknownDestructionDatesToggle && !hideShowUnknownDatesToggle && (
         <TimelineToggleButton
           label="timeline.showUnknownDates"
           isActive={showUnknownDestructionDates ?? false}
@@ -216,8 +218,8 @@ export function TimelineControls({
       {/* Speed control - always visible when map settings are hidden (Dashboard) */}
       {hideMapSettings && renderSpeedControl()}
 
-      {/* Show Unknown Dates toggle - visible on Dashboard when hideMapSettings is true */}
-      {hideMapSettings && advancedMode && onShowUnknownDestructionDatesToggle && (
+      {/* Show Unknown Dates toggle - visible on Dashboard when hideMapSettings is true and not explicitly hidden */}
+      {hideMapSettings && advancedMode && onShowUnknownDestructionDatesToggle && !hideShowUnknownDatesToggle && (
         <TimelineToggleButton
           label="timeline.showUnknownDates"
           isActive={showUnknownDestructionDates ?? false}

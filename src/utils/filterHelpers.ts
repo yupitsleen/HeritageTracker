@@ -22,6 +22,7 @@ const FILTER_SETTER_MAP: SetterMap = {
   creationYearStart: 'setCreationYearStart',
   creationYearEnd: 'setCreationYearEnd',
   searchTerm: 'setSearchTerm',
+  showUnknownDates: 'setShowUnknownDates',
 };
 
 const TEMP_FILTER_SETTER_MAP: SetterMap = {
@@ -32,6 +33,7 @@ const TEMP_FILTER_SETTER_MAP: SetterMap = {
   creationYearStart: 'setTempCreationYearStart',
   creationYearEnd: 'setTempCreationYearEnd',
   searchTerm: 'setSearchTerm', // Note: searchTerm doesn't have a "temp" version
+  showUnknownDates: 'setShowUnknownDates', // Note: showUnknownDates doesn't have a "temp" version
 };
 
 /**

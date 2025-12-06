@@ -197,6 +197,10 @@ export const FilterBar = memo(function FilterBar({
     });
   }, [onFilterChange]);
 
+  const handleToggleUnknownDates = useCallback(() => {
+    onFilterChange({ showUnknownDates: !filters.showUnknownDates });
+  }, [onFilterChange, filters.showUnknownDates]);
+
   // Factory function for creating memoized remove handlers for filter tags
   const createRemoveTypeHandler = useCallback((typeToRemove: string) => {
     return () => {
@@ -316,6 +320,25 @@ export const FilterBar = memo(function FilterBar({
               startEraDefault={defaultStartEra}
             />
           </FilterButton>
+
+          {/* Show Unknown Dates Toggle */}
+          <button
+            type="button"
+            onClick={handleToggleUnknownDates}
+            className={cn(
+              "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
+              "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
+              filters.showUnknownDates
+                ? "bg-[#009639] text-white border-[#009639]"
+                : cn(t.bg.primary, t.border.subtle, t.bg.hover, t.text.body)
+            )}
+            aria-label={translate("timeline.showUnknownDates")}
+            aria-pressed={filters.showUnknownDates}
+            title={translate("timeline.showUnknownDates")}
+          >
+            {filters.showUnknownDates ? "✓ " : ""}
+            {translate("timeline.showUnknownDates")}
+          </button>
           </div>
 
           {/* Mobile Filters Button - Visible only on mobile */}
@@ -498,6 +521,21 @@ export const FilterBar = memo(function FilterBar({
                   endYearDefault={defaultEndYear}
                   startEraDefault={defaultStartEra}
                 />
+              </div>
+
+              {/* Show Unknown Dates Toggle */}
+              <div>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={filters.showUnknownDates}
+                    onChange={handleToggleUnknownDates}
+                    className="w-5 h-5 rounded border-gray-300 text-[#009639] focus:ring-[#009639] cursor-pointer"
+                  />
+                  <span className={cn("text-sm", t.text.body)}>
+                    {translate("timeline.showUnknownDates")}
+                  </span>
+                </label>
               </div>
             </div>
 
