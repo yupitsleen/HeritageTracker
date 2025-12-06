@@ -181,15 +181,24 @@ export function TimelineScrubber({
     // Update scale in case container width changed
     rendererRef.current.updateScale(timeScale);
 
-    // Render timeline with current state and highlighted site
-    rendererRef.current.render(destructionDates, currentTimestamp, highlightedSiteId);
+    // Clamp currentTimestamp to the adjusted date range to prevent scrubber rendering off-screen
+    // This ensures the scrubber never renders past the visual timeline bounds
+    const clampedTimestamp = new Date(
+      Math.max(
+        adjustedStartDate.getTime(),
+        Math.min(adjustedEndDate.getTime(), currentTimestamp.getTime())
+      )
+    );
+
+    // Render timeline with clamped timestamp and highlighted site
+    rendererRef.current.render(destructionDates, clampedTimestamp, highlightedSiteId);
 
     return () => {
       // Cleanup on unmount only
       rendererRef.current?.cleanup();
       rendererRef.current = null;
     };
-  }, [svgMounted, timeScale, destructionDates, currentTimestamp, highlightedSiteId, setTimestamp, pause, onSiteHighlight]);
+  }, [svgMounted, timeScale, destructionDates, currentTimestamp, highlightedSiteId, adjustedStartDate, adjustedEndDate, setTimestamp, pause, onSiteHighlight]);
 
   // Handle reset button click - reset timeline AND clear highlighted site to reset map zoom
   const handleReset = useCallback(() => {
@@ -256,7 +265,16 @@ export function TimelineScrubber({
 
   // Check if timeline is at the start or end position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
+  // Always stop at adjustedEndDate - this matches the visual timeline scale
+  // The timeline SVG scale uses adjustedEndDate, so the scrubber must respect that boundary
   const isAtEnd = currentTimestamp.getTime() >= adjustedEndDate.getTime();
+
+  // Auto-pause when reaching the adjusted end date during playback
+  useEffect(() => {
+    if (isPlaying && isAtEnd) {
+      pause();
+    }
+  }, [isPlaying, isAtEnd, pause]);
 
   // Handle play button click - reset and play if at the end
   const handlePlay = () => {
