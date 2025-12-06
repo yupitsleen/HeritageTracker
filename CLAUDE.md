@@ -75,12 +75,11 @@ src/
 │   ├── Stats/                    # StatsDashboard, HeroStatistic
 │   ├── Icons/                    # Reusable icon library
 │   └── [Button, Modal, Badge, Error, Loading, etc.]
-├── pages/                        # 7 pages
+├── pages/                        # 6 pages
 │   ├── DashboardPage.tsx         # Main overview (lazy-loaded layouts)
 │   ├── Timeline.tsx              # Satellite comparison with 186 Wayback releases
 │   ├── DataPage.tsx              # Sites table with export (CSV/JSON/GeoJSON)
-│   ├── StatsPage.tsx             # Statistical analysis
-│   ├── AboutPage.tsx             # Project information
+│   ├── AboutPage.tsx             # Project information (includes statistics & comparisons)
 │   ├── DonatePage.tsx            # Donation information
 │   └── resources/
 │       └── HowItWorksPage.tsx    # Comprehensive user guide

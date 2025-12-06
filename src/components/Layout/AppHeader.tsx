@@ -22,7 +22,7 @@ interface AppHeaderProps {
  * Application header with title, description, and action buttons
  * Black background with Palestinian flag colors
  * Includes dark mode toggle and navigation to all pages
- * Dashboard, Data, Timeline, Stats, About, and Donate pages
+ * Dashboard, Data, Timeline, About, and Resources pages
  * Mobile: Hamburger menu for navigation
  */
 export function AppHeader({ onOpenHelp }: AppHeaderProps) {
@@ -69,7 +69,6 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
     if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "dashboard";
     if (path.includes("/data")) return "data";
     if (path.includes("/timeline")) return "timeline";
-    if (path.includes("/stats")) return "stats";
     if (path.includes("/about")) return "about";
     if (path.includes("/resources/")) {
       // Return the specific resource page (e.g., "resources/donate")

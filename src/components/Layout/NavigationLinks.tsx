@@ -21,7 +21,6 @@ const NAV_ITEMS: NavigationItem[] = [
   { path: '/', translationKey: 'header.dashboard', variant: 'primary', hideOnMobile: true },
   { path: '/data', translationKey: 'header.data', variant: 'primary' },
   { path: '/timeline', translationKey: 'header.timeline', variant: 'secondary' },
-  { path: '/stats', translationKey: 'header.statistics', variant: 'primary' },
   { path: '/about', translationKey: 'header.about', variant: 'primary' },
 ];
 

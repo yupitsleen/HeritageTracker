@@ -246,9 +246,17 @@ export const About = memo(function About() {
           <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
             Data Sources
           </h2>
-          <div className="space-y-2 md:space-y-3">
+
+          <div className={`${t.bg.tertiary} border-l-4 border-[#009639] p-3 rounded mb-3`}>
+            <p className={`text-xs md:text-sm font-medium ${t.text.body}`}>
+              "The deliberate destruction of cultural heritage is an attack on humanity itself." — UNESCO
+            </p>
+          </div>
+
+          <h3 className={`text-base md:text-lg font-semibold mb-2 ${t.text.heading}`}>Heritage Documentation</h3>
+          <div className="space-y-2 md:space-y-3 mb-4">
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
-              <h3 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>UNESCO</h3>
+              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>UNESCO</h4>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
                 UN agency providing official heritage damage assessments. Verified 114 cultural
                 sites in Gaza (Oct 2024).
@@ -264,9 +272,9 @@ export const About = memo(function About() {
             </div>
 
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
-              <h3 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
+              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
                 Forensic Architecture
-              </h3>
+              </h4>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
                 Investigative agency at Goldsmiths, University of London, using spatial analysis to
                 document heritage destruction.
@@ -282,12 +290,61 @@ export const About = memo(function About() {
             </div>
 
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
-              <h3 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
+              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
                 Heritage for Peace
-              </h3>
+              </h4>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
                 Nonprofit providing detailed documentation and damage assessments of heritage sites
                 in conflict zones.
+              </p>
+            </div>
+          </div>
+
+          <h3 className={`text-base md:text-lg font-semibold mb-2 ${t.text.heading}`}>Casualty & Humanitarian Data</h3>
+          <div className="space-y-2 md:space-y-3">
+            <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
+              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
+                UN Office for the Coordination of Humanitarian Affairs (OCHA)
+              </h4>
+              <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
+                Official UN agency coordinating humanitarian response and verifying casualty data
+                from Gaza Ministry of Health.
+              </p>
+              <a
+                href="https://www.ochaopt.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#009639] hover:underline text-xs md:text-sm font-medium mt-1 inline-block"
+              >
+                View OCHA Reports →
+              </a>
+            </div>
+
+            <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
+              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
+                UNRWA (UN Relief and Works Agency)
+              </h4>
+              <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
+                UN agency providing humanitarian assistance and documenting the impact on Palestinian
+                refugees in Gaza.
+              </p>
+              <a
+                href="https://www.unrwa.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#009639] hover:underline text-xs md:text-sm font-medium mt-1 inline-block"
+              >
+                View UNRWA Reports →
+              </a>
+            </div>
+
+            <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
+              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
+                Gaza Ministry of Health
+              </h4>
+              <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
+                Primary source for casualty data, verified by WHO, UN OCHA, and international
+                humanitarian organizations. Historical data accuracy confirmed by independent studies.
               </p>
             </div>
           </div>
@@ -461,6 +518,43 @@ export const About = memo(function About() {
                 <li>Stats page provides context on broader humanitarian impact</li>
                 <li>About page explains verification methodology and legal frameworks</li>
               </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Comparative Scale - If This Were Your City */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>If This Were Your City</h2>
+          <p className={`text-sm md:text-base mb-3 ${t.text.body}`}>
+            Gaza's heritage destruction, proportionally applied to other cities:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+              <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>Rome</h3>
+              <p className={`text-xs md:text-sm mb-2 ${t.text.body}`}>
+                The Pantheon, Colosseum, and 8 medieval churches—destroyed in 14 months.
+              </p>
+              <p className={`text-xs italic ${t.text.body}`}>
+                Equivalent to Gaza's losses
+              </p>
+            </div>
+            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+              <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>Paris</h3>
+              <p className={`text-xs md:text-sm mb-2 ${t.text.body}`}>
+                Notre-Dame, Sainte-Chapelle, The Louvre, and 12 historic churches—leveled.
+              </p>
+              <p className={`text-xs italic ${t.text.body}`}>
+                Equivalent to Gaza's losses
+              </p>
+            </div>
+            <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
+              <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>New York</h3>
+              <p className={`text-xs md:text-sm mb-2 ${t.text.body}`}>
+                St. Patrick's Cathedral, Trinity Church, The Met, MoMA, and colonial-era sites—erased.
+              </p>
+              <p className={`text-xs italic ${t.text.body}`}>
+                Equivalent to Gaza's losses
+              </p>
             </div>
           </div>
         </section>
