@@ -12,7 +12,6 @@ interface ResourceItem {
 }
 
 const RESOURCE_ITEMS: ResourceItem[] = [
-  { path: '/resources/how-it-works', translationKey: 'header.resources.howItWorks' },
   { path: '/resources/donate', translationKey: 'header.resources.donate' },
   { path: '/resources/organizations', translationKey: 'header.resources.organizations' },
   { path: '/resources/research', translationKey: 'header.resources.research' },
@@ -31,7 +30,7 @@ interface ResourcesDropdownProps {
 /**
  * Resources dropdown menu component
  *
- * Displays dropdown menu with 7 resource pages:
+ * Displays dropdown menu with resource pages:
  * - Donate
  * - Organizations
  * - Research & Reports

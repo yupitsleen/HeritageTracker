@@ -443,39 +443,11 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
           </div>
         </section>
 
-        {/* Legal Context */}
-        <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Legal Framework</h2>
-          <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3 md:p-4 space-y-1.5 md:space-y-2 text-xs md:text-sm ${t.text.heading}`}>
-            <p>
-              <strong>1954 Hague Convention:</strong> Prohibits targeting cultural heritage during
-              armed conflict. Cultural property must be protected and preserved.
-            </p>
-            <p>
-              <strong>Rome Statute Article 8(2)(b)(ix):</strong> Intentionally directing attacks
-              against buildings dedicated to religion, education, art, science, or historic
-              monuments constitutes a <strong>war crime</strong>.
-            </p>
-            <p>
-              <strong>UN Genocide Convention Article II:</strong> Genocide includes acts committed
-              with intent to destroy, in whole or in part, a national, ethnical, racial or religious
-              group—including destruction of their cultural heritage.
-            </p>
-            <p className="hidden md:block">
-              <strong>UNESCO Enhanced Protection:</strong> Saint Hilarion Monastery was granted the
-              highest level of immunity in December 2023, then designated World Heritage in Danger
-              in July 2024—yet sustained damage to surrounding infrastructure.
-            </p>
-          </div>
-        </section>
-
         {/* Footer with Sources */}
         <div className={`text-center text-xs pt-4 border-t ${t.border.default} ${t.text.heading}`}>
           <p className="mb-2">
-            <strong>Heritage data:</strong> UNESCO, Forensic Architecture, Heritage for Peace
-          </p>
-          <p className="mb-2">
-            <strong>Casualty data:</strong> Gaza Ministry of Health, verified by{' '}
+            <strong>Data sources:</strong> Heritage data from UNESCO, Forensic Architecture, Heritage for Peace.
+            Casualty data from Gaza Ministry of Health, verified by{' '}
             <a
               href={EXTERNAL_SOURCES.unOcha}
               target="_blank"
@@ -494,20 +466,20 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
               UNRWA
             </a>
           </p>
-          <p className="mb-3">
-            Last updated {LAST_UPDATED} • See{' '}
+          <p className="mb-2">
+            Last updated {LAST_UPDATED}
+          </p>
+          <p className="mb-2">
+            For methodology, verification process, and legal framework, see the{' '}
             <a
-              href="https://github.com/yourusername/heritage-tracker/blob/main/docs/research/CASUALTY_STATISTICS.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:opacity-70 transition-opacity"
+              href="/about"
+              className="underline hover:opacity-70 transition-opacity font-medium"
             >
-              full source documentation
+              About page
             </a>
           </p>
           <p className={`font-medium ${t.text.heading}`}>
-            "The deliberate destruction of cultural heritage is an attack on humanity itself." —
-            UNESCO
+            "The deliberate destruction of cultural heritage is an attack on humanity itself." — UNESCO
           </p>
         </div>
       </div>

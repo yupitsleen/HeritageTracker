@@ -391,6 +391,80 @@ export const About = memo(function About() {
           </p>
         </section>
 
+        {/* Technical Information Section */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
+            Technical Information
+          </h2>
+          <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
+            Heritage Tracker is built with modern web technologies for optimal performance and reliability:
+          </p>
+          <div className={`${t.bg.tertiary} p-3 rounded-lg`}>
+            <ul className={`space-y-1.5 text-sm ${t.text.body}`}>
+              <li><strong>React 19</strong> with TypeScript for type safety and reliability</li>
+              <li><strong>Leaflet</strong> for interactive mapping with OpenStreetMap tiles</li>
+              <li><strong>D3.js</strong> for timeline visualization and data graphics</li>
+              <li><strong>Virtual scrolling</strong> handles 100+ sites at 60 FPS</li>
+              <li><strong>Progressive loading</strong> ensures fast initial page load (&lt;2s)</li>
+              <li><strong>Lazy loading</strong> for images and heavy components</li>
+            </ul>
+          </div>
+          <p className={`text-sm mt-2 ${t.text.body}`}>
+            For technical documentation and source code, visit the{' '}
+            <a
+              href="https://github.com/yupitsleen/HeritageTracker"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#009639] hover:underline font-medium"
+            >
+              GitHub repository
+            </a>
+          </p>
+        </section>
+
+        {/* Using Heritage Tracker Section */}
+        <section className="mb-4 md:mb-6">
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
+            Using Heritage Tracker
+          </h2>
+          <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
+            Different audiences can use Heritage Tracker for various purposes. Click the "?" help button
+            on any page for detailed instructions on using that page's features.
+          </p>
+
+          <div className={`${t.bg.tertiary} p-3 rounded-lg space-y-3`}>
+            <div>
+              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>For Researchers</h3>
+              <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
+                <li>Use GeoJSON export for spatial analysis in QGIS or ArcGIS</li>
+                <li>Filter by site type to focus on specific categories (e.g., all UNESCO-listed sites)</li>
+                <li>Compare satellite imagery dates to document destruction timeline</li>
+                <li>Export filtered results to share specific subsets of data</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>For Advocates</h3>
+              <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
+                <li>Use Timeline page to create compelling before/after comparisons</li>
+                <li>Share direct links to specific sites for targeted campaigns</li>
+                <li>Export to CSV for reports and presentations</li>
+                <li>Cite sources directly from each site's detail view</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>For Educators</h3>
+              <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
+                <li>Use map view to show geographic distribution of sites</li>
+                <li>Timeline mode demonstrates scale and timeline of destruction</li>
+                <li>Stats page provides context on broader humanitarian impact</li>
+                <li>About page explains verification methodology and legal frameworks</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Acknowledgments Section */}
         <section className="mb-4 md:mb-6">
           <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Acknowledgments</h2>
@@ -401,18 +475,8 @@ export const About = memo(function About() {
           </p>
         </section>
 
-        {/* Attribution Section */}
+        {/* Disclaimer Section */}
         <section className={`border-t ${t.border.default} pt-4 md:pt-6`}>
-          <p className={`text-xs md:text-sm leading-relaxed mb-3 ${t.text.body}`}>
-            <strong>Content Attribution & Methodology:</strong> Site descriptions and historical
-            information are original syntheses created by combining factual data from multiple
-            verified sources. Research was conducted using publicly available reports from UNESCO,
-            Forensic Architecture, Heritage for Peace, and other authoritative organizations. All
-            factual claims (dates, coordinates, artifact counts, destruction dates) are
-            cross-referenced against multiple sources and cited accordingly. Narrative descriptions
-            are original summaries of publicly available information, not direct quotations.
-            Research assistance provided by Claude (Anthropic).
-          </p>
           <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
             <strong>Disclaimer:</strong> Heritage Tracker is an independent documentation project.
             All information is sourced from publicly available reports by UNESCO, Forensic

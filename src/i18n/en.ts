@@ -41,7 +41,6 @@ export const en: Translations = {
     about: "About",
     resources: {
       title: "Resources",
-      howItWorks: "How It Works",
       donate: "Donate",
       organizations: "Organizations",
       research: "Research & Reports",
