@@ -12,6 +12,7 @@ export interface FilterState {
   creationYearStart: number | null;
   creationYearEnd: number | null;
   searchTerm: string;
+  showUnknownDates: boolean; // Show sites without destruction dates (using sourceAssessmentDate)
 }
 
 /**
@@ -26,6 +27,7 @@ export function createEmptyFilterState(): FilterState {
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
+    showUnknownDates: false, // Default to hiding sites without destruction dates
   };
 }
 
@@ -40,7 +42,8 @@ export function isFilterStateEmpty(state: FilterState): boolean {
     state.destructionDateEnd === null &&
     state.creationYearStart === null &&
     state.creationYearEnd === null &&
-    state.searchTerm.trim().length === 0
+    state.searchTerm.trim().length === 0 &&
+    state.showUnknownDates === false // showUnknownDates=false is the default state
   );
 }
 
@@ -73,6 +76,7 @@ export function areFiltersEqual(a: FilterState, b: FilterState): boolean {
   const creationStartEqual = a.creationYearStart === b.creationYearStart;
   const creationEndEqual = a.creationYearEnd === b.creationYearEnd;
   const searchEqual = a.searchTerm === b.searchTerm;
+  const showUnknownDatesEqual = a.showUnknownDates === b.showUnknownDates;
 
   return (
     typesEqual &&
@@ -81,6 +85,7 @@ export function areFiltersEqual(a: FilterState, b: FilterState): boolean {
     endDateEqual &&
     creationStartEqual &&
     creationEndEqual &&
-    searchEqual
+    searchEqual &&
+    showUnknownDatesEqual
   );
 }

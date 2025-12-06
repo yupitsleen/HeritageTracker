@@ -2,17 +2,15 @@ import { memo, useState, useMemo, useEffect, useCallback } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { Site, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
-import { formatLabel, formatDateRange, formatYearRange } from "../../utils/format";
+import { formatLabel } from "../../utils/format";
 import { FilterButton } from "./FilterButton";
 import { FilterCheckboxList } from "./FilterCheckboxList";
-import { FilterTag } from "./FilterTag";
 import { DateRangeFilter } from "./DateRangeFilter";
 import { YearRangeFilter } from "./YearRangeFilter";
 import { Input } from "../Form/Input";
 import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
-import { StatusLegend } from "../Map/StatusLegend";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -43,21 +41,18 @@ interface FilterBarProps {
 }
 
 /**
- * FilterBar - Redesigned with pill/badge system for better UX
+ * FilterBar - Compact filter interface with count badges
  *
- * **Key Improvements:**
- * - Compact filter buttons with count badges (Toggl-inspired)
- * - Active filters displayed as removable pills below
+ * **Key Features:**
+ * - Compact filter buttons with count badges
  * - Responsive mobile drawer instead of awkward stacking
  * - Better use of horizontal space on desktop
  * - Uses Headless UI (Popover, Dialog) for accessibility
  *
  * **Design Pattern:**
  * Desktop: [Search] [Filter Buttons] [Clear All] [Count]
- *          [Active Filter Pills]
  *
  * Mobile:  [Search] [Filters Button (count)] [Count]
- *          [Active Filter Pills]
  *          [Mobile Drawer for all filters]
  */
 export const FilterBar = memo(function FilterBar({
@@ -125,17 +120,6 @@ export const FilterBar = memo(function FilterBar({
     return STATUS_OPTIONS.filter((status) => (statusCounts[status] || 0) > 0);
   }, [statusCounts]);
 
-  // Memoized formatted ranges for filter pills
-  const dateRangeLabel = useMemo(
-    () => formatDateRange(filters.destructionDateStart, filters.destructionDateEnd),
-    [filters.destructionDateStart, filters.destructionDateEnd]
-  );
-
-  const yearRangeLabel = useMemo(
-    () => formatYearRange(filters.creationYearStart, filters.creationYearEnd),
-    [filters.creationYearStart, filters.creationYearEnd]
-  );
-
   // Memoized callback handlers to prevent unnecessary re-renders
   const handleSearchInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
@@ -183,36 +167,9 @@ export const FilterBar = memo(function FilterBar({
     onFilterChange({ creationYearEnd: year });
   }, [onFilterChange]);
 
-  const handleRemoveDestructionDateFilter = useCallback(() => {
-    onFilterChange({
-      destructionDateStart: null,
-      destructionDateEnd: null,
-    });
-  }, [onFilterChange]);
-
-  const handleRemoveYearBuiltFilter = useCallback(() => {
-    onFilterChange({
-      creationYearStart: null,
-      creationYearEnd: null,
-    });
-  }, [onFilterChange]);
-
-  // Factory function for creating memoized remove handlers for filter tags
-  const createRemoveTypeHandler = useCallback((typeToRemove: string) => {
-    return () => {
-      onFilterChange({
-        selectedTypes: filters.selectedTypes.filter((t) => t !== typeToRemove),
-      });
-    };
-  }, [onFilterChange, filters.selectedTypes]);
-
-  const createRemoveStatusHandler = useCallback((statusToRemove: string) => {
-    return () => {
-      onFilterChange({
-        selectedStatuses: filters.selectedStatuses.filter((s) => s !== statusToRemove),
-      });
-    };
-  }, [onFilterChange, filters.selectedStatuses]);
+  const handleToggleUnknownDates = useCallback(() => {
+    onFilterChange({ showUnknownDates: !filters.showUnknownDates });
+  }, [onFilterChange, filters.showUnknownDates]);
 
   return (
     <div className="space-y-2">
@@ -316,6 +273,25 @@ export const FilterBar = memo(function FilterBar({
               startEraDefault={defaultStartEra}
             />
           </FilterButton>
+
+          {/* Show Unknown Dates Toggle */}
+          <button
+            type="button"
+            onClick={handleToggleUnknownDates}
+            className={cn(
+              "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
+              "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
+              filters.showUnknownDates
+                ? "bg-[#009639] text-white border-[#009639]"
+                : cn(t.bg.primary, t.border.subtle, t.bg.hover, t.text.body)
+            )}
+            aria-label={translate("timeline.showUnknownDates")}
+            aria-pressed={filters.showUnknownDates}
+            title={translate("timeline.showUnknownDates")}
+          >
+            {filters.showUnknownDates ? "✓ " : ""}
+            {translate("timeline.showUnknownDates")}
+          </button>
           </div>
 
           {/* Mobile Filters Button - Visible only on mobile */}
@@ -354,55 +330,8 @@ export const FilterBar = memo(function FilterBar({
             </Button>
           )}
         </div>
-
-        {/* Status Legend - Far right, desktop only */}
-        <div className="hidden lg:flex">
-          <StatusLegend compact />
-        </div>
       </div>
 
-      {/* Active Filter Tags Row */}
-      {hasActiveFilters && (
-        <div className="flex flex-wrap items-center justify-center gap-1.5">
-          {/* Type Tags */}
-          {filters.selectedTypes.map((type) => (
-            <FilterTag
-              key={type}
-              label={formatLabel(type)}
-              onRemove={createRemoveTypeHandler(type)}
-              ariaLabel={`Remove ${formatLabel(type)} filter`}
-            />
-          ))}
-
-          {/* Status Tags */}
-          {filters.selectedStatuses.map((status) => (
-            <FilterTag
-              key={status}
-              label={formatLabel(status)}
-              onRemove={createRemoveStatusHandler(status)}
-              ariaLabel={`Remove ${formatLabel(status)} filter`}
-            />
-          ))}
-
-          {/* Destruction Date Tag */}
-          {dateRangeLabel && (
-            <FilterTag
-              label={dateRangeLabel}
-              onRemove={handleRemoveDestructionDateFilter}
-              ariaLabel="Remove destruction date filter"
-            />
-          )}
-
-          {/* Year Built Tag */}
-          {yearRangeLabel && (
-            <FilterTag
-              label={yearRangeLabel}
-              onRemove={handleRemoveYearBuiltFilter}
-              ariaLabel="Remove year built filter"
-            />
-          )}
-        </div>
-      )}
 
       {/* Mobile Filters Drawer */}
       <Dialog
@@ -498,6 +427,21 @@ export const FilterBar = memo(function FilterBar({
                   endYearDefault={defaultEndYear}
                   startEraDefault={defaultStartEra}
                 />
+              </div>
+
+              {/* Show Unknown Dates Toggle */}
+              <div>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={filters.showUnknownDates}
+                    onChange={handleToggleUnknownDates}
+                    className="w-5 h-5 rounded border-gray-300 text-[#009639] focus:ring-[#009639] cursor-pointer"
+                  />
+                  <span className={cn("text-sm", t.text.body)}>
+                    {translate("timeline.showUnknownDates")}
+                  </span>
+                </label>
               </div>
             </div>
 

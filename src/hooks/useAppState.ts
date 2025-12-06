@@ -53,6 +53,7 @@ export function useAppState() {
     setCreationYearStart: filterState.setCreationYearStart,
     setCreationYearEnd: filterState.setCreationYearEnd,
     setSearchTerm: filterState.setSearchTerm,
+    setShowUnknownDates: filterState.setShowUnknownDates,
     hasActiveFilters: filterState.hasActiveFilters,
     hasUnappliedChanges: filterState.hasUnappliedChanges,
     hasTempFilters: filterState.hasTempFilters,

@@ -10,10 +10,9 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Timeline } from "./pages/Timeline";
 import { AboutPage } from "./pages/AboutPage";
-import { StatsPage } from "./pages/StatsPage";
 import { DonatePage } from "./pages/DonatePage";
 import { DataPage } from "./pages/DataPage";
-import { OrganizationsPage, ResearchPage, MediaPage, EducationPage, LegalPage, TrackersPage, HowItWorksPage } from "./pages/resources";
+import { OrganizationsPage, ResearchPage, MediaPage, EducationPage, LegalPage, TrackersPage } from "./pages/resources";
 import { BREAKPOINTS } from "./constants/layout";
 
 /**
@@ -27,13 +26,11 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
       <Route path="/data" element={<DataPage />} />
       <Route path="/timeline" element={<Timeline />} />
       <Route path="/about" element={<AboutPage />} />
-      <Route path="/stats" element={<StatsPage />} />
 
       {/* Legacy donate route - redirect to resources/donate */}
       <Route path="/donate" element={<DonatePage />} />
 
       {/* Resources routes */}
-      <Route path="/resources/how-it-works" element={<HowItWorksPage />} />
       <Route path="/resources/donate" element={<DonatePage />} />
       <Route path="/resources/organizations" element={<OrganizationsPage />} />
       <Route path="/resources/research" element={<ResearchPage />} />

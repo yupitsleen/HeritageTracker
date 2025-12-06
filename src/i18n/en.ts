@@ -41,7 +41,6 @@ export const en: Translations = {
     about: "About",
     resources: {
       title: "Resources",
-      howItWorks: "How It Works",
       donate: "Donate",
       organizations: "Organizations",
       research: "Research & Reports",
@@ -49,6 +48,7 @@ export const en: Translations = {
       education: "Educational Resources",
       legal: "Legal & Advocacy",
       trackers: "Other Heritage Trackers",
+      howItWorks: "How It Works",
     },
   },
 

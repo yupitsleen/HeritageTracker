@@ -97,6 +97,7 @@ export function registryToLegacyState(
       "max" in registryState.yearBuilt
         ? registryState.yearBuilt.max
         : null,
+    showUnknownDates: false, // Default to hiding sites without destruction dates
   };
 }
 

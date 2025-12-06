@@ -28,6 +28,7 @@ export function useFilteredSites(
     creationYearStart,
     creationYearEnd,
     searchTerm,
+    showUnknownDates,
   } = filters;
 
   // Filter pipeline - each step depends on previous
@@ -61,9 +62,21 @@ export function useFilteredSites(
     [yearFiltered, searchTerm]
   );
 
+  // Filter by showUnknownDates - if false, only show sites with destruction dates
+  const unknownDatesFiltered = useMemo(
+    () => {
+      if (showUnknownDates) {
+        return searchFiltered;
+      }
+      // Only show sites that have a destruction date (exclude sites that only have sourceAssessmentDate)
+      return searchFiltered.filter(site => site.dateDestroyed != null);
+    },
+    [searchFiltered, showUnknownDates]
+  );
+
   return {
-    filteredSites: searchFiltered,
-    count: searchFiltered.length,
+    filteredSites: unknownDatesFiltered,
+    count: unknownDatesFiltered.length,
     total: sites.length,
   };
 }

@@ -22,6 +22,7 @@ export function useFilterState() {
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
   const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showUnknownDates, setShowUnknownDates] = useState<boolean>(false);
 
   // Temporary filters (for modal - not applied until "Apply Filters" clicked)
   const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<Site["type"]>>([]);
@@ -41,6 +42,7 @@ export function useFilterState() {
       creationYearStart,
       creationYearEnd,
       searchTerm,
+      showUnknownDates,
     }),
     [
       selectedTypes,
@@ -50,6 +52,7 @@ export function useFilterState() {
       creationYearStart,
       creationYearEnd,
       searchTerm,
+      showUnknownDates,
     ]
   );
 
@@ -62,6 +65,7 @@ export function useFilterState() {
       creationYearStart: tempCreationYearStart,
       creationYearEnd: tempCreationYearEnd,
       searchTerm, // Search term is always synced (not part of modal)
+      showUnknownDates, // showUnknownDates is always synced (not part of modal)
     }),
     [
       tempSelectedTypes,
@@ -71,6 +75,7 @@ export function useFilterState() {
       tempCreationYearStart,
       tempCreationYearEnd,
       searchTerm,
+      showUnknownDates,
     ]
   );
 
@@ -100,6 +105,7 @@ export function useFilterState() {
     setCreationYearStart(empty.creationYearStart);
     setCreationYearEnd(empty.creationYearEnd);
     setSearchTerm(empty.searchTerm);
+    setShowUnknownDates(empty.showUnknownDates);
   }, []);
 
   const initializeTempFilters = useCallback(() => {
@@ -154,6 +160,7 @@ export function useFilterState() {
     setCreationYearStart,
     setCreationYearEnd,
     setSearchTerm,
+    setShowUnknownDates,
 
     // Temporary filters
     tempFilters,

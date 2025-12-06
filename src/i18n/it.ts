@@ -41,7 +41,6 @@ export const it: Translations = {
     about: "Informazioni",
     resources: {
       title: "Risorse",
-      howItWorks: "Come Funziona",
       donate: "Dona",
       organizations: "Organizzazioni",
       research: "Ricerca e Rapporti",
@@ -49,6 +48,7 @@ export const it: Translations = {
       education: "Risorse Educative",
       legal: "Diritto e Sostegno",
       trackers: "Altri Tracciatori del Patrimonio",
+      howItWorks: "Come Funziona",
     },
   },
 

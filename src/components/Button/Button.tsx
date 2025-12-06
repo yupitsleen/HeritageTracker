@@ -44,8 +44,8 @@ function getVariantClasses(variant: ButtonVariant, isDark: boolean, textColor: s
       : `bg-transparent ${textColor} border-gray-800 hover:bg-gray-700 hover:text-white hover:border-gray-700 hover:shadow-lg active:opacity-80`,
 
     danger: isDark
-      ? `bg-transparent text-gray-300 border-gray-600 hover:bg-[${PALESTINIAN_FLAG.RED}] hover:text-white hover:border-[${PALESTINIAN_FLAG.RED}] hover:shadow-lg active:opacity-80`
-      : `bg-transparent ${textColor} border-gray-400 hover:bg-[${PALESTINIAN_FLAG.RED}] hover:text-white hover:border-[${PALESTINIAN_FLAG.RED}] hover:shadow-lg active:opacity-80`,
+      ? `bg-[${PALESTINIAN_FLAG.RED}] text-white border-[${PALESTINIAN_FLAG.RED}] hover:bg-red-700 hover:border-red-700 hover:shadow-lg active:opacity-80`
+      : `bg-[${PALESTINIAN_FLAG.RED}] text-white border-[${PALESTINIAN_FLAG.RED}] hover:bg-red-700 hover:border-red-700 hover:shadow-lg active:opacity-80`,
 
     ghost: isDark
       ? "bg-transparent hover:bg-gray-700 text-gray-300 border-gray-600 hover:opacity-90"

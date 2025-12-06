@@ -3,6 +3,7 @@ import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import { scaleTime } from "d3-scale";
 import type { Site } from "../../types";
 import { useAnimation } from "../../contexts/AnimationContext";
+import { useAppState } from "../../hooks/useAppState";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
@@ -43,6 +44,7 @@ export interface AdvancedTimelineMode {
   showNavigation?: boolean; // Optional: show Previous/Next navigation (default: true when advancedMode is set)
   hidePlayControls?: boolean; // Optional: hide Play/Pause/Speed controls (default: false)
   hideMapSettings?: boolean; // Optional: hide Zoom to Site and Show Map Markers (moved to map on Dashboard)
+  hideShowUnknownDatesToggle?: boolean; // Optional: hide Show Unknown Dates toggle (when moved to FilterBar)
   onReset?: () => void; // Optional: custom reset handler for parent components (e.g., Timeline page to reset wayback sliders)
 }
 
@@ -52,9 +54,6 @@ interface TimelineScrubberProps {
   onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
   advancedMode?: AdvancedTimelineMode;
-  // Show/hide sites with unknown destruction dates (only survey date)
-  showUnknownDestructionDates?: boolean;
-  onShowUnknownDestructionDatesChange?: (show: boolean) => void;
 }
 
 /**
@@ -73,8 +72,6 @@ export function TimelineScrubber({
   highlightedSiteId,
   onSiteHighlight,
   advancedMode,
-  showUnknownDestructionDates = true,
-  onShowUnknownDestructionDatesChange,
 }: TimelineScrubberProps) {
   const {
     currentTimestamp,
@@ -92,6 +89,10 @@ export function TimelineScrubber({
     setZoomToSiteEnabled,
     setMapMarkersVisible,
   } = useAnimation();
+
+  // Get showUnknownDates from filter state
+  const { filters, setShowUnknownDates } = useAppState();
+  const showUnknownDestructionDates = filters.showUnknownDates;
 
   const t = useThemeClasses();
   const translate = useTranslation();
@@ -401,6 +402,7 @@ export function TimelineScrubber({
             advancedMode={!!advancedMode}
             hidePlayControls={advancedMode?.hidePlayControls ?? false}
             hideMapSettings={advancedMode?.hideMapSettings ?? false}
+            hideShowUnknownDatesToggle={advancedMode?.hideShowUnknownDatesToggle ?? false}
             syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
             showUnknownDestructionDates={showUnknownDestructionDates}
             onPlay={handlePlay}
@@ -410,7 +412,7 @@ export function TimelineScrubber({
             onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
             onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
             onSyncMapToggle={advancedMode?.onSyncMapToggle}
-            onShowUnknownDestructionDatesToggle={onShowUnknownDestructionDatesChange ? () => onShowUnknownDestructionDatesChange(!showUnknownDestructionDates) : undefined}
+            onShowUnknownDestructionDatesToggle={() => setShowUnknownDates(!showUnknownDestructionDates)}
           />
         </div>
 

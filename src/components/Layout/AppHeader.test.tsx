@@ -55,7 +55,6 @@ describe("AppHeader", () => {
       expect(screen.getByRole("button", { name: /dashboard/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /data/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /timeline/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /statistics/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /about/i })).toBeInTheDocument();
     });
 
