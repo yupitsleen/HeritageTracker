@@ -23,9 +23,6 @@ export const About = memo(function About() {
           <h1 className={`text-3xl md:text-4xl font-bold mb-1.5 ${t.text.heading}`}>
             About Heritage Tracker
           </h1>
-          <p className={`text-sm md:text-lg ${t.text.body}`}>
-            Evidence-based documentation of Palestinian cultural heritage destruction
-          </p>
         </div>
 
         {/* Mission Section */}
@@ -43,11 +40,11 @@ export const About = memo(function About() {
           </p>
 
           <p className={`text-sm md:text-base leading-relaxed mb-3 md:mb-4 ${t.text.body}`}>
-            Since October 2023, Gaza has witnessed both: over 70,000 Palestinians killed by January 2025 (independent research estimates exceed 100,000), with
-            heritage sites systematically targeted—1,400-year-old mosques reduced to rubble, museums
-            looted and demolished, libraries containing irreplaceable manuscripts burned. This is
-            not collateral damage. This is the deliberate erasure of Palestinian existence from the
-            land.
+            Since October 2023, Gaza has witnessed both: over 70,000 Palestinians killed by January
+            2025 (independent research estimates exceed 100,000), with heritage sites systematically
+            targeted—1,400-year-old mosques reduced to rubble, museums looted and demolished,
+            libraries containing irreplaceable manuscripts burned. This is not collateral damage.
+            This is the deliberate erasure of Palestinian existence from the land.
           </p>
 
           <div className={`${t.bg.tertiary} border-l-4 border-[#ed3039] p-2 md:p-3 rounded mb-3`}>
@@ -62,12 +59,21 @@ export const About = memo(function About() {
             </p>
           </div>
 
-          <h3 className={`text-base md:text-lg font-bold mb-2 text-center ${t.text.heading}`}>Our Mission</h3>
+          <h3 className={`text-base md:text-lg font-bold mb-2 text-center ${t.text.heading}`}>
+            Our Mission
+          </h3>
           <p className={`text-sm md:text-base leading-relaxed mb-2 md:mb-3 ${t.text.body}`}>
-            Heritage Tracker documents this cultural destruction with forensic precision. We create
-            an evidence-based record for international courts, historians, and humanity. Every site
-            documented here is verified by UNESCO, Forensic Architecture, and Heritage for Peace.
-            This is documentation of what international law defines as genocide.
+            This tool visualizes cultural heritage destruction in Gaza using satellite imagery and
+            verified data from UNESCO and other authoritative sources.
+          </p>
+          <p className={`text-sm md:text-base leading-relaxed mb-2 md:mb-3 ${t.text.body}`}>
+            It's not a complete archive. It shows what happened to specific sites—where they were,
+            when they were destroyed, what they looked like before and after. The satellite maps
+            also let you explore the broader context and surrounding areas.
+          </p>
+          <p className={`text-sm md:text-base leading-relaxed mb-2 md:mb-3 ${t.text.body}`}>
+            The goal is to make the scale visible. Maps show locations. Timelines show progression.
+            Comparisons show change.
           </p>
 
           <div className={`${t.bg.tertiary} border-l-4 border-[#009639] p-2 md:p-3 rounded`}>
@@ -81,7 +87,9 @@ export const About = memo(function About() {
 
         {/* Responsibility Section */}
         <section className="mb-8">
-          <h2 className={`text-3xl font-bold mb-4 text-center ${t.text.heading}`}>Who's Responsible</h2>
+          <h2 className={`text-3xl font-bold mb-4 text-center ${t.text.heading}`}>
+            Who's Responsible
+          </h2>
 
           {/* Israeli Military Operations */}
           <div className={`${t.bg.tertiary} rounded-lg p-6 mb-4`}>
@@ -123,25 +131,41 @@ export const About = memo(function About() {
               </p>
 
               <p>
-                <strong>Scale:</strong> Beyond the heritage sites documented here, Israel
-                destroyed over 60% of all buildings in Gaza, displaced 90% of the population, killed
-                over 70,000 Palestinians by January 2025 (70% women and children; independent research estimates exceed 100,000), and rendered the territory
-                largely uninhabitable.
+                <strong>Scale:</strong> Beyond the heritage sites documented here, Israel destroyed
+                over 60% of all buildings in Gaza, displaced 90% of the population, killed over
+                70,000 Palestinians by January 2025 (70% women and children; independent research
+                estimates exceed 100,000), and rendered the territory largely uninhabitable.
               </p>
 
               <p>
-                <strong>International Legal Actions:</strong> The International Court of Justice ordered Israel to prevent genocide in January 2024. The International Criminal Court issued arrest warrants for Israeli Prime Minister Benjamin Netanyahu and former Defense Minister Yoav Gallant in November 2024 for war crimes and crimes against humanity.
+                <strong>International Legal Actions:</strong> The International Court of Justice
+                ordered Israel to prevent genocide in January 2024. The International Criminal Court
+                issued arrest warrants for Israeli Prime Minister Benjamin Netanyahu and former
+                Defense Minister Yoav Gallant in November 2024 for war crimes and crimes against
+                humanity.
+              </p>
+
+              <p>
+                <strong>Historical Context:</strong> The destruction of Palestinian heritage is not
+                new. During the 1948 Nakba ("catastrophe"), over 400 Palestinian villages were
+                depopulated and destroyed. Cultural erasure has continued for decades—renaming
+                sites, demolishing historic buildings, destroying archives, and replacing
+                Palestinian place names on maps. What's happening in Gaza is an intensification of a
+                long-standing pattern.
               </p>
             </div>
           </div>
 
           {/* United States Complicity */}
           <div className={`${t.bg.tertiary} rounded-lg p-6`}>
-            <h3 className={`text-xl font-bold mb-3 text-center ${t.text.heading}`}>United States</h3>
+            <h3 className={`text-xl font-bold mb-3 text-center ${t.text.heading}`}>
+              United States
+            </h3>
             <div className={`space-y-3 text-base ${t.text.body}`}>
               <p>
                 The United States provided critical material, financial, and political support
-                enabling these operations between October 2023 and January 2025, making it directly complicit in the destruction.
+                enabling these operations between October 2023 and January 2025, making it directly
+                complicit in the destruction.
               </p>
 
               <div className="border-l-4 border-[#009639] pl-4 my-3">
@@ -150,7 +174,8 @@ export const About = memo(function About() {
                 </p>
                 <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
                   <li>
-                    <strong>$18+ billion</strong> in military aid to Israel between October 2023 and January 2025
+                    <strong>$18+ billion</strong> in military aid to Israel between October 2023 and
+                    January 2025
                   </li>
                   <li>
                     <strong>Weapons transfers:</strong> 2,000-pound bombs, F-35 fighter jets,
@@ -217,30 +242,6 @@ export const About = memo(function About() {
           </div>
         </section>
 
-        {/* Methodology Section */}
-        <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Methodology</h2>
-          <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
-            Every site has been verified by authoritative sources. Requirements:
-          </p>
-          <ul className={`list-disc list-inside text-sm space-y-1 mb-3 ${t.text.body}`}>
-            <li>
-              <strong>Multiple verifications</strong> from UNESCO, Forensic Architecture, or
-              Heritage for Peace
-            </li>
-            <li>
-              <strong>Documented coordinates</strong> via satellite imagery or archaeological
-              records
-            </li>
-            <li>
-              <strong>Verified destruction dates</strong> with supporting evidence
-            </li>
-            <li>
-              <strong>Published sources</strong> with URLs for transparency
-            </li>
-          </ul>
-        </section>
-
         {/* Data Sources Section */}
         <section className="mb-4 md:mb-6">
           <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
@@ -249,14 +250,19 @@ export const About = memo(function About() {
 
           <div className={`${t.bg.tertiary} border-l-4 border-[#009639] p-3 rounded mb-3`}>
             <p className={`text-xs md:text-sm font-medium ${t.text.body}`}>
-              "The deliberate destruction of cultural heritage is an attack on humanity itself." — UNESCO
+              "The deliberate destruction of cultural heritage is an attack on humanity itself." —
+              UNESCO
             </p>
           </div>
 
-          <h3 className={`text-base md:text-lg font-semibold mb-2 ${t.text.heading}`}>Heritage Documentation</h3>
+          <h3 className={`text-base md:text-lg font-semibold mb-2 ${t.text.heading}`}>
+            Heritage Documentation
+          </h3>
           <div className="space-y-2 md:space-y-3 mb-4">
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
-              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>UNESCO</h4>
+              <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
+                UNESCO
+              </h4>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
                 UN agency providing official heritage damage assessments. Verified 114 cultural
                 sites in Gaza (Oct 2024).
@@ -300,7 +306,9 @@ export const About = memo(function About() {
             </div>
           </div>
 
-          <h3 className={`text-base md:text-lg font-semibold mb-2 ${t.text.heading}`}>Casualty & Humanitarian Data</h3>
+          <h3 className={`text-base md:text-lg font-semibold mb-2 ${t.text.heading}`}>
+            Casualty & Humanitarian Data
+          </h3>
           <div className="space-y-2 md:space-y-3">
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
               <h4 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
@@ -325,8 +333,8 @@ export const About = memo(function About() {
                 UNRWA (UN Relief and Works Agency)
               </h4>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
-                UN agency providing humanitarian assistance and documenting the impact on Palestinian
-                refugees in Gaza.
+                UN agency providing humanitarian assistance and documenting the impact on
+                Palestinian refugees in Gaza.
               </p>
               <a
                 href="https://www.unrwa.org/"
@@ -344,7 +352,8 @@ export const About = memo(function About() {
               </h4>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
                 Primary source for casualty data, verified by WHO, UN OCHA, and international
-                humanitarian organizations. Historical data accuracy confirmed by independent studies.
+                humanitarian organizations. Historical data accuracy confirmed by independent
+                studies.
               </p>
             </div>
           </div>
@@ -352,7 +361,9 @@ export const About = memo(function About() {
 
         {/* Research Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Research & Data Collection</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
+            Research & Data Collection
+          </h2>
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
             Comprehensive research (Oct 2025) synthesizing data from multiple authoritative sources.
           </p>
@@ -367,7 +378,8 @@ export const About = memo(function About() {
           <div className={`space-y-1.5 text-sm leading-relaxed ${t.text.body}`}>
             <p>
               <strong>Focus:</strong> 114 UNESCO-verified sites (Oct 2024). 64.7% of Gaza's 320
-              archaeological sites damaged or destroyed. Currently documenting 70 sites (representing 140-160 buildings).
+              archaeological sites damaged or destroyed. Currently documenting 70 sites
+              (representing 140-160 buildings).
             </p>
             <p>
               <strong>Legal alignment:</strong> 1954 Hague Convention, Rome Statute (ICC), UN
@@ -384,30 +396,6 @@ export const About = memo(function About() {
                 research documentation
               </a>
               .
-            </p>
-          </div>
-        </section>
-
-        {/* Legal Framework Section */}
-        <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Legal & Ethical Framework</h2>
-          <div className={`space-y-1.5 text-sm leading-relaxed ${t.text.body}`}>
-            <p>
-              <strong>Documentation:</strong> Factual information from verified sources.
-            </p>
-            <p>
-              <strong>Attribution:</strong> All claims sourced with citations, dates, and URLs.
-            </p>
-            <p>
-              <strong>Cultural sensitivity:</strong> Respectful documentation of Palestinian
-              heritage.
-            </p>
-            <p>
-              <strong>Educational purpose:</strong> Fair use for educational and historical
-              documentation.
-            </p>
-            <p>
-              <strong>Privacy:</strong> No personal data collected or stored.
             </p>
           </div>
         </section>
@@ -448,60 +436,36 @@ export const About = memo(function About() {
           </p>
         </section>
 
-        {/* Technical Information Section */}
-        <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
-            Technical Information
-          </h2>
-          <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
-            Heritage Tracker is built with modern web technologies for optimal performance and reliability:
-          </p>
-          <div className={`${t.bg.tertiary} p-3 rounded-lg`}>
-            <ul className={`space-y-1.5 text-sm ${t.text.body}`}>
-              <li><strong>React 19</strong> with TypeScript for type safety and reliability</li>
-              <li><strong>Leaflet</strong> for interactive mapping with OpenStreetMap tiles</li>
-              <li><strong>D3.js</strong> for timeline visualization and data graphics</li>
-              <li><strong>Virtual scrolling</strong> handles 100+ sites at 60 FPS</li>
-              <li><strong>Progressive loading</strong> ensures fast initial page load (&lt;2s)</li>
-              <li><strong>Lazy loading</strong> for images and heavy components</li>
-            </ul>
-          </div>
-          <p className={`text-sm mt-2 ${t.text.body}`}>
-            For technical documentation and source code, visit the{' '}
-            <a
-              href="https://github.com/yupitsleen/HeritageTracker"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#009639] hover:underline font-medium"
-            >
-              GitHub repository
-            </a>
-          </p>
-        </section>
-
         {/* Using Heritage Tracker Section */}
         <section className="mb-4 md:mb-6">
           <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
             Using Heritage Tracker
           </h2>
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
-            Different audiences can use Heritage Tracker for various purposes. Click the "?" help button
-            on any page for detailed instructions on using that page's features.
+            Different audiences can use Heritage Tracker for various purposes. Click the "?" help
+            button on any page for detailed instructions on using that page's features.
           </p>
 
           <div className={`${t.bg.tertiary} p-3 rounded-lg space-y-3`}>
             <div>
-              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>For Researchers</h3>
+              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>
+                For Researchers
+              </h3>
               <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
                 <li>Use GeoJSON export for spatial analysis in QGIS or ArcGIS</li>
-                <li>Filter by site type to focus on specific categories (e.g., all UNESCO-listed sites)</li>
+                <li>
+                  Filter by site type to focus on specific categories (e.g., all UNESCO-listed
+                  sites)
+                </li>
                 <li>Compare satellite imagery dates to document destruction timeline</li>
                 <li>Export filtered results to share specific subsets of data</li>
               </ul>
             </div>
 
             <div>
-              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>For Advocates</h3>
+              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>
+                For Advocates
+              </h3>
               <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
                 <li>Use Timeline page to create compelling before/after comparisons</li>
                 <li>Share direct links to specific sites for targeted campaigns</li>
@@ -511,7 +475,9 @@ export const About = memo(function About() {
             </div>
 
             <div>
-              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>For Educators</h3>
+              <h3 className={`text-base font-semibold mb-1.5 ${t.text.subheading}`}>
+                For Educators
+              </h3>
               <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
                 <li>Use map view to show geographic distribution of sites</li>
                 <li>Timeline mode demonstrates scale and timeline of destruction</li>
@@ -524,7 +490,9 @@ export const About = memo(function About() {
 
         {/* Comparative Scale - If This Were Your City */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>If This Were Your City</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
+            If This Were Your City
+          </h2>
           <p className={`text-sm md:text-base mb-3 ${t.text.body}`}>
             Gaza's heritage destruction, proportionally applied to other cities:
           </p>
@@ -534,34 +502,31 @@ export const About = memo(function About() {
               <p className={`text-xs md:text-sm mb-2 ${t.text.body}`}>
                 The Pantheon, Colosseum, and 8 medieval churches—destroyed in 14 months.
               </p>
-              <p className={`text-xs italic ${t.text.body}`}>
-                Equivalent to Gaza's losses
-              </p>
+              <p className={`text-xs italic ${t.text.body}`}>Equivalent to Gaza's losses</p>
             </div>
             <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>Paris</h3>
               <p className={`text-xs md:text-sm mb-2 ${t.text.body}`}>
                 Notre-Dame, Sainte-Chapelle, The Louvre, and 12 historic churches—leveled.
               </p>
-              <p className={`text-xs italic ${t.text.body}`}>
-                Equivalent to Gaza's losses
-              </p>
+              <p className={`text-xs italic ${t.text.body}`}>Equivalent to Gaza's losses</p>
             </div>
             <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3`}>
               <h3 className={`text-sm md:text-base font-bold mb-2 ${t.text.heading}`}>New York</h3>
               <p className={`text-xs md:text-sm mb-2 ${t.text.body}`}>
-                St. Patrick's Cathedral, Trinity Church, The Met, MoMA, and colonial-era sites—erased.
+                St. Patrick's Cathedral, Trinity Church, The Met, MoMA, and colonial-era
+                sites—erased.
               </p>
-              <p className={`text-xs italic ${t.text.body}`}>
-                Equivalent to Gaza's losses
-              </p>
+              <p className={`text-xs italic ${t.text.body}`}>Equivalent to Gaza's losses</p>
             </div>
           </div>
         </section>
 
         {/* Acknowledgments Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Acknowledgments</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
+            Acknowledgments
+          </h2>
           <p className={`text-sm leading-relaxed ${t.text.body}`}>
             This project builds on work by UNESCO, Forensic Architecture, Heritage for Peace,
             Palestinian Museum, Institute for Palestine Studies, ICOM, and countless researchers and
