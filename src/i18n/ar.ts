@@ -41,6 +41,7 @@ export const ar: Translations = {
     about: "حول",
     resources: {
       title: "الموارد",
+      howItWorks: "كيف يعمل",
       donate: "تبرع",
       organizations: "المنظمات",
       research: "البحوث والتقارير",
@@ -303,6 +304,8 @@ export const ar: Translations = {
     donate: "تبرع",
     stats: "الإحصائيات",
     about: "حول",
+    copyright: "© {year} متتبع التراث",
+    lastUpdated: "آخر تحديث: {date}",
   },
 
   legend: {

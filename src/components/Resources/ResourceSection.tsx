@@ -12,11 +12,11 @@ interface ResourceSectionProps {
  * Provides consistent section styling with title and content area.
  */
 export function ResourceSection({ title, children }: ResourceSectionProps) {
-  const { text } = useThemeClasses();
+  const t = useThemeClasses();
 
   return (
     <section className="space-y-4">
-      <h2 className={`text-2xl font-semibold ${text}`}>{title}</h2>
+      <h2 className={`text-2xl font-semibold ${t.text.heading}`}>{title}</h2>
       <div className="space-y-2">
         {children}
       </div>

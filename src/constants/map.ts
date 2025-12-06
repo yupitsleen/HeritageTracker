@@ -84,7 +84,7 @@ export const HISTORICAL_IMAGERY = {
     url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
     maxZoom: 17, // Older imagery has lower resolution
   },
-  /** Early 2024 - January 18, 2024 (earliest 2024 imagery) */
+  /** Early 2024 - January 18, 2024 (default - earliest 2024 imagery) */
   EARLY_2024: {
     releaseNum: 41468,
     date: "2024-01-18",
@@ -92,11 +92,11 @@ export const HISTORICAL_IMAGERY = {
     url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/41468/{z}/{y}/{x}",
     maxZoom: 18, // Recent imagery, but zoom 18 ensures tile availability
   },
-  /** Current - Latest ESRI World Imagery */
+  /** Current - Latest ESRI World Imagery (as of January 2025) */
   CURRENT: {
-    releaseNum: null, // Uses current/latest imagery
-    date: "current",
-    label: "Current",
+    releaseNum: 44000, // Approximate release number for Jan 2025 imagery
+    date: "2025-01-15",
+    label: "Jan 2025",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     maxZoom: 19, // Current imagery has high resolution
   },

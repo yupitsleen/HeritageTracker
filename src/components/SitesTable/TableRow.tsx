@@ -14,6 +14,7 @@ interface TableRowProps {
   onSiteClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   rowRef?: React.RefObject<HTMLTableRowElement | null>;
+  clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
 }
 
 /**
@@ -27,6 +28,7 @@ export function TableRow({
   onSiteClick,
   onSiteHighlight,
   rowRef,
+  clickableRow = false,
 }: TableRowProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -49,9 +51,13 @@ export function TableRow({
             ? "bg-green-900/40 ring-2 ring-[#009639] ring-inset"
             : "bg-green-50/60 ring-2 ring-[#009639] ring-inset"
           : `${t.bg.primary}/50 ${t.bg.hover}`
-      }`}
+      } ${clickableRow ? "cursor-pointer" : ""}`}
       onClick={() => {
-        onSiteHighlight?.(site.id);
+        if (clickableRow && onSiteClick) {
+          onSiteClick(site);
+        } else {
+          onSiteHighlight?.(site.id);
+        }
       }}
     >
       {visibleColumns.has("type") && (

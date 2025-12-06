@@ -11,6 +11,7 @@ interface SitesTableProps {
   variant?: "compact" | "expanded" | "mobile";
   visibleColumns?: string[]; // For resizable table - which columns to show
   tooltipText?: string; // Optional custom tooltip text for the info icon
+  clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
 }
 
 /**
@@ -32,6 +33,7 @@ export function SitesTable({
   variant = "compact",
   visibleColumns,
   tooltipText,
+  clickableRow = false,
 }: SitesTableProps) {
   // Route to appropriate variant component
   if (variant === "mobile") {
@@ -48,6 +50,7 @@ export function SitesTable({
       variant={variant}
       visibleColumns={visibleColumns}
       tooltipText={tooltipText}
+      clickableRow={clickableRow}
     />
   );
 }

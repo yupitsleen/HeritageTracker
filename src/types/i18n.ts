@@ -88,6 +88,7 @@ export interface Translations {
       education: string;
       legal: string;
       trackers: string;
+      howItWorks: string;
     };
   };
 
@@ -359,6 +360,8 @@ export interface Translations {
     donate: string;
     stats: string;
     about: string;
+    copyright: string;
+    lastUpdated: string;
   };
 
   /** Map legend */

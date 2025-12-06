@@ -64,7 +64,7 @@ export const TARGETED_CASUALTIES = {
    * and silence journalists that CPJ has ever documented"
    */
   journalists: {
-    killed: "165+",
+    killed: "248+",
     injured: "49",
     missing: "2",
     arrested: "75",
@@ -115,9 +115,10 @@ export const EXTERNAL_SOURCES = {
 
 /**
  * Last verification/update date for statistics
- * Next scheduled update: December 1, 2025
+ * Updated manually when research is conducted
+ * Next scheduled update: February 1, 2025
  */
-export const LAST_UPDATED = "November 11, 2025";
+export const LAST_UPDATED = "January 2025";
 
 /**
  * Default oldest site age display value when no data available

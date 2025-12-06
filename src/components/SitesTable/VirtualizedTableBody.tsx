@@ -18,6 +18,7 @@ interface VirtualizedTableBodyProps {
   variant: 'compact' | 'expanded';
   isColumnVisible: (columnName: string) => boolean;
   height?: number; // Container height (default: 600px)
+  clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
 }
 
 /**
@@ -36,6 +37,7 @@ export function VirtualizedTableBody({
   variant,
   isColumnVisible,
   height = 600,
+  clickableRow = false,
 }: VirtualizedTableBodyProps) {
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -90,6 +92,7 @@ export function VirtualizedTableBody({
                     highlightedSiteId={highlightedSiteId}
                     variant={variant}
                     isColumnVisible={isColumnVisible}
+                    clickableRow={clickableRow}
                   />
                 </tr>
               );

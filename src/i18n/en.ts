@@ -41,6 +41,7 @@ export const en: Translations = {
     about: "About",
     resources: {
       title: "Resources",
+      howItWorks: "How It Works",
       donate: "Donate",
       organizations: "Organizations",
       research: "Research & Reports",
@@ -312,6 +313,8 @@ export const en: Translations = {
     donate: "Donate",
     stats: "Stats",
     about: "About",
+    copyright: "© {year} Heritage Tracker",
+    lastUpdated: "Last Updated: {date}",
   },
 
   legend: {

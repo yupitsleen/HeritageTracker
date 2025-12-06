@@ -1,4 +1,3 @@
-import { mockSites } from "../data/mockSites";
 import { About } from "../components/About/About";
 import { SharedLayout } from "../components/Layout/SharedLayout";
 
@@ -16,7 +15,7 @@ export function AboutPage() {
   return (
     <SharedLayout>
       <div className="container mx-auto px-4 py-6 pb-24 max-w-7xl">
-        <About sites={mockSites} />
+        <About />
       </div>
     </SharedLayout>
   );

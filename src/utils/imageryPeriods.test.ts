@@ -22,17 +22,19 @@ describe("getImageryPeriodForDate", () => {
       expect(getImageryPeriodForDate(new Date("2024-01-17"))).toBe("BASELINE_2014");
     });
 
-    it("should return EARLY_2024 for date 2024-01-18, CURRENT for dates after", () => {
+    it("should return EARLY_2024 for dates from 2024-01-18 to 2025-01-14", () => {
       expect(getImageryPeriodForDate(new Date("2024-01-18"))).toBe("EARLY_2024");
-      expect(getImageryPeriodForDate(new Date("2024-01-19"))).toBe("CURRENT");
+      expect(getImageryPeriodForDate(new Date("2024-01-19"))).toBe("EARLY_2024");
+      expect(getImageryPeriodForDate(new Date("2024-12-31"))).toBe("EARLY_2024");
+      expect(getImageryPeriodForDate(new Date("2025-01-14"))).toBe("EARLY_2024");
     });
   });
 
-  describe("dates after Jan 2024", () => {
-    it("should return CURRENT for all dates after 2024-01-18", () => {
-      expect(getImageryPeriodForDate(new Date("2024-01-19"))).toBe("CURRENT");
-      expect(getImageryPeriodForDate(new Date("2024-02-01"))).toBe("CURRENT");
-      expect(getImageryPeriodForDate(new Date("2024-10-01"))).toBe("CURRENT");
+  describe("dates after Jan 2025", () => {
+    it("should return CURRENT for dates from 2025-01-15 onwards", () => {
+      expect(getImageryPeriodForDate(new Date("2025-01-15"))).toBe("CURRENT");
+      expect(getImageryPeriodForDate(new Date("2025-01-16"))).toBe("CURRENT");
+      expect(getImageryPeriodForDate(new Date("2025-02-01"))).toBe("CURRENT");
       expect(getImageryPeriodForDate(new Date("2025-12-31"))).toBe("CURRENT");
     });
   });
@@ -62,7 +64,7 @@ describe("getImageryPeriodForDate", () => {
       // This is validated by testing boundary dates for each period
       const baseline = getImageryPeriodForDate(new Date("2014-02-20"));
       const early2024 = getImageryPeriodForDate(new Date("2024-01-18"));
-      const current = getImageryPeriodForDate(new Date("2024-02-01"));
+      const current = getImageryPeriodForDate(new Date("2025-01-15"));
 
       expect(baseline).toBe("BASELINE_2014");
       expect(early2024).toBe("EARLY_2024");

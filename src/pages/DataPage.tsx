@@ -98,6 +98,7 @@ export function DataPage() {
             onSiteHighlight={() => {}}
             highlightedSiteId={null}
             variant="expanded"
+            clickableRow={true}
             tooltipText={translate("table.tooltipDataPage")}
           />
         </div>

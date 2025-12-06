@@ -41,6 +41,7 @@ export const it: Translations = {
     about: "Informazioni",
     resources: {
       title: "Risorse",
+      howItWorks: "Come Funziona",
       donate: "Dona",
       organizations: "Organizzazioni",
       research: "Ricerca e Rapporti",
@@ -311,6 +312,8 @@ export const it: Translations = {
     donate: "Dona",
     stats: "Statistiche",
     about: "Informazioni",
+    copyright: "© {year} Registro del Patrimonio",
+    lastUpdated: "Ultimo Aggiornamento: {date}",
   },
 
   legend: {

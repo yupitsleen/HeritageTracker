@@ -2,7 +2,7 @@
 
 **Documenting Palestinian cultural heritage destruction through interactive visualization**
 
-![Tests](https://img.shields.io/badge/tests-1396%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-1465%20passing-brightgreen)
 ![E2E Tests](https://img.shields.io/badge/E2E-16%20passing-blue)
 ![Coverage](https://img.shields.io/badge/coverage-80%25-green)
 ![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)
@@ -30,9 +30,10 @@ Document and visualize Palestinian cultural heritage destruction with evidence-b
 
 ### Data Management
 - **Resizable Table** - Virtual scrolling (60 FPS with 100+ sites), progressive columns
-- **Multi-format Export** - CSV/JSON/GeoJSON with bilingual support
-- **Bilingual UI** - English/Arabic with RTL support
+- **Multi-format Export** - CSV/JSON/GeoJSON with multilingual support
+- **Multilingual UI** - English/Arabic/Italian with RTL support
 - **Detail Modals** - Cross-component state sync
+- **User Guide** - Comprehensive "How It Works" page in Resources dropdown
 
 ### Production-Ready Architecture
 - **3 Backend Modes** - Mock API, Local (PostgreSQL+PostGIS), Supabase Cloud
@@ -52,7 +53,7 @@ Document and visualize Palestinian cultural heritage destruction with evidence-b
 | **Visualization** | D3.js |
 | **Performance** | TanStack Virtual + TanStack Query |
 | **Backend** | PostgreSQL 16 + PostGIS 3.4 + Express |
-| **Testing** | Vitest (1,396 tests) + Playwright (16 E2E) + MSW 2.11.6 |
+| **Testing** | Vitest (1,465 tests) + Playwright (16 E2E) + MSW 2.11.6 |
 
 ---
 
@@ -70,7 +71,7 @@ npm install
 
 ```bash
 npm run dev          # → http://localhost:5173 (Vite HMR)
-npm test             # Run 1,396 unit tests
+npm test             # Run 1,465 unit tests
 npm run e2e          # Run 16 E2E tests (Playwright)
 npm run test:all     # Run all tests (unit + E2E)
 npm run lint         # ESLint check
@@ -104,8 +105,9 @@ src/
 │   ├── Timeline/           # D3.js scrubber
 │   ├── FilterBar/          # Multi-select filters
 │   └── SitesTable/         # Virtual scrolling table
+├── pages/                  # 7 pages (Dashboard, Timeline, Data, Stats, About, Donate, HowItWorks)
 ├── hooks/                  # 24+ custom hooks
-├── contexts/               # 4 contexts (theme, animation, calendar, locale)
+├── contexts/               # 4 contexts (theme, animation, calendar, locale - en/ar/it)
 ├── config/                 # 30+ configuration files
 ├── data/mockSites.ts       # 70 documented sites (2,356 lines)
 ├── database/               # PostgreSQL migrations (285 lines)
@@ -113,10 +115,12 @@ src/
 ```
 
 **Achievements:**
-- ✅ 1,396 tests passing (1,304 frontend + 77 backend + 15 utils)
+
+- ✅ 1,465 tests passing (frontend + backend)
 - ✅ 16 E2E tests (70% faster than original suite)
 - ✅ 70 sites documented (exceeds UNESCO target by 123-140%)
 - ✅ 3 backend modes with zero-code switching
+- ✅ Multilingual support (English/Arabic/Italian)
 - ✅ Code review 90% complete
 
 ---
@@ -141,8 +145,10 @@ src/
 - [x] 70 Gaza sites documented (140-160 buildings)
 - [x] 3 backend modes with adapter pattern
 - [x] Scaling architecture (pagination, virtual scrolling, clustering)
-- [x] 1,396 unit tests + 16 E2E tests
+- [x] 1,465 unit tests + 16 E2E tests
 - [x] Local backend (PostgreSQL + Express)
+- [x] Multilingual support (English/Arabic/Italian)
+- [x] "How It Works" user guide page
 - [x] Code review 90% complete
 
 ### 🚧 Phase 15: Production Deployment (Next)
@@ -182,7 +188,7 @@ See [research documentation](docs/research/) for detailed source analysis.
 
 - 📊 Data collection and source verification
 - 💻 Code contributions ([open issues](https://github.com/yupitsleen/HeritageTracker/issues))
-- 🌍 Arabic translation and localization
+- 🌍 Translation and localization (Arabic/Italian expansion)
 - 🐛 Testing and bug reports
 
 ### Contribution Guidelines
@@ -194,7 +200,7 @@ See [research documentation](docs/research/) for detailed source analysis.
 4. Follow patterns in [CLAUDE.md](CLAUDE.md)
 
 **Quality Gates:**
-- ✅ All 1,396 unit tests passing
+- ✅ All 1,465 unit tests passing
 - ✅ All 16 E2E tests passing
 - ✅ ESLint with zero warnings
 - ✅ TypeScript strict mode (no `any`)
@@ -238,11 +244,13 @@ Built on documentation by UNESCO, Forensic Architecture, Heritage for Peace, Pal
 ## 📊 Project Statistics
 
 - **70 sites** documented (140-160 buildings)
-- **1,396 tests** passing (1,304 frontend + 77 backend + 15 utils)
+- **1,465 tests** passing (frontend + backend)
 - **16 E2E tests** (Playwright)
+- **7 pages** (Dashboard, Timeline, Data, Stats, About, Donate, HowItWorks)
 - **2,356 lines** of heritage site data
 - **857 lines** of developer documentation
 - **3 backend modes** (Mock/Local/Supabase)
+- **3 languages** (English/Arabic/Italian)
 - **186 Wayback releases** (2014-2025)
 - **24+ custom hooks**
 - **30+ config files**

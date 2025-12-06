@@ -2458,6 +2458,7 @@ export const mockSites: Site[] = [
     coordinates: [31.5045, 34.4625], // Shuja'iyya district, Gaza City - ESTIMATE, needs validation
     status: "destroyed",
     dateDestroyed: "2024-07-01",
+    dateDestroyedIslamic: "24 Dhu al-Hijjah 1445 AH",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2025-11-09",
     description:

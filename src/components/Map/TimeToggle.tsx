@@ -10,20 +10,10 @@ interface TimeToggleProps {
 }
 
 /**
- * Format date string to full format for tooltips (e.g., "Feb 20, 2014" or "Aug 31, 2023")
+ * Format date string to full format for tooltips (e.g., "Feb 20, 2014" or "Oct 6, 2023")
  * Uses UTC to avoid timezone offset issues
  */
 function formatFullDate(dateStr: string): string {
-  if (dateStr === "current") {
-    // For "current", use today's date
-    const today = new Date();
-    return today.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      timeZone: "UTC"
-    });
-  }
   const date = new Date(dateStr + "T00:00:00Z"); // Parse as UTC
   return date.toLocaleDateString("en-US", {
     month: "short",
@@ -34,13 +24,9 @@ function formatFullDate(dateStr: string): string {
 }
 
 /**
- * Extract year from date string (e.g., "2014" or "2025")
+ * Extract year from date string (e.g., "2014" or "2023" or "2025")
  */
 function formatYear(dateStr: string): string {
-  if (dateStr === "current") {
-    // For "current", use current year
-    return new Date().getUTCFullYear().toString();
-  }
   const date = new Date(dateStr + "T00:00:00Z"); // Parse as UTC
   return date.getUTCFullYear().toString();
 }

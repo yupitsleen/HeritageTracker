@@ -103,6 +103,28 @@ export const FilterBar = memo(function FilterBar({
   // Use custom hook for derived filter state (memoized)
   const { hasActiveFilters, activeFilterCount } = useActiveFilters(filters);
 
+  // Calculate counts for each type and status
+  const typeCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    sites.forEach((site) => {
+      counts[site.type] = (counts[site.type] || 0) + 1;
+    });
+    return counts;
+  }, [sites]);
+
+  const statusCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    sites.forEach((site) => {
+      counts[site.status] = (counts[site.status] || 0) + 1;
+    });
+    return counts;
+  }, [sites]);
+
+  // Filter out unused statuses (with count of 0)
+  const availableStatuses = useMemo(() => {
+    return STATUS_OPTIONS.filter((status) => (statusCounts[status] || 0) > 0);
+  }, [statusCounts]);
+
   // Memoized formatted ranges for filter pills
   const dateRangeLabel = useMemo(
     () => formatDateRange(filters.destructionDateStart, filters.destructionDateEnd),
@@ -240,6 +262,7 @@ export const FilterBar = memo(function FilterBar({
               selectedValues={filters.selectedTypes}
               onChange={handleTypesChange}
               formatLabel={formatLabel}
+              counts={typeCounts}
             />
           </FilterButton>
 
@@ -250,10 +273,11 @@ export const FilterBar = memo(function FilterBar({
             tooltip={TOOLTIPS.FILTERS.STATUS_FILTER}
           >
             <FilterCheckboxList
-              options={STATUS_OPTIONS}
+              options={availableStatuses}
               selectedValues={filters.selectedStatuses}
               onChange={handleStatusesChange}
               formatLabel={formatLabel}
+              counts={statusCounts}
             />
           </FilterButton>
 
@@ -426,6 +450,7 @@ export const FilterBar = memo(function FilterBar({
                   selectedValues={filters.selectedTypes}
                   onChange={handleTypesChange}
                   formatLabel={formatLabel}
+                  counts={typeCounts}
                 />
               </div>
 
@@ -435,10 +460,11 @@ export const FilterBar = memo(function FilterBar({
                   {translate("filters.selectStatus")}
                 </h3>
                 <FilterCheckboxList
-                  options={STATUS_OPTIONS}
+                  options={availableStatuses}
                   selectedValues={filters.selectedStatuses}
                   onChange={handleStatusesChange}
                   formatLabel={formatLabel}
+                  counts={statusCounts}
                 />
               </div>
 
