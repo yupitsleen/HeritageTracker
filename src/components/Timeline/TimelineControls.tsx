@@ -216,6 +216,17 @@ export function TimelineControls({
       {/* Speed control - always visible when map settings are hidden (Dashboard) */}
       {hideMapSettings && renderSpeedControl()}
 
+      {/* Show Unknown Dates toggle - visible on Dashboard when hideMapSettings is true */}
+      {hideMapSettings && advancedMode && onShowUnknownDestructionDatesToggle && (
+        <TimelineToggleButton
+          label="timeline.showUnknownDates"
+          isActive={showUnknownDestructionDates ?? false}
+          onClick={onShowUnknownDestructionDatesToggle}
+          variant="button"
+          tooltip="timeline.showUnknownDatesTooltip"
+        />
+      )}
+
       {/* 2xl and up: Full controls visible */}
       <div className="hidden 2xl:flex 2xl:items-center 2xl:gap-1.5">
         {renderDesktopToggles()}
