@@ -9,7 +9,6 @@ import { mockSites } from "../data/mockSites";
 
 // Import all major components
 import { About } from "../components/About/About";
-import { StatsDashboard } from "../components/Stats/StatsDashboard";
 import { DonateModal } from "../components/Donate/DonateModal";
 import { SiteDetailPanel } from "../components/SiteDetail/SiteDetailPanel";
 import { FilterBar } from "../components/FilterBar/FilterBar";
@@ -66,27 +65,15 @@ describe("Dark Mode - Component Rendering", () => {
     cleanup();
   });
 
-  describe("About Modal", () => {
+  describe("About Component", () => {
     it("renders in light mode", () => {
-      renderWithProviders(<About sites={mockSites} />, "light");
+      renderWithProviders(<About />, "light");
       expect(screen.getByText("About Heritage Tracker")).toBeInTheDocument();
     });
 
     it("renders in dark mode", () => {
-      renderWithProviders(<About sites={mockSites} />, "dark");
+      renderWithProviders(<About />, "dark");
       expect(screen.getByText("About Heritage Tracker")).toBeInTheDocument();
-    });
-  });
-
-  describe("Stats Dashboard", () => {
-    it("renders in light mode", () => {
-      renderWithProviders(<StatsDashboard sites={mockSites} />, "light");
-      expect(screen.getByText("Documenting Genocide")).toBeInTheDocument();
-    });
-
-    it("renders in dark mode", () => {
-      renderWithProviders(<StatsDashboard sites={mockSites} />, "dark");
-      expect(screen.getByText("Documenting Genocide")).toBeInTheDocument();
     });
   });
 

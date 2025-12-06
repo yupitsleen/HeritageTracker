@@ -72,7 +72,6 @@ src/
 │   ├── Timeline/                 # TimelineScrubber, TimelineControls
 │   ├── SitesTable/               # Virtual scrolling table (100+ sites)
 │   ├── Layout/                   # AppHeader, DesktopLayout, MobileLayout
-│   ├── Stats/                    # StatsDashboard, HeroStatistic
 │   ├── Icons/                    # Reusable icon library
 │   └── [Button, Modal, Badge, Error, Loading, etc.]
 ├── pages/                        # 6 pages
