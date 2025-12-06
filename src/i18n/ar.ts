@@ -48,6 +48,7 @@ export const ar: Translations = {
       education: "الموارد التعليمية",
       legal: "القانون والدفاع",
       trackers: "متتبعات تراثية أخرى",
+      howItWorks: "كيف يعمل",
     },
   },
 

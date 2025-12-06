@@ -48,6 +48,7 @@ export const it: Translations = {
       education: "Risorse Educative",
       legal: "Diritto e Sostegno",
       trackers: "Altri Tracciatori del Patrimonio",
+      howItWorks: "Come Funziona",
     },
   },
 

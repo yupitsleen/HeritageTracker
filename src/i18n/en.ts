@@ -48,6 +48,7 @@ export const en: Translations = {
       education: "Educational Resources",
       legal: "Legal & Advocacy",
       trackers: "Other Heritage Trackers",
+      howItWorks: "How It Works",
     },
   },
 
