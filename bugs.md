@@ -55,7 +55,7 @@
 
 ## Phase 3 - Medium Priority Improvements ✅ COMPLETED (4/4)
 
-**Commit:** `[pending]` - fix: quick wins - table UX improvements (#6, #7, #9, #10)
+**Commit:** `f2b052a` - fix: quick wins - table UX improvements (#6, #7, #9, #10)
 
 ### ✅ 6. Filter Dropdown - Hide Site Status if none exist
 
