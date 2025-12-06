@@ -1,12 +1,12 @@
 # Heritage Tracker - Bug Tracking & Progress
 
-**Status:** Phase 1 IN PROGRESS | Phase 2 In Progress 🔄
+**Status:** IN PROGRESS
 
 ---
 
 ## Phase 1 - Critical Bugs - IN PROGRESS
 
-**Commit:** `2bb49e9` - fix: resolve Phase 1 critical bugs (dark mode, dates, timeline bounds, N/A display)
+**Commit:** `2bb49e9` - fix: resolve Phase 1 critical bugs (dark mode, dates, N/A display)
 
 ### ✅ 1. Dark Mode Text Visibility - How It Works Page
 
@@ -28,8 +28,7 @@
 
 **Status:** TODO - IN PROGRESS
 **Issue:** Timeline dots rendering outside the timeline container
-**Fix:** Changed TimelineScrubber container from overflow-visible to overflow-hidden (clips dots outside bounds)
-**Files:** 1 modified (TimelineScrubber.tsx)
+**Files:** 1 modified (TimelineScrubber.tsx) - un-do? Not working as intended.
 **Tests:**
 
 ### ✅ 4. 'N/A' Destruction Date Display Issue
@@ -52,61 +51,93 @@
 **Priority:** High
 **Complexity:** Medium
 
-### 6. "As Large as Possible" Interval Behavior
-
-**Status:** DONE
-**Issue:** "As large as possible" interval option doesn't move green scrubber to the very end (remains on site's destruction date)
-**Priority:** Medium
-**Complexity:** Medium
-
-### 🔄 7. Filter Dropdown - Show Site Counts
-
-**Status:** TODO
-**Issue:** Status/Type filter dropdowns don't show how many sites per option
-**Enhancement:** Add counts in parentheses (e.g., "Destroyed (45)", "Mosque (14)"). If there are 0, also indicate that "(0)".
-**Priority:** Medium
-**Complexity:** Low
-
-### 🔄 8. Data Table Column Widths
-
-**Status:** IN PROGRESS
-**Issue:** Column widths are unpolished - some too big, some squished. Mostly done except site name column too big
-**Priority:** Medium
-**Complexity:** Low
-
 ---
 
 ## Phase 3 - Medium Priority Improvements 📋 PLANNED
 
-### 📋 10. Language Select Button Styling
+### 🔄 6. Filter Dropdown - Hide Site Status if none exist
+
+**Status:** TODO
+**Issue:** Status filter dropdowns show statuses that are unused (i.e. do not apply to any sites at this time)
+**Enhancement:** If there are 0 sites that have a status, hide the status from appearing in the dropdown".
+**Priority:** Medium
+**Complexity:** Low
+
+### 🔄 7. Data Table Column Widths
+
+**Status:** IN PROGRESS
+**Issue:** Column width of the Site Name column is too big (i.e. lots of empty space in the cell).
+**Priority:** Medium
+**Complexity:** Low
+
+### 📋 8. Language Select Button Styling
 
 **Status:** TODO
 **Issue:** Language select dropdown should match styling of adjacent buttons (theme toggle, etc.)
 **Priority:** Low
 **Complexity:** Low
 
-### 📋 11. Site Type Icons Color
+### 📋 9. Site Type Icons Color
 
 **Status:** TODO
 **Issue:** Site type icons should use Palestinian flag red for consistency
 **Priority:** Low
 **Complexity:** Low
 
-### 📋 12. Data Page Row Click Behavior
+### 📋 10. Data Page Row Click Behavior
 
 **Status:** TODO
-**Issue:** On Data page, clicking anywhere on row should open site detail modal (not just site name link)
+**Issue:** On Data page only, clicking anywhere on a table row (rather than just the site name that has a link) should open site detail modal.
 **Priority:** Medium
 **Complexity:** Low
 
-### 📋 13. Dashboard Data Table "See More" Indicator
+### 📋 11. Dashboard Data Table "See More" Indicator
 
 **Status:** TODO
-**Issue:** Dashboard mini data table needs discrete "see more" indicator to open site detail modal
+**Issue:** Dashboard mini data table needs discrete "see more" indicator to open site detail modal. Can we make this appear in the same cell as the Site Name, or do we need a new column next to the Site name? Or should we have a "see more" link pop up as a tooltip on hover?
 **Priority:** Low
 **Complexity:** Low
 
-### 📋 14. Stats Page - Last Updated & Source Attribution
+### 🎨 12. Static Text Centering
+
+**Status:** TODO
+**Issue:** Lots of static text, like headers, on static-content pages not centered, like on other pages
+**Priority:** Low
+**Complexity:** Low
+
+### ✨ 13. Last Updated & Copyright Footer
+
+**Status:** TODO
+**Feature:** Dynamically set "Last Updated" and copyright year
+**Priority:** Low
+**Complexity:** Low
+
+### 💭 14. Component Visual Depth
+
+**Status:** NEEDS REVIEW
+**Issue:** Show more depth between main components and background, or make components more distinct
+**Priority:** TBD
+**Complexity:** Medium
+
+### 💭 15. Rounded Button Incongruence
+
+**Status:** NEEDS REVIEW
+**Question:** Do rounded buttons look incongruent with non-rounded main components?
+**Priority:** TBD
+**Complexity:** Low
+
+### 💭 16. Red Triangle Background Width
+
+**Status:** NEEDS REVIEW
+**Issue:** Red triangle background extends too far right across the page. Let's make it end about 1/3 of the way across the page.
+**Priority:** TBD
+**Complexity:** Low
+
+---
+
+## Phase 4 - NEED TO THINK MORE ABOUT
+
+### 📋 17. Stats Page - Last Updated & Source Attribution
 
 **Status:** TODO
 **Issue:** Show when casualty stats were last updated, sources directly near numbers (not just footer)
@@ -114,47 +145,43 @@
 **Priority:** High
 **Complexity:** Medium
 
----
-
-## Phase 4 - Content & Polish 🎨 BACKLOG
-
-### 🎨 15. Stats/About Pages - Past Tense Language
+### 🎨 18. Stats/About Pages - Past Tense Language
 
 **Status:** TODO
 **Issue:** Use more past-tense language on Stats and About pages
 **Priority:** Low
 **Complexity:** Low
 
-### 🎨 16. How It Works Page - Content Relevance
+### 🎨 19. How It Works Page - Content Relevance
 
 **Status:** TODO
 **Issue:** Page has irrelevant technical info (Claude slop)
 **Priority:** Low
 **Complexity:** Low
 
-### 🎨 17. Static Text Centering
-
-**Status:** TODO
-**Issue:** Lots of static text on pages not centered
-**Priority:** Low
-**Complexity:** Low
-
-### 🎨 18. Help Modal vs About/How It Works
+### 🎨 20. Help Modal vs About/How It Works
 
 **Status:** TODO
 **Issue:** Clarify what Help modal contains that's not in About or How It Works
-**Question:** Why is How It Works under Resources tab?
+**Question:** Why is How It Works under Resources tab? Do we have redundant content or out of scope content?
 **Priority:** Low
 **Complexity:** Low
 
-### 🎨 19. Stats/About Content Simplification
+### 🎨 21. Stats/About Content Simplification
 
 **Status:** TODO
-**Issue:** Content on Stats and About pages could be further simplified
+**Issue:** Content on Stats and About pages could be further simplified (if we deem them not redundant)
 **Priority:** Low
 **Complexity:** Medium
 
-### 🎨 20. Source Endorsement Disclaimer
+### 💭 22. Animation Impact
+
+**Status:** NEEDS REVIEW
+**Question:** Is the timeline animation still impactful? Should we keep it? Enhance it to make it more dramatic?
+**Priority:** TBD
+**Complexity:** N/A
+
+### 🎨 23. Source Endorsement Disclaimer
 
 **Status:** TODO
 **Issue:** Should indicate more clearly that sources (UNESCO, etc.) do not endorse this project
@@ -165,65 +192,13 @@
 
 ## Phase 5 - New Features ✨ FUTURE
 
-### ✨ 21. Show/Hide Data Columns
+### ✨ 24. Show/Hide Data Columns
 
 **Status:** TODO
 **Feature:** Allow users to choose which data columns to show/hide in table
 **Priority:** Low
 **Complexity:** Medium
 
-### ✨ 22. Last Updated & Copyright Footer
-
-**Status:** TODO
-**Feature:** Dynamically set "Last Updated" and copyright year
-**Priority:** Low
-**Complexity:** Low
-
 ---
 
-## Deferred / Needs Discussion 💭
-
-### 💭 23. Animation Impact
-
-**Status:** NEEDS REVIEW
-**Question:** Is the timeline animation still impactful? Should we keep it?
-**Priority:** TBD
-**Complexity:** N/A
-
-### 💭 24. Component Visual Depth
-
-**Status:** NEEDS REVIEW
-**Issue:** Show more depth between main components and background, or make components more distinct
-**Priority:** TBD
-**Complexity:** Medium
-
-### 💭 25. Rounded Button Incongruence
-
-**Status:** NEEDS REVIEW
-**Question:** Do rounded buttons look incongruent with non-rounded main components?
-**Priority:** TBD
-**Complexity:** Low
-
-### 💭 26. Red Triangle Background Width
-
-**Status:** NEEDS REVIEW
-**Issue:** Red triangle background extends too far right across the page
-**Priority:** TBD
-**Complexity:** Low
-
----
-
-## Progress Summary
-
-**Phase 1 (Critical):** 4/4 almost complete
-**Phase 2 (High Priority):** 0/4 complete 🔄
-**Phase 3 (Medium Priority):** 0/6 complete 📋
-**Phase 4 (Content & Polish):** 0/6 complete 🎨
-**Phase 5 (New Features):** 0/2 complete ✨
-**Deferred:** 4 items need discussion 💭
-
-**Total:** 4/22 bugs/features complete (18%)
-
----
-
-_Last Updated: November 28, 2025_
+_Last Updated: December 6th, 2025_
