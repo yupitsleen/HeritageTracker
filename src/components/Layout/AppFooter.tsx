@@ -3,6 +3,7 @@ import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Z_INDEX } from "../../constants/layout";
+import { LAST_UPDATED } from "../../constants/statistics";
 
 interface AppFooterProps {
   isMobile: boolean;
@@ -13,10 +14,12 @@ interface AppFooterProps {
  * Green background with Palestinian flag colors
  * Muted in dark mode
  * Stats, About, and Donate now navigate to dedicated pages for better performance
+ * Shows dynamic copyright year and last updated date
  */
 export function AppFooter({ isMobile }: AppFooterProps) {
   const t = useThemeClasses();
   const translate = useTranslation();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer
@@ -28,7 +31,8 @@ export function AppFooter({ isMobile }: AppFooterProps) {
         <div className="py-1.5">
           <div className={cn("container mx-auto px-4")}>
             <p className="text-[10px] text-center">
-              {translate("footer.title")} •{" "}
+              {translate("footer.copyright").replace("{year}", currentYear.toString())} •{" "}
+              {translate("footer.lastUpdated").replace("{date}", LAST_UPDATED)} •{" "}
               <a
                 href="https://github.com/yupitsleen/HeritageTracker"
                 target="_blank"
@@ -82,6 +86,10 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               >
                 {translate("footer.github")}
               </a>
+            </p>
+            <p className="text-[9px] text-center mt-1 opacity-80">
+              {translate("footer.copyright").replace("{year}", currentYear.toString())} •{" "}
+              {translate("footer.lastUpdated").replace("{date}", LAST_UPDATED)}
             </p>
           </div>
         </div>

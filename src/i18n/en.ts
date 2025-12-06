@@ -313,6 +313,8 @@ export const en: Translations = {
     donate: "Donate",
     stats: "Stats",
     about: "About",
+    copyright: "© {year} Heritage Tracker",
+    lastUpdated: "Last Updated: {date}",
   },
 
   legend: {

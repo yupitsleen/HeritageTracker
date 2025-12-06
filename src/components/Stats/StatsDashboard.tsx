@@ -36,7 +36,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
 
         {/* Escalation & Acceleration - Shows systematic intensification */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
             Escalation & Acceleration: From Ethnic Cleansing to Genocide
           </h2>
           <p className={`text-sm md:text-base mb-3 ${t.text.heading}`}>
@@ -182,7 +182,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
 
         {/* Targeted Killings - Protected Groups Under International Law */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
             Targeting Those Who Document, Heal, and Help
           </h2>
           <p className={`text-sm md:text-base mb-3 ${t.text.heading}`}>
@@ -386,7 +386,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
 
         {/* What Was Lost - Key Examples */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Notable Losses</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Notable Losses</h2>
           <div className="space-y-2 md:space-y-3">
             {/* Great Omari Mosque */}
             <div className={`border-l-4 border-[#ed3039] ${t.bg.tertiary} p-2 md:p-3 rounded-r-lg`}>
@@ -408,7 +408,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
 
         {/* Comparative Scale - If This Were Your City */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>If This Were Your City</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>If This Were Your City</h2>
           <p className={`text-sm md:text-base mb-3 ${t.text.heading}`}>
             Gaza's heritage destruction, proportionally applied to other cities:
           </p>
@@ -445,7 +445,7 @@ export const StatsDashboard = memo(function StatsDashboard({ sites }: StatsDashb
 
         {/* Legal Context */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Legal Framework</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Legal Framework</h2>
           <div className={`${t.bg.tertiary} border ${t.border.default} rounded-lg p-3 md:p-4 space-y-1.5 md:space-y-2 text-xs md:text-sm ${t.text.heading}`}>
             <p>
               <strong>1954 Hague Convention:</strong> Prohibits targeting cultural heritage during

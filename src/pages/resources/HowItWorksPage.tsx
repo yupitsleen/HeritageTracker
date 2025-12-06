@@ -23,7 +23,7 @@ export function HowItWorksPage() {
       <ResourceSection title="Interactive Dashboard">
         <div className={`space-y-4 ${t.text.body}`}>
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Map View</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Map View</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>Click markers</strong> to view detailed site information</li>
               <li><strong>Toggle layers</strong> to switch between street view and satellite imagery</li>
@@ -33,7 +33,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Timeline Scrubber</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Timeline Scrubber</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>Drag the slider</strong> to see sites destroyed over time</li>
               <li><strong>Play button</strong> automatically advances through the timeline</li>
@@ -43,7 +43,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Site Details</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Site Details</h3>
             <p className={`text-sm md:text-base ${t.text.body}`}>
               Click on any site to view comprehensive information including historical significance,
               destruction details, verification sources, and satellite imagery comparisons.
@@ -56,7 +56,7 @@ export function HowItWorksPage() {
       <ResourceSection title="Data Table (Data Page)">
         <div className={`space-y-4 ${t.text.body}`}>
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Navigation</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Navigation</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>Scroll</strong> to browse all 70+ documented sites</li>
               <li><strong>Click rows</strong> to open detailed site information</li>
@@ -66,7 +66,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Export Options</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Export Options</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>CSV</strong> - Spreadsheet format for Excel, Google Sheets</li>
               <li><strong>JSON</strong> - Structured data format for developers</li>
@@ -86,7 +86,7 @@ export function HowItWorksPage() {
           </p>
 
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Using the Comparison View</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Using the Comparison View</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>Select a site</strong> from the dropdown menu</li>
               <li><strong>Left panel</strong> shows historical imagery (before destruction)</li>
@@ -109,7 +109,7 @@ export function HowItWorksPage() {
       <ResourceSection title="Filtering & Search">
         <div className={`space-y-4 ${t.text.body}`}>
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Filter Options</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Filter Options</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>Site Type</strong> - Mosque, Church, Museum, Archaeological Site, Library, Monument</li>
               <li><strong>Status</strong> - Destroyed, Heavily Damaged, Damaged, Looted, Threatened</li>
@@ -120,7 +120,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Search</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Search</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li>Search works across site names, locations, and descriptions</li>
               <li>Results update in real-time as you type (300ms debouncing)</li>
@@ -142,7 +142,7 @@ export function HowItWorksPage() {
       <ResourceSection title="Mobile & Accessibility">
         <div className={`space-y-4 ${t.text.body}`}>
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Mobile Support</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Mobile Support</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>Responsive design</strong> adapts to your screen size</li>
               <li><strong>Touch-friendly</strong> controls for mobile devices</li>
@@ -152,7 +152,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Keyboard Navigation</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Keyboard Navigation</h3>
             <div className={`${t.bg.tertiary} p-4 rounded-lg ${t.text.body}`}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
@@ -176,7 +176,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Accessibility Features</h3>
+            <h3 className={`text-lg font-semibold mb-2 text-center ${t.text.subheading}`}>Accessibility Features</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm md:text-base ${t.text.body}`}>
               <li><strong>WCAG 2.1 AA compliant</strong> color contrast ratios</li>
               <li><strong>Screen reader support</strong> with proper ARIA labels</li>
@@ -251,7 +251,7 @@ export function HowItWorksPage() {
       <ResourceSection title="Tips & Best Practices">
         <div className={`${t.bg.tertiary} p-4 rounded-lg space-y-3 ${t.text.body}`}>
           <div>
-            <h3 className={`text-base font-semibold mb-2 ${t.text.subheading}`}>For Researchers</h3>
+            <h3 className={`text-base font-semibold mb-2 text-center ${t.text.subheading}`}>For Researchers</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
               <li>Use GeoJSON export for spatial analysis in QGIS or ArcGIS</li>
               <li>Filter by site type to focus on specific categories (e.g., all UNESCO-listed sites)</li>
@@ -261,7 +261,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-base font-semibold mb-2 ${t.text.subheading}`}>For Advocates</h3>
+            <h3 className={`text-base font-semibold mb-2 text-center ${t.text.subheading}`}>For Advocates</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
               <li>Use Timeline page to create compelling before/after comparisons</li>
               <li>Share direct links to specific sites for targeted campaigns</li>
@@ -271,7 +271,7 @@ export function HowItWorksPage() {
           </div>
 
           <div>
-            <h3 className={`text-base font-semibold mb-2 ${t.text.subheading}`}>For Educators</h3>
+            <h3 className={`text-base font-semibold mb-2 text-center ${t.text.subheading}`}>For Educators</h3>
             <ul className={`list-disc list-inside space-y-1 text-sm ${t.text.body}`}>
               <li>Use map view to show geographic distribution of sites</li>
               <li>Timeline mode demonstrates scale and timeline of destruction</li>

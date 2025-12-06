@@ -30,7 +30,7 @@ export const About = memo(function About() {
 
         {/* Mission Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
             Understanding Genocide
           </h2>
 
@@ -62,7 +62,7 @@ export const About = memo(function About() {
             </p>
           </div>
 
-          <h3 className={`text-base md:text-lg font-bold mb-2 ${t.text.heading}`}>Our Mission</h3>
+          <h3 className={`text-base md:text-lg font-bold mb-2 text-center ${t.text.heading}`}>Our Mission</h3>
           <p className={`text-sm md:text-base leading-relaxed mb-2 md:mb-3 ${t.text.body}`}>
             Heritage Tracker documents this cultural destruction with forensic precision. We create
             an evidence-based record for international courts, historians, and humanity. Every site
@@ -81,11 +81,11 @@ export const About = memo(function About() {
 
         {/* Responsibility Section */}
         <section className="mb-8">
-          <h2 className={`text-3xl font-bold mb-4 ${t.text.heading}`}>Who's Responsible</h2>
+          <h2 className={`text-3xl font-bold mb-4 text-center ${t.text.heading}`}>Who's Responsible</h2>
 
           {/* Israeli Military Operations */}
           <div className={`${t.bg.tertiary} rounded-lg p-6 mb-4`}>
-            <h3 className={`text-xl font-bold mb-3 ${t.text.heading}`}>Israel</h3>
+            <h3 className={`text-xl font-bold mb-3 text-center ${t.text.heading}`}>Israel</h3>
             <div className={`space-y-3 text-base ${t.text.body}`}>
               <p>
                 The Israeli military has conducted systematic bombing campaigns across Gaza since
@@ -137,7 +137,7 @@ export const About = memo(function About() {
 
           {/* United States Complicity */}
           <div className={`${t.bg.tertiary} rounded-lg p-6`}>
-            <h3 className={`text-xl font-bold mb-3 ${t.text.heading}`}>United States</h3>
+            <h3 className={`text-xl font-bold mb-3 text-center ${t.text.heading}`}>United States</h3>
             <div className={`space-y-3 text-base ${t.text.body}`}>
               <p>
                 The United States provided critical material, financial, and political support
@@ -219,7 +219,7 @@ export const About = memo(function About() {
 
         {/* Methodology Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Methodology</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Methodology</h2>
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
             Every site has been verified by authoritative sources. Requirements:
           </p>
@@ -243,12 +243,12 @@ export const About = memo(function About() {
 
         {/* Data Sources Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
             Data Sources
           </h2>
           <div className="space-y-2 md:space-y-3">
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
-              <h3 className={`text-sm md:text-base font-bold mb-1 ${t.text.heading}`}>UNESCO</h3>
+              <h3 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>UNESCO</h3>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
                 UN agency providing official heritage damage assessments. Verified 114 cultural
                 sites in Gaza (Oct 2024).
@@ -264,7 +264,7 @@ export const About = memo(function About() {
             </div>
 
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
-              <h3 className={`text-sm md:text-base font-bold mb-1 ${t.text.heading}`}>
+              <h3 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
                 Forensic Architecture
               </h3>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
@@ -282,7 +282,7 @@ export const About = memo(function About() {
             </div>
 
             <div className={`border ${t.border.default} rounded-lg p-2 md:p-3`}>
-              <h3 className={`text-sm md:text-base font-bold mb-1 ${t.text.heading}`}>
+              <h3 className={`text-sm md:text-base font-bold mb-1 text-center ${t.text.heading}`}>
                 Heritage for Peace
               </h3>
               <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
@@ -295,7 +295,7 @@ export const About = memo(function About() {
 
         {/* Research Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Research & Data Collection</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Research & Data Collection</h2>
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
             Comprehensive research (Oct 2025) synthesizing data from multiple authoritative sources.
           </p>
@@ -333,7 +333,7 @@ export const About = memo(function About() {
 
         {/* Legal Framework Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Legal & Ethical Framework</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Legal & Ethical Framework</h2>
           <div className={`space-y-1.5 text-sm leading-relaxed ${t.text.body}`}>
             <p>
               <strong>Documentation:</strong> Factual information from verified sources.
@@ -357,7 +357,7 @@ export const About = memo(function About() {
 
         {/* Contributing Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
             How to Contribute
           </h2>
           <p className={`text-xs md:text-sm leading-relaxed mb-2 ${t.text.body}`}>
@@ -393,7 +393,7 @@ export const About = memo(function About() {
 
         {/* Acknowledgments Section */}
         <section className="mb-4 md:mb-6">
-          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${t.text.heading}`}>Acknowledgments</h2>
+          <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>Acknowledgments</h2>
           <p className={`text-sm leading-relaxed ${t.text.body}`}>
             This project builds on work by UNESCO, Forensic Architecture, Heritage for Peace,
             Palestinian Museum, Institute for Palestine Studies, ICOM, and countless researchers and

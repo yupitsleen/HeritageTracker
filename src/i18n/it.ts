@@ -312,6 +312,8 @@ export const it: Translations = {
     donate: "Dona",
     stats: "Statistiche",
     about: "Informazioni",
+    copyright: "© {year} Registro del Patrimonio",
+    lastUpdated: "Ultimo Aggiornamento: {date}",
   },
 
   legend: {

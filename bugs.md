@@ -53,9 +53,10 @@
 
 ---
 
-## Phase 3 - Medium Priority Improvements ✅ COMPLETED (4/4)
+## Phase 3 - Medium Priority Improvements ✅ COMPLETED (8/8)
 
 **Commit:** `f2b052a` - fix: quick wins - table UX improvements (#6, #7, #9, #10)
+**Commit:** [PENDING] - fix: quick wins - UX polish (#8, #11, #12, #13)
 
 ### ✅ 6. Filter Dropdown - Hide Site Status if none exist
 
@@ -73,12 +74,13 @@
 **Files:** 1 modified (TableHeader.tsx)
 **Tests:** All passing ✅
 
-### 📋 8. Language Select Button Styling
+### ✅ 8. Language Select Button Styling
 
-**Status:** TODO
+**Status:** FIXED
 **Issue:** Language select dropdown should match styling of adjacent buttons (theme toggle, etc.)
-**Priority:** Low
-**Complexity:** Low
+**Fix:** Updated LanguageSelector to use IconButton styling (border, hover effects, transitions)
+**Files:** 1 modified (LanguageSelector.tsx)
+**Tests:** All passing ✅
 
 ### ✅ 9. Site Type Icons Color
 
@@ -103,19 +105,21 @@
 **Priority:** Low
 **Complexity:** Low
 
-### 🎨 12. Static Text Centering
+### ✅ 12. Static Text Centering
 
-**Status:** TODO
+**Status:** FIXED
 **Issue:** Lots of static text, like headers, on static-content pages not centered, like on other pages
-**Priority:** Low
-**Complexity:** Low
+**Fix:** Added text-center class to all h2 and h3 section headers across About, Stats, and How It Works pages
+**Files:** 3 modified (About.tsx, StatsDashboard.tsx, HowItWorksPage.tsx)
+**Tests:** All passing ✅
 
-### ✨ 13. Last Updated & Copyright Footer
+### ✅ 13. Last Updated & Copyright Footer
 
-**Status:** TODO
+**Status:** FIXED
 **Feature:** Dynamically set "Last Updated" and copyright year
-**Priority:** Low
-**Complexity:** Low
+**Fix:** Added dynamic copyright year (new Date().getFullYear()) and LAST_UPDATED constant from statistics.ts to footer. Desktop shows in single line, mobile shows in second line for better readability.
+**Files:** 4 modified (AppFooter.tsx, en.ts, ar.ts, it.ts)
+**Tests:** All passing ✅
 
 ### 💭 14. Component Visual Depth
 

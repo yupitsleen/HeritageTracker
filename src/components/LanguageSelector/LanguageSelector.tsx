@@ -3,6 +3,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useLocale } from "../../contexts/LocaleContext";
 import { getAllLocales, getLocaleName } from "../../config/locales";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useTheme } from "../../contexts/ThemeContext";
 import type { LocaleCode } from "../../types/i18n";
 import { BaseDropdown, ChevronIcon } from "../Dropdown/BaseDropdown";
 import { Z_INDEX } from "../../constants/layout";
@@ -17,9 +18,11 @@ interface LanguageSelectorProps {
 /**
  * Language selector dropdown that displays all registered locales
  * Shows native names and allows users to switch between languages
+ * Matches IconButton styling for visual consistency
  */
 export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
   const { locale, setLocale } = useLocale();
+  const { isDark } = useTheme();
   const t = useThemeClasses();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,7 +36,11 @@ export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
 
   const trigger = (
     <button
-      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md transition-colors ${t.bg.secondary} ${t.bg.hover} ${t.text.body}`}
+      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm border transition-all duration-200 hover:shadow-lg active:opacity-80 ${
+        isDark
+          ? "bg-transparent text-gray-300 border-gray-600 hover:bg-gray-600 hover:text-white hover:border-gray-500"
+          : "bg-transparent text-white border-gray-400 hover:bg-gray-700 hover:text-white hover:border-gray-700"
+      }`}
       aria-label="Select language"
       title={`Current: ${currentLocaleName}`}
     >

@@ -304,6 +304,8 @@ export const ar: Translations = {
     donate: "تبرع",
     stats: "الإحصائيات",
     about: "حول",
+    copyright: "© {year} متتبع التراث",
+    lastUpdated: "آخر تحديث: {date}",
   },
 
   legend: {
