@@ -423,20 +423,22 @@ export function TimelineScrubber({
       </div>
 
       {/* D3 Timeline SVG - Ultra compact */}
-      <div className="relative overflow-hidden" style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}>
-        <svg
-          ref={(node) => {
-            if (node && node !== svgRef.current) {
-              svgRef.current = node;
-              setSvgMounted(true);
-            }
-          }}
-          key={`timeline-${containerWidth}-${startDate.getTime()}`}
-          width="100%"
-          height={TIMELINE_CONFIG.HEIGHT}
-          className="mt-1"
-          aria-hidden="true"
-        />
+      <div className="relative" style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}>
+        <div className="overflow-hidden">
+          <svg
+            ref={(node) => {
+              if (node && node !== svgRef.current) {
+                svgRef.current = node;
+                setSvgMounted(true);
+              }
+            }}
+            key={`timeline-${containerWidth}-${startDate.getTime()}`}
+            width="100%"
+            height={TIMELINE_CONFIG.HEIGHT}
+            className="mt-1"
+            aria-hidden="true"
+          />
+        </div>
         {/*
           Floating scrubber date tooltip - positioned below timeline
 
