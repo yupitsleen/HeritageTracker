@@ -1,6 +1,7 @@
 import type { Site } from "../../types";
 import { getSiteTypeConfig } from "../../config/data.config";
 import { getHeroIcon } from "../../config/iconRegistry";
+import { COLORS } from "../../config/colorThemes";
 
 interface SiteTypeIconProps {
   type: Site["type"];
@@ -29,6 +30,7 @@ function UnicodeIcon({
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
+        color: COLORS.FLAG_RED,
       }}
       {...props}
     >
@@ -61,6 +63,7 @@ export function SiteTypeIcon({
       return (
         <IconComponent
           className={className}
+          style={{ color: COLORS.FLAG_RED }}
           aria-label={typeConfig.label}
           role="img"
         />

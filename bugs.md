@@ -53,22 +53,25 @@
 
 ---
 
-## Phase 3 - Medium Priority Improvements 📋 PLANNED
+## Phase 3 - Medium Priority Improvements ✅ COMPLETED (4/4)
 
-### 🔄 6. Filter Dropdown - Hide Site Status if none exist
+**Commit:** `[pending]` - fix: quick wins - table UX improvements (#6, #7, #9, #10)
 
-**Status:** TODO
+### ✅ 6. Filter Dropdown - Hide Site Status if none exist
+
+**Status:** FIXED
 **Issue:** Status filter dropdowns show statuses that are unused (i.e. do not apply to any sites at this time)
-**Enhancement:** If there are 0 sites that have a status, hide the status from appearing in the dropdown".
-**Priority:** Medium
-**Complexity:** Low
+**Fix:** Added memoized `availableStatuses` filter in FilterBar.tsx that dynamically hides statuses with 0 sites
+**Files:** 1 modified (FilterBar.tsx)
+**Tests:** All passing ✅
 
-### 🔄 7. Data Table Column Widths
+### ✅ 7. Data Table Column Widths
 
-**Status:** IN PROGRESS
-**Issue:** Column width of the Site Name column is too big (i.e. lots of empty space in the cell).
-**Priority:** Medium
-**Complexity:** Low
+**Status:** FIXED
+**Issue:** Column width of the Site Name column is too big (i.e. lots of empty space in the cell)
+**Fix:** Reduced maxWidth from 400px to 280px for expanded variant in TableHeader.tsx
+**Files:** 1 modified (TableHeader.tsx)
+**Tests:** All passing ✅
 
 ### 📋 8. Language Select Button Styling
 
@@ -77,19 +80,21 @@
 **Priority:** Low
 **Complexity:** Low
 
-### 📋 9. Site Type Icons Color
+### ✅ 9. Site Type Icons Color
 
-**Status:** TODO
+**Status:** FIXED
 **Issue:** Site type icons should use Palestinian flag red for consistency
-**Priority:** Low
-**Complexity:** Low
+**Fix:** Applied COLORS.FLAG_RED (#ed3039) to both UnicodeIcon and HeroIcon components
+**Files:** 1 modified (SiteTypeIcon.tsx)
+**Tests:** All passing ✅
 
-### 📋 10. Data Page Row Click Behavior
+### ✅ 10. Data Page Row Click Behavior
 
-**Status:** TODO
-**Issue:** On Data page only, clicking anywhere on a table row (rather than just the site name that has a link) should open site detail modal.
-**Priority:** Medium
-**Complexity:** Low
+**Status:** FIXED
+**Issue:** On Data page only, clicking anywhere on a table row (rather than just the site name that has a link) should open site detail modal
+**Fix:** Added `clickableRow` prop that propagates through SitesTable → SitesTableDesktop → TableRow/VirtualizedTableBody → SiteTableRow, with cursor-pointer styling
+**Files:** 6 modified (DataPage.tsx, SitesTable/index.tsx, SitesTableDesktop.tsx, TableRow.tsx, VirtualizedTableBody.tsx, SiteTableRow.tsx)
+**Tests:** All passing ✅
 
 ### 📋 11. Dashboard Data Table "See More" Indicator
 

@@ -42,7 +42,7 @@ export function TableHeader({
           <th
             className={`pl-2 pr-1 ${COMPACT_TABLE.headerY} ${COMPACT_TABLE.headerText} cursor-pointer select-none transition-colors duration-200 hover:bg-gray-700/30`}
             onClick={() => onSort("name")}
-            style={{ minWidth: variant === "compact" ? "180px" : "220px", maxWidth: variant === "expanded" ? "400px" : "none" }}
+            style={{ minWidth: variant === "compact" ? "180px" : "220px", maxWidth: variant === "expanded" ? "280px" : "none", width: variant === "expanded" ? "280px" : "auto" }}
           >
             {translate("table.siteName")}
             <SortIcon field="name" currentField={sortField} direction={sortDirection} />

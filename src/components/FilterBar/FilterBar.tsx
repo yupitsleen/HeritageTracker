@@ -120,6 +120,11 @@ export const FilterBar = memo(function FilterBar({
     return counts;
   }, [sites]);
 
+  // Filter out unused statuses (with count of 0)
+  const availableStatuses = useMemo(() => {
+    return STATUS_OPTIONS.filter((status) => (statusCounts[status] || 0) > 0);
+  }, [statusCounts]);
+
   // Memoized formatted ranges for filter pills
   const dateRangeLabel = useMemo(
     () => formatDateRange(filters.destructionDateStart, filters.destructionDateEnd),
@@ -268,7 +273,7 @@ export const FilterBar = memo(function FilterBar({
             tooltip={TOOLTIPS.FILTERS.STATUS_FILTER}
           >
             <FilterCheckboxList
-              options={STATUS_OPTIONS}
+              options={availableStatuses}
               selectedValues={filters.selectedStatuses}
               onChange={handleStatusesChange}
               formatLabel={formatLabel}
@@ -455,7 +460,7 @@ export const FilterBar = memo(function FilterBar({
                   {translate("filters.selectStatus")}
                 </h3>
                 <FilterCheckboxList
-                  options={STATUS_OPTIONS}
+                  options={availableStatuses}
                   selectedValues={filters.selectedStatuses}
                   onChange={handleStatusesChange}
                   formatLabel={formatLabel}

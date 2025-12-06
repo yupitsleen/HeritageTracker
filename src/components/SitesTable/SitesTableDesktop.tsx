@@ -25,6 +25,7 @@ interface SitesTableDesktopProps {
   variant: "compact" | "expanded";
   visibleColumns?: string[]; // For resizable table - which columns to show
   tooltipText?: string; // Optional custom tooltip text for the info icon
+  clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
 }
 
 /**
@@ -53,6 +54,7 @@ export function SitesTableDesktop({
   variant,
   visibleColumns,
   tooltipText,
+  clickableRow = false,
 }: SitesTableDesktopProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -157,6 +159,7 @@ export function SitesTableDesktop({
               highlightedSiteId={highlightedSiteId}
               variant={variant}
               isColumnVisible={isColumnVisible}
+              clickableRow={clickableRow}
             />
           </div>
         ) : (
@@ -179,6 +182,7 @@ export function SitesTableDesktop({
                   onSiteClick={onSiteClick}
                   onSiteHighlight={onSiteHighlight}
                   rowRef={highlightedSiteId === site.id ? highlightedRowRef : undefined}
+                  clickableRow={clickableRow}
                 />
               ))}
             </tbody>
