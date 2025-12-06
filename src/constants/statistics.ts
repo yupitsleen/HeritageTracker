@@ -115,6 +115,7 @@ export const EXTERNAL_SOURCES = {
 
 /**
  * Last verification/update date for statistics
+ * Updated manually when research is conducted
  * Next scheduled update: February 1, 2025
  */
 export const LAST_UPDATED = "January 2025";
