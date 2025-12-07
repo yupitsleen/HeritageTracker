@@ -3,7 +3,6 @@ import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import { scaleTime } from "d3-scale";
 import type { Site } from "../../types";
 import { useAnimation } from "../../contexts/AnimationContext";
-import { useAppState } from "../../hooks/useAppState";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
@@ -44,7 +43,6 @@ export interface AdvancedTimelineMode {
   showNavigation?: boolean; // Optional: show Previous/Next navigation (default: true when advancedMode is set)
   hidePlayControls?: boolean; // Optional: hide Play/Pause/Speed controls (default: false)
   hideMapSettings?: boolean; // Optional: hide Zoom to Site and Show Map Markers (moved to map on Dashboard)
-  hideShowUnknownDatesToggle?: boolean; // Optional: hide Show Unknown Dates toggle (when moved to FilterBar)
   onReset?: () => void; // Optional: custom reset handler for parent components (e.g., Timeline page to reset wayback sliders)
 }
 
@@ -90,10 +88,6 @@ export function TimelineScrubber({
     setMapMarkersVisible,
   } = useAnimation();
 
-  // Get showUnknownDates from filter state
-  const { filters, setShowUnknownDates } = useAppState();
-  const showUnknownDestructionDates = filters.showUnknownDates;
-
   const t = useThemeClasses();
   const translate = useTranslation();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -102,22 +96,20 @@ export function TimelineScrubber({
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
   const [scrubberPosition, setScrubberPosition] = useState<number | null>(null);
 
-  // Extract timeline data using custom hook with unknown dates filter
-  const { events: allDestructionDates } = useTimelineData(sites, showUnknownDestructionDates);
+  // Extract timeline data using custom hook
+  // Note: sites are already filtered by useFilteredSites (includes showUnknownDates logic)
+  const { events: allDestructionDates } = useTimelineData(sites);
 
   // Calculate date range from dataset (oldest and newest destruction dates)
   const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
     const defaults = calculateDefaultDateRange(allDestructionDates, startDate, endDate);
-    // When showUnknownDestructionDates is false, we're filtering the timeline
-    // so the scale should adjust to show only the visible events
-    const hasActiveFilter = !showUnknownDestructionDates;
-    const adjusted = calculateAdjustedDateRange(allDestructionDates, hasActiveFilter, startDate, endDate);
+    const adjusted = calculateAdjustedDateRange(allDestructionDates, false, startDate, endDate);
 
     return {
       ...defaults,
       ...adjusted,
     };
-  }, [allDestructionDates, startDate, endDate, showUnknownDestructionDates]);
+  }, [allDestructionDates, startDate, endDate]);
 
   // Use all destruction dates (no filtering in timeline component)
   const destructionDates = allDestructionDates;
@@ -402,9 +394,7 @@ export function TimelineScrubber({
             advancedMode={!!advancedMode}
             hidePlayControls={advancedMode?.hidePlayControls ?? false}
             hideMapSettings={advancedMode?.hideMapSettings ?? false}
-            hideShowUnknownDatesToggle={advancedMode?.hideShowUnknownDatesToggle ?? false}
             syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
-            showUnknownDestructionDates={showUnknownDestructionDates}
             onPlay={handlePlay}
             onPause={pause}
             onReset={handleReset}
@@ -412,7 +402,6 @@ export function TimelineScrubber({
             onZoomToSiteToggle={() => setZoomToSiteEnabled(!zoomToSiteEnabled)}
             onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
             onSyncMapToggle={advancedMode?.onSyncMapToggle}
-            onShowUnknownDestructionDatesToggle={() => setShowUnknownDates(!showUnknownDestructionDates)}
           />
         </div>
 
