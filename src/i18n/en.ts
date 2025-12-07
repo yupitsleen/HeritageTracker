@@ -106,6 +106,8 @@ export const en: Translations = {
     interval1Year: "1 year",
     interval5Years: "5 years",
     syncMapVersion: "Sync Map Version",
+    syncMapVersionTooltip:
+      "Automatically jumps to the satellite imagery release closest to (and after) each site's destruction date",
     unknownDate: "Unknown",
     noImageryAvailable: "No imagery releases available",
   },

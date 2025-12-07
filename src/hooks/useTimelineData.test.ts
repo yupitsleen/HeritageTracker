@@ -58,10 +58,10 @@ describe("useTimelineData", () => {
     sources: [],
   };
 
-  describe("when showUnknownDestructionDates is true (default)", () => {
+  describe("filtering behavior", () => {
     it("includes sites with destruction dates", () => {
       const { result } = renderHook(() =>
-        useTimelineData([mockSiteWithDestructionDate], true)
+        useTimelineData([mockSiteWithDestructionDate])
       );
 
       expect(result.current.events).toHaveLength(1);
@@ -69,9 +69,9 @@ describe("useTimelineData", () => {
       expect(result.current.totalEvents).toBe(1);
     });
 
-    it("includes sites with only survey dates", () => {
+    it("includes sites with only survey dates (sourceAssessmentDate)", () => {
       const { result } = renderHook(() =>
-        useTimelineData([mockSiteWithOnlySurveyDate], true)
+        useTimelineData([mockSiteWithOnlySurveyDate])
       );
 
       expect(result.current.events).toHaveLength(1);
@@ -81,61 +81,30 @@ describe("useTimelineData", () => {
 
     it("excludes sites with no dates", () => {
       const { result } = renderHook(() =>
-        useTimelineData([mockSiteWithNoDates], true)
+        useTimelineData([mockSiteWithNoDates])
       );
 
       expect(result.current.events).toHaveLength(0);
       expect(result.current.totalEvents).toBe(0);
     });
 
-    it("includes both types of sites", () => {
+    it("includes both destruction dates and survey dates", () => {
       const { result } = renderHook(() =>
         useTimelineData(
-          [mockSiteWithDestructionDate, mockSiteWithOnlySurveyDate, mockSiteWithNoDates],
-          true
+          [mockSiteWithDestructionDate, mockSiteWithOnlySurveyDate, mockSiteWithNoDates]
         )
       );
 
       expect(result.current.events).toHaveLength(2);
       expect(result.current.totalEvents).toBe(2);
     });
-  });
 
-  describe("when showUnknownDestructionDates is false", () => {
-    it("includes sites with destruction dates", () => {
+    it("respects pre-filtered sites (filtering done by useFilteredSites)", () => {
+      // If sites are pre-filtered to exclude ones with only survey dates
+      const preFilteredSites = [mockSiteWithDestructionDate];
+
       const { result } = renderHook(() =>
-        useTimelineData([mockSiteWithDestructionDate], false)
-      );
-
-      expect(result.current.events).toHaveLength(1);
-      expect(result.current.events[0].siteId).toBe("1");
-      expect(result.current.totalEvents).toBe(1);
-    });
-
-    it("excludes sites with only survey dates", () => {
-      const { result } = renderHook(() =>
-        useTimelineData([mockSiteWithOnlySurveyDate], false)
-      );
-
-      expect(result.current.events).toHaveLength(0);
-      expect(result.current.totalEvents).toBe(0);
-    });
-
-    it("excludes sites with no dates", () => {
-      const { result } = renderHook(() =>
-        useTimelineData([mockSiteWithNoDates], false)
-      );
-
-      expect(result.current.events).toHaveLength(0);
-      expect(result.current.totalEvents).toBe(0);
-    });
-
-    it("only includes sites with exact destruction dates", () => {
-      const { result } = renderHook(() =>
-        useTimelineData(
-          [mockSiteWithDestructionDate, mockSiteWithOnlySurveyDate, mockSiteWithNoDates],
-          false
-        )
+        useTimelineData(preFilteredSites)
       );
 
       expect(result.current.events).toHaveLength(1);
@@ -162,7 +131,7 @@ describe("useTimelineData", () => {
         dateDestroyed: "2023-11-01",
       };
 
-      const { result } = renderHook(() => useTimelineData([site1, site2, site3], true));
+      const { result } = renderHook(() => useTimelineData([site1, site2, site3]));
 
       expect(result.current.events).toHaveLength(3);
       expect(result.current.events[0].siteId).toBe("site2"); // Oct

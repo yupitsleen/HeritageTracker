@@ -307,7 +307,7 @@ export function WaybackSlider({
                 active={syncMapVersion}
                 onClick={onSyncMapVersionToggle}
                 aria-label={translate("timeline.syncMapVersion")}
-                title={translate("timeline.syncMapVersion")}
+                title={translate("timeline.syncMapVersionTooltip")}
               >
                 {syncMapVersion ? "✓ " : ""}
                 {translate("timeline.syncMapVersion")}

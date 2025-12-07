@@ -105,6 +105,8 @@ export const it: Translations = {
     interval1Year: "1 anno",
     interval5Years: "5 anni",
     syncMapVersion: "Sincronizza Versione Mappa",
+    syncMapVersionTooltip:
+      "Passa automaticamente alla versione di immagini satellitari più vicina a (e dopo) la data di distruzione di ogni sito",
     unknownDate: "Sconosciuto",
     noImageryAvailable: "Nessuna versione di immagini disponibile",
   },

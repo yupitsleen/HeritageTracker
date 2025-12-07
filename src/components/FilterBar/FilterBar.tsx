@@ -287,7 +287,7 @@ export const FilterBar = memo(function FilterBar({
             )}
             aria-label={translate("timeline.showUnknownDates")}
             aria-pressed={filters.showUnknownDates}
-            title={translate("timeline.showUnknownDates")}
+            title={translate("timeline.showUnknownDatesTooltip")}
           >
             {filters.showUnknownDates ? "✓ " : ""}
             {translate("timeline.showUnknownDates")}
@@ -431,7 +431,7 @@ export const FilterBar = memo(function FilterBar({
 
               {/* Show Unknown Dates Toggle */}
               <div>
-                <label className="flex items-center gap-3 cursor-pointer">
+                <label className="flex items-center gap-3 cursor-pointer" title={translate("timeline.showUnknownDatesTooltip")}>
                   <input
                     type="checkbox"
                     checked={filters.showUnknownDates}

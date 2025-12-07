@@ -145,6 +145,7 @@ export interface Translations {
     interval1Year: string;
     interval5Years: string;
     syncMapVersion: string;
+    syncMapVersionTooltip: string;
     unknownDate: string;
     noImageryAvailable: string;
   };
