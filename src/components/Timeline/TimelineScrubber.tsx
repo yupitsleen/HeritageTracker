@@ -103,7 +103,8 @@ export function TimelineScrubber({
   // Calculate date range from dataset (oldest and newest destruction dates)
   const { adjustedStartDate, adjustedEndDate } = useMemo(() => {
     const defaults = calculateDefaultDateRange(allDestructionDates, startDate, endDate);
-    const adjusted = calculateAdjustedDateRange(allDestructionDates, false, startDate, endDate);
+    // Always adjust scale to match visible (filtered) events
+    const adjusted = calculateAdjustedDateRange(allDestructionDates, true, startDate, endDate);
 
     return {
       ...defaults,
