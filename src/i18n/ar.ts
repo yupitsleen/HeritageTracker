@@ -103,6 +103,8 @@ export const ar: Translations = {
     interval1Year: "سنة واحدة",
     interval5Years: "٥ سنوات",
     syncMapVersion: "مزامنة إصدار الخريطة",
+    syncMapVersionTooltip:
+      "ينتقل تلقائيًا إلى إصدار صور الأقمار الصناعية الأقرب إلى (وبعد) تاريخ تدمير كل موقع",
     unknownDate: "غير معروف",
     noImageryAvailable: "لا توجد إصدارات صور متاحة",
   },
