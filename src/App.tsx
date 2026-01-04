@@ -9,10 +9,16 @@ import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Timeline } from "./pages/Timeline";
-import { AboutPage } from "./pages/AboutPage";
 import { DonatePage } from "./pages/DonatePage";
 import { DataPage } from "./pages/DataPage";
-import { OrganizationsPage, ResearchPage, MediaPage, EducationPage, LegalPage, TrackersPage } from "./pages/resources";
+import {
+  OrganizationsPage,
+  ResearchPage,
+  MediaPage,
+  EducationPage,
+  LegalPage,
+  TrackersPage,
+} from "./pages/resources";
 import { BREAKPOINTS } from "./constants/layout";
 
 /**
@@ -25,7 +31,6 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
       <Route path="/" element={isMobile ? <DataPage /> : <DashboardPage />} />
       <Route path="/data" element={<DataPage />} />
       <Route path="/timeline" element={<Timeline />} />
-      <Route path="/about" element={<AboutPage />} />
 
       {/* Legacy donate route - redirect to resources/donate */}
       <Route path="/donate" element={<DonatePage />} />
@@ -51,7 +56,7 @@ export function App() {
   // Check if we're on mobile - initialize immediately from window.innerWidth
   const [isMobile, setIsMobile] = useState(() => {
     // Check during initial render (works in browser, defaults to false in SSR)
-    return typeof window !== 'undefined' && window.innerWidth < BREAKPOINTS.MOBILE;
+    return typeof window !== "undefined" && window.innerWidth < BREAKPOINTS.MOBILE;
   });
 
   useEffect(() => {
@@ -61,14 +66,14 @@ export function App() {
 
     // Recheck on mount (in case window was resized before mount)
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Determine basename - should match Vite's base config
   // Production (GitHub Pages): /HeritageTracker/
   // Development/E2E: /
-  const basename = import.meta.env.PROD ? '/HeritageTracker' : '';
+  const basename = import.meta.env.PROD ? "/HeritageTracker" : "";
 
   return (
     <BrowserRouter basename={basename}>
