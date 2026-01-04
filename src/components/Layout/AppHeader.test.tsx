@@ -55,7 +55,7 @@ describe("AppHeader", () => {
       expect(screen.getByRole("button", { name: /dashboard/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /data/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /timeline/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /about/i })).toBeInTheDocument();
+      // About page has been hidden from navigation
     });
 
     it("renders theme toggle button", () => {
@@ -121,7 +121,7 @@ describe("AppHeader", () => {
       // All nav items should be present (except Dashboard which is conditionally hidden on mobile)
       expect(screen.getAllByRole("button", { name: /data/i })).toHaveLength(2); // Desktop + Mobile
       expect(screen.getAllByRole("button", { name: /timeline/i })).toHaveLength(2);
-      expect(screen.getAllByRole("button", { name: /about/i })).toHaveLength(2);
+      // About page has been hidden from navigation
     });
 
     it("mobile menu includes theme toggle", () => {
@@ -147,9 +147,7 @@ describe("AppHeader", () => {
 
       // Click a nav item (Data is always present in mobile menu)
       const dataButtons = screen.getAllByRole("button", { name: /data/i });
-      const mobileDataButton = dataButtons.find(button =>
-        button.classList.contains("w-full")
-      );
+      const mobileDataButton = dataButtons.find((button) => button.classList.contains("w-full"));
 
       if (mobileDataButton) {
         fireEvent.click(mobileDataButton);
@@ -267,9 +265,7 @@ describe("AppHeader", () => {
 
       // Data button should have active styling (ring-2 class)
       const dataButtons = container.querySelectorAll('[aria-label*="Data"]');
-      const activeButton = Array.from(dataButtons).find(btn =>
-        btn.className.includes("ring-2")
-      );
+      const activeButton = Array.from(dataButtons).find((btn) => btn.className.includes("ring-2"));
 
       expect(activeButton).toBeInTheDocument();
     });
