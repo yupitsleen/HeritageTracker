@@ -1,0 +1,10 @@
+# .lattice/config.yaml -- Lattice Framework Configuration
+# All paths are relative to the repository root.
+
+version: 1
+language: typescript
+paths:
+  knowledge_base: .lattice/standards/knowledge-base.md
+  language_idioms: .lattice/standards/language-idioms.md
+  architecture: .lattice/standards/architecture.md
+architecture_mode: custom
