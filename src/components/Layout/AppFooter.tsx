@@ -3,7 +3,6 @@ import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Z_INDEX } from "../../constants/layout";
-import { BUILD_DATE } from "../../constants/build";
 
 interface AppFooterProps {
   isMobile: boolean;
@@ -32,7 +31,6 @@ export function AppFooter({ isMobile }: AppFooterProps) {
           <div className={cn("container mx-auto px-4")}>
             <p className="text-[10px] text-center">
               {translate("footer.copyright").replace("{year}", currentYear.toString())} •{" "}
-              {translate("footer.lastUpdated").replace("{date}", BUILD_DATE)} •{" "}
               <a
                 href="https://github.com/yupitsleen/HeritageTracker"
                 target="_blank"
@@ -80,8 +78,7 @@ export function AppFooter({ isMobile }: AppFooterProps) {
               </a>
             </p>
             <p className="text-[9px] text-center mt-1 opacity-80">
-              {translate("footer.copyright").replace("{year}", currentYear.toString())} •{" "}
-              {translate("footer.lastUpdated").replace("{date}", BUILD_DATE)}
+              {translate("footer.copyright").replace("{year}", currentYear.toString())}
             </p>
           </div>
         </div>
