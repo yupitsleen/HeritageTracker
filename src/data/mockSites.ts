@@ -3633,5 +3633,429 @@ export const mockSites: Site[] = [
       collectionRationale: "UNESCO lists these Zaytoun Quarter buildings as a group without individual identification",
     },
   },
-  // NEW SITES END - Total: 70 sites
+  {
+    id: "barquq-castle",
+    name: "Barquq Castle (Khan Yunis Caravanserai)",
+    nameArabic: "قلعة برقوق / خان يونس",
+    type: "monument",
+    yearBuilt: "1387–1388 CE",
+    yearBuiltIslamic: "789–790 AH",
+    coordinates: [31.3444, 34.3021], // Khan Yunis city center
+    status: "heavily-damaged",
+    dateDestroyed: "2024-04-07",
+    dateDestroyedIslamic: "28 Ramadan 1445 AH",
+    sourceAssessmentDate: "2024-07-22",
+    lastUpdated: "2025-09-30",
+    description:
+      "A Mamluk-era fortified caravanserai-mosque built in 1387–1388 CE by Yunis al-Nawruzi under Sultan Barquq of the Circassian Mamluk dynasty. One of the largest surviving Mamluk structures in Gaza, it served as a caravanserai on the Damascus–Cairo trade and pilgrimage route (Via Maris). Large sections of walls and towers collapsed; craters and shrapnel marks documented on remaining facades.",
+    historicalSignificance:
+      "Built during the Circassian Mamluk period, Barquq Castle represents the administrative and commercial infrastructure of 14th-century Palestine. It functioned as both a fortified gateway and a waystation for merchants and pilgrims traveling between Egypt and the Levant, reflecting Gaza's strategic importance on the Via Maris.",
+    culturalValue:
+      "As one of the most significant Mamluk structures remaining in the Gaza Strip, the castle embodied over 600 years of architectural and historical continuity. Its partial destruction eliminates an irreplaceable example of Mamluk military and civic architecture in Palestine.",
+    verifiedBy: ["UNESCO"],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza Heritage Damage Assessment",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2024-07-22",
+        type: "official",
+      },
+      {
+        organization: "Middle East Monitor",
+        title: "Historic Barquq Castle in Khan Yunis heavily damaged by Israeli attacks",
+        url: "https://www.middleeastmonitor.com/historic-barquq-castle-in-khan-yunis-heavily-damaged-by-israeli-attacks/",
+        date: "2024-04-10",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "great-mosque-khan-yunis",
+    name: "Great Mosque of Khan Yunis",
+    nameArabic: "الجامع الكبير في خان يونس",
+    type: "mosque",
+    yearBuilt: "1928",
+    yearBuiltIslamic: "1347 AH",
+    coordinates: [31.3449, 34.3029], // Khan Yunis city center
+    status: "destroyed",
+    dateDestroyed: "2024-08-20",
+    dateDestroyedIslamic: "15 Safar 1446 AH",
+    sourceAssessmentDate: "2024-08-20",
+    lastUpdated: "2025-09-30",
+    description:
+      "Built in 1928 on a historically significant site in Khan Yunis city center, the Great Mosque was one of the most prominent Islamic landmarks in southern Gaza. With a floor area of approximately 3,300 m² including a 900 m² courtyard, it served the spiritual and civic life of Khan Yunis for nearly a century before being deliberately demolished with explosives by Israeli forces in August 2024.",
+    historicalSignificance:
+      "For nearly 100 years the Great Mosque was the principal place of worship and communal gathering in Khan Yunis. Its site holds historical associations predating the 1928 construction. Its demolition, documented on video, represents the deliberate erasure of southern Gaza's most prominent religious landmark.",
+    culturalValue:
+      "The mosque anchored the civic and religious identity of Khan Yunis across generations. Its destruction, including documented burning of Qurans inside the structure prior to demolition, caused profound cultural and spiritual loss for the city's population.",
+    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sources: [
+      {
+        organization: "Al Jazeera",
+        title: "A 'cultural genocide': which of Gaza's heritage sites have been destroyed?",
+        url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
+        date: "2024-08-20",
+        type: "journalism",
+      },
+      {
+        organization: "Palestine Information Center",
+        title: "Israeli Forces Demolish Great Mosque of Khan Yunis",
+        url: "https://english.palinfo.com/Palestinian-Heritage/2024/08/30/324528/",
+        date: "2024-08-30",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "holy-family-church-gaza",
+    name: "Holy Family Church",
+    nameArabic: "كنيسة العائلة المقدسة",
+    type: "church",
+    yearBuilt: "1965",
+    yearBuiltIslamic: "1384 AH",
+    coordinates: [31.4967, 34.4698], // Al-Zaytoun quarter, Gaza City
+    status: "heavily-damaged",
+    dateDestroyed: "2024-07-07",
+    dateDestroyedIslamic: "1 Muharram 1446 AH",
+    sourceAssessmentDate: "2024-07-07",
+    lastUpdated: "2025-09-30",
+    description:
+      "Gaza's only Catholic church, built in 1965 in the Al-Zaytoun quarter of Gaza City. During the conflict it sheltered approximately 650 displaced Palestinian Christians. The adjacent Rosary Sisters' School was destroyed by an airstrike on 4 November 2023; the church itself sustained severe damage in a July 7, 2024 bombing that killed four people, following earlier sniper fire on 16 December 2023 that killed two parishioners.",
+    historicalSignificance:
+      "Holy Family Church represented over half a century of continuous Catholic presence in Gaza and served as the spiritual home for Gaza's small Christian minority. Its repeated targeting drew direct Vatican intervention and public appeals from Pope Francis, making it internationally significant as a symbol of Christian civilian suffering in the conflict.",
+    culturalValue:
+      "As Gaza's sole Catholic place of worship, the church was irreplaceable for the city's Christian community. Together with the destroyed Rosary Sisters' School, its damage severed the infrastructure of Christian community life that had persisted in Gaza for generations.",
+    verifiedBy: ["UNESCO", "Latin Patriarchate of Jerusalem"],
+    sources: [
+      {
+        organization: "National Catholic Reporter",
+        title: "Two dead at Holy Family Gaza, pastor injured after mid-morning Israeli attack",
+        url: "https://www.ncronline.org/news/two-dead-holy-family-gaza-pastor-injured-after-mid-morning-israeli-attack",
+        date: "2023-12-16",
+        type: "journalism",
+      },
+      {
+        organization: "UNESCO",
+        title: "Gaza Heritage Damage Assessment",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2024-07-22",
+        type: "official",
+      },
+    ],
+  },
+  {
+    id: "abasan-mosaics",
+    name: "Abasan Mosaics",
+    nameArabic: "فسيفساء عبسان",
+    type: "archaeological",
+    yearBuilt: "BCE 300 (Byzantine period, 4th–7th century CE)",
+    coordinates: [31.3279, 34.3452], // Abasan al-Kabira, east of Khan Yunis
+    status: "heavily-damaged",
+    dateDestroyed: "2023-11-01",
+    dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH",
+    sourceAssessmentDate: "2024-07-22",
+    lastUpdated: "2025-09-30",
+    description:
+      "Byzantine-era mosaic floors and wall fragments dating to the Roman–Byzantine period (approximately 4th–7th century CE), located in situ at Abasan al-Kabira in the Khan Yunis Governorate. The site had already sustained damage in the 2014 Gaza war before suffering further destruction in the current conflict, as verified by UNESCO's formal assessment in July 2024.",
+    historicalSignificance:
+      "The Abasan Mosaics represent one of the surviving examples of Byzantine artistic heritage in southern Gaza. Mosaic art from this period reflects the region's role as a crossroads of late antique Mediterranean culture and early Christian artistic traditions. Their continued in-situ location made them a rare archaeological resource.",
+    culturalValue:
+      "In-situ Byzantine mosaics are among the most vulnerable and irreplaceable categories of archaeological heritage. The repeated destruction of this site — in both 2014 and 2023–2024 — represents the progressive erasure of a unique window into Gaza's Byzantine past.",
+    verifiedBy: ["UNESCO"],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza Heritage Damage Assessment",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2024-07-22",
+        type: "official",
+      },
+      {
+        organization: "Progressive Magazine",
+        title: "Stones That Remember: War and the Erasure of History",
+        url: "https://progressive.org/latest/stones-that-remember-war-and-the-erasure-of-history-salah-20260505/",
+        date: "2026-05-05",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "islamic-university-central-library",
+    name: "Islamic University of Gaza — Central Library",
+    nameArabic: "المكتبة المركزية للجامعة الإسلامية بغزة",
+    type: "archive",
+    yearBuilt: "1978",
+    yearBuiltIslamic: "1398 AH",
+    coordinates: [31.5071, 34.4513], // Al-Rimal, Gaza City
+    status: "destroyed",
+    dateDestroyed: "2023-10-09",
+    dateDestroyedIslamic: "24 Rabi' al-Awwal 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2025-09-30",
+    description:
+      "Gaza's largest academic library, inaugurated in 1978 as part of the Islamic University of Gaza in the Al-Rimal district. The five-floor building (approximately 900 m² per floor) held over 240,000 books, 8,000 periodicals, and 16,000 master's and doctoral theses. It was destroyed in the opening days of the October 2023 conflict, representing the single greatest quantified intellectual loss in Gaza's modern history.",
+    historicalSignificance:
+      "The Islamic University of Gaza, founded in 1978, was the first university established in the Gaza Strip. Its central library served as the primary research repository for generations of Palestinian scholars and students. Its destruction in the conflict's first 48 hours signaled the systematic targeting of Gaza's educational infrastructure.",
+    culturalValue:
+      "The loss of over 240,000 volumes, including rare Arabic manuscripts, research theses, and historical periodicals, constitutes an irreversible blow to Palestinian academic and cultural heritage. The library was a primary repository of Palestinian scholarly production accumulated over four decades.",
+    verifiedBy: ["UNESCO", "Librarians and Archivists with Palestine"],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza Heritage Damage Assessment",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2024-05-27",
+        type: "official",
+      },
+      {
+        organization: "Librarians and Archivists with Palestine",
+        title: "Gaza Libraries and Archives Report 2024",
+        url: "https://librarianswithpalestine.org/gaza-report-2024/",
+        date: "2024-06-01",
+        type: "documentation",
+      },
+      {
+        organization: "Visionscarto",
+        title: "Central Library of the Islamic University of Gaza",
+        url: "https://www.visionscarto.net/central-library-of-the-islamic-university-gaza",
+        date: "2024-01-15",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "gaza-municipal-library",
+    name: "Gaza Municipal Library",
+    nameArabic: "مكتبة بلدية غزة",
+    type: "archive",
+    yearBuilt: "20th century",
+    coordinates: [31.5105, 34.4668], // Gaza City center
+    status: "destroyed",
+    dateDestroyed: "2023-11-27",
+    dateDestroyedIslamic: "14 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2025-09-30",
+    description:
+      "Gaza's main municipal public library, housing approximately 10,000 books in Arabic, English, and French. The library was destroyed by shelling on 27 November 2023. The Gaza Municipality stated the library was deliberately targeted. It represented a critical free public access point for education and literacy for all Gaza residents regardless of academic affiliation.",
+    historicalSignificance:
+      "The Gaza Municipal Library was the primary free public library serving all residents of Gaza City. Unlike university libraries restricted to students and researchers, this institution was open to the general public, making it an essential democratic resource for education and literacy across all social classes.",
+    culturalValue:
+      "The destruction of the municipal library severed public access to a multilingual collection built over decades. Its loss is particularly significant because it served community members — including children, workers, and adults pursuing self-education — who lacked access to university facilities.",
+    verifiedBy: ["Gaza Municipality", "UNESCO"],
+    sources: [
+      {
+        organization: "Egyptian Streets",
+        title: "Gaza's Main Public Library Destroyed, Thousands of Books Lost",
+        url: "https://egyptianstreets.com/2023/11/29/gazas-main-public-library-destroyed-thousands-of-books-lost/",
+        date: "2023-11-29",
+        type: "journalism",
+      },
+      {
+        organization: "Librarians and Archivists with Palestine",
+        title: "Gaza Libraries and Archives Report 2024",
+        url: "https://librarianswithpalestine.org/gaza-report-2024/",
+        date: "2024-06-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "al-kalima-library",
+    name: "Al-Kalima Library and Publishing House",
+    nameArabic: "دار الكلمة للنشر والتوزيع",
+    type: "archive",
+    yearBuilt: "Late 20th century",
+    coordinates: [31.5240, 34.4555], // Sheikh Radwan neighborhood, Gaza City
+    status: "destroyed",
+    dateDestroyed: "2024-02-19",
+    dateDestroyedIslamic: "9 Sha'ban 1445 AH",
+    sourceAssessmentDate: "2024-02-19",
+    lastUpdated: "2025-09-30",
+    description:
+      "A major Gaza publishing house and lending library in the Sheikh Radwan neighborhood of Gaza City, destroyed by fire set by Israeli forces on 19 February 2024. Al-Kalima served as one of the key nodes of Palestinian literary publishing and book distribution in Gaza, combining a lending library with active book production and distribution services.",
+    historicalSignificance:
+      "Al-Kalima was one of the few remaining active publishing houses in the Gaza Strip, playing a vital role in sustaining Palestinian literary production and distribution under blockade conditions. Its destruction directly severed one of Gaza's last functional book publishing infrastructures.",
+    culturalValue:
+      "The burning of Al-Kalima represented not only the loss of physical books but the destruction of a living institution that connected Palestinian writers with readers. Publishing houses under blockade are extraordinarily difficult to rebuild, making this loss particularly consequential for Palestinian literary culture.",
+    verifiedBy: ["Librarians and Archivists with Palestine"],
+    sources: [
+      {
+        organization: "Literary Hub",
+        title: "Israeli Forces Have Burned Down the Library of Al-Kalima",
+        url: "https://lithub.com/israeli-forces-have-burned-down-the-library-of-al-kalima/",
+        date: "2024-02-22",
+        type: "journalism",
+      },
+      {
+        organization: "Librarians and Archivists with Palestine",
+        title: "Gaza Libraries and Archives Report 2024",
+        url: "https://librarianswithpalestine.org/gaza-report-2024/",
+        date: "2024-06-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "ataa-library-beit-hanoun",
+    name: "Ataa Library (Beit Hanoun Children's Library)",
+    nameArabic: "مكتبة عطاء - بيت حانون",
+    type: "archive",
+    yearBuilt: "Early 21st century (rebuilt after 2014)",
+    coordinates: [31.5323, 34.5431], // Beit Hanoun, North Gaza
+    status: "destroyed",
+    dateDestroyed: "2023-10-10",
+    dateDestroyedIslamic: "25 Rabi' al-Awwal 1445 AH",
+    sourceAssessmentDate: "2024-06-01",
+    lastUpdated: "2025-09-30",
+    description:
+      "A children's library in Beit Hanoun, North Gaza, supported by IBBY's (International Board on Books for Young People) Children in Crisis fund. The library was originally destroyed in the 2014 Gaza war, rebuilt through international support, and then destroyed again in October 2023 when Beit Hanoun — among the most heavily bombed areas of Gaza — came under immediate assault at the start of the conflict.",
+    historicalSignificance:
+      "The Ataa Library's twice-over destruction — in 2014 and again in 2023 — embodies the repeated cycle of destruction and loss inflicted on Gaza's educational infrastructure across multiple conflicts. Its IBBY affiliation connected it to the international children's literature community and made it a symbol of the right to reading and childhood education in conflict zones.",
+    culturalValue:
+      "Children's libraries represent a society's investment in its youngest generation's literacy and imagination. The destruction of Ataa Library for the second time within a decade eliminated a hard-won community resource for Beit Hanoun's children, many of whom have now grown up knowing only conflict and loss of educational infrastructure.",
+    verifiedBy: ["Librarians and Archivists with Palestine", "IBBY"],
+    sources: [
+      {
+        organization: "Librarians and Archivists with Palestine",
+        title: "Gaza Libraries and Archives Report 2024",
+        url: "https://librarianswithpalestine.org/gaza-report-2024/",
+        date: "2024-06-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "palestinian-costume-museum-rafah",
+    name: "Palestinian Costume Museum, Rafah",
+    nameArabic: "متحف الزي الفلسطيني - رفح",
+    type: "museum",
+    yearBuilt: "Early 21st century",
+    coordinates: [31.2913, 34.2437], // Rafah
+    status: "destroyed",
+    dateDestroyed: "2024-02-22",
+    dateDestroyedIslamic: "12 Sha'ban 1445 AH",
+    sourceAssessmentDate: "2024-02-22",
+    lastUpdated: "2025-09-30",
+    description:
+      "A private museum in Rafah owned by Leila Shahin, holding 320 pieces of traditional Palestinian dress, embroidery, and costume — a collection distinct from the Rafah Museum of Palestinian Heritage. Destroyed on 22 February 2024, the museum's collection represented irreplaceable examples of traditional Palestinian material culture and craft traditions, particularly women's embroidery (tatreez).",
+    historicalSignificance:
+      "Palestinian tatreez (embroidery) is recognized by UNESCO as intangible cultural heritage and carries encoded regional and social identity within its patterns. This collection of 320 garments and textile pieces preserved embroidery traditions from across historical Palestine, serving as a living archive of material culture that could not be reconstructed from photographs alone.",
+    culturalValue:
+      "Textile and costume collections are among the most vulnerable categories of heritage — they cannot be recreated, and physical originals carry information about dyes, weaving techniques, and regional variations that photographs cannot capture. The destruction of this collection severed a direct material link to Palestinian women's craft traditions spanning centuries.",
+    verifiedBy: ["Librarians and Archivists with Palestine", "Museums Association"],
+    sources: [
+      {
+        organization: "Librarians and Archivists with Palestine",
+        title: "Gaza Libraries and Archives Report 2024",
+        url: "https://librarianswithpalestine.org/gaza-report-2024/",
+        date: "2024-06-01",
+        type: "documentation",
+      },
+      {
+        organization: "Museums Association",
+        title: "Widescale destruction of cultural heritage in Gaza",
+        url: "https://www.museumsassociation.org/museums-journal/news/2024/01/widescale-destruction-of-cultural-heritage-in-gaza/",
+        date: "2024-01-15",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "ibrahim-abu-shaar-heritage-diwan",
+    name: "Ibrahim Abu Sha'ar Heritage Diwan",
+    nameArabic: "ديوان إبراهيم أبو شعر التراثي",
+    type: "museum",
+    yearBuilt: "Late 20th century",
+    coordinates: [31.2778, 34.2582], // Southeast of Rafah
+    status: "destroyed",
+    dateDestroyed: "2023-12-06",
+    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-06-01",
+    lastUpdated: "2025-09-30",
+    description:
+      "A private collection and community diwan (traditional gathering house) dedicated to Bedouin heritage in southeastern Rafah, destroyed on 6 December 2023. The collection held an extensive array of traditional Bedouin material culture including tools, textiles, oral history recordings, and artifacts, making it a rare institutional repository of Bedouin Palestinian cultural identity in southern Gaza.",
+    historicalSignificance:
+      "Bedouin cultural heritage in the Gaza Strip represents a distinct layer of Palestinian identity tied to the indigenous Bedouin communities of the Negev and southern Coastal Plain. A diwan functions not only as a museum but as a living social institution — a place for community gathering, oral tradition, and intergenerational cultural transmission. Its destruction ended a living practice, not just a collection.",
+    culturalValue:
+      "Private diwans and heritage collections represent the grassroots preservation of cultural identity by community members without institutional support. The Ibrahim Abu Sha'ar Diwan filled a gap that no formal institution addressed — the preservation of Bedouin material culture specific to southern Gaza's communities. Its destruction leaves this aspect of Palestinian heritage without any remaining institutional anchor in the region.",
+    verifiedBy: ["Librarians and Archivists with Palestine"],
+    sources: [
+      {
+        organization: "Librarians and Archivists with Palestine",
+        title: "Gaza Libraries and Archives Report 2024",
+        url: "https://librarianswithpalestine.org/gaza-report-2024/",
+        date: "2024-06-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "mavi-marmara-memorial",
+    name: "Mavi Marmara Martyrs Memorial",
+    nameArabic: "نصب شهداء مافي مرمرة",
+    type: "monument",
+    yearBuilt: "2010",
+    yearBuiltIslamic: "1431 AH",
+    coordinates: [31.5250, 34.4350], // Gaza seaport area
+    status: "destroyed",
+    dateDestroyed: "2023-11-13",
+    dateDestroyedIslamic: "29 Rabi' al-Thani 1445 AH",
+    sourceAssessmentDate: "2023-11-13",
+    lastUpdated: "2025-09-30",
+    description:
+      "A memorial erected in Gaza at the seaport area to commemorate the nine activists — eight Turkish nationals and one Turkish-American — killed by Israeli naval commandos during the 2010 Mavi Marmara flotilla raid in international waters. The monument was demolished by Israeli forces when they seized the Gaza seaport area in November 2023.",
+    historicalSignificance:
+      "The Mavi Marmara incident on 31 May 2010, in which Israeli commandos killed nine activists attempting to break the Gaza blockade with humanitarian aid, prompted a major international diplomatic crisis including the suspension of Israeli-Turkish diplomatic relations. The memorial in Gaza served as a permanent commemoration of this event and a symbol of international solidarity with Gaza's blockaded civilian population.",
+    culturalValue:
+      "Beyond its political significance, the memorial represented Gaza's capacity to commemorate its own history and honor those who died in solidarity with its people. Its destruction by the same military force responsible for the original killings carried particular symbolic weight for Gaza's civilian population.",
+    verifiedBy: ["Anadolu Agency"],
+    sources: [
+      {
+        organization: "Anadolu Agency",
+        title: "Israel destroys Mavi Marmara martyrs memorial in Gaza",
+        url: "https://www.aa.com.tr/en/middle-east/israel-destroys-mavi-marmara-martyrs-memorial-in-gaza/3055611",
+        date: "2023-11-14",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "othman-ibn-qushqar-mosque",
+    name: "Othman ibn Qushqar Mosque",
+    nameArabic: "مسجد عثمان قشقار",
+    type: "mosque",
+    yearBuilt: "1220 CE",
+    yearBuiltIslamic: "617 AH",
+    coordinates: [31.4972, 34.4655], // Zaytoun quarter, Gaza City
+    status: "heavily-damaged",
+    dateDestroyed: "2023-12-07",
+    dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2025-09-30",
+    description:
+      "Built in 1220 CE in the Zaytoun quarter of Gaza City, this Ayyubid-era mosque is located at the reported burial site of Hashim ibn Abd Manaf, great-grandfather of the Prophet Muhammad, making it a site of profound Islamic significance. One of the oldest surviving Ayyubid-period mosques in Gaza, it suffered severe damage in December 2023.",
+    historicalSignificance:
+      "The mosque's association with the burial site of Hashim ibn Abd Manaf — revered in Islamic tradition as an ancestor of the Prophet — gives it a religious significance extending across the entire Muslim world. Built in the early Ayyubid period, the structure predates the Mamluk era and represents a rare surviving layer of 13th-century Islamic architecture in Gaza.",
+    culturalValue:
+      "As one of Gaza's oldest and most religiously significant mosques, the Othman ibn Qushqar Mosque held irreplaceable architectural and spiritual value. Its Ayyubid construction techniques and its association with a site venerated in Islamic tradition made it one of the most historically important religious buildings in the Gaza Strip.",
+    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza Heritage Damage Assessment",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2024-05-27",
+        type: "official",
+      },
+      {
+        organization: "Al Jazeera",
+        title: "A 'cultural genocide': which of Gaza's heritage sites have been destroyed?",
+        url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
+        date: "2024-01-14",
+        type: "journalism",
+      },
+    ],
+  },
+  // NEW SITES END - Total: 82 sites
 ];
