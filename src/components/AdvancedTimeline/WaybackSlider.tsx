@@ -104,18 +104,20 @@ export function WaybackSlider({
 
     // Create year markers (positioned by actual date)
     const years: Array<{ year: number; position: number }> = [];
+    const totalRange = lastDate.getTime() - firstDate.getTime();
     for (let year = startYear; year <= endYear; year++) {
-      const yearStart = new Date(`${year}-01-01`).getTime();
-      const totalRange = lastDate.getTime() - firstDate.getTime();
-      const yearOffset = yearStart - firstDate.getTime();
-      const position = (yearOffset / totalRange) * 100;
+      const isLastYear = year === endYear;
+      // Pin the last year label to 100% so it aligns with the last tick rather
+      // than floating at Jan 1 of that year (which leaves an unlabeled tail).
+      const position = isLastYear
+        ? 100
+        : ((new Date(`${year}-01-01`).getTime() - firstDate.getTime()) / totalRange) * 100;
       years.push({ year, position: Math.max(0, Math.min(100, position)) });
     }
 
     // Calculate position for each release
     const positions = releases.map((release, idx) => {
       const releaseDate = new Date(release.releaseDate).getTime();
-      const totalRange = lastDate.getTime() - firstDate.getTime();
       const releaseOffset = releaseDate - firstDate.getTime();
       const position = (releaseOffset / totalRange) * 100;
       return {
