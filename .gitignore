@@ -32,3 +32,4 @@ nul
 
 # Test Coverage
 /coverage/
+.claude/

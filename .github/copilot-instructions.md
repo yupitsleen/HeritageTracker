@@ -2,7 +2,7 @@
 
 **Project:** Palestinian cultural heritage destruction tracker with interactive satellite comparison
 **Stack:** React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS v4 + Leaflet + D3.js + Supabase + Playwright
-**Status:** Production-ready | 1,396 unit tests + 16 E2E tests | Zero-failing-tests policy
+**Status:** Production-ready | 1,465 unit tests + 16 E2E tests | Zero-failing-tests policy
 
 ---
 
@@ -11,7 +11,7 @@
 ### Commits
 
 - **Conventional format only:** `feat:`, `fix:`, `refactor:`, `perf:` (see `CLAUDE.md`)
-- **Pre-commit gate:** ALL tests passing (1396 unit + 16 E2E), lint zero warnings, dev server runs
+- **Pre-commit gate:** ALL tests passing (1465 unit + 16 E2E), lint zero warnings, dev server runs
 - **No hardcoded text:** All UI labels must use i18n from `src/i18n/`
 
 ### Quality Gates
