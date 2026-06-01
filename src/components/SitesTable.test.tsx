@@ -392,6 +392,31 @@ describe("SitesTable", () => {
     });
   });
 
+  describe("Virtual scroll threshold", () => {
+    it("uses a single table element when site count is below 500", () => {
+      const manySites: Site[] = Array.from({ length: 101 }, (_, i) => ({
+        ...mockSites[0],
+        id: `site-bulk-${i}`,
+        name: `Site ${i}`,
+      }));
+
+      const { container } = renderWithTheme(
+        <CalendarProvider>
+          <SitesTable
+            sites={manySites}
+            onSiteClick={vi.fn()}
+            variant="expanded"
+          />
+        </CalendarProvider>
+      );
+
+      // Standard rendering produces one table; virtual scrolling (old threshold=100) split
+      // headers and rows into two separate tables, breaking column alignment.
+      const tables = container.querySelectorAll("table");
+      expect(tables).toHaveLength(1);
+    });
+  });
+
   describe("Expanded variant", () => {
     it("displays Export CSV button in expanded variant", () => {
       const { container } = renderWithTheme(
