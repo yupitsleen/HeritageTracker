@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, lazy, Suspense } from "react";
+import { useNavigate } from "react-router-dom";
 import { mockSites } from "../data/mockSites";
 import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
@@ -21,6 +22,7 @@ export function DataPage() {
   const t = useThemeClasses();
   const { isDark } = useTheme();
   const translate = useTranslation();
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
   const [selectedSite, setSelectedSite] = useState<Site | null>(null);
@@ -67,6 +69,11 @@ export function DataPage() {
   const handleSiteClick = useCallback((site: Site) => {
     setSelectedSite(site);
   }, []);
+
+  const handleViewOnMap = useCallback((siteId: string) => {
+    setSelectedSite(null);
+    navigate(`/timeline?siteId=${siteId}`);
+  }, [navigate]);
 
   return (
     <SharedLayout helpContent={<DataPageHelpModal />}>
@@ -118,7 +125,7 @@ export function DataPage() {
               </div>
             }
           >
-            <SiteDetailPanel site={selectedSite} />
+            <SiteDetailPanel site={selectedSite} onViewOnMap={handleViewOnMap} />
           </Suspense>
         )}
       </Modal>

@@ -1,4 +1,5 @@
-import { lazy, Suspense, useState, useCallback, useEffect } from "react";
+import { lazy, Suspense, useState, useCallback, useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useFilteredSites } from "../hooks/useFilteredSites";
@@ -71,6 +72,11 @@ export function Timeline() {
   // Site filtering state
   const [highlightedSiteId, setHighlightedSiteId] = useState<string | null>(null);
   const [selectedSite, setSelectedSite] = useState<Site | null>(null);
+
+  // "See on Map" deep-link from Data page
+  const [searchParams] = useSearchParams();
+  const initialSiteIdFromUrl = useRef(searchParams.get('siteId'));
+  const initialSiteHandled = useRef(false);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
   // Default to ON for better user experience on Advanced Timeline page
@@ -219,7 +225,13 @@ export function Timeline() {
     ]
   );
 
-  /**
+  // Apply the deep-linked site once releases are available
+  useEffect(() => {
+    if (!initialSiteHandled.current && initialSiteIdFromUrl.current && releases.length > 0) {
+      initialSiteHandled.current = true;
+      handleSiteHighlight(initialSiteIdFromUrl.current);
+    }
+  }, [releases, handleSiteHighlight]);
 
   /**
    * Reset wayback sliders to initial positions
