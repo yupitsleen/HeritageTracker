@@ -49,8 +49,8 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
       return {
         value: key,
         label: period.label,
-        shortLabel: formatYear(period.date), // Just the year
-        tooltip: formatFullDate(period.date), // Full date for tooltip
+        shortLabel: key === "CURRENT" ? period.label : formatYear(period.date),
+        tooltip: formatFullDate(period.date),
       };
     });
   }, []);

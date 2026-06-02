@@ -69,7 +69,7 @@ export function SiteDetailView({
   const setZoomToSiteEnabled = onZoomToSiteChange || contextSetZoomToSite;
   const setMapMarkersVisible = onMapMarkersChange || contextSetMapMarkers;
 
-  // Time period state for historical imagery (default to Jan 2025 - latest available)
+  // Time period state for historical imagery (default to CURRENT - latest available)
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("CURRENT");
 
   // Sync satellite imagery with timeline (only if syncActive is true)
