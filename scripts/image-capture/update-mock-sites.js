@@ -113,6 +113,17 @@ async function updateMockSites(imageMap, attribution) {
   for (const [siteId, images] of imageMap.entries()) {
     console.log(`Processing site: ${siteId}`);
 
+    // Skip sites that already have an images block in mockSites.ts.
+    // Match only within this site's block (from its id: up to its own sources:).
+    const siteBlockMatch = new RegExp(
+      `id:\\s*["']${siteId}["']([\\s\\S]*?)sources:`
+    ).exec(content);
+    if (siteBlockMatch && siteBlockMatch[1].includes('images:')) {
+      skippedCount++;
+      console.log(`  ↷ Skipped ${siteId} (images already present)`);
+      continue;
+    }
+
     // Find the site block
     const siteRegex = new RegExp(
       `(\\{\\s*id:\\s*["']${siteId}["'][\\s\\S]*?)` + // Start of site object

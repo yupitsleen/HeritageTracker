@@ -11,18 +11,12 @@ export default defineConfig({
     exclude: ['**/node_modules/**', '**/e2e/**'],
     // Aggressive performance optimizations - maximize parallel execution
     pool: 'forks',
-    poolOptions: {
-      forks: {
-        singleFork: false,
-        minForks: 2,
-        maxForks: 8, // Run up to 8 test files in parallel
-      },
-    },
+    maxWorkers: 8, // Run up to 8 test files in parallel
     isolate: true, // Keep isolation to prevent test failures
     // Reduce overhead
     deps: {
       optimizer: {
-        web: {
+        client: {
           enabled: true,
         },
       },
@@ -47,7 +41,6 @@ export default defineConfig({
         'database/**',
       ],
       include: ['src/**/*.{ts,tsx}'],
-      all: true,
       lines: 80,
       functions: 80,
       branches: 80,

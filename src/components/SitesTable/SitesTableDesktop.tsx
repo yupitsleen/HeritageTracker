@@ -14,7 +14,7 @@ import { InfoIcon } from "../Icons/InfoIcon";
 import { INFO_ICON_COLORS } from "../../constants/tooltip";
 
 // Threshold for enabling virtual scrolling
-const VIRTUAL_SCROLL_THRESHOLD = 100;
+const VIRTUAL_SCROLL_THRESHOLD = 500;
 
 interface SitesTableDesktopProps {
   sites: Site[];

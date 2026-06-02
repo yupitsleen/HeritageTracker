@@ -92,13 +92,13 @@ export const HISTORICAL_IMAGERY = {
     url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/41468/{z}/{y}/{x}",
     maxZoom: 18, // Recent imagery, but zoom 18 ensures tile availability
   },
-  /** Current - Latest ESRI World Imagery (as of January 2025) */
+  /** Current - Live ESRI World Imagery (always the latest available) */
   CURRENT: {
-    releaseNum: 44000, // Approximate release number for Jan 2025 imagery
+    releaseNum: 44000,
     date: "2025-01-15",
-    label: "Jan 2025",
+    label: "Latest",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    maxZoom: 19, // Current imagery has high resolution
+    maxZoom: 19,
   },
 } as const;
 

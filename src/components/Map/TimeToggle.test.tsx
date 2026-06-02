@@ -26,10 +26,9 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    // Check for year-only labels (e.g., "2014", "2024", "2025")
     expect(screen.getByText("2014")).toBeInTheDocument();
     expect(screen.getByText("2024")).toBeInTheDocument();
-    expect(screen.getByText("2025")).toBeInTheDocument(); // Current year
+    expect(screen.getByText("Latest")).toBeInTheDocument();
   });
 
   it("highlights the selected period", () => {
@@ -49,7 +48,7 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const currentButton = screen.getByLabelText("Switch to Jan 2025 satellite imagery");
+    const currentButton = screen.getByLabelText("Switch to Latest satellite imagery");
     await user.click(currentButton);
 
     expect(mockOnChange).toHaveBeenCalledWith("CURRENT");
@@ -68,7 +67,7 @@ describe("TimeToggle", () => {
     await user.click(screen.getByLabelText("Switch to Jan 2024 satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("EARLY_2024");
 
-    await user.click(screen.getByLabelText("Switch to Jan 2025 satellite imagery"));
+    await user.click(screen.getByLabelText("Switch to Latest satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("CURRENT");
   });
 
@@ -82,7 +81,7 @@ describe("TimeToggle", () => {
     const buttonJan2024 = screen.getByLabelText(
       "Switch to Jan 2024 satellite imagery"
     );
-    const buttonCurrent = screen.getByLabelText("Switch to Jan 2025 satellite imagery");
+    const buttonCurrent = screen.getByLabelText("Switch to Latest satellite imagery");
 
     expect(button2014).toBeInTheDocument();
     expect(buttonJan2024).toBeInTheDocument();
@@ -108,7 +107,7 @@ describe("TimeToggle", () => {
     });
 
     const selected = screen.getByText(/2014/);
-    const unselected = screen.getByLabelText("Switch to Jan 2025 satellite imagery");
+    const unselected = screen.getByLabelText("Switch to Latest satellite imagery");
 
     expect(selected).toHaveClass("bg-[#009639]", "text-white");
     expect(unselected).toHaveClass("bg-white", "text-black", "hover:bg-gray-100");

@@ -14,6 +14,8 @@ interface SiteImageProps {
  * Displays image with proper credit and licensing information below
  */
 export function SiteImage({ image, alt, label, className }: SiteImageProps) {
+  const t = useThemeClasses();
+
   // Handle both absolute URLs and relative paths
   const getImageUrl = (url: string) => {
     // If it's an absolute URL (http/https), return as-is
@@ -51,10 +53,10 @@ export function SiteImage({ image, alt, label, className }: SiteImageProps) {
       </div>
 
       {/* Image label */}
-      <p className="text-sm font-medium text-gray-700">{label}</p>
+      <p className={`text-sm font-medium ${t.text.body}`}>{label}</p>
 
       {/* Attribution */}
-      <div className="text-xs text-gray-600 space-y-1">
+      <div className={`text-xs space-y-1 ${t.text.muted}`}>
         <p>
           <span className="font-medium">Credit:</span> {image.credit}
         </p>
@@ -66,7 +68,7 @@ export function SiteImage({ image, alt, label, className }: SiteImageProps) {
         )}
 
         {image.description && (
-          <p className="text-gray-500 italic">{image.description}</p>
+          <p className={`italic ${t.text.subtle}`}>{image.description}</p>
         )}
 
         {image.sourceUrl && (
@@ -75,7 +77,7 @@ export function SiteImage({ image, alt, label, className }: SiteImageProps) {
               href={image.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="text-blue-500 hover:text-blue-400 underline"
             >
               View original source
             </a>

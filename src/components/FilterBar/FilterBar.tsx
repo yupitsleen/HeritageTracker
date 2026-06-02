@@ -207,7 +207,7 @@ export const FilterBar = memo(function FilterBar({
           </div>
 
           {/* Desktop Filter Buttons - Hidden on mobile */}
-          <div className="hidden md:flex md:items-center md:gap-1.5 md:flex-wrap">
+          <div className="hidden md:flex md:items-center md:gap-1.5">
           {/* Type Filter */}
           <FilterButton
             label={translate("filters.selectTypes")}
@@ -274,12 +274,12 @@ export const FilterBar = memo(function FilterBar({
             />
           </FilterButton>
 
-          {/* Show Unknown Dates Toggle */}
+          {/* Show Unknown Dates Toggle — only at lg+ to avoid wrapping at md widths */}
           <button
             type="button"
             onClick={handleToggleUnknownDates}
             className={cn(
-              "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
+              "hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
               "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
               filters.showUnknownDates
                 ? "bg-[#009639] text-white border-[#009639]"
