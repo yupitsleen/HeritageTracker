@@ -27,7 +27,7 @@ export function createEmptyFilterState(): FilterState {
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
-    showUnknownDates: false, // Default to hiding sites without destruction dates
+    showUnknownDates: true, // Default to showing sites without destruction dates
   };
 }
 
@@ -43,7 +43,7 @@ export function isFilterStateEmpty(state: FilterState): boolean {
     state.creationYearStart === null &&
     state.creationYearEnd === null &&
     state.searchTerm.trim().length === 0 &&
-    state.showUnknownDates === false // showUnknownDates=false is the default state
+    state.showUnknownDates === true // showUnknownDates=true is the default state
   );
 }
 

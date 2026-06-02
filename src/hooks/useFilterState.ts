@@ -22,7 +22,7 @@ export function useFilterState() {
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
   const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [showUnknownDates, setShowUnknownDates] = useState<boolean>(false);
+  const [showUnknownDates, setShowUnknownDates] = useState<boolean>(true);
 
   // Temporary filters (for modal - not applied until "Apply Filters" clicked)
   const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<Site["type"]>>([]);
