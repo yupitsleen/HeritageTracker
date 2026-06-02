@@ -75,8 +75,9 @@ describe("useIntersectionObserver", () => {
     mockObserverInstance = null;
     observerInstances = [];
 
-    // Mock IntersectionObserver
-    global.IntersectionObserver = vi.fn((callback, options) => {
+    // Mock IntersectionObserver — must use a regular function (not arrow) so
+    // vitest 4's vi.fn() wrapper remains constructable via `new`.
+    global.IntersectionObserver = vi.fn(function(callback, options) {
       mockObserverInstance = new MockIntersectionObserver(callback, options || {});
       observerInstances.push(mockObserverInstance);
       return mockObserverInstance as unknown as IntersectionObserver;
