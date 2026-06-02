@@ -273,92 +273,89 @@ export function WaybackSlider({
       role="region"
       aria-label="Wayback Imagery Timeline"
     >
-      {/* Header - Current date and position with step controls - centered */}
+      {/* Header: three-column flex so left controls never overlap the nav buttons */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
-      <div className="flex items-center justify-center gap-3 mb-2 relative" dir="ltr">
-        {/* Comparison Mode Toggle - Top left */}
-        {onComparisonModeToggle && (
-          <div className="absolute left-0 top-0 flex items-center gap-3">
-            <Button
-              variant="secondary"
-              size="xs"
-              active={comparisonMode}
-              onClick={onComparisonModeToggle}
-              aria-label={translate("timeline.comparisonMode")}
-              title={translate("timeline.comparisonMode")}
-            >
-              {comparisonMode ? "✓ " : ""}
-              {translate("timeline.comparisonMode")}
-            </Button>
-
-            {/* Interval Selector - only shown when comparison mode handlers are available */}
-            {comparisonInterval && onIntervalChange && (
-              <IntervalSelector
-                value={comparisonInterval}
-                onChange={onIntervalChange}
-                comparisonModeEnabled={comparisonMode}
-                syncMapVersion={syncMapVersion}
-              />
-            )}
-
-            {/* Sync Map Version Toggle */}
-            {onSyncMapVersionToggle && (
+      <div className="flex items-start gap-2 mb-2 min-w-0" dir="ltr">
+        {/* Left: comparison controls (flex-1 so it takes equal space as the right column) */}
+        <div className="flex flex-1 items-center gap-1.5 flex-wrap min-w-0">
+          {onComparisonModeToggle && (
+            <>
               <Button
                 variant="secondary"
                 size="xs"
-                active={syncMapVersion}
-                onClick={onSyncMapVersionToggle}
-                aria-label={translate("timeline.syncMapVersion")}
-                title={translate("timeline.syncMapVersionTooltip")}
+                active={comparisonMode}
+                onClick={onComparisonModeToggle}
+                aria-label={translate("timeline.comparisonMode")}
+                title={translate("timeline.comparisonMode")}
               >
-                {syncMapVersion ? "✓ " : ""}
-                {translate("timeline.syncMapVersion")}
+                {comparisonMode ? "✓ " : ""}
+                {translate("timeline.comparisonMode")}
               </Button>
-            )}
-          </div>
-        )}
 
-        {/* Dataset info - absolutely positioned to the right of buttons, centered between buttons and info icon - hidden on mobile */}
-        <div className={`absolute right-10 text-xs ${t.text.muted} pointer-events-none hidden md:block`}>
-          {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
+              {comparisonInterval && onIntervalChange && (
+                <IntervalSelector
+                  value={comparisonInterval}
+                  onChange={onIntervalChange}
+                  comparisonModeEnabled={comparisonMode}
+                  syncMapVersion={syncMapVersion}
+                />
+              )}
+
+              {onSyncMapVersionToggle && (
+                <Button
+                  variant="secondary"
+                  size="xs"
+                  active={syncMapVersion}
+                  onClick={onSyncMapVersionToggle}
+                  aria-label={translate("timeline.syncMapVersion")}
+                  title={translate("timeline.syncMapVersionTooltip")}
+                >
+                  {syncMapVersion ? "✓ " : ""}
+                  {translate("timeline.syncMapVersion")}
+                </Button>
+              )}
+            </>
+          )}
         </div>
 
-        {/* Info icon in top right */}
-        <div className="absolute right-0 top-0">
+        {/* Center: nav buttons — flex-shrink-0 so they're always fully visible */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <Button
+            onClick={handlePrevious}
+            disabled={currentIndex === 0}
+            variant="secondary"
+            size="xs"
+            aria-label="Go to previous satellite image release"
+            title={TOOLTIPS.WAYBACK.PREV_RELEASE}
+          >
+            <span className="xl:hidden">⏮</span>
+            <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
+          </Button>
+
+          <Button
+            onClick={handleNext}
+            disabled={currentIndex === releases.length - 1}
+            variant="secondary"
+            size="xs"
+            aria-label="Go to next satellite image release"
+            title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
+          >
+            <span className="xl:hidden">⏭</span>
+            <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
+          </Button>
+        </div>
+
+        {/* Right: dataset stats + info icon — shrink-0 so left column gets the real remaining space */}
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <span className={`hidden md:block text-xs truncate pointer-events-none ${t.text.muted}`}>
+            {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
+          </span>
           <InfoIcon
             title={translate("timelinePage.waybackTooltip")}
             aria-label={translate("timelinePage.waybackTooltip")}
-            className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
+            className={`w-4 h-4 flex-shrink-0 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
           />
         </div>
-
-        {/* Previous button */}
-        <Button
-          onClick={handlePrevious}
-          disabled={currentIndex === 0}
-          variant="secondary"
-          size="xs"
-          aria-label="Go to previous satellite image release"
-          title={TOOLTIPS.WAYBACK.PREV_RELEASE}
-        >
-          {/* Icon only below xl, full text at xl+ */}
-          <span className="xl:hidden">⏮</span>
-          <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
-        </Button>
-
-        {/* Next button */}
-        <Button
-          onClick={handleNext}
-          disabled={currentIndex === releases.length - 1}
-          variant="secondary"
-          size="xs"
-          aria-label="Go to next satellite image release"
-          title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
-        >
-          {/* Icon only below xl, full text at xl+ */}
-          <span className="xl:hidden">⏭</span>
-          <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
-        </Button>
       </div>
 
       {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}
