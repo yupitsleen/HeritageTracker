@@ -3627,6 +3627,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "These buildings represent Gaza's diverse cultural and religious heritage. The Zaytoun Quarter's architecture reflected the coexistence of different communities in Ottoman Gaza, with traditional houses and religious structures forming an integrated urban landscape.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/historic-gaza-zaytoun-quarter-buildings-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/historic-gaza-zaytoun-quarter-buildings-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -3662,6 +3681,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "As one of the most significant Mamluk structures remaining in the Gaza Strip, the castle embodied over 600 years of architectural and historical continuity. Its partial destruction eliminates an irreplaceable example of Mamluk military and civic architecture in Palestine.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/barquq-castle-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/barquq-castle-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -3699,6 +3737,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The mosque anchored the civic and religious identity of Khan Yunis across generations. Its destruction, including documented burning of Qurans inside the structure prior to demolition, caused profound cultural and spiritual loss for the city's population.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/great-mosque-khan-yunis-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/great-mosque-khan-yunis-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -3736,6 +3793,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "As Gaza's sole Catholic place of worship, the church was irreplaceable for the city's Christian community. Together with the destroyed Rosary Sisters' School, its damage severed the infrastructure of Christian community life that had persisted in Gaza for generations.",
     verifiedBy: ["UNESCO", "Latin Patriarchate of Jerusalem"],
+    images: {
+      before: {
+        url: "/images/sites/holy-family-church-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/holy-family-church-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "National Catholic Reporter",
@@ -3772,6 +3848,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "In-situ Byzantine mosaics are among the most vulnerable and irreplaceable categories of archaeological heritage. The repeated destruction of this site — in both 2014 and 2023–2024 — represents the progressive erasure of a unique window into Gaza's Byzantine past.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/abasan-mosaics-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/abasan-mosaics-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -3809,6 +3904,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The loss of over 240,000 volumes, including rare Arabic manuscripts, research theses, and historical periodicals, constitutes an irreversible blow to Palestinian academic and cultural heritage. The library was a primary repository of Palestinian scholarly production accumulated over four decades.",
     verifiedBy: ["UNESCO", "Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/islamic-university-central-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/islamic-university-central-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -3852,6 +3966,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of the municipal library severed public access to a multilingual collection built over decades. Its loss is particularly significant because it served community members — including children, workers, and adults pursuing self-education — who lacked access to university facilities.",
     verifiedBy: ["Gaza Municipality", "UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/gaza-municipal-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/gaza-municipal-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Egyptian Streets",
@@ -3888,6 +4021,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The burning of Al-Kalima represented not only the loss of physical books but the destruction of a living institution that connected Palestinian writers with readers. Publishing houses under blockade are extraordinarily difficult to rebuild, making this loss particularly consequential for Palestinian literary culture.",
     verifiedBy: ["Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/al-kalima-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-kalima-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Literary Hub",
@@ -3924,6 +4076,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Children's libraries represent a society's investment in its youngest generation's literacy and imagination. The destruction of Ataa Library for the second time within a decade eliminated a hard-won community resource for Beit Hanoun's children, many of whom have now grown up knowing only conflict and loss of educational infrastructure.",
     verifiedBy: ["Librarians and Archivists with Palestine", "IBBY"],
+    images: {
+      before: {
+        url: "/images/sites/ataa-library-beit-hanoun-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ataa-library-beit-hanoun-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -3953,6 +4124,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Textile and costume collections are among the most vulnerable categories of heritage — they cannot be recreated, and physical originals carry information about dyes, weaving techniques, and regional variations that photographs cannot capture. The destruction of this collection severed a direct material link to Palestinian women's craft traditions spanning centuries.",
     verifiedBy: ["Librarians and Archivists with Palestine", "Museums Association"],
+    images: {
+      before: {
+        url: "/images/sites/palestinian-costume-museum-rafah-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/palestinian-costume-museum-rafah-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -3989,6 +4179,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Private diwans and heritage collections represent the grassroots preservation of cultural identity by community members without institutional support. The Ibrahim Abu Sha'ar Diwan filled a gap that no formal institution addressed — the preservation of Bedouin material culture specific to southern Gaza's communities. Its destruction leaves this aspect of Palestinian heritage without any remaining institutional anchor in the region.",
     verifiedBy: ["Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/ibrahim-abu-shaar-heritage-diwan-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibrahim-abu-shaar-heritage-diwan-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -4019,6 +4228,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Beyond its political significance, the memorial represented Gaza's capacity to commemorate its own history and honor those who died in solidarity with its people. Its destruction by the same military force responsible for the original killings carried particular symbolic weight for Gaza's civilian population.",
     verifiedBy: ["Anadolu Agency"],
+    images: {
+      before: {
+        url: "/images/sites/mavi-marmara-memorial-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/mavi-marmara-memorial-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Anadolu Agency",
@@ -4049,6 +4277,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "As one of Gaza's oldest and most religiously significant mosques, the Othman ibn Qushqar Mosque held irreplaceable architectural and spiritual value. Its Ayyubid construction techniques and its association with a site venerated in Islamic tradition made it one of the most historically important religious buildings in the Gaza Strip.",
     verifiedBy: ["UNESCO", "Heritage for Peace"],
+    images: {
+      before: {
+        url: "/images/sites/othman-ibn-qushqar-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/othman-ibn-qushqar-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -4085,6 +4332,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "As a site commemorating the sacrifice of soldiers from multiple Allied nations in two world wars, the Gaza War Cemetery holds significance extending far beyond Palestinian heritage. Its partial destruction drew international condemnation from governments that rarely comment on Palestinian cultural heritage losses, demonstrating the breadth of heritage harm caused by the conflict.",
     verifiedBy: ["Commonwealth War Graves Commission"],
+    images: {
+      before: {
+        url: "/images/sites/gaza-war-cemetery-al-tuffah-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/gaza-war-cemetery-al-tuffah-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "The Guardian / Military.com",
@@ -4119,6 +4385,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "As Gaza's only English-language public library, Edward Said Public Library filled a unique gap in the cultural landscape. Its destruction, along with the killing of its librarian, represents the human cost inseparable from cultural heritage loss — the people who built and maintained these institutions are themselves among the victims.",
     verifiedBy: ["Literary Hub", "Wikipedia"],
+    images: {
+      before: {
+        url: "/images/sites/edward-said-public-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/edward-said-public-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Literary Hub",
@@ -4148,6 +4433,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of a university library by fire, with documented desecration of religious texts, represents both an intellectual and a spiritual loss. University libraries are among the most difficult cultural institutions to rebuild, as their collections are accumulated over decades through donations, acquisitions, and scholarly contributions.",
     verifiedBy: ["Anadolu Agency"],
+    images: {
+      before: {
+        url: "/images/sites/al-aqsa-university-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-aqsa-university-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Anadolu News Agency",
@@ -4178,6 +4482,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The mosque's near-century of continuous use embedded it in the living memory of the Khan Yunis community. The combination of physical destruction and documented religious desecration makes this case particularly significant as evidence in legal and historical records of the conflict.",
     verifiedBy: ["Al Jazeera"],
+    images: {
+      before: {
+        url: "/images/sites/bani-saleh-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/bani-saleh-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -4215,6 +4538,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Contemporary art institutions are extraordinarily difficult to rebuild — they represent decades of community-building, relationships with artists, and accumulated collections. Eltiqa's destruction eliminated the primary site for exhibiting, preserving, and debating contemporary Palestinian visual culture in Gaza.",
     verifiedBy: ["Palestinian Ministry of Culture", "UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/eltiqa-gallery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/eltiqa-gallery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Hyperallergic",
@@ -4252,6 +4594,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The destruction of a 100,000-volume public library — including the only copies of certain Palestinian historical and archival materials — constitutes an irreversible loss. The presence of displaced civilian families sheltering in the building at the time adds a layer of human tragedy to the cultural loss.",
     verifiedBy: ["UNESCO", "Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/diana-tamari-sabbagh-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/diana-tamari-sabbagh-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -4288,6 +4649,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Community libraries serve populations who lack access to university libraries and represent a society's grassroots investment in literacy and learning. Their concentrated destruction in a single day points to systematic rather than incidental targeting of knowledge infrastructure.",
     verifiedBy: ["Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/enaim-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/enaim-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -4317,6 +4697,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Its destruction, alongside Enaim Library and other institutions on the same day, forms part of the documented pattern of concentrated cultural infrastructure elimination in Gaza City's residential and commercial areas during December 2023.",
     verifiedBy: ["Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/al-nahda-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-nahda-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -4346,6 +4745,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The loss of educational development infrastructure in Gaza is compounded by the extreme difficulty of rebuilding such institutions under blockade conditions. Each institution destroyed represents years of community investment in capacity-building that cannot be quickly replaced.",
     verifiedBy: ["Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/kanaan-educational-institute-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/kanaan-educational-institute-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -4376,6 +4794,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The severe damage or destruction of an Ayyubid-era mosque that survived eight centuries — including previous conflicts — represents an irreplaceable loss of medieval Islamic architectural heritage. Beit Hanoun's near-total destruction left virtually no heritage structures standing in one of Gaza's oldest settled areas.",
     verifiedBy: ["Wikipedia", "Palestine Chronicle"],
+    images: {
+      before: {
+        url: "/images/sites/umm-al-nasr-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/umm-al-nasr-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Wikipedia",
@@ -4405,6 +4842,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The immediate destruction of historic mosques in the opening hours of the offensive denied the community the possibility of preservation or evacuation of religious and cultural objects. Al-Amin Muhammad's loss set the pattern for the systematic destruction of Islamic heritage sites that followed throughout the conflict.",
     verifiedBy: ["Al Jazeera"],
+    images: {
+      before: {
+        url: "/images/sites/al-amin-muhammad-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-amin-muhammad-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -4433,6 +4889,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Music education institutions cultivate cultural transmission between generations. The conservatory's destruction eliminated the only formal pathway for musical training in Gaza and with it decades of student-teacher relationships, instrument collections, and sheet music archives. Its continuation in exile — culminating in an international award — testifies both to the institution's resilience and to the scale of what was lost physically.",
     verifiedBy: ["Institute for Palestine Studies"],
+    images: {
+      before: {
+        url: "/images/sites/edward-said-conservatory-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/edward-said-conservatory-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Institute for Palestine Studies",
@@ -4462,6 +4937,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Coastal archaeological sites are among the rarest and most informative categories of heritage, preserving evidence of ancient maritime trade, shipbuilding, and cultural exchange. The complete destruction of Maiuma eliminates a site that could have yielded irreplaceable evidence about ancient Gaza's economy and its connections to the Hellenistic and Roman Mediterranean world.",
     verifiedBy: ["Gaza Maritime Archaeology Project", "UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/maiuma-ancient-port-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/maiuma-ancient-port-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Anadolu Agency",
@@ -4492,6 +4986,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Cultural centers for deaf communities are extraordinarily rare in the Arab world. Atfaluna's crafts program, restaurant, and arts workshops constituted the primary institutional space where Gaza's deaf community could develop cultural identity and professional skills. UNESCO's verification of it as a cultural site reflects its recognized importance beyond its social welfare function.",
     verifiedBy: ["UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/atfaluna-society-deaf-children-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/atfaluna-society-deaf-children-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -4529,6 +5042,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Distance-learning university libraries serve a uniquely broad population: working adults, people with disabilities, and students in areas with no nearby campus. The damage to this library disrupted educational access for a population already severely constrained by blockade and conflict.",
     verifiedBy: ["UNESCO", "Scholars at Risk"],
+    images: {
+      before: {
+        url: "/images/sites/al-quds-open-university-library-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-quds-open-university-library-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Scholars at Risk",
@@ -4565,6 +5097,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The partial evacuation of the collection during a ceasefire window — and its subsequent renewed endangerment — illustrates the ongoing precarity of Gaza's movable cultural heritage. Private museums in residential buildings are particularly vulnerable to total loss, with no institutional capacity for emergency preservation.",
     verifiedBy: ["Palestinian Ministry of Culture", "Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/shahwan-museum-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/shahwan-museum-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
@@ -4602,6 +5153,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Musical instrument collections in conflict zones are among the most difficult categories of heritage to preserve — instruments are fragile, bulky, and impossible to digitize. The loss of Al-Sununu's instrument collection means not only the destruction of physical objects but the severing of the hands-on pedagogical tradition that connected children to these instruments.",
     verifiedBy: ["Arabic Wikipedia", "UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/al-sununu-foundation-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-sununu-foundation-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Music Fund / AER Worldwide",
@@ -4630,6 +5200,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Cultural centers that host public film, theater, and arts programming serve as irreplaceable civic infrastructure. Their loss is not merely about buildings but about the shared public space where communities process experience, debate ideas, and maintain cultural identity. The destruction of the Gaza Center eliminated a major venue for this kind of civic cultural life.",
     verifiedBy: ["Palestinian Ministry of Culture"],
+    images: {
+      before: {
+        url: "/images/sites/gaza-center-culture-arts-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/gaza-center-culture-arts-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Gaza Center for Culture and Arts",
@@ -4660,6 +5249,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Cultural bookshop-cafés serve a social function beyond commerce — they are gathering places where readers, writers, and students meet, discuss, and sustain literary culture. The destruction and looting of Al-Shorouq Al-Daem eliminated not only physical books but one of Gaza's long-standing informal intellectual gathering spaces.",
     verifiedBy: ["Palestinian Ministry of Culture", "Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/al-shorouq-al-daem-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-shorouq-al-daem-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "ArabLit",
@@ -4696,6 +5304,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Commercial bookstores occupy a distinct role from institutional libraries — they sustain a commercial ecosystem around reading and provide access to books for purchase in communities where institutional library access is limited. Their destruction as a category eliminates the private-sector dimension of literary culture.",
     verifiedBy: ["Palestinian Ministry of Culture", "Librarians and Archivists with Palestine"],
+    images: {
+      before: {
+        url: "/images/sites/lubbud-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/lubbud-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
