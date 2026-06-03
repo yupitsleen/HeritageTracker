@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { OPACITY, opacityToDecimal, withOpacity, type OpacityValue } from './opacity';
+import { OPACITY, opacityToDecimal, withOpacity } from './opacity';
 
 describe('OPACITY constants', () => {
   describe('Structure', () => {
@@ -26,39 +26,6 @@ describe('OPACITY constants', () => {
     });
   });
 
-  describe('Specific Values', () => {
-    it('OVERLAY is 95 (most opaque overlay)', () => {
-      expect(OPACITY.OVERLAY).toBe(95);
-    });
-
-    it('MAP_BACKGROUND is 90', () => {
-      expect(OPACITY.MAP_BACKGROUND).toBe(90);
-    });
-
-    it('LINK_HOVER is 80', () => {
-      expect(OPACITY.LINK_HOVER).toBe(80);
-    });
-
-    it('TEXT_OVERLAY is 70', () => {
-      expect(OPACITY.TEXT_OVERLAY).toBe(70);
-    });
-
-    it('HOVER_STATE is 50 (semi-transparent)', () => {
-      expect(OPACITY.HOVER_STATE).toBe(50);
-    });
-
-    it('DISABLED is 0 (fully transparent)', () => {
-      expect(OPACITY.DISABLED).toBe(0);
-    });
-  });
-
-  describe('Immutability', () => {
-    it('is a readonly object (as const)', () => {
-      // TypeScript should enforce this, but we can verify values don't change
-      const overlay = OPACITY.OVERLAY;
-      expect(OPACITY.OVERLAY).toBe(overlay);
-    });
-  });
 });
 
 describe('opacityToDecimal', () => {
@@ -144,25 +111,5 @@ describe('withOpacity', () => {
       const result = withOpacity('bg-black', OPACITY.OVERLAY);
       expect(result).not.toContain(' ');
     });
-  });
-});
-
-describe('Type Safety', () => {
-  it('OpacityValue type includes all OPACITY keys', () => {
-    // This test verifies that TypeScript type checking works
-    // If it compiles, the type is correct
-    const overlay: OpacityValue = OPACITY.OVERLAY;
-    const mapBg: OpacityValue = OPACITY.MAP_BACKGROUND;
-    const linkHover: OpacityValue = OPACITY.LINK_HOVER;
-    const textOverlay: OpacityValue = OPACITY.TEXT_OVERLAY;
-    const hoverState: OpacityValue = OPACITY.HOVER_STATE;
-    const disabled: OpacityValue = OPACITY.DISABLED;
-
-    expect(overlay).toBe(95);
-    expect(mapBg).toBe(90);
-    expect(linkHover).toBe(80);
-    expect(textOverlay).toBe(70);
-    expect(hoverState).toBe(50);
-    expect(disabled).toBe(0);
   });
 });

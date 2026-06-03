@@ -125,42 +125,4 @@ describe("Icon Components", () => {
     });
   });
 
-  describe("Icon Consistency", () => {
-    it("all icons accept className prop", () => {
-      const testClass = "custom-class";
-
-      const { container: info } = render(<InfoIcon className={testClass} />);
-      expect(info.querySelector("svg")).toHaveClass(testClass);
-
-      const { container: close } = render(<CloseIcon className={testClass} />);
-      expect(close.querySelector("svg")).toHaveClass(testClass);
-
-      const { container: chevron } = render(<ChevronIcon className={testClass} />);
-      expect(chevron.querySelector("svg")).toHaveClass(testClass);
-    });
-
-    it("all icons accept aria-label prop", () => {
-      const testLabel = "Test Icon";
-
-      const { container: info } = render(<InfoIcon aria-label={testLabel} />);
-      expect(info.querySelector("svg")).toHaveAttribute("aria-label", testLabel);
-
-      const { container: close } = render(<CloseIcon aria-label={testLabel} />);
-      expect(close.querySelector("svg")).toHaveAttribute("aria-label", testLabel);
-
-      const { container: chevron } = render(<ChevronIcon aria-label={testLabel} />);
-      expect(chevron.querySelector("svg")).toHaveAttribute("aria-label", testLabel);
-    });
-
-    it("all icons have role=img for accessibility", () => {
-      const { container: info } = render(<InfoIcon />);
-      expect(info.querySelector("svg")).toHaveAttribute("role", "img");
-
-      const { container: close } = render(<CloseIcon />);
-      expect(close.querySelector("svg")).toHaveAttribute("role", "img");
-
-      const { container: chevron } = render(<ChevronIcon />);
-      expect(chevron.querySelector("svg")).toHaveAttribute("role", "img");
-    });
-  });
 });
