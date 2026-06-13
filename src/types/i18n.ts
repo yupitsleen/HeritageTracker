@@ -222,6 +222,8 @@ export interface Translations {
     archaeological: string;
     museum: string;
     historicBuilding: string;
+    hospital: string;
+    school: string;
   };
 
   /** Site statuses */

@@ -5340,5 +5340,904 @@ export const mockSites: Site[] = [
       },
     ],
   },
-  // NEW SITES END - Total: 102 sites
+  // HOSPITALS
+  {
+    id: "al-shifa-hospital",
+    name: "Al-Shifa Hospital",
+    nameArabic: "مستشفى الشفاء",
+    type: "hospital",
+    yearBuilt: "1946",
+    coordinates: [31.5218, 34.4513],
+    status: "heavily-damaged",
+    dateDestroyed: "2024-03-18",
+    sourceAssessmentDate: "2024-04-01",
+    lastUpdated: "2025-11-01",
+    description:
+      "Gaza's largest hospital and the main medical complex in the Gaza Strip. Founded in the British Mandate period, Al-Shifa served as the central referral hospital for the entire population, providing surgical, maternity, and emergency services.",
+    historicalSignificance:
+      "Al-Shifa has been the backbone of Gaza's healthcare system for over 70 years. During the 2023–2024 conflict it became a focal point of international attention and controversy as Israeli forces twice conducted large-scale military operations inside the compound.",
+    culturalValue:
+      "The primary healthcare infrastructure for Gaza's population. By April 2024 the WHO confirmed the compound was mostly destroyed following a two-week Israeli military siege.",
+    verifiedBy: ["WHO", "MSF", "Forensic Architecture", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "Gaza: WHO deeply concerned about Al-Shifa hospital",
+        url: "https://www.who.int/news/item/10-11-2023-gaza--who-deeply-concerned-about-al-shifa-hospital",
+        date: "2023-11-10",
+        type: "official",
+      },
+      {
+        organization: "Human Rights Watch",
+        title: "Gaza: Israeli Military Operations at Al-Shifa Hospital",
+        url: "https://www.hrw.org/news/2024/04/01/gaza-israeli-military-operations-al-shifa-hospital",
+        date: "2024-04-01",
+        type: "documentation",
+      },
+      {
+        organization: "MSF",
+        title: "MSF calls for protection of Al-Shifa hospital",
+        date: "2023-11-11",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "al-ahli-arab-hospital",
+    name: "Al-Ahli Arab Hospital",
+    nameArabic: "مستشفى الأهلي العربي",
+    type: "hospital",
+    yearBuilt: "1882",
+    coordinates: [31.5255, 34.4540],
+    status: "heavily-damaged",
+    dateDestroyed: "2023-10-17",
+    sourceAssessmentDate: "2023-10-18",
+    lastUpdated: "2025-11-01",
+    description:
+      "One of the oldest hospitals in Palestine, founded in 1882 by the Anglican Church Missionary Society. Operated by the Episcopal Diocese of Jerusalem, Al-Ahli served Gaza's Christian and Muslim communities.",
+    historicalSignificance:
+      "Founded during the Ottoman period. On 17 October 2023 an explosion in the hospital courtyard killed hundreds of people sheltering there; the cause of the blast is disputed. The hospital building itself sustained limited structural damage.",
+    culturalValue:
+      "The only Christian hospital in Gaza, operating continuously since 1882.",
+    verifiedBy: ["MSF", "Human Rights Watch", "Amnesty International"],
+    sources: [
+      {
+        organization: "Amnesty International",
+        title: "Gaza: Horrifying details of Al-Ahli hospital explosion must be urgently investigated",
+        url: "https://www.amnesty.org/en/latest/news/2023/10/gaza-horrifying-details-of-al-ahli-hospital-explosion-must-be-urgently-investigated/",
+        date: "2023-10-18",
+        type: "documentation",
+      },
+      {
+        organization: "Human Rights Watch",
+        title: "Gaza Hospital Blast Kills Hundreds",
+        date: "2023-10-17",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "nasser-medical-complex",
+    name: "Nasser Medical Complex",
+    nameArabic: "مجمع ناصر الطبي",
+    type: "hospital",
+    yearBuilt: "unknown",
+    coordinates: [31.3269, 34.2965],
+    status: "heavily-damaged",
+    dateDestroyed: "2024-02-15",
+    sourceAssessmentDate: "2024-02-21",
+    lastUpdated: "2025-11-01",
+    description:
+      "The largest hospital in southern Gaza, located in Khan Younis. Nasser Medical Complex served as the primary referral center for southern Gaza's population, with a trauma center, maternity ward, and specialized surgical units.",
+    historicalSignificance:
+      "The largest hospital in southern Gaza. Israeli forces raided the compound on 15 February 2024 during the Khan Younis offensive; the hospital had completely ceased functioning by March 2024.",
+    culturalValue:
+      "Bodies of patients were reportedly found in and around the facility following military operations, according to MSF and WHO documentation.",
+    verifiedBy: ["WHO", "MSF", "UNRWA", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "WHO condemns attacks on Nasser hospital, Khan Younis",
+        url: "https://www.who.int/news/item/21-02-2024-who-condemns-attacks-on-nasser-hospital",
+        date: "2024-02-21",
+        type: "official",
+      },
+      {
+        organization: "MSF",
+        title: "Gaza: Nasser hospital siege leaves southern Gaza with almost no healthcare",
+        date: "2024-02-16",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "al-quds-hospital",
+    name: "Al-Quds Hospital",
+    nameArabic: "مستشفى القدس",
+    type: "hospital",
+    yearBuilt: "unknown",
+    coordinates: [31.5072, 34.4577],
+    status: "heavily-damaged",
+    dateDestroyed: "2023-11-12",
+    sourceAssessmentDate: "2023-11-12",
+    lastUpdated: "2025-11-01",
+    description:
+      "Operated by the Palestine Red Crescent Society (PRCS), Al-Quds Hospital was one of Gaza City's main hospitals. It served tens of thousands of patients annually, with particular focus on emergency and obstetric care.",
+    historicalSignificance:
+      "As a Red Crescent facility, Al-Quds carried protected status under international humanitarian law. On 12 November 2023 the PRCS announced the hospital was fully out of service after fuel ran out under siege and the facility sustained damage from surrounding bombardment.",
+    culturalValue:
+      "A Red Crescent facility in the Tel al-Hawa district of Gaza City, with protected status under international humanitarian law.",
+    verifiedBy: ["PRCS", "MSF", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "Palestine Red Crescent Society",
+        title: "Al-Quds Hospital forced to stop operations",
+        url: "https://www.palestinercs.org/",
+        date: "2023-11-03",
+        type: "official",
+      },
+      {
+        organization: "Human Rights Watch",
+        title: "Gaza: Hospital Patients at Grave Risk",
+        date: "2023-11-04",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "kamal-adwan-hospital",
+    name: "Kamal Adwan Hospital",
+    nameArabic: "مستشفى كمال عدوان",
+    type: "hospital",
+    yearBuilt: "unknown",
+    coordinates: [31.5662, 34.5012],
+    status: "destroyed",
+    dateDestroyed: "2024-12-27",
+    sourceAssessmentDate: "2024-12-28",
+    lastUpdated: "2025-11-01",
+    description:
+      "A hospital in Beit Lahia, northern Gaza. It was repeatedly raided and besieged across multiple operations. On 27 December 2024 Israeli forces stormed the hospital, removed patients and staff, and left the building burning.",
+    historicalSignificance:
+      "Kamal Adwan was the last operational hospital in the northern Gaza Strip for much of the conflict. Its director, Dr. Hussam Abu Safiya, was arrested by Israeli forces in December 2024.",
+    culturalValue:
+      "By late 2024 it was the only functioning hospital serving the northern Gaza governorate.",
+    verifiedBy: ["WHO", "UNRWA", "Human Rights Watch", "Amnesty International"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "Kamal Adwan Hospital out of service following a raid and repeated attacks",
+        url: "https://www.who.int/news/item/28-12-2024-kamal-adwan-hospital-out-of-service-following-a-raid-today-and-repeated-attacks-since-october",
+        date: "2024-12-28",
+        type: "official",
+      },
+      {
+        organization: "Amnesty International",
+        title: "Gaza: Kamal Adwan hospital attack a war crime",
+        date: "2024-12-27",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "indonesian-hospital",
+    name: "Indonesian Hospital",
+    nameArabic: "المستشفى الإندونيسي",
+    type: "hospital",
+    yearBuilt: "2016",
+    coordinates: [31.5523, 34.5055],
+    status: "heavily-damaged",
+    dateDestroyed: "2023-11-20",
+    sourceAssessmentDate: "2023-11-21",
+    lastUpdated: "2025-11-01",
+    description:
+      "Built with funds from the Indonesian government and people, the Indonesian Hospital in Beit Lahia was a modern facility providing surgical, emergency, and maternity services to northern Gaza. It was one of the most recently constructed hospitals in the Strip.",
+    historicalSignificance:
+      "Funded by Indonesian public donations collected through the Medical Emergency Rescue Committee (MER-C) and inaugurated January 2016. Struck and besieged in November 2023, forcing evacuation of patients and staff. The IDF subsequently occupied the building; it partially reopened in June 2024.",
+    culturalValue:
+      "Built through Indonesian public fundraising as a humanitarian contribution to Gaza's healthcare infrastructure.",
+    verifiedBy: ["WHO", "Indonesian Ministry of Foreign Affairs", "MSF"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "WHO condemns damage to Indonesian Hospital in northern Gaza",
+        date: "2023-11-21",
+        type: "official",
+      },
+      {
+        organization: "MSF",
+        title: "Northern Gaza hospitals systematically destroyed",
+        date: "2023-11-22",
+        type: "documentation",
+      },
+    ],
+  },
+  // SCHOOLS & UNIVERSITIES
+  {
+    id: "islamic-university-gaza",
+    name: "Islamic University of Gaza",
+    nameArabic: "الجامعة الإسلامية بغزة",
+    type: "school",
+    yearBuilt: "1978",
+    coordinates: [31.5008, 34.4472],
+    status: "destroyed",
+    dateDestroyed: "2023-10-11",
+    sourceAssessmentDate: "2024-01-15",
+    lastUpdated: "2025-11-01",
+    description:
+      "Founded in 1978, the Islamic University of Gaza was the oldest and largest university in the Gaza Strip, with thousands of students enrolled across faculties including engineering, medicine, humanities, and Islamic law. It housed extensive research facilities, libraries, and laboratories.",
+    historicalSignificance:
+      "The oldest and largest university in the Gaza Strip. By November 2024, IUG reported that 16 buildings, its central library, over 240,000 books, 8,000 periodicals, and more than 16,000 theses had been destroyed. Fifty-six staff and faculty were killed.",
+    culturalValue:
+      "Its central library held over 240,000 volumes. The university's engineering, science, and medical faculties were the primary source of professional graduates in those fields for Gaza.",
+    verifiedBy: ["UNESCO", "Human Rights Watch", "Forensic Architecture"],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "UNESCO condemns destruction of Islamic University of Gaza",
+        url: "https://www.unesco.org/en/articles/damaged-cultural-sites-gaza",
+        date: "2024-01-15",
+        type: "official",
+      },
+      {
+        organization: "Human Rights Watch",
+        title: "Gaza: Universities Targeted and Destroyed",
+        date: "2024-01-20",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "al-azhar-university-gaza",
+    name: "Al-Azhar University Gaza",
+    nameArabic: "جامعة الأزهر - غزة",
+    type: "school",
+    yearBuilt: "1991",
+    coordinates: [31.5183, 34.4519],
+    status: "destroyed",
+    dateDestroyed: "2023-11-04",
+    sourceAssessmentDate: "2024-01-20",
+    lastUpdated: "2025-11-01",
+    description:
+      "Al-Azhar University Gaza, founded on 18 October 1991, was one of the major universities in the Strip with approximately 14,000 students across 12 colleges and 80 disciplines. It offered programs in education, arts, economics, sharia, law, and sciences across campuses in Gaza City.",
+    historicalSignificance:
+      "Founded 18 October 1991. By 2023 it had grown to 14,000 students across 12 colleges and 80 disciplines. Airstrikes in November 2023 caused material losses the university estimated at over $221 million.",
+    culturalValue:
+      "One of the larger universities in the Gaza Strip, with faculties spanning education, sharia, law, arts, economics, and sciences.",
+    verifiedBy: ["UNESCO", "Scholars at Risk", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "Scholars at Risk",
+        title: "Attacks on Higher Education in Gaza",
+        url: "https://www.scholarsatrisk.org/",
+        date: "2024-02-01",
+        type: "documentation",
+      },
+      {
+        organization: "UNESCO",
+        title: "Higher education institutions damaged in Gaza",
+        date: "2024-01-20",
+        type: "official",
+      },
+    ],
+  },
+  {
+    id: "university-college-applied-sciences",
+    name: "University College of Applied Sciences",
+    nameArabic: "كلية العلوم التطبيقية الجامعية",
+    type: "school",
+    yearBuilt: "unknown",
+    coordinates: [31.5248, 34.4483],
+    status: "destroyed",
+    dateDestroyed: "2023-12-15",
+    sourceAssessmentDate: "2024-01-20",
+    lastUpdated: "2025-11-01",
+    description:
+      "A technical and applied sciences university offering programs in information technology, engineering technology, and business. UCAS played an important role in producing Gaza's technical workforce.",
+    historicalSignificance:
+      "A technical university offering applied engineering, IT, and business programs in Gaza City.",
+    culturalValue:
+      "One of several higher education institutions in Gaza providing technical and vocational training.",
+    verifiedBy: ["Scholars at Risk", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "Scholars at Risk",
+        title: "Attacks on Higher Education in Gaza",
+        url: "https://www.scholarsatrisk.org/",
+        date: "2024-02-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "al-aqsa-university",
+    name: "Al-Aqsa University",
+    nameArabic: "جامعة الأقصى",
+    type: "school",
+    yearBuilt: "unknown",
+    coordinates: [31.3018, 34.2762],
+    status: "destroyed",
+    dateDestroyed: "2024-01-20",
+    sourceAssessmentDate: "2024-02-01",
+    lastUpdated: "2025-11-01",
+    description:
+      "Al-Aqsa University served students across campuses in Khan Younis and Gaza City, offering education, arts, and science programs. It was one of the major universities in the southern Gaza Strip.",
+    historicalSignificance:
+      "Al-Aqsa University's strong teacher-training tradition made it foundational to Palestinian education. It educated Gaza's schoolteachers across multiple generations.",
+    culturalValue:
+      "A major provider of teacher education in the southern Gaza Strip.",
+    verifiedBy: ["Scholars at Risk", "UNESCO"],
+    sources: [
+      {
+        organization: "Scholars at Risk",
+        title: "Attacks on Higher Education in Gaza",
+        url: "https://www.scholarsatrisk.org/",
+        date: "2024-02-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "unrwa-schools-gaza-north",
+    name: "UNRWA Schools — Northern Gaza",
+    nameArabic: "مدارس الأونروا - شمال غزة",
+    type: "school",
+    yearBuilt: "1950s",
+    coordinates: [31.5350, 34.4970],
+    status: "destroyed",
+    dateDestroyed: "2023-11-01",
+    sourceAssessmentDate: "2024-03-01",
+    lastUpdated: "2025-11-01",
+    description:
+      "UNRWA has operated schools in the northern Gaza governorate since the 1950s, educating Palestinian refugee children. By 2023, UNRWA ran approximately 183 schools across Gaza serving over 280,000 students. In northern Gaza alone, dozens of school buildings were damaged or destroyed or converted to emergency shelters.",
+    historicalSignificance:
+      "UNRWA has operated schools in northern Gaza since the early 1950s. By 2023 UNRWA ran approximately 183 schools across Gaza serving over 280,000 students. Dozens of northern school buildings were damaged, destroyed, or converted to emergency shelters.",
+    culturalValue:
+      "The primary source of formal education for Palestinian refugee children in northern Gaza for over 70 years.",
+    verifiedBy: ["UNRWA", "UNESCO", "Human Rights Watch"],
+    metadata: {
+      isCollection: true,
+      estimatedBuildingCount: "50+",
+      collectionRationale: "UNRWA operated 183 schools across Gaza; this entry covers the northern governorate cluster most heavily affected in the initial phase of the conflict",
+    },
+    sources: [
+      {
+        organization: "UNRWA",
+        title: "UNRWA Education in Gaza Emergency Update",
+        url: "https://www.unrwa.org/newsroom/emergency-reports/gaza-emergency-situation-report",
+        date: "2024-03-01",
+        type: "official",
+      },
+      {
+        organization: "UNESCO",
+        title: "No safe place: Attacks on schools and education in Gaza",
+        date: "2024-04-15",
+        type: "official",
+      },
+    ],
+  },
+  // 2024–2025 EXPANSION
+  {
+    id: "european-gaza-hospital",
+    name: "European Gaza Hospital",
+    nameArabic: "مستشفى غزة الأوروبي",
+    type: "hospital",
+    yearBuilt: "unknown",
+    coordinates: [31.3428, 34.3082],
+    status: "heavily-damaged",
+    sourceAssessmentDate: "2024-08-12",
+    lastUpdated: "2025-11-01",
+    description:
+      "The largest hospital in southern Gaza, located in Khan Younis and funded by the European Union. It served as the main referral hospital for southern and central Gaza, providing specialist care unavailable elsewhere in the Strip.",
+    historicalSignificance:
+      "Came under repeated military pressure during the southern Gaza campaign in early-to-mid 2024, was ordered evacuated, and was forced to reduce services. WHO documented it as non-functional by August 2024.",
+    culturalValue:
+      "Built with EU funding as the main specialist referral hospital for southern and central Gaza.",
+    verifiedBy: ["WHO", "MSF", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "European Hospital in southern Gaza forced to reduce services",
+        date: "2024-08-12",
+        type: "official",
+      },
+      {
+        organization: "MSF",
+        title: "Southern Gaza hospitals under siege — European Hospital",
+        date: "2024-08-11",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "al-awda-hospital-jabalia",
+    name: "Al-Awda Hospital",
+    nameArabic: "مستشفى العودة",
+    type: "hospital",
+    yearBuilt: "unknown",
+    coordinates: [31.5381, 34.4892],
+    status: "heavily-damaged",
+    dateDestroyed: "2024-04-07",
+    sourceAssessmentDate: "2024-04-08",
+    lastUpdated: "2025-11-01",
+    description:
+      "Located in the Jabalia refugee camp in northern Gaza, Al-Awda Hospital (Return Hospital) was the primary surgical and maternity facility for the north's civilian population. It sustained repeated damage over multiple phases of the conflict.",
+    historicalSignificance:
+      "Al-Awda served the densest refugee population in Gaza. The hospital was encircled and raided multiple times between late 2023 and mid-2024, including a large-scale operation in April 2024 during the second northern offensive that left the hospital non-functional for weeks.",
+    culturalValue:
+      "One of the few hospitals serving Jabalia refugee camp, the most densely populated area in the Gaza Strip.",
+    verifiedBy: ["WHO", "UNRWA", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "Al-Awda Hospital raided in northern Gaza, staff detained",
+        date: "2024-04-08",
+        type: "official",
+      },
+      {
+        organization: "Human Rights Watch",
+        title: "Gaza: Attacks on al-Awda Hospital Must Be Investigated",
+        date: "2024-04-15",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "abu-yousuf-al-najjar-hospital",
+    name: "Abu Yousuf Al-Najjar Hospital",
+    nameArabic: "مستشفى أبو يوسف النجار",
+    type: "hospital",
+    yearBuilt: "unknown",
+    coordinates: [31.2886, 34.2428],
+    status: "destroyed",
+    dateDestroyed: "2024-05-26",
+    sourceAssessmentDate: "2024-05-28",
+    lastUpdated: "2025-11-01",
+    description:
+      "The main public hospital in Rafah city, Abu Yousuf Al-Najjar served as the primary healthcare facility for over 1.4 million displaced people who had sought refuge in Rafah by early 2024. When Israel launched the Rafah ground operation in May 2024, the hospital was forced to shut down entirely.",
+    historicalSignificance:
+      "The main public hospital in Rafah when over 1.4 million displaced people had gathered there. It was forced to close when Israeli forces seized the Rafah border crossing and expanded the ground operation in May 2024. MSF was operating inside the facility and suspended activities at the same time.",
+    culturalValue:
+      "Rafah's primary hospital, including its only dialysis center, serving the city's greatly expanded displaced population in 2024.",
+    verifiedBy: ["WHO", "MSF", "UNRWA"],
+    sources: [
+      {
+        organization: "MSF",
+        title: "Rafah: MSF forced to suspend activities at Abu Yousuf al-Najjar Hospital",
+        url: "https://www.msf.org/",
+        date: "2024-05-26",
+        type: "official",
+      },
+      {
+        organization: "WHO",
+        title: "Last hospital in Rafah closes as military operation expands",
+        date: "2024-05-28",
+        type: "official",
+      },
+    ],
+  },
+  {
+    id: "al-rantisi-hospital",
+    name: "Dr. Abdul Aziz Al-Rantisi Children's Hospital",
+    nameArabic: "مستشفى الدكتور عبد العزيز الرنتيسي للأطفال",
+    type: "hospital",
+    yearBuilt: "2008",
+    coordinates: [31.5322, 34.4568],
+    status: "heavily-damaged",
+    dateDestroyed: "2023-11-05",
+    sourceAssessmentDate: "2023-11-06",
+    lastUpdated: "2025-11-01",
+    description:
+      "Gaza's largest children's hospital, opened in 2008 with 124 beds across specialties including the territory's only pediatric oncology and dialysis departments. The hospital was struck on 5 November 2023 and subsequently forced to close, then evacuated under IDF orders.",
+    historicalSignificance:
+      "The only hospital in the Gaza Strip providing pediatric cancer care. Its closure in November 2023 left children requiring oncology treatment without access to care within the territory. The Palestine Children's Relief Fund subsequently undertook reconstruction of the cancer ward.",
+    culturalValue:
+      "Named after Palestinian pediatrician Abdel Aziz al-Rantisi. With 124 beds it was Gaza's largest children's hospital.",
+    verifiedBy: ["WHO", "PCRF", "Save the Children"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "Al-Rantisi pediatric hospital forced to close",
+        date: "2023-11-05",
+        type: "official",
+      },
+      {
+        organization: "Palestine Children's Relief Fund",
+        title: "Statement on the Forced Closure of PCRF's Pediatric Cancer Department in Gaza",
+        url: "https://www.pcrf.net/pcrf-in-the-news/statement-on-cancer-department-in-gaza.html",
+        date: "2023-11-06",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "gaza-psychiatric-hospital",
+    name: "Gaza Psychiatric Hospital",
+    nameArabic: "مستشفى غزة للطب النفسي",
+    type: "hospital",
+    yearBuilt: "1980",
+    coordinates: [31.5063, 34.4587],
+    status: "destroyed",
+    dateDestroyed: "2023-11-05",
+    sourceAssessmentDate: "2023-11-09",
+    lastUpdated: "2025-11-01",
+    description:
+      "Established in 1980, the Gaza Psychiatric Hospital was the only Ministry of Health inpatient psychiatric facility in the Gaza Strip. It was the sole provider of inpatient mental health care for the territory's entire population. Israeli forces struck the hospital directly on 5 November 2023; it ceased all operations by 9 November 2023 after fuel ran out and damage made it non-functional.",
+    historicalSignificance:
+      "The only inpatient psychiatric facility in the Gaza Strip. Its destruction left no psychiatric hospital anywhere in the territory. A 2025 WHO EMRO journal article documented the resulting collapse of psychiatric emergency management across Gaza.",
+    culturalValue:
+      "The sole Ministry of Health psychiatric facility serving the entire Gaza Strip.",
+    verifiedBy: ["WHO", "Lancet Psychiatry", "UN OCHA"],
+    sources: [
+      {
+        organization: "WHO",
+        title: "Gaza Psychiatric Hospital out of service following direct targeting",
+        url: "https://gazahcsector.palestine-studies.org/en/node/12",
+        date: "2023-11-09",
+        type: "official",
+      },
+      {
+        organization: "WHO EMRO",
+        title: "Repercussions of the destruction of Gaza's sole psychiatric hospital",
+        url: "https://www.emro.who.int/emhj-volume-31-2025/volume-31-issue-2/repercussions-of-the-destruction-of-gazas-sole-psychiatric-hospital.html",
+        date: "2025-01-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "abu-hussein-school-jabalia",
+    name: "Abu Hussein Primary School (UNRWA)",
+    nameArabic: "مدرسة أبو حسين الابتدائية - الأونروا",
+    type: "school",
+    yearBuilt: "1960s",
+    coordinates: [31.5297, 34.4878],
+    status: "destroyed",
+    dateDestroyed: "2024-10-17",
+    sourceAssessmentDate: "2024-10-17",
+    lastUpdated: "2025-11-01",
+    description:
+      "The UNRWA-run Abu Hussein Primary School in Jabalia refugee camp was being used as a displacement shelter when Israeli forces struck it on 17 October 2024. The strike killed at least 28 Palestinians and wounded approximately 160 others sheltering inside.",
+    historicalSignificance:
+      "The strike on Abu Hussein occurred during the third major Israeli offensive into Jabalia camp (launched 5 October 2024). UNRWA stated it had shared the coordinates with Israeli authorities as required under standard humanitarian practice. The attack drew international condemnation.",
+    culturalValue:
+      "An UNRWA primary school serving the Jabalia refugee camp community, converted to a displacement shelter during the conflict.",
+    verifiedBy: ["UNRWA", "UN OCHA", "Al Jazeera"],
+    sources: [
+      {
+        organization: "UNRWA",
+        title: "UNRWA Situation Report #145 — strike on Abu Hussein school in Jabalia",
+        url: "https://www.unrwa.org/resources/reports/unrwa-situation-report-145-situation-gaza-strip-and-west-bank-including-east-jerusalem",
+        date: "2024-10-17",
+        type: "official",
+      },
+      {
+        organization: "Al Jazeera",
+        title: "Israeli strike on school sheltering displaced families in Jabalia kills 28",
+        url: "https://www.aljazeera.com/news/2024/10/17/israeli-strike-on-school-sheltering-displaced-families-in-jabalia-kills",
+        date: "2024-10-17",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "al-sardi-school-nuseirat",
+    name: "Al-Sardi Boys' Preparatory School (UNRWA)",
+    nameArabic: "مدرسة السردي الإعدادية للأولاد - الأونروا",
+    type: "school",
+    yearBuilt: "1950s",
+    coordinates: [31.4458, 34.3724],
+    status: "destroyed",
+    dateDestroyed: "2024-06-06",
+    sourceAssessmentDate: "2024-06-06",
+    lastUpdated: "2025-11-01",
+    description:
+      "The UNRWA Al-Sardi Boys' Preparatory School in Nuseirat refugee camp was sheltering approximately 6,000 displaced people when Israeli forces fired two missiles into the upper floors at around 2 am on 6 June 2024. At least 35 people were killed and dozens more wounded, including 6 UNRWA staff members.",
+    historicalSignificance:
+      "The Al-Sardi school attack was one of the most documented strikes on a UN facility during the conflict. CNN analysis confirmed US-made munitions were used. UNRWA chief Philippe Lazzarini called the attack a 'blatant disregard for International Humanitarian Law.'",
+    culturalValue:
+      "An UNRWA boys' preparatory school in Nuseirat refugee camp, sheltering approximately 6,000 displaced people at the time of the strike.",
+    verifiedBy: ["UNRWA", "CNN", "UN OCHA"],
+    sources: [
+      {
+        organization: "UNRWA",
+        title: "No shelter from war: The bombing of Block 2 at the UNRWA Nuseirat School",
+        url: "https://www.unrwa.org/newsroom/features/no-shelter-war-bombing-block-2-unrwa-nuseirat-school",
+        date: "2024-06-06",
+        type: "official",
+      },
+      {
+        organization: "CNN",
+        title: "US munitions used in Israeli attack on UNRWA school in Gaza",
+        date: "2024-06-07",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "al-israa-university",
+    name: "Al-Israa University",
+    nameArabic: "جامعة الإسراء",
+    type: "school",
+    yearBuilt: "2000",
+    coordinates: [31.5061, 34.4501],
+    status: "destroyed",
+    dateDestroyed: "2024-01-17",
+    sourceAssessmentDate: "2024-02-01",
+    lastUpdated: "2025-11-01",
+    description:
+      "A private university in Gaza City offering programs in business, law, engineering, and humanities. Al-Israa was founded in 2000 and had grown to serve thousands of students. Video footage verified by open-source investigators showed the university buildings being demolished by Israeli forces in January 2024.",
+    historicalSignificance:
+      "Al-Israa is the most thoroughly documented case of deliberate university demolition during the conflict. Verified footage shows controlled demolition of the campus buildings during Israeli military operations in Gaza City.",
+    culturalValue:
+      "Its destruction was cited by the UN Special Rapporteur on the right to education as evidence of 'scholasticide' — the deliberate targeting of educational institutions.",
+    verifiedBy: ["Forensic Architecture", "Scholars at Risk", "Human Rights Watch"],
+    sources: [
+      {
+        organization: "Forensic Architecture",
+        title: "Al-Israa University: Forensic Analysis of Demolition",
+        url: "https://forensic-architecture.org/",
+        date: "2024-02-15",
+        type: "documentation",
+      },
+      {
+        organization: "Human Rights Watch",
+        title: "Gaza: Video Shows Israeli Forces Destroying University",
+        date: "2024-02-01",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "rafah-refugee-camp-school-cluster",
+    name: "UNRWA Schools — Rafah Governorate",
+    nameArabic: "مدارس الأونروا - محافظة رفح",
+    type: "school",
+    yearBuilt: "1950s",
+    coordinates: [31.2971, 34.2476],
+    status: "destroyed",
+    dateDestroyed: "2024-05-15",
+    sourceAssessmentDate: "2024-06-01",
+    lastUpdated: "2025-11-01",
+    description:
+      "Cluster of UNRWA schools across the Rafah governorate, most of which were converted to displacement shelters by early 2024 when over 1.4 million people had fled to Rafah. The Rafah ground operation launched on 6 May 2024 resulted in destruction of or forced closure of all schools in the governorate.",
+    historicalSignificance:
+      "By early 2024 over 1.4 million displaced people had gathered in Rafah, many sheltering in UNRWA schools. The Rafah ground operation launched 6 May 2024 resulted in the closure or destruction of all functioning UNRWA schools in the governorate.",
+    culturalValue:
+      "UNRWA schools in Rafah governorate have educated Palestinian refugee children since the early 1950s.",
+    verifiedBy: ["UNRWA", "UNESCO", "Human Rights Watch"],
+    metadata: {
+      isCollection: true,
+      estimatedBuildingCount: "25+",
+      collectionRationale: "All UNRWA schools in Rafah governorate were rendered non-functional or destroyed during the May 2024 ground operation",
+    },
+    sources: [
+      {
+        organization: "UNRWA",
+        title: "UNRWA situation report: Rafah operation impact on education",
+        url: "https://www.unrwa.org/",
+        date: "2024-06-01",
+        type: "official",
+      },
+      {
+        organization: "UNESCO",
+        title: "Education destroyed: All schools in Rafah non-functional",
+        date: "2024-06-15",
+        type: "official",
+      },
+    ],
+  },
+  // --- BATCH 2: Additional heritage sites ---
+
+  {
+    id: "deir-el-balah-bronze-age-cemetery",
+    name: "Deir el-Balah Bronze Age Cemetery",
+    nameArabic: "مقبرة دير البلح من العصر البرونزي",
+    type: "archaeological",
+    yearBuilt: "BCE 1300",
+    coordinates: [31.418, 34.350],
+    status: "damaged",
+    lastUpdated: "2025-12-01",
+    description:
+      "A Late Bronze Age cemetery near Deir al-Balah, central Gaza Strip, excavated by Trude Dothan between 1972 and 1982. The site yielded approximately 50 anthropoid clay sarcophagi dated to the 13th–14th centuries BCE, shaped in the Egyptian tradition. Among the most significant Bronze Age burial assemblages found in the southern Levant.",
+    historicalSignificance:
+      "The Deir el-Balah sarcophagi provide evidence of Egyptian cultural influence during the New Kingdom's administration of Canaan (~1550–1070 BCE). Anthropoid pottery coffins of this type are rare in the Levant and indicate Gaza's role as a provincial center under Egyptian rule.",
+    culturalValue:
+      "A Bronze Age burial site documenting ancient Gaza's position within the Egyptian–Canaanite cultural sphere. Damaged during military operations in the central Gaza Strip.",
+    verifiedBy: ["Institute for Palestine Studies", "UNESCO", "972 Magazine"],
+    sources: [
+      {
+        organization: "Institute for Palestine Studies",
+        title: "Destruction of Cultural Heritage in Gaza",
+        url: "https://www.palestine-studies.org/en/node/1655123",
+        date: "2023-11-01",
+        type: "documentation",
+      },
+      {
+        organization: "Wikipedia",
+        title: "Deir el-Balah sarcophagi",
+        url: "https://en.wikipedia.org/wiki/Deir_el-Balah_sarcophagi",
+        type: "reference",
+      },
+    ],
+  },
+
+  {
+    id: "souq-al-zawiya",
+    name: "Souq al-Zawiya",
+    nameArabic: "سوق الزاوية",
+    type: "historic-building",
+    yearBuilt: "1300",
+    coordinates: [31.505, 34.465],
+    status: "destroyed",
+    dateDestroyed: "2023-11-23",
+    sourceAssessmentDate: "2023-11-23",
+    lastUpdated: "2025-12-01",
+    description:
+      "Gaza's largest historic market, established in the Mamluk era, stretching over 250 metres through the Old City with 65 buildings and more than 1,150 shops. Located adjacent to the Great Omari Mosque, Hammam al-Sammara, and Qasr al-Basha along the trade route linking Asia and Africa. Destroyed by an Israeli airstrike on 23 November 2023.",
+    historicalSignificance:
+      "Rooted in the Mamluk era, the market takes its name from a zawiya (rest house) used by Indian spice traders for centuries. The site's Central Archives building, which held documents over a century old, was also destroyed. Souq al-Zawiya formed the commercial heart of Old Gaza alongside the city's principal Mamluk monuments.",
+    culturalValue:
+      "The main food and goods market of Gaza's Old City for centuries, embedded within the Mamluk historic district that UNESCO monitors as outstanding universal value.",
+    verifiedBy: ["GIG", "UNESCO", "Jordan Times"],
+    sources: [
+      {
+        organization: "GIG",
+        title: "Al-Zawiya Popular Market — War Damage Documentation",
+        url: "https://gigaza.org/en/war-damage/al-zawiya-popular-market/",
+        date: "2023-11-23",
+        type: "documentation",
+      },
+      {
+        organization: "Jordan Times",
+        title: "Heritage Alert: Cultural devastation in Gaza's historic market",
+        url: "https://jordantimes.com/news/local/heritage-alert-cultural-devastation-gazas-historic-market",
+        date: "2023-12-01",
+        type: "journalism",
+      },
+    ],
+  },
+
+  {
+    id: "khalid-ibn-walid-mosque-al-qarara",
+    name: "Khalid ibn al-Walid Mosque",
+    nameArabic: "مسجد خالد بن الوليد",
+    type: "mosque",
+    yearBuilt: "unknown",
+    coordinates: [31.375, 34.378],
+    status: "destroyed",
+    dateDestroyed: "2023-11-08",
+    sourceAssessmentDate: "2023-11-09",
+    lastUpdated: "2025-12-01",
+    description:
+      "A mosque in Al-Qarara town, Khan Yunis Governorate, targeted by Israeli aircraft on 8 November 2023. The strike destroyed the building without prior warning. The attack occurred during the early phase of Israeli ground operations expanding into southern Gaza.",
+    historicalSignificance:
+      "Documented by the Genocide in Gaza (GIG) database and reported by multiple international news outlets as one of dozens of mosques destroyed in Khan Yunis governorate in the first weeks of the conflict.",
+    culturalValue:
+      "A neighborhood mosque serving the Al-Qarara community in Khan Yunis Governorate.",
+    verifiedBy: ["GIG", "Wikipedia"],
+    sources: [
+      {
+        organization: "GIG",
+        title: "Khalid Ibn Al-Walid Mosque – Khan Yunis — War Damage Documentation",
+        url: "https://gigaza.org/en/war-damage/khalid-ibn-al-walid-mosque-khan-yunis/",
+        date: "2023-11-09",
+        type: "documentation",
+      },
+      {
+        organization: "Wikipedia",
+        title: "Attacks on religious sites during the Israeli invasion of Gaza",
+        url: "https://en.wikipedia.org/wiki/Attacks_on_religious_sites_during_the_Israeli_invasion_of_Gaza",
+        type: "reference",
+      },
+    ],
+  },
+
+  {
+    id: "al-shuhada-mosque-khan-yunis",
+    name: "Al-Shuhada Mosque",
+    nameArabic: "مسجد الشهداء",
+    type: "mosque",
+    yearBuilt: "unknown",
+    coordinates: [31.344, 34.300],
+    status: "destroyed",
+    dateDestroyed: "2023-12-11",
+    sourceAssessmentDate: "2023-12-11",
+    lastUpdated: "2025-12-01",
+    description:
+      "One of the principal mosques in Khan Yunis, located in the Al-Balad (old town) district. The mosque hosted daily and Friday prayers and served as a center for religious gatherings. Targeted by Israeli aircraft on 11 December 2023, resulting in complete destruction.",
+    historicalSignificance:
+      "Documented by the GIG database as one of the main religious landmarks in Khan Yunis city, destroyed during the Israeli ground campaign in southern Gaza in late 2023.",
+    culturalValue:
+      "A congregational mosque in the historic core of Khan Yunis city.",
+    verifiedBy: ["GIG", "Middle East Monitor"],
+    sources: [
+      {
+        organization: "GIG",
+        title: "Al-Shuhada Mosque – Khan Younis — War Damage Documentation",
+        url: "https://gigaza.org/en/war-damage/al-shuhada-mosque-khan-younis/",
+        date: "2023-12-11",
+        type: "documentation",
+      },
+    ],
+  },
+
+  {
+    id: "al-faruq-mosque-khan-yunis",
+    name: "Al-Faruq Mosque",
+    nameArabic: "مسجد الفاروق",
+    type: "mosque",
+    yearBuilt: "unknown",
+    coordinates: [31.346, 34.307],
+    status: "destroyed",
+    dateDestroyed: "2024-10-25",
+    sourceAssessmentDate: "2024-10-25",
+    lastUpdated: "2025-12-01",
+    description:
+      "One of the largest mosques in Khan Yunis, destroyed by an Israeli airstrike on 25 October 2024 without prior warning. The GIG database documents the complete destruction of the building. Middle East Eye described it as one of Khan Yunis's largest mosques.",
+    historicalSignificance:
+      "Struck more than a year into the conflict during renewed Israeli operations in Khan Yunis. Documented by GIG, Middle East Eye, and the Jerusalem Post as one of the principal mosques in the city.",
+    culturalValue:
+      "A large congregational mosque serving the Khan Yunis community.",
+    verifiedBy: ["GIG", "Middle East Eye", "Jerusalem Post"],
+    sources: [
+      {
+        organization: "GIG",
+        title: "Al-Faruq Mosque – Khan Yunis — War Damage Documentation",
+        url: "https://gigaza.org/en/war-damage/al-faruq-mosque-khan-yunis/",
+        date: "2024-10-25",
+        type: "documentation",
+      },
+      {
+        organization: "Jerusalem Post",
+        title: "IDF strikes destroyed Al Farouq Mosque in Gaza",
+        url: "https://www.jpost.com/israel-hamas-war/article-819531",
+        date: "2024-10-25",
+        type: "journalism",
+      },
+    ],
+  },
+
+  {
+    id: "shuhada-al-aqsa-mosque-deir-balah",
+    name: "Shuhada al-Aqsa Mosque",
+    nameArabic: "مسجد شهداء الأقصى",
+    type: "mosque",
+    yearBuilt: "unknown",
+    coordinates: [31.415, 34.341],
+    status: "destroyed",
+    dateDestroyed: "2024-10-06",
+    sourceAssessmentDate: "2024-10-06",
+    lastUpdated: "2025-12-01",
+    description:
+      "A mosque in Deir al-Balah, central Gaza Strip, that had been serving as a displacement shelter when Israeli forces bombed it on 6 October 2024. At least 26 Palestinians were killed and more than 93 wounded. The adjacent Ibn Rushd school was struck in the same attack.",
+    historicalSignificance:
+      "The attack is the subject of a dedicated Wikipedia article ('October 2024 Deir al-Balah mosque bombing'). Al Jazeera and NPR reported from the scene. Israel claimed the mosque was used as a Hamas command center; no evidence was provided for this claim.",
+    culturalValue:
+      "A mosque in Deir al-Balah serving as a civilian displacement shelter at the time of the attack.",
+    verifiedBy: ["Al Jazeera", "NPR", "Wikipedia"],
+    sources: [
+      {
+        organization: "Al Jazeera",
+        title: "Israeli strike on Gaza mosque-turned-shelter kills at least 26",
+        url: "https://www.aljazeera.com/gallery/2024/10/6/deadly-israeli-strike-on-gaza-mosque-turned-shelter",
+        date: "2024-10-06",
+        type: "journalism",
+      },
+      {
+        organization: "Wikipedia",
+        title: "October 2024 Deir al-Balah mosque bombing",
+        url: "https://en.wikipedia.org/wiki/October_2024_Deir_al-Balah_mosque_bombing",
+        type: "reference",
+      },
+      {
+        organization: "NPR",
+        title: "A strike on a mosque kills 19 as Israel bombards northern Gaza",
+        url: "https://www.npr.org/2024/10/06/g-s1-26576/israel-bombards-northern-gaza-and-southern-beirut",
+        date: "2024-10-06",
+        type: "journalism",
+      },
+    ],
+  },
+
+  // BATCH 2 END - Total: 128 sites
 ];

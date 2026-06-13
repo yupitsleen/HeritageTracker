@@ -187,7 +187,7 @@ describe("Translation Completeness", () => {
 
 describe("Site-specific Translations", () => {
   it("has all site type translations", () => {
-    const types = ["mosque", "church", "archaeological", "museum", "historicBuilding"];
+    const types = ["mosque", "church", "archaeological", "museum", "historicBuilding", "hospital", "school"];
 
     types.forEach((type) => {
       expect(en.siteTypes).toHaveProperty(type);

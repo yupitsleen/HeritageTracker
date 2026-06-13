@@ -12,6 +12,8 @@
 // Import only the icons we use (tree-shakable)
 import {
   BuildingLibraryIcon,
+  BuildingOffice2Icon,
+  AcademicCapIcon,
   MagnifyingGlassIcon,
   HomeModernIcon,
   FlagIcon,
@@ -47,6 +49,8 @@ export type HeroIconComponent = React.ComponentType<{
  */
 const ICON_REGISTRY_SOLID: Record<string, HeroIconComponent> = {
   BuildingLibraryIcon,
+  BuildingOffice2Icon,
+  AcademicCapIcon,
   MagnifyingGlassIcon,
   HomeModernIcon,
   FlagIcon,

@@ -178,6 +178,8 @@ export const ar: Translations = {
     archaeological: "موقع أثري",
     museum: "متحف",
     historicBuilding: "مبنى تاريخي",
+    hospital: "مستشفى",
+    school: "مدرسة / جامعة",
   },
 
   siteStatus: {
