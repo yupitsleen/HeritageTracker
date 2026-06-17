@@ -1,47 +1,5 @@
 # Heritage Tracker
 
-**Documenting Palestinian cultural heritage destruction through interactive visualization**
-
-![Tests](https://img.shields.io/badge/tests-1465%20passing-brightgreen)
-![E2E Tests](https://img.shields.io/badge/E2E-16%20passing-blue)
-![Coverage](https://img.shields.io/badge/coverage-80%25-green)
-![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)
-
-**Production Status:** 70 Gaza sites documented (140-160 buildings) | Code review 90% complete | Ready for deployment
-
----
-
-## 🎯 Mission
-
-Document and visualize Palestinian cultural heritage destruction with evidence-based data to support transparency, legal advocacy, and preservation efforts.
-
-**The Context:** 64.7% of Gaza's cultural heritage destroyed (207 of 320 sites) | 114 sites UNESCO-verified | 1,700+ years of history at risk
-
----
-
-## ✨ Key Features
-
-### Interactive Visualization
-- **Comparison Mode** - Side-by-side satellite imagery (186 ESRI Wayback releases, 2014-2025)
-- **Interactive Map** - Leaflet with clustering, satellite/street toggle, 50+ site markers
-- **Timeline** - D3.js horizontal scrubber with play/pause, BC/BCE support
-- **Advanced Filters** - Type, status, date ranges with 300ms debouncing
-- **Statistics Dashboard** - Impact metrics, artifact tracking, loss calculations
-
-### Data Management
-- **Resizable Table** - Virtual scrolling (60 FPS with 100+ sites), progressive columns
-- **Multi-format Export** - CSV/JSON/GeoJSON with multilingual support
-- **Multilingual UI** - English/Arabic/Italian with RTL support
-- **Detail Modals** - Cross-component state sync
-- **User Guide** - Comprehensive "How It Works" page in Resources dropdown
-
-### Production-Ready Architecture
-- **3 Backend Modes** - Mock API, Local (PostgreSQL+PostGIS), Supabase Cloud
-- **Zero-Downtime Switching** - Change .env, no code changes needed
-- **Performance** - <2s page load, <500ms filters, 60 FPS scrolling
-- **Scaling** - Pagination, virtual scrolling, map clustering, React Query caching
-- **Security** - SQL injection protection, custom error hierarchy, adapter pattern
-
 ---
 
 ## 🛠️ Tech Stack
@@ -114,16 +72,6 @@ src/
 └── server/                 # Express REST API (3-layer architecture)
 ```
 
-**Achievements:**
-
-- ✅ 1,465 tests passing (frontend + backend)
-- ✅ 16 E2E tests (70% faster than original suite)
-- ✅ 70 sites documented (exceeds UNESCO target by 123-140%)
-- ✅ 3 backend modes with zero-code switching
-- ✅ Multilingual support (English/Arabic/Italian)
-- ✅ Code review 90% complete
-
----
 
 ## 📖 Documentation
 
@@ -138,33 +86,6 @@ src/
 
 ---
 
-## 🗺️ Roadmap
-
-### ✅ Phase 1-14: Production Ready (COMPLETE)
-- [x] Interactive map, timeline, filters, comparison mode
-- [x] 70 Gaza sites documented (140-160 buildings)
-- [x] 3 backend modes with adapter pattern
-- [x] Scaling architecture (pagination, virtual scrolling, clustering)
-- [x] 1,465 unit tests + 16 E2E tests
-- [x] Local backend (PostgreSQL + Express)
-- [x] Multilingual support (English/Arabic/Italian)
-- [x] "How It Works" user guide page
-- [x] Code review 90% complete
-
-### 🚧 Phase 15: Production Deployment (Next)
-- [ ] Deploy Supabase backend
-- [ ] Deploy frontend to Vercel/Netlify
-- [ ] Configure CI/CD for automatic deployments
-- [ ] Set up monitoring and analytics
-
-### 📋 Phase 16: Content Expansion (Future)
-- [ ] Complete Gaza heritage documentation
-- [ ] User contribution system with verification
-- [ ] Image research and integration
-- [ ] West Bank sites
-- [ ] International museum holdings
-
----
 
 ## 📚 Data Sources
 
@@ -176,53 +97,13 @@ All sites verified by authoritative sources:
 4. **Palestinian Museum** - Cultural heritage records
 5. **Institute for Palestine Studies** - Historical documentation
 
-**Research Methodology:** Site descriptions are original syntheses from multiple verified sources. Research assistance by Claude (Anthropic). All factual claims cross-referenced and cited.
+**Research Methodology:** Site descriptions are AI syntheses from multiple verified sources. Research assistance by Claude (Anthropic).
 
 See [research documentation](docs/research/) for detailed source analysis.
 
----
+--
 
-## 🤝 Contributing
-
-### Ways to Help
-
-- 📊 Data collection and source verification
-- 💻 Code contributions ([open issues](https://github.com/yupitsleen/HeritageTracker/issues))
-- 🌍 Translation and localization (Arabic/Italian expansion)
-- 🐛 Testing and bug reports
-
-### Contribution Guidelines
-
-**Before submitting:**
-1. Use conventional commits: `feat:`, `fix:`, `refactor:`, `perf:`
-2. Write tests (minimum 5+ per component)
-3. Run quality checks: `npm run lint && npm run test:all`
-4. Follow patterns in [CLAUDE.md](CLAUDE.md)
-
-**Quality Gates:**
-- ✅ All 1,465 unit tests passing
-- ✅ All 16 E2E tests passing
-- ✅ ESLint with zero warnings
-- ✅ TypeScript strict mode (no `any`)
-- ✅ 80%+ code coverage
-
-All changes auto-tested via CI/CD (GitHub Actions).
-
----
-
-## ⚖️ Legal & Ethical
-
-**Documentation and educational project** for cultural heritage preservation:
-
-- ✅ All data from publicly available, verified sources
-- ✅ Full attribution and citations
-- ✅ Factual presentation without political advocacy
-- ✅ Respects cultural sensitivity and Palestinian heritage
-- ✅ Educational/non-profit use only
-
----
-
-## 🌍 Related Projects
+## 🌍 Related Projects by others
 
 - [Forensic Architecture](https://forensic-architecture.org/) - Spatial investigations and evidence analysis
 - [Syria Heritage Initiative](https://uchicago.edu/shi/) - Syrian cultural heritage documentation
@@ -238,28 +119,3 @@ Built on documentation by UNESCO, Forensic Architecture, Heritage for Peace, Pal
 **Special Thanks:**
 - Anthropic's Claude for research assistance and code review
 - Open source community for critical tools (React, Leaflet, D3.js, PostgreSQL)
-
----
-
-## 📊 Project Statistics
-
-- **70 sites** documented (140-160 buildings)
-- **1,465 tests** passing (frontend + backend)
-- **16 E2E tests** (Playwright)
-- **7 pages** (Dashboard, Timeline, Data, Stats, About, Donate, HowItWorks)
-- **2,356 lines** of heritage site data
-- **857 lines** of developer documentation
-- **3 backend modes** (Mock/Local/Supabase)
-- **3 languages** (English/Arabic/Italian)
-- **186 Wayback releases** (2014-2025)
-- **24+ custom hooks**
-- **30+ config files**
-- **80%+ code coverage**
-
----
-
-**"Cultural heritage belongs to all of humanity. Its destruction is everyone's loss."**
-
----
-
-*Version 2.0.0-dev | Production-ready | November 2025*
