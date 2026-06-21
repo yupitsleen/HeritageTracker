@@ -186,6 +186,9 @@ export const it: Translations = {
     historicBuilding: "Edificio Storico",
     hospital: "Ospedale",
     school: "Scuola / Università",
+    monument: "Monumento",
+    cemetery: "Cimitero",
+    archive: "Archivio",
   },
 
   siteStatus: {

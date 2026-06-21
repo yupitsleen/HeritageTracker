@@ -187,6 +187,9 @@ export const en: Translations = {
     historicBuilding: "Historic Building",
     hospital: "Hospital",
     school: "School / University",
+    monument: "Monument",
+    cemetery: "Cemetery",
+    archive: "Archive",
   },
 
   siteStatus: {

@@ -224,6 +224,9 @@ export interface Translations {
     historicBuilding: string;
     hospital: string;
     school: string;
+    monument: string;
+    cemetery: string;
+    archive: string;
   };
 
   /** Site statuses */
