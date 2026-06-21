@@ -5359,6 +5359,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The primary healthcare infrastructure for Gaza's population. By April 2024 the WHO confirmed the compound was mostly destroyed following a two-week Israeli military siege.",
     verifiedBy: ["WHO", "MSF", "Forensic Architecture", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-shifa-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-shifa-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5400,6 +5419,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The only Christian hospital in Gaza, operating continuously since 1882.",
     verifiedBy: ["MSF", "Human Rights Watch", "Amnesty International"],
+    images: {
+      before: {
+        url: "/images/sites/al-ahli-arab-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-ahli-arab-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Amnesty International",
@@ -5434,6 +5472,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Bodies of patients were reportedly found in and around the facility following military operations, according to MSF and WHO documentation.",
     verifiedBy: ["WHO", "MSF", "UNRWA", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/nasser-medical-complex-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/nasser-medical-complex-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5468,6 +5525,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A Red Crescent facility in the Tel al-Hawa district of Gaza City, with protected status under international humanitarian law.",
     verifiedBy: ["PRCS", "MSF", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-quds-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-quds-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Palestine Red Crescent Society",
@@ -5502,6 +5578,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "By late 2024 it was the only functioning hospital serving the northern Gaza governorate.",
     verifiedBy: ["WHO", "UNRWA", "Human Rights Watch", "Amnesty International"],
+    images: {
+      before: {
+        url: "/images/sites/kamal-adwan-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/kamal-adwan-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5536,6 +5631,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Built through Indonesian public fundraising as a humanitarian contribution to Gaza's healthcare infrastructure.",
     verifiedBy: ["WHO", "Indonesian Ministry of Foreign Affairs", "MSF"],
+    images: {
+      before: {
+        url: "/images/sites/indonesian-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/indonesian-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5570,6 +5684,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Its central library held over 240,000 volumes. The university's engineering, science, and medical faculties were the primary source of professional graduates in those fields for Gaza.",
     verifiedBy: ["UNESCO", "Human Rights Watch", "Forensic Architecture"],
+    images: {
+      before: {
+        url: "/images/sites/islamic-university-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/islamic-university-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -5604,6 +5737,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "One of the larger universities in the Gaza Strip, with faculties spanning education, sharia, law, arts, economics, and sciences.",
     verifiedBy: ["UNESCO", "Scholars at Risk", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-azhar-university-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-azhar-university-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Scholars at Risk",
@@ -5638,6 +5790,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "One of several higher education institutions in Gaza providing technical and vocational training.",
     verifiedBy: ["Scholars at Risk", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/university-college-applied-sciences-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/university-college-applied-sciences-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Scholars at Risk",
@@ -5666,6 +5837,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A major provider of teacher education in the southern Gaza Strip.",
     verifiedBy: ["Scholars at Risk", "UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/al-aqsa-university-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-aqsa-university-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Scholars at Risk",
@@ -5699,6 +5889,25 @@ export const mockSites: Site[] = [
       estimatedBuildingCount: "50+",
       collectionRationale: "UNRWA operated 183 schools across Gaza; this entry covers the northern governorate cluster most heavily affected in the initial phase of the conflict",
     },
+    images: {
+      before: {
+        url: "/images/sites/unrwa-schools-gaza-north-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/unrwa-schools-gaza-north-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -5733,6 +5942,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Built with EU funding as the main specialist referral hospital for southern and central Gaza.",
     verifiedBy: ["WHO", "MSF", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/european-gaza-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/european-gaza-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5766,6 +5994,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "One of the few hospitals serving Jabalia refugee camp, the most densely populated area in the Gaza Strip.",
     verifiedBy: ["WHO", "UNRWA", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-awda-hospital-jabalia-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-awda-hospital-jabalia-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5799,6 +6046,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Rafah's primary hospital, including its only dialysis center, serving the city's greatly expanded displaced population in 2024.",
     verifiedBy: ["WHO", "MSF", "UNRWA"],
+    images: {
+      before: {
+        url: "/images/sites/abu-yousuf-al-najjar-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/abu-yousuf-al-najjar-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "MSF",
@@ -5833,6 +6099,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Named after Palestinian pediatrician Abdel Aziz al-Rantisi. With 124 beds it was Gaza's largest children's hospital.",
     verifiedBy: ["WHO", "PCRF", "Save the Children"],
+    images: {
+      before: {
+        url: "/images/sites/al-rantisi-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-rantisi-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5867,6 +6152,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The sole Ministry of Health psychiatric facility serving the entire Gaza Strip.",
     verifiedBy: ["WHO", "Lancet Psychiatry", "UN OCHA"],
+    images: {
+      before: {
+        url: "/images/sites/gaza-psychiatric-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/gaza-psychiatric-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5902,6 +6206,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "An UNRWA primary school serving the Jabalia refugee camp community, converted to a displacement shelter during the conflict.",
     verifiedBy: ["UNRWA", "UN OCHA", "Al Jazeera"],
+    images: {
+      before: {
+        url: "/images/sites/abu-hussein-school-jabalia-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/abu-hussein-school-jabalia-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -5937,6 +6260,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "An UNRWA boys' preparatory school in Nuseirat refugee camp, sheltering approximately 6,000 displaced people at the time of the strike.",
     verifiedBy: ["UNRWA", "CNN", "UN OCHA"],
+    images: {
+      before: {
+        url: "/images/sites/al-sardi-school-nuseirat-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-sardi-school-nuseirat-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -5971,6 +6313,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Its destruction was cited by the UN Special Rapporteur on the right to education as evidence of 'scholasticide' — the deliberate targeting of educational institutions.",
     verifiedBy: ["Forensic Architecture", "Scholars at Risk", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-israa-university-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-israa-university-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Forensic Architecture",
@@ -6010,6 +6371,25 @@ export const mockSites: Site[] = [
       estimatedBuildingCount: "25+",
       collectionRationale: "All UNRWA schools in Rafah governorate were rendered non-functional or destroyed during the May 2024 ground operation",
     },
+    images: {
+      before: {
+        url: "/images/sites/rafah-refugee-camp-school-cluster-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/rafah-refugee-camp-school-cluster-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -6044,6 +6424,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A Bronze Age burial site documenting ancient Gaza's position within the Egyptian–Canaanite cultural sphere. Damaged during military operations in the central Gaza Strip.",
     verifiedBy: ["Institute for Palestine Studies", "UNESCO", "972 Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/deir-el-balah-bronze-age-cemetery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/deir-el-balah-bronze-age-cemetery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Institute for Palestine Studies",
@@ -6079,6 +6478,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The main food and goods market of Gaza's Old City for centuries, embedded within the Mamluk historic district that UNESCO monitors as outstanding universal value.",
     verifiedBy: ["GIG", "UNESCO", "Jordan Times"],
+    images: {
+      before: {
+        url: "/images/sites/souq-al-zawiya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/souq-al-zawiya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6115,6 +6533,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A neighborhood mosque serving the Al-Qarara community in Khan Yunis Governorate.",
     verifiedBy: ["GIG", "Wikipedia"],
+    images: {
+      before: {
+        url: "/images/sites/khalid-ibn-walid-mosque-al-qarara-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/khalid-ibn-walid-mosque-al-qarara-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6150,6 +6587,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A congregational mosque in the historic core of Khan Yunis city.",
     verifiedBy: ["GIG", "Middle East Monitor"],
+    images: {
+      before: {
+        url: "/images/sites/al-shuhada-mosque-khan-yunis-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-shuhada-mosque-khan-yunis-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6179,6 +6635,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A large congregational mosque serving the Khan Yunis community.",
     verifiedBy: ["GIG", "Middle East Eye", "Jerusalem Post"],
+    images: {
+      before: {
+        url: "/images/sites/al-faruq-mosque-khan-yunis-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-faruq-mosque-khan-yunis-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6215,6 +6690,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A mosque in Deir al-Balah serving as a civilian displacement shelter at the time of the attack.",
     verifiedBy: ["Al Jazeera", "NPR", "Wikipedia"],
+    images: {
+      before: {
+        url: "/images/sites/shuhada-al-aqsa-mosque-deir-balah-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/shuhada-al-aqsa-mosque-deir-balah-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -6259,6 +6753,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The mosque, cemetery, and courtyard were preserved after Israeli and Palestinian organizations objected to a development plan proposing luxury housing on the site; it remains a focal point of memory and ongoing heritage advocacy.",
     verifiedBy: ["Institute for Palestine Studies", "Palquest"],
+    images: {
+      before: {
+        url: "/images/sites/lifta-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/lifta-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Institute for Palestine Studies",
@@ -6291,6 +6804,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Physical evidence of the centuries-long Muslim presence in Ein Karem, now a village known primarily for its Christian holy sites.",
     verifiedBy: ["Palquest", "Palestine Remembered"],
+    images: {
+      before: {
+        url: "/images/sites/umar-ibn-al-khattab-mosque-ein-karem-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/umar-ibn-al-khattab-mosque-ein-karem-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Palquest",
@@ -6323,6 +6855,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Remains in active use for religious services and reunions by descendants who continue a decades-long campaign for the right of return.",
     verifiedBy: ["CNEWA", "Washington Report on Middle East Affairs"],
+    images: {
+      before: {
+        url: "/images/sites/iqrit-church-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/iqrit-church-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "CNEWA",
@@ -6355,6 +6906,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Represented continuity of Islamic religious architecture from the Mamluk period through to 1948; the kibbutz Yizre'el was established on the village's former lands shortly after.",
     verifiedBy: ["Palquest", "Zochrot"],
+    images: {
+      before: {
+        url: "/images/sites/zirin-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/zirin-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Palquest",
@@ -6387,6 +6957,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Ruins remain a tangible link to centuries of regional strategic and religious history, now an empty archaeological site.",
     verifiedBy: ["Palquest", "Zochrot"],
+    images: {
+      before: {
+        url: "/images/sites/qaqun-fortress-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/qaqun-fortress-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Palquest",
@@ -6419,6 +7008,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Remains active for religious ceremonies and gatherings by descendants who continue advocacy for return, within what is now Bar'am National Park.",
     verifiedBy: ["America Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/birim-church-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/birim-church-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "America Magazine",
@@ -6445,6 +7053,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A 2012 discovery of 1930s aerial photography provided documentary proof of the mosque's existence and destruction.",
     verifiedBy: ["Jerusalem Story", "Washington Report on Middle East Affairs"],
+    images: {
+      before: {
+        url: "/images/sites/sheikh-eid-mosque-mughrabi-quarter-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sheikh-eid-mosque-mughrabi-quarter-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Jerusalem Story",
@@ -6477,6 +7104,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Its loss erased a physical link between Jerusalem and Maghrebi Islamic heritage; the site is now paved over as part of the Western Wall Plaza.",
     verifiedBy: ["Jerusalem Story"],
+    images: {
+      before: {
+        url: "/images/sites/bou-medyan-zaouia-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/bou-medyan-zaouia-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Jerusalem Story",
@@ -6503,6 +7149,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Complete erasure of a living village's mosque and civic infrastructure; the land was later forested as Canada Park, burying the rubble.",
     verifiedBy: ["Palestine Remembered"],
+    images: {
+      before: {
+        url: "/images/sites/imwas-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/imwas-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Palestine Remembered",
@@ -6529,6 +7194,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Erasure documented as part of the same operation that created Canada Park over the village ruins.",
     verifiedBy: ["+972 Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/yalo-village-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/yalo-village-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "+972 Magazine",
@@ -6555,6 +7239,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Part of the coordinated destruction of the three Latrun villages; the site was replaced by the Israeli settlement Mevo Horon.",
     verifiedBy: ["+972 Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/beit-nuba-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/beit-nuba-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "+972 Magazine",
@@ -6581,6 +7284,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The Goldstone Report found no evidence the mosque was used for militant activity, concluding the strike could not be explained other than as a direct attack on a place of worship.",
     verifiedBy: ["Wikipedia"],
+    images: {
+      before: {
+        url: "/images/sites/ibrahim-al-maqadma-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibrahim-al-maqadma-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Wikipedia",
@@ -6607,6 +7329,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Despite destruction, the school continued operating and rebuilt its campus.",
     verifiedBy: ["Wikipedia", "NPR", "Haaretz"],
+    images: {
+      before: {
+        url: "/images/sites/american-international-school-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/american-international-school-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "NPR",
@@ -6639,6 +7380,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Held academic materials, scientific equipment, and library holdings serving Gaza's student population; Israel alleged militant use of the facilities, which the university denied.",
     verifiedBy: ["Wikipedia", "The Electronic Intifada"],
+    images: {
+      before: {
+        url: "/images/sites/islamic-university-gaza-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/islamic-university-gaza-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "The Electronic Intifada",
@@ -6671,6 +7431,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Served a densely populated refugee camp community, one of Gaza's largest.",
     verifiedBy: ["Palestinian Centre for Human Rights"],
+    images: {
+      before: {
+        url: "/images/sites/imad-akel-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/imad-akel-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Palestinian Centre for Human Rights",
@@ -6697,6 +7476,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Most of the mosque's Qurans and religious manuscripts were destroyed or burned in the strike; residents later organized a self-financed restoration effort.",
     verifiedBy: ["NPR", "Middle East Monitor"],
+    images: {
+      before: {
+        url: "/images/sites/al-omari-mosque-jabaliya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-omari-mosque-jabaliya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "NPR",
@@ -6731,6 +7529,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "One of the few intact Mamluk-era religious buildings remaining in Gaza prior to 2014; its loss removed a key architectural record of the period.",
     verifiedBy: ["Wikipedia", "Jordan Times"],
+    images: {
+      before: {
+        url: "/images/sites/mahkamah-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/mahkamah-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Jordan Times",
@@ -6763,6 +7580,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Represented international cultural investment in Palestinian children's literacy; IBBY launched a reconstruction appeal in October 2014.",
     verifiedBy: ["IBBY", "Literary Hub"],
+    images: {
+      before: {
+        url: "/images/sites/ibby-library-beit-hanoun-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibby-library-beit-hanoun-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "IBBY",

@@ -192,9 +192,9 @@ export const it: Translations = {
     destroyed: "Distrutto",
     heavilyDamaged: "Gravemente Danneggiato",
     looted: "Saccheggiato",
-    damaged: "Danneggiato",
+    damaged: "Danneggiato Parzialmente",
     abandoned: "Abbandonato",
-    unknown: "Sconosciuto",
+    unknown: "Non Verificato",
     unharmed: "Integro",
   },
 

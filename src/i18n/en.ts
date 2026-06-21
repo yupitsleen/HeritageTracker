@@ -191,12 +191,12 @@ export const en: Translations = {
 
   siteStatus: {
     destroyed: "Destroyed",
-    heavilyDamaged: "Heavily Damaged",
+    heavilyDamaged: "Severely Damaged",
     looted: "Looted",
-    damaged: "Damaged",
+    damaged: "Moderately Damaged",
     abandoned: "Abandoned",
-    unknown: "Unknown",
-    unharmed: "Unharmed",
+    unknown: "Unverified",
+    unharmed: "Undamaged",
   },
 
   stats: {

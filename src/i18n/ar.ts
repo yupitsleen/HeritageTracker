@@ -185,11 +185,11 @@ export const ar: Translations = {
 
   siteStatus: {
     destroyed: "مدمر",
-    heavilyDamaged: "تضرر بشدة",
+    heavilyDamaged: "متضرر بشدة",
     looted: "منهوب",
-    damaged: "متضرر",
+    damaged: "متضرر جزئيًا",
     abandoned: "مهجور",
-    unknown: "غير معروف",
+    unknown: "غير مؤكد",
     unharmed: "سليم",
   },
 

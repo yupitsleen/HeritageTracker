@@ -610,5 +610,269 @@
     "name": "Lubbud Library",
     "lat": 31.508,
     "lng": 34.467
+  },
+  {
+    "id": "al-shifa-hospital",
+    "name": "Al-Shifa Hospital",
+    "lat": 31.5218,
+    "lng": 34.4513
+  },
+  {
+    "id": "al-ahli-arab-hospital",
+    "name": "Al-Ahli Arab Hospital",
+    "lat": 31.5255,
+    "lng": 34.454
+  },
+  {
+    "id": "nasser-medical-complex",
+    "name": "Nasser Medical Complex",
+    "lat": 31.3269,
+    "lng": 34.2965
+  },
+  {
+    "id": "al-quds-hospital",
+    "name": "Al-Quds Hospital",
+    "lat": 31.5072,
+    "lng": 34.4577
+  },
+  {
+    "id": "kamal-adwan-hospital",
+    "name": "Kamal Adwan Hospital",
+    "lat": 31.5662,
+    "lng": 34.5012
+  },
+  {
+    "id": "indonesian-hospital",
+    "name": "Indonesian Hospital",
+    "lat": 31.5523,
+    "lng": 34.5055
+  },
+  {
+    "id": "islamic-university-gaza",
+    "name": "Islamic University of Gaza",
+    "lat": 31.5008,
+    "lng": 34.4472
+  },
+  {
+    "id": "al-azhar-university-gaza",
+    "name": "Al-Azhar University Gaza",
+    "lat": 31.5183,
+    "lng": 34.4519
+  },
+  {
+    "id": "university-college-applied-sciences",
+    "name": "University College of Applied Sciences",
+    "lat": 31.5248,
+    "lng": 34.4483
+  },
+  {
+    "id": "al-aqsa-university",
+    "name": "Al-Aqsa University",
+    "lat": 31.3018,
+    "lng": 34.2762
+  },
+  {
+    "id": "unrwa-schools-gaza-north",
+    "name": "UNRWA Schools — Northern Gaza",
+    "lat": 31.535,
+    "lng": 34.497
+  },
+  {
+    "id": "european-gaza-hospital",
+    "name": "European Gaza Hospital",
+    "lat": 31.3428,
+    "lng": 34.3082
+  },
+  {
+    "id": "al-awda-hospital-jabalia",
+    "name": "Al-Awda Hospital",
+    "lat": 31.5381,
+    "lng": 34.4892
+  },
+  {
+    "id": "abu-yousuf-al-najjar-hospital",
+    "name": "Abu Yousuf Al-Najjar Hospital",
+    "lat": 31.2886,
+    "lng": 34.2428
+  },
+  {
+    "id": "al-rantisi-hospital",
+    "name": "Dr. Abdul Aziz Al-Rantisi Children",
+    "lat": 31.5322,
+    "lng": 34.4568
+  },
+  {
+    "id": "gaza-psychiatric-hospital",
+    "name": "Gaza Psychiatric Hospital",
+    "lat": 31.5063,
+    "lng": 34.4587
+  },
+  {
+    "id": "abu-hussein-school-jabalia",
+    "name": "Abu Hussein Primary School (UNRWA)",
+    "lat": 31.5297,
+    "lng": 34.4878
+  },
+  {
+    "id": "al-sardi-school-nuseirat",
+    "name": "Al-Sardi Boys",
+    "lat": 31.4458,
+    "lng": 34.3724
+  },
+  {
+    "id": "al-israa-university",
+    "name": "Al-Israa University",
+    "lat": 31.5061,
+    "lng": 34.4501
+  },
+  {
+    "id": "rafah-refugee-camp-school-cluster",
+    "name": "UNRWA Schools — Rafah Governorate",
+    "lat": 31.2971,
+    "lng": 34.2476
+  },
+  {
+    "id": "deir-el-balah-bronze-age-cemetery",
+    "name": "Deir el-Balah Bronze Age Cemetery",
+    "lat": 31.418,
+    "lng": 34.35
+  },
+  {
+    "id": "souq-al-zawiya",
+    "name": "Souq al-Zawiya",
+    "lat": 31.505,
+    "lng": 34.465
+  },
+  {
+    "id": "khalid-ibn-walid-mosque-al-qarara",
+    "name": "Khalid ibn al-Walid Mosque",
+    "lat": 31.375,
+    "lng": 34.378
+  },
+  {
+    "id": "al-shuhada-mosque-khan-yunis",
+    "name": "Al-Shuhada Mosque",
+    "lat": 31.344,
+    "lng": 34.3
+  },
+  {
+    "id": "al-faruq-mosque-khan-yunis",
+    "name": "Al-Faruq Mosque",
+    "lat": 31.346,
+    "lng": 34.307
+  },
+  {
+    "id": "shuhada-al-aqsa-mosque-deir-balah",
+    "name": "Shuhada al-Aqsa Mosque",
+    "lat": 31.415,
+    "lng": 34.341
+  },
+  {
+    "id": "lifta-mosque",
+    "name": "Lifta Village Mosque",
+    "lat": 31.79,
+    "lng": 35.19
+  },
+  {
+    "id": "umar-ibn-al-khattab-mosque-ein-karem",
+    "name": "Mosque of Umar ibn al-Khattab, Ein Karem",
+    "lat": 31.77,
+    "lng": 35.16
+  },
+  {
+    "id": "iqrit-church",
+    "name": "Iqrit Melkite Greek Catholic Church",
+    "lat": 33.04,
+    "lng": 35.34
+  },
+  {
+    "id": "zirin-mosque",
+    "name": "Zir",
+    "lat": 32.56,
+    "lng": 35.32
+  },
+  {
+    "id": "qaqun-fortress",
+    "name": "Qaqun Fortress",
+    "lat": 32.36,
+    "lng": 34.99
+  },
+  {
+    "id": "birim-church",
+    "name": "Kafr Bir",
+    "lat": 33.04,
+    "lng": 35.4
+  },
+  {
+    "id": "sheikh-eid-mosque-mughrabi-quarter",
+    "name": "Sheikh Eid Mosque",
+    "lat": 31.7766,
+    "lng": 35.2341
+  },
+  {
+    "id": "bou-medyan-zaouia",
+    "name": "Bou Medyan Zaouia",
+    "lat": 31.7766,
+    "lng": 35.2341
+  },
+  {
+    "id": "imwas-mosque",
+    "name": "Imwas Village Mosque",
+    "lat": 31.842,
+    "lng": 34.9927
+  },
+  {
+    "id": "yalo-village",
+    "name": "Yalo Village",
+    "lat": 31.84,
+    "lng": 34.97
+  },
+  {
+    "id": "beit-nuba-mosque",
+    "name": "Beit Nuba Village Mosque",
+    "lat": 31.85,
+    "lng": 34.98
+  },
+  {
+    "id": "ibrahim-al-maqadma-mosque",
+    "name": "Ibrahim al-Maqadma Mosque",
+    "lat": 31.5498,
+    "lng": 34.5025
+  },
+  {
+    "id": "american-international-school-gaza",
+    "name": "American International School in Gaza",
+    "lat": 31.5608,
+    "lng": 34.4808
+  },
+  {
+    "id": "islamic-university-gaza-library",
+    "name": "Islamic University of Gaza - Central Library",
+    "lat": 31.5078,
+    "lng": 34.4502
+  },
+  {
+    "id": "imad-akel-mosque",
+    "name": "Imad Akel Mosque",
+    "lat": 31.5327,
+    "lng": 34.4982
+  },
+  {
+    "id": "al-omari-mosque-jabaliya",
+    "name": "Al-Omari Mosque, Jabaliya",
+    "lat": 31.528,
+    "lng": 34.483
+  },
+  {
+    "id": "mahkamah-mosque",
+    "name": "Mahkamah Mosque",
+    "lat": 31.501,
+    "lng": 34.468
+  },
+  {
+    "id": "ibby-library-beit-hanoun",
+    "name": "IBBY Children",
+    "lat": 31.538,
+    "lng": 34.537
   }
 ]
