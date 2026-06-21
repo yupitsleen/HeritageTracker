@@ -140,6 +140,7 @@ export const ar: Translations = {
     site: "موقع",
     sites: "مواقع",
     islamic: "إسلامي",
+    showIslamicDates: "إظهار التواريخ الهجرية",
     description: "الوصف",
     coordinates: "الإحداثيات",
     sources: "المصادر",

@@ -145,6 +145,7 @@ export const it: Translations = {
     site: "sito",
     sites: "siti",
     islamic: "Islamico",
+    showIslamicDates: "Mostra Date Islamiche",
     description: "Descrizione",
     coordinates: "Coordinate",
     sources: "Fonti",

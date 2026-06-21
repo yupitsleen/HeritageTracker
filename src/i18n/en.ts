@@ -146,6 +146,7 @@ export const en: Translations = {
     site: "site",
     sites: "sites",
     islamic: "Islamic",
+    showIslamicDates: "Show Islamic Dates",
     description: "Description",
     coordinates: "Coordinates",
     sources: "Sources",
