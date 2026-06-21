@@ -186,6 +186,7 @@ export interface Translations {
     tooltipDashboard: string;
     tooltipDataPage: string;
     lastUpdated: string;
+    showIslamicDates: string;
   };
 
   /** Filter bar */
