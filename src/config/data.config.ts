@@ -190,6 +190,20 @@ export const SITE_TYPE_REGISTRY: Record<string, SiteTypeConfig> = {
     icon: "heroicon:ArchiveBoxIcon",
     description: "Repository for historical documents and records"
   },
+  "hospital": {
+    id: "hospital",
+    label: "Hospital",
+    labelArabic: "مستشفى",
+    icon: "heroicon:BuildingOffice2Icon",
+    description: "Medical facility providing healthcare services"
+  },
+  "school": {
+    id: "school",
+    label: "School / University",
+    labelArabic: "مدرسة / جامعة",
+    icon: "heroicon:AcademicCapIcon",
+    description: "Educational institution"
+  },
 };
 
 /**

@@ -11,6 +11,7 @@ import { Input } from "../Form/Input";
 import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
+import { SiteTypeIcon } from "../Icons/SiteTypeIcon";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -220,6 +221,7 @@ export const FilterBar = memo(function FilterBar({
               onChange={handleTypesChange}
               formatLabel={formatLabel}
               counts={typeCounts}
+              getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
             />
           </FilterButton>
 
@@ -380,6 +382,7 @@ export const FilterBar = memo(function FilterBar({
                   onChange={handleTypesChange}
                   formatLabel={formatLabel}
                   counts={typeCounts}
+                  getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
                 />
               </div>
 

@@ -7,12 +7,12 @@ import type { Site } from "../types";
  * Run these tests before adding new sites to catch errors early
  */
 
-// Gaza bounds (approximate)
-const GAZA_BOUNDS = {
-  minLat: 31.2,
-  maxLat: 31.6,
+// Historic Palestine bounds (Gaza, West Bank, Israel/Galilee/Jerusalem area) - approximate
+const PALESTINE_BOUNDS = {
+  minLat: 29.4,
+  maxLat: 33.4,
   minLng: 34.2,
-  maxLng: 34.6,
+  maxLng: 35.7,
 };
 
 describe("Site Data Validation", () => {
@@ -63,6 +63,7 @@ describe("Site Data Validation", () => {
         "destroyed",
         "heavily-damaged",
         "damaged",
+        "abandoned",
       ];
 
       mockSites.forEach((site) => {
@@ -91,25 +92,25 @@ describe("Site Data Validation", () => {
       });
     });
 
-    it("all sites have coordinates within Gaza bounds", () => {
+    it("all sites have coordinates within historic Palestine bounds", () => {
       mockSites.forEach((site) => {
         const [lat, lng] = site.coordinates;
         expect(
           lat,
-          `Site ${site.name} latitude ${lat} outside Gaza bounds (${GAZA_BOUNDS.minLat}-${GAZA_BOUNDS.maxLat})`
-        ).toBeGreaterThanOrEqual(GAZA_BOUNDS.minLat);
+          `Site ${site.name} latitude ${lat} outside bounds (${PALESTINE_BOUNDS.minLat}-${PALESTINE_BOUNDS.maxLat})`
+        ).toBeGreaterThanOrEqual(PALESTINE_BOUNDS.minLat);
         expect(
           lat,
-          `Site ${site.name} latitude ${lat} outside Gaza bounds (${GAZA_BOUNDS.minLat}-${GAZA_BOUNDS.maxLat})`
-        ).toBeLessThanOrEqual(GAZA_BOUNDS.maxLat);
+          `Site ${site.name} latitude ${lat} outside bounds (${PALESTINE_BOUNDS.minLat}-${PALESTINE_BOUNDS.maxLat})`
+        ).toBeLessThanOrEqual(PALESTINE_BOUNDS.maxLat);
         expect(
           lng,
-          `Site ${site.name} longitude ${lng} outside Gaza bounds (${GAZA_BOUNDS.minLng}-${GAZA_BOUNDS.maxLng})`
-        ).toBeGreaterThanOrEqual(GAZA_BOUNDS.minLng);
+          `Site ${site.name} longitude ${lng} outside bounds (${PALESTINE_BOUNDS.minLng}-${PALESTINE_BOUNDS.maxLng})`
+        ).toBeGreaterThanOrEqual(PALESTINE_BOUNDS.minLng);
         expect(
           lng,
-          `Site ${site.name} longitude ${lng} outside Gaza bounds (${GAZA_BOUNDS.minLng}-${GAZA_BOUNDS.maxLng})`
-        ).toBeLessThanOrEqual(GAZA_BOUNDS.maxLng);
+          `Site ${site.name} longitude ${lng} outside bounds (${PALESTINE_BOUNDS.minLng}-${PALESTINE_BOUNDS.maxLng})`
+        ).toBeLessThanOrEqual(PALESTINE_BOUNDS.maxLng);
       });
     });
   });
@@ -135,19 +136,19 @@ describe("Site Data Validation", () => {
       });
     });
 
-    it("all destruction dates are between 2023-2024", () => {
+    it("all destruction dates are between 1948 and today", () => {
       mockSites.forEach((site) => {
         if (site.dateDestroyed) {
           const date = new Date(site.dateDestroyed);
           const year = date.getFullYear();
           expect(
             year,
-            `Site ${site.name} destroyed in ${year}, expected 2023-2024`
-          ).toBeGreaterThanOrEqual(2023);
+            `Site ${site.name} destroyed in ${year}, expected 1948 or later`
+          ).toBeGreaterThanOrEqual(1948);
           expect(
             year,
-            `Site ${site.name} destroyed in ${year}, expected 2023-2024`
-          ).toBeLessThanOrEqual(2025); // Allow 2025 for recent events
+            `Site ${site.name} destroyed in ${year}, expected no later than current year`
+          ).toBeLessThanOrEqual(new Date().getFullYear());
         }
       });
     });
