@@ -26,56 +26,42 @@ import type { VerifierConfig } from "../types/verifierTypes";
 export const STATUS_REGISTRY: Record<string, StatusConfig> = {
   "destroyed": {
     id: "destroyed",
-    label: "Destroyed",
-    labelArabic: "مدمر",
     severity: 100,
     markerColor: "red",
     description: "Completely destroyed, no structural integrity remaining"
   },
   "heavily-damaged": {
     id: "heavily-damaged",
-    label: "Heavily Damaged",
-    labelArabic: "تضررت بشدة",
     severity: 75,
     markerColor: "orange",
     description: "Major structural damage, may not be repairable"
   },
   "looted": {
     id: "looted",
-    label: "Looted",
-    labelArabic: "منهوب",
     severity: 60,
     markerColor: "purple",
     description: "Artifacts or valuables stolen or removed"
   },
   "damaged": {
     id: "damaged",
-    label: "Damaged",
-    labelArabic: "تضرر",
     severity: 50,
     markerColor: "yellow",
     description: "Partial damage, repairable with restoration work"
   },
   "abandoned": {
     id: "abandoned",
-    label: "Abandoned",
-    labelArabic: "مهجور",
     severity: 25,
     markerColor: "gray",
     description: "No longer in use or maintained, but structurally intact"
   },
   "unknown": {
     id: "unknown",
-    label: "Unknown",
-    labelArabic: "غير معروف",
     severity: 10,
     markerColor: "lightgray",
     description: "Status cannot be verified or is uncertain"
   },
   "unharmed": {
     id: "unharmed",
-    label: "Unharmed",
-    labelArabic: "سليم",
     severity: 0,
     markerColor: "green",
     description: "No damage, fully intact and preserved"
@@ -99,24 +85,10 @@ export function getStatuses(): StatusConfig[] {
 export function getStatusConfig(statusId: string): StatusConfig {
   return STATUS_REGISTRY[statusId] || {
     id: statusId,
-    label: statusId,
     severity: 0,
     markerColor: "grey",
     description: "Unknown status"
   };
-}
-
-/**
- * Get status label by ID and locale
- */
-export function getStatusLabel(statusId: string, locale: string = 'en'): string {
-  const config = getStatusConfig(statusId);
-
-  if (locale === 'ar' && config.labelArabic) {
-    return config.labelArabic;
-  }
-
-  return config.label;
 }
 
 /**

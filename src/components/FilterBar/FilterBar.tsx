@@ -2,7 +2,7 @@ import { memo, useState, useMemo, useEffect, useCallback } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { Site, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
-import { formatLabel } from "../../utils/format";
+import { translateSiteType, translateStatus } from "../../utils/format";
 import { FilterButton } from "./FilterButton";
 import { FilterCheckboxList } from "./FilterCheckboxList";
 import { DateRangeFilter } from "./DateRangeFilter";
@@ -219,7 +219,7 @@ export const FilterBar = memo(function FilterBar({
               options={SITE_TYPES}
               selectedValues={filters.selectedTypes}
               onChange={handleTypesChange}
-              formatLabel={formatLabel}
+              formatLabel={(type) => translateSiteType(translate, type)}
               counts={typeCounts}
               getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
             />
@@ -235,7 +235,7 @@ export const FilterBar = memo(function FilterBar({
               options={availableStatuses}
               selectedValues={filters.selectedStatuses}
               onChange={handleStatusesChange}
-              formatLabel={formatLabel}
+              formatLabel={(status) => translateStatus(translate, status)}
               counts={statusCounts}
             />
           </FilterButton>
@@ -380,7 +380,7 @@ export const FilterBar = memo(function FilterBar({
                   options={SITE_TYPES}
                   selectedValues={filters.selectedTypes}
                   onChange={handleTypesChange}
-                  formatLabel={formatLabel}
+                  formatLabel={(type) => translateSiteType(translate, type)}
                   counts={typeCounts}
                   getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
                 />
@@ -395,7 +395,7 @@ export const FilterBar = memo(function FilterBar({
                   options={availableStatuses}
                   selectedValues={filters.selectedStatuses}
                   onChange={handleStatusesChange}
-                  formatLabel={formatLabel}
+                  formatLabel={(status) => translateStatus(translate, status)}
                   counts={statusCounts}
                 />
               </div>

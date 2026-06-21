@@ -25,7 +25,6 @@ import type {
   FilterState,
 } from "../types/filterConfig";
 import { getSiteTypes } from "./siteTypes";
-import { getStatuses } from "./siteStatus";
 import { parseYearBuilt } from "../utils/siteFilters";
 
 /**
@@ -95,11 +94,6 @@ export const FILTER_REGISTRY: Record<FilterId, FilterConfig> = {
     defaultValue: [],
     order: 3,
     enabled: true,
-    options: getStatuses().map((statusConfig) => ({
-      value: statusConfig.id,
-      label: statusConfig.label,
-      labelArabic: statusConfig.labelArabic,
-    })),
     description: "Filter sites by their damage status",
   },
 

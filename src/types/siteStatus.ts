@@ -8,10 +8,6 @@
 export interface StatusConfig {
   /** Unique identifier for the status */
   id: string;
-  /** Display label in English */
-  label: string;
-  /** Display label in Arabic (optional) */
-  labelArabic?: string;
   /** Severity level (0-100) for ordering and filtering */
   severity: number;
   /** Marker color for map display */
