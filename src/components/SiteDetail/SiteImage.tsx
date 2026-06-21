@@ -36,6 +36,7 @@ export function SiteImage({ image, alt, label, className }: SiteImageProps) {
         <img
           src={getImageUrl(image.url)}
           alt={alt}
+          loading="lazy"
           className="w-full h-64 object-cover rounded-lg shadow-md"
           onError={(e) => {
             // Fallback for broken images
