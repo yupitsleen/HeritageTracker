@@ -145,6 +145,7 @@ export const it: Translations = {
     site: "sito",
     sites: "siti",
     islamic: "Islamico",
+    showIslamicDates: "Mostra Date Islamiche",
     description: "Descrizione",
     coordinates: "Coordinate",
     sources: "Fonti",
@@ -185,15 +186,18 @@ export const it: Translations = {
     historicBuilding: "Edificio Storico",
     hospital: "Ospedale",
     school: "Scuola / Università",
+    monument: "Monumento",
+    cemetery: "Cimitero",
+    archive: "Archivio",
   },
 
   siteStatus: {
     destroyed: "Distrutto",
     heavilyDamaged: "Gravemente Danneggiato",
     looted: "Saccheggiato",
-    damaged: "Danneggiato",
+    damaged: "Danneggiato Parzialmente",
     abandoned: "Abbandonato",
-    unknown: "Sconosciuto",
+    unknown: "Non Verificato",
     unharmed: "Integro",
   },
 

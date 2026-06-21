@@ -72,14 +72,14 @@ jobs:
       - name: Check bundle size limit
         run: |
           BUNDLE_SIZE=${{ steps.bundle.outputs.bundle_size }}
-          MAX_SIZE=$((6144 * 1024))  # 6MB limit (includes ~4.3MB satellite imagery for 102 sites + ~1.4MB assets)
+          MAX_SIZE=$((9216 * 1024))  # 9MB limit (includes ~6.1MB satellite imagery for 140+ sites + ~1.5MB assets)
 
           if [ $BUNDLE_SIZE -gt $MAX_SIZE ]; then
-            echo "❌ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) exceeds limit (6MB)"
-            echo "::error::Bundle size exceeds 6MB limit"
+            echo "❌ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) exceeds limit (9MB)"
+            echo "::error::Bundle size exceeds 9MB limit"
             exit 1
           else
-            echo "✅ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) is within limit (6MB)"
+            echo "✅ Bundle size (${{ steps.bundle.outputs.bundle_size_mb }}MB) is within limit (9MB)"
           fi
 
       - name: Comment PR with results

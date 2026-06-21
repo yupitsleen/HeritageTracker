@@ -146,6 +146,7 @@ export const en: Translations = {
     site: "site",
     sites: "sites",
     islamic: "Islamic",
+    showIslamicDates: "Show Islamic Dates",
     description: "Description",
     coordinates: "Coordinates",
     sources: "Sources",
@@ -186,16 +187,19 @@ export const en: Translations = {
     historicBuilding: "Historic Building",
     hospital: "Hospital",
     school: "School / University",
+    monument: "Monument",
+    cemetery: "Cemetery",
+    archive: "Archive",
   },
 
   siteStatus: {
     destroyed: "Destroyed",
-    heavilyDamaged: "Heavily Damaged",
+    heavilyDamaged: "Severely Damaged",
     looted: "Looted",
-    damaged: "Damaged",
+    damaged: "Moderately Damaged",
     abandoned: "Abandoned",
-    unknown: "Unknown",
-    unharmed: "Unharmed",
+    unknown: "Unverified",
+    unharmed: "Undamaged",
   },
 
   stats: {

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { Site } from "../../types";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
@@ -60,6 +60,9 @@ export function SitesTableDesktop({
   const t = useThemeClasses();
   const translate = useTranslation();
 
+  // Islamic date columns are opt-in (default hidden) in the expanded table
+  const [showIslamicDates, setShowIslamicDates] = useState(false);
+
   // Sort logic
   const { sortField, sortDirection, handleSort, sortedSites } = useTableSort<Site>(sites, "dateDestroyed", "desc");
 
@@ -75,8 +78,10 @@ export function SitesTableDesktop({
     // If visibleColumns not provided (modal), use variant logic
     if (!visibleColumns) {
       if (variant === "expanded") {
-        // All columns visible in expanded mode
-        return new Set(["type", "name", "status", "dateDestroyed", "dateDestroyedIslamic", "sourceAssessmentDate", "yearBuilt", "yearBuiltIslamic", "lastUpdated"]);
+        // All columns visible in expanded mode; Islamic dates are opt-in
+        const columns = ["type", "name", "status", "dateDestroyed", "sourceAssessmentDate", "yearBuilt", "lastUpdated"];
+        if (showIslamicDates) columns.push("dateDestroyedIslamic", "yearBuiltIslamic");
+        return new Set(columns);
       }
       // Compact mode: only essential columns
       return new Set(["name", "status", "dateDestroyed"]);
@@ -84,7 +89,7 @@ export function SitesTableDesktop({
 
     // Use provided visible columns
     return new Set(visibleColumns);
-  }, [variant, visibleColumns]);
+  }, [variant, visibleColumns, showIslamicDates]);
 
   // Helper to check if column is visible
   const isColumnVisible = (columnName: string) => visibleColumnsSet.has(columnName);
@@ -127,12 +132,23 @@ export function SitesTableDesktop({
               />
             </div>
             {variant === "expanded" && (
-              <ExportControls
-                selectedFormat={selectedExportFormat}
-                onFormatChange={setSelectedExportFormat}
-                onExport={handleExport}
-                exportConfigs={exportConfigs}
-              />
+              <div className="flex items-center gap-3">
+                <label className={`flex items-center gap-1.5 text-xs cursor-pointer select-none ${t.text.subheading}`}>
+                  <input
+                    type="checkbox"
+                    checked={showIslamicDates}
+                    onChange={(e) => setShowIslamicDates(e.target.checked)}
+                    className="cursor-pointer"
+                  />
+                  {translate("table.showIslamicDates")}
+                </label>
+                <ExportControls
+                  selectedFormat={selectedExportFormat}
+                  onFormatChange={setSelectedExportFormat}
+                  onExport={handleExport}
+                  exportConfigs={exportConfigs}
+                />
+              </div>
             )}
           </div>
         </div>

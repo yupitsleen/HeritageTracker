@@ -82,7 +82,7 @@ export function SiteTableRow({
       {isColumnVisible("type") && (
         <td className={`${t.table.td} text-center`}>
           <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
-            <SiteTypeIcon type={site.type} className={`w-5 h-5 ${t.text.body}`} />
+            <SiteTypeIcon type={site.type} className={`w-6 h-6 ${t.text.body}`} />
           </span>
         </td>
       )}

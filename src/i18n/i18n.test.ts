@@ -216,7 +216,7 @@ describe("Site-specific Translations", () => {
     expect(translate("en", "siteStatus.destroyed")).toBe("Destroyed");
     expect(translate("ar", "siteStatus.destroyed")).toBe("مدمر");
 
-    expect(translate("en", "siteStatus.damaged")).toBe("Damaged");
-    expect(translate("ar", "siteStatus.damaged")).toBe("متضرر");
+    expect(translate("en", "siteStatus.damaged")).toBe("Moderately Damaged");
+    expect(translate("ar", "siteStatus.damaged")).toBe("متضرر جزئيًا");
   });
 });

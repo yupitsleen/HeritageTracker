@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { cn } from "../../styles/theme";
 
@@ -12,6 +13,8 @@ interface FilterCheckboxListProps<T extends string> {
   formatLabel?: (value: string) => string;
   /** Optional counts per option (e.g., "mosque": 14) */
   counts?: Record<string, number>;
+  /** Optional icon renderer per option, shown right-aligned */
+  getIcon?: (value: T) => ReactNode;
 }
 
 /**
@@ -36,6 +39,7 @@ export function FilterCheckboxList<T extends string>({
   onChange,
   formatLabel = (v) => v,
   counts,
+  getIcon,
 }: FilterCheckboxListProps<T>) {
   const t = useThemeClasses();
 
@@ -75,6 +79,7 @@ export function FilterCheckboxList<T extends string>({
                 </span>
               )}
             </span>
+            {getIcon && <span className="shrink-0">{getIcon(option)}</span>}
           </label>
         );
       })}

@@ -3221,7 +3221,7 @@ export const mockSites: Site[] = [
     id: "baptist-hospital-emergency-building",
     name: "Baptist Hospital - Emergency Building",
     nameArabic: "مستشفى المعمداني - مبنى الطوارئ",
-    type: "historic-building",
+    type: "hospital",
     yearBuilt: "20th century",
     coordinates: [31.5055, 34.4605], // Gaza City - ESTIMATE
     status: "destroyed",
@@ -3268,7 +3268,7 @@ export const mockSites: Site[] = [
     id: "baptist-hospital-surgery-building",
     name: "Baptist Hospital - Surgery Building",
     nameArabic: "مستشفى المعمداني - مبنى الجراحة",
-    type: "historic-building",
+    type: "hospital",
     yearBuilt: "20th century",
     coordinates: [31.5056, 34.4606], // Gaza City - ESTIMATE (adjacent to emergency building)
     status: "destroyed",
@@ -5359,6 +5359,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The primary healthcare infrastructure for Gaza's population. By April 2024 the WHO confirmed the compound was mostly destroyed following a two-week Israeli military siege.",
     verifiedBy: ["WHO", "MSF", "Forensic Architecture", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-shifa-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-shifa-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5400,6 +5419,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The only Christian hospital in Gaza, operating continuously since 1882.",
     verifiedBy: ["MSF", "Human Rights Watch", "Amnesty International"],
+    images: {
+      before: {
+        url: "/images/sites/al-ahli-arab-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-ahli-arab-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Amnesty International",
@@ -5434,6 +5472,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Bodies of patients were reportedly found in and around the facility following military operations, according to MSF and WHO documentation.",
     verifiedBy: ["WHO", "MSF", "UNRWA", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/nasser-medical-complex-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/nasser-medical-complex-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5468,6 +5525,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A Red Crescent facility in the Tel al-Hawa district of Gaza City, with protected status under international humanitarian law.",
     verifiedBy: ["PRCS", "MSF", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-quds-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-quds-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Palestine Red Crescent Society",
@@ -5502,6 +5578,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "By late 2024 it was the only functioning hospital serving the northern Gaza governorate.",
     verifiedBy: ["WHO", "UNRWA", "Human Rights Watch", "Amnesty International"],
+    images: {
+      before: {
+        url: "/images/sites/kamal-adwan-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/kamal-adwan-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5536,6 +5631,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Built through Indonesian public fundraising as a humanitarian contribution to Gaza's healthcare infrastructure.",
     verifiedBy: ["WHO", "Indonesian Ministry of Foreign Affairs", "MSF"],
+    images: {
+      before: {
+        url: "/images/sites/indonesian-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/indonesian-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5570,6 +5684,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Its central library held over 240,000 volumes. The university's engineering, science, and medical faculties were the primary source of professional graduates in those fields for Gaza.",
     verifiedBy: ["UNESCO", "Human Rights Watch", "Forensic Architecture"],
+    images: {
+      before: {
+        url: "/images/sites/islamic-university-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/islamic-university-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -5604,6 +5737,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "One of the larger universities in the Gaza Strip, with faculties spanning education, sharia, law, arts, economics, and sciences.",
     verifiedBy: ["UNESCO", "Scholars at Risk", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-azhar-university-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-azhar-university-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Scholars at Risk",
@@ -5638,6 +5790,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "One of several higher education institutions in Gaza providing technical and vocational training.",
     verifiedBy: ["Scholars at Risk", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/university-college-applied-sciences-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/university-college-applied-sciences-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Scholars at Risk",
@@ -5666,6 +5837,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A major provider of teacher education in the southern Gaza Strip.",
     verifiedBy: ["Scholars at Risk", "UNESCO"],
+    images: {
+      before: {
+        url: "/images/sites/al-aqsa-university-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-aqsa-university-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Scholars at Risk",
@@ -5699,6 +5889,25 @@ export const mockSites: Site[] = [
       estimatedBuildingCount: "50+",
       collectionRationale: "UNRWA operated 183 schools across Gaza; this entry covers the northern governorate cluster most heavily affected in the initial phase of the conflict",
     },
+    images: {
+      before: {
+        url: "/images/sites/unrwa-schools-gaza-north-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/unrwa-schools-gaza-north-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -5733,6 +5942,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Built with EU funding as the main specialist referral hospital for southern and central Gaza.",
     verifiedBy: ["WHO", "MSF", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/european-gaza-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/european-gaza-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5766,6 +5994,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "One of the few hospitals serving Jabalia refugee camp, the most densely populated area in the Gaza Strip.",
     verifiedBy: ["WHO", "UNRWA", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-awda-hospital-jabalia-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-awda-hospital-jabalia-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5799,6 +6046,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Rafah's primary hospital, including its only dialysis center, serving the city's greatly expanded displaced population in 2024.",
     verifiedBy: ["WHO", "MSF", "UNRWA"],
+    images: {
+      before: {
+        url: "/images/sites/abu-yousuf-al-najjar-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/abu-yousuf-al-najjar-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "MSF",
@@ -5833,6 +6099,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Named after Palestinian pediatrician Abdel Aziz al-Rantisi. With 124 beds it was Gaza's largest children's hospital.",
     verifiedBy: ["WHO", "PCRF", "Save the Children"],
+    images: {
+      before: {
+        url: "/images/sites/al-rantisi-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-rantisi-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5867,6 +6152,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The sole Ministry of Health psychiatric facility serving the entire Gaza Strip.",
     verifiedBy: ["WHO", "Lancet Psychiatry", "UN OCHA"],
+    images: {
+      before: {
+        url: "/images/sites/gaza-psychiatric-hospital-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/gaza-psychiatric-hospital-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "WHO",
@@ -5902,6 +6206,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "An UNRWA primary school serving the Jabalia refugee camp community, converted to a displacement shelter during the conflict.",
     verifiedBy: ["UNRWA", "UN OCHA", "Al Jazeera"],
+    images: {
+      before: {
+        url: "/images/sites/abu-hussein-school-jabalia-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/abu-hussein-school-jabalia-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -5937,6 +6260,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "An UNRWA boys' preparatory school in Nuseirat refugee camp, sheltering approximately 6,000 displaced people at the time of the strike.",
     verifiedBy: ["UNRWA", "CNN", "UN OCHA"],
+    images: {
+      before: {
+        url: "/images/sites/al-sardi-school-nuseirat-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-sardi-school-nuseirat-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -5971,6 +6313,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "Its destruction was cited by the UN Special Rapporteur on the right to education as evidence of 'scholasticide' — the deliberate targeting of educational institutions.",
     verifiedBy: ["Forensic Architecture", "Scholars at Risk", "Human Rights Watch"],
+    images: {
+      before: {
+        url: "/images/sites/al-israa-university-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-israa-university-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Forensic Architecture",
@@ -6010,6 +6371,25 @@ export const mockSites: Site[] = [
       estimatedBuildingCount: "25+",
       collectionRationale: "All UNRWA schools in Rafah governorate were rendered non-functional or destroyed during the May 2024 ground operation",
     },
+    images: {
+      before: {
+        url: "/images/sites/rafah-refugee-camp-school-cluster-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/rafah-refugee-camp-school-cluster-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "UNRWA",
@@ -6044,6 +6424,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A Bronze Age burial site documenting ancient Gaza's position within the Egyptian–Canaanite cultural sphere. Damaged during military operations in the central Gaza Strip.",
     verifiedBy: ["Institute for Palestine Studies", "UNESCO", "972 Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/deir-el-balah-bronze-age-cemetery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/deir-el-balah-bronze-age-cemetery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Institute for Palestine Studies",
@@ -6079,6 +6478,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "The main food and goods market of Gaza's Old City for centuries, embedded within the Mamluk historic district that UNESCO monitors as outstanding universal value.",
     verifiedBy: ["GIG", "UNESCO", "Jordan Times"],
+    images: {
+      before: {
+        url: "/images/sites/souq-al-zawiya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/souq-al-zawiya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6115,6 +6533,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A neighborhood mosque serving the Al-Qarara community in Khan Yunis Governorate.",
     verifiedBy: ["GIG", "Wikipedia"],
+    images: {
+      before: {
+        url: "/images/sites/khalid-ibn-walid-mosque-al-qarara-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/khalid-ibn-walid-mosque-al-qarara-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6150,6 +6587,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A congregational mosque in the historic core of Khan Yunis city.",
     verifiedBy: ["GIG", "Middle East Monitor"],
+    images: {
+      before: {
+        url: "/images/sites/al-shuhada-mosque-khan-yunis-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-shuhada-mosque-khan-yunis-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6179,6 +6635,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A large congregational mosque serving the Khan Yunis community.",
     verifiedBy: ["GIG", "Middle East Eye", "Jerusalem Post"],
+    images: {
+      before: {
+        url: "/images/sites/al-faruq-mosque-khan-yunis-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-faruq-mosque-khan-yunis-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -6215,6 +6690,25 @@ export const mockSites: Site[] = [
     culturalValue:
       "A mosque in Deir al-Balah serving as a civilian displacement shelter at the time of the attack.",
     verifiedBy: ["Al Jazeera", "NPR", "Wikipedia"],
+    images: {
+      before: {
+        url: "/images/sites/shuhada-al-aqsa-mosque-deir-balah-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/shuhada-al-aqsa-mosque-deir-balah-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -6240,4 +6734,885 @@ export const mockSites: Site[] = [
   },
 
   // BATCH 2 END - Total: 128 sites
+
+  // BATCH 3 START - Historical sites (1948 Nakba, 1967 war, 2008-09 & 2014 Gaza wars)
+  {
+    id: "lifta-mosque",
+    name: "Lifta Village Mosque",
+    nameArabic: "جامع لفتا",
+    type: "mosque",
+    yearBuilt: "Ottoman era",
+    coordinates: [31.79, 35.19],
+    status: "damaged",
+    dateDestroyed: "1948-01-15", // Estimated - village depopulated winter 1947-48, exact date unknown
+    lastUpdated: "2026-06-17",
+    description:
+      "Central mosque of Lifta, a Palestinian village of roughly 2,250 residents on Jerusalem's western edge, depopulated by Haganah and Lehi forces in the months around Israel's establishment.",
+    historicalSignificance:
+      "Lifta is widely cited as the only 1948-depopulated village whose physical structures (homes, mosque, spring, cemetery) remain largely intact rather than demolished or built over, making it a unique surviving record of pre-Nakba Palestinian village life.",
+    culturalValue:
+      "The mosque, cemetery, and courtyard were preserved after Israeli and Palestinian organizations objected to a development plan proposing luxury housing on the site; it remains a focal point of memory and ongoing heritage advocacy.",
+    verifiedBy: ["Institute for Palestine Studies", "Palquest"],
+    images: {
+      before: {
+        url: "/images/sites/lifta-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/lifta-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Institute for Palestine Studies",
+        title: "Lifta: Register of a People, History, Cultural Heritage, and Struggle",
+        url: "https://www.palestine-studies.org/en/node/1651173",
+        type: "documentation",
+      },
+      {
+        organization: "Palquest",
+        title: "Lifta",
+        url: "https://www.palquest.org/en/place/17085/lifta",
+        type: "reference",
+      },
+    ],
+  },
+  {
+    id: "umar-ibn-al-khattab-mosque-ein-karem",
+    name: "Mosque of Umar ibn al-Khattab, Ein Karem",
+    nameArabic: "مسجد عمر بن الخطاب، عين كارم",
+    type: "mosque",
+    yearBuilt: "7th century tradition (Ottoman-era structure)",
+    coordinates: [31.77, 35.16],
+    status: "damaged",
+    dateDestroyed: "1948-07-13", // Estimated - village captured 9-18 July 1948
+    lastUpdated: "2026-06-17",
+    description:
+      "Mosque near the Ayn Maryam spring in Ein Karem, a village of over 3,000 Palestinians captured by Irgun, Gadna, and Haganah-affiliated units in July 1948 and later incorporated into West Jerusalem.",
+    historicalSignificance:
+      "Named for Caliph Umar ibn al-Khattab, reportedly linked to his presence during the 7th-century Islamic conquest, making it one of the few visibly standing Islamic-era structures in a depopulated Jerusalem-area village.",
+    culturalValue:
+      "Physical evidence of the centuries-long Muslim presence in Ein Karem, now a village known primarily for its Christian holy sites.",
+    verifiedBy: ["Palquest", "Palestine Remembered"],
+    images: {
+      before: {
+        url: "/images/sites/umar-ibn-al-khattab-mosque-ein-karem-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/umar-ibn-al-khattab-mosque-ein-karem-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Palquest",
+        title: "'Ayn Karim",
+        url: "https://www.palquest.org/en/place/16928/ayn-karim",
+        type: "reference",
+      },
+      {
+        organization: "Palestine Remembered",
+        title: "'Ayn Karim",
+        url: "https://www.palestineremembered.com/Jerusalem/Ayn-Karim/index.html",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "iqrit-church",
+    name: "Iqrit Melkite Greek Catholic Church",
+    nameArabic: "كنيسة إقرت",
+    type: "church",
+    yearBuilt: "19th century (rebuilt after 1837 earthquake)",
+    coordinates: [33.04, 35.34],
+    status: "abandoned",
+    dateDestroyed: "1948-11-05",
+    lastUpdated: "2026-06-17",
+    description:
+      "Village church of Iqrit, a Palestinian Christian community of roughly 490 people captured during Operation Hiram on 31 October 1948. Residents were expelled on 5 November under a promise of return; the rest of the village was demolished by the Israeli military in 1951, with the church spared.",
+    historicalSignificance:
+      "A landmark case of Israeli state demolition proceeding in direct defiance of an Israeli Supreme Court ruling that had upheld residents' right to return; frequently cited alongside Bir'im as a paired example of unresolved Nakba-era displacement.",
+    culturalValue:
+      "Remains in active use for religious services and reunions by descendants who continue a decades-long campaign for the right of return.",
+    verifiedBy: ["CNEWA", "Washington Report on Middle East Affairs"],
+    images: {
+      before: {
+        url: "/images/sites/iqrit-church-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/iqrit-church-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "CNEWA",
+        title: "In Destroyed Israeli Village, Exiled Residents Unite at the Church",
+        url: "https://cnewa.org/in-destroyed-israeli-village-exiled-residents-unite-at-the-church/",
+        type: "journalism",
+      },
+      {
+        organization: "Washington Report on Middle East Affairs",
+        title: "Iqrit Descendants Determined to Rebuild",
+        url: "https://www.wrmea.org/2013-august/iqrit-descendants-determined-to-rebuild-return-to-their-destroyed-village.html",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "zirin-mosque",
+    name: "Zir'in Village Mosque",
+    nameArabic: "مسجد زرعين",
+    type: "mosque",
+    yearBuilt: "13th century (Mamluk, Sultan Baybars)",
+    coordinates: [32.56, 35.32],
+    status: "destroyed",
+    dateDestroyed: "1948-05-28",
+    lastUpdated: "2026-06-17",
+    description:
+      "Central mosque of Zir'in, a village of over 1,400 people in the Jezreel Valley, shelled and captured by the 13th Battalion of the Golani Brigade after a written Palmach order to destroy most of the village's houses.",
+    historicalSignificance:
+      "One of the few cases with direct documentary evidence (a written military destruction order) tying a village's demolition to deliberate policy rather than incidental war damage.",
+    culturalValue:
+      "Represented continuity of Islamic religious architecture from the Mamluk period through to 1948; the kibbutz Yizre'el was established on the village's former lands shortly after.",
+    verifiedBy: ["Palquest", "Zochrot"],
+    images: {
+      before: {
+        url: "/images/sites/zirin-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/zirin-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Palquest",
+        title: "Zir'in",
+        url: "https://www.palquest.org/en/place/17189/zirin",
+        type: "reference",
+      },
+      {
+        organization: "Zochrot",
+        title: "Zir'in",
+        url: "https://www.zochrot.org/villages/village_details/49147/en",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "qaqun-fortress",
+    name: "Qaqun Fortress",
+    nameArabic: "قلعة قاقون",
+    type: "archaeological",
+    yearBuilt: "12th century (Crusader, rebuilt under Mamluk Sultan Baybars)",
+    coordinates: [32.36, 34.99],
+    status: "heavily-damaged",
+    dateDestroyed: "1948-06-05",
+    lastUpdated: "2026-06-17",
+    description:
+      "Hilltop fortress and administrative seat of Qaqun, a town that commanded the only land route from the coastal Sharon plain into the Nablus hills, depopulated by the Alexandroni Brigade's 3rd Battalion.",
+    historicalSignificance:
+      "One of few sites in the region with a documented, continuous fortification history spanning Crusader, Mamluk, Ottoman, and British Mandate periods, including a church-to-mosque conversion under Baybars.",
+    culturalValue:
+      "Ruins remain a tangible link to centuries of regional strategic and religious history, now an empty archaeological site.",
+    verifiedBy: ["Palquest", "Zochrot"],
+    images: {
+      before: {
+        url: "/images/sites/qaqun-fortress-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/qaqun-fortress-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Palquest",
+        title: "Qaqun",
+        url: "https://www.palquest.org/en/place/17114/qaqun",
+        type: "reference",
+      },
+      {
+        organization: "Zochrot",
+        title: "Qaqun",
+        url: "https://www.zochrot.org/villages/village_details/49445/en",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "birim-church",
+    name: "Kafr Bir'im Maronite Church",
+    nameArabic: "كنيسة كفر برعم",
+    type: "church",
+    yearBuilt: "19th century (rebuilt after 1837 earthquake)",
+    coordinates: [33.04, 35.4],
+    status: "abandoned",
+    dateDestroyed: "1948-11-13",
+    lastUpdated: "2026-06-17",
+    description:
+      "Church of the predominantly Maronite Christian village of Kafr Bir'im, captured by Haganah forces in October 1948 despite residents raising white flags. Remaining village buildings were demolished by Israeli airstrikes in 1953; the church was spared.",
+    historicalSignificance:
+      "Along with neighboring Iqrit, one of the most legally and politically documented Nakba displacement cases in Israel, including a 1950s High Court ruling on property rights that was overridden by military demolition.",
+    culturalValue:
+      "Remains active for religious ceremonies and gatherings by descendants who continue advocacy for return, within what is now Bar'am National Park.",
+    verifiedBy: ["America Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/birim-church-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/birim-church-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "America Magazine",
+        title: "In Destroyed Melkite Village, Exiles Unite at the Church",
+        url: "https://www.americamagazine.org/from-our-archives/2015/04/14/destroyed-melkite-village-exiles-unite-church/",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "sheikh-eid-mosque-mughrabi-quarter",
+    name: "Sheikh Eid Mosque",
+    nameArabic: "جامع الشيخ عيد",
+    type: "mosque",
+    yearBuilt: "12th century (founded ~1193 by al-Malik al-Afdal)",
+    coordinates: [31.7766, 35.2341],
+    status: "destroyed",
+    dateDestroyed: "1967-06-11",
+    lastUpdated: "2026-06-17",
+    description:
+      "Mosque and former Islamic school in Jerusalem's Mughrabi Quarter, an 800-year-old Islamic waqf neighborhood of roughly 135 buildings demolished within hours of the Six-Day War ceasefire on orders from Jerusalem mayor Teddy Kollek, to create the Western Wall Plaza.",
+    historicalSignificance:
+      "Founded as an Islamic school by Saladin's son; became a major Muslim pilgrimage site after the burial of preacher Sheikh Eid there.",
+    culturalValue:
+      "A 2012 discovery of 1930s aerial photography provided documentary proof of the mosque's existence and destruction.",
+    verifiedBy: ["Jerusalem Story", "Washington Report on Middle East Affairs"],
+    images: {
+      before: {
+        url: "/images/sites/sheikh-eid-mosque-mughrabi-quarter-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sheikh-eid-mosque-mughrabi-quarter-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Jerusalem Story",
+        title: "The Destruction of Jerusalem's Moroccan Quarter",
+        url: "https://www.jerusalemstory.com/en/article/destruction-jerusalems-moroccan-quarter-centuries-old-maghrebi-community-western-wall",
+        type: "documentation",
+      },
+      {
+        organization: "Washington Report on Middle East Affairs",
+        title: "The Nakba Continues: Proof Found That in 1967 Israel Destroyed Centuries-Old Jerusalem Mosque",
+        url: "https://www.wrmea.org/2012-september/the-nakba-continues-proof-found-that-in-1967-israel-destroyed-centuries-old-jerusalem-mosque.html",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "bou-medyan-zaouia",
+    name: "Bou Medyan Zaouia",
+    nameArabic: "زاوية أبي مدين",
+    type: "monument",
+    yearBuilt: "12th century (founded ~1193)",
+    coordinates: [31.7766, 35.2341],
+    status: "destroyed",
+    dateDestroyed: "1967-06-11",
+    lastUpdated: "2026-06-17",
+    description:
+      "Sufi religious lodge named for North African saint Abu Madyan, forming the spiritual core of Jerusalem's Mughrabi Quarter, demolished alongside the Sheikh Eid Mosque in the same June 1967 operation.",
+    historicalSignificance:
+      "Anchored the Maghrebi (North African) Muslim community in Jerusalem for centuries, linking the city to the broader Islamic world via its waqf structure.",
+    culturalValue:
+      "Its loss erased a physical link between Jerusalem and Maghrebi Islamic heritage; the site is now paved over as part of the Western Wall Plaza.",
+    verifiedBy: ["Jerusalem Story"],
+    images: {
+      before: {
+        url: "/images/sites/bou-medyan-zaouia-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/bou-medyan-zaouia-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Jerusalem Story",
+        title: "The Destruction of Jerusalem's Moroccan Quarter",
+        url: "https://www.jerusalemstory.com/en/article/destruction-jerusalems-moroccan-quarter-centuries-old-maghrebi-community-western-wall",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "imwas-mosque",
+    name: "Imwas Village Mosque",
+    nameArabic: "جامع عمواس",
+    type: "mosque",
+    yearBuilt: "Ottoman era",
+    coordinates: [31.842, 34.9927],
+    status: "destroyed",
+    dateDestroyed: "1967-06-15", // Estimated, days after June 1967 ceasefire
+    lastUpdated: "2026-06-17",
+    description:
+      "Mosque of Imwas, a Latrun-salient village traditionally identified with biblical Emmaus, razed along with the rest of the village's homes and civic buildings on orders attributed to Yitzhak Rabin shortly after the Six-Day War ceasefire. The village's older Byzantine-Crusader church was deliberately left standing.",
+    historicalSignificance:
+      "Continuously inhabited site with archaeological layers spanning Byzantine, Crusader, and Islamic periods, and a long-debated identification with the New Testament Emmaus.",
+    culturalValue:
+      "Complete erasure of a living village's mosque and civic infrastructure; the land was later forested as Canada Park, burying the rubble.",
+    verifiedBy: ["Palestine Remembered"],
+    images: {
+      before: {
+        url: "/images/sites/imwas-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/imwas-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Palestine Remembered",
+        title: "The Association For Reconstruction Of Emmaus",
+        url: "https://www.palestineremembered.com/al-Ramla/Imwas/Story260.html",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "yalo-village",
+    name: "Yalo Village",
+    nameArabic: "يالو",
+    type: "monument",
+    yearBuilt: "Ottoman era",
+    coordinates: [31.84, 34.97], // Approximate - village-level only, within present-day Canada Park
+    status: "destroyed",
+    dateDestroyed: "1967-06-15", // Estimated, days after June 1967 ceasefire
+    lastUpdated: "2026-06-17",
+    description:
+      "Depopulated Latrun-salient village identified by 19th-century scholars with ancient Aijalon; its homes, mosque, public buildings, and cemeteries were destroyed alongside neighboring Imwas and Beit Nuba on orders attributed to Yitzhak Rabin.",
+    historicalSignificance:
+      "Part of a coordinated, multi-village destruction operation that displaced 7,000-10,000 people across the three Latrun villages.",
+    culturalValue:
+      "Erasure documented as part of the same operation that created Canada Park over the village ruins.",
+    verifiedBy: ["+972 Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/yalo-village-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/yalo-village-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "+972 Magazine",
+        title: "Turning entire Palestinian villages invisible",
+        url: "https://www.972mag.com/turning-entire-palestinian-villages-invisible/",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "beit-nuba-mosque",
+    name: "Beit Nuba Village Mosque",
+    nameArabic: "جامع بيت نوبا",
+    type: "mosque",
+    yearBuilt: "Pre-1863 (referenced in Victor Guérin's 19th-century surveys)",
+    coordinates: [31.85, 34.98], // Approximate - village-level only, near present-day Mevo Horon
+    status: "destroyed",
+    dateDestroyed: "1967-06-15", // Estimated, days after June 1967 ceasefire
+    lastUpdated: "2026-06-17",
+    description:
+      "Mosque of Beit Nuba, a Latrun-salient village whose built-up area was destroyed by Israeli forces shortly after the Six-Day War, part of the same operation that razed neighboring Imwas and Yalo.",
+    historicalSignificance:
+      "Mosque referenced in 19th-century French explorer Victor Guérin's surveys, indicating pre-modern Islamic heritage in the village.",
+    culturalValue:
+      "Part of the coordinated destruction of the three Latrun villages; the site was replaced by the Israeli settlement Mevo Horon.",
+    verifiedBy: ["+972 Magazine"],
+    images: {
+      before: {
+        url: "/images/sites/beit-nuba-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/beit-nuba-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "+972 Magazine",
+        title: "Turning entire Palestinian villages invisible",
+        url: "https://www.972mag.com/turning-entire-palestinian-villages-invisible/",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "ibrahim-al-maqadma-mosque",
+    name: "Ibrahim al-Maqadma Mosque",
+    nameArabic: "مسجد إبراهيم المقادمة",
+    type: "mosque",
+    yearBuilt: "20th century",
+    coordinates: [31.5498, 34.5025],
+    status: "destroyed",
+    dateDestroyed: "2009-01-03",
+    lastUpdated: "2026-06-17",
+    description:
+      "A community mosque in Beit Lahia struck by an Israeli Air Force missile during evening prayers, with more than 200 worshippers inside, killing at least 15 people including six children.",
+    historicalSignificance:
+      "One of the deadliest single attacks on a place of worship during Operation Cast Lead, cited extensively in the UN Goldstone Report.",
+    culturalValue:
+      "The Goldstone Report found no evidence the mosque was used for militant activity, concluding the strike could not be explained other than as a direct attack on a place of worship.",
+    verifiedBy: ["Wikipedia"],
+    images: {
+      before: {
+        url: "/images/sites/ibrahim-al-maqadma-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibrahim-al-maqadma-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Wikipedia",
+        title: "Ibrahim al-Maqadma Mosque missile strike",
+        url: "https://en.wikipedia.org/wiki/Ibrahim_al-Maqadma_Mosque_missile_strike",
+        type: "reference",
+      },
+    ],
+  },
+  {
+    id: "american-international-school-gaza",
+    name: "American International School in Gaza",
+    nameArabic: "المدرسة الأميركية الدولية في غزة",
+    type: "school",
+    yearBuilt: "1999",
+    coordinates: [31.5608, 34.4808],
+    status: "destroyed",
+    dateDestroyed: "2009-01-03",
+    lastUpdated: "2026-06-17",
+    description:
+      "Gaza's only private American-curriculum international school, with a $5 million Beit Lahia campus destroyed in a predawn Israeli airstrike during Operation Cast Lead. The IDF said rockets had been launched from the area; school officials disputed that any were fired from inside the campus.",
+    historicalSignificance:
+      "One of the most prominent education-sector losses of the war, frequently cited in debates over legitimate military targets during Cast Lead.",
+    culturalValue:
+      "Despite destruction, the school continued operating and rebuilt its campus.",
+    verifiedBy: ["Wikipedia", "NPR", "Haaretz"],
+    images: {
+      before: {
+        url: "/images/sites/american-international-school-gaza-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/american-international-school-gaza-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "NPR",
+        title: "Despite Bombing, Gaza School Endures",
+        url: "https://www.npr.org/2009/08/02/106662131/despite-bombing-gaza-school-endures",
+        type: "journalism",
+      },
+      {
+        organization: "Haaretz",
+        title: "Was the Gaza School Bombed by IAF a 'Legitimate Target'?",
+        url: "https://www.haaretz.com/2009-04-26/ty-article/was-the-gaza-school-bombed-by-iaf-a-legitimate-target/0000017f-db8b-d856-a37f-ffcb571f0000",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "islamic-university-gaza-library",
+    name: "Islamic University of Gaza - Central Library",
+    nameArabic: "مكتبة الجامعة الإسلامية بغزة",
+    type: "archive",
+    yearBuilt: "1978",
+    coordinates: [31.5078, 34.4502],
+    status: "heavily-damaged",
+    dateDestroyed: "2008-12-29",
+    lastUpdated: "2026-06-17",
+    description:
+      "Central library and laboratory buildings of Gaza's first higher-education institution, struck by six Israeli airstrikes that fully destroyed two five-story lab buildings and damaged surrounding campus structures including the library.",
+    historicalSignificance:
+      "Among the earliest and most significant strikes on Palestinian higher-education infrastructure during the war, foreshadowing later debates over attacks on education ('scholasticide').",
+    culturalValue:
+      "Held academic materials, scientific equipment, and library holdings serving Gaza's student population; Israel alleged militant use of the facilities, which the university denied.",
+    verifiedBy: ["Wikipedia", "The Electronic Intifada"],
+    images: {
+      before: {
+        url: "/images/sites/islamic-university-gaza-library-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/islamic-university-gaza-library-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "The Electronic Intifada",
+        title: "Haunted by the horrors of Cast Lead",
+        url: "https://electronicintifada.net/content/haunted-horrors-cast-lead/22996",
+        type: "journalism",
+      },
+      {
+        organization: "The Electronic Intifada",
+        title: "Rebuilding the Islamic University of Gaza",
+        url: "https://electronicintifada.net/content/rebuilding-islamic-university-gaza/8068",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "imad-akel-mosque",
+    name: "Imad Akel Mosque",
+    nameArabic: "مسجد عماد عقل",
+    type: "mosque",
+    yearBuilt: "20th century",
+    coordinates: [31.5327, 34.4982],
+    status: "destroyed",
+    dateDestroyed: "2008-12-29",
+    lastUpdated: "2026-06-17",
+    description:
+      "Neighborhood mosque in the Jabaliya refugee camp bombed by an Israeli F-16 in the opening days of Operation Cast Lead; the strike also collapsed the home of the neighboring Balousha family three meters away, killing five daughters aged 4-18.",
+    historicalSignificance:
+      "One of 34 mosques reported destroyed during the 2008-09 war; the linked Balousha family deaths made this strike one of the most widely documented civilian-casualty incidents of Cast Lead.",
+    culturalValue:
+      "Served a densely populated refugee camp community, one of Gaza's largest.",
+    verifiedBy: ["Palestinian Centre for Human Rights"],
+    images: {
+      before: {
+        url: "/images/sites/imad-akel-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/imad-akel-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Palestinian Centre for Human Rights",
+        title: "29 December 2008: Balousha Family",
+        url: "https://pchrgaza.org/29-december-2008-balousha-family/",
+        type: "documentation",
+      },
+    ],
+  },
+  {
+    id: "al-omari-mosque-jabaliya",
+    name: "Al-Omari Mosque, Jabaliya",
+    nameArabic: "المسجد العمري الكبير، جباليا",
+    type: "mosque",
+    yearBuilt: "7th century foundation (Mamluk-era minaret)",
+    coordinates: [31.528, 34.483],
+    status: "heavily-damaged",
+    dateDestroyed: "2014-08-02",
+    lastUpdated: "2026-06-17",
+    description:
+      "Gaza's oldest and largest mosque outside the Old City, struck by an Israeli airstrike that tore through the roof and damaged the vaulted stone ceiling and courtyard; the muezzin was killed shortly after the call to prayer.",
+    historicalSignificance:
+      "Believed to have hosted a mosque on the site since the 7th century, with a surviving minaret and portico dating to the Mamluk era and capacity for roughly 2,000 worshippers.",
+    culturalValue:
+      "Most of the mosque's Qurans and religious manuscripts were destroyed or burned in the strike; residents later organized a self-financed restoration effort.",
+    verifiedBy: ["NPR", "Middle East Monitor"],
+    images: {
+      before: {
+        url: "/images/sites/al-omari-mosque-jabaliya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-omari-mosque-jabaliya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "NPR",
+        title: "Gaza's Casualties Of War Include Its Historic Mosques",
+        url: "https://www.npr.org/sections/parallels/2014/08/12/339828441/gazas-casualties-of-war-include-its-historic-mosques",
+        date: "2014-08-12",
+        type: "journalism",
+      },
+      {
+        organization: "Middle East Monitor",
+        title: "The ancient mosques of Gaza in ruins",
+        url: "https://www.middleeastmonitor.com/20140910-the-ancient-mosques-of-gaza-in-ruins-how-israels-war-endangered-palestines-cultural-heritage/",
+        date: "2014-09-10",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "mahkamah-mosque",
+    name: "Mahkamah Mosque",
+    nameArabic: "مسجد المحكمة",
+    type: "mosque",
+    yearBuilt: "1455 (Mamluk, Sayf al-Din Birdibak al-Ashrafi)",
+    coordinates: [31.501, 34.468],
+    status: "destroyed",
+    dateDestroyed: "2014-07-24",
+    lastUpdated: "2026-06-17",
+    description:
+      "Mamluk-era mosque on Baghdad Street near the western entrance to Gaza's Shuja'iyya district, destroyed in an Israeli airstrike during the height of the Shuja'iyya offensive.",
+    historicalSignificance:
+      "A rare, well-preserved example of Burji Mamluk architecture, strongly influenced by earlier Ayyubid mosque-madrasa design traditions.",
+    culturalValue:
+      "One of the few intact Mamluk-era religious buildings remaining in Gaza prior to 2014; its loss removed a key architectural record of the period.",
+    verifiedBy: ["Wikipedia", "Jordan Times"],
+    images: {
+      before: {
+        url: "/images/sites/mahkamah-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/mahkamah-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Jordan Times",
+        title: "Gaza's historic mosques, shrines reduced to rubble in Israeli offensive",
+        url: "https://jordantimes.com/news/local/gazas-historic-mosques-shrines-reduced-rubble-israeli-offensive-archeologist",
+        type: "journalism",
+      },
+      {
+        organization: "Middle East Monitor",
+        title: "The ancient mosques of Gaza in ruins",
+        url: "https://www.middleeastmonitor.com/20140910-the-ancient-mosques-of-gaza-in-ruins-how-israels-war-endangered-palestines-cultural-heritage/",
+        date: "2014-09-10",
+        type: "journalism",
+      },
+    ],
+  },
+  {
+    id: "ibby-library-beit-hanoun",
+    name: "IBBY Children's Library, Beit Hanoun",
+    type: "archive",
+    yearBuilt: "2008",
+    coordinates: [31.538, 34.537],
+    status: "destroyed",
+    dateDestroyed: "2014-07-28",
+    lastUpdated: "2026-06-17",
+    description:
+      "A children's library supported by the International Board on Books for Young People (IBBY) since 2008, intended as a safe space for literacy programs near the Israeli border in Beit Hanoun, destroyed during the 2014 war.",
+    historicalSignificance:
+      "Part of a small network of children-focused literacy institutions in Gaza, notable for serving a border community frequently exposed to conflict.",
+    culturalValue:
+      "Represented international cultural investment in Palestinian children's literacy; IBBY launched a reconstruction appeal in October 2014.",
+    verifiedBy: ["IBBY", "Literary Hub"],
+    images: {
+      before: {
+        url: "/images/sites/ibby-library-beit-hanoun-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ibby-library-beit-hanoun-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-05-28",
+        description: "Satellite imagery from 2026-05-28"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "IBBY",
+        title: "Children in Crisis: Gaza Libraries",
+        url: "https://www.ibby.org/awards-activities/ibby-children-in-crisis-fund/ibby-children-in-crisis-gaza-libraries",
+        type: "official",
+      },
+      {
+        organization: "Literary Hub",
+        title: "Israel has damaged or destroyed at least 13 libraries in Gaza",
+        url: "https://lithub.com/israel-has-damaged-or-destroyed-at-least-13-libraries-in-gaza/",
+        type: "journalism",
+      },
+    ],
+  },
+  // BATCH 3 END - Total: 146 sites
 ];

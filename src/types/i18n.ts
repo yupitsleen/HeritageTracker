@@ -186,6 +186,7 @@ export interface Translations {
     tooltipDashboard: string;
     tooltipDataPage: string;
     lastUpdated: string;
+    showIslamicDates: string;
   };
 
   /** Filter bar */
@@ -224,6 +225,9 @@ export interface Translations {
     historicBuilding: string;
     hospital: string;
     school: string;
+    monument: string;
+    cemetery: string;
+    archive: string;
   };
 
   /** Site statuses */

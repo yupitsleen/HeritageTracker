@@ -75,7 +75,7 @@ jobs:
       - name: Check bundle size limit
         run: |
           BUNDLE_SIZE=$(du -sb dist/ | awk '{print $1}')
-          MAX_SIZE=$((6144 * 1024))  # 6MB limit (includes ~4.3MB satellite imagery for 102 sites + ~1.4MB assets)
+          MAX_SIZE=$((9216 * 1024))  # 9MB limit (includes ~6.1MB satellite imagery for 140+ sites + ~1.5MB assets)
           if [ $BUNDLE_SIZE -gt $MAX_SIZE ]; then
             echo "❌ Bundle size ($BUNDLE_SIZE bytes) exceeds limit ($MAX_SIZE bytes)"
             exit 1

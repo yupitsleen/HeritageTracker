@@ -2,7 +2,7 @@ import { memo, useState, useMemo, useEffect, useCallback } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { Site, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
-import { formatLabel } from "../../utils/format";
+import { translateSiteType, translateStatus } from "../../utils/format";
 import { FilterButton } from "./FilterButton";
 import { FilterCheckboxList } from "./FilterCheckboxList";
 import { DateRangeFilter } from "./DateRangeFilter";
@@ -11,6 +11,7 @@ import { Input } from "../Form/Input";
 import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
+import { SiteTypeIcon } from "../Icons/SiteTypeIcon";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -218,8 +219,9 @@ export const FilterBar = memo(function FilterBar({
               options={SITE_TYPES}
               selectedValues={filters.selectedTypes}
               onChange={handleTypesChange}
-              formatLabel={formatLabel}
+              formatLabel={(type) => translateSiteType(translate, type)}
               counts={typeCounts}
+              getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
             />
           </FilterButton>
 
@@ -233,7 +235,7 @@ export const FilterBar = memo(function FilterBar({
               options={availableStatuses}
               selectedValues={filters.selectedStatuses}
               onChange={handleStatusesChange}
-              formatLabel={formatLabel}
+              formatLabel={(status) => translateStatus(translate, status)}
               counts={statusCounts}
             />
           </FilterButton>
@@ -378,8 +380,9 @@ export const FilterBar = memo(function FilterBar({
                   options={SITE_TYPES}
                   selectedValues={filters.selectedTypes}
                   onChange={handleTypesChange}
-                  formatLabel={formatLabel}
+                  formatLabel={(type) => translateSiteType(translate, type)}
                   counts={typeCounts}
+                  getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
                 />
               </div>
 
@@ -392,7 +395,7 @@ export const FilterBar = memo(function FilterBar({
                   options={availableStatuses}
                   selectedValues={filters.selectedStatuses}
                   onChange={handleStatusesChange}
-                  formatLabel={formatLabel}
+                  formatLabel={(status) => translateStatus(translate, status)}
                   counts={statusCounts}
                 />
               </div>
