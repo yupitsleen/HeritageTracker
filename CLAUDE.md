@@ -6,6 +6,8 @@
 
 Counts (sites, tests, components, lines) are never written in docs — the code is the source of truth. Count them when you need them.
 
+**Session orientation:** run `git log --oneline -5 && git status -sb` before starting work — recent commits are the real "current status", not docs.
+
 ---
 
 ## Commands
