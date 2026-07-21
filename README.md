@@ -2,7 +2,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Category | Technologies |
 |----------|--------------|
@@ -14,16 +14,6 @@
 | **Testing** | Vitest (1,465 tests) + Playwright (16 E2E) + MSW 2.11.6 |
 
 ---
-
-## 🚀 Quick Start
-
-### Installation
-
-```bash
-git clone https://github.com/yupitsleen/HeritageTracker.git
-cd HeritageTracker
-npm install
-```
 
 ### Development
 
@@ -53,41 +43,8 @@ See [CLAUDE.md](CLAUDE.md) for detailed setup instructions.
 
 ---
 
-## 📁 Project Structure
 
-```
-src/
-├── api/                    # Backend integration (3 modes: Mock/Local/Supabase)
-├── components/             # 21 feature components
-│   ├── Map/                # Leaflet + ComparisonMapView
-│   ├── Timeline/           # D3.js scrubber
-│   ├── FilterBar/          # Multi-select filters
-│   └── SitesTable/         # Virtual scrolling table
-├── pages/                  # 7 pages (Dashboard, Timeline, Data, Stats, About, Donate, HowItWorks)
-├── hooks/                  # 24+ custom hooks
-├── contexts/               # 4 contexts (theme, animation, calendar, locale - en/ar/it)
-├── config/                 # 30+ configuration files
-├── data/mockSites.ts       # 70 documented sites (2,356 lines)
-├── database/               # PostgreSQL migrations (285 lines)
-└── server/                 # Express REST API (3-layer architecture)
-```
-
-
-## 📖 Documentation
-
-| Document | Description |
-|----------|-------------|
-| **[CLAUDE.md](CLAUDE.md)** | Developer guide (857 lines, 46% optimized) |
-| **[CHANGELOG.md](CHANGELOG.md)** | Complete project history (14 phases) |
-| **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)** | Git workflow and quality gates |
-| **[CODE_REVIEW_FINDINGS.md](CODE_REVIEW_FINDINGS.md)** | Code quality improvements (90% complete) |
-| **[database/README.md](database/README.md)** | PostgreSQL setup guide |
-| **[server/README.md](server/README.md)** | Express backend documentation |
-
----
-
-
-## 📚 Data Sources
+## Data Sources
 
 All sites verified by authoritative sources:
 
@@ -103,7 +60,7 @@ See [research documentation](docs/research/) for detailed source analysis.
 
 --
 
-## 🌍 Related Projects by others
+## Related Projects by others
 
 - [Forensic Architecture](https://forensic-architecture.org/) - Spatial investigations and evidence analysis
 - [Syria Heritage Initiative](https://uchicago.edu/shi/) - Syrian cultural heritage documentation
@@ -112,7 +69,7 @@ See [research documentation](docs/research/) for detailed source analysis.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Built on documentation by UNESCO, Forensic Architecture, Heritage for Peace, Palestinian Museum, Institute for Palestine Studies, ICOMOS Palestine, and countless researchers dedicated to preserving cultural heritage.
 
