@@ -14,7 +14,7 @@ interface SiteTableRowProps {
   highlightedSiteId?: string | null;
   variant: "compact" | "expanded";
   isColumnVisible: (columnName: string) => boolean;
-  style?: CSSProperties; // For react-window positioning
+  style?: CSSProperties; // For virtualizer positioning
   clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
 }
 
