@@ -37,10 +37,6 @@ const logger = pino({
           ignore: 'pid,hostname',
           singleLine: false,
           messageFormat: '{msg}',
-          customPrettifiers: {
-            // Custom formatting for specific fields
-            requestId: (requestId) => `[${requestId.substring(0, 8)}]`,
-          },
         },
       }
     : undefined,

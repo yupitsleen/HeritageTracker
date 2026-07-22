@@ -2,11 +2,13 @@ import { useMemo } from "react";
 import type { Site } from "../types";
 import {
   calculateGlowContribution,
+  getGlowReductionPercentage,
+} from "../utils/calculations/glowContributions";
+import {
   calculateTotalHeritageValue,
   calculateDestroyedValue,
   calculateHeritageIntegrity,
-  getGlowReductionPercentage,
-} from "../utils/heritageCalculations";
+} from "../utils/calculations/heritageMetrics";
 import { getEffectiveDestructionDate } from "../utils/format";
 
 /**

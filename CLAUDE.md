@@ -52,7 +52,7 @@ src/
 ├── hooks/          # useAppState, useFilteredSites, useWaybackReleases,
 │                   #   useSitesPaginated, useSitesQuery, useDebounce, ...
 ├── contexts/       # Animation, Calendar (Gregorian/Islamic), Locale, Theme
-├── config/         # colorThemes, tileLayers, wayback, filters, animation
+├── config/         # colorThemes, data.config, wayback, filters, animation
 ├── constants/      # layout (BREAKPOINTS, Z_INDEX), timeline, map, statistics
 ├── utils/          # formatters (BC/BCE), exporters (CSV/JSON/GeoJSON), validators
 ├── services/       # waybackService (ESRI Wayback API client)
@@ -153,7 +153,7 @@ interface Site {
 
 ## Deployment
 
-- `npm run build` → `dist/`. Vercel/Netlify: build `npm run build`, output `dist`, set `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`.
+- `npm run build` → `dist/`. Vercel/Netlify: build `npm run build`, output `dist`, set `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`. Build-date config: see `DEPLOYMENT.md`.
 - Supabase: run `database/migrations/001_initial_schema.sql` in the SQL editor — same schema as local.
 
 ## Constraints

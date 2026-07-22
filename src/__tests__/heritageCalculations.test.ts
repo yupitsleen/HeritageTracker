@@ -2,12 +2,14 @@ import { describe, it, expect } from "vitest";
 import {
   calculateGlowContribution,
   getAgeColorCode,
+  getGlowReductionPercentage,
+} from "../utils/calculations/glowContributions";
+import {
   calculateTotalHeritageValue,
   calculateDestroyedValue,
   calculateHeritageIntegrity,
-  calculateSignificanceScore,
-  getGlowReductionPercentage,
-} from "../utils/heritageCalculations";
+} from "../utils/calculations/heritageMetrics";
+import { calculateSignificanceScore } from "../utils/calculations/significance";
 import type { Site } from "../types";
 
 // Test data helpers

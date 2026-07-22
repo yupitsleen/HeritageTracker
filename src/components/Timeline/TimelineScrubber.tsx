@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 // Optimized D3 imports - only import what we need
-import { scaleTime } from "d3-scale";
+import { scaleTime } from "d3";
 import type { Site } from "../../types";
 import { useAnimation } from "../../contexts/AnimationContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
