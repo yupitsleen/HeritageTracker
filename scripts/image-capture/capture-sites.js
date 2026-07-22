@@ -14,6 +14,7 @@ import { chromium } from '@playwright/test';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs/promises';
+import { existsSync } from 'fs';
 
 // ESM equivalents for __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,7 @@ const __dirname = dirname(__filename);
 const TEMPLATE_PATH = join(__dirname, 'map-template.html');
 const SITES_DATA_PATH = join(__dirname, 'sites-data.json');
 const OUTPUT_DIR = join(__dirname, '../../public/images/sites');
+const MANIFEST_PATH = join(OUTPUT_DIR, 'capture-manifest.json');
 
 // Wayback configuration
 const WAYBACK_API_URL = "https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json";
@@ -94,6 +96,29 @@ async function loadSites() {
   const sites = JSON.parse(content);
   console.log(`Loaded ${sites.length} sites`);
   return sites;
+}
+
+/**
+ * Load the per-site capture manifest (id -> { capturedAt, backfilled? }).
+ * Missing file just means no site has been captured under this system yet.
+ */
+async function loadManifest() {
+  try {
+    return JSON.parse(await fs.readFile(MANIFEST_PATH, 'utf-8'));
+  } catch {
+    return {};
+  }
+}
+
+async function writeManifest(manifest) {
+  const sorted = Object.fromEntries(
+    Object.keys(manifest).sort().map((id) => [id, manifest[id]])
+  );
+  await fs.writeFile(MANIFEST_PATH, JSON.stringify(sorted, null, 2) + '\n');
+}
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
 }
 
 /**
@@ -173,8 +198,46 @@ async function main() {
     console.log(`  After:  ${afterRelease.releaseDate}`);
     console.log('');
 
-    // Load sites
-    const sites = await loadSites();
+    // Load sites, then narrow down to what actually needs capturing.
+    // CLI args = force-regenerate just those IDs (e.g. after a coordinate fix).
+    // No args = default to only sites missing either image.
+    const allSites = await loadSites();
+    const forceIds = process.argv.slice(2);
+    const hasBothImages = (id) =>
+      existsSync(join(OUTPUT_DIR, `${id}-before.jpg`)) &&
+      existsSync(join(OUTPUT_DIR, `${id}-after.jpg`));
+
+    const sites = forceIds.length > 0
+      ? allSites.filter((s) => forceIds.includes(s.id))
+      : allSites.filter((s) => !hasBothImages(s.id));
+
+    console.log(forceIds.length > 0
+      ? `Forcing regeneration of ${sites.length} requested site(s)`
+      : `${sites.length} of ${allSites.length} sites need images (rest already captured)`);
+    console.log('');
+
+    // Backfill capture-manifest.json for sites that already have images but
+    // predate this manifest — we don't know their real capture date, so we
+    // record today's date and mark it `backfilled: true` rather than pretend
+    // it's a real timestamp.
+    const manifest = await loadManifest();
+    const today = todayISO();
+    let backfilledCount = 0;
+    for (const s of allSites) {
+      if (hasBothImages(s.id) && !manifest[s.id]) {
+        manifest[s.id] = { capturedAt: today, backfilled: true }; // backfill: real capture date unknown
+        backfilledCount++;
+      }
+    }
+    if (backfilledCount > 0) {
+      console.log(`Backfilled capture-manifest.json for ${backfilledCount} site(s) with no prior capture record.`);
+      await writeManifest(manifest);
+    }
+
+    if (sites.length === 0) {
+      console.log('Nothing to capture.');
+      return;
+    }
 
     // Launch browser
     console.log('Launching headless browser...');
@@ -211,6 +274,7 @@ async function main() {
 
         if (afterSuccess) {
           successCount++;
+          manifest[site.id] = { capturedAt: today }; // real capture, not a backfill
         } else {
           failCount++;
         }
@@ -224,6 +288,9 @@ async function main() {
     // Close browser
     await browser.close();
 
+    // Persist real capture dates recorded above
+    await writeManifest(manifest);
+
     // Generate attribution file
     const attributionData = {
       credit: ATTRIBUTION.credit,
@@ -232,7 +299,7 @@ async function main() {
       beforeDate: beforeRelease.releaseDate,
       afterDate: afterRelease.releaseDate,
       generatedAt: new Date().toISOString(),
-      totalSites: sites.length,
+      totalSites: allSites.length,
       successfulCaptures: successCount,
       failedCaptures: failCount
     };

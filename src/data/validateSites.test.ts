@@ -1,6 +1,14 @@
 import { describe, it, expect } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { mockSites } from "./mockSites";
 import type { Site } from "../types";
+
+const CAPTURE_MANIFEST_PATH = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../public/images/sites/capture-manifest.json"
+);
 
 /**
  * Data validation tests to ensure all sites meet schema requirements
@@ -369,6 +377,38 @@ describe("Site Data Validation", () => {
             ).toBe(true);
           })
         );
+      });
+    });
+  });
+
+  describe("Image Freshness", () => {
+    type ManifestEntry = { capturedAt: string; backfilled?: boolean };
+    const manifest: Record<string, ManifestEntry> = JSON.parse(
+      fs.readFileSync(CAPTURE_MANIFEST_PATH, "utf-8")
+    );
+
+    it("no site's images predate its last data update", () => {
+      mockSites.forEach((site) => {
+        if (!site.images) return;
+
+        const entry = manifest[site.id];
+        expect(
+          entry,
+          `Site ${site.name} has images but no capture-manifest.json entry — ` +
+            `run scripts/image-capture/capture-sites.js to record one`
+        ).toBeDefined();
+
+        // `backfilled` entries have no real capture date (recorded as "today"
+        // the day this check was introduced) — they can't tell us anything
+        // about staleness, only genuine capture dates going forward can.
+        if (entry.backfilled) return;
+
+        expect(
+          site.lastUpdated <= entry.capturedAt,
+          `Site ${site.name} lastUpdated (${site.lastUpdated}) is after its images were ` +
+            `captured (${entry.capturedAt}) — coordinates or other data likely changed since; ` +
+            `re-run scripts/image-capture/capture-sites.js ${site.id}`
+        ).toBe(true);
       });
     });
   });
