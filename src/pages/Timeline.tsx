@@ -83,8 +83,8 @@ export function Timeline() {
   const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
 
   // Comparison Mode toggle - when enabled, shows two maps side-by-side
-  // Default to OFF for standard single-map view
-  const [comparisonModeEnabled, setComparisonModeEnabled] = useState(false);
+  // Default to ON for first-load comparison view
+  const [comparisonModeEnabled, setComparisonModeEnabled] = useState(true);
 
   // Before release index for comparison mode (earlier imagery)
   const [beforeReleaseIndex, setBeforeReleaseIndex] = useState(0);
