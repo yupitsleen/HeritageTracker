@@ -117,13 +117,15 @@ describe("Site Data Validation", () => {
 
   describe("Date Validation", () => {
     it("all sites with dateDestroyed have valid ISO format", () => {
-      const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      // Day precision (YYYY-MM-DD) or month precision (YYYY-MM) when sources
+      // only support the month — never an invented day.
+      const isoDateRegex = /^\d{4}-\d{2}(-\d{2})?$/;
 
       mockSites.forEach((site) => {
         if (site.dateDestroyed) {
           expect(
             isoDateRegex.test(site.dateDestroyed),
-            `Site ${site.name} dateDestroyed "${site.dateDestroyed}" not in ISO format (YYYY-MM-DD)`
+            `Site ${site.name} dateDestroyed "${site.dateDestroyed}" not in ISO format (YYYY-MM-DD or YYYY-MM)`
           ).toBe(true);
 
           // Verify date is valid
@@ -311,6 +313,17 @@ describe("Site Data Validation", () => {
           `Site ${site.name}: dateDestroyedIslamic "${site.dateDestroyedIslamic}" does not match ` +
             `dateDestroyed ${site.dateDestroyed} (expected ~${reference.d}/${reference.m}/${reference.y} AH)`
         ).toBe(true);
+      });
+    });
+
+    it("month-precision destruction dates carry no day-precision Islamic date", () => {
+      mockSites.forEach((site) => {
+        if (site.dateDestroyed && /^\d{4}-\d{2}$/.test(site.dateDestroyed)) {
+          expect(
+            site.dateDestroyedIslamic,
+            `Site ${site.name} has month-precision dateDestroyed but a day-precision dateDestroyedIslamic "${site.dateDestroyedIslamic}"`
+          ).toBeUndefined();
+        }
       });
     });
 

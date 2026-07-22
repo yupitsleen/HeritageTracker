@@ -48,13 +48,22 @@ export interface Site {
   yearBuilt: string;
   yearBuiltIslamic?: string; // Manually verified Islamic calendar date
   coordinates: [number, number]; // [latitude, longitude] - Leaflet format
+
+  /**
+   * True when no source publishes building-level coordinates for this site
+   * (private museums, razed 1948/1967 village buildings, aggregate entries).
+   * The coordinates are a neighborhood/village-level placement, not the building.
+   */
+  coordinatesApproximate?: boolean;
+
   status: string; // Now accepts any string - use STATUS_REGISTRY for valid statuses
 
   /**
-   * Exact date when the site was destroyed or damaged (ISO date string).
+   * Date when the site was destroyed or damaged.
    *
-   * Use when the precise destruction date is known from sources.
-   * Leave undefined if only a survey/assessment date is available.
+   * "YYYY-MM-DD" when sources support day precision; "YYYY-MM" when sources
+   * only support the month — never invent a day. Leave undefined if only a
+   * survey/assessment date is available.
    */
   dateDestroyed?: string;
 

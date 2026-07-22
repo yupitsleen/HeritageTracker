@@ -428,8 +428,7 @@ export const mockSites: Site[] = [
       34.4994
     ],
     status: "destroyed",
-    dateDestroyed: "2023-11-20",
-    dateDestroyedIslamic: "7 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-11",
     sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2026-07-22",
     description: "A 5th-century Byzantine church and monastery built in 444 CE during the reign of Emperor Theodosius II. The site spanned 850 square meters with 400 square meters of colorful mosaic floors depicting animals, hunting scenes, and palm trees. The church walls were adorned with 16 religious texts written in ancient Greek.",
@@ -946,6 +945,7 @@ export const mockSites: Site[] = [
       31.48,
       34.45
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-01-17",
     dateDestroyedIslamic: "6 Rajab 1445 AH",
@@ -1411,6 +1411,7 @@ export const mockSites: Site[] = [
       31.4181,
       34.3514
     ],
+    coordinatesApproximate: true,
     status: "damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
@@ -1581,9 +1582,9 @@ export const mockSites: Site[] = [
       31.5078,
       34.4658
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-12",
-    dateDestroyedIslamic: "29 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2026-07-22",
     description: "An Ottoman-era domed building housing a manuscript center with rare Islamic texts and historical documents. The center specialized in the preservation and study of Arabic manuscripts and historical records.",
@@ -1639,9 +1640,9 @@ export const mockSites: Site[] = [
       31.5048,
       34.4652
     ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-11-28",
-    dateDestroyedIslamic: "15 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-11",
     sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2026-07-22",
     description: "A historic Ottoman-era sabil (public water fountain), representing traditional Islamic charitable architecture. Sabils were public fountains providing free water to travelers and residents, embodying Islamic principles of charity and community service.",
@@ -1689,9 +1690,9 @@ export const mockSites: Site[] = [
       31.5095,
       34.4642
     ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-12-01",
-    dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2026-07-22",
     description: "A 19th-century historic house in Gaza City representing traditional Palestinian residential architecture. The house features characteristic stonework, arched windows, and courtyard design typical of upper-class Gaza homes.",
@@ -1738,6 +1739,7 @@ export const mockSites: Site[] = [
       31.528,
       34.459
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-10-25",
     dateDestroyedIslamic: "10 Rabi' al-Thani 1445 AH",
@@ -1852,6 +1854,7 @@ export const mockSites: Site[] = [
       31.3458,
       34.3058
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-01-08",
     dateDestroyedIslamic: "26 Jumada al-Akhirah 1445 AH",
@@ -2029,9 +2032,9 @@ export const mockSites: Site[] = [
       31.5082,
       34.4648
     ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-12-22",
-    dateDestroyedIslamic: "9 Jumada al-Akhirah 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2026-07-22",
     description: "A historic 19th-century house belonging to the prominent Al-Shawa family, one of Gaza's most notable families. The house represents traditional Palestinian elite residential architecture.",
@@ -2331,6 +2334,7 @@ export const mockSites: Site[] = [
       31.5042,
       34.4588
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2026-07-22",
@@ -2472,6 +2476,7 @@ export const mockSites: Site[] = [
       31.2794,
       34.2458
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2026-07-22",
@@ -2519,6 +2524,7 @@ export const mockSites: Site[] = [
       31.4432,
       34.3847
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2026-07-22",
@@ -2707,6 +2713,7 @@ export const mockSites: Site[] = [
       31.5048,
       34.4598
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2026-07-22",
@@ -2848,6 +2855,7 @@ export const mockSites: Site[] = [
       31.5052,
       34.4592
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2025-09-14",
     dateDestroyedIslamic: "21 Rabi' al-Awwal 1447 AH",
@@ -2897,6 +2905,7 @@ export const mockSites: Site[] = [
       31.5048,
       34.4585
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2026-07-22",
@@ -2944,6 +2953,7 @@ export const mockSites: Site[] = [
       31.5052,
       34.4583
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2026-07-22",
@@ -2991,6 +3001,7 @@ export const mockSites: Site[] = [
       31.505,
       34.458
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2025-11-09",
@@ -3043,6 +3054,7 @@ export const mockSites: Site[] = [
       31.5068,
       34.4661
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2026-07-22",
@@ -3095,6 +3107,7 @@ export const mockSites: Site[] = [
       31.5045,
       34.459
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2025-11-09",
@@ -3147,6 +3160,7 @@ export const mockSites: Site[] = [
       31.503,
       34.462
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2025-11-09",
@@ -3257,6 +3271,7 @@ export const mockSites: Site[] = [
       31.3449,
       34.3029
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-08-20",
     dateDestroyedIslamic: "15 Safar 1446 AH",
@@ -3385,6 +3400,7 @@ export const mockSites: Site[] = [
       31.3279,
       34.3452
     ],
+    coordinatesApproximate: true,
     status: "heavily-damaged",
     dateDestroyed: "2023-11-01",
     dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH",
@@ -3554,6 +3570,7 @@ export const mockSites: Site[] = [
       31.524,
       34.4555
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-02-19",
     dateDestroyedIslamic: "9 Sha'ban 1445 AH",
@@ -3610,6 +3627,7 @@ export const mockSites: Site[] = [
       31.5323,
       34.5431
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-10-10",
     dateDestroyedIslamic: "25 Rabi' al-Awwal 1445 AH",
@@ -3660,9 +3678,9 @@ export const mockSites: Site[] = [
       31.2778,
       34.2582
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
     description: "A private collection and community diwan (traditional gathering house) dedicated to Bedouin heritage in southeastern Rafah, destroyed on 6 December 2023. The collection held an extensive array of traditional Bedouin material culture including tools, textiles, oral history recordings, and artifacts, making it a rare institutional repository of Bedouin Palestinian cultural identity in southern Gaza.",
@@ -3873,6 +3891,7 @@ export const mockSites: Site[] = [
       31.548,
       34.51
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-01-24",
     lastUpdated: "2026-07-22",
@@ -3921,6 +3940,7 @@ export const mockSites: Site[] = [
       31.296,
       34.251
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-05-15",
     dateDestroyedIslamic: "6 Dhul-Qa'dah 1445 AH",
@@ -3971,6 +3991,7 @@ export const mockSites: Site[] = [
       31.507,
       34.462
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-12-04",
     dateDestroyedIslamic: "21 Jumada al-Ula 1445 AH",
@@ -4085,9 +4106,9 @@ export const mockSites: Site[] = [
       31.512,
       34.464
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
     description: "A community library in Gaza City destroyed on December 6, 2023, part of a wave that eliminated at least five scholarly and cultural institutions in Gaza City in a single day. Documented by Librarians and Archivists with Palestine.",
@@ -4135,8 +4156,7 @@ export const mockSites: Site[] = [
       34.4517
     ],
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2026-07-22",
     description: "The 'Renaissance Library' — Al-Nahda in Arabic means renaissance or awakening — destroyed in Gaza City on December 6, 2023, in the same wave that eliminated multiple cultural and educational institutions in a single day.",
@@ -4183,9 +4203,9 @@ export const mockSites: Site[] = [
       31.508,
       34.452
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
     description: "A combined educational institute and community library in the Al-Rimal neighborhood of Gaza City, destroyed on December 6, 2023 in the wave that eliminated multiple knowledge institutions in a single day. Documented by Librarians and Archivists with Palestine.",
@@ -4283,6 +4303,7 @@ export const mockSites: Site[] = [
       31.3452,
       34.3038
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-10-08",
     dateDestroyedIslamic: "23 Rabi' al-Awwal 1445 AH",
@@ -4333,6 +4354,7 @@ export const mockSites: Site[] = [
       31.49,
       34.442
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-01-15",
     lastUpdated: "2026-07-22",
@@ -4438,6 +4460,7 @@ export const mockSites: Site[] = [
       31.504,
       34.463
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-03-06",
     dateDestroyedIslamic: "25 Sha'ban 1445 AH",
@@ -4495,6 +4518,7 @@ export const mockSites: Site[] = [
       31.51,
       34.443
     ],
+    coordinatesApproximate: true,
     status: "heavily-damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
@@ -4544,9 +4568,9 @@ export const mockSites: Site[] = [
       31.3445,
       34.3025
     ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
     description: "A private museum in Khan Yunis, housed in the basement of a residential building and assembled over more than 30 years by collector Marwan Shahwan. The collection holds over 10,000 ancient artifacts spanning multiple civilizations. Documented as damaged by the Palestinian Ministry of Culture on December 6, 2023. During a ceasefire period, part of the collection was evacuated to Al-Mawasi on the western Khan Yunis coast, but the area subsequently came under renewed military operations.",
@@ -4602,6 +4626,7 @@ export const mockSites: Site[] = [
       31.515,
       34.456
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-01",
     dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH",
@@ -4652,9 +4677,9 @@ export const mockSites: Site[] = [
       31.516,
       34.448
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
     description: "A combined library, bookstore, and cultural café founded in 1983 in Gaza City, operating for approximately 25 years near Al-Azhar University on University Street in the Rimal area. Originally established as a printing house by order of then-Gaza Mayor Rashad al-Shawa, it evolved into a major cultural hub described as a 'permanent cultural café' where readers could access thousands of titles. The institution had multiple branches including an Old City branch and a Rimal branch. Reported destroyed on December 6, 2023 by the Palestinian Ministry of Culture, with contents looted and operations fully ceased.",
@@ -4709,9 +4734,9 @@ export const mockSites: Site[] = [
       31.508,
       34.467
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
     description: "A commercial library and bookstore in Gaza City, documented as destroyed on December 6, 2023 by the Palestinian Ministry of Culture — part of the same single-day wave that eliminated at least five other literary and cultural institutions across Gaza City. Specific neighborhood location was not publicly documented; it received minimal press coverage outside the Ministry's official damage report.",
@@ -5302,6 +5327,7 @@ export const mockSites: Site[] = [
       31.535,
       34.497
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-01",
     sourceAssessmentDate: "2024-03-01",
@@ -5577,6 +5603,7 @@ export const mockSites: Site[] = [
       31.5063,
       34.4587
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-05",
     sourceAssessmentDate: "2023-11-09",
@@ -5634,6 +5661,7 @@ export const mockSites: Site[] = [
       31.5297,
       34.4878
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-10-17",
     sourceAssessmentDate: "2024-10-17",
@@ -5691,6 +5719,7 @@ export const mockSites: Site[] = [
       31.4458,
       34.3724
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-06-06",
     sourceAssessmentDate: "2024-06-06",
@@ -5747,6 +5776,7 @@ export const mockSites: Site[] = [
       31.5061,
       34.4501
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-01-17",
     sourceAssessmentDate: "2024-02-01",
@@ -5803,6 +5833,7 @@ export const mockSites: Site[] = [
       31.2971,
       34.2476
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-05-15",
     sourceAssessmentDate: "2024-06-01",
@@ -5857,6 +5888,7 @@ export const mockSites: Site[] = [
       31.418,
       34.35
     ],
+    coordinatesApproximate: true,
     status: "damaged",
     lastUpdated: "2026-07-22",
     description: "A Late Bronze Age cemetery near Deir al-Balah, central Gaza Strip, excavated by Trude Dothan between 1972 and 1982. The site yielded approximately 50 anthropoid clay sarcophagi dated to the 13th–14th centuries BCE, shaped in the Egyptian tradition. Among the most significant Bronze Age burial assemblages found in the southern Levant.",
@@ -5966,6 +5998,7 @@ export const mockSites: Site[] = [
       31.375,
       34.378
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-08",
     sourceAssessmentDate: "2023-11-09",
@@ -6141,6 +6174,7 @@ export const mockSites: Site[] = [
       31.7955,
       35.1963
     ],
+    coordinatesApproximate: true,
     status: "damaged",
     dateDestroyed: "1948-01-15",
     lastUpdated: "2026-07-22",
@@ -6300,6 +6334,7 @@ export const mockSites: Site[] = [
       32.5575,
       35.3278
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "1948-05-28",
     lastUpdated: "2026-07-22",
@@ -6452,6 +6487,7 @@ export const mockSites: Site[] = [
       31.7766,
       35.2341
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "1967-06-11",
     lastUpdated: "2026-06-17",
@@ -6505,6 +6541,7 @@ export const mockSites: Site[] = [
       31.7766,
       35.2341
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "1967-06-11",
     lastUpdated: "2026-06-17",
@@ -6643,6 +6680,7 @@ export const mockSites: Site[] = [
       31.8531,
       35.0317
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "1967-06-15",
     lastUpdated: "2026-07-22",
@@ -6996,6 +7034,7 @@ export const mockSites: Site[] = [
       31.538,
       34.537
     ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2014-07-28",
     lastUpdated: "2026-07-22",

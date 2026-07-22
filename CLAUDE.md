@@ -91,8 +91,9 @@ interface Site {
   yearBuilt: string;                // "1277" or "BCE 800"
   yearBuiltIslamic?: string;        // "676 AH"
   coordinates: [number, number];    // [lat, lng]
+  coordinatesApproximate?: boolean; // no building-level source; area/village-level placement
   status: string;                   // destroyed | severely_damaged | partially_damaged | looted | threatened
-  dateDestroyed?: string;           // ISO or "BCE YYYY"
+  dateDestroyed?: string;           // ISO "YYYY-MM-DD", or "YYYY-MM" when sources only support the month
   dateDestroyedIslamic?: string;
   lastUpdated: string;
   description: string;

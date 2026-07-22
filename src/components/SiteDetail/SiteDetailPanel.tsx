@@ -200,6 +200,7 @@ export function SiteDetailPanel({ site, onViewOnMap }: SiteDetailPanelProps) {
         <p>
           <span className="font-medium">{translate("siteDetail.coordinates")}:</span> {site.coordinates[0]},{" "}
           {site.coordinates[1]}
+          {site.coordinatesApproximate && <> ({translate("siteDetail.coordinatesApproximate")})</>}
         </p>
       </section>
     </div>

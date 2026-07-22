@@ -234,6 +234,7 @@ export const en: Translations = {
     sources: "Sources",
     images: "Images",
     coordinates: "Coordinates",
+    coordinatesApproximate: "approximate",
     verificationSources: "Verification Sources",
     siteType: "Site Type",
     yearBuilt: "Year Built",

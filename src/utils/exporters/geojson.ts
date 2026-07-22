@@ -24,6 +24,7 @@ interface GeoJSONProperties {
   yearBuilt: string;
   status: string;
   dateDestroyed?: string;
+  coordinatesApproximate?: boolean;
   sourceUrl?: string;
   unescoListed?: boolean;
   religiousSignificance?: string;
@@ -85,6 +86,7 @@ function siteToGeoJSONFeature(site: Site): GeoJSONFeature {
       yearBuilt: site.yearBuilt,
       status: site.status,
       dateDestroyed: site.dateDestroyed,
+      coordinatesApproximate: site.coordinatesApproximate,
       // sourceUrl: site.sourceUrl, // Property does not exist on current Site type
       unescoListed: site.unescoListed,
       // religiousSignificance: site.religiousSignificance,

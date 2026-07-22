@@ -16,10 +16,15 @@ Still-open items from the audit (not yet applied):
 
 - ~20 notable missing sites listed in the Bonus sections (Grand Mosque of Khan Yunis, Rafah
   Museum, UNESCO-verified sites absent from the dataset, …).
-- ~30 sites carry day-precision `dateDestroyed` values that sources only support at month
-  precision (see `findings-dates.md`).
-- ~45 sites (private museums, 1948 village buildings, aggregate entries) have no published
-  building-level coordinates; their coordinates are approximate.
+
+Applied since:
+
+- 2026-07-22: month-precision `dateDestroyed` ("YYYY-MM") on the 12 remaining sites whose
+  day-precision dates sources only support at month precision (their derived day-precision
+  Islamic dates were dropped); the regen had already removed the rest.
+- 2026-07-22: `coordinatesApproximate: true` on the 51 sites the coordinate passes could not
+  verify at building level (could-not-verify lists plus aggregate entries and 1948/1967
+  village-center placements).
 
 Canonical sources for future additions: UNESCO assessment (unesco.org/en/gaza/assessment —
 only claim `verifiedBy: UNESCO` for sites on this list), the IPS palestine-studies.org per-site
