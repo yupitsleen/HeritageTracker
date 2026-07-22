@@ -12,10 +12,8 @@ corrective codemod that regenerated the file (146 → 131 sites).
 | `findings-desc-a.md` / `findings-desc-b.md` | Checkable factual claims in description fields |
 | `findings-sources.md` | Citation integrity, dead/fabricated URLs, verifiedBy vs UNESCO's list |
 
-Still-open items from the audit (not yet applied):
-
-- ~20 notable missing sites listed in the Bonus sections (Grand Mosque of Khan Yunis, Rafah
-  Museum, UNESCO-verified sites absent from the dataset, …).
+Still-open items from the audit (not yet applied): none — the missing-sites item below was the
+last one.
 
 Applied since:
 
@@ -25,6 +23,19 @@ Applied since:
 - 2026-07-22: `coordinatesApproximate: true` on the 51 sites the coordinate passes could not
   verify at building level (could-not-verify lists plus aggregate entries and 1948/1967
   village-center placements).
+- 2026-07-22: researched the ~27 candidates named across the Bonus sections. Several turned out
+  to already be in the dataset under a different id/name (Rafah Museum, Grand Mosque of Khan
+  Yunis, Tell el-'Ajjul, Tell es-Sakan, Byzantine Church of Jabaliya, the Commonwealth/Al-Tuffah
+  war cemetery pair — the README's own parenthetical examples were stale) or were duplicates of
+  an existing entry under a different name (Gaza Museum of Archaeology = Al Mat'haf; Gaza
+  Municipality building on Omar Al-Mukhtar St = the existing municipality entry). One candidate
+  (Abu Khadra Mosque) was dropped for an uncited/contradictory war-damage claim — the same
+  pattern this audit exists to catch. Three more (Al-Shamah Mosque, Al-Madrasah al-Kamaliyah,
+  Kfar Bar'am Synagogue) had real sourcing but no status that fit this tracker's four-value
+  damage model (`destroyed` / `heavily-damaged` / `damaged` / `abandoned`) without
+  misrepresenting what the sources actually say, so they were left out rather than forced.
+  16 verified sites were added, each with a real dated source (mostly the UNESCO assessment
+  page, gigaza.org war-damage records, or direct news coverage) — see `git log` for the id list.
 
 Canonical sources for future additions: UNESCO assessment (unesco.org/en/gaza/assessment —
 only claim `verifiedBy: UNESCO` for sites on this list), the IPS palestine-studies.org per-site

@@ -7077,5 +7077,573 @@ export const mockSites: Site[] = [
         type: "journalism"
       }
     ]
+  },
+  {
+    id: "al-husseini-shrine",
+    name: "Al-Husseini Shrine",
+    type: "monument",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.505,
+      34.4655
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A shrine in Gaza City included on UNESCO's verified list of damaged cultural heritage properties. No independent source beyond UNESCO's assessment gives construction date, precise location, or architectural details.",
+    historicalSignificance: "Traditional Islamic shrine architecture marking a religious figure's memorial or burial site, part of Gaza's tradition of venerating local religious figures.",
+    culturalValue: "Listed by UNESCO among Gaza City's verified damaged cultural heritage sites; represents a strand of Gaza's Islamic devotional heritage for which detailed documentation has not survived the war.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "ali-abu-al-kass-shrine",
+    name: "Ali Abu Al-Kass Shrine",
+    type: "monument",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.506,
+      34.464
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A shrine in Gaza City included on UNESCO's verified list of damaged cultural heritage properties. No independent source beyond UNESCO's assessment gives construction date, precise location, or architectural details.",
+    historicalSignificance: "Traditional Islamic shrine architecture marking a religious figure's memorial or burial site, part of Gaza's tradition of venerating local religious figures.",
+    culturalValue: "Listed by UNESCO among Gaza City's verified damaged cultural heritage sites; represents a strand of Gaza's Islamic devotional heritage for which detailed documentation has not survived the war.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "al-ghussein-shrine-cemetery",
+    name: "Al-Ghussein Shrine and Cemetery",
+    type: "monument",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5065,
+      34.4648
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A shrine and adjoining burial ground associated with the Al-Ghussein family of Gaza City, included on UNESCO's verified list of damaged cultural heritage properties. Distinct from the separately listed Al-Ghussein House (Goethe Institute), a 19th-century family residence in Daraj. No independent source beyond UNESCO's assessment gives construction date or precise location.",
+    historicalSignificance: "Family shrine and cemetery associated with the Al-Ghussein family, one of Gaza City's notable historic families, reflecting local traditions of family burial grounds and memorial shrines.",
+    culturalValue: "Listed by UNESCO among Gaza City's verified damaged cultural heritage sites; loss or damage to family cemeteries erases physical genealogical and social history for Gaza's old established families.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "zawiya-al-ahmadiya",
+    name: "Zawiya Al-Ahmadiya",
+    nameArabic: "الزاوية الأحمدية",
+    type: "monument",
+    yearBuilt: "14th century",
+    coordinates: [
+      31.5072,
+      34.4657
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era Sufi zawiya (religious lodge) in Gaza City's Daraj quarter, founded in the 14th century by followers of the Sufi scholar Sheikh Ahmad al-Badawi. The complex comprises a domed prayer chamber and a prayer hall with three vaulted iwans around an octagonal fountain incorporating reused Roman-period marble columns. A marble tomb near the southern wall is attributed to Mamluk noblewoman Qutlugh Khatun, credited with financing construction, with an inscription recording her death in 1332 CE.",
+    historicalSignificance: "One of Gaza's Mamluk-period Sufi religious complexes, linking the city to the broader Sufi devotional tradition associated with Sheikh Ahmad al-Badawi (founder of the Badawiyya order). Underwent Ministry of Endowments repairs to cracked walls prior to the current war.",
+    culturalValue: "A rare surviving example of Mamluk zawiya architecture in Gaza's Old City, combining religious, funerary, and architectural significance including spolia from the Roman period.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      },
+      {
+        organization: "Arabic Wikipedia",
+        title: "الزاوية الأحمدية (Al-Zawiya Al-Ahmadiya)",
+        url: "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%B2%D8%A7%D9%88%D9%8A%D8%A9_%D8%A7%D9%84%D8%A3%D8%AD%D9%85%D8%AF%D9%8A%D8%A9",
+        type: "documentation"
+      },
+      {
+        organization: "Institute for Palestine Studies",
+        title: "الزاوية الأحمدية — Documenting the Destruction of the Cultural Sector in the Gaza Strip",
+        url: "https://gazacultrualsector.palestine-studies.org/ar/node/4646",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "aybaki-mosque",
+    name: "Aybaki Mosque",
+    nameArabic: "مسجد الأيبكي",
+    type: "mosque",
+    yearBuilt: "late 13th century",
+    coordinates: [
+      31.5084,
+      34.4686
+    ],
+    coordinatesApproximate: true,
+    status: "destroyed",
+    dateDestroyed: "2025-09-16",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-period mosque (also known as the Mosque of Sheikh Abdullah al-Aybaki) in the al-Tuffah neighborhood of Gaza City, built in the late 13th century and named for Sheikh Abdullah al-Aybaki, reputed to be a mamluk or relative of Izz al-Din Aybak, the first Mamluk sultan of Egypt. Destroyed, along with at least 16 neighboring residential buildings, by an Israeli airstrike at approximately 6:24 PM on 16 September 2025 during Israel's 2025 Gaza City offensive.",
+    historicalSignificance: "A Mamluk-era religious building tied by family lineage to the founding Mamluk dynasty of Egypt; Sheikh Abdullah al-Aybaki's descendants were buried at nearby shrines including the Sayed al-Hashim Mosque in al-Daraj.",
+    culturalValue: "Its destruction, documented on video showing a direct strike on the minaret, is part of the broader loss of Gaza's Mamluk-period built heritage during the 2025 offensive.",
+    verifiedBy: [
+      "Haaretz",
+      "Al Jazeera"
+    ],
+    sources: [
+      {
+        organization: "Wikipedia",
+        title: "Aybaki Mosque",
+        url: "https://en.wikipedia.org/wiki/Aybaki_Mosque",
+        type: "documentation"
+      },
+      {
+        organization: "Haaretz",
+        title: "In Gaza, the So-called 'Evacuation of Civilians' Is a Trail of Bombs and Death",
+        url: "https://www.haaretz.com/gaza/2025-09-17/ty-article/.premium/in-gaza-the-so-called-evacuation-of-civilians-is-a-trail-of-bombs-and-death/00000199-5759-d7ad-a1d9-577953760000",
+        date: "2025-09-17",
+        type: "journalism"
+      },
+      {
+        organization: "Al Jazeera",
+        title: "Thousands of Palestinians flee as Israeli bombs rain down on Gaza City",
+        url: "https://www.aljazeera.com/news/2025/9/16/thousands-of-palestinians-flee-as-israeli-bombs-rain-down-on-gaza-city",
+        date: "2025-09-16",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "al-soussi-mosque",
+    name: "Al-Soussi Mosque",
+    nameArabic: "مسجد السوسي (مسجد عبد الله بن عمر)",
+    type: "mosque",
+    yearBuilt: "1998",
+    coordinates: [
+      31.529588,
+      34.447093
+    ],
+    status: "destroyed",
+    dateDestroyed: "2023-10-09",
+    sourceAssessmentDate: "2023-10-09",
+    lastUpdated: "2026-07-22",
+    description: "A two-story neighborhood mosque (approximately 600 square metres), formally named after Abdullah ibn Omar and commonly known as al-Soussi, in Al-Shati (Beach) refugee camp west of Gaza City. It opened in Ramadan 1418 AH / 1998 CE. On 9 October 2023, Israeli aircraft struck the mosque with multiple missiles, completely destroying it and damaging surrounding homes; it was one of four mosques hit in Al-Shati camp that day.",
+    historicalSignificance: "Served as a central place of worship and community gathering point in Al-Shati camp, Gaza's third-largest refugee camp, home to more than 90,000 people.",
+    culturalValue: "A community mosque whose destruction, alongside three others in the same camp on the same day, removed key religious and communal infrastructure from one of Gaza's most densely populated refugee camps.",
+    verifiedBy: [
+      "GIG"
+    ],
+    sources: [
+      {
+        organization: "The National",
+        title: "Israeli warplanes strike Al Sousi Mosque in Gaza refugee camp",
+        url: "https://www.thenationalnews.com/mena/palestine-israel/2023/10/09/israeli-warplanes-strike-al-sousi-mosque-in-gaza-refugee-camp/",
+        date: "2023-10-09",
+        type: "journalism"
+      },
+      {
+        organization: "GIG",
+        title: "Al-Sousi Mosque - Gaza (war damage record)",
+        url: "https://gigaza.org/en/war-damage/al-sousi-mosque-gaza/",
+        date: "2023-10-09",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "al-hassaina-mosque",
+    name: "Al-Hassaina Mosque",
+    nameArabic: "مسجد الحساينة",
+    type: "mosque",
+    yearBuilt: "2017",
+    coordinates: [
+      31.523083,
+      34.432944
+    ],
+    status: "destroyed",
+    dateDestroyed: "2023-11",
+    sourceAssessmentDate: "2023-11-28",
+    lastUpdated: "2026-07-22",
+    description: "A twin-minaret mosque on the Gaza City waterfront overlooking the port (al-Mina area), funded by Palestinian merchants and opened in 2017. Known locally as \"the Mosque by the Sea\" for its prominent coastal location. Destroyed by Israeli airstrikes in late November 2023; documentation sources place the strike on 27-28 November 2023.",
+    historicalSignificance: "One of Gaza City's most photographed modern religious landmarks, sited directly on the historic Gaza port/Anthedon Harbour waterfront and regularly used for Ramadan i'tikaf (retreat) and communal prayer.",
+    culturalValue: "A prominent recent addition to Gaza's mosque architecture on the ancient port site; its loss removed a major religious and social gathering space for the port/al-Mina neighborhood.",
+    verifiedBy: [
+      "GIG"
+    ],
+    sources: [
+      {
+        organization: "GIG",
+        title: "Al-Hassaina Mosque - Gaza (war damage record)",
+        url: "https://gigaza.org/war-damage/%D9%85%D8%B3%D8%AC%D8%AF-%D8%A7%D9%84%D8%AD%D8%B3%D8%A7%D9%8A%D9%86%D8%A9-%D8%BA%D8%B2%D8%A9/",
+        date: "2023-11-28",
+        type: "documentation"
+      },
+      {
+        organization: "Palestine Chronicle",
+        title: "The Mosque by the Sea - Why Did Israel Bomb Al-Hassaina Islamic Landmark",
+        url: "https://www.palestinechronicle.com/the-mosque-by-the-sea-why-did-israel-bomb-al-hassaina-islamic-landmark/",
+        date: "2024-04-05",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "sheikh-khalid-mosque",
+    name: "Sheikh Khalid Mosque",
+    nameArabic: "مسجد الشيخ خالد",
+    type: "mosque",
+    yearBuilt: "14th century",
+    yearBuiltIslamic: "8th century AH",
+    coordinates: [
+      31.5085,
+      34.462
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    dateDestroyed: "2024-04-11",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era mosque (14th century / 8th century AH) in the Al-Fawakhir area at the intersection of Al-Fawakhir and Al-Wehda Streets, Al-Daraj quarter of Gaza's Old City. Named after Sheikh Khaled bin Shabeeb (d. 749 AH / 1348 CE); the mosque also contains the burial of Sheikh Jaqmaq, ancestor of the now-extinct Jaqmaq family, and was renovated in the 13th century AH (19th century CE) under Sheikh Saleh Abu Ades. On 11 April 2024, Israeli aircraft targeted the mosque, causing partial damage.",
+    historicalSignificance: "One of Gaza Old City's Mamluk-period mosques, part of the historic religious fabric of the Daraj quarter alongside the Great Omari Mosque and other Mamluk-era monuments.",
+    culturalValue: "Represents nearly 700 years of continuous Mamluk-era religious architecture and burial tradition in Gaza's Old City core.",
+    verifiedBy: [
+      "GIG"
+    ],
+    sources: [
+      {
+        organization: "GIG",
+        title: "Sheikh Khaled Mosque - Gaza (war damage record)",
+        url: "https://gigaza.org/en/war-damage/sheikh-khaled-mosque-gaza/",
+        date: "2024-04-11",
+        type: "documentation"
+      },
+      {
+        organization: "Arabic Wikipedia",
+        title: "مسجد الشيخ خالد",
+        url: "https://ar.wikipedia.org/wiki/%D9%85%D8%B3%D8%AC%D8%AF_%D8%A7%D9%84%D8%B4%D9%8A%D8%AE_%D8%AE%D8%A7%D9%84%D8%AF",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "st-philip-episcopal-church",
+    name: "St. Philip Episcopal Church",
+    nameArabic: "كنيسة القديس فيلبس",
+    type: "church",
+    yearBuilt: "early 20th century",
+    coordinates: [
+      31.5046,
+      34.4616
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    dateDestroyed: "2025-04-13",
+    lastUpdated: "2026-07-22",
+    description: "An Anglican church within the Al-Ahli Arab Hospital compound in Gaza City, run by the Episcopal Diocese of Jerusalem. Built at the turn of the 20th century and reconsecrated in 1996 in the presence of the then-Archbishop of Canterbury and Yasser Arafat, reopening in March 1997. On Palm Sunday, 13 April 2025, twin Israeli missile strikes on the hospital compound demolished the two-storey Genetic Laboratory and damaged the Pharmacy and Emergency Department; the Diocese of Jerusalem reported collateral damage to the St. Philip's church building in the same strikes. Church clergy had earlier converted the building into a medical clinic to help treat the wounded after Al-Shifa Hospital was destroyed.",
+    historicalSignificance: "Serves Gaza's small Christian community and is physically integrated with Al-Ahli Arab Hospital (founded 1882), one of the oldest continuously operating Christian institutions in Gaza.",
+    culturalValue: "One of Gaza's few remaining active church buildings, at a compound that has been struck multiple times since October 2023.",
+    verifiedBy: [
+      "Al Jazeera"
+    ],
+    sources: [
+      {
+        organization: "Al Jazeera",
+        title: "Israeli forces bomb al-Ahli Hospital in Gaza, forcing patients to flee",
+        url: "https://www.aljazeera.com/news/2025/4/13/israeli-forces-bomb-al-ahli-hospital-in-gaza-forcing-patients-to-flee",
+        date: "2025-04-13",
+        type: "journalism"
+      },
+      {
+        organization: "The Living Church",
+        title: "Israeli Missile Strikes Close al-Ahli Hospital",
+        url: "https://livingchurch.org/news/news-anglican-communion/israeli-missile-strikes-close-al-ahli-hospital/",
+        date: "2025-04-14",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "khan-abu-shaban",
+    name: "Khan Abu Sha'ban",
+    nameArabic: "خان أبو شعبان",
+    type: "historic-building",
+    yearBuilt: "Ottoman period",
+    coordinates: [
+      31.5062,
+      34.4665
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A historic khan (caravanserai/commercial warehouse building) in the Daraj/Barjiliyya quarter of Gaza's Old City, associated with the locally established Abu Sha'ban merchant family. Catalogued as a distinct site (\"Wikalat Abu Sha'ban\") in the Gaza Historical Database gazetteer maintained by Ruhr-Universitat Bochum. Listed by name among UNESCO's verified-damage cultural heritage sites in Gaza city as of UNESCO's assessment. No building-level coordinate, precise construction date, or dated destruction event is published by any source found.",
+    historicalSignificance: "One of Gaza Old City's historic khans, reflecting the city's centuries-long role as a commercial waystation on trade routes linking Egypt and the Levant.",
+    culturalValue: "Represents Gaza's historic commercial architecture in the Daraj/Barjiliyya quarter, alongside other Old City khans and markets.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment) - \"Khan Abu Sha'ban, Gaza city, Gaza Governorate\"",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      },
+      {
+        organization: "Institute for Palestine Studies",
+        title: "Gaza Historical Database gazetteer entry: Wikalat Abu Sha'ban (Khan), Daraj/Barjiliyya",
+        url: "https://gaza.ub.rub.de/gaza/?p=gazetteer",
+        type: "academic"
+      }
+    ]
+  },
+  {
+    id: "ash-sheikh-sad-mosque",
+    name: "Ash Sheikh Sa'd Mosque",
+    type: "mosque",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5285,
+      34.4835
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "A mosque in Jabalia, North Gaza Governorate, included on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023. No independent secondary reporting on the mosque's construction history or specific damage extent was located beyond its listing.",
+    historicalSignificance: "One of several historic religious sites in the old town of Jabalia, alongside the Old Al-Omari Mosque and the Byzantine Church of Jabaliya, reflecting the area's long-standing role as a settlement north of Gaza City.",
+    culturalValue: "A local place of worship serving the Jabalia community; architectural or historical details beyond its UNESCO listing could not be independently verified.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "rajab-abedrabboh-house-shop",
+    name: "Rajab Ibrahim Abedrabboh House & Shop",
+    type: "historic-building",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5275,
+      34.4825
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "A combined historic residence and shop in Jabalia, North Gaza Governorate, included on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023. No independent secondary reporting describing the building's construction date, architecture, or damage extent was located beyond its listing.",
+    historicalSignificance: "Represents Gaza's tradition of combined residential-commercial buildings typical of small-town Palestinian architecture, located in the historic core of Jabalia near the Old Al-Omari Mosque and Byzantine Church of Jabaliya.",
+    culturalValue: "A vernacular heritage property documenting everyday commercial and domestic life in Jabalia; specific ownership and architectural history have not been independently verified in available sources.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "hathat-house",
+    name: "HatHat House",
+    nameArabic: "بيت حتحت",
+    type: "historic-building",
+    yearBuilt: "18th century",
+    yearBuiltIslamic: "12th century AH",
+    coordinates: [
+      31.5006,
+      34.4696
+    ],
+    coordinatesApproximate: true,
+    status: "destroyed",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "Also known as Qasr Hathat, a two-story Ottoman-era mansion in the Shuja'iyya quarter east of Gaza City, near Baghdad Street, the Sayyida Ruqayya Mosque, and the Ibn Uthman Mosque. Built by Ibrahim Jalbi al-Hathat, a merchant of Kurdish descent, at the transition from Mamluk to Ottoman rule. The ground floor held seven rooms, an iwan hall, and two kitchens around an interior courtyard; the house was restored in 2009 by the Al-Rahma Charitable Society, Gaza's Ministry of Tourism, and the Iwan Center, and repurposed as a community and educational space.",
+    historicalSignificance: "One of Gaza's oldest surviving examples of Kurdish-Palestinian merchant-family domestic architecture, illustrating the courtyard-house tradition spanning the late Mamluk and Ottoman periods. Its 2009 restoration made it a rare functioning example of adaptive reuse of historic Gazan housing stock.",
+    culturalValue: "Documented Ottoman-era decorative stonework, including pink- and white-marble arches, and a traditional inward-facing courtyard plan. Its destruction eliminated one of the last intact merchant houses of Old Gaza's Shuja'iyya quarter.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      },
+      {
+        organization: "Arabic Wikipedia",
+        title: "قصر حتحت (Qasr Hathat)",
+        url: "https://ar.wikipedia.org/wiki/%D9%82%D8%B5%D8%B1_%D8%AD%D8%AA%D8%AD%D8%AA",
+        type: "documentation"
+      },
+      {
+        organization: "Institute for Palestine Studies",
+        title: "بيت حتحت الأثري (The Historic Hathat House)",
+        url: "https://gazacultrualsector.palestine-studies.org/en/node/4638",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "theater-day-productions",
+    name: "Theater Day Productions",
+    nameArabic: "أيام المسرح",
+    type: "historic-building",
+    yearBuilt: "2000",
+    coordinates: [
+      31.5147,
+      34.4526
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "Theater Day Productions (Ayyam Al Masrah), founded in 2000, is Gaza's foremost community theatre organization, running drama workshops and productions for children and youth from an office in the YMCA compound on Al-Jalaa Street in Gaza City. It is included on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023; reporting confirms severe, war-wide destruction of Gaza's theatre infrastructure generally, but no source located during research specifically documents the physical condition of TDP's own premises.",
+    historicalSignificance: "Established community theatre practice in Gaza, producing dozens of original plays addressing siege, displacement, and trauma, and training generations of young Gazan actors and drama teachers.",
+    culturalValue: "One of the longest-running arts organizations in Gaza, sustaining theatre education and performance through repeated conflicts since 2000; its continued operation from displacement camps and shelters after 2023 reflects the resilience of Gaza's performing-arts community.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      },
+      {
+        organization: "Haaretz",
+        title: "End Stage: Israel Has Completely Erased Gaza's Theater World",
+        url: "https://www.haaretz.com/middle-east-news/palestinians/2025-01-22/ty-article-magazine/.premium/end-stage-israel-has-completely-erased-gazas-theater-world/00000193-6905-d584-a9df-fbff45c60000",
+        date: "2025-01-22",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "palestinian-institute-of-music",
+    name: "The Palestinian Institute of Music",
+    type: "historic-building",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5017,
+      34.4668
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "A Gaza City music-education institution listed separately from the Edward Sa'ed (Edward Said) National Conservatory of Music branch on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023. No independent secondary reporting describing the institute's founding, address, or specific damage was located beyond its UNESCO listing; it should not be confused with the Edward Said National Conservatory of Music - Gaza Branch, a separate, better-documented institution already recorded in this dataset.",
+    historicalSignificance: "One of a small number of formal music-education institutions that operated in Gaza City prior to October 2023, alongside the Edward Said National Conservatory of Music branch.",
+    culturalValue: "Represents part of Gaza's limited formal infrastructure for musical training and cultural transmission; further primary documentation of its specific history and holdings was not located during this research pass.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "riyad-al-qishawi-beit-sitti",
+    name: "Riyad Al-Qishawi House (Beit Sitti)",
+    nameArabic: "بيت ستي",
+    type: "historic-building",
+    yearBuilt: "c. 1587",
+    coordinates: [
+      31.4875,
+      34.4439
+    ],
+    coordinatesApproximate: true,
+    status: "abandoned",
+    sourceAssessmentDate: "2024-02-04",
+    lastUpdated: "2026-07-22",
+    description: "A roughly 430-year-old Ottoman-era mansion in the Zeitoun (Al-Zaytoun) quarter of Gaza's Old City, recorded on UNESCO's list under the name Riyad Al-Qishawi and known popularly as Beit Sitti ('my grandmother's house'). The three-story stone building, centered on a courtyard with an ornamental pool, was restored and reopened in December 2017 as a restaurant celebrating Palestinian culinary and cultural heritage, run by playwright and caricaturist Atef Salama. As of February 2024 reporting, the building remained structurally standing but locked and inaccessible, its keyholders unable to return to Gaza City.",
+    historicalSignificance: "One of Gaza's oldest documented domestic buildings, cited by Palestinian heritage authorities among roughly 134 structures in Gaza older than 180 years; its 2017 restoration and reuse as a cultural-culinary venue made it a rare example of a historic Gazan house remaining in active public use before the current war.",
+    culturalValue: "Preserved Ottoman-period architectural features including an inner courtyard, ornamental pool, and traditional guest rooms; hosted traditional Palestinian food, music, and gathering, making it a living link between Gaza's architectural past and contemporary cultural life.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      },
+      {
+        organization: "Daily Sabah",
+        title: "430-year-old Ottoman house restored in Gaza",
+        url: "https://www.dailysabah.com/history/2017/12/21/430-year-old-ottoman-house-restored-in-gaza",
+        date: "2017-12-21",
+        type: "journalism"
+      },
+      {
+        organization: "NPR",
+        title: "A requiem for Gaza's iconic sites, destroyed in the war",
+        url: "https://www.npr.org/2024/02/04/1226295081/gaza-iconic-sites-destroyed-in-war",
+        date: "2024-02-04",
+        type: "journalism"
+      }
+    ]
   }
 ];
