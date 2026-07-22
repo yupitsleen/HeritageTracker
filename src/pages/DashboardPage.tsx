@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal/Modal";
 import { useTheme } from "../contexts/ThemeContext";
-import { useAnimation } from "../contexts/AnimationContext";
+import { AnimationProvider, useAnimation } from "../contexts/AnimationContext";
 import { useAppState } from "../hooks/useAppState";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useTableResize } from "../hooks/useTableResize";
@@ -28,18 +28,27 @@ const DesktopLayout = lazy(() =>
 const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPanel").then(m => ({ default: m.SiteDetailPanel })));
 
 /**
+ * Hides map markers by default on Dashboard mount.
+ * Rendered inside AnimationProvider so it targets the Dashboard's own
+ * (filteredSites-scoped) animation context, not any other page's.
+ */
+function HideMapMarkersByDefault() {
+  const { setMapMarkersVisible } = useAnimation();
+
+  useEffect(() => {
+    setMapMarkersVisible(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only on mount
+
+  return null;
+}
+
+/**
  * DashboardPage - Main heritage tracker dashboard with table, maps, and timeline
  * Desktop only - mobile users see DataPage instead (see App.tsx routing)
  */
 export function DashboardPage() {
   const navigate = useNavigate();
-  const { setMapMarkersVisible } = useAnimation();
-
-  // Set map markers to hidden by default on Dashboard (only on initial mount)
-  useEffect(() => {
-    setMapMarkersVisible(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run only on mount
 
   // Fetch sites from API (using mock adapter in development)
   const { sites, isLoading, error, refetch } = useSites();
@@ -96,35 +105,40 @@ export function DashboardPage() {
           // Show skeleton UI immediately while data loads
           <LoadingSpinner fullScreen message="Loading heritage sites..." />
         ) : (
-          // Lazy load layout components with Suspense for parallel chunk loading
-          // Note: Mobile devices are redirected to Data page via useEffect
-          <Suspense fallback={<LoadingSpinner fullScreen message="Loading dashboard..." />}>
-            <DesktopLayout
-              filterProps={{
-                filters: appState.filters,
-                onFilterChange: handleFilterChange,
-                hasActiveFilters: appState.hasActiveFilters,
-                onClearAll: appState.clearAllFilters,
-              }}
-              siteData={{
-                sites,
-                filteredSites,
-                totalSites: total,
-              }}
-              tableResize={{
-                width: tableResize.tableWidth,
-                isResizing: tableResize.isResizing,
-                handleResizeStart: tableResize.handleResizeStart,
-                getVisibleColumns: tableResize.getVisibleColumns,
-              }}
-              siteInteraction={{
-                highlightedSiteId: appState.highlightedSiteId,
-                onSiteClick: appState.setSelectedSite,
-                onSiteHighlight: appState.setHighlightedSiteId,
-                onExpandTable: handleExpandTable,
-              }}
-            />
-          </Suspense>
+          // AnimationProvider scoped to filteredSites (not all mockSites) so the timeline's
+          // start date matches what's actually shown - same approach as the Timeline page.
+          <AnimationProvider sites={filteredSites}>
+            <HideMapMarkersByDefault />
+            {/* Lazy load layout components with Suspense for parallel chunk loading */}
+            {/* Note: Mobile devices are redirected to Data page via useEffect */}
+            <Suspense fallback={<LoadingSpinner fullScreen message="Loading dashboard..." />}>
+              <DesktopLayout
+                filterProps={{
+                  filters: appState.filters,
+                  onFilterChange: handleFilterChange,
+                  hasActiveFilters: appState.hasActiveFilters,
+                  onClearAll: appState.clearAllFilters,
+                }}
+                siteData={{
+                  sites,
+                  filteredSites,
+                  totalSites: total,
+                }}
+                tableResize={{
+                  width: tableResize.tableWidth,
+                  isResizing: tableResize.isResizing,
+                  handleResizeStart: tableResize.handleResizeStart,
+                  getVisibleColumns: tableResize.getVisibleColumns,
+                }}
+                siteInteraction={{
+                  highlightedSiteId: appState.highlightedSiteId,
+                  onSiteClick: appState.setSelectedSite,
+                  onSiteHighlight: appState.setHighlightedSiteId,
+                  onExpandTable: handleExpandTable,
+                }}
+              />
+            </Suspense>
+          </AnimationProvider>
         )}
       </main>
 

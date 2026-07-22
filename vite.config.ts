@@ -81,7 +81,7 @@ export default defineConfig({
           // Vendor chunks - separate large libraries
           'react-vendor': ['react', 'react-dom'],
           'map-vendor': ['leaflet', 'react-leaflet', 'leaflet.heat'],
-          'd3-vendor': ['d3', 'd3-scale'],
+          'd3-vendor': ['d3'],
         }
       }
     },

@@ -4,6 +4,7 @@ import {
   createEmptyFilterState,
   isFilterStateEmpty,
   areFiltersEqual,
+  DEFAULT_DESTRUCTION_DATE_START,
 } from './filters';
 
 describe('Filter Utilities', () => {
@@ -13,7 +14,8 @@ describe('Filter Utilities', () => {
 
       expect(empty.selectedTypes).toEqual([]);
       expect(empty.selectedStatuses).toEqual([]);
-      expect(empty.destructionDateStart).toBeNull();
+      // Defaults to 2014 satellite-imagery baseline, not null
+      expect(empty.destructionDateStart).toEqual(DEFAULT_DESTRUCTION_DATE_START);
       expect(empty.destructionDateEnd).toBeNull();
       expect(empty.creationYearStart).toBeNull();
       expect(empty.creationYearEnd).toBeNull();

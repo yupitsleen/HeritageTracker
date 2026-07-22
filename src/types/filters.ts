@@ -1,6 +1,28 @@
 import type { Site } from "./index";
 
 /**
+ * Default destruction-date start for the initial view.
+ * Satellite (ESRI Wayback) imagery only goes back to Feb 2014, so by default we
+ * only show sites destroyed in that comparable window. Users can expand/change
+ * via the date-range picker (min reaches back to the earliest data) or "Clear all".
+ */
+export const DEFAULT_DESTRUCTION_DATE_START = new Date("2014-02-20");
+
+/**
+ * Whether the destruction-date range is a real user filter, i.e. it deviates
+ * from the default 2014 baseline. The default start on its own is NOT active.
+ */
+export function isDestructionDateFilterActive(
+  start: Date | null,
+  end: Date | null
+): boolean {
+  const startDeviates =
+    start != null &&
+    start.getTime() !== DEFAULT_DESTRUCTION_DATE_START.getTime();
+  return startDeviates || end != null;
+}
+
+/**
  * Filter state interface
  * Represents the active filters applied to the sites list
  */
@@ -22,7 +44,7 @@ export function createEmptyFilterState(): FilterState {
   return {
     selectedTypes: [],
     selectedStatuses: [],
-    destructionDateStart: null,
+    destructionDateStart: DEFAULT_DESTRUCTION_DATE_START,
     destructionDateEnd: null,
     creationYearStart: null,
     creationYearEnd: null,
@@ -38,7 +60,9 @@ export function isFilterStateEmpty(state: FilterState): boolean {
   return (
     state.selectedTypes.length === 0 &&
     state.selectedStatuses.length === 0 &&
-    state.destructionDateStart === null &&
+    // Default destruction-date start (2014 satellite baseline) counts as "empty"
+    state.destructionDateStart?.getTime() ===
+      DEFAULT_DESTRUCTION_DATE_START.getTime() &&
     state.destructionDateEnd === null &&
     state.creationYearStart === null &&
     state.creationYearEnd === null &&

@@ -20,6 +20,15 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
+      // Tailwind dark: modifiers don't work here — theming is via React context
+      // (useTheme/useThemeClasses), not Tailwind's darkMode config.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'JSXAttribute[name.name="className"] Literal[value=/\\bdark:/]',
+          message: 'Tailwind dark: modifiers are not wired up. Use isDark from useTheme() or useThemeClasses() instead.',
+        },
+      ],
       // Enforce consistent z-index usage
       // NOTE: While ESLint doesn't have a built-in rule to detect inline z-index values,
       // all z-index values should use the Z_INDEX constant from src/constants/layout.ts

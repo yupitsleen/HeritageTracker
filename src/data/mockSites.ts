@@ -1,8 +1,10 @@
 import type { Site } from "../types";
 
 /**
- * Mock data: 3 sample Gaza heritage sites for development
- * Using real sites from our research for realistic testing
+ * Site database for mock mode and database seeds.
+ * Fact-checked 2026-07-22: coordinates, dates, source citations, and factual
+ * claims verified against UNESCO, Wikidata/OSM, IPS palestine-studies.org,
+ * gigaza.org, and primary news coverage. See project audit reports.
  */
 export const mockSites: Site[] = [
   {
@@ -12,19 +14,22 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "7th century",
     yearBuiltIslamic: "1st century AH",
-    coordinates: [31.5069, 34.4668], // Gaza City [lat, lng]
+    coordinates: [
+      31.5042,
+      34.4645
+    ],
     status: "destroyed",
     dateDestroyed: "2023-12-07",
     dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "Gaza's oldest and largest mosque, originally a Byzantine church converted in the 7th century. The mosque housed rare Islamic manuscripts and served as a center of learning for centuries.",
-    historicalSignificance:
-      "One of the oldest mosques in Palestine, with a history spanning over 1,400 years. It represents continuous religious and cultural heritage from Byzantine, Islamic, Crusader, Mamluk, and Ottoman periods.",
-    culturalValue:
-      "Contained 62 rare manuscripts including handwritten Qurans and Islamic scholarly texts. The building itself was an architectural masterpiece blending multiple historical periods.",
-    verifiedBy: ["UNESCO", "Heritage for Peace", "Forensic Architecture"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "Gaza's oldest and largest mosque, originally a Byzantine church converted in the 7th century. The mosque housed rare Islamic manuscripts and served as a center of learning for centuries.",
+    historicalSignificance: "One of the oldest mosques in Palestine, with a history spanning over 1,400 years. It represents continuous religious and cultural heritage from Byzantine, Islamic, Crusader, Mamluk, and Ottoman periods.",
+    culturalValue: "Contained rare manuscripts, including handwritten Qurans and Islamic scholarly texts; post-2023 salvage teams counted 228 manuscripts, of which 123 were recovered. The building itself was an architectural masterpiece blending multiple historical periods.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/great-omari-mosque-before.jpg",
@@ -43,22 +48,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/articles/damaged-cultural-sites-gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "church-st-porphyrius",
@@ -67,20 +72,22 @@ export const mockSites: Site[] = [
     type: "church",
     yearBuilt: "5th century (425 CE)",
     yearBuiltIslamic: "197 BH (Before Hijra)",
-    coordinates: [31.5203, 34.4547], // [lat, lng]
+    coordinates: [
+      31.504,
+      34.462
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-10-19",
     dateDestroyedIslamic: "3 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "One of the oldest churches in the world, built in 425 CE and named after Saint Porphyrius, Bishop of Gaza. The church served Gaza's small Christian community and was a rare example of early Byzantine architecture.",
-    historicalSignificance:
-      "Third-oldest church in the world still in use before the conflict. Contains the tomb of Saint Porphyrius and represents 1,600 years of continuous Christian presence in Gaza.",
-    culturalValue:
-      "Irreplaceable Byzantine-era mosaics, ancient religious artifacts, and architectural elements. Served as a sanctuary and community center for Gaza's Christian minority.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
-    // Images need to be sourced with proper attribution
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "One of the oldest churches in the world, built in 425 CE and named after Saint Porphyrius, Bishop of Gaza. The church served Gaza's small Christian community and stands on 5th-century foundations; the present building was constructed in the Crusader era (c. 1150s–1160s).",
+    historicalSignificance: "Traditionally considered one of the oldest churches in the world still in use before the conflict. Contains the tomb of Saint Porphyrius and represents 1,600 years of continuous Christian presence in Gaza.",
+    culturalValue: "Irreplaceable Byzantine-era mosaics, ancient religious artifacts, and architectural elements. Served as a sanctuary and community center for Gaza's Christian minority.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/church-st-porphyrius-before.jpg",
@@ -99,80 +106,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/articles/damaged-cultural-sites-gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Al Jazeera",
         title: "Israeli strike damages historic Gaza church",
-        url: "https://www.aljazeera.com/news/2023/10/20/israeli-strike-damages-historic-gaza-church",
+        url: "https://www.aljazeera.com/news/2023/10/20/war-crime-israel-bombs-gaza-church-sheltering-displaced-people",
         date: "2023-10-20",
-        type: "journalism",
-      },
-    ],
-  },
-  {
-    id: "blakhiyya-archaeological-site",
-    name: "Blakhiyya Archaeological Site",
-    nameArabic: "موقع البلاخية الأثري",
-    type: "archaeological",
-    yearBuilt: "800 BCE - 1100 CE",
-    yearBuiltIslamic: "1422 BH - 493 AH",
-    coordinates: [31.2656, 34.2945], // [lat, lng]
-    status: "destroyed",
-    dateDestroyed: "2024-01-15",
-    dateDestroyedIslamic: "4 Rajab 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "Ancient seaport and settlement site with continuous occupation from the Iron Age through the Islamic period. Contained over 4,000 archaeological objects including pottery, coins, and architectural remains.",
-    historicalSignificance:
-      "One of the most important archaeological sites in Gaza, documenting nearly 2,000 years of Mediterranean trade and cultural exchange. Provided crucial evidence of Philistine, Greek, Roman, Byzantine, and Islamic civilizations.",
-    culturalValue:
-      "Irreplaceable archaeological artifacts spanning multiple civilizations. The site was crucial for understanding ancient Gaza's role as a major port city and cultural crossroads.",
-    verifiedBy: ["UNESCO", "Forensic Architecture", "Heritage for Peace"],
-    // Images need to be sourced with proper attribution
-    images: {
-      before: {
-        url: "/images/sites/blakhiyya-archaeological-site-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/blakhiyya-archaeological-site-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
+        type: "journalism"
       }
-    },
-    
-    sources: [
-      {
-        organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/articles/damaged-cultural-sites-gaza",
-        date: "2024-05-27",
-        type: "official",
-      },
-      {
-        organization: "Forensic Architecture",
-        title: "Gaza Platform: Archaeological Sites",
-        url: "https://forensic-architecture.org/investigation/gaza-platform",
-        date: "2024-03-10",
-        type: "documentation",
-      },
-    ],
+    ]
   },
   {
     id: "qasr-al-basha",
@@ -181,20 +130,22 @@ export const mockSites: Site[] = [
     type: "museum",
     yearBuilt: "13th century (Mamluk period)",
     yearBuiltIslamic: "7th century AH",
-    coordinates: [31.505, 34.462], // Gaza City [lat, lng]
+    coordinates: [
+      31.5044,
+      34.466
+    ],
     status: "heavily-damaged",
-    dateDestroyed: "2023-11-15",
-    dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A 13th-century Mamluk palace that served as the residence of Napoleon Bonaparte during his 1799 Gaza campaign. Later converted into a museum showcasing Gaza's history with collections of pottery, coins, and historical artifacts.",
-    historicalSignificance:
-      "The palace represents Mamluk architectural heritage and served as an important administrative center throughout various historical periods. Its connection to Napoleon's campaign made it a landmark of international historical significance.",
-    culturalValue:
-      "Housed museum collections documenting Gaza's history from ancient to modern times. The building itself was an architectural treasure featuring distinctive Mamluk stonework and vaulted chambers.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
-    // Images need to be sourced with proper attribution
+    dateDestroyed: "2023-12-11",
+    dateDestroyedIslamic: "27 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A 13th-century Mamluk palace that served as the residence of Napoleon Bonaparte during his 1799 Gaza campaign. Later converted into a museum showcasing Gaza's history with collections of pottery, coins, and historical artifacts.",
+    historicalSignificance: "The palace represents Mamluk architectural heritage and served as an important administrative center throughout various historical periods. Its connection to Napoleon's campaign made it a landmark of international historical significance.",
+    culturalValue: "Housed museum collections documenting Gaza's history from ancient to modern times. The building itself was an architectural treasure featuring distinctive Mamluk stonework and vaulted chambers.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/qasr-al-basha-before.jpg",
@@ -213,22 +164,28 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/articles/damaged-cultural-sites-gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
-    ],
+      {
+        organization: "Institute for Palestine Studies",
+        title: "Qasr al-Basha — Documenting the Destruction of the Cultural Sector in the Gaza Strip",
+        url: "https://gazacultrualsector.palestine-studies.org/en/node/4376",
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "hammam-al-samra",
@@ -237,20 +194,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "Ottoman period (16th century)",
     yearBuiltIslamic: "10th century AH",
-    coordinates: [31.512, 34.471], // Gaza City [lat, lng]
-    status: "damaged",
-    dateDestroyed: "2024-02-10",
-    dateDestroyedIslamic: "1 Sha'ban 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic Ottoman bathhouse representing traditional Islamic bathing culture and social architecture. The hammam featured distinctive domed chambers, intricate stonework, and a sophisticated water heating system.",
-    historicalSignificance:
-      "One of the last remaining examples of Ottoman public bath architecture in Gaza. These bathhouses served as important social and cultural centers in Islamic cities for centuries.",
-    culturalValue:
-      "The hammam represents traditional Ottoman architectural techniques and social customs. Its preservation was crucial for understanding daily life and public health practices in historic Gaza.",
-    verifiedBy: ["Heritage for Peace", "Forensic Architecture"],
-    // Images need to be sourced with proper attribution
+    coordinates: [
+      31.5036,
+      34.4639
+    ],
+    status: "destroyed",
+    dateDestroyed: "2023-12-26",
+    dateDestroyedIslamic: "13 Jumada al-Akhira 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A historic Mamluk-era bathhouse representing traditional Islamic bathing culture and social architecture. The hammam featured distinctive domed chambers, intricate stonework, and a sophisticated water heating system.",
+    historicalSignificance: "One of the last remaining examples of Mamluk public bath architecture in Gaza. These bathhouses served as important social and cultural centers in Islamic cities for centuries.",
+    culturalValue: "The hammam represents traditional Ottoman architectural techniques and social customs. Its preservation was crucial for understanding daily life and public health practices in historic Gaza.",
+    verifiedBy: [
+      "Heritage for Peace",
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/hammam-al-samra-before.jpg",
@@ -269,22 +228,29 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2024-02-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
       {
-        organization: "Forensic Architecture",
-        title: "Gaza Platform: Historic Buildings",
-        url: "https://forensic-architecture.org/investigation/gaza-platform",
-        date: "2024-03-10",
-        type: "documentation",
+        organization: "Middle East Eye",
+        title: "Historic 1,000-year-old Hamam al-Sammara destroyed by Israeli bombing in Gaza",
+        url: "https://www.middleeasteye.net/live-blog/live-blog-update/historic-1000-year-old-hamam-al-sammara-destroyed-israeli-bombing-gaza",
+        date: "2023-12-27",
+        type: "journalism"
       },
-    ],
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
   },
   {
     id: "sayed-al-hashim-mosque",
@@ -293,19 +259,21 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "1850 (current building), site since 12th century",
     yearBuiltIslamic: "1267 AH (current), site since 6th century AH",
-    coordinates: [31.50806, 34.4633],
+    coordinates: [
+      31.50806,
+      34.4633
+    ],
     status: "damaged",
-    dateDestroyed: "2023-10-15", // Estimated October 2023
-    dateDestroyedIslamic: "29 Rabi' al-Awwal 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "One of the largest and oldest mosques in Gaza, located in the ad-Darrāj Quarter of the Old City. The mosque is named after Hashim ibn Abd al-Manaf, the great-grandfather of Prophet Muhammad, whose tomb is believed to be located under the mosque's dome.",
-    historicalSignificance:
-      "The site has held religious significance since at least the 12th century CE. The current building was constructed in 1850 on the orders of Ottoman Sultan Abdul Majid. According to Muslim tradition, Hashim ibn Abd al-Manaf died in Gaza during a trading voyage, making this site a place of pilgrimage.",
-    culturalValue:
-      "The mosque served as an important religious and cultural landmark in Gaza's Old City. Its connection to the Prophet Muhammad's family made it a significant site for Islamic heritage. The building was damaged by an Israeli airstrike in October 2023.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    dateDestroyed: "2023-10-15",
+    dateDestroyedIslamic: "29 Rabi' al-Awwal 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "One of the largest and oldest mosques in Gaza, located in the ad-Darrāj Quarter of the Old City. The mosque is named after Hashim ibn Abd al-Manaf, the great-grandfather of Prophet Muhammad, whose tomb is believed to be located under the mosque's dome.",
+    historicalSignificance: "The site has held religious significance since at least the 12th century CE. The current building was constructed in 1850 on the orders of Ottoman Sultan Abdul Majid. According to Muslim tradition, Hashim ibn Abd al-Manaf died in Gaza during a trading voyage, making this site a place of pilgrimage.",
+    culturalValue: "The mosque served as an important religious and cultural landmark in Gaza's Old City. Its connection to the Prophet Muhammad's family made it a significant site for Islamic heritage. The building was damaged by an Israeli airstrike in October 2023.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/sayed-al-hashim-mosque-before.jpg",
@@ -324,44 +292,39 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
-        organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2024-05-27",
-        type: "official",
-      },
-      {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "ibn-uthman-mosque",
     name: "Ibn Uthman Mosque",
     nameArabic: "مسجد ابن عثمان",
     type: "mosque",
-    yearBuilt: "1399-1400 (14th century)",
+    yearBuilt: "1399-1431",
     yearBuiltIslamic: "802 AH",
-    coordinates: [31.5203, 34.4668],
+    coordinates: [
+      31.4998,
+      34.4694
+    ],
     status: "destroyed",
-    dateDestroyed: "2024-07-15",
-    dateDestroyedIslamic: "9 Muharram 1446 AH",
+    dateDestroyed: "2024-07-03",
+    dateDestroyedIslamic: "27 Dhu al-Hijjah 1445 AH",
     sourceAssessmentDate: "2024-07-04",
-    lastUpdated: "2025-11-15",
-    description:
-      "The second largest archaeological mosque in the Gaza Strip, located along Suq Street in the Turukman Quarter of the Shuja'iyya district. The mosque covered 2,000 square meters with a 400 square meter main courtyard and featured two gates overlooking the Shuja'iyya market.",
-    historicalSignificance:
-      "Built between 1399-1400 CE during the Mamluk period, this mosque represented significant Islamic architectural heritage in Gaza. It was an important religious center in the Shuja'iyya neighborhood for over 600 years before its destruction.",
-    culturalValue:
-      "The Ibn Uthman Mosque was the second most important archaeological mosque in Gaza after the Great Omari Mosque. Its loss represents a significant blow to Gaza's Islamic architectural heritage and the cultural identity of the Shuja'iyya community.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    lastUpdated: "2026-07-22",
+    description: "The second largest archaeological mosque in the Gaza Strip, located along Suq Street in the Turukman Quarter of the Shuja'iyya district. The mosque covered 2,000 square meters with a 400 square meter main courtyard and featured two gates overlooking the Shuja'iyya market.",
+    historicalSignificance: "Built between 1399-1400 CE during the Mamluk period, this mosque represented significant Islamic architectural heritage in Gaza. It was an important religious center in the Shuja'iyya neighborhood for over 600 years before its destruction.",
+    culturalValue: "The Ibn Uthman Mosque was the second most important archaeological mosque in Gaza after the Great Omari Mosque. Its loss represents a significant blow to Gaza's Islamic architectural heritage and the cultural identity of the Shuja'iyya community.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/ibn-uthman-mosque-before.jpg",
@@ -380,23 +343,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-28",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Middle East Monitor",
         title: "Israel destroys second largest historical mosque in Gaza",
         url: "https://www.middleeastmonitor.com/20240704-israel-destroys-second-largest-historical-mosque-in-gaza/",
         date: "2024-07-04",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "ibn-marwan-mosque",
@@ -405,19 +367,22 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "1324 (Mamluk era)",
     yearBuiltIslamic: "724 AH",
-    coordinates: [31.5073, 34.4703],
+    coordinates: [
+      31.5042,
+      34.469
+    ],
     status: "damaged",
-    dateDestroyed: "2023-11-01", // Estimated late 2023
-    dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A Mamluk-era mosque situated in the midst of a cemetery in the Tuffah neighborhood of Gaza City. The mosque contains the tomb of Sheikh Ali ibn Marwan, a holy man from the Hasani family who came from Morocco and died in Gaza in 1314 CE.",
-    historicalSignificance:
-      "Completed in 1324 CE during the Mamluk period, this mosque represents 700 years of Islamic heritage in Gaza. The Hasani family's connection to Morocco illustrates historical migration patterns and cultural exchange between North Africa and Palestine.",
-    culturalValue:
-      "The mosque served as both a place of worship and a memorial site honoring Sheikh Ali ibn Marwan. Its location within a cemetery made it an important spiritual center for the local community. UNESCO confirmed the mosque as one of more than 100 damaged cultural properties based on satellite imagery.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    dateDestroyed: "2023-11-01",
+    dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era mosque situated in the midst of a cemetery in the Tuffah neighborhood of Gaza City. The mosque contains the tomb of Sheikh Ali ibn Marwan, a holy man from the Hasani family who came from Morocco and died in Gaza in 1314 CE.",
+    historicalSignificance: "Completed in 1324 CE during the Mamluk period, this mosque represents 700 years of Islamic heritage in Gaza. The Hasani family's connection to Morocco illustrates historical migration patterns and cultural exchange between North Africa and Palestine.",
+    culturalValue: "The mosque served as both a place of worship and a memorial site honoring Sheikh Ali ibn Marwan. Its location within a cemetery made it an important spiritual center for the local community. UNESCO confirmed the mosque as one of more than 100 damaged cultural properties based on satellite imagery.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/ibn-marwan-mosque-before.jpg",
@@ -436,22 +401,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-28",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Museum With No Frontiers",
         title: "Mosque of Ali Ibn Marwan Documentation",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "byzantine-church-jabaliya",
@@ -460,19 +423,21 @@ export const mockSites: Site[] = [
     type: "church",
     yearBuilt: "444 CE (5th century)",
     yearBuiltIslamic: "183 BH (Before Hijra)",
-    coordinates: [31.5333, 34.5],
+    coordinates: [
+      31.5248,
+      34.4994
+    ],
     status: "destroyed",
-    dateDestroyed: "2023-11-20", // Estimated November 2023
-    dateDestroyedIslamic: "7 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A 5th-century Byzantine church and monastery built in 444 CE during the reign of Emperor Theodosius II. The site spanned 850 square meters with 400 square meters of colorful mosaic floors depicting animals, hunting scenes, and palm trees. The church walls were adorned with 16 religious texts written in ancient Greek.",
-    historicalSignificance:
-      "Discovered in 1997 and reopened to the public in January 2022 after extensive restoration involving international partners. The church represents early Christian presence in Gaza and contains exceptionally well-preserved Byzantine-era mosaics and Greek inscriptions from the 5th century.",
-    culturalValue:
-      "The church was completely destroyed by shelling in November 2023, though archaeologist Fadel Al Utol reported in January 2025 that the mosaics remained intact beneath debris. This site represented irreplaceable Byzantine artistic and religious heritage, with over 1,500 years of history.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    dateDestroyed: "2023-11",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A 5th-century Byzantine church and monastery built in 444 CE during the reign of Emperor Theodosius II. The site spanned 850 square meters with 400 square meters of colorful mosaic floors depicting animals, hunting scenes, and palm trees. The church walls were adorned with 16 religious texts written in ancient Greek.",
+    historicalSignificance: "Discovered in 1997 and reopened to the public in January 2022 after extensive restoration involving international partners. The church represents early Christian presence in Gaza and contains exceptionally well-preserved Byzantine-era mosaics and Greek inscriptions from the 5th century.",
+    culturalValue: "The church was completely destroyed by shelling in November 2023, though archaeologist Fadel Al Utol reported in January 2025 that the mosaics remained intact beneath debris. This site represented irreplaceable Byzantine artistic and religious heritage, with over 1,500 years of history.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/byzantine-church-jabaliya-before.jpg",
@@ -491,23 +456,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Heritage for Peace",
         title: "Impact on Cultural Heritage Sites Report - Jabaliya Church",
         date: "2023-11-28",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Times of Israel",
         title: "Restored 5th-century Byzantine church reopens in Gaza",
         url: "https://www.timesofisrael.com/restored-5th-century-byzantine-church-reopens-in-gaza/",
         date: "2022-01-28",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "al-qarara-cultural-museum",
@@ -515,19 +478,22 @@ export const mockSites: Site[] = [
     nameArabic: "متحف القرارة الثقافي",
     type: "museum",
     yearBuilt: "20th century",
-    coordinates: [31.3705, 34.3265],
+    coordinates: [
+      31.3699,
+      34.3412
+    ],
     status: "destroyed",
-    dateDestroyed: "2023-10-10", // Estimated early October 2023
-    dateDestroyedIslamic: "24 Rabi' al-Awwal 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A cultural museum in al-Qarara, near Khan Younis, dedicated to teaching about Gaza's heritage and preserving the cultural identity of southern Gaza. The museum served as an educational center for local communities.",
-    historicalSignificance:
-      "The museum documented the history and cultural traditions of the Khan Younis region, providing educational resources for understanding Gaza's heritage. It was particularly important for southern Gaza communities.",
-    culturalValue:
-      "The museum's destruction early in the conflict represents the loss of irreplaceable artifacts and educational resources documenting southern Gaza's cultural heritage. Its collection focused on traditional life, crafts, and historical artifacts from the region.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    dateDestroyed: "2023-10-10",
+    dateDestroyedIslamic: "24 Rabi' al-Awwal 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A cultural museum in al-Qarara, near Khan Younis, dedicated to teaching about Gaza's heritage and preserving the cultural identity of southern Gaza. The museum served as an educational center for local communities.",
+    historicalSignificance: "The museum documented the history and cultural traditions of the Khan Younis region, providing educational resources for understanding Gaza's heritage. It was particularly important for southern Gaza communities.",
+    culturalValue: "The museum's destruction early in the conflict represents the loss of irreplaceable artifacts and educational resources documenting southern Gaza's cultural heritage. Its collection focused on traditional life, crafts, and historical artifacts from the region.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/al-qarara-cultural-museum-before.jpg",
@@ -546,22 +512,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "rashad-shawa-cultural-center",
@@ -569,19 +535,22 @@ export const mockSites: Site[] = [
     nameArabic: "مركز رشاد الشوا الثقافي",
     type: "museum",
     yearBuilt: "1985",
-    coordinates: [31.5203, 34.4668],
+    coordinates: [
+      31.5206,
+      34.443
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-25",
-    dateDestroyedIslamic: "12 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A major cultural center in Gaza City built in 1985, housing a theatre and a library containing tens of thousands of books. The center served as a hub for arts, culture, and education in Gaza.",
-    historicalSignificance:
-      "Named after Rashad al-Shawa, a prominent Gaza mayor, the center represented Gaza's commitment to culture and education. It hosted theatrical performances, cultural events, and provided library resources for researchers and students.",
-    culturalValue:
-      "The destruction of the Rashad Shawa Cultural Center resulted in the loss of tens of thousands of books and irreplaceable cultural resources. The center was a vital institution for Gaza's intellectual and artistic community, and its loss significantly impacted educational and cultural life.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    dateDestroyedIslamic: "12 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A major cultural center in Gaza City built in 1985, housing a theatre and a library containing tens of thousands of books. The center served as a hub for arts, culture, and education in Gaza.",
+    historicalSignificance: "Named after Rashad al-Shawa, a prominent Gaza mayor, the center represented Gaza's commitment to culture and education. It hosted theatrical performances, cultural events, and provided library resources for researchers and students.",
+    culturalValue: "The destruction of the Rashad Shawa Cultural Center resulted in the loss of tens of thousands of books and irreplaceable cultural resources. The center was a vital institution for Gaza's intellectual and artistic community, and its loss significantly impacted educational and cultural life.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/rashad-shawa-cultural-center-before.jpg",
@@ -600,24 +569,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Museums Association",
         title: "Widescale destruction of cultural heritage in Gaza",
         url: "https://www.museumsassociation.org/museums-journal/news/2024/01/widescale-destruction-of-cultural-heritage-in-gaza/",
         date: "2024-01-15",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "anthedon-harbour",
@@ -626,19 +593,23 @@ export const mockSites: Site[] = [
     type: "archaeological",
     yearBuilt: "800 BCE - Byzantine period",
     yearBuiltIslamic: "1422 BH - 11 AH",
-    coordinates: [31.567, 34.475],
+    coordinates: [
+      31.541,
+      34.452
+    ],
     status: "destroyed",
-    dateDestroyed: "2023-12-01", // Estimated late 2023
-    dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "An ancient seaport located at Tell Iblakhiye, 2 kilometers north of Gaza's main port near the Beach Refugee Camp. The archaeological site was inhabited from the Mycenaean to Byzantine period, with its heyday during the Hellenistic period when it became an independent city.",
-    historicalSignificance:
-      "Listed as a UNESCO Tentative World Heritage Site in April 2012, Anthedon represents a clear example of ancient Mediterranean seaports. The site contains a Roman temple, villas, parts of city walls, and port structures, documenting the ancient trade route linking Europe with the Levant during Phoenician, Roman, and Hellenistic periods.",
-    culturalValue:
-      "Anthedon provided crucial archaeological evidence of Gaza's role as a major Mediterranean port city for over 1,500 years. The complete destruction of this UNESCO-recognized site represents an irreplaceable loss to understanding ancient maritime trade and cultural exchange in the Eastern Mediterranean.",
-    verifiedBy: ["UNESCO", "Heritage for Peace", "Forensic Architecture"],
+    dateDestroyed: "2023-12-01",
+    dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "An ancient seaport located at Tell Iblakhiye, 2 kilometers north of Gaza's main port near the Beach Refugee Camp. The archaeological site was inhabited from the Mycenaean to Byzantine period, with its heyday during the Hellenistic period when it became an independent city. The site is also known as Tell Blakhiyah.",
+    historicalSignificance: "Listed as a UNESCO Tentative World Heritage Site in April 2012, Anthedon represents a clear example of ancient Mediterranean seaports. The site contains a Roman temple, villas, parts of city walls, and port structures, documenting the ancient trade route linking Europe with the Levant during Phoenician, Roman, and Hellenistic periods.",
+    culturalValue: "Anthedon provided crucial archaeological evidence of Gaza's role as a major Mediterranean port city for over 1,500 years. The complete destruction of this UNESCO-recognized site represents an irreplaceable loss to understanding ancient maritime trade and cultural exchange in the Eastern Mediterranean.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace",
+      "Forensic Architecture"
+    ],
     images: {
       before: {
         url: "/images/sites/anthedon-harbour-before.jpg",
@@ -657,22 +628,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Anthedon Harbour - Tentative World Heritage Site",
         url: "https://whc.unesco.org/en/tentativelists/5719/",
         date: "2012-04-02",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "tell-el-ajjul",
@@ -681,19 +652,22 @@ export const mockSites: Site[] = [
     type: "archaeological",
     yearBuilt: "2000-1800 BCE",
     yearBuiltIslamic: "3622 BH - 3422 BH",
-    coordinates: [31.4677, 34.4043],
+    coordinates: [
+      31.4677,
+      34.4043
+    ],
     status: "damaged",
-    dateDestroyed: "2023-11-01", // Estimated late 2023
-    dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
+    dateDestroyed: "2023-11-01",
+    dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2025-09-30",
-    description:
-      "A major Bronze Age settlement located at the mouth of Wadi Ghazzah, 1.8 kilometers inland from the Mediterranean coast, south of Gaza City. The site was inhabited during 2000-1800 BCE and sits on the main land route between ancient Egypt and the Levant.",
-    historicalSignificance:
-      "Excavated in 1930-1934 by British archaeologist Sir Flinders Petrie, Tell el-Ajjul yielded three hoards of Bronze Age gold jewellery considered among the greatest Bronze Age finds in the Levant. The site is one of the proposed locations for the ancient city of Sharuhen mentioned in historical texts.",
-    culturalValue:
-      "Tell el-Ajjul provided irreplaceable evidence of Bronze Age trade, craftsmanship, and settlement patterns. The site's strategic location between Egypt and the Levant made it crucial for understanding ancient Near Eastern commerce and cultural exchange. Its damage represents a significant loss to Bronze Age archaeology.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    description: "A major Bronze Age settlement located at the mouth of Wadi Ghazzah, 1.8 kilometers inland from the Mediterranean coast, south of Gaza City. The site was inhabited during 2000-1800 BCE and sits on the main land route between ancient Egypt and the Levant.",
+    historicalSignificance: "Excavated in 1930-1934 by British archaeologist Sir Flinders Petrie, Tell el-Ajjul yielded three hoards of Bronze Age gold jewellery considered among the greatest Bronze Age finds in the Levant. The site is one of the proposed locations for the ancient city of Sharuhen mentioned in historical texts.",
+    culturalValue: "Tell el-Ajjul provided irreplaceable evidence of Bronze Age trade, craftsmanship, and settlement patterns. The site's strategic location between Egypt and the Levant made it crucial for understanding ancient Near Eastern commerce and cultural exchange. Its damage represents a significant loss to Bronze Age archaeology.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/tell-el-ajjul-before.jpg",
@@ -712,23 +686,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Preliminary Damage Assessment of Archaeological Sites in Gaza",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Britannica",
         title: "Tall al-ʿAjjul Archaeological Site",
         url: "https://www.britannica.com/place/Tall-al-Ajjul",
-        type: "academic",
-      },
-    ],
+        type: "academic"
+      }
+    ]
   },
   {
     id: "tell-es-sakan",
@@ -737,19 +709,22 @@ export const mockSites: Site[] = [
     type: "archaeological",
     yearBuilt: "3300-2300 BCE",
     yearBuiltIslamic: "4922 BH - 3922 BH",
-    coordinates: [31.4758, 34.4046],
+    coordinates: [
+      31.4758,
+      34.4046
+    ],
     status: "damaged",
-    dateDestroyed: "2023-12-01", // Estimated late 2023
-    dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
+    dateDestroyed: "2023-12-01",
+    dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2025-09-30",
-    description:
-      "The oldest and largest Egyptian colony in the Southern Levant, located in the al-Zahra neighborhood 5 kilometers south of Gaza City. The site covers 12-20 acres and rises more than 10 meters above the coastal plain, containing exceptionally well-preserved Early Bronze Age mud-brick architecture.",
-    historicalSignificance:
-      "Tell es-Sakan was inhabited from 3300-3000 BCE as an Egyptian colony, then abandoned and reoccupied as a Canaanite city from 2600-2250 BCE. Discovered by chance in 1998 during housing construction, the site had remained undetected under sand dunes despite previous surveys. It represents the earliest phase of Egyptian expansion into the Levant.",
-    culturalValue:
-      "As the largest archaeological site in the Gaza Strip, Tell es-Sakan provided unique evidence of Early Bronze Age Egyptian colonial architecture and the transition from Egyptian to Canaanite occupation. The site's exceptional preservation made it invaluable for understanding early urbanism and Egyptian-Levantine relations over 5,000 years ago.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    description: "The oldest and largest Egyptian colony in the Southern Levant, located in the al-Zahra neighborhood 5 kilometers south of Gaza City. The site covers 12-20 acres and rises more than 10 meters above the coastal plain, containing exceptionally well-preserved Early Bronze Age mud-brick architecture.",
+    historicalSignificance: "Tell es-Sakan was inhabited from 3300-3000 BCE as an Egyptian colony, then abandoned and reoccupied as a Canaanite city from 2600-2250 BCE. Discovered by chance in 1998 during housing construction, the site had remained undetected under sand dunes despite previous surveys. It represents the earliest phase of Egyptian expansion into the Levant.",
+    culturalValue: "As the largest archaeological site in the Gaza Strip, Tell es-Sakan provided unique evidence of Early Bronze Age Egyptian colonial architecture and the transition from Egyptian to Canaanite occupation. The site's exceptional preservation made it invaluable for understanding early urbanism and Egyptian-Levantine relations over 5,000 years ago.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/tell-es-sakan-before.jpg",
@@ -768,24 +743,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Preliminary Damage Assessment of Archaeological Sites in Gaza",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Honor Frost Foundation",
         title: "Maritime Archaeological Survey at Tell es-Sakan",
         url: "https://honorfrostfoundation.org/2022/05/12/maritime-archaeological-survey-and-assessment-at-tell-ruqeish-and-tell-es-sakan-gaza-strip-ongoing/",
         date: "2022-05-12",
-        type: "academic",
-      },
-    ],
+        type: "academic"
+      }
+    ]
   },
   {
     id: "central-archives-gaza",
@@ -793,19 +766,22 @@ export const mockSites: Site[] = [
     nameArabic: "الأرشيف المركزي لمدينة غزة",
     type: "historic-building",
     yearBuilt: "20th century",
-    coordinates: [31.5203, 34.4668],
+    coordinates: [
+      31.5069,
+      34.46
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-29",
-    dateDestroyedIslamic: "16 Jumada al-Ula 1445 AH", // Manually verified with Islamic calendar converter
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "The Central Archives housed within the administrative buildings of Gaza City Municipality in Palestine Square. The archives contained materials documenting Palestinian lives going back 150 years, urban development plans, documents relating to ancient buildings of historical value, and handwritten materials from well-known national figures.",
-    historicalSignificance:
-      "The Central Archives represented 150 years of Palestinian documentary heritage and institutional memory. The collection included irreplaceable administrative records, historical documents, and urban planning materials crucial for understanding Gaza's modern development.",
-    culturalValue:
-      "The destruction of the Central Archives by fire in late November 2023 represents the erasure of a large part of Palestinian memory and historical documentation. A UN investigation concluded that 'the interior of the building was likely set ablaze' by Israeli forces. The loss of these documents makes it significantly more difficult to reconstruct property ownership, urban history, and administrative continuity.",
-    verifiedBy: ["ICOM UK", "International Council on Archives"],
+    dateDestroyedIslamic: "16 Jumada al-Ula 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "The Central Archives housed within the administrative buildings of Gaza City Municipality in Palestine Square. The archives contained materials documenting Palestinian lives going back 150 years, urban development plans, documents relating to ancient buildings of historical value, and handwritten materials from well-known national figures.",
+    historicalSignificance: "The Central Archives represented 150 years of Palestinian documentary heritage and institutional memory. The collection included irreplaceable administrative records, historical documents, and urban planning materials crucial for understanding Gaza's modern development.",
+    culturalValue: "The destruction of the Central Archives by fire in late November 2023 represents the erasure of a large part of Palestinian memory and historical documentation. A UN investigation concluded that 'the interior of the building was likely set ablaze' by Israeli forces. The loss of these documents makes it significantly more difficult to reconstruct property ownership, urban history, and administrative continuity.",
+    verifiedBy: [
+      "ICOM UK",
+      "International Council on Archives"
+    ],
     images: {
       before: {
         url: "/images/sites/central-archives-gaza-before.jpg",
@@ -824,24 +800,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "International Council on Archives",
         title: "Statement on the Destruction of the Central Archives of the Municipality of Gaza",
         url: "https://www.ica.org/statement-of-the-international-council-on-archives-on-the-destruction-of-the-central-archives-of-the-municipality-of-gaza/",
         date: "2023-12-05",
-        type: "official",
+        type: "official"
       },
       {
         organization: "ICOM UK",
         title: "Central Archives of Gaza City Destroyed",
         url: "https://uk.icom.museum/central-archives-of-gaza-city-destroyed/",
         date: "2023-11-30",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "saint-hilarion-monastery",
@@ -850,19 +824,23 @@ export const mockSites: Site[] = [
     type: "church",
     yearBuilt: "340 CE (4th century)",
     yearBuiltIslamic: "282 BH (Before Hijra)",
-    coordinates: [31.4473, 34.3664], // Tell Umm el-'Amr, Nuseirat
+    coordinates: [
+      31.4473,
+      34.3664
+    ],
     status: "damaged",
     dateDestroyed: "2023-12-14",
     dateDestroyedIslamic: "1 Jumada al-Akhirah 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
+    sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2025-09-30",
-    description:
-      "One of the oldest and largest monasteries in the Middle East, founded around 340 CE by Saint Hilarion, a native of Gaza and key figure in Palestinian monasticism. The archaeological site at Tell Umm el-'Amr spans a large area with intricate Byzantine-era mosaics and church ruins.",
-    historicalSignificance:
-      "Founded by Saint Hilarion, considered one of the fathers of Palestinian monasticism. The monastery was a major center of early Christian monastic life and represents 1,700 years of continuous religious heritage. The site contains exceptional Byzantine architecture and mosaics documenting early Christian presence in Gaza.",
-    culturalValue:
-      "UNESCO granted enhanced protection (highest level of immunity) in December 2023, followed by World Heritage in Danger status in July 2024. The monastery's surrounding areas sustained damage including roads and infrastructure, threatening this irreplaceable archaeological treasure. The site features extensive Byzantine mosaics and architectural remains.",
-    verifiedBy: ["UNESCO", "British Council", "Aliph Foundation"],
+    description: "One of the oldest and largest monasteries in the Middle East, founded around 340 CE by Saint Hilarion, a native of Gaza and key figure in Palestinian monasticism. The archaeological site at Tell Umm el-'Amr spans a large area with intricate Byzantine-era mosaics and church ruins.",
+    historicalSignificance: "Founded by Saint Hilarion, considered one of the fathers of Palestinian monasticism. The monastery was a major center of early Christian monastic life and represents 1,700 years of continuous religious heritage. The site contains exceptional Byzantine architecture and mosaics documenting early Christian presence in Gaza.",
+    culturalValue: "UNESCO granted enhanced protection (highest level of immunity) in December 2023, followed by World Heritage in Danger status in July 2024. The monastery's surrounding areas sustained damage including roads and infrastructure, threatening this irreplaceable archaeological treasure. The site features extensive Byzantine mosaics and architectural remains.",
+    verifiedBy: [
+      "UNESCO",
+      "British Council",
+      "Aliph Foundation"
+    ],
     images: {
       before: {
         url: "/images/sites/saint-hilarion-monastery-before.jpg",
@@ -881,24 +859,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Gaza: UNESCO grants enhanced provisional protection to Saint Hilarion Monastery",
         url: "https://www.unesco.org/en/articles/gaza-unesco-grants-enhanced-provisional-protection-saint-hilarion-monastery",
         date: "2023-12-18",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Hyperallergic",
         title: "1,700-Year-Old Gaza Monastery Designated World Heritage in Danger",
         url: "https://hyperallergic.com/942804/1700-year-old-saint-hilarion-gaza-monastery-designated-world-heritage-in-danger/",
         date: "2024-07-26",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "ard-al-moharbeen-cemetery",
@@ -907,24 +883,23 @@ export const mockSites: Site[] = [
     type: "archaeological",
     yearBuilt: "1st century BCE - 2nd century CE",
     yearBuiltIslamic: "722 BH - 478 BH",
-    coordinates: [31.533, 34.5], // Jabaliya (approximate)
+    coordinates: [
+      31.5487,
+      34.4663
+    ],
     status: "destroyed",
     dateDestroyed: "2023-10-08",
     dateDestroyedIslamic: "23 Rabi' al-Awwal 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "The largest Roman cemetery discovered in Gaza, with 125+ tombs excavated from an area of 4,000 square meters. The necropolis was discovered in February 2022 during construction work and featured remarkable artifacts including two rare lead sarcophagi - one engraved with grape harvest motifs, the other with dolphins swimming in water.",
-    historicalSignificance:
-      "This cemetery was in use from the 1st century BCE to the 2nd century CE and represents Gaza's importance as a Roman-era city. The discovery in 2022 was considered one of the most significant archaeological finds in recent Palestinian history, providing crucial evidence of Roman burial practices and artistic traditions in the region.",
-    culturalValue:
-      "The site was almost completely destroyed just one day after the conflict began on October 8, 2023, when researchers found rocket damage. UNESCO confirmed the destruction in January 2024. A 2025 report documented severe damage from bombs and bulldozers. The loss of this recently discovered site, with its rare lead sarcophagi and extensive tomb collection, represents an irreplaceable loss to Roman-era archaeology.",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "The largest Roman cemetery discovered in Gaza, with 125+ tombs excavated from an area of 4,000 square meters. The necropolis was discovered in February 2022 during construction work and featured remarkable artifacts including two rare lead sarcophagi - one engraved with grape harvest motifs, the other with dolphins swimming in water.",
+    historicalSignificance: "This cemetery was in use from the 1st to 3rd centuries CE and represents Gaza's importance as a Roman-era city. The discovery in 2022 was considered one of the most significant archaeological finds in recent Palestinian history, providing crucial evidence of Roman burial practices and artistic traditions in the region.",
+    culturalValue: "The site was almost completely destroyed just one day after the conflict began on October 8, 2023, when researchers found rocket damage. UNESCO confirmed the destruction in January 2024. A 2025 report documented severe damage from bombs and bulldozers. The loss of this recently discovered site, with its rare lead sarcophagi and extensive tomb collection, represents an irreplaceable loss to Roman-era archaeology.",
     verifiedBy: [
       "UNESCO",
       "Ministry of Tourism and Antiquities",
-      "Centre for Cultural Heritage Preservation",
+      "Centre for Cultural Heritage Preservation"
     ],
-    // Images need to be sourced with proper attribution
     images: {
       before: {
         url: "/images/sites/ard-al-moharbeen-cemetery-before.jpg",
@@ -943,23 +918,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Preliminary Damage Assessment - Ard-al-Moharbeen Necropolis",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-01-15",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Al Jazeera",
         title: "Four tombs unearthed at Roman-era cemetery in Gaza",
         url: "https://www.aljazeera.com/news/2023/9/25/four-tombs-unearthed-at-roman-era-cemetery-in-gaza",
         date: "2023-09-25",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "israa-university-museum",
@@ -967,19 +941,23 @@ export const mockSites: Site[] = [
     nameArabic: "متحف جامعة الإسراء",
     type: "museum",
     yearBuilt: "2014",
-    coordinates: [31.48, 34.45], // South of Gaza City (approximate)
+    coordinates: [
+      31.48,
+      34.45
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-01-17",
     dateDestroyedIslamic: "6 Rajab 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
+    sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2025-09-30",
-    description:
-      "A national museum housed within Al-Israa University, containing more than 3,000 rare archaeological artifacts spanning Gaza's history. The university was the last remaining higher education institution in Gaza when it was destroyed. Before demolition, occupying forces looted the museum's entire collection of artifacts.",
-    historicalSignificance:
-      "Al-Israa University was established in 2014 and became a center for higher education in southern Gaza. Its museum represented an important repository of Palestinian cultural heritage, documenting Gaza's archaeological and historical legacy. The university's destruction marked the complete elimination of all universities in Gaza.",
-    culturalValue:
-      "The museum's 3,000+ artifacts were looted by Israeli forces before the university building was demolished by explosives on January 17, 2024, after 70 days of occupation. University vice president Ahmed Alhussaina stated that such widespread destruction represents a deliberate act aimed at erasing Palestinian cultural memory and archaeological heritage. The loss includes irreplaceable historical artifacts and educational resources.",
-    verifiedBy: ["PEN America", "Al-Israa University"],
+    description: "A national museum housed within Al-Israa University, containing more than 3,000 rare archaeological artifacts spanning Gaza's history. The university was the last remaining higher education institution in Gaza when it was destroyed. Before demolition, occupying forces looted the museum's entire collection of artifacts.",
+    historicalSignificance: "Al-Israa University was established in 2014 and became a center for higher education in southern Gaza. Its museum represented an important repository of Palestinian cultural heritage, documenting Gaza's archaeological and historical legacy. The university's destruction marked the complete elimination of all universities in Gaza.",
+    culturalValue: "The museum's 3,000+ artifacts were looted by Israeli forces before the university building was demolished by explosives on January 17, 2024, after 70 days of occupation. University vice president Ahmed Alhussaina stated that such widespread destruction represents a deliberate act aimed at erasing Palestinian cultural memory and archaeological heritage. The loss includes irreplaceable historical artifacts and educational resources.",
+    verifiedBy: [
+      "PEN America",
+      "Al-Israa University"
+    ],
     images: {
       before: {
         url: "/images/sites/israa-university-museum-before.jpg",
@@ -998,24 +976,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "PEN America",
         title: "Gaza Cultural Heritage Destruction Report",
         url: "https://www.finestresullarte.info/en/news/gaza-the-silent-massacre-a-report-lists-destroyed-cultural-heritage",
         date: "2024-02-01",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "WAFA News Agency",
         title: "Occupation forces destroy key facilities of Al-Israa University in Gaza",
         url: "https://english.wafa.ps/Pages/Details/140840",
         date: "2024-01-17",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "rafah-museum",
@@ -1023,19 +999,21 @@ export const mockSites: Site[] = [
     nameArabic: "متحف رفح",
     type: "museum",
     yearBuilt: "1990s",
-    coordinates: [31.2889, 34.2463], // Rafah
+    coordinates: [
+      31.288,
+      34.252
+    ],
     status: "destroyed",
     dateDestroyed: "2023-10-11",
     dateDestroyedIslamic: "25 Rabi' al-Awwal 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A museum in Rafah housing a 30-year collection of ancient coins, copper plates, jewelry, and archaeological artifacts from southern Gaza. The museum served as an important cultural institution documenting the heritage of the Rafah region.",
-    historicalSignificance:
-      "The Rafah Museum preserved archaeological evidence of southern Gaza's history, with collections spanning thousands of years. It was particularly important for communities in the southernmost part of the Gaza Strip.",
-    culturalValue:
-      "The museum was destroyed on October 11, 2023, just days after the conflict began. The loss of its 30-year collection, including rare coins, ancient jewelry, and copper artifacts, represents an irreplaceable loss to understanding Rafah's archaeological heritage.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A museum in Rafah housing a 30-year collection of ancient coins, copper plates, jewelry, and archaeological artifacts from southern Gaza. The museum served as an important cultural institution documenting the heritage of the Rafah region.",
+    historicalSignificance: "The Rafah Museum preserved archaeological evidence of southern Gaza's history, with collections spanning thousands of years. It was particularly important for communities in the southernmost part of the Gaza Strip.",
+    culturalValue: "The museum was destroyed on October 11, 2023, just days after the conflict began. The loss of its 30-year collection, including rare coins, ancient jewelry, and copper artifacts, represents an irreplaceable loss to understanding Rafah's archaeological heritage.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/rafah-museum-before.jpg",
@@ -1054,23 +1032,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Al Jazeera",
         title: "A cultural genocide: Gaza's heritage sites destroyed",
         url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
         date: "2024-01-14",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "omari-mosque-jabaliya",
@@ -1079,19 +1056,22 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "7th century",
     yearBuiltIslamic: "1st century AH",
-    coordinates: [31.5316, 34.4833], // Jabaliya
+    coordinates: [
+      31.5257,
+      34.4839
+    ],
     status: "destroyed",
     dateDestroyed: "2023-10-31",
     dateDestroyedIslamic: "16 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "An ancient mosque in Jabaliya with 7th-century origins, representing one of the oldest Islamic religious structures in northern Gaza. The mosque served as a central place of worship for the Jabaliya community.",
-    historicalSignificance:
-      "With foundations dating to the early Islamic period, the Omari Mosque of Jabaliya represented over 1,400 years of continuous Islamic worship and community gathering in northern Gaza.",
-    culturalValue:
-      "The mosque was completely obliterated in late October 2023, as documented by Heritage for Peace. Its destruction represents the loss of a major religious and cultural landmark for the Jabaliya refugee camp community.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "An ancient mosque in Jabaliya with 7th-century origins, representing one of the oldest Islamic religious structures in northern Gaza. The mosque served as a central place of worship for the Jabaliya community.",
+    historicalSignificance: "With foundations dating to the early Islamic period, the Omari Mosque of Jabaliya represented over 1,400 years of continuous Islamic worship and community gathering in northern Gaza.",
+    culturalValue: "The mosque was completely obliterated in late October 2023, as documented by Heritage for Peace. Its destruction represents the loss of a major religious and cultural landmark for the Jabaliya refugee camp community.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/omari-mosque-jabaliya-before.jpg",
@@ -1110,23 +1090,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
       {
         organization: "The Art Newspaper",
         title: "Bombing of Gaza has damaged more than 100 heritage sites",
         url: "https://www.theartnewspaper.com/2023/11/28/bombing-of-gaza-has-damaged-or-destroyed-more-than-100-heritage-sites-ngo-report-reveals",
         date: "2023-11-28",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "al-saqqa-palace",
@@ -1135,19 +1114,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "1661",
     yearBuiltIslamic: "1072 AH",
-    coordinates: [31.5085, 34.4655], // Gaza City
+    coordinates: [
+      31.5006,
+      34.4681
+    ],
     status: "damaged",
     dateDestroyed: "2023-11-18",
     dateDestroyedIslamic: "5 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A 17th-century Ottoman residential palace built in 1661, representing traditional Ottoman domestic architecture in Gaza. The palace featured distinctive stonework, vaulted rooms, and traditional courtyard design.",
-    historicalSignificance:
-      "Built during the Ottoman period, Al-Saqqa Palace is one of the oldest surviving residential structures in Gaza City, documenting over 360 years of urban architectural history and Ottoman building traditions.",
-    culturalValue:
-      "The palace represents an important example of Ottoman domestic architecture and social organization. Its damage threatens the preservation of traditional building techniques and historical residential patterns in old Gaza.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A 17th-century Ottoman residential palace built in 1661, representing traditional Ottoman domestic architecture in Gaza. The palace featured distinctive stonework, vaulted rooms, and traditional courtyard design.",
+    historicalSignificance: "Built during the Ottoman period, Al-Saqqa Palace is one of the oldest surviving residential structures in Gaza City, documenting over 360 years of urban architectural history and Ottoman building traditions.",
+    culturalValue: "The palace represents an important example of Ottoman domestic architecture and social organization. Its damage threatens the preservation of traditional building techniques and historical residential patterns in old Gaza.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/al-saqqa-palace-before.jpg",
@@ -1166,23 +1148,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-28",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-01",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "al-ghussein-house",
@@ -1191,19 +1172,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "1800s (19th century)",
     yearBuiltIslamic: "13th century AH",
-    coordinates: [31.509, 34.464], // Gaza City
+    coordinates: [
+      31.5056,
+      34.4658
+    ],
     status: "damaged",
     dateDestroyed: "2023-11-10",
     dateDestroyedIslamic: "26 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic 19th-century house in Gaza City that was repurposed as the Goethe Institute cultural center. The building represented traditional Gazan residential architecture and served as a hub for German-Palestinian cultural exchange.",
-    historicalSignificance:
-      "The house is approximately 200 years old and represents traditional 19th-century Palestinian architecture. Its use as the Goethe Institute made it an important site for international cultural dialogue and educational programs.",
-    culturalValue:
-      "The building served dual significance: as a historic architectural monument and as an active cultural institution promoting arts, language, and cross-cultural understanding. Its damage impacts both heritage preservation and contemporary cultural programming.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A historic 19th-century house in Gaza City that was repurposed as the Goethe Institute cultural center. The building represented traditional Gazan residential architecture and served as a hub for German-Palestinian cultural exchange.",
+    historicalSignificance: "The house is approximately 200 years old and represents traditional 19th-century Palestinian architecture. Its use as the Goethe Institute made it an important site for international cultural dialogue and educational programs.",
+    culturalValue: "The building served dual significance: as a historic architectural monument and as an active cultural institution promoting arts, language, and cross-cultural understanding. Its damage impacts both heritage preservation and contemporary cultural programming.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/al-ghussein-house-before.jpg",
@@ -1222,23 +1206,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-28",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Wikipedia",
         title: "Destruction of cultural heritage during Israeli invasion of Gaza Strip",
         url: "https://en.wikipedia.org/wiki/Destruction_of_cultural_heritage_during_the_Israeli_invasion_of_the_Gaza_Strip",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-qissariya-market",
@@ -1247,19 +1229,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "14th century (Mamluk period)",
     yearBuiltIslamic: "8th century AH",
-    coordinates: [31.5055, 34.465], // Gaza City Old Market
+    coordinates: [
+      31.5031,
+      34.4639
+    ],
     status: "destroyed",
     dateDestroyed: "2023-12-05",
     dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic covered market dating to the Mamluk period (14th century), featuring traditional vaulted stone architecture. The market was a central commercial hub in Gaza's old city, with shops selling traditional crafts, textiles, and goods.",
-    historicalSignificance:
-      "Al-Qissariya Market represents over 600 years of continuous commercial activity in Gaza City. The name 'Qissariya' derives from the Arabic term for covered markets, reflecting Byzantine and Islamic trading traditions.",
-    culturalValue:
-      "The market was not only an architectural monument but a living cultural space where traditional crafts, commerce, and social interaction continued for centuries. Its destruction represents the loss of both physical heritage and intangible cultural practices.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A historic covered market dating to the Mamluk period (14th century), featuring traditional vaulted stone architecture. The market was a central commercial hub in Gaza's old city, with shops selling traditional crafts, textiles, and goods.",
+    historicalSignificance: "Al-Qissariya Market represents over 600 years of continuous commercial activity in Gaza City. The name 'Qissariya' derives from the Arabic term for covered markets, reflecting Byzantine and Islamic trading traditions.",
+    culturalValue: "The market was not only an architectural monument but a living cultural space where traditional crafts, commerce, and social interaction continued for centuries. Its destruction represents the loss of both physical heritage and intangible cultural practices.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/al-qissariya-market-before.jpg",
@@ -1278,23 +1263,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-10",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "commonwealth-war-cemetery",
@@ -1303,19 +1287,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "1917",
     yearBuiltIslamic: "1336 AH",
-    coordinates: [31.5025, 34.4615], // Gaza City
+    coordinates: [
+      31.5121,
+      34.482
+    ],
     status: "damaged",
     dateDestroyed: "2023-11-25",
     dateDestroyedIslamic: "12 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A Commonwealth War Graves Commission cemetery containing the graves of soldiers from World War I and II, primarily from the British Empire forces. The cemetery includes over 3,200 burials and commemorates those who died in the Palestine campaigns.",
-    historicalSignificance:
-      "Established in 1917 following World War I battles in Gaza, the cemetery is an important memorial to soldiers from multiple nations who died during the Palestine campaigns. It represents a significant site of international war remembrance.",
-    culturalValue:
-      "The cemetery is protected under international law as a war grave site. Damage to the cemetery affects graves of soldiers from the UK, Australia, New Zealand, India, and other Commonwealth nations, impacting international heritage and remembrance.",
-    verifiedBy: ["UNESCO", "Commonwealth War Graves Commission"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A Commonwealth War Graves Commission cemetery containing the graves of soldiers from World War I and II, primarily from the British Empire forces. The cemetery includes over 3,200 burials and commemorates those who died in the Palestine campaigns.",
+    historicalSignificance: "Established in 1917 following World War I battles in Gaza, the cemetery is an important memorial to soldiers from multiple nations who died during the Palestine campaigns. It represents a significant site of international war remembrance.",
+    culturalValue: "The cemetery is protected under international law as a war grave site. Damage to the cemetery affects graves of soldiers from the UK, Australia, New Zealand, India, and other Commonwealth nations, impacting international heritage and remembrance.",
+    verifiedBy: [
+      "UNESCO",
+      "Commonwealth War Graves Commission"
+    ],
     images: {
       before: {
         url: "/images/sites/commonwealth-war-cemetery-before.jpg",
@@ -1334,23 +1321,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-28",
-        type: "official",
+        type: "official"
       },
       {
         organization: "The Guardian",
         title: "Gaza heritage sites damaged",
         date: "2023-12-01",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "mathaf-al-funduq",
@@ -1358,19 +1343,22 @@ export const mockSites: Site[] = [
     nameArabic: "متحف الفندق / المتحف",
     type: "museum",
     yearBuilt: "2008",
-    coordinates: [31.5486, 34.4571], // Blakhiyah area, north of Gaza City port, coastal road
+    coordinates: [
+      31.5476,
+      34.4595
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-03",
     dateDestroyedIslamic: "19 Rabi' al-Thani 1445 AH",
     sourceAssessmentDate: "2024-02-15",
-    lastUpdated: "2025-09-30",
-    description:
-      "Founded in 2008 by Gazan businessman and collector Jawdat N. Khoudary, Al Mat'haf (The Museum) was built on the Blakhiyah coastal strip north of Gaza City port, on land adjacent to the ancient site of Anthedon Harbour. The hotel-museum held approximately 350 privately acquired artifacts spanning the Bronze Age through the Egyptian administration period (pre-1967), including coins, glass, pottery, and architectural elements from Roman, Byzantine, Islamic, and Crusader periods. Israeli forces occupied the site from October 7, 2023. When Khoudary was able to return in February 2024, he found the main hall destroyed by fire and extensive looting — the building was described as reduced to rubble.",
-    historicalSignificance:
-      "Built adjacent to the ancient Anthedon Harbour site (already in the database), Al Mat'haf served as both a public museum and a living archive of Khoudary's decades-long private collection. Its location on the ancient Anthedon coastal strip gave it a direct physical connection to Gaza's Hellenistic and Roman maritime heritage. Jawdat Khoudary was one of Gaza's most prominent private heritage collectors and advocates.",
-    culturalValue:
-      "The 350-artifact collection assembled by Khoudary over decades included objects not held in any public institution — items that survived the blockade, previous conflicts, and years of scarcity specifically because of his private stewardship. Their destruction by fire and looting represents the permanent loss of privately preserved heritage that existed nowhere else.",
-    verifiedBy: ["Heritage for Peace", "UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Founded in 2008 by Gazan businessman and collector Jawdat N. Khoudary, Al Mat'haf (The Museum) was built on the Blakhiyah coastal strip north of Gaza City port, on land adjacent to the ancient site of Anthedon Harbour. The hotel-museum held approximately 350 privately acquired artifacts spanning the Bronze Age through the Egyptian administration period (pre-1967), including coins, glass, pottery, and architectural elements from Roman, Byzantine, Islamic, and Crusader periods. Israeli forces occupied the site from October 7, 2023. When Khoudary was able to return in February 2024, he found the main hall destroyed by fire and extensive looting — the building was described as set on fire, with collection items looted.",
+    historicalSignificance: "Built adjacent to the ancient Anthedon Harbour site (already in the database), Al Mat'haf served as both a public museum and a living archive of Khoudary's decades-long private collection. Its location on the ancient Anthedon coastal strip gave it a direct physical connection to Gaza's Hellenistic and Roman maritime heritage. Jawdat Khoudary was one of Gaza's most prominent private heritage collectors and advocates.",
+    culturalValue: "The 350-artifact collection assembled by Khoudary over decades included objects not held in any public institution — items that survived the blockade, previous conflicts, and years of scarcity specifically because of his private stewardship. Their destruction by fire and looting represents the permanent loss of privately preserved heritage that existed nowhere else.",
+    verifiedBy: [
+      "Heritage for Peace",
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/mathaf-al-funduq-before.jpg",
@@ -1389,30 +1377,29 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Al Jazeera",
         title: "A cultural genocide: Gaza's heritage sites destroyed",
         url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
         date: "2024-01-14",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
       {
         organization: "Wikipedia / Al Majalla",
         title: "Al Mat'haf — Gaza hotel museum looted and destroyed",
         url: "https://en.wikipedia.org/wiki/Al_Mat%27haf",
         date: "2024-02-15",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "deir-al-balah-museum",
@@ -1420,19 +1407,22 @@ export const mockSites: Site[] = [
     nameArabic: "متحف دير البلح",
     type: "museum",
     yearBuilt: "2000s",
-    coordinates: [31.4181, 34.3514], // Deir al-Balah
+    coordinates: [
+      31.4181,
+      34.3514
+    ],
+    coordinatesApproximate: true,
     status: "damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A regional museum in Deir al-Balah, central Gaza, housing archaeological artifacts from the surrounding area including pottery, ancient tools, and historical objects documenting local heritage.",
-    historicalSignificance:
-      "The museum served the central Gaza region, preserving and exhibiting archaeological finds from Deir al-Balah and nearby areas, some dating back thousands of years to Bronze Age and Iron Age settlements.",
-    culturalValue:
-      "The museum's damage represents the loss of irreplaceable regional artifacts and an important cultural institution for central Gaza communities. Its collections provided crucial links to understanding the area's ancient history.",
-    verifiedBy: ["Heritage for Peace", "UNESCO"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A regional museum in Deir al-Balah, central Gaza, housing archaeological artifacts from the surrounding area including pottery, ancient tools, and historical objects documenting local heritage.",
+    historicalSignificance: "The museum served the central Gaza region, preserving and exhibiting archaeological finds from Deir al-Balah and nearby areas, some dating back thousands of years to Bronze Age and Iron Age settlements.",
+    culturalValue: "The museum's damage represents the loss of irreplaceable regional artifacts and an important cultural institution for central Gaza communities. Its collections provided crucial links to understanding the area's ancient history.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/deir-al-balah-museum-before.jpg",
@@ -1451,23 +1441,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-20",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
       {
         organization: "The Art Newspaper",
         title: "Bombing of Gaza has damaged more than 100 heritage sites",
         url: "https://www.theartnewspaper.com/2023/11/28/bombing-of-gaza-has-damaged-or-destroyed-more-than-100-heritage-sites-ngo-report-reveals",
         date: "2023-11-28",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "tell-ruqeish",
@@ -1476,19 +1465,21 @@ export const mockSites: Site[] = [
     type: "archaeological",
     yearBuilt: "1200-500 BCE (Iron Age)",
     yearBuiltIslamic: "2822 BH - 2122 BH",
-    coordinates: [31.358, 34.312], // Southern Gaza
+    coordinates: [
+      31.4153,
+      34.3281
+    ],
     status: "damaged",
     dateDestroyed: "2023-12-10",
     dateDestroyedIslamic: "27 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "An Iron Age archaeological site in southern Gaza dating from 1200-500 BCE. The tell (ancient settlement mound) contains evidence of Philistine and later period occupation, with pottery, tools, and architectural remains.",
-    historicalSignificance:
-      "Tell Ruqeish provides crucial evidence of Iron Age settlement patterns in southern Gaza. The site helps document the Philistine period and subsequent cultural transitions in the region during the first millennium BCE.",
-    culturalValue:
-      "The site was subject to maritime archaeological survey by the Honor Frost Foundation in 2022. Damage to Tell Ruqeish impacts our understanding of ancient Gaza's coastal settlements and Iron Age cultural development.",
-    verifiedBy: ["Heritage for Peace", "Forensic Architecture"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "An Iron Age archaeological site in southern Gaza dating from 1200-500 BCE. The tell (ancient settlement mound) contains evidence of Philistine and later period occupation, with pottery, tools, and architectural remains.",
+    historicalSignificance: "Tell Ruqeish provides crucial evidence of Iron Age settlement patterns in southern Gaza. The site helps document the Philistine period and subsequent cultural transitions in the region during the first millennium BCE.",
+    culturalValue: "The site was subject to maritime archaeological survey by the Honor Frost Foundation in 2022. Damage to Tell Ruqeish impacts our understanding of ancient Gaza's coastal settlements and Iron Age cultural development.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/tell-ruqeish-before.jpg",
@@ -1507,23 +1498,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Honor Frost Foundation",
         title: "Maritime Archaeological Survey at Tell Ruqeish",
         url: "https://honorfrostfoundation.org/2022/05/12/maritime-archaeological-survey-and-assessment-at-tell-ruqeish-and-tell-es-sakan-gaza-strip-ongoing/",
         date: "2022-05-12",
-        type: "academic",
+        type: "academic"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "samir-mansour-bookshop",
@@ -1531,19 +1521,21 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة سمير منصور",
     type: "historic-building",
     yearBuilt: "Restored 2021 (originally older)",
-    coordinates: [31.5145, 34.4675], // Gaza City
+    coordinates: [
+      31.5135,
+      34.4408
+    ],
     status: "destroyed",
-    dateDestroyed: "2023-10-17",
-    dateDestroyedIslamic: "1 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A beloved community bookshop in Gaza City, restored and reopened in 2021 after previous destruction. The bookshop served as a cultural hub, providing books, educational materials, and a gathering space for Gaza's literary community.",
-    historicalSignificance:
-      "The bookshop was previously destroyed in 2021 and painstakingly restored by owner Samir Mansour with community support. Its reopening represented resilience and the importance of literacy and culture in Gaza.",
-    culturalValue:
-      "The destruction of Samir Mansour Bookshop for a second time in October 2023 represents not only the loss of thousands of books and educational resources, but the erasure of a vital community cultural space and symbol of resilience.",
-    verifiedBy: ["Heritage for Peace"],
+    dateDestroyed: "2023-10-10",
+    dateDestroyedIslamic: "25 Rabi' al-Awwal 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A beloved community bookshop in Gaza City, rebuilt and reopened on 17 February 2022 after previous destruction. The bookshop served as a cultural hub, providing books, educational materials, and a gathering space for Gaza's literary community.",
+    historicalSignificance: "The bookshop was previously destroyed in 2021 and painstakingly restored by owner Samir Mansour with community support. Its reopening represented resilience and the importance of literacy and culture in Gaza.",
+    culturalValue: "The destruction of Samir Mansour Bookshop for a second time in October 2023 represents not only the loss of thousands of books and educational resources, but the erasure of a vital community cultural space and symbol of resilience.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/samir-mansour-bookshop-before.jpg",
@@ -1562,23 +1554,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Al Jazeera",
         title: "A cultural genocide: Gaza's heritage sites destroyed",
         url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
         date: "2024-01-14",
-        type: "journalism",
+        type: "journalism"
       },
       {
-        organization: "BBC",
-        title: "Gaza bookshop destroyed twice",
-        date: "2023-10-20",
+        organization: "Times of Israel",
+        title: "Demolished during 2021 conflict, an iconic Gaza bookstore reopens",
+        date: "2022-02-17",
         type: "journalism",
-      },
-    ],
+        url: "https://www.timesofisrael.com/demolished-during-2021-israel-hamas-conflict-an-iconic-gaza-bookstore-reopens/"
+      }
+    ]
   },
   {
     id: "dar-assaada-manuscript-center",
@@ -1587,19 +1578,22 @@ export const mockSites: Site[] = [
     type: "museum",
     yearBuilt: "Ottoman period",
     yearBuiltIslamic: "Ottoman era",
-    coordinates: [31.5078, 34.4658], // Gaza City
+    coordinates: [
+      31.5078,
+      34.4658
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-12",
-    dateDestroyedIslamic: "29 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "An Ottoman-era domed building housing a manuscript center with rare Islamic texts and historical documents. The center specialized in the preservation and study of Arabic manuscripts and historical records.",
-    historicalSignificance:
-      "The building dates to the Ottoman period and served as an important repository for Islamic scholarship and historical documentation. The manuscript center preserved rare texts crucial for understanding regional intellectual history.",
-    culturalValue:
-      "The destruction of Dar As-Sa'ada resulted in the loss of irreplaceable manuscripts, historical documents, and scholarly texts. UNESCO verified this site as one of the damaged cultural properties in Gaza.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    dateDestroyed: "2023-12",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "An Ottoman-era domed building housing a manuscript center with rare Islamic texts and historical documents. The center specialized in the preservation and study of Arabic manuscripts and historical records.",
+    historicalSignificance: "The building dates to the Ottoman period and served as an important repository for Islamic scholarship and historical documentation. The manuscript center preserved rare texts crucial for understanding regional intellectual history.",
+    culturalValue: "The destruction of Dar As-Sa'ada resulted in the loss of irreplaceable manuscripts, historical documents, and scholarly texts. UNESCO verified this site as one of the damaged cultural properties in Gaza.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/dar-assaada-manuscript-center-before.jpg",
@@ -1618,73 +1612,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
-  },
-  {
-    id: "subat-al-alami",
-    name: "Subat Al-Alami",
-    nameArabic: "سبات العلمي",
-    type: "historic-building",
-    yearBuilt: "Ottoman period",
-    yearBuiltIslamic: "Ottoman era",
-    coordinates: [31.5065, 34.4645], // Gaza City
-    status: "damaged",
-    dateDestroyed: "2023-11-22",
-    dateDestroyedIslamic: "9 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic Ottoman-era building in Gaza City's old quarter, representing traditional Palestinian architecture and urban design from the Ottoman period.",
-    historicalSignificance:
-      "The building exemplifies Ottoman-period construction techniques and architectural styles in Gaza. It forms part of the historic fabric of Gaza City's old town.",
-    culturalValue:
-      "Subat Al-Alami is one of several historic buildings that collectively document Gaza's Ottoman heritage. Its damage contributes to the degradation of the old city's historic character and architectural continuity.",
-    verifiedBy: ["UNESCO"],
-    images: {
-      before: {
-        url: "/images/sites/subat-al-alami-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/subat-al-alami-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
+        url: "https://www.heritageforpeace.org/"
       }
-    },
-    
-    
-    sources: [
-      {
-        organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2024-05-28",
-        type: "official",
-      },
-    ],
+    ]
   },
   {
     id: "sabil-ar-rifaiya",
@@ -1693,19 +1636,21 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "Ottoman period",
     yearBuiltIslamic: "Ottoman era",
-    coordinates: [31.5048, 34.4652], // Gaza City
+    coordinates: [
+      31.5048,
+      34.4652
+    ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-11-28",
-    dateDestroyedIslamic: "15 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic Ottoman-era sabil (public water fountain), representing traditional Islamic charitable architecture. Sabils were public fountains providing free water to travelers and residents, embodying Islamic principles of charity and community service.",
-    historicalSignificance:
-      "Sabils were important features of Islamic cities, demonstrating architectural beauty combined with social welfare. This sabil represents Ottoman-era urban planning and the tradition of waqf (charitable endowment) in Gaza.",
-    culturalValue:
-      "The sabil is both an architectural monument and a symbol of communal care and Islamic urban traditions. Its damage threatens the preservation of this unique type of Ottoman public architecture.",
-    verifiedBy: ["UNESCO"],
+    dateDestroyed: "2023-11",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A historic Ottoman-era sabil (public water fountain), representing traditional Islamic charitable architecture. Sabils were public fountains providing free water to travelers and residents, embodying Islamic principles of charity and community service.",
+    historicalSignificance: "Sabils were important features of Islamic cities, demonstrating architectural beauty combined with social welfare. This sabil represents Ottoman-era urban planning and the tradition of waqf (charitable endowment) in Gaza.",
+    culturalValue: "The sabil is both an architectural monument and a symbol of communal care and Islamic urban traditions. Its damage threatens the preservation of this unique type of Ottoman public architecture.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/sabil-ar-rifaiya-before.jpg",
@@ -1724,17 +1669,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "khader-tarazi-house",
@@ -1743,19 +1686,21 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "19th century",
     yearBuiltIslamic: "13th century AH",
-    coordinates: [31.5095, 34.4642], // Gaza City
+    coordinates: [
+      31.5095,
+      34.4642
+    ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-12-01",
-    dateDestroyedIslamic: "18 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A 19th-century historic house in Gaza City representing traditional Palestinian residential architecture. The house features characteristic stonework, arched windows, and courtyard design typical of upper-class Gaza homes.",
-    historicalSignificance:
-      "The Khader Tarazi House is approximately 150-200 years old and represents the architectural heritage of Gaza's notable families. It exemplifies traditional building techniques and social organization of 19th-century Gaza.",
-    culturalValue:
-      "Historic houses like this are crucial for understanding daily life, social structures, and architectural evolution in Ottoman and late Ottoman-period Gaza. The building's damage threatens preservation of traditional domestic architecture.",
-    verifiedBy: ["UNESCO"],
+    dateDestroyed: "2023-12",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A 19th-century historic house in Gaza City representing traditional Palestinian residential architecture. The house features characteristic stonework, arched windows, and courtyard design typical of upper-class Gaza homes.",
+    historicalSignificance: "The Khader Tarazi House is approximately 150-200 years old and represents the architectural heritage of Gaza's notable families. It exemplifies traditional building techniques and social organization of 19th-century Gaza.",
+    culturalValue: "Historic houses like this are crucial for understanding daily life, social structures, and architectural evolution in Ottoman and late Ottoman-period Gaza. The building's damage threatens preservation of traditional domestic architecture.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/khader-tarazi-house-before.jpg",
@@ -1774,17 +1719,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-28",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "ministry-storage-sheikh-radwan",
@@ -1792,19 +1735,23 @@ export const mockSites: Site[] = [
     nameArabic: "مخزن وزارة السياحة والآثار",
     type: "museum",
     yearBuilt: "Modern (20th century)",
-    coordinates: [31.528, 34.459], // Sheikh Radwan neighborhood
+    coordinates: [
+      31.528,
+      34.459
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-10-25",
     dateDestroyedIslamic: "10 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A government storage facility in the Sheikh Radwan neighborhood housing archaeological artifacts and antiquities pending study, conservation, or museum display. The facility contained objects from various excavations across Gaza.",
-    historicalSignificance:
-      "The facility served as a central repository for Gaza's archaeological collections, containing artifacts from multiple periods and sites. It was crucial infrastructure for heritage management and archaeological research.",
-    culturalValue:
-      "The destruction of the storage facility on October 25, 2023, represents catastrophic loss of unstudied and uncatalogued artifacts. Many objects in storage had not yet been fully documented, photographed, or researched, making this loss especially devastating for Gaza's archaeology.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A government storage facility in the Sheikh Radwan neighborhood housing archaeological artifacts and antiquities pending study, conservation, or museum display. The facility contained objects from various excavations across Gaza.",
+    historicalSignificance: "The facility served as a central repository for Gaza's archaeological collections, containing artifacts from multiple periods and sites. It was crucial infrastructure for heritage management and archaeological research.",
+    culturalValue: "The seizure of the storage facility by the Israeli army (reported April 2024; the collection's fate is unknown), represents catastrophic loss of unstudied and uncatalogued artifacts. Many objects in storage had not yet been fully documented, photographed, or researched, making this loss especially devastating for Gaza's archaeology.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/ministry-storage-sheikh-radwan-before.jpg",
@@ -1823,23 +1770,29 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-01",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
-    ],
+      {
+        organization: "Al-Monitor",
+        title: "Gaza's historic treasures saved by irony of history",
+        url: "https://www.al-monitor.com/originals/2024/04/gazas-historic-treasures-saved-irony-history",
+        date: "2024-04-15",
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "zofor-domri-mosque",
@@ -1848,19 +1801,21 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "Mamluk period (13th-14th century)",
     yearBuiltIslamic: "7th-8th century AH",
-    coordinates: [31.5068, 34.467], // Gaza City
+    coordinates: [
+      31.501,
+      34.4673
+    ],
     status: "damaged",
     dateDestroyed: "2023-12-15",
     dateDestroyedIslamic: "2 Jumada al-Akhirah 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A Mamluk-era mosque in Gaza City dating to the 13th or 14th century, featuring traditional Mamluk architectural elements including stonework and arched prayer halls.",
-    historicalSignificance:
-      "The mosque represents Mamluk architectural heritage in Gaza, a period of significant cultural and architectural development. Mamluk mosques are characterized by distinctive architectural features and stone craftsmanship.",
-    culturalValue:
-      "Zofor Domri Mosque is one of several important Mamluk-period religious structures in Gaza. Its damage contributes to the erosion of Gaza's medieval Islamic architectural heritage.",
-    verifiedBy: ["UNESCO"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era mosque in Gaza City dating to the 13th or 14th century, featuring traditional Mamluk architectural elements including stonework and arched prayer halls.",
+    historicalSignificance: "The mosque represents Mamluk architectural heritage in Gaza, a period of significant cultural and architectural development. Mamluk mosques are characterized by distinctive architectural features and stone craftsmanship.",
+    culturalValue: "Zofor Domri Mosque is one of several important Mamluk-period religious structures in Gaza. Its damage contributes to the erosion of Gaza's medieval Islamic architectural heritage.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/zofor-domri-mosque-before.jpg",
@@ -1879,17 +1834,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-28",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "akkad-museum",
@@ -1897,19 +1850,22 @@ export const mockSites: Site[] = [
     nameArabic: "متحف عكاد",
     type: "museum",
     yearBuilt: "2000s",
-    coordinates: [31.3458, 34.3058], // Khan Younis
+    coordinates: [
+      31.3458,
+      34.3058
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-01-08",
     dateDestroyedIslamic: "26 Jumada al-Akhirah 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A cultural museum in Khan Younis housing collections of traditional crafts, historical artifacts, and cultural objects documenting southern Gaza's heritage and Bedouin traditions.",
-    historicalSignificance:
-      "The Akkad Museum served the Khan Younis region, preserving and presenting the cultural heritage of southern Gaza, including Bedouin material culture and traditional crafts unique to the area.",
-    culturalValue:
-      "The museum's destruction in January 2024 represents the loss of important collections documenting southern Gaza's distinct cultural traditions, including textiles, jewelry, household items, and agricultural tools specific to the region.",
-    verifiedBy: ["Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A cultural museum in Khan Younis housing collections of traditional crafts, historical artifacts, and cultural objects documenting southern Gaza's heritage and Bedouin traditions.",
+    historicalSignificance: "The Akkad Museum served the Khan Younis region, preserving and presenting the cultural heritage of southern Gaza, including Bedouin material culture and traditional crafts unique to the area.",
+    culturalValue: "The museum's destruction in January 2024 represents the loss of important collections documenting southern Gaza's distinct cultural traditions, including textiles, jewelry, household items, and agricultural tools specific to the region.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/akkad-museum-before.jpg",
@@ -1928,22 +1884,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Wikipedia",
         title: "Destruction of cultural heritage during Israeli invasion of Gaza Strip",
         url: "https://en.wikipedia.org/wiki/Destruction_of_cultural_heritage_during_the_Israeli_invasion_of_the_Gaza_Strip",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2024-01-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
+        url: "https://www.heritageforpeace.org/"
+      }
+    ]
   },
   {
     id: "shababeek-art-center",
@@ -1951,19 +1906,22 @@ export const mockSites: Site[] = [
     nameArabic: "مركز شبابيك للفن المعاصر",
     type: "museum",
     yearBuilt: "2010",
-    coordinates: [31.5125, 34.4695], // Gaza City
+    coordinates: [
+      31.5262,
+      34.443
+    ],
     status: "destroyed",
-    dateDestroyed: "2023-11-08",
-    dateDestroyedIslamic: "24 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A contemporary art center established in 2010, dedicated to promoting Palestinian contemporary art, providing exhibition space, artist residencies, and cultural programming for Gaza's artistic community.",
-    historicalSignificance:
-      "Shababeek Center was one of Gaza's few dedicated contemporary art spaces, serving as a crucial platform for emerging and established Palestinian artists to create, exhibit, and engage with international art networks.",
-    culturalValue:
-      "The center's destruction represents the loss not only of a physical space but of a vital cultural institution supporting living artistic practice. The loss impacts Gaza's contemporary cultural production and artists' ability to sustain creative work.",
-    verifiedBy: ["Heritage for Peace"],
+    dateDestroyed: "2024-04-01",
+    dateDestroyedIslamic: "22 Ramadan 1445 AH",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A contemporary art center launched in 2009, dedicated to promoting Palestinian contemporary art, providing exhibition space, artist residencies, and cultural programming for Gaza's artistic community.",
+    historicalSignificance: "Shababeek Center was one of Gaza's few dedicated contemporary art spaces, serving as a crucial platform for emerging and established Palestinian artists to create, exhibit, and engage with international art networks.",
+    culturalValue: "The center's destruction represents the loss not only of a physical space but of a vital cultural institution supporting living artistic practice. The loss impacts Gaza's contemporary cultural production and artists' ability to sustain creative work.",
+    verifiedBy: [
+      "Heritage for Peace",
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/shababeek-art-center-before.jpg",
@@ -1982,93 +1940,59 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Museums Association",
         title: "Widescale destruction of cultural heritage in Gaza",
         url: "https://www.museumsassociation.org/museums-journal/news/2024/01/widescale-destruction-of-cultural-heritage-in-gaza/",
         date: "2024-01-15",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-15",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
-    ],
-  },
-  {
-    id: "al-mahatta-house",
-    name: "Al-Mahatta House",
-    nameArabic: "بيت المحطة",
-    type: "historic-building",
-    yearBuilt: "Early 20th century",
-    yearBuiltIslamic: "14th century AH",
-    coordinates: [31.51, 34.468], // Gaza City
-    status: "damaged",
-    dateDestroyed: "2023-12-18",
-    dateDestroyedIslamic: "5 Jumada al-Akhirah 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "An early 20th-century historic building near the former railway station in Gaza City. The house represents the architectural style of the late Ottoman and British Mandate periods.",
-    historicalSignificance:
-      "Al-Mahatta House is associated with Gaza's railway era, when the city was connected by rail to Egypt and the broader region. The building documents early 20th-century urban development and architectural transitions.",
-    culturalValue:
-      "The house is one of fewer surviving examples of early 20th-century architecture in Gaza, representing a transitional period between Ottoman and Mandate-era building styles. Its damage threatens preservation of this architectural period.",
-    verifiedBy: ["Heritage for Peace"],
-    images: {
-      before: {
-        url: "/images/sites/al-mahatta-house-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
       },
-      after: {
-        url: "/images/sites/al-mahatta-house-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
+      {
+        organization: "The Art Newspaper",
+        title: "Gazan art centre destroyed during Israel's raid on Al-Shifa hospital",
+        url: "https://www.theartnewspaper.com/2024/04/09/gazan-art-centre-destroyed-during-israels-raid-on-al-shifa-hospital",
+        date: "2024-04-09",
+        type: "journalism"
       }
-    },
-    
-    
-    sources: [
-      {
-        organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-20",
-        type: "documentation",
-      },
-    ],
+    ]
   },
   {
     id: "katib-wilaya-mosque",
     name: "Katib Wilaya Mosque",
     nameArabic: "مسجد كاتب الولاية",
     type: "mosque",
-    yearBuilt: "Mamluk period (14th century)",
+    yearBuilt: "1432",
     yearBuiltIslamic: "8th century AH",
-    coordinates: [31.5072, 34.4665], // Gaza City
+    coordinates: [
+      31.504,
+      34.4624
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-11-12",
     dateDestroyedIslamic: "28 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A Mamluk-era mosque dating to the 14th century, named after the Ottoman administrative position of Katib Wilaya (provincial secretary). The mosque features characteristic Mamluk stonework and architectural details.",
-    historicalSignificance:
-      "The mosque represents over 600 years of Islamic heritage in Gaza and exemplifies Mamluk religious architecture. Its name reflects the Ottoman administrative system that governed Gaza for centuries.",
-    culturalValue:
-      "Katib Wilaya Mosque is one of Gaza's important medieval mosques, contributing to the historic character of Gaza City's old quarter. Its heavy damage threatens the preservation of Mamluk architectural heritage.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era mosque dating to the 15th century (completed 1432 CE per its minaret inscription), named after the Ottoman administrative position of Katib Wilaya (provincial secretary). The mosque features characteristic Mamluk stonework and architectural details.",
+    historicalSignificance: "The mosque represents over 600 years of Islamic heritage in Gaza and exemplifies Mamluk religious architecture. Its name reflects the Ottoman administrative system that governed Gaza for centuries.",
+    culturalValue: "Katib Wilaya Mosque is one of Gaza's important medieval mosques, contributing to the historic character of Gaza City's old quarter. Its heavy damage threatens the preservation of Mamluk architectural heritage.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/katib-wilaya-mosque-before.jpg",
@@ -2087,71 +2011,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
-        organization: "UNESCO",
-        title: "Preliminary Damage Assessment of Cultural Sites in Gaza",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2024-05-28",
-        type: "official",
-      },
-      {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-20",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
-      },
-    ],
-  },
-  {
-    id: "al-zeitoun-cultural-center",
-    name: "Al-Zeitoun Cultural Center",
-    nameArabic: "مركز الزيتون الثقافي",
-    type: "museum",
-    yearBuilt: "1995",
-    coordinates: [31.494, 34.4545], // Al-Zeitoun neighborhood
-    status: "destroyed",
-    dateDestroyed: "2023-10-20",
-    dateDestroyedIslamic: "5 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A community cultural center in the Al-Zeitoun neighborhood of Gaza City, established in 1995. The center provided library services, cultural programming, and educational activities for the local community.",
-    historicalSignificance:
-      "The center served the Al-Zeitoun neighborhood for nearly 30 years, providing cultural and educational resources to one of Gaza City's most populous areas.",
-    culturalValue:
-      "Al-Zeitoun Cultural Center's destruction early in the conflict represents the loss of an important community institution that fostered education, literacy, and cultural engagement in eastern Gaza City.",
-    verifiedBy: ["Heritage for Peace"],
-    images: {
-      before: {
-        url: "/images/sites/al-zeitoun-cultural-center-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/al-zeitoun-cultural-center-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
+        url: "https://www.heritageforpeace.org/"
       }
-    },
-    
-    
-    sources: [
-      {
-        organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-01",
-        type: "documentation",
-      },
-    ],
+    ]
   },
   {
     id: "al-shawa-house",
@@ -2160,19 +2028,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "19th century",
     yearBuiltIslamic: "13th century AH",
-    coordinates: [31.5082, 34.4648], // Gaza City
+    coordinates: [
+      31.5082,
+      34.4648
+    ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-12-22",
-    dateDestroyedIslamic: "9 Jumada al-Akhirah 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic 19th-century house belonging to the prominent Al-Shawa family, one of Gaza's most notable families. The house represents traditional Palestinian elite residential architecture.",
-    historicalSignificance:
-      "The Al-Shawa family produced several mayors of Gaza and prominent public figures. The house documents the architectural and social history of Gaza's leading families during the Ottoman and British Mandate periods.",
-    culturalValue:
-      "As one of the historic family residences of Gaza's elite, the house is architecturally and historically significant. Its damage threatens preservation of 19th-century upper-class domestic architecture and the material heritage of Gaza's notable families.",
-    verifiedBy: ["Heritage for Peace"],
+    dateDestroyed: "2023-12",
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A historic 19th-century house belonging to the prominent Al-Shawa family, one of Gaza's most notable families. The house represents traditional Palestinian elite residential architecture.",
+    historicalSignificance: "The Al-Shawa family produced several mayors of Gaza and prominent public figures. The house documents the architectural and social history of Gaza's leading families during the Ottoman and British Mandate periods.",
+    culturalValue: "As one of the historic family residences of Gaza's elite, the house is architecturally and historically significant. Its damage threatens preservation of 19th-century upper-class domestic architecture and the material heritage of Gaza's notable families.",
+    verifiedBy: [
+      "Heritage for Peace",
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/al-shawa-house-before.jpg",
@@ -2191,135 +2062,45 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-25",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
-    ],
-  },
-  {
-    id: "mahkama-courthouse",
-    name: "Al-Mahkama Courthouse",
-    nameArabic: "المحكمة",
-    type: "historic-building",
-    yearBuilt: "British Mandate period (1930s)",
-    yearBuiltIslamic: "1350s AH",
-    coordinates: [31.507, 34.4655], // Gaza City
-    status: "damaged",
-    dateDestroyed: "2023-12-08",
-    dateDestroyedIslamic: "25 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A British Mandate-era courthouse built in the 1930s, representing colonial administrative architecture in Gaza. The building features Mandate-period architectural style with characteristic arched windows and stone facades.",
-    historicalSignificance:
-      "Built during the British Mandate (1920-1948), the courthouse represents the legal and administrative infrastructure of that period. It documents the transition from Ottoman to British to Palestinian governance in Gaza.",
-    culturalValue:
-      "The courthouse is one of few remaining examples of British Mandate architecture in Gaza. Its damage threatens preservation of this distinct architectural period and its role in Gaza's modern legal and administrative history.",
-    verifiedBy: ["Heritage for Peace"],
-    images: {
-      before: {
-        url: "/images/sites/mahkama-courthouse-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/mahkama-courthouse-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
       }
-    },
-    
-    
-    sources: [
-      {
-        organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-12",
-        type: "documentation",
-      },
-    ],
-  },
-  {
-    id: "khan-yunis-old-market",
-    name: "Khan Yunis Old Market",
-    nameArabic: "سوق خان يونس القديم",
-    type: "historic-building",
-    yearBuilt: "Ottoman period (16th-19th century)",
-    yearBuiltIslamic: "10th-13th century AH",
-    coordinates: [31.3461, 34.3043], // Khan Yunis
-    status: "heavily-damaged",
-    dateDestroyed: "2024-01-20",
-    dateDestroyedIslamic: "9 Rajab 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "The historic old market of Khan Yunis, dating to the Ottoman period. The market featured traditional covered stalls, stone archways, and commercial buildings serving the southern Gaza region for centuries.",
-    historicalSignificance:
-      "Khan Yunis was established as a caravanserai (khan) during the Mamluk period and grew into a major town. The old market represents centuries of commercial activity and traditional trading practices in southern Gaza.",
-    culturalValue:
-      "The market was not only a historic architectural ensemble but a living cultural space where traditional commerce, crafts, and social interaction continued. Its heavy damage represents both architectural loss and the disruption of intangible cultural practices.",
-    verifiedBy: ["Heritage for Peace"],
-    images: {
-      before: {
-        url: "/images/sites/khan-yunis-old-market-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/khan-yunis-old-market-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
-      }
-    },
-    
-    
-    sources: [
-      {
-        organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2024-01-25",
-        type: "documentation",
-      },
-    ],
+    ]
   },
   {
     id: "sheikh-radwan-cemetery",
     name: "Sheikh Radwan Historic Cemetery",
     nameArabic: "مقبرة الشيخ رضوان",
     type: "historic-building",
-    yearBuilt: "15th century onwards",
+    yearBuilt: "Unknown",
     yearBuiltIslamic: "9th century AH onwards",
-    coordinates: [31.5285, 34.458], // Sheikh Radwan
+    coordinates: [
+      31.527,
+      34.458
+    ],
     status: "damaged",
     dateDestroyed: "2023-10-28",
     dateDestroyedIslamic: "13 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic Islamic cemetery dating from the 15th century, named after Sheikh Radwan, a revered Islamic scholar and saint. The cemetery contains historic graves, tombs, and mausoleums of important religious and community figures.",
-    historicalSignificance:
-      "The cemetery honors Sheikh Radwan, after whom the entire neighborhood is named. It serves as a burial site for generations of Gaza's families and contains tombs of notable scholars, community leaders, and ordinary residents spanning over 500 years.",
-    culturalValue:
-      "Historic cemeteries are important cultural heritage sites preserving genealogical records, funerary architecture, and community memory. Damage to Sheikh Radwan Cemetery threatens both physical monuments and the continuity of cultural and familial connections.",
-    verifiedBy: ["Heritage for Peace"],
+    sourceAssessmentDate: "2024-05-27",
+    lastUpdated: "2026-07-22",
+    description: "A historic Islamic cemetery one of Gaza City's historic cemeteries, named after Sheikh Radwan, a revered Islamic scholar and saint. The cemetery contains historic graves, tombs, and mausoleums of important religious and community figures.",
+    historicalSignificance: "The cemetery honors Sheikh Radwan, after whom the entire neighborhood is named. It serves as a burial site for generations of Gaza's families and contains tombs of notable scholars, community leaders, and ordinary residents spanning over 500 years.",
+    culturalValue: "Historic cemeteries are important cultural heritage sites preserving genealogical records, funerary architecture, and community memory. Damage to Sheikh Radwan Cemetery threatens both physical monuments and the continuity of cultural and familial connections.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/sheikh-radwan-cemetery-before.jpg",
@@ -2338,178 +2119,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-05",
+        title: "Gaza cultural heritage situation reports (preliminary report, 7 Nov 2023)",
+        date: "2023-11-07",
         type: "documentation",
+        url: "https://www.heritageforpeace.org/"
       },
-    ],
-  },
-  {
-    id: "napoleon-fort",
-    name: "Napoleon's Fort (Al-Muntar Hill)",
-    nameArabic: "قلعة نابليون - تل المنطار",
-    type: "archaeological",
-    yearBuilt: "Ancient origins, Napoleonic fortifications 1799",
-    yearBuiltIslamic: "1213 AH (fortifications)",
-    coordinates: [31.5345, 34.512], // Al-Muntar Hill, northeast Gaza
-    status: "damaged",
-    dateDestroyed: "2023-11-05",
-    dateDestroyedIslamic: "21 Rabi' al-Thani 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "Al-Muntar Hill is an ancient tell (settlement mound) with archaeological layers spanning thousands of years. Napoleon Bonaparte's forces fortified the hilltop during the 1799 Gaza campaign. The site offers strategic views over Gaza and has been continuously significant from ancient to modern times.",
-    historicalSignificance:
-      "The site combines ancient archaeological value with Napoleonic military history. Napoleon used this strategic position during his Egyptian and Syrian campaigns. The tell contains archaeological evidence from multiple periods of Gaza's history.",
-    culturalValue:
-      "Al-Muntar Hill represents both archaeological heritage (ancient settlement layers) and modern historical significance (Napoleonic fortifications). Damage to the site affects understanding of Gaza's long history from antiquity through the Napoleonic era.",
-    verifiedBy: ["Heritage for Peace"],
-    images: {
-      before: {
-        url: "/images/sites/napoleon-fort-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/napoleon-fort-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
+      {
+        organization: "Atlantic Council",
+        title: "The IDF's desecration of cemeteries in Gaza",
+        url: "https://www.atlanticcouncil.org/blogs/menasource/gaza-idf-cemetery-desecration-israel/",
+        type: "journalism"
       }
-    },
-    
-    
-    sources: [
-      {
-        organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-11-10",
-        type: "documentation",
-      },
-    ],
-  },
-  {
-    id: "al-katib-mosque",
-    name: "Al-Katib Mosque",
-    nameArabic: "مسجد الكاتب",
-    type: "mosque",
-    yearBuilt: "Mamluk period (13th century)",
-    yearBuiltIslamic: "7th century AH",
-    coordinates: [31.5075, 34.466], // Gaza City
-    status: "destroyed",
-    dateDestroyed: "2023-12-03",
-    dateDestroyedIslamic: "20 Jumada al-Ula 1445 AH",
-    sourceAssessmentDate: "2024-05-27", // Based on UNESCO assessment date
-    lastUpdated: "2025-09-30",
-    description:
-      "A historic Mamluk-era mosque dating to the 13th century, located in Gaza City's old quarter. The mosque featured traditional Mamluk architectural elements including intricate stonework and vaulted prayer halls.",
-    historicalSignificance:
-      "Al-Katib Mosque represents over 700 years of Islamic worship in Gaza. The mosque is named after 'Katib' (scribe), reflecting the historical importance of literacy and scholarship in Islamic culture.",
-    culturalValue:
-      "The mosque's destruction represents the loss of significant Mamluk religious architecture and a community worship space that served Gaza's residents for seven centuries. It was one of several important medieval mosques in Gaza's historic core.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
-    images: {
-      before: {
-        url: "/images/sites/al-katib-mosque-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/al-katib-mosque-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
-      }
-    },
-    
-    
-    sources: [
-      {
-        organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2024-05-27",
-        type: "official",
-      },
-      {
-        organization: "Heritage for Peace",
-        title: "Cultural Heritage in Gaza: Destroyed and Damaged Sites Report",
-        date: "2023-12-08",
-        type: "documentation",
-      },
-    ],
-  },
-  // NEW SITES START - Site 46
-  {
-    id: "ibn-othman-mosque",
-    name: "Ibn Othman Mosque",
-    nameArabic: "مسجد ابن عثمان",
-    type: "mosque",
-    yearBuilt: "15th century (Mamluk period)",
-    yearBuiltIslamic: "9th century AH",
-    coordinates: [31.5045, 34.4625], // Shuja'iyya district, Gaza City - ESTIMATE, needs validation
-    status: "destroyed",
-    dateDestroyed: "2024-07-01",
-    dateDestroyedIslamic: "24 Dhu al-Hijjah 1445 AH",
-    sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "The second largest mosque in Gaza with a total area of 45 by 36.5 meters. Built during the Burji Mamluk period by Sheikh Ahmad ibn Muhammad ibn Uthman. Located along Suq Street in the Turukman Quarter of the Shuja'iyya district.",
-    historicalSignificance:
-      "One of the most beautiful examples of Mamluk architecture in Palestine. The mosque represents significant Islamic architectural heritage from the medieval Mamluk period and served the Shuja'iyya community for over 600 years.",
-    culturalValue:
-      "Exemplary Mamluk-era mosque architecture. Important community gathering place in one of Gaza's densely populated eastern neighborhoods.",
-    verifiedBy: ["UNESCO"],
-    images: {
-      before: {
-        url: "/images/sites/ibn-othman-mosque-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/ibn-othman-mosque-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
-      }
-    },
-    
-    
-    sources: [
-      {
-        organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2025-10-06",
-        type: "official",
-      },
-      {
-        organization: "Archiqoo",
-        title: "Ibn Uthman Mosque Documentation",
-        url: "https://archiqoo.com/locations/ibn_uthman_mosque.php",
-        type: "documentation",
-      },
-    ],
+    ]
   },
   {
     id: "shaikh-zakaria-mosque",
@@ -2518,17 +2142,19 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "11th century (5th century AH)",
     yearBuiltIslamic: "5th century AH",
-    coordinates: [31.5055, 34.4585], // Daraj Quarter, Gaza City - ESTIMATE, needs validation
+    coordinates: [
+      31.5086,
+      34.4614
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic mosque located in Gaza's Daraj Quarter, one of several significant Islamic edifices in the Old City's Muslim Quarter. Established in the 11th century during the early Islamic period.",
-    historicalSignificance:
-      "One of the oldest mosques in Gaza, dating to the 5th century AH (11th century AD). Part of the historic Daraj Quarter's religious heritage alongside the Great Omari Mosque and al-Sayed Hashem Mosque.",
-    culturalValue:
-      "Historic mosque serving the densely populated Daraj Quarter for nearly a millennium. Important component of Gaza's Old City Islamic architectural ensemble.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic mosque located in Gaza's Daraj Quarter, one of several significant Islamic edifices in the Old City's Muslim Quarter. Established in the 11th century during the early Islamic period.",
+    historicalSignificance: "One of the oldest mosques in Gaza, attributed to the 11th century by some accounts, with Mamluk-era construction in the 14th century per others. Part of the historic Daraj Quarter's religious heritage alongside the Great Omari Mosque and al-Sayed Hashem Mosque.",
+    culturalValue: "Historic mosque serving the densely populated Daraj Quarter for nearly a millennium. Important component of Gaza's Old City Islamic architectural ensemble.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/shaikh-zakaria-mosque-before.jpg",
@@ -2547,35 +2173,35 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "al-mughrabi-mosque",
     name: "Al-Mughrabi Mosque",
     nameArabic: "مسجد المغربي",
     type: "mosque",
-    yearBuilt: "12th-13th century", // Estimate based on Maghrebi community establishment
-    coordinates: [31.5050, 34.4580], // Gaza City Old Town - ESTIMATE, needs validation
+    yearBuilt: "12th-13th century",
+    coordinates: [
+      31.5053,
+      34.4667
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic mosque serving Gaza's Maghrebi (North African) community. Named after the Maghrebi Muslims from Morocco, Algeria, Tunisia, and other North African regions who settled in Gaza.",
-    historicalSignificance:
-      "Connected to the historical Maghrebi community presence in Palestine, similar to the Mughrabi Quarter in Jerusalem established in the late 12th century. Represents the multicultural Islamic heritage of Gaza.",
-    culturalValue:
-      "Important symbol of Gaza's diverse Islamic heritage and North African community connections. Every historic mosque in Gaza has been either partially or completely destroyed according to archaeologists.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic mosque serving Gaza's Maghrebi (North African) community. Named after the Maghrebi Muslims from Morocco, Algeria, Tunisia, and other North African regions who settled in Gaza.",
+    historicalSignificance: "Connected to the historical Maghrebi community presence in Palestine, similar to the Mughrabi Quarter in Jerusalem established in the late 12th century. Represents the multicultural Islamic heritage of Gaza.",
+    culturalValue: "Important symbol of Gaza's diverse Islamic heritage and North African community connections. Every historic mosque in Gaza has been either partially or completely destroyed according to archaeologists.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/al-mughrabi-mosque-before.jpg",
@@ -2594,35 +2220,35 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "sett-ruqayya-mosque",
     name: "Sett Ruqayya Mosque",
     nameArabic: "مسجد ست رقية",
     type: "mosque",
-    yearBuilt: "Medieval period", // Specific date unknown
-    coordinates: [31.5048, 34.4575], // Gaza Governorate - ESTIMATE, needs validation
+    yearBuilt: "Medieval period",
+    coordinates: [
+      31.4999,
+      34.4703
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic mosque in Gaza City. Named after Sett Ruqayya, part of Gaza's historic religious infrastructure.",
-    historicalSignificance:
-      "One of Gaza's historic mosques documented by UNESCO as damaged or destroyed during the 2023-2024 conflict. Represents Gaza's medieval Islamic heritage.",
-    culturalValue:
-      "Historic neighborhood mosque serving local community for centuries. Part of Gaza's extensive network of religious sites.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic mosque in Gaza City. Named after Sett Ruqayya, part of Gaza's historic religious infrastructure.",
+    historicalSignificance: "One of Gaza's historic mosques documented by UNESCO as damaged or destroyed during the 2023-2024 conflict. Represents Gaza's medieval Islamic heritage.",
+    culturalValue: "Historic neighborhood mosque serving local community for centuries. Part of Gaza's extensive network of religious sites.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/sett-ruqayya-mosque-before.jpg",
@@ -2641,129 +2267,35 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
-  },
-  {
-    id: "ash-sheikh-shaban-mosque",
-    name: "Ash-Sheikh Sha'ban Mosque",
-    nameArabic: "مسجد الشيخ شعبان",
-    type: "mosque",
-    yearBuilt: "Medieval period", // Specific date unknown
-    coordinates: [31.5052, 34.4578], // Gaza Governorate - ESTIMATE, needs validation
-    status: "destroyed",
-    sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic mosque in Gaza City named after Sheikh Sha'ban. Part of Gaza's extensive network of medieval religious sites.",
-    historicalSignificance:
-      "One of Gaza's historic mosques documented by UNESCO as damaged or destroyed during the 2023-2024 conflict. Named after a local religious figure Sheikh Sha'ban.",
-    culturalValue:
-      "Historic neighborhood mosque serving local community. Part of Gaza's Islamic architectural heritage.",
-    verifiedBy: ["UNESCO"],
-    images: {
-      before: {
-        url: "/images/sites/ash-sheikh-shaban-mosque-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/ash-sheikh-shaban-mosque-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
+        type: "official"
       }
-    },
-    
-    
-    sources: [
-      {
-        organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2025-10-06",
-        type: "official",
-      },
-    ],
-  },
-  {
-    id: "zawiyat-al-hnoud-mosque",
-    name: "Zawiyat Al Hnoud Mosque",
-    nameArabic: "زاوية الهنود",
-    type: "mosque",
-    yearBuilt: "Medieval period", // Specific date unknown
-    coordinates: [31.5046, 34.4582], // Gaza Governorate - ESTIMATE, needs validation
-    status: "destroyed",
-    sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic zawiya (Sufi lodge/mosque) in Gaza City. Zawiyat Al Hnoud served as both a place of worship and Sufi spiritual center.",
-    historicalSignificance:
-      "Represents Gaza's Sufi Islamic tradition. Zawiyas served as important centers for spiritual education and community gathering in medieval Islamic societies.",
-    culturalValue:
-      "Important example of Sufi architectural and spiritual heritage in Gaza. Zawiyas traditionally provided hospitality, education, and spiritual guidance.",
-    verifiedBy: ["UNESCO"],
-    images: {
-      before: {
-        url: "/images/sites/zawiyat-al-hnoud-mosque-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/zawiyat-al-hnoud-mosque-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2025-10-23",
-        description: "Satellite imagery from 2025-10-23"
-      }
-    },
-    
-    
-    sources: [
-      {
-        organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2025-10-06",
-        type: "official",
-      },
-    ],
+    ]
   },
   {
     id: "ali-ibn-marwan-shrine",
     name: "Ali Ibn Marwan Shrine",
     nameArabic: "ضريح علي بن مروان",
     type: "monument",
-    yearBuilt: "12th-13th century", // Medieval period
-    coordinates: [31.5044, 34.4590], // Gaza City - ESTIMATE (near Ibn Marwan Mosque)
+    yearBuilt: "12th-13th century",
+    coordinates: [
+      31.5042,
+      34.469
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Shrine dedicated to Ali Ibn Marwan, separate from the adjacent Ali Ibn Marwan Mosque. Traditional Islamic shrine architecture marking a religious figure's burial site or memorial.",
-    historicalSignificance:
-      "Medieval Islamic shrine representing Gaza's tradition of venerating religious scholars and saints. Shrines like this served as pilgrimage destinations and community focal points.",
-    culturalValue:
-      "Important monument in Gaza's Islamic heritage. Shrines traditionally served as places of prayer, pilgrimage, and community gathering.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Shrine dedicated to Ali Ibn Marwan, separate from the adjacent Ali Ibn Marwan Mosque. Traditional Islamic shrine architecture marking a religious figure's burial site or memorial.",
+    historicalSignificance: "Medieval Islamic shrine representing Gaza's tradition of venerating religious scholars and saints. Shrines like this served as pilgrimage destinations and community focal points.",
+    culturalValue: "Important monument in Gaza's Islamic heritage. Shrines traditionally served as places of prayer, pilgrimage, and community gathering.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/ali-ibn-marwan-shrine-before.jpg",
@@ -2782,17 +2314,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "abu-al-azm-shamshon-shrine",
@@ -2800,17 +2330,20 @@ export const mockSites: Site[] = [
     nameArabic: "ضريح أبو الأزم / شمشون",
     type: "monument",
     yearBuilt: "Medieval period",
-    coordinates: [31.5042, 34.4588], // Gaza Governorate - ESTIMATE, needs validation
+    coordinates: [
+      31.5042,
+      34.4588
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic shrine also known as the Shamshon (Samson) Shrine. Represents the complex interfaith heritage of Gaza, where Islamic and pre-Islamic traditions intersect.",
-    historicalSignificance:
-      "Notable for its dual naming connecting Islamic and biblical traditions. The shrine's association with Samson reflects Gaza's layered religious history spanning multiple faiths and civilizations.",
-    culturalValue:
-      "Unique monument demonstrating Gaza's multicultural and multi-religious heritage. Shrines of this type often became pilgrimage sites for diverse communities.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic shrine also known as the Shamshon (Samson) Shrine. Represents the complex interfaith heritage of Gaza, where Islamic and pre-Islamic traditions intersect.",
+    historicalSignificance: "Notable for its dual naming connecting Islamic and biblical traditions. The shrine's association with Samson reflects Gaza's layered religious history spanning multiple faiths and civilizations.",
+    culturalValue: "Unique monument demonstrating Gaza's multicultural and multi-religious heritage. Shrines of this type often became pilgrimage sites for diverse communities.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/abu-al-azm-shamshon-shrine-before.jpg",
@@ -2829,17 +2362,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "unknown-soldier-memorial-gaza",
@@ -2847,17 +2378,19 @@ export const mockSites: Site[] = [
     nameArabic: "نصب الجندي المجهول",
     type: "monument",
     yearBuilt: "20th century",
-    coordinates: [31.5060, 34.4600], // Gaza City - ESTIMATE, needs validation
+    coordinates: [
+      31.5194,
+      34.4446
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Memorial monument honoring fallen soldiers. Public monument serving as a site of remembrance and national commemoration in Gaza City.",
-    historicalSignificance:
-      "20th century monument representing Palestinian national memory and commemoration of those who died in conflicts. Unknown Soldier memorials are traditional sites for honoring war dead.",
-    culturalValue:
-      "Important site for public commemoration and national remembrance. Monuments like this serve as focal points for memorial ceremonies and collective memory.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Memorial monument honoring fallen soldiers. Public monument serving as a site of remembrance and national commemoration in Gaza City.",
+    historicalSignificance: "20th century monument representing Palestinian national memory and commemoration of those who died in conflicts. Unknown Soldier memorials are traditional sites for honoring war dead.",
+    culturalValue: "Important site for public commemoration and national remembrance. Monuments like this serve as focal points for memorial ceremonies and collective memory.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/unknown-soldier-memorial-gaza-before.jpg",
@@ -2876,17 +2409,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "tell-al-muntar",
@@ -2894,17 +2425,19 @@ export const mockSites: Site[] = [
     nameArabic: "تل المنطار",
     type: "archaeological",
     yearBuilt: "Ancient (Bronze Age onwards)",
-    coordinates: [31.5100, 34.4750], // Eastern Gaza City - ESTIMATE, needs validation
+    coordinates: [
+      31.4903,
+      34.4744
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Ancient archaeological tell (settlement mound) in Gaza. Tell Al-Muntar contains layers of human occupation spanning multiple historical periods.",
-    historicalSignificance:
-      "Archaeological site documenting continuous human settlement over millennia. Tells are artificial hills formed by successive generations building on the ruins of previous settlements.",
-    culturalValue:
-      "Important archaeological resource for understanding Gaza's ancient history. Contains stratigraphic evidence of Bronze Age, Iron Age, and later civilizations.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Ancient archaeological tell (settlement mound) in Gaza. Tell Al-Muntar contains layers of human occupation spanning multiple historical periods. The hill is also the site of the Napoleon-era fort (Qasr al-Muntar).",
+    historicalSignificance: "Archaeological site documenting continuous human settlement over millennia. Tells are artificial hills formed by successive generations building on the ruins of previous settlements.",
+    culturalValue: "Important archaeological resource for understanding Gaza's ancient history. Contains stratigraphic evidence of Bronze Age, Iron Age, and later civilizations.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/tell-al-muntar-before.jpg",
@@ -2923,17 +2456,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "tell-rafah",
@@ -2941,17 +2472,20 @@ export const mockSites: Site[] = [
     nameArabic: "تل رفح",
     type: "archaeological",
     yearBuilt: "Ancient (Bronze Age onwards)",
-    coordinates: [31.2794, 34.2458], // Rafah - ESTIMATE based on Rafah city center
+    coordinates: [
+      31.2794,
+      34.2458
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Ancient archaeological tell in Rafah, southern Gaza Strip. Settlement mound containing multiple layers of occupation from various historical periods.",
-    historicalSignificance:
-      "Important archaeological site documenting ancient civilizations in southern Gaza. Rafah has been inhabited since ancient times due to its strategic location on the Via Maris trade route.",
-    culturalValue:
-      "Critical archaeological resource for understanding southern Gaza's ancient history. Contains evidence of Egyptian, Canaanite, and later civilizations.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Ancient archaeological tell in Rafah, southern Gaza Strip. Settlement mound containing multiple layers of occupation from various historical periods.",
+    historicalSignificance: "Important archaeological site documenting ancient civilizations in southern Gaza. Rafah has been inhabited since ancient times due to its strategic location on the Via Maris trade route.",
+    culturalValue: "Critical archaeological resource for understanding southern Gaza's ancient history. Contains evidence of Egyptian, Canaanite, and later civilizations.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/tell-rafah-before.jpg",
@@ -2970,17 +2504,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "al-bureij-mosaic",
@@ -2988,17 +2520,20 @@ export const mockSites: Site[] = [
     nameArabic: "فسيفساء البريج",
     type: "archaeological",
     yearBuilt: "Byzantine period (4th-7th century)",
-    coordinates: [31.4432, 34.3847], // Al Bureij, Deir al-Balah - ESTIMATE based on camp location
+    coordinates: [
+      31.4432,
+      34.3847
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Byzantine-era mosaic floor located in Al Bureij, central Gaza Strip. Part of the region's extensive Byzantine archaeological heritage including church and monastery remains.",
-    historicalSignificance:
-      "Representative of Gaza's rich Byzantine period (324-638 AD) when the region was an important Christian center. Byzantine mosaics are significant artistic and cultural artifacts.",
-    culturalValue:
-      "Important example of Byzantine artistry and craftsmanship. Mosaic floors often depicted religious scenes, geometric patterns, and provided insight into Byzantine Christian life.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Byzantine-era mosaic floor located in Al Bureij, central Gaza Strip. Part of the region's extensive Byzantine archaeological heritage including church and monastery remains.",
+    historicalSignificance: "Representative of Gaza's rich Byzantine period (324-638 AD) when the region was an important Christian center. Byzantine mosaics are significant artistic and cultural artifacts.",
+    culturalValue: "Important example of Byzantine artistry and craftsmanship. Mosaic floors often depicted religious scenes, geometric patterns, and provided insight into Byzantine Christian life.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/al-bureij-mosaic-before.jpg",
@@ -3017,17 +2552,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "english-cemetery-az-zawaida",
@@ -3035,17 +2568,19 @@ export const mockSites: Site[] = [
     nameArabic: "المقبرة الإنجليزية، الزوايدة",
     type: "cemetery",
     yearBuilt: "1917-1918 (World War I)",
-    coordinates: [31.4500, 34.3700], // Az-Zawaida, Deir Al Balah - ESTIMATE
+    coordinates: [
+      31.4255,
+      34.3741
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "British Commonwealth war cemetery in Az-Zawaida containing graves of soldiers who died during World War I Palestine campaigns. Maintained by the Commonwealth War Graves Commission.",
-    historicalSignificance:
-      "Memorial to British Empire soldiers who fought in the Palestine theater during World War I (1917-1918). Part of the historical record of the British conquest of Ottoman Palestine.",
-    culturalValue:
-      "International war memorial and historical site. Commonwealth war cemeteries are protected under international heritage conventions and serve as places of remembrance.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "British Commonwealth war cemetery in Az-Zawaida containing graves of soldiers who died during World War I Palestine campaigns. Maintained by the Commonwealth War Graves Commission.",
+    historicalSignificance: "Memorial to British Empire soldiers who fought in the Palestine theater during World War I (1917-1918). Part of the historical record of the British conquest of Ottoman Palestine.",
+    culturalValue: "International war memorial and historical site. Commonwealth war cemeteries are protected under international heritage conventions and serve as places of remembrance.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/english-cemetery-az-zawaida-before.jpg",
@@ -3064,17 +2599,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "old-gaza-municipality-building",
@@ -3082,17 +2615,19 @@ export const mockSites: Site[] = [
     nameArabic: "مبنى بلدية غزة القديم",
     type: "historic-building",
     yearBuilt: "Early 20th century (Ottoman/British Mandate era)",
-    coordinates: [31.5050, 34.4600], // Omar Al-Mukhtar Street, Gaza City - ESTIMATE
+    coordinates: [
+      31.5069,
+      34.46
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic municipality building on Omar Al-Mukhtar Street in Gaza City. The Gaza municipality was established in 1893, with modern mayorship beginning in 1906 under Said al-Shawa.",
-    historicalSignificance:
-      "Architectural monument of local importance representing Gaza's administrative development during the Ottoman and British Mandate periods. The building housed the municipal government that served Gaza City for over a century.",
-    culturalValue:
-      "Important civic architecture from the early modern period of Gaza's development. Represents the establishment of formal municipal governance in Gaza.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic municipality building on Omar Al-Mukhtar Street in Gaza City. The Gaza municipality was established in 1893, with modern mayorship beginning in 1906 under Said al-Shawa.",
+    historicalSignificance: "Architectural monument of local importance representing Gaza's administrative development during the Ottoman and British Mandate periods. The building housed the municipal government that served Gaza City for over a century.",
+    culturalValue: "Important civic architecture from the early modern period of Gaza's development. Represents the establishment of formal municipal governance in Gaza.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/old-gaza-municipality-building-before.jpg",
@@ -3111,17 +2646,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "an-nassr-cinema",
@@ -3129,17 +2662,19 @@ export const mockSites: Site[] = [
     nameArabic: "سينما النصر",
     type: "historic-building",
     yearBuilt: "Mid-20th century",
-    coordinates: [31.5045, 34.4595], // Gaza City - ESTIMATE
+    coordinates: [
+      31.5103,
+      34.4563
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic cinema building in Gaza City. One of Gaza's cultural entertainment venues from the mid-20th century representing the city's vibrant cultural life before the conflicts.",
-    historicalSignificance:
-      "Represents Gaza's mid-20th century cultural and entertainment scene. Cinemas were important social gathering places and cultural institutions in Arab cities during this period.",
-    culturalValue:
-      "Important cultural building representing Gaza's modern urban development and entertainment culture. Cinema buildings often featured distinctive architectural styles.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic cinema building in Gaza City. One of Gaza's cultural entertainment venues from the mid-20th century representing the city's vibrant cultural life before the conflicts.",
+    historicalSignificance: "Represents Gaza's mid-20th century cultural and entertainment scene. Cinemas were important social gathering places and cultural institutions in Arab cities during this period.",
+    culturalValue: "Important cultural building representing Gaza's modern urban development and entertainment culture. Cinema buildings often featured distinctive architectural styles.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/an-nassr-cinema-before.jpg",
@@ -3158,17 +2693,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "as-samer-cinema",
@@ -3176,17 +2709,20 @@ export const mockSites: Site[] = [
     nameArabic: "سينما السامر",
     type: "historic-building",
     yearBuilt: "Mid-20th century",
-    coordinates: [31.5048, 34.4598], // Gaza City - ESTIMATE
+    coordinates: [
+      31.5048,
+      34.4598
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic cinema in Gaza City. One of several entertainment venues that served Gaza's population during the mid-20th century cultural renaissance.",
-    historicalSignificance:
-      "Part of Gaza's mid-20th century cultural infrastructure. Cinemas were central to urban social life and cultural exchange in the modern Arab world.",
-    culturalValue:
-      "Represents Gaza's vibrant cultural scene before decades of conflict. Cinema buildings were important architectural and social institutions.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic cinema in Gaza City. One of several entertainment venues that served Gaza's population during the mid-20th century cultural renaissance.",
+    historicalSignificance: "Part of Gaza's mid-20th century cultural infrastructure. Cinemas were central to urban social life and cultural exchange in the modern Arab world.",
+    culturalValue: "Represents Gaza's vibrant cultural scene before decades of conflict. Cinema buildings were important architectural and social institutions.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/as-samer-cinema-before.jpg",
@@ -3205,17 +2741,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "baptist-hospital-emergency-building",
@@ -3223,17 +2757,19 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى المعمداني - مبنى الطوارئ",
     type: "hospital",
     yearBuilt: "20th century",
-    coordinates: [31.5055, 34.4605], // Gaza City - ESTIMATE
+    coordinates: [
+      31.5047,
+      34.4615
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic emergency building of the Baptist Hospital in Gaza City. Part of a significant medical institution providing healthcare services to Gaza's population.",
-    historicalSignificance:
-      "Represents Gaza's modern medical infrastructure development. The Baptist Hospital has been an important healthcare provider in Gaza for decades.",
-    culturalValue:
-      "Important healthcare facility with architectural and institutional significance. Hospital buildings represent community welfare and medical advancement.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic emergency building of the Baptist Hospital in Gaza City. Part of a significant medical institution providing healthcare services to Gaza's population.",
+    historicalSignificance: "Represents Gaza's modern medical infrastructure development. The Baptist Hospital has been an important healthcare provider in Gaza for decades.",
+    culturalValue: "Important healthcare facility with architectural and institutional significance. Hospital buildings represent community welfare and medical advancement.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/baptist-hospital-emergency-building-before.jpg",
@@ -3252,17 +2788,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "baptist-hospital-surgery-building",
@@ -3270,17 +2804,19 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى المعمداني - مبنى الجراحة",
     type: "hospital",
     yearBuilt: "20th century",
-    coordinates: [31.5056, 34.4606], // Gaza City - ESTIMATE (adjacent to emergency building)
+    coordinates: [
+      31.5048,
+      34.4616
+    ],
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic surgery building of the Baptist Hospital in Gaza City. Critical medical facility providing surgical services to the Gaza population.",
-    historicalSignificance:
-      "Part of Gaza's essential medical infrastructure. The Baptist Hospital complex represents decades of healthcare provision in Gaza.",
-    culturalValue:
-      "Important healthcare facility with institutional significance. Surgical wings were critical components of Gaza's limited medical infrastructure.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic surgery building of the Baptist Hospital in Gaza City. Critical medical facility providing surgical services to the Gaza population.",
+    historicalSignificance: "Part of Gaza's essential medical infrastructure. The Baptist Hospital complex represents decades of healthcare provision in Gaza.",
+    culturalValue: "Important healthcare facility with institutional significance. Surgical wings were critical components of Gaza's limited medical infrastructure.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/baptist-hospital-surgery-building-before.jpg",
@@ -3299,17 +2835,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "ebaf-storage-facility",
@@ -3317,19 +2851,22 @@ export const mockSites: Site[] = [
     nameArabic: "مخزن المدرسة الكتابية والأثرية الفرنسية",
     type: "archive",
     yearBuilt: "20th century",
-    coordinates: [31.5052, 34.4592], // Al-Kawthar Tower, Rimal, Gaza City
+    coordinates: [
+      31.5052,
+      34.4592
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2025-09-14",
     dateDestroyedIslamic: "21 Rabi' al-Awwal 1447 AH",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Storage facility for movable cultural property operated by the École Biblique et Archéologique Française (EBAF), housed in Al-Kawthar Tower in the Rimal district. Registered under the 1954 Hague Convention for the Protection of Cultural Property in Armed Conflict. After receiving an IDF evacuation SMS on September 10, 2025, six trucks completed an emergency transfer of approximately 70% of the collection over three days. The remaining 30% — predominantly ceramics and lapidary objects — was destroyed when the building was struck on September 14, 2025.",
-    historicalSignificance:
-      "The EBAF has conducted archaeological research in Gaza and Palestine since the 19th century. This facility held 28–30 years of French biblical and archaeological field research and excavated artifacts. Its Hague Convention registration — intended to protect it under international law — did not prevent the strike.",
-    culturalValue:
-      "The partial destruction of a Hague Convention-protected archaeological repository represents a documented violation of international cultural property law. The ~30% of the collection that could not be evacuated in time — including ceramic and lapidary objects — was irretrievably lost.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Storage facility for movable cultural property operated by the École Biblique et Archéologique Française (EBAF), housed in Al-Kawthar Tower in the Rimal district. Registered under the 1954 Hague Convention for the Protection of Cultural Property in Armed Conflict. After receiving an IDF evacuation SMS on September 10, 2025, six trucks completed an emergency transfer of approximately 70% of the collection over three days. The remaining 30% — predominantly ceramics and lapidary objects — was destroyed when the building was struck on September 14, 2025.",
+    historicalSignificance: "The EBAF has conducted archaeological research in Gaza and Palestine since the 19th century. This facility held 28–30 years of French biblical and archaeological field research and excavated artifacts. Its Hague Convention registration — intended to protect it under international law — did not prevent the strike.",
+    culturalValue: "The partial destruction of a Hague Convention-protected archaeological repository represents a documented violation of international cultural property law. The ~30% of the collection that could not be evacuated in time — including ceramic and lapidary objects — was irretrievably lost.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/ebaf-storage-facility-before.jpg",
@@ -3348,17 +2885,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "hani-saba-house",
@@ -3366,17 +2901,20 @@ export const mockSites: Site[] = [
     nameArabic: "بيت هاني صبا",
     type: "historic-building",
     yearBuilt: "Ottoman period (late 19th - early 20th century)",
-    coordinates: [31.5048, 34.4585], // Gaza City - ESTIMATE
+    coordinates: [
+      31.5048,
+      34.4585
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic house in Gaza City, part of the extensive network of over 320 architectural heritage sites in Gaza. Representative of Ottoman-era residential architecture.",
-    historicalSignificance:
-      "One of Gaza's documented heritage buildings of historical and artistic interest. Represents the Ottoman period architectural legacy in Gaza City's historic neighborhoods.",
-    culturalValue:
-      "Important example of traditional Gaza residential architecture. Part of the Old City's dense urban fabric that showcased Palestinian architectural heritage.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic house in Gaza City, part of the extensive network of over 320 architectural heritage sites in Gaza. Representative of Ottoman-era residential architecture.",
+    historicalSignificance: "One of Gaza's documented heritage buildings of historical and artistic interest. Represents the Ottoman period architectural legacy in Gaza City's historic neighborhoods.",
+    culturalValue: "Important example of traditional Gaza residential architecture. Part of the Old City's dense urban fabric that showcased Palestinian architectural heritage.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/hani-saba-house-before.jpg",
@@ -3395,17 +2933,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "raghib-al-alami-house",
@@ -3413,17 +2949,20 @@ export const mockSites: Site[] = [
     nameArabic: "بيت راغب العلمي",
     type: "historic-building",
     yearBuilt: "20th century (modern period)",
-    coordinates: [31.5052, 34.4583], // Daraj Quarter, Gaza City - ESTIMATE
+    coordinates: [
+      31.5052,
+      34.4583
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Historic house belonging to Raghib al-Alami, who served as mayor of Gaza City between 1965 and 1970 during the Egyptian administration. Also referred to as 'Subat al-Alami' or the 'Alami House'. Located in the Daraj quarter near the Omari Mosque and Basha Palace.",
-    historicalSignificance:
-      "Home of a prominent political figure in modern Gaza history. The house and its adjoining arcade represented Gaza's mid-20th century civic leadership and architectural heritage. Extensive damage was documented by UNESCO.",
-    culturalValue:
-      "Important cultural heritage center that was renovated before its destruction. Represents Gaza's modern political and social history as well as traditional architecture.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Historic house belonging to Raghib al-Alami, who served as mayor of Gaza City between 1965 and 1970 during the Egyptian administration. Also referred to as 'Subat al-Alami' or the 'Alami House'. Located in the Daraj quarter near the Omari Mosque and Basha Palace.",
+    historicalSignificance: "Home of a prominent political figure in modern Gaza history. The house and its adjoining arcade represented Gaza's mid-20th century civic leadership and architectural heritage. Extensive damage was documented by UNESCO.",
+    culturalValue: "Important cultural heritage center that was renovated before its destruction. Represents Gaza's modern political and social history as well as traditional architecture.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/raghib-al-alami-house-before.jpg",
@@ -3442,17 +2981,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Strip Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "historic-gaza-old-city-residential-a",
@@ -3460,17 +2997,20 @@ export const mockSites: Site[] = [
     nameArabic: "المباني السكنية التاريخية في مدينة غزة القديمة (المجموعة أ)",
     type: "historic-building",
     yearBuilt: "Mamluk and Ottoman periods (13th-20th century)",
-    coordinates: [31.5050, 34.4580], // Gaza Old City center - ESTIMATE
+    coordinates: [
+      31.505,
+      34.458
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2025-11-09",
-    description:
-      "Collection of approximately 25-30 historic residential buildings in Gaza's Old City. These structures date primarily from the Mamluk (13th-16th century) and Ottoman (16th-20th century) periods. The buildings feature traditional Palestinian architectural elements including stone arcades, carved decorations, domed halls, and courtyard layouts.",
-    historicalSignificance:
-      "These buildings represent Gaza's dense historic urban fabric and continuous habitation over centuries. Mamluk architecture featured geometric patterns, domes, and cross-vault designs, while Ottoman-era buildings showcased distinctive aesthetic components with high artistic and historical values.",
-    culturalValue:
-      "Critical examples of traditional Palestinian residential architecture. UNESCO verified these as part of 81 buildings of historical and/or artistic interest damaged or destroyed since October 7, 2023. As of 2024, approximately 63% of Gaza's 320+ heritage sites have sustained damage.",
-    verifiedBy: ["UNESCO"],
+    description: "Collection of approximately 25-30 historic residential buildings in Gaza's Old City. These structures date primarily from the Mamluk (13th-16th century) and Ottoman (16th-20th century) periods. The buildings feature traditional Palestinian architectural elements including stone arcades, carved decorations, domed halls, and courtyard layouts.",
+    historicalSignificance: "These buildings represent Gaza's dense historic urban fabric and continuous habitation over centuries. Mamluk architecture featured geometric patterns, domes, and cross-vault designs, while Ottoman-era buildings showcased distinctive aesthetic components with high artistic and historical values.",
+    culturalValue: "Critical examples of traditional Palestinian residential architecture. UNESCO verified these as part of 81 buildings of historical and/or artistic interest damaged or destroyed since October 7, 2023. As of 2024, approximately 63% of Gaza's 320+ heritage sites have sustained damage.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/historic-gaza-old-city-residential-a-before.jpg",
@@ -3489,22 +3029,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Gaza Strip Damage Assessment - Historic Buildings",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
+        type: "official"
+      }
     ],
     metadata: {
       isCollection: true,
       estimatedBuildingCount: "25-30",
-      collectionRationale: "UNESCO lists these as a group of historic buildings without individual names",
-    },
+      collectionRationale: "UNESCO lists these as a group of historic buildings without individual names"
+    }
   },
   {
     id: "historic-daraj-quarter-buildings",
@@ -3512,17 +3050,20 @@ export const mockSites: Site[] = [
     nameArabic: "المباني التاريخية في حي الدرج (المجموعة ب)",
     type: "historic-building",
     yearBuilt: "Mamluk and Ottoman periods (13th-20th century)",
-    coordinates: [31.5055, 34.4585], // Daraj Quarter - ESTIMATE
+    coordinates: [
+      31.5068,
+      34.4661
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
-    lastUpdated: "2025-11-09",
-    description:
-      "Collection of approximately 20-25 historic buildings in the Daraj Quarter, Gaza City's densely populated northwestern quarter situated on an oblong hill. The Daraj Quarter, referred to as the 'Muslim Quarter,' contains some of Gaza's most significant Islamic and Ottoman architecture.",
-    historicalSignificance:
-      "The Daraj Quarter has been a center of religious and civic life for centuries, housing multiple historic mosques, houses, and public buildings. The quarter's architecture represents the evolution of Gaza from the Mamluk period through Ottoman rule.",
-    culturalValue:
-      "These buildings formed the core of Gaza's Old City historic ensemble. The Daraj Quarter's architecture showcased traditional urban planning, with narrow streets, courtyard houses, and public buildings integrated into a dense urban fabric that had survived for centuries until the 2023-2024 conflict.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Collection of approximately 20-25 historic buildings in the Daraj Quarter, Gaza City's densely populated northwestern quarter situated on an oblong hill. The Daraj Quarter, referred to as the 'Muslim Quarter,' contains some of Gaza's most significant Islamic and Ottoman architecture.",
+    historicalSignificance: "The Daraj Quarter has been a center of religious and civic life for centuries, housing multiple historic mosques, houses, and public buildings. The quarter's architecture represents the evolution of Gaza from the Mamluk period through Ottoman rule.",
+    culturalValue: "These buildings formed the core of Gaza's Old City historic ensemble. The Daraj Quarter's architecture showcased traditional urban planning, with narrow streets, courtyard houses, and public buildings integrated into a dense urban fabric that had survived for centuries until the 2023-2024 conflict.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/historic-daraj-quarter-buildings-before.jpg",
@@ -3541,22 +3082,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Gaza Strip Damage Assessment - Historic Buildings",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
+        type: "official"
+      }
     ],
     metadata: {
       isCollection: true,
       estimatedBuildingCount: "20-25",
-      collectionRationale: "UNESCO lists these Daraj Quarter buildings as a group without individual identification",
-    },
+      collectionRationale: "UNESCO lists these Daraj Quarter buildings as a group without individual identification"
+    }
   },
   {
     id: "historic-gaza-commercial-public-buildings",
@@ -3564,17 +3103,20 @@ export const mockSites: Site[] = [
     nameArabic: "المباني التجارية والعامة التاريخية في غزة (المجموعة ج)",
     type: "historic-building",
     yearBuilt: "Ottoman and British Mandate periods (19th-20th century)",
-    coordinates: [31.5045, 34.4590], // Gaza City commercial districts - ESTIMATE
+    coordinates: [
+      31.5045,
+      34.459
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2025-11-09",
-    description:
-      "Collection of approximately 15-20 historic commercial and public buildings from the late Ottoman period through the British Mandate era (1890s-1940s). These structures include shops, warehouses, administrative buildings, and mixed-use commercial-residential buildings that formed Gaza City's economic infrastructure.",
-    historicalSignificance:
-      "These buildings represent Gaza's modernization during the late Ottoman period and British Mandate. The establishment of formal municipal governance in 1893 and subsequent urban development created new architectural typologies blending traditional and modern elements.",
-    culturalValue:
-      "Important examples of Gaza's transition to modern urban planning and architecture. Buildings from this period often featured distinctive facades, arched windows, and mixed Ottoman-European architectural influences representing Gaza's integration into global trade networks.",
-    verifiedBy: ["UNESCO"],
+    description: "Collection of approximately 15-20 historic commercial and public buildings from the late Ottoman period through the British Mandate era (1890s-1940s). These structures include shops, warehouses, administrative buildings, and mixed-use commercial-residential buildings that formed Gaza City's economic infrastructure.",
+    historicalSignificance: "These buildings represent Gaza's modernization during the late Ottoman period and British Mandate. The establishment of formal municipal governance in 1893 and subsequent urban development created new architectural typologies blending traditional and modern elements.",
+    culturalValue: "Important examples of Gaza's transition to modern urban planning and architecture. Buildings from this period often featured distinctive facades, arched windows, and mixed Ottoman-European architectural influences representing Gaza's integration into global trade networks.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/historic-gaza-commercial-public-buildings-before.jpg",
@@ -3593,22 +3135,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2025-10-23"
       }
     },
-    
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Gaza Strip Damage Assessment - Historic Buildings",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
+        type: "official"
+      }
     ],
     metadata: {
       isCollection: true,
       estimatedBuildingCount: "15-20",
-      collectionRationale: "UNESCO lists these commercial/public buildings as a group without individual identification",
-    },
+      collectionRationale: "UNESCO lists these commercial/public buildings as a group without individual identification"
+    }
   },
   {
     id: "historic-gaza-zaytoun-quarter-buildings",
@@ -3616,17 +3156,20 @@ export const mockSites: Site[] = [
     nameArabic: "المباني التاريخية في حي الزيتون (المجموعة د)",
     type: "historic-building",
     yearBuilt: "Ottoman period (16th-20th century)",
-    coordinates: [31.5030, 34.4620], // Zaytoun/Zeitoun Quarter - ESTIMATE
+    coordinates: [
+      31.503,
+      34.462
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-10-06",
     lastUpdated: "2025-11-09",
-    description:
-      "Collection of approximately 10-15 historic buildings in the Zaytoun (Zeitoun) Quarter of Gaza City. This southeastern neighborhood contains residential and religious architecture from the Ottoman period, including structures associated with Gaza's diverse religious communities.",
-    historicalSignificance:
-      "The Zaytoun Quarter was historically known for its multi-religious character and traditional architecture. The quarter housed several significant religious sites including parts of the Jewish Quarter heritage and traditional Muslim neighborhoods.",
-    culturalValue:
-      "These buildings represent Gaza's diverse cultural and religious heritage. The Zaytoun Quarter's architecture reflected the coexistence of different communities in Ottoman Gaza, with traditional houses and religious structures forming an integrated urban landscape.",
-    verifiedBy: ["UNESCO"],
+    description: "Collection of approximately 10-15 historic buildings in the Zaytoun (Zeitoun) Quarter of Gaza City. This southeastern neighborhood contains residential and religious architecture from the Ottoman period, including structures associated with Gaza's diverse religious communities.",
+    historicalSignificance: "The Zaytoun Quarter was historically known for its multi-religious character and traditional architecture. The quarter housed several significant religious sites including parts of the Jewish Quarter heritage and traditional Muslim neighborhoods.",
+    culturalValue: "These buildings represent Gaza's diverse cultural and religious heritage. The Zaytoun Quarter's architecture reflected the coexistence of different communities in Ottoman Gaza, with traditional houses and religious structures forming an integrated urban landscape.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/historic-gaza-zaytoun-quarter-buildings-before.jpg",
@@ -3645,21 +3188,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
         title: "Gaza Strip Damage Assessment - Historic Buildings",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2025-10-06",
-        type: "official",
-      },
+        type: "official"
+      }
     ],
     metadata: {
       isCollection: true,
       estimatedBuildingCount: "10-15",
-      collectionRationale: "UNESCO lists these Zaytoun Quarter buildings as a group without individual identification",
-    },
+      collectionRationale: "UNESCO lists these Zaytoun Quarter buildings as a group without individual identification"
+    }
   },
   {
     id: "barquq-castle",
@@ -3668,19 +3210,21 @@ export const mockSites: Site[] = [
     type: "monument",
     yearBuilt: "1387–1388 CE",
     yearBuiltIslamic: "789–790 AH",
-    coordinates: [31.3444, 34.3021], // Khan Yunis city center
+    coordinates: [
+      31.3432,
+      34.3033
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2024-04-07",
     dateDestroyedIslamic: "28 Ramadan 1445 AH",
     sourceAssessmentDate: "2024-07-22",
-    lastUpdated: "2025-09-30",
-    description:
-      "A Mamluk-era fortified caravanserai-mosque built in 1387–1388 CE by Yunis al-Nawruzi under Sultan Barquq of the Circassian Mamluk dynasty. One of the largest surviving Mamluk structures in Gaza, it served as a caravanserai on the Damascus–Cairo trade and pilgrimage route (Via Maris). Large sections of walls and towers collapsed; craters and shrapnel marks documented on remaining facades.",
-    historicalSignificance:
-      "Built during the Circassian Mamluk period, Barquq Castle represents the administrative and commercial infrastructure of 14th-century Palestine. It functioned as both a fortified gateway and a waystation for merchants and pilgrims traveling between Egypt and the Levant, reflecting Gaza's strategic importance on the Via Maris.",
-    culturalValue:
-      "As one of the most significant Mamluk structures remaining in the Gaza Strip, the castle embodied over 600 years of architectural and historical continuity. Its partial destruction eliminates an irreplaceable example of Mamluk military and civic architecture in Palestine.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era fortified caravanserai-mosque built in 1387–1388 CE by Yunis al-Nawruzi under Sultan Barquq of the Circassian Mamluk dynasty. One of the largest surviving Mamluk structures in Gaza, it served as a caravanserai on the Damascus–Cairo trade and pilgrimage route (Via Maris). Large sections of walls and towers collapsed; craters and shrapnel marks documented on remaining facades.",
+    historicalSignificance: "Built during the Circassian Mamluk period, Barquq Castle represents the administrative and commercial infrastructure of 14th-century Palestine. It functioned as both a fortified gateway and a waystation for merchants and pilgrims traveling between Egypt and the Levant, reflecting Gaza's strategic importance on the Via Maris.",
+    culturalValue: "As one of the most significant Mamluk structures remaining in the Gaza Strip, the castle embodied over 600 years of architectural and historical continuity. Its partial destruction eliminates an irreplaceable example of Mamluk military and civic architecture in Palestine.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/barquq-castle-before.jpg",
@@ -3699,23 +3243,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-07-22",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Middle East Monitor",
         title: "Historic Barquq Castle in Khan Yunis heavily damaged by Israeli attacks",
         url: "https://www.middleeastmonitor.com/historic-barquq-castle-in-khan-yunis-heavily-damaged-by-israeli-attacks/",
         date: "2024-04-10",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "great-mosque-khan-yunis",
@@ -3724,19 +3267,22 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "1928",
     yearBuiltIslamic: "1347 AH",
-    coordinates: [31.3449, 34.3029], // Khan Yunis city center
+    coordinates: [
+      31.3449,
+      34.3029
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-08-20",
     dateDestroyedIslamic: "15 Safar 1446 AH",
     sourceAssessmentDate: "2024-08-20",
-    lastUpdated: "2025-09-30",
-    description:
-      "Built in 1928 on a historically significant site in Khan Yunis city center, the Great Mosque was one of the most prominent Islamic landmarks in southern Gaza. With a floor area of approximately 3,300 m² including a 900 m² courtyard, it served the spiritual and civic life of Khan Yunis for nearly a century before being deliberately demolished with explosives by Israeli forces in August 2024.",
-    historicalSignificance:
-      "For nearly 100 years the Great Mosque was the principal place of worship and communal gathering in Khan Yunis. Its site holds historical associations predating the 1928 construction. Its demolition, documented on video, represents the deliberate erasure of southern Gaza's most prominent religious landmark.",
-    culturalValue:
-      "The mosque anchored the civic and religious identity of Khan Yunis across generations. Its destruction, including documented burning of Qurans inside the structure prior to demolition, caused profound cultural and spiritual loss for the city's population.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    lastUpdated: "2026-07-22",
+    description: "Built in 1928 on a historically significant site in Khan Yunis city center, the Great Mosque was one of the most prominent Islamic landmarks in southern Gaza. With a floor area of approximately 3,300 m² including a 900 m² courtyard, it served the spiritual and civic life of Khan Yunis for nearly a century before being deliberately demolished with explosives by Israeli forces in August 2024.",
+    historicalSignificance: "For nearly 100 years the Great Mosque was the principal place of worship and communal gathering in Khan Yunis. Its site holds historical associations predating the 1928 construction. Its demolition, documented on video, represents the deliberate erasure of southern Gaza's most prominent religious landmark.",
+    culturalValue: "The mosque anchored the civic and religious identity of Khan Yunis across generations. Its destruction, including documented burning of Qurans inside the structure prior to demolition, caused profound cultural and spiritual loss for the city's population.",
+    verifiedBy: [
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/great-mosque-khan-yunis-before.jpg",
@@ -3755,23 +3301,29 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Al Jazeera",
         title: "A 'cultural genocide': which of Gaza's heritage sites have been destroyed?",
         url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
-        date: "2024-08-20",
-        type: "journalism",
+        date: "2024-01-14",
+        type: "journalism"
       },
       {
         organization: "Palestine Information Center",
         title: "Israeli Forces Demolish Great Mosque of Khan Yunis",
         url: "https://english.palinfo.com/Palestinian-Heritage/2024/08/30/324528/",
         date: "2024-08-30",
-        type: "documentation",
+        type: "documentation"
       },
-    ],
+      {
+        organization: "Al Jazeera",
+        title: "Video of Israeli forces burning the Quran and bombing Gaza mosque",
+        url: "https://www.aljazeera.com/video/newsfeed/2024/8/25/video-of-israeli-forces-burning-the-quran-and-bombing-gaza-mosque",
+        date: "2024-08-25",
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "holy-family-church-gaza",
@@ -3780,19 +3332,22 @@ export const mockSites: Site[] = [
     type: "church",
     yearBuilt: "1965",
     yearBuiltIslamic: "1384 AH",
-    coordinates: [31.4967, 34.4698], // Al-Zaytoun quarter, Gaza City
+    coordinates: [
+      31.5241,
+      34.452
+    ],
     status: "heavily-damaged",
-    dateDestroyed: "2024-07-07",
-    dateDestroyedIslamic: "1 Muharram 1446 AH",
-    sourceAssessmentDate: "2024-07-07",
-    lastUpdated: "2025-09-30",
-    description:
-      "Gaza's only Catholic church, built in 1965 in the Al-Zaytoun quarter of Gaza City. During the conflict it sheltered approximately 650 displaced Palestinian Christians. The adjacent Rosary Sisters' School was destroyed by an airstrike on 4 November 2023; the church itself sustained severe damage in a July 7, 2024 bombing that killed four people, following earlier sniper fire on 16 December 2023 that killed two parishioners.",
-    historicalSignificance:
-      "Holy Family Church represented over half a century of continuous Catholic presence in Gaza and served as the spiritual home for Gaza's small Christian minority. Its repeated targeting drew direct Vatican intervention and public appeals from Pope Francis, making it internationally significant as a symbol of Christian civilian suffering in the conflict.",
-    culturalValue:
-      "As Gaza's sole Catholic place of worship, the church was irreplaceable for the city's Christian community. Together with the destroyed Rosary Sisters' School, its damage severed the infrastructure of Christian community life that had persisted in Gaza for generations.",
-    verifiedBy: ["UNESCO", "Latin Patriarchate of Jerusalem"],
+    dateDestroyed: "2025-07-17",
+    dateDestroyedIslamic: "22 Muharram 1447 AH",
+    sourceAssessmentDate: "2025-07-17",
+    lastUpdated: "2026-07-22",
+    description: "Gaza's only Catholic church, built in 1965 in the Al-Zaytoun quarter of Gaza City. During the conflict it sheltered approximately 650 displaced Palestinian Christians. The adjacent Rosary Sisters' School was destroyed by an airstrike on 4 November 2023; the church itself sustained severe damage in a July 17, 2025 bombing that killed four people, following earlier sniper fire on 16 December 2023 that killed two parishioners.",
+    historicalSignificance: "Holy Family Church represented over half a century of continuous Catholic presence in Gaza and served as the spiritual home for Gaza's small Christian minority. Its repeated targeting drew direct Vatican intervention and public appeals from Pope Francis, making it internationally significant as a symbol of Christian civilian suffering in the conflict.",
+    culturalValue: "As Gaza's sole Catholic place of worship, the church was irreplaceable for the city's Christian community. Together with the destroyed Rosary Sisters' School, its damage severed the infrastructure of Christian community life that had persisted in Gaza for generations.",
+    verifiedBy: [
+      "UNESCO",
+      "Latin Patriarchate of Jerusalem"
+    ],
     images: {
       before: {
         url: "/images/sites/holy-family-church-gaza-before.jpg",
@@ -3811,43 +3366,52 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "National Catholic Reporter",
         title: "Two dead at Holy Family Gaza, pastor injured after mid-morning Israeli attack",
         url: "https://www.ncronline.org/news/two-dead-holy-family-gaza-pastor-injured-after-mid-morning-israeli-attack",
         date: "2023-12-16",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-07-22",
-        type: "official",
+        type: "official"
       },
-    ],
+      {
+        organization: "NPR",
+        title: "Israeli strike hits Gaza's Holy Family Catholic church",
+        url: "https://www.npr.org/2025/07/17/nx-s1-5471391/israel-hamas-war-gaza-catholic-church-priest",
+        date: "2025-07-17",
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "abasan-mosaics",
     name: "Abasan Mosaics",
     nameArabic: "فسيفساء عبسان",
     type: "archaeological",
-    yearBuilt: "BCE 300 (Byzantine period, 4th–7th century CE)",
-    coordinates: [31.3279, 34.3452], // Abasan al-Kabira, east of Khan Yunis
+    yearBuilt: "4th century (Byzantine period)",
+    coordinates: [
+      31.3279,
+      34.3452
+    ],
+    coordinatesApproximate: true,
     status: "heavily-damaged",
     dateDestroyed: "2023-11-01",
     dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH",
     sourceAssessmentDate: "2024-07-22",
-    lastUpdated: "2025-09-30",
-    description:
-      "Byzantine-era mosaic floors and wall fragments dating to the Roman–Byzantine period (approximately 4th–7th century CE), located in situ at Abasan al-Kabira in the Khan Yunis Governorate. The site had already sustained damage in the 2014 Gaza war before suffering further destruction in the current conflict, as verified by UNESCO's formal assessment in July 2024.",
-    historicalSignificance:
-      "The Abasan Mosaics represent one of the surviving examples of Byzantine artistic heritage in southern Gaza. Mosaic art from this period reflects the region's role as a crossroads of late antique Mediterranean culture and early Christian artistic traditions. Their continued in-situ location made them a rare archaeological resource.",
-    culturalValue:
-      "In-situ Byzantine mosaics are among the most vulnerable and irreplaceable categories of archaeological heritage. The repeated destruction of this site — in both 2014 and 2023–2024 — represents the progressive erasure of a unique window into Gaza's Byzantine past.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Byzantine-era mosaic floors and wall fragments dating to the Roman–Byzantine period (approximately 4th–7th century CE), located in situ at Abasan al-Kabira in the Khan Yunis Governorate. The site had already sustained damage in the 2014 Gaza war before suffering further destruction in the current conflict, as verified by UNESCO's formal assessment in July 2024.",
+    historicalSignificance: "The Abasan Mosaics represent one of the surviving examples of Byzantine artistic heritage in southern Gaza. Mosaic art from this period reflects the region's role as a crossroads of late antique Mediterranean culture and early Christian artistic traditions. Their continued in-situ location made them a rare archaeological resource.",
+    culturalValue: "In-situ Byzantine mosaics are among the most vulnerable and irreplaceable categories of archaeological heritage. The repeated destruction of this site — in both 2014 and 2023–2024 — represents the progressive erasure of a unique window into Gaza's Byzantine past.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/abasan-mosaics-before.jpg",
@@ -3866,23 +3430,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-07-22",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Progressive Magazine",
         title: "Stones That Remember: War and the Erasure of History",
         url: "https://progressive.org/latest/stones-that-remember-war-and-the-erasure-of-history-salah-20260505/",
         date: "2026-05-05",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "islamic-university-central-library",
@@ -3891,19 +3454,21 @@ export const mockSites: Site[] = [
     type: "archive",
     yearBuilt: "1978",
     yearBuiltIslamic: "1398 AH",
-    coordinates: [31.5071, 34.4513], // Al-Rimal, Gaza City
+    coordinates: [
+      31.5134,
+      34.4401
+    ],
     status: "destroyed",
     dateDestroyed: "2023-10-09",
     dateDestroyedIslamic: "24 Rabi' al-Awwal 1445 AH",
     sourceAssessmentDate: "2024-05-27",
-    lastUpdated: "2025-09-30",
-    description:
-      "Gaza's largest academic library, inaugurated in 1978 as part of the Islamic University of Gaza in the Al-Rimal district. The five-floor building (approximately 900 m² per floor) held over 240,000 books, 8,000 periodicals, and 16,000 master's and doctoral theses. It was destroyed in the opening days of the October 2023 conflict, representing the single greatest quantified intellectual loss in Gaza's modern history.",
-    historicalSignificance:
-      "The Islamic University of Gaza, founded in 1978, was the first university established in the Gaza Strip. Its central library served as the primary research repository for generations of Palestinian scholars and students. Its destruction in the conflict's first 48 hours signaled the systematic targeting of Gaza's educational infrastructure.",
-    culturalValue:
-      "The loss of over 240,000 volumes, including rare Arabic manuscripts, research theses, and historical periodicals, constitutes an irreversible blow to Palestinian academic and cultural heritage. The library was a primary repository of Palestinian scholarly production accumulated over four decades.",
-    verifiedBy: ["UNESCO", "Librarians and Archivists with Palestine"],
+    lastUpdated: "2026-07-22",
+    description: "Gaza's largest academic library, inaugurated in 1978 as part of the Islamic University of Gaza in the Al-Rimal district. The five-floor building (approximately 900 m² per floor) held over 240,000 books, 8,000 periodicals, and 16,000 master's and doctoral theses. It was destroyed in the opening days of the October 2023 conflict, representing one of the largest documented losses of an academic collection in Gaza's modern history.",
+    historicalSignificance: "The Islamic University of Gaza, founded in 1978, was the first university established in the Gaza Strip. Its central library served as the primary research repository for generations of Palestinian scholars and students. Its destruction in the conflict's first 48 hours signaled the systematic targeting of Gaza's educational infrastructure.",
+    culturalValue: "The loss of over 240,000 volumes, including rare Arabic manuscripts, research theses, and historical periodicals, constitutes an irreversible blow to Palestinian academic and cultural heritage. The library was a primary repository of Palestinian scholarly production accumulated over four decades.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/islamic-university-central-library-before.jpg",
@@ -3922,30 +3487,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
-      {
-        organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2024-05-27",
-        type: "official",
-      },
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Visionscarto",
         title: "Central Library of the Islamic University of Gaza",
         url: "https://www.visionscarto.net/central-library-of-the-islamic-university-gaza",
         date: "2024-01-15",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "gaza-municipal-library",
@@ -3953,19 +3510,21 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة بلدية غزة",
     type: "archive",
     yearBuilt: "20th century",
-    coordinates: [31.5105, 34.4668], // Gaza City center
+    coordinates: [
+      31.5167,
+      34.45
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-27",
     dateDestroyedIslamic: "14 Jumada al-Ula 1445 AH",
     sourceAssessmentDate: "2024-05-27",
-    lastUpdated: "2025-09-30",
-    description:
-      "Gaza's main municipal public library, housing approximately 10,000 books in Arabic, English, and French. The library was destroyed by shelling on 27 November 2023. The Gaza Municipality stated the library was deliberately targeted. It represented a critical free public access point for education and literacy for all Gaza residents regardless of academic affiliation.",
-    historicalSignificance:
-      "The Gaza Municipal Library was the primary free public library serving all residents of Gaza City. Unlike university libraries restricted to students and researchers, this institution was open to the general public, making it an essential democratic resource for education and literacy across all social classes.",
-    culturalValue:
-      "The destruction of the municipal library severed public access to a multilingual collection built over decades. Its loss is particularly significant because it served community members — including children, workers, and adults pursuing self-education — who lacked access to university facilities.",
-    verifiedBy: ["Gaza Municipality", "UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Gaza's main municipal public library, housing approximately 10,000 books in Arabic, English, and French. The library was destroyed by shelling on 27 November 2023. The Gaza Municipality stated the library was deliberately targeted. It represented a critical free public access point for education and literacy for all Gaza residents regardless of academic affiliation.",
+    historicalSignificance: "The Gaza Municipal Library was the primary free public library serving all residents of Gaza City. Unlike university libraries restricted to students and researchers, this institution was open to the general public, making it an essential democratic resource for education and literacy across all social classes.",
+    culturalValue: "The destruction of the municipal library severed public access to a multilingual collection built over decades. Its loss is particularly significant because it served community members — including children, workers, and adults pursuing self-education — who lacked access to university facilities.",
+    verifiedBy: [
+      "Gaza Municipality"
+    ],
     images: {
       before: {
         url: "/images/sites/gaza-municipal-library-before.jpg",
@@ -3984,23 +3543,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Egyptian Streets",
         title: "Gaza's Main Public Library Destroyed, Thousands of Books Lost",
         url: "https://egyptianstreets.com/2023/11/29/gazas-main-public-library-destroyed-thousands-of-books-lost/",
         date: "2023-11-29",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-kalima-library",
@@ -4008,19 +3566,22 @@ export const mockSites: Site[] = [
     nameArabic: "دار الكلمة للنشر والتوزيع",
     type: "archive",
     yearBuilt: "Late 20th century",
-    coordinates: [31.5240, 34.4555], // Sheikh Radwan neighborhood, Gaza City
+    coordinates: [
+      31.524,
+      34.4555
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-02-19",
     dateDestroyedIslamic: "9 Sha'ban 1445 AH",
     sourceAssessmentDate: "2024-02-19",
     lastUpdated: "2025-09-30",
-    description:
-      "A major Gaza publishing house and lending library in the Sheikh Radwan neighborhood of Gaza City, destroyed by fire set by Israeli forces on 19 February 2024. Al-Kalima served as one of the key nodes of Palestinian literary publishing and book distribution in Gaza, combining a lending library with active book production and distribution services.",
-    historicalSignificance:
-      "Al-Kalima was one of the few remaining active publishing houses in the Gaza Strip, playing a vital role in sustaining Palestinian literary production and distribution under blockade conditions. Its destruction directly severed one of Gaza's last functional book publishing infrastructures.",
-    culturalValue:
-      "The burning of Al-Kalima represented not only the loss of physical books but the destruction of a living institution that connected Palestinian writers with readers. Publishing houses under blockade are extraordinarily difficult to rebuild, making this loss particularly consequential for Palestinian literary culture.",
-    verifiedBy: ["Librarians and Archivists with Palestine"],
+    description: "A major Gaza publishing house and lending library in the Sheikh Radwan neighborhood of Gaza City, destroyed by fire set by Israeli forces on 19 February 2024. Al-Kalima served as one of the key nodes of Palestinian literary publishing and book distribution in Gaza, combining a lending library with active book production and distribution services.",
+    historicalSignificance: "Al-Kalima was one of the few remaining active publishing houses in the Gaza Strip, playing a vital role in sustaining Palestinian literary production and distribution under blockade conditions. Its destruction directly severed one of Gaza's last functional book publishing infrastructures.",
+    culturalValue: "The burning of Al-Kalima represented not only the loss of physical books but the destruction of a living institution that connected Palestinian writers with readers. Publishing houses under blockade are extraordinarily difficult to rebuild, making this loss particularly consequential for Palestinian literary culture.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/al-kalima-library-before.jpg",
@@ -4039,23 +3600,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Literary Hub",
         title: "Israeli Forces Have Burned Down the Library of Al-Kalima",
         url: "https://lithub.com/israeli-forces-have-burned-down-the-library-of-al-kalima/",
         date: "2024-02-22",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "ataa-library-beit-hanoun",
@@ -4063,19 +3623,23 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة عطاء - بيت حانون",
     type: "archive",
     yearBuilt: "Early 21st century (rebuilt after 2014)",
-    coordinates: [31.5323, 34.5431], // Beit Hanoun, North Gaza
+    coordinates: [
+      31.5323,
+      34.5431
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-10-10",
     dateDestroyedIslamic: "25 Rabi' al-Awwal 1445 AH",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
-    description:
-      "A children's library in Beit Hanoun, North Gaza, supported by IBBY's (International Board on Books for Young People) Children in Crisis fund. The library was originally destroyed in the 2014 Gaza war, rebuilt through international support, and then destroyed again in October 2023 when Beit Hanoun — among the most heavily bombed areas of Gaza — came under immediate assault at the start of the conflict.",
-    historicalSignificance:
-      "The Ataa Library's twice-over destruction — in 2014 and again in 2023 — embodies the repeated cycle of destruction and loss inflicted on Gaza's educational infrastructure across multiple conflicts. Its IBBY affiliation connected it to the international children's literature community and made it a symbol of the right to reading and childhood education in conflict zones.",
-    culturalValue:
-      "Children's libraries represent a society's investment in its youngest generation's literacy and imagination. The destruction of Ataa Library for the second time within a decade eliminated a hard-won community resource for Beit Hanoun's children, many of whom have now grown up knowing only conflict and loss of educational infrastructure.",
-    verifiedBy: ["Librarians and Archivists with Palestine", "IBBY"],
+    description: "A children's library in Beit Hanoun, North Gaza, supported by IBBY's (International Board on Books for Young People) Children in Crisis fund. The library was originally destroyed in the 2014 Gaza war, rebuilt through international support, and then destroyed again in October 2023 when Beit Hanoun — among the most heavily bombed areas of Gaza — came under immediate assault at the start of the conflict.",
+    historicalSignificance: "The Ataa Library's twice-over destruction — in 2014 and again in 2023 — embodies the repeated cycle of destruction and loss inflicted on Gaza's educational infrastructure across multiple conflicts. Its IBBY affiliation connected it to the international children's literature community and made it a symbol of the right to reading and childhood education in conflict zones.",
+    culturalValue: "Children's libraries represent a society's investment in its youngest generation's literacy and imagination. The destruction of Ataa Library for the second time within a decade eliminated a hard-won community resource for Beit Hanoun's children, many of whom have now grown up knowing only conflict and loss of educational infrastructure.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine",
+      "IBBY"
+    ],
     images: {
       before: {
         url: "/images/sites/ataa-library-beit-hanoun-before.jpg",
@@ -4094,71 +3658,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
-  },
-  {
-    id: "palestinian-costume-museum-rafah",
-    name: "Palestinian Costume Museum, Rafah",
-    nameArabic: "متحف الزي الفلسطيني - رفح",
-    type: "museum",
-    yearBuilt: "Early 21st century",
-    coordinates: [31.2913, 34.2437], // Rafah
-    status: "destroyed",
-    dateDestroyed: "2024-02-22",
-    dateDestroyedIslamic: "12 Sha'ban 1445 AH",
-    sourceAssessmentDate: "2024-02-22",
-    lastUpdated: "2025-09-30",
-    description:
-      "A private museum in Rafah owned by Leila Shahin, holding 320 pieces of traditional Palestinian dress, embroidery, and costume — a collection distinct from the Rafah Museum of Palestinian Heritage. Destroyed on 22 February 2024, the museum's collection represented irreplaceable examples of traditional Palestinian material culture and craft traditions, particularly women's embroidery (tatreez).",
-    historicalSignificance:
-      "Palestinian tatreez (embroidery) is recognized by UNESCO as intangible cultural heritage and carries encoded regional and social identity within its patterns. This collection of 320 garments and textile pieces preserved embroidery traditions from across historical Palestine, serving as a living archive of material culture that could not be reconstructed from photographs alone.",
-    culturalValue:
-      "Textile and costume collections are among the most vulnerable categories of heritage — they cannot be recreated, and physical originals carry information about dyes, weaving techniques, and regional variations that photographs cannot capture. The destruction of this collection severed a direct material link to Palestinian women's craft traditions spanning centuries.",
-    verifiedBy: ["Librarians and Archivists with Palestine", "Museums Association"],
-    images: {
-      before: {
-        url: "/images/sites/palestinian-costume-museum-rafah-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/palestinian-costume-museum-rafah-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2026-05-28",
-        description: "Satellite imagery from 2026-05-28"
+        type: "documentation"
       }
-    },
-    
-    sources: [
-      {
-        organization: "Librarians and Archivists with Palestine",
-        title: "Gaza Libraries and Archives Report 2024",
-        url: "https://librarianswithpalestine.org/gaza-report-2024/",
-        date: "2024-06-01",
-        type: "documentation",
-      },
-      {
-        organization: "Museums Association",
-        title: "Widescale destruction of cultural heritage in Gaza",
-        url: "https://www.museumsassociation.org/museums-journal/news/2024/01/widescale-destruction-of-cultural-heritage-in-gaza/",
-        date: "2024-01-15",
-        type: "documentation",
-      },
-    ],
+    ]
   },
   {
     id: "ibrahim-abu-shaar-heritage-diwan",
@@ -4166,19 +3674,21 @@ export const mockSites: Site[] = [
     nameArabic: "ديوان إبراهيم أبو شعر التراثي",
     type: "museum",
     yearBuilt: "Late 20th century",
-    coordinates: [31.2778, 34.2582], // Southeast of Rafah
+    coordinates: [
+      31.2778,
+      34.2582
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
-    description:
-      "A private collection and community diwan (traditional gathering house) dedicated to Bedouin heritage in southeastern Rafah, destroyed on 6 December 2023. The collection held an extensive array of traditional Bedouin material culture including tools, textiles, oral history recordings, and artifacts, making it a rare institutional repository of Bedouin Palestinian cultural identity in southern Gaza.",
-    historicalSignificance:
-      "Bedouin cultural heritage in the Gaza Strip represents a distinct layer of Palestinian identity tied to the indigenous Bedouin communities of the Negev and southern Coastal Plain. A diwan functions not only as a museum but as a living social institution — a place for community gathering, oral tradition, and intergenerational cultural transmission. Its destruction ended a living practice, not just a collection.",
-    culturalValue:
-      "Private diwans and heritage collections represent the grassroots preservation of cultural identity by community members without institutional support. The Ibrahim Abu Sha'ar Diwan filled a gap that no formal institution addressed — the preservation of Bedouin material culture specific to southern Gaza's communities. Its destruction leaves this aspect of Palestinian heritage without any remaining institutional anchor in the region.",
-    verifiedBy: ["Librarians and Archivists with Palestine"],
+    description: "A private collection and community diwan (traditional gathering house) dedicated to Bedouin heritage in southeastern Rafah, destroyed on 6 December 2023. The collection held an extensive array of traditional Bedouin material culture including tools, textiles, oral history recordings, and artifacts, making it a rare institutional repository of Bedouin Palestinian cultural identity in southern Gaza.",
+    historicalSignificance: "Bedouin cultural heritage in the Gaza Strip represents a distinct layer of Palestinian identity tied to the indigenous Bedouin communities of the Negev and southern Coastal Plain. A diwan functions not only as a museum but as a living social institution — a place for community gathering, oral tradition, and intergenerational cultural transmission. Its destruction ended a living practice, not just a collection.",
+    culturalValue: "Private diwans and heritage collections represent the grassroots preservation of cultural identity by community members without institutional support. The Ibrahim Abu Sha'ar Diwan filled a gap that no formal institution addressed — the preservation of Bedouin material culture specific to southern Gaza's communities. Its destruction leaves this aspect of Palestinian heritage without any remaining institutional anchor in the region.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/ibrahim-abu-shaar-heritage-diwan-before.jpg",
@@ -4197,16 +3707,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "mavi-marmara-memorial",
@@ -4215,19 +3724,21 @@ export const mockSites: Site[] = [
     type: "monument",
     yearBuilt: "2010",
     yearBuiltIslamic: "1431 AH",
-    coordinates: [31.5250, 34.4350], // Gaza seaport area
+    coordinates: [
+      31.5238,
+      34.4324
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-13",
     dateDestroyedIslamic: "29 Rabi' al-Thani 1445 AH",
     sourceAssessmentDate: "2023-11-13",
-    lastUpdated: "2025-09-30",
-    description:
-      "A memorial erected in Gaza at the seaport area to commemorate the nine activists — eight Turkish nationals and one Turkish-American — killed by Israeli naval commandos during the 2010 Mavi Marmara flotilla raid in international waters. The monument was demolished by Israeli forces when they seized the Gaza seaport area in November 2023.",
-    historicalSignificance:
-      "The Mavi Marmara incident on 31 May 2010, in which Israeli commandos killed nine activists attempting to break the Gaza blockade with humanitarian aid, prompted a major international diplomatic crisis including the suspension of Israeli-Turkish diplomatic relations. The memorial in Gaza served as a permanent commemoration of this event and a symbol of international solidarity with Gaza's blockaded civilian population.",
-    culturalValue:
-      "Beyond its political significance, the memorial represented Gaza's capacity to commemorate its own history and honor those who died in solidarity with its people. Its destruction by the same military force responsible for the original killings carried particular symbolic weight for Gaza's civilian population.",
-    verifiedBy: ["Anadolu Agency"],
+    lastUpdated: "2026-07-22",
+    description: "A memorial erected in Gaza at the seaport area to commemorate the ten activists — eight Turkish nationals and one Turkish-American — killed by Israeli naval commandos during the 2010 Mavi Marmara flotilla raid in international waters. The monument was demolished by Israeli forces when they seized the Gaza seaport area in November 2023.",
+    historicalSignificance: "The Mavi Marmara incident on 31 May 2010, in which Israeli commandos killed nine activists attempting to break the Gaza blockade with humanitarian aid, prompted a major international diplomatic crisis including the suspension of Israeli-Turkish diplomatic relations. The memorial in Gaza served as a permanent commemoration of this event and a symbol of international solidarity with Gaza's blockaded civilian population.",
+    culturalValue: "Beyond its political significance, the memorial represented Gaza's capacity to commemorate its own history and honor those who died in solidarity with its people. Its destruction by the same military force responsible for the original killings carried particular symbolic weight for Gaza's civilian population.",
+    verifiedBy: [
+      "Anadolu Agency"
+    ],
     images: {
       before: {
         url: "/images/sites/mavi-marmara-memorial-before.jpg",
@@ -4246,16 +3757,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Anadolu Agency",
         title: "Israel destroys Mavi Marmara martyrs memorial in Gaza",
         url: "https://www.aa.com.tr/en/middle-east/israel-destroys-mavi-marmara-martyrs-memorial-in-gaza/3055611",
         date: "2023-11-14",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "othman-ibn-qushqar-mosque",
@@ -4264,19 +3774,22 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "1220 CE",
     yearBuiltIslamic: "617 AH",
-    coordinates: [31.4972, 34.4655], // Zaytoun quarter, Gaza City
+    coordinates: [
+      31.5038,
+      34.4633
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-12-07",
     dateDestroyedIslamic: "22 Jumada al-Ula 1445 AH",
     sourceAssessmentDate: "2024-05-27",
-    lastUpdated: "2025-09-30",
-    description:
-      "Built in 1220 CE in the Zaytoun quarter of Gaza City, this Ayyubid-era mosque is located at the reported burial site of Hashim ibn Abd Manaf, great-grandfather of the Prophet Muhammad, making it a site of profound Islamic significance. One of the oldest surviving Ayyubid-period mosques in Gaza, it suffered severe damage in December 2023.",
-    historicalSignificance:
-      "The mosque's association with the burial site of Hashim ibn Abd Manaf — revered in Islamic tradition as an ancestor of the Prophet — gives it a religious significance extending across the entire Muslim world. Built in the early Ayyubid period, the structure predates the Mamluk era and represents a rare surviving layer of 13th-century Islamic architecture in Gaza.",
-    culturalValue:
-      "As one of Gaza's oldest and most religiously significant mosques, the Othman ibn Qushqar Mosque held irreplaceable architectural and spiritual value. Its Ayyubid construction techniques and its association with a site venerated in Islamic tradition made it one of the most historically important religious buildings in the Gaza Strip.",
-    verifiedBy: ["UNESCO", "Heritage for Peace"],
+    lastUpdated: "2026-07-22",
+    description: "Built in 1220 CE in the Zaytoun quarter of Gaza City, this Ayyubid-era mosque is one of the oldest mosques of Gaza's Zeitoun quarter, great-grandfather of the Prophet Muhammad, making it a site of profound Islamic significance. One of the oldest surviving Ayyubid-period mosques in Gaza, it suffered severe damage in December 2023.",
+    historicalSignificance: "The mosque's association with the burial site of Hashim ibn Abd Manaf — revered in Islamic tradition as an ancestor of the Prophet — gives it a religious significance extending across the entire Muslim world. Built in the early Ayyubid period, the structure predates the Mamluk era and represents a rare surviving layer of 13th-century Islamic architecture in Gaza.",
+    culturalValue: "As one of Gaza's oldest and most religiously significant mosques, the Othman ibn Qushqar Mosque held irreplaceable architectural and spiritual value. Its Ayyubid construction techniques and its association with a site venerated in Islamic tradition made it one of the most historically important religious buildings in the Gaza Strip.",
+    verifiedBy: [
+      "UNESCO",
+      "Heritage for Peace"
+    ],
     images: {
       before: {
         url: "/images/sites/othman-ibn-qushqar-mosque-before.jpg",
@@ -4295,23 +3808,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Al Jazeera",
         title: "A 'cultural genocide': which of Gaza's heritage sites have been destroyed?",
         url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
         date: "2024-01-14",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "gaza-war-cemetery-al-tuffah",
@@ -4319,19 +3831,21 @@ export const mockSites: Site[] = [
     nameArabic: "مقبرة غزة الحربية - التفاح",
     type: "cemetery",
     yearBuilt: "1917",
-    coordinates: [31.5020, 34.4890], // Al-Tuffah neighborhood, eastern Gaza City
+    coordinates: [
+      31.5121,
+      34.482
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2025-08-08",
-    dateDestroyedIslamic: "13 Muharram 1447 AH",
+    dateDestroyedIslamic: "14 Safar 1447 AH",
     sourceAssessmentDate: "2026-02-04",
-    lastUpdated: "2026-02-13",
-    description:
-      "The main Gaza War Cemetery holds the remains of more than 3,600 service members from over a dozen countries, established after World War I. Satellite imagery from August 8, 2025 confirmed that Israeli forces bulldozed the cemetery's southern corner — an area of approximately 1,000 square meters — destroying more than 100 graves predominantly belonging to Australian, British, Polish, Canadian, and New Zealand WWI and WWII soldiers. The IDF stated they were targeting 'underground terrorist infrastructure.' The Guardian broke the story on February 4, 2026 based on the satellite imagery analysis.",
-    historicalSignificance:
-      "The Gaza War Cemetery is one of the largest Commonwealth war cemeteries in the Middle East, maintained by the Commonwealth War Graves Commission. The governments of Australia, Canada, New Zealand, and the United Kingdom formally raised concerns following the revelation. The destruction of internationally recognized military graves — protected under the Geneva Conventions — marked a significant escalation in documented heritage violations.",
-    culturalValue:
-      "As a site commemorating the sacrifice of soldiers from multiple Allied nations in two world wars, the Gaza War Cemetery holds significance extending far beyond Palestinian heritage. Its partial destruction drew international condemnation from governments that rarely comment on Palestinian cultural heritage losses, demonstrating the breadth of heritage harm caused by the conflict.",
-    verifiedBy: ["Commonwealth War Graves Commission"],
+    lastUpdated: "2026-07-22",
+    description: "The main Gaza War Cemetery holds the remains of more than 3,600 service members from over a dozen countries, established after World War I. Satellite imagery from August 8, 2025 confirmed that Israeli forces bulldozed the cemetery's southern corner — an area of approximately 1,000 square meters — destroying more than 100 graves predominantly belonging to Australian, British, Polish, Canadian, and New Zealand WWI and WWII soldiers. The IDF stated they were targeting 'underground terrorist infrastructure.' The Guardian broke the story on February 4, 2026 based on the satellite imagery analysis.",
+    historicalSignificance: "The Gaza War Cemetery is one of the largest Commonwealth war cemeteries in the Middle East, maintained by the Commonwealth War Graves Commission. The governments of Australia, Canada, New Zealand, and the United Kingdom formally raised concerns following the revelation. The destruction of internationally recognized military graves — protected under the Geneva Conventions — marked a significant escalation in documented heritage violations.",
+    culturalValue: "As a site commemorating the sacrifice of soldiers from multiple Allied nations in two world wars, the Gaza War Cemetery holds significance extending far beyond Palestinian heritage. Its partial destruction drew international condemnation from governments that rarely comment on Palestinian cultural heritage losses, demonstrating the breadth of heritage harm caused by the conflict.",
+    verifiedBy: [
+      "Commonwealth War Graves Commission"
+    ],
     images: {
       before: {
         url: "/images/sites/gaza-war-cemetery-al-tuffah-before.jpg",
@@ -4350,23 +3864,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "The Guardian / Military.com",
         title: "Israeli Forces Bulldozed WWI and WWII Allied War Graves in Gaza",
         url: "https://www.military.com/daily-news/investigations-and-features/2026/02/13/israeli-forces-bulldozed-wwi-and-wwii-allied-war-graves-gaza.html",
         date: "2026-02-13",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "The Conversation",
         title: "The damaged Gaza War Cemetery highlights ongoing risk to soldier graves in conflict zones",
         url: "https://theconversation.com/the-damaged-gaza-war-cemetery-highlights-ongoing-risk-to-soldier-graves-in-conflict-zones-275536",
         date: "2026-02-10",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "edward-said-public-library",
@@ -4374,17 +3887,21 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة إدوارد سعيد العامة",
     type: "archive",
     yearBuilt: "2017",
-    coordinates: [31.5480, 34.5100], // Beit Lahia, North Gaza
+    coordinates: [
+      31.548,
+      34.51
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-01-24",
-    lastUpdated: "2026-02-13",
-    description:
-      "Founded in 2017 by Palestinian poet Mosab Abu Toha in Beit Lahia, North Gaza, this was Gaza's first English-language public library. The library's librarian Doaa Al-Masri was killed during the conflict. Abu Toha released a statement on January 24, 2025 confirming the library's destruction after being able to return to the site post-ceasefire.",
-    historicalSignificance:
-      "Named after the late Palestinian-American scholar Edward Said, the library was founded to provide Gaza's population with access to English-language literature and to connect Palestinian readers with world literature. It was established by a poet who himself became internationally known through his writing about life under siege, giving the institution both literary and symbolic significance.",
-    culturalValue:
-      "As Gaza's only English-language public library, Edward Said Public Library filled a unique gap in the cultural landscape. Its destruction, along with the killing of its librarian, represents the human cost inseparable from cultural heritage loss — the people who built and maintained these institutions are themselves among the victims.",
-    verifiedBy: ["Literary Hub", "Wikipedia"],
+    lastUpdated: "2026-07-22",
+    description: "Founded in 2017 by Palestinian poet Mosab Abu Toha in Beit Lahia, North Gaza, this was Gaza's first English-language public library. Doaa Al-Masri, librarian of its Gaza City branch, was killed during the conflict. Abu Toha released a statement on January 24, 2025 confirming the library's destruction after being able to return to the site post-ceasefire.",
+    historicalSignificance: "Named after the late Palestinian-American scholar Edward Said, the library was founded to provide Gaza's population with access to English-language literature and to connect Palestinian readers with world literature. It was established by a poet who himself became internationally known through his writing about life under siege, giving the institution both literary and symbolic significance.",
+    culturalValue: "As Gaza's only English-language public library, Edward Said Public Library filled a unique gap in the cultural landscape. Its destruction, along with the killing of its librarian, represents the human cost inseparable from cultural heritage loss — the people who built and maintained these institutions are themselves among the victims.",
+    verifiedBy: [
+      "Literary Hub",
+      "Wikipedia"
+    ],
     images: {
       before: {
         url: "/images/sites/edward-said-public-library-before.jpg",
@@ -4403,16 +3920,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Literary Hub",
         title: "Read Mosab Abu Toha's Statement on the Destruction of the Edward Said Library in Gaza",
         url: "https://lithub.com/read-mosab-abu-tohas-statement-on-the-destruction-of-the-edward-said-library-in-gaza/",
         date: "2025-01-24",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-aqsa-university-library",
@@ -4420,19 +3936,22 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة جامعة الأقصى",
     type: "archive",
     yearBuilt: "Late 20th century",
-    coordinates: [31.2960, 34.2510], // Al-Aqsa University, Rafah campus
+    coordinates: [
+      31.296,
+      34.251
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-05-15",
     dateDestroyedIslamic: "6 Dhul-Qa'dah 1445 AH",
     sourceAssessmentDate: "2024-05-24",
-    lastUpdated: "2025-09-30",
-    description:
-      "The library of Al-Aqsa University's Rafah campus was set on fire and destroyed by Israeli forces during the Rafah ground offensive in May 2024. Soldiers were filmed burning books and copies of the Quran inside the building. The destruction was documented on video and reported by the Anadolu News Agency.",
-    historicalSignificance:
-      "Al-Aqsa University, founded in 1991, is one of the main institutions of higher education in Gaza. The deliberate burning of its library during the Rafah offensive — documented on video — reflects a broader pattern of academic infrastructure targeting. The university's library served thousands of students across multiple academic disciplines.",
-    culturalValue:
-      "The destruction of a university library by fire, with documented desecration of religious texts, represents both an intellectual and a spiritual loss. University libraries are among the most difficult cultural institutions to rebuild, as their collections are accumulated over decades through donations, acquisitions, and scholarly contributions.",
-    verifiedBy: ["Anadolu Agency"],
+    lastUpdated: "2026-07-22",
+    description: "The library of Al-Aqsa University's Rafah campus was set on fire and destroyed by Israeli forces during the Rafah ground offensive in May 2024. Soldiers were filmed burning books and copies of the Quran inside the building. The destruction was documented on video and reported by the Anadolu News Agency.",
+    historicalSignificance: "Al-Aqsa University, with roots in a 1955 teachers' institute and accredited as a university in 2001, is one of the main institutions of higher education in Gaza. The deliberate burning of its library during the Rafah offensive — documented on video — reflects a broader pattern of academic infrastructure targeting. The university's library served thousands of students across multiple academic disciplines.",
+    culturalValue: "The destruction of a university library by fire, with documented desecration of religious texts, represents both an intellectual and a spiritual loss. University libraries are among the most difficult cultural institutions to rebuild, as their collections are accumulated over decades through donations, acquisitions, and scholarly contributions.",
+    verifiedBy: [
+      "Anadolu Agency"
+    ],
     images: {
       before: {
         url: "/images/sites/al-aqsa-university-library-before.jpg",
@@ -4451,72 +3970,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Anadolu News Agency",
         title: "Israeli soldiers burn Al-Aqsa University library in Gaza Strip",
         url: "https://www.anews.com.tr/middle-east/2024/05/24/israeli-soldiers-burn-al-aqsa-university-library-in-gaza-strip",
         date: "2024-05-24",
-        type: "journalism",
-      },
-    ],
-  },
-  {
-    id: "bani-saleh-mosque",
-    name: "Bani Saleh Mosque",
-    nameArabic: "مسجد بني صالح",
-    type: "mosque",
-    yearBuilt: "1928",
-    yearBuiltIslamic: "1347 AH",
-    coordinates: [31.3481, 34.3053], // Khan Yunis area
-    status: "destroyed",
-    dateDestroyed: "2024-08-24",
-    dateDestroyedIslamic: "20 Safar 1446 AH",
-    sourceAssessmentDate: "2024-08-25",
-    lastUpdated: "2025-09-30",
-    description:
-      "A 96-year-old mosque destroyed by Israeli forces on August 24, 2024. Al Jazeera obtained and broadcast video documentation of the destruction and of soldiers burning and tearing pages from the Quran inside the mosque prior to its demolition.",
-    historicalSignificance:
-      "Built in 1928, the Bani Saleh Mosque had stood for nearly a century as a place of worship and community gathering. The documented desecration of Qurans within the mosque before its demolition — captured on video — drew international condemnation and added to a documented pattern of religious text destruction at multiple Gaza mosques.",
-    culturalValue:
-      "The mosque's near-century of continuous use embedded it in the living memory of the Khan Yunis community. The combination of physical destruction and documented religious desecration makes this case particularly significant as evidence in legal and historical records of the conflict.",
-    verifiedBy: ["Al Jazeera"],
-    images: {
-      before: {
-        url: "/images/sites/bani-saleh-mosque-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/bani-saleh-mosque-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2026-05-28",
-        description: "Satellite imagery from 2026-05-28"
+        type: "journalism"
       }
-    },
-    
-    sources: [
-      {
-        organization: "Al Jazeera",
-        title: "Video of Israeli forces burning the Quran and bombing Gaza mosque",
-        url: "https://www.aljazeera.com/video/newsfeed/2024/8/25/video-of-israeli-forces-burning-the-quran-and-bombing-gaza-mosque",
-        date: "2024-08-25",
-        type: "journalism",
-      },
-      {
-        organization: "Palestine Information Center",
-        title: "Israeli Forces Destroy Bani Saleh Mosque, Khan Yunis",
-        url: "https://english.palinfo.com/news/2024/08/24/324233/",
-        date: "2024-08-24",
-        type: "documentation",
-      },
-    ],
+    ]
   },
   {
     id: "eltiqa-gallery",
@@ -4525,19 +3987,23 @@ export const mockSites: Site[] = [
     type: "museum",
     yearBuilt: "2002",
     yearBuiltIslamic: "1423 AH",
-    coordinates: [31.5070, 34.4620], // Omar Al-Mukhtar Street, Gaza City downtown
+    coordinates: [
+      31.507,
+      34.462
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-12-04",
     dateDestroyedIslamic: "21 Jumada al-Ula 1445 AH",
     sourceAssessmentDate: "2024-05-27",
     lastUpdated: "2025-09-30",
-    description:
-      "Founded in 2002 by seven Palestinian artists, Eltiqa was Gaza's oldest contemporary art gallery and one of only two established visual arts venues in the Strip. Destroyed by an Israeli airstrike on December 4, 2023. In the aftermath, displaced Palestinians removed artwork and furniture to use as fuel for heat and cooking. The collective subsequently held an exhibition in exile in Dubai in March 2025. Eltiqa had participated in Documenta 15, the internationally prominent contemporary art exhibition.",
-    historicalSignificance:
-      "Eltiqa was the primary institutional home for Gaza's contemporary visual arts community for over two decades. Its participation in Documenta 15 — one of the world's most important contemporary art exhibitions — gave Gaza's artists an international platform. Its destruction severed the most significant institutional link connecting Gaza's artists to the international art world.",
-    culturalValue:
-      "Contemporary art institutions are extraordinarily difficult to rebuild — they represent decades of community-building, relationships with artists, and accumulated collections. Eltiqa's destruction eliminated the primary site for exhibiting, preserving, and debating contemporary Palestinian visual culture in Gaza.",
-    verifiedBy: ["Palestinian Ministry of Culture", "UNESCO"],
+    description: "Founded in 2002 by seven Palestinian artists, Eltiqa was Gaza's oldest contemporary art gallery and one of only two established visual arts venues in the Strip. Destroyed by an Israeli airstrike on December 4, 2023. In the aftermath, displaced Palestinians removed artwork and furniture to use as fuel for heat and cooking. The collective subsequently held an exhibition in exile in Dubai in March 2025. Eltiqa had participated in Documenta 15, the internationally prominent contemporary art exhibition.",
+    historicalSignificance: "Eltiqa was the primary institutional home for Gaza's contemporary visual arts community for over two decades. Its participation in Documenta 15 — one of the world's most important contemporary art exhibitions — gave Gaza's artists an international platform. Its destruction severed the most significant institutional link connecting Gaza's artists to the international art world.",
+    culturalValue: "Contemporary art institutions are extraordinarily difficult to rebuild — they represent decades of community-building, relationships with artists, and accumulated collections. Eltiqa's destruction eliminated the primary site for exhibiting, preserving, and debating contemporary Palestinian visual culture in Gaza.",
+    verifiedBy: [
+      "Palestinian Ministry of Culture",
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/eltiqa-gallery-before.jpg",
@@ -4556,23 +4022,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Hyperallergic",
         title: "Gaza Art Gallery Reportedly Destroyed by Israeli Airstrike",
         url: "https://hyperallergic.com/gaza-art-gallery-reportedly-destroyed-by-israeli-airstrike/",
         date: "2023-12-05",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Art News",
         title: "Gaza's Eltiqa Gallery, Which Participated in Documenta 15, Destroyed in Airstrike",
         url: "https://www.artnews.com/art-news/news/eltiqa-gallery-gaza-destroyed-documenta-15-1234690729/",
         date: "2023-12-05",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "diana-tamari-sabbagh-library",
@@ -4581,19 +4046,21 @@ export const mockSites: Site[] = [
     type: "archive",
     yearBuilt: "1985",
     yearBuiltIslamic: "1405 AH",
-    coordinates: [31.5203, 34.4668], // Al-Rimal, Gaza City (within Rashad al-Shawa Cultural Center)
+    coordinates: [
+      31.5206,
+      34.443
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-25",
     dateDestroyedIslamic: "12 Jumada al-Ula 1445 AH",
     sourceAssessmentDate: "2024-05-27",
-    lastUpdated: "2025-09-30",
-    description:
-      "Gaza's premier public reference library, housed within the Rashad al-Shawa Cultural Center in the Al-Rimal district. Holding over 100,000 volumes, it was named after Diana Tamari Sabbagh, a pioneering Palestinian philanthropist. The building was sheltering hundreds of displaced civilians at the time of its destruction on November 25, 2023. The library also held records related to the 1990s Palestinian-Israeli peace negotiations.",
-    historicalSignificance:
-      "Named after Diana Tamari Sabbagh, whose family supported educational and cultural institutions across the Arab world, the library was the most significant free public reference library in Gaza. As a distinct institution from the broader Cultural Center, it served researchers, students, and the general public with a collection spanning Arabic, English, and international scholarship.",
-    culturalValue:
-      "The destruction of a 100,000-volume public library — including the only copies of certain Palestinian historical and archival materials — constitutes an irreversible loss. The presence of displaced civilian families sheltering in the building at the time adds a layer of human tragedy to the cultural loss.",
-    verifiedBy: ["UNESCO", "Librarians and Archivists with Palestine"],
+    lastUpdated: "2026-07-22",
+    description: "Gaza's premier public reference library, housed within the Rashad al-Shawa Cultural Center in the Al-Rimal district. Holding tens of thousands of volumes, it was named after Diana Tamari Sabbagh, a pioneering Palestinian philanthropist. The building was sheltering hundreds of displaced civilians at the time of its destruction on November 25, 2023. The library also held records related to the 1990s Palestinian-Israeli peace negotiations.",
+    historicalSignificance: "Named after Diana Tamari Sabbagh, whose family supported educational and cultural institutions across the Arab world, the library was the most significant free public reference library in Gaza. As a distinct institution from the broader Cultural Center, it served researchers, students, and the general public with a collection spanning Arabic, English, and international scholarship.",
+    culturalValue: "The destruction of a 100,000-volume public library — including the only copies of certain Palestinian historical and archival materials — constitutes an irreversible loss. The presence of displaced civilian families sheltering in the building at the time adds a layer of human tragedy to the cultural loss.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/diana-tamari-sabbagh-library-before.jpg",
@@ -4612,23 +4079,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "The National News",
         title: "Gaza's lost treasures: Israel's war ravages Palestinian archives and manuscripts",
         url: "https://www.thenationalnews.com/news/mena/2024/07/07/gazas-lost-treasures-israels-war-ravages-palestinian-archives-and-manuscripts/",
         date: "2024-07-07",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "enaim-library",
@@ -4636,19 +4102,21 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة عنايم",
     type: "archive",
     yearBuilt: "Late 20th century",
-    coordinates: [31.5120, 34.4640], // Gaza City
+    coordinates: [
+      31.512,
+      34.464
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
-    description:
-      "A community library in Gaza City destroyed on December 6, 2023, part of a wave that eliminated at least five scholarly and cultural institutions in Gaza City in a single day. Documented by Librarians and Archivists with Palestine.",
-    historicalSignificance:
-      "The December 6, 2023 wave of destruction — eliminating multiple libraries and educational institutions on a single day — represents one of the most concentrated single-day losses of knowledge infrastructure in the conflict. Enaim Library was one of the community institutions serving Gaza City residents outside formal academic settings.",
-    culturalValue:
-      "Community libraries serve populations who lack access to university libraries and represent a society's grassroots investment in literacy and learning. Their concentrated destruction in a single day points to systematic rather than incidental targeting of knowledge infrastructure.",
-    verifiedBy: ["Librarians and Archivists with Palestine"],
+    description: "A community library in Gaza City destroyed on December 6, 2023, part of a wave that eliminated at least five scholarly and cultural institutions in Gaza City in a single day. Documented by Librarians and Archivists with Palestine.",
+    historicalSignificance: "The December 6, 2023 wave of destruction — eliminating multiple libraries and educational institutions on a single day — represents one of the most concentrated single-day losses of knowledge infrastructure in the conflict. Enaim Library was one of the community institutions serving Gaza City residents outside formal academic settings.",
+    culturalValue: "Community libraries serve populations who lack access to university libraries and represent a society's grassroots investment in literacy and learning. Their concentrated destruction in a single day points to systematic rather than incidental targeting of knowledge infrastructure.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/enaim-library-before.jpg",
@@ -4667,16 +4135,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-nahda-library",
@@ -4684,19 +4151,20 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة النهضة",
     type: "archive",
     yearBuilt: "Late 20th century",
-    coordinates: [31.5130, 34.4635], // Gaza City
+    coordinates: [
+      31.5276,
+      34.4517
+    ],
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
-    lastUpdated: "2025-09-30",
-    description:
-      "The 'Renaissance Library' — Al-Nahda in Arabic means renaissance or awakening — destroyed in Gaza City on December 6, 2023, in the same wave that eliminated multiple cultural and educational institutions in a single day.",
-    historicalSignificance:
-      "The name Al-Nahda carries resonance in Arab cultural history, evoking the Arab cultural renaissance of the 19th and early 20th centuries that produced some of the most significant Arabic literature, journalism, and intellectual thought. A library bearing this name in Gaza represented a connection to that broader tradition of Arab intellectual revival.",
-    culturalValue:
-      "Its destruction, alongside Enaim Library and other institutions on the same day, forms part of the documented pattern of concentrated cultural infrastructure elimination in Gaza City's residential and commercial areas during December 2023.",
-    verifiedBy: ["Librarians and Archivists with Palestine"],
+    lastUpdated: "2026-07-22",
+    description: "The 'Renaissance Library' — Al-Nahda in Arabic means renaissance or awakening — destroyed in Gaza City on December 6, 2023, in the same wave that eliminated multiple cultural and educational institutions in a single day.",
+    historicalSignificance: "The name Al-Nahda carries resonance in Arab cultural history, evoking the Arab cultural renaissance of the 19th and early 20th centuries that produced some of the most significant Arabic literature, journalism, and intellectual thought. A library bearing this name in Gaza represented a connection to that broader tradition of Arab intellectual revival.",
+    culturalValue: "Its destruction, alongside Enaim Library and other institutions on the same day, forms part of the documented pattern of concentrated cultural infrastructure elimination in Gaza City's residential and commercial areas during December 2023.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/al-nahda-library-before.jpg",
@@ -4715,16 +4183,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "kanaan-educational-institute",
@@ -4732,19 +4199,21 @@ export const mockSites: Site[] = [
     nameArabic: "معهد كنعان للتطوير التربوي",
     type: "archive",
     yearBuilt: "Early 21st century",
-    coordinates: [31.5080, 34.4520], // Al-Rimal, Gaza City
+    coordinates: [
+      31.508,
+      34.452
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
-    description:
-      "A combined educational institute and community library in the Al-Rimal neighborhood of Gaza City, destroyed on December 6, 2023 in the wave that eliminated multiple knowledge institutions in a single day. Documented by Librarians and Archivists with Palestine.",
-    historicalSignificance:
-      "Educational development institutes in Gaza faced particularly difficult operating conditions under the blockade, making those that survived especially valuable. Kana'an combined library resources with educational programming, serving both students and community development needs in an environment with severely constrained institutional resources.",
-    culturalValue:
-      "The loss of educational development infrastructure in Gaza is compounded by the extreme difficulty of rebuilding such institutions under blockade conditions. Each institution destroyed represents years of community investment in capacity-building that cannot be quickly replaced.",
-    verifiedBy: ["Librarians and Archivists with Palestine"],
+    description: "A combined educational institute and community library in the Al-Rimal neighborhood of Gaza City, destroyed on December 6, 2023 in the wave that eliminated multiple knowledge institutions in a single day. Documented by Librarians and Archivists with Palestine.",
+    historicalSignificance: "Educational development institutes in Gaza faced particularly difficult operating conditions under the blockade, making those that survived especially valuable. Kana'an combined library resources with educational programming, serving both students and community development needs in an environment with severely constrained institutional resources.",
+    culturalValue: "The loss of educational development infrastructure in Gaza is compounded by the extreme difficulty of rebuilding such institutions under blockade conditions. Each institution destroyed represents years of community investment in capacity-building that cannot be quickly replaced.",
+    verifiedBy: [
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/kanaan-educational-institute-before.jpg",
@@ -4763,16 +4232,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "umm-al-nasr-mosque",
@@ -4781,19 +4249,22 @@ export const mockSites: Site[] = [
     type: "mosque",
     yearBuilt: "1239 CE",
     yearBuiltIslamic: "637 AH",
-    coordinates: [31.5320, 34.5410], // Beit Hanoun, North Gaza
+    coordinates: [
+      31.5415,
+      34.5361
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
     sourceAssessmentDate: "2024-01-15",
-    lastUpdated: "2025-09-30",
-    description:
-      "The oldest mosque in Beit Hanoun, built in 1239 CE by the Ayyubids to commemorate their victory over Crusader forces at the Battle of Umm al-Nasr. The mosque had already sustained damage in the 2006 Israeli military operation. Beit Hanoun, in the far northeast of the Gaza Strip, was among the most intensely bombed areas from the earliest days of the October 2023 offensive, and the mosque sustained severe damage described in local accounts as near-complete destruction.",
-    historicalSignificance:
-      "Built to mark an Ayyubid military victory in the 13th century, Umm al-Nasr Mosque connects Beit Hanoun's community to the Ayyubid period — the dynasty of Saladin — and to a specific battle in the region's medieval history. Its near-800-year continuity of use made it one of the oldest functioning religious sites in the northern Gaza Strip.",
-    culturalValue:
-      "The severe damage or destruction of an Ayyubid-era mosque that survived eight centuries — including previous conflicts — represents an irreplaceable loss of medieval Islamic architectural heritage. Beit Hanoun's near-total destruction left virtually no heritage structures standing in one of Gaza's oldest settled areas.",
-    verifiedBy: ["Wikipedia", "Palestine Chronicle"],
+    lastUpdated: "2026-07-22",
+    description: "The oldest mosque in Beit Hanoun, built in 1239 CE by the Ayyubids to commemorate their the November 1239 battle against Crusader forces fought at the site. The mosque had already sustained damage in the 2006 Israeli military operation. Beit Hanoun, in the far northeast of the Gaza Strip, was among the most intensely bombed areas from the earliest days of the October 2023 offensive, and the mosque sustained severe damage described in local accounts as near-complete destruction.",
+    historicalSignificance: "Built to mark an Ayyubid military victory in the 13th century, Umm al-Nasr Mosque connects Beit Hanoun's community to the Ayyubid period — the dynasty of Saladin — and to a specific battle in the region's medieval history. Its near-800-year continuity of use made it one of the oldest functioning religious sites in the northern Gaza Strip.",
+    culturalValue: "The severe damage or destruction of an Ayyubid-era mosque that survived eight centuries — including previous conflicts — represents an irreplaceable loss of medieval Islamic architectural heritage. Beit Hanoun's near-total destruction left virtually no heritage structures standing in one of Gaza's oldest settled areas.",
+    verifiedBy: [
+      "Wikipedia",
+      "Palestine Chronicle"
+    ],
     images: {
       before: {
         url: "/images/sites/umm-al-nasr-mosque-before.jpg",
@@ -4812,16 +4283,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Wikipedia",
         title: "Umm al-Nasr Mosque",
         url: "https://en.wikipedia.org/wiki/Umm_al-Nasr_Mosque",
         date: "2024-01-15",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-amin-muhammad-mosque",
@@ -4829,19 +4299,22 @@ export const mockSites: Site[] = [
     nameArabic: "مسجد الأمين محمد",
     type: "mosque",
     yearBuilt: "19th–20th century",
-    coordinates: [31.3452, 34.3038], // Khan Yunis city center
+    coordinates: [
+      31.3452,
+      34.3038
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-10-08",
     dateDestroyedIslamic: "23 Rabi' al-Awwal 1445 AH",
     sourceAssessmentDate: "2024-01-14",
     lastUpdated: "2025-09-30",
-    description:
-      "One of the oldest and most prominent mosques in Khan Yunis city center, destroyed by an Israeli airstrike on October 8, 2023 — the second day of the Israeli military offensive. Its early destruction on day two of the conflict made it among the first heritage sites lost.",
-    historicalSignificance:
-      "As one of Khan Yunis's oldest and most prominent mosques, Al-Amin Muhammad served as both a religious anchor and a landmark in the city center. Its destruction on the second day of the conflict — before the ground offensive had even begun — reflects the early targeting of established religious landmarks.",
-    culturalValue:
-      "The immediate destruction of historic mosques in the opening hours of the offensive denied the community the possibility of preservation or evacuation of religious and cultural objects. Al-Amin Muhammad's loss set the pattern for the systematic destruction of Islamic heritage sites that followed throughout the conflict.",
-    verifiedBy: ["Al Jazeera"],
+    description: "One of the oldest and most prominent mosques in Khan Yunis city center, destroyed by an Israeli airstrike on October 8, 2023 — the second day of the Israeli military offensive. Its early destruction on day two of the conflict made it among the first heritage sites lost.",
+    historicalSignificance: "As one of Khan Yunis's oldest and most prominent mosques, Al-Amin Muhammad served as both a religious anchor and a landmark in the city center. Its destruction on the second day of the conflict — before the ground offensive had even begun — reflects the early targeting of established religious landmarks.",
+    culturalValue: "The immediate destruction of historic mosques in the opening hours of the offensive denied the community the possibility of preservation or evacuation of religious and cultural objects. Al-Amin Muhammad's loss set the pattern for the systematic destruction of Islamic heritage sites that followed throughout the conflict.",
+    verifiedBy: [
+      "Al Jazeera"
+    ],
     images: {
       before: {
         url: "/images/sites/al-amin-muhammad-mosque-before.jpg",
@@ -4860,16 +4333,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Al Jazeera",
         title: "A 'cultural genocide': which of Gaza's heritage sites have been destroyed?",
         url: "https://www.aljazeera.com/news/2024/1/14/a-cultural-genocide-which-of-gazas-heritage-sites-have-been-destroyed",
         date: "2024-01-14",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "edward-said-conservatory-gaza",
@@ -4878,17 +4350,21 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "2012",
     yearBuiltIslamic: "1433 AH",
-    coordinates: [31.4900, 34.4420], // Tel al-Hawa, southwestern Gaza City
+    coordinates: [
+      31.49,
+      34.442
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     sourceAssessmentDate: "2025-01-15",
-    lastUpdated: "2026-02-13",
-    description:
-      "Opened in 2012 in the Tel al-Hawa neighborhood of southwestern Gaza City, the Gaza branch of the Edward Said National Conservatory of Music was the primary music education institution in the Gaza Strip. Located on the ground floor of the Palestine Red Crescent's ambulance building, it was hit directly by an artillery shell and subsequently looted and burned. Staff confirmed the destruction upon returning to Gaza in January 2025. Despite the physical destruction, the conservatory won the 2025 International Music Council Award for its 'Gaza Sings' project, conducted in displacement camps.",
-    historicalSignificance:
-      "The Edward Said National Conservatory of Music was founded to develop Palestinian musical culture and provide professional music education across the Palestinian territories. Its Gaza branch was the sole institution in the Strip offering structured music education, connecting students to a broader tradition of Palestinian musical heritage.",
-    culturalValue:
-      "Music education institutions cultivate cultural transmission between generations. The conservatory's destruction eliminated the only formal pathway for musical training in Gaza and with it decades of student-teacher relationships, instrument collections, and sheet music archives. Its continuation in exile — culminating in an international award — testifies both to the institution's resilience and to the scale of what was lost physically.",
-    verifiedBy: ["Institute for Palestine Studies"],
+    lastUpdated: "2026-07-22",
+    description: "Opened in 2012 in the Tel al-Hawa neighborhood of southwestern Gaza City, the Gaza branch of the Edward Said National Conservatory of Music was the primary music education institution in the Gaza Strip. Located on the ground floor of the Palestine Red Crescent's ambulance building, it was hit directly by an artillery shell and subsequently looted and burned. Staff confirmed the destruction upon returning to Gaza in January 2025. Despite the physical destruction, the conservatory won the 2025 International Music Council Award for its 'Gaza Sings' project, conducted in displacement camps.",
+    historicalSignificance: "The Edward Said National Conservatory of Music was founded to develop Palestinian musical culture and provide professional music education across the Palestinian territories. Its Gaza branch was the sole institution in the Strip offering structured music education, connecting students to a broader tradition of Palestinian musical heritage.",
+    culturalValue: "Music education institutions cultivate cultural transmission between generations. The conservatory's destruction eliminated the only formal pathway for musical training in Gaza and with it decades of student-teacher relationships, instrument collections, and sheet music archives. Its continuation in exile — culminating in an international award — testifies both to the institution's resilience and to the scale of what was lost physically.",
+    verifiedBy: [
+      "Institute for Palestine Studies",
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/edward-said-conservatory-gaza-before.jpg",
@@ -4907,36 +4383,44 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Institute for Palestine Studies",
         title: "Gaza's Edward Said National Conservatory of Music",
         url: "https://www.palestine-studies.org/en/node/1657311",
         date: "2025-01-20",
-        type: "documentation",
+        type: "documentation"
       },
-    ],
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
   },
   {
     id: "maiuma-ancient-port",
     name: "Maiuma (Ancient Port of Gaza)",
     nameArabic: "ميوما / ميناء غزة القديم",
     type: "archaeological",
-    yearBuilt: "BCE 300 (Roman period)",
-    coordinates: [31.5550, 34.4180], // Northwest Gaza coast, near Beit Lahia
+    yearBuilt: "1st century (Roman period)",
+    coordinates: [
+      31.5252,
+      34.4311
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-10",
     dateDestroyedIslamic: "26 Rabi' al-Thani 1445 AH",
     sourceAssessmentDate: "2024-03-15",
-    lastUpdated: "2025-09-30",
-    description:
-      "The ancient port town of Maiuma served as the maritime gateway to Gaza during the Roman and Byzantine periods, functioning as the harbor district of ancient Gaza. Dating to approximately 300 BCE, the site contains stratified archaeological remains spanning the Hellenistic, Roman, and Byzantine eras. Analysis of aerial photography by the Gaza Maritime Archaeology Project confirmed 'complete destruction' of the site from airstrikes by November 2023.",
-    historicalSignificance:
-      "Maiuma was an integral part of ancient Gaza's economy and connectivity to the wider Mediterranean world. As the port through which Gaza's renowned wine, textiles, and trade goods were exported to Rome and Byzantium, Maiuma is inseparable from understanding Gaza's ancient commercial and cultural prominence. Its destruction severs a key node in the archaeological understanding of ancient Gaza's role in Mediterranean trade.",
-    culturalValue:
-      "Coastal archaeological sites are among the rarest and most informative categories of heritage, preserving evidence of ancient maritime trade, shipbuilding, and cultural exchange. The complete destruction of Maiuma eliminates a site that could have yielded irreplaceable evidence about ancient Gaza's economy and its connections to the Hellenistic and Roman Mediterranean world.",
-    verifiedBy: ["Gaza Maritime Archaeology Project", "UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "The ancient port town of Maiuma served as the maritime gateway to Gaza during the Roman and Byzantine periods, functioning as the harbor district of ancient Gaza. A Roman–Byzantine era port, the site contains stratified archaeological remains spanning the Hellenistic, Roman, and Byzantine eras. Analysis of aerial photography by the Gaza Maritime Archaeology Project confirmed 'complete destruction' of the site from airstrikes by November 2023.",
+    historicalSignificance: "Maiuma was an integral part of ancient Gaza's economy and connectivity to the wider Mediterranean world. As the port through which Gaza's renowned wine, textiles, and trade goods were exported to Rome and Byzantium, Maiuma is inseparable from understanding Gaza's ancient commercial and cultural prominence. Its destruction severs a key node in the archaeological understanding of ancient Gaza's role in Mediterranean trade.",
+    culturalValue: "Coastal archaeological sites are among the rarest and most informative categories of heritage, preserving evidence of ancient maritime trade, shipbuilding, and cultural exchange. The complete destruction of Maiuma eliminates a site that could have yielded irreplaceable evidence about ancient Gaza's economy and its connections to the Hellenistic and Roman Mediterranean world.",
+    verifiedBy: [
+      "Gaza Maritime Archaeology Project"
+    ],
     images: {
       before: {
         url: "/images/sites/maiuma-ancient-port-before.jpg",
@@ -4955,16 +4439,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Anadolu Agency",
         title: "'Erasure of history': Israel's cultural genocide decimates Gaza's archaeological treasures",
         url: "https://www.aa.com.tr/en/middle-east/-erasure-of-history-israel-s-cultural-genocide-decimates-gaza-s-archaeological-treasures/3144001",
         date: "2024-03-15",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "atfaluna-society-deaf-children",
@@ -4973,19 +4456,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "1992",
     yearBuiltIslamic: "1412 AH",
-    coordinates: [31.5040, 34.4630], // 72 Philistin (Palestine) Street, central Gaza City
+    coordinates: [
+      31.504,
+      34.463
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-03-06",
     dateDestroyedIslamic: "25 Sha'ban 1445 AH",
     sourceAssessmentDate: "2024-05-27",
-    lastUpdated: "2025-09-30",
-    description:
-      "Located at 72 Philistin (Palestine) Street in central Gaza City, Atfaluna Society for Deaf Children was one of Gaza's longest-established cultural and educational institutions for the deaf community. The building was struck by an Israeli airstrike on March 6, 2024, killing co-founder and head of carpentry Hashem Ghazal and staff member Anwar Al Zaeem. UNESCO verified the site as damaged cultural property. Programs included sign language education, audiology, speech therapy, vocational training, and arts programming including film-making and animation workshops.",
-    historicalSignificance:
-      "Founded in 1992, Atfaluna was one of the primary institutions supporting Gaza's deaf and hard-of-hearing community across multiple generations. Its cultural programming — including short film and animation workshops supported post-2014 — connected deaf Gazan youth to international arts practices. The killing of its co-founder and staff in the strike adds a direct human dimension to the cultural loss.",
-    culturalValue:
-      "Cultural centers for deaf communities are extraordinarily rare in the Arab world. Atfaluna's crafts program, restaurant, and arts workshops constituted the primary institutional space where Gaza's deaf community could develop cultural identity and professional skills. UNESCO's verification of it as a cultural site reflects its recognized importance beyond its social welfare function.",
-    verifiedBy: ["UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Located at 72 Philistin (Palestine) Street in central Gaza City, Atfaluna Society for Deaf Children was one of Gaza's longest-established cultural and educational institutions for the deaf community. The building was struck by an Israeli airstrike on March 6, 2024, while longtime carpentry director Hashem Ghazal and his wife were killed in a separate strike on 13 May 2024 and staff member Anwar Al Zaeem. UNESCO verified the site as damaged cultural property. Programs included sign language education, audiology, speech therapy, vocational training, and arts programming including film-making and animation workshops.",
+    historicalSignificance: "Founded in 1992, Atfaluna was one of the primary institutions supporting Gaza's deaf and hard-of-hearing community across multiple generations. Its cultural programming — including short film and animation workshops supported post-2014 — connected deaf Gazan youth to international arts practices. The killing of its co-founder and staff in the strike adds a direct human dimension to the cultural loss.",
+    culturalValue: "Cultural centers for deaf communities are extraordinarily rare in the Arab world. Atfaluna's crafts program, restaurant, and arts workshops constituted the primary institutional space where Gaza's deaf community could develop cultural identity and professional skills. UNESCO's verification of it as a cultural site reflects its recognized importance beyond its social welfare function.",
+    verifiedBy: [
+      "UNESCO"
+    ],
     images: {
       before: {
         url: "/images/sites/atfaluna-society-deaf-children-before.jpg",
@@ -5004,23 +4490,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
         url: "https://www.unesco.org/en/gaza/assessment",
         date: "2024-05-27",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Wikipedia / Sunbula",
         title: "Atfaluna Society for Deaf Children",
         url: "https://en.wikipedia.org/wiki/Atfaluna_Society_for_Deaf_Children",
         date: "2024-03-10",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-quds-open-university-library-gaza",
@@ -5029,19 +4514,22 @@ export const mockSites: Site[] = [
     type: "archive",
     yearBuilt: "1992",
     yearBuiltIslamic: "1412 AH",
-    coordinates: [31.5100, 34.4430], // Khalid al-Hassan Street, Al-Nasser neighborhood, Gaza City
+    coordinates: [
+      31.51,
+      34.443
+    ],
+    coordinatesApproximate: true,
     status: "heavily-damaged",
     dateDestroyed: "2023-11-15",
     dateDestroyedIslamic: "1 Jumada al-Ula 1445 AH",
     sourceAssessmentDate: "2024-05-27",
-    lastUpdated: "2025-09-30",
-    description:
-      "The Gaza City branch of Al-Quds Open University, located on Khalid al-Hassan Street in the Al-Nasser neighborhood of western Gaza City, was targeted by Israeli tanks on November 15, 2023. The university issued a formal condemnation on November 19 noting the campus had been used as military barracks by Israeli forces before the attack. The library, serving thousands of distance-learning students across the Gaza Strip, sustained serious structural damage. Al-Quds Open University was established in 1991 as the primary distance-learning institution for Palestinians.",
-    historicalSignificance:
-      "Al-Quds Open University was founded to provide accessible higher education to Palestinians who could not access traditional universities due to the occupation and movement restrictions. Its Gaza City branch served students across the Strip through its library resources. The November 15, 2023 attack — following the campus's use as Israeli military barracks — was documented by the Scholars at Risk network.",
-    culturalValue:
-      "Distance-learning university libraries serve a uniquely broad population: working adults, people with disabilities, and students in areas with no nearby campus. The damage to this library disrupted educational access for a population already severely constrained by blockade and conflict.",
-    verifiedBy: ["UNESCO", "Scholars at Risk"],
+    lastUpdated: "2026-07-22",
+    description: "The Gaza City branch of Al-Quds Open University, located on Khalid al-Hassan Street in the Al-Nasser neighborhood of western Gaza City, was targeted by Israeli tanks on November 15, 2023. The university issued a formal condemnation on November 19 noting the campus had been used as military barracks by Israeli forces before the attack. The library, serving thousands of distance-learning students across the Gaza Strip, sustained serious structural damage. Al-Quds Open University was established in 1991 as the primary distance-learning institution for Palestinians.",
+    historicalSignificance: "Al-Quds Open University was founded to provide accessible higher education to Palestinians who could not access traditional universities due to the occupation and movement restrictions. Its Gaza City branch served students across the Strip through its library resources. The November 15, 2023 attack — following the campus's use as Israeli military barracks — was documented by the Scholars at Risk network.",
+    culturalValue: "Distance-learning university libraries serve a uniquely broad population: working adults, people with disabilities, and students in areas with no nearby campus. The damage to this library disrupted educational access for a population already severely constrained by blockade and conflict.",
+    verifiedBy: [
+      "Scholars at Risk"
+    ],
     images: {
       before: {
         url: "/images/sites/al-quds-open-university-library-gaza-before.jpg",
@@ -5060,23 +4548,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Scholars at Risk",
         title: "Al-Quds Open University attacked, November 15, 2023",
         url: "https://www.scholarsatrisk.org/report/2023-11-15-al-quds-open-university/",
         date: "2023-11-19",
-        type: "documentation",
-      },
-      {
-        organization: "UNESCO",
-        title: "Gaza Heritage Damage Assessment",
-        url: "https://www.unesco.org/en/gaza/assessment",
-        date: "2024-05-27",
-        type: "official",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "shahwan-museum",
@@ -5084,19 +4564,22 @@ export const mockSites: Site[] = [
     nameArabic: "متحف الشهوان / متحف مروان الشهوان",
     type: "museum",
     yearBuilt: "Early 21st century",
-    coordinates: [31.3445, 34.3025], // Khan Yunis city
+    coordinates: [
+      31.3445,
+      34.3025
+    ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
-    description:
-      "A private museum in Khan Yunis, housed in the basement of a residential building and assembled over more than 30 years by collector Marwan Shahwan. The collection holds over 10,000 ancient artifacts spanning multiple civilizations. Documented as damaged by the Palestinian Ministry of Culture on December 6, 2023. During a ceasefire period, part of the collection was evacuated to Al-Mawasi on the western Khan Yunis coast, but the area subsequently came under renewed military operations.",
-    historicalSignificance:
-      "Private collectors like Marwan Shahwan have played a critical role in preserving Palestinian archaeological heritage outside formal institutional structures — often at personal expense over decades. A collection of 10,000 artifacts assembled across 30+ years represents irreplaceable archaeological breadth spanning the Bronze Age through the Ottoman period.",
-    culturalValue:
-      "The partial evacuation of the collection during a ceasefire window — and its subsequent renewed endangerment — illustrates the ongoing precarity of Gaza's movable cultural heritage. Private museums in residential buildings are particularly vulnerable to total loss, with no institutional capacity for emergency preservation.",
-    verifiedBy: ["Palestinian Ministry of Culture", "Librarians and Archivists with Palestine"],
+    description: "A private museum in Khan Yunis, housed in the basement of a residential building and assembled over more than 30 years by collector Marwan Shahwan. The collection holds over 10,000 ancient artifacts spanning multiple civilizations. Documented as damaged by the Palestinian Ministry of Culture on December 6, 2023. During a ceasefire period, part of the collection was evacuated to Al-Mawasi on the western Khan Yunis coast, but the area subsequently came under renewed military operations.",
+    historicalSignificance: "Private collectors like Marwan Shahwan have played a critical role in preserving Palestinian archaeological heritage outside formal institutional structures — often at personal expense over decades. A collection of 10,000 artifacts assembled across 30+ years represents irreplaceable archaeological breadth spanning the Bronze Age through the Ottoman period.",
+    culturalValue: "The partial evacuation of the collection during a ceasefire window — and its subsequent renewed endangerment — illustrates the ongoing precarity of Gaza's movable cultural heritage. Private museums in residential buildings are particularly vulnerable to total loss, with no institutional capacity for emergency preservation.",
+    verifiedBy: [
+      "Palestinian Ministry of Culture",
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/shahwan-museum-before.jpg",
@@ -5115,23 +4598,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "The National",
         title: "How young volunteers in Gaza are using their bare hands to rescue cultural treasures",
         url: "https://www.thenationalnews.com/news/mena/2026/04/03/how-young-volunteers-in-gaza-are-using-their-bare-hands-to-dig-through-rubble-and-rescue-cultural-treasures/",
         date: "2026-04-03",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "al-sununu-foundation",
@@ -5140,19 +4622,22 @@ export const mockSites: Site[] = [
     type: "historic-building",
     yearBuilt: "2010",
     yearBuiltIslamic: "1431 AH",
-    coordinates: [31.5150, 34.4560], // Gaza City (approximate — neighborhood unconfirmed)
+    coordinates: [
+      31.515,
+      34.456
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-01",
     dateDestroyedIslamic: "17 Rabi' al-Thani 1445 AH",
     sourceAssessmentDate: "2024-06-01",
-    lastUpdated: "2025-09-30",
-    description:
-      "Founded in 2010 by Aarab Mohammed and Haitham al-Mughanni in Gaza City, Al-Sununu (The Swallow) offered instrumental instruction and music therapy for children ages 4–16. The foundation held one of Gaza's largest collections of musical instruments, including oud, qanun, ney, guitar, kamanja, viola, cello, and tabla. Operated in partnership with UNESCO and ISESCO. The kindergarten and music school were destroyed in November 2023.",
-    historicalSignificance:
-      "Al-Sununu was among a handful of institutions dedicated specifically to music education and music therapy in Gaza. Its UNESCO and ISESCO partnerships gave it an international dimension and represented a recognized link between Gaza's musical culture and global arts organizations. Its destruction eliminated one of the Gaza Strip's primary centers of childhood musical education.",
-    culturalValue:
-      "Musical instrument collections in conflict zones are among the most difficult categories of heritage to preserve — instruments are fragile, bulky, and impossible to digitize. The loss of Al-Sununu's instrument collection means not only the destruction of physical objects but the severing of the hands-on pedagogical tradition that connected children to these instruments.",
-    verifiedBy: ["Arabic Wikipedia", "UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Founded in 2010 by Aarab Mohammed and Haitham al-Mughanni in Gaza City, Al-Sununu (The Swallow) offered instrumental instruction and music therapy for children ages 4–16. The foundation held one of Gaza's largest collections of musical instruments, including oud, qanun, ney, guitar, kamanja, viola, cello, and tabla. Operated in partnership with UNESCO and ISESCO. The kindergarten and music school were destroyed in November 2023.",
+    historicalSignificance: "Al-Sununu was among a handful of institutions dedicated specifically to music education and music therapy in Gaza. Its UNESCO and ISESCO partnerships gave it an international dimension and represented a recognized link between Gaza's musical culture and global arts organizations. Its destruction eliminated one of the Gaza Strip's primary centers of childhood musical education.",
+    culturalValue: "Musical instrument collections in conflict zones are among the most difficult categories of heritage to preserve — instruments are fragile, bulky, and impossible to digitize. The loss of Al-Sununu's instrument collection means not only the destruction of physical objects but the severing of the hands-on pedagogical tradition that connected children to these instruments.",
+    verifiedBy: [
+      "Arabic Wikipedia"
+    ],
     images: {
       before: {
         url: "/images/sites/al-sununu-foundation-before.jpg",
@@ -5171,63 +4656,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Music Fund / AER Worldwide",
         title: "Al-Sununu Foundation for Arts and Culture, Gaza",
         url: "https://musicfund.eu/projects/israelpalestina/",
         date: "2024-01-01",
-        type: "documentation",
-      },
-    ],
-  },
-  {
-    id: "gaza-center-culture-arts",
-    name: "Gaza Center for Culture and Arts",
-    nameArabic: "مركز غزة للثقافة والفنون",
-    type: "historic-building",
-    yearBuilt: "2005",
-    yearBuiltIslamic: "1426 AH",
-    coordinates: [31.4970, 34.4520], // Thalathini St (Jamal Abdel Nasser St), Al-Sabra, Gaza City
-    status: "destroyed",
-    sourceAssessmentDate: "2024-05-27",
-    lastUpdated: "2025-09-30",
-    description:
-      "Located on Thalathini Street (Jamal Abdel Nasser Street) in the Al-Sabra neighborhood of southern Gaza City, the Gaza Center for Culture and Arts was founded in 2005 and licensed by the Palestinian Ministry of Culture in 2006. It organized the Red Carpet Human Rights Film Festival, hosted literary and cultural events, theater, visual arts exhibitions, and music programming. The center's own website confirms total destruction during the conflict.",
-    historicalSignificance:
-      "The Gaza Center for Culture and Arts was one of the primary civic cultural venues in Gaza, providing public programming in film, theater, and visual arts to a population with limited access to such institutions. Its Red Carpet Human Rights Film Festival — first held in 2015 in the Shuja'iyya district — was the only dedicated human rights film festival in the Gaza Strip.",
-    culturalValue:
-      "Cultural centers that host public film, theater, and arts programming serve as irreplaceable civic infrastructure. Their loss is not merely about buildings but about the shared public space where communities process experience, debate ideas, and maintain cultural identity. The destruction of the Gaza Center eliminated a major venue for this kind of civic cultural life.",
-    verifiedBy: ["Palestinian Ministry of Culture"],
-    images: {
-      before: {
-        url: "/images/sites/gaza-center-culture-arts-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/gaza-center-culture-arts-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2026-05-28",
-        description: "Satellite imagery from 2026-05-28"
+        type: "documentation"
       }
-    },
-    
-    sources: [
-      {
-        organization: "Gaza Center for Culture and Arts",
-        title: "Official website confirming destruction",
-        url: "https://gazacenter.org/ar",
-        date: "2024-01-01",
-        type: "official",
-      },
-    ],
+    ]
   },
   {
     id: "al-shorouq-al-daem-library",
@@ -5236,19 +4673,22 @@ export const mockSites: Site[] = [
     type: "archive",
     yearBuilt: "1983",
     yearBuiltIslamic: "1403 AH",
-    coordinates: [31.5160, 34.4480], // Near Al-Azhar University, Rimal area, Gaza City
+    coordinates: [
+      31.516,
+      34.448
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
-    description:
-      "A combined library, bookstore, and cultural café founded in 1983 in Gaza City, operating for approximately 25 years near Al-Azhar University on University Street in the Rimal area. Originally established as a printing house by order of then-Gaza Mayor Rashad al-Shawa, it evolved into a major cultural hub described as a 'permanent cultural café' where readers could access thousands of titles. The institution had multiple branches including an Old City branch and a Rimal branch. Reported destroyed on December 6, 2023 by the Palestinian Ministry of Culture, with contents looted and operations fully ceased.",
-    historicalSignificance:
-      "Founded under the tenure of Rashad al-Shawa — one of Gaza's most prominent mayors, after whom the Rashad Shawa Cultural Center is also named — Al-Shorouq Al-Daem has deep roots in Gaza's civic cultural history. Its four-decade operation near Al-Azhar University made it a fixture of student and intellectual life in central Gaza.",
-    culturalValue:
-      "Cultural bookshop-cafés serve a social function beyond commerce — they are gathering places where readers, writers, and students meet, discuss, and sustain literary culture. The destruction and looting of Al-Shorouq Al-Daem eliminated not only physical books but one of Gaza's long-standing informal intellectual gathering spaces.",
-    verifiedBy: ["Palestinian Ministry of Culture", "Librarians and Archivists with Palestine"],
+    description: "A combined library, bookstore, and cultural café founded in 1983 in Gaza City, operating for approximately 25 years near Al-Azhar University on University Street in the Rimal area. Originally established as a printing house by order of then-Gaza Mayor Rashad al-Shawa, it evolved into a major cultural hub described as a 'permanent cultural café' where readers could access thousands of titles. The institution had multiple branches including an Old City branch and a Rimal branch. Reported destroyed on December 6, 2023 by the Palestinian Ministry of Culture, with contents looted and operations fully ceased.",
+    historicalSignificance: "Founded under the tenure of Rashad al-Shawa — one of Gaza's most prominent mayors, after whom the Rashad Shawa Cultural Center is also named — Al-Shorouq Al-Daem has deep roots in Gaza's civic cultural history. Its four-decade operation near Al-Azhar University made it a fixture of student and intellectual life in central Gaza.",
+    culturalValue: "Cultural bookshop-cafés serve a social function beyond commerce — they are gathering places where readers, writers, and students meet, discuss, and sustain literary culture. The destruction and looting of Al-Shorouq Al-Daem eliminated not only physical books but one of Gaza's long-standing informal intellectual gathering spaces.",
+    verifiedBy: [
+      "Palestinian Ministry of Culture",
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/al-shorouq-al-daem-library-before.jpg",
@@ -5267,23 +4707,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "ArabLit",
         title: "New report details damage to arts and culture across Gaza Strip",
         url: "https://arablit.org/2023/12/07/new-report-details-damage-to-arts-culture-across-gaza-strip/",
         date: "2023-12-07",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "lubbud-library",
@@ -5291,19 +4730,22 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة لبود",
     type: "archive",
     yearBuilt: "Late 20th century",
-    coordinates: [31.5080, 34.4670], // Gaza City (approximate — neighborhood unconfirmed)
+    coordinates: [
+      31.508,
+      34.467
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "2023-12-06",
-    dateDestroyedIslamic: "23 Jumada al-Ula 1445 AH",
+    dateDestroyed: "2023-12",
     sourceAssessmentDate: "2024-06-01",
     lastUpdated: "2025-09-30",
-    description:
-      "A commercial library and bookstore in Gaza City, documented as destroyed on December 6, 2023 by the Palestinian Ministry of Culture — part of the same single-day wave that eliminated at least five other literary and cultural institutions across Gaza City. Specific neighborhood location was not publicly documented; it received minimal press coverage outside the Ministry's official damage report.",
-    historicalSignificance:
-      "Lubbud Library was one of Gaza City's commercial bookstores providing public access to books and reading materials. Its documentation by the Palestinian Ministry of Culture alongside five other institutions on December 6, 2023 forms part of the official record of concentrated, single-day cultural infrastructure destruction during the conflict.",
-    culturalValue:
-      "Commercial bookstores occupy a distinct role from institutional libraries — they sustain a commercial ecosystem around reading and provide access to books for purchase in communities where institutional library access is limited. Their destruction as a category eliminates the private-sector dimension of literary culture.",
-    verifiedBy: ["Palestinian Ministry of Culture", "Librarians and Archivists with Palestine"],
+    description: "A commercial library and bookstore in Gaza City, documented as destroyed on December 6, 2023 by the Palestinian Ministry of Culture — part of the same single-day wave that eliminated at least five other literary and cultural institutions across Gaza City. Specific neighborhood location was not publicly documented; it received minimal press coverage outside the Ministry's official damage report.",
+    historicalSignificance: "Lubbud Library was one of Gaza City's commercial bookstores providing public access to books and reading materials. Its documentation by the Palestinian Ministry of Culture alongside five other institutions on December 6, 2023 forms part of the official record of concentrated, single-day cultural infrastructure destruction during the conflict.",
+    culturalValue: "Commercial bookstores occupy a distinct role from institutional libraries — they sustain a commercial ecosystem around reading and provide access to books for purchase in communities where institutional library access is limited. Their destruction as a category eliminates the private-sector dimension of literary culture.",
+    verifiedBy: [
+      "Palestinian Ministry of Culture",
+      "Librarians and Archivists with Palestine"
+    ],
     images: {
       before: {
         url: "/images/sites/lubbud-library-before.jpg",
@@ -5322,43 +4764,46 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Librarians and Archivists with Palestine",
         title: "Gaza Libraries and Archives Report 2024",
         url: "https://librarianswithpalestine.org/gaza-report-2024/",
         date: "2024-06-01",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "ArabLit",
         title: "New report details damage to arts and culture across Gaza Strip",
         url: "https://arablit.org/2023/12/07/new-report-details-damage-to-arts-culture-across-gaza-strip/",
         date: "2023-12-07",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
-  // HOSPITALS
   {
     id: "al-shifa-hospital",
     name: "Al-Shifa Hospital",
     nameArabic: "مستشفى الشفاء",
     type: "hospital",
     yearBuilt: "1946",
-    coordinates: [31.5218, 34.4513],
+    coordinates: [
+      31.5241,
+      34.4435
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2024-03-18",
     sourceAssessmentDate: "2024-04-01",
-    lastUpdated: "2025-11-01",
-    description:
-      "Gaza's largest hospital and the main medical complex in the Gaza Strip. Founded in the British Mandate period, Al-Shifa served as the central referral hospital for the entire population, providing surgical, maternity, and emergency services.",
-    historicalSignificance:
-      "Al-Shifa has been the backbone of Gaza's healthcare system for over 70 years. During the 2023–2024 conflict it became a focal point of international attention and controversy as Israeli forces twice conducted large-scale military operations inside the compound.",
-    culturalValue:
-      "The primary healthcare infrastructure for Gaza's population. By April 2024 the WHO confirmed the compound was mostly destroyed following a two-week Israeli military siege.",
-    verifiedBy: ["WHO", "MSF", "Forensic Architecture", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "Gaza's largest hospital and the main medical complex in the Gaza Strip. Founded in the British Mandate period, Al-Shifa served as the central referral hospital for the entire population, providing surgical, maternity, and emergency services.",
+    historicalSignificance: "Al-Shifa has been the backbone of Gaza's healthcare system for over 70 years. During the 2023–2024 conflict it became a focal point of international attention and controversy as Israeli forces twice conducted large-scale military operations inside the compound.",
+    culturalValue: "The primary healthcare infrastructure for Gaza's population. By April 2024 the WHO confirmed the compound was mostly destroyed following a two-week Israeli military siege.",
+    verifiedBy: [
+      "WHO",
+      "MSF",
+      "Forensic Architecture",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/al-shifa-hospital-before.jpg",
@@ -5377,29 +4822,28 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
         title: "Gaza: WHO deeply concerned about Al-Shifa hospital",
-        url: "https://www.who.int/news/item/10-11-2023-gaza--who-deeply-concerned-about-al-shifa-hospital",
+        url: "https://www.who.int/news/item/06-04-2024-six-months-of-war-leave-al-shifa-hospital-in-ruins--who-mission-reports",
         date: "2023-11-10",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Human Rights Watch",
         title: "Gaza: Israeli Military Operations at Al-Shifa Hospital",
-        url: "https://www.hrw.org/news/2024/04/01/gaza-israeli-military-operations-al-shifa-hospital",
+        url: "https://www.hrw.org/news/2025/03/20/gaza-israeli-military-war-crimes-while-occupying-hospitals",
         date: "2024-04-01",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "MSF",
         title: "MSF calls for protection of Al-Shifa hospital",
         date: "2023-11-11",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-ahli-arab-hospital",
@@ -5407,18 +4851,22 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى الأهلي العربي",
     type: "hospital",
     yearBuilt: "1882",
-    coordinates: [31.5255, 34.4540],
+    coordinates: [
+      31.5047,
+      34.4616
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-10-17",
     sourceAssessmentDate: "2023-10-18",
-    lastUpdated: "2025-11-01",
-    description:
-      "One of the oldest hospitals in Palestine, founded in 1882 by the Anglican Church Missionary Society. Operated by the Episcopal Diocese of Jerusalem, Al-Ahli served Gaza's Christian and Muslim communities.",
-    historicalSignificance:
-      "Founded during the Ottoman period. On 17 October 2023 an explosion in the hospital courtyard killed hundreds of people sheltering there; the cause of the blast is disputed. The hospital building itself sustained limited structural damage.",
-    culturalValue:
-      "The only Christian hospital in Gaza, operating continuously since 1882.",
-    verifiedBy: ["MSF", "Human Rights Watch", "Amnesty International"],
+    lastUpdated: "2026-07-22",
+    description: "One of the oldest hospitals in Palestine, founded in 1882 by the Anglican Church Missionary Society. Operated by the Episcopal Diocese of Jerusalem, Al-Ahli served Gaza's Christian and Muslim communities.",
+    historicalSignificance: "Founded during the Ottoman period. On 17 October 2023 an explosion in the hospital courtyard killed hundreds of people sheltering there; the cause of the blast is disputed. The hospital building itself sustained limited structural damage.",
+    culturalValue: "The only Christian hospital in Gaza, operating continuously since 1882.",
+    verifiedBy: [
+      "MSF",
+      "Human Rights Watch",
+      "Amnesty International"
+    ],
     images: {
       before: {
         url: "/images/sites/al-ahli-arab-hospital-before.jpg",
@@ -5437,22 +4885,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Amnesty International",
         title: "Gaza: Horrifying details of Al-Ahli hospital explosion must be urgently investigated",
-        url: "https://www.amnesty.org/en/latest/news/2023/10/gaza-horrifying-details-of-al-ahli-hospital-explosion-must-be-urgently-investigated/",
+        url: "https://www.amnesty.org.uk/latest/israelopt-attack-al-ahli-hospital-gaza-must-be-independently-investigated/",
         date: "2023-10-18",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Human Rights Watch",
-        title: "Gaza Hospital Blast Kills Hundreds",
-        date: "2023-10-17",
+        title: "Gaza: Findings on October 17 al-Ahli Hospital Explosion",
+        date: "2023-11-26",
         type: "documentation",
-      },
-    ],
+        url: "https://www.hrw.org/news/2023/11/26/gaza-findings-october-17-al-ahli-hospital-explosion"
+      }
+    ]
   },
   {
     id: "nasser-medical-complex",
@@ -5460,18 +4908,23 @@ export const mockSites: Site[] = [
     nameArabic: "مجمع ناصر الطبي",
     type: "hospital",
     yearBuilt: "unknown",
-    coordinates: [31.3269, 34.2965],
+    coordinates: [
+      31.3478,
+      34.2933
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2024-02-15",
     sourceAssessmentDate: "2024-02-21",
-    lastUpdated: "2025-11-01",
-    description:
-      "The largest hospital in southern Gaza, located in Khan Younis. Nasser Medical Complex served as the primary referral center for southern Gaza's population, with a trauma center, maternity ward, and specialized surgical units.",
-    historicalSignificance:
-      "The largest hospital in southern Gaza. Israeli forces raided the compound on 15 February 2024 during the Khan Younis offensive; the hospital had completely ceased functioning by March 2024.",
-    culturalValue:
-      "Bodies of patients were reportedly found in and around the facility following military operations, according to MSF and WHO documentation.",
-    verifiedBy: ["WHO", "MSF", "UNRWA", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "The largest hospital in southern Gaza, located in Khan Younis. Nasser Medical Complex served as the primary referral center for southern Gaza's population, with a trauma center, maternity ward, and specialized surgical units.",
+    historicalSignificance: "The largest hospital in southern Gaza. Israeli forces raided the compound on 15 February 2024 during the Khan Younis offensive; the hospital had completely ceased functioning by March 2024.",
+    culturalValue: "Bodies of patients were reportedly found in and around the facility following military operations, according to MSF and WHO documentation.",
+    verifiedBy: [
+      "WHO",
+      "MSF",
+      "UNRWA",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/nasser-medical-complex-before.jpg",
@@ -5490,22 +4943,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
         title: "WHO condemns attacks on Nasser hospital, Khan Younis",
-        url: "https://www.who.int/news/item/21-02-2024-who-condemns-attacks-on-nasser-hospital",
+        url: "https://www.who.int/news/item/20-02-2024-who-transfers-critical-patients-out-of-nasser-medical-complex--fears-for-safety-of-remaining-patients",
         date: "2024-02-21",
-        type: "official",
+        type: "official"
       },
       {
         organization: "MSF",
         title: "Gaza: Nasser hospital siege leaves southern Gaza with almost no healthcare",
         date: "2024-02-16",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-quds-hospital",
@@ -5513,18 +4965,22 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى القدس",
     type: "hospital",
     yearBuilt: "unknown",
-    coordinates: [31.5072, 34.4577],
+    coordinates: [
+      31.506,
+      34.4306
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-11-12",
     sourceAssessmentDate: "2023-11-12",
-    lastUpdated: "2025-11-01",
-    description:
-      "Operated by the Palestine Red Crescent Society (PRCS), Al-Quds Hospital was one of Gaza City's main hospitals. It served tens of thousands of patients annually, with particular focus on emergency and obstetric care.",
-    historicalSignificance:
-      "As a Red Crescent facility, Al-Quds carried protected status under international humanitarian law. On 12 November 2023 the PRCS announced the hospital was fully out of service after fuel ran out under siege and the facility sustained damage from surrounding bombardment.",
-    culturalValue:
-      "A Red Crescent facility in the Tel al-Hawa district of Gaza City, with protected status under international humanitarian law.",
-    verifiedBy: ["PRCS", "MSF", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "Operated by the Palestine Red Crescent Society (PRCS), Al-Quds Hospital was one of Gaza City's main hospitals. It served tens of thousands of patients annually, with particular focus on emergency and obstetric care.",
+    historicalSignificance: "As a Red Crescent facility, Al-Quds carried protected status under international humanitarian law. On 12 November 2023 the PRCS announced the hospital was fully out of service after fuel ran out under siege and the facility sustained damage from surrounding bombardment.",
+    culturalValue: "A Red Crescent facility in the Tel al-Hawa district of Gaza City, with protected status under international humanitarian law.",
+    verifiedBy: [
+      "PRCS",
+      "MSF",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/al-quds-hospital-before.jpg",
@@ -5543,22 +4999,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Palestine Red Crescent Society",
         title: "Al-Quds Hospital forced to stop operations",
         url: "https://www.palestinercs.org/",
         date: "2023-11-03",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Human Rights Watch",
-        title: "Gaza: Hospital Patients at Grave Risk",
-        date: "2023-11-04",
+        title: "Gaza: Unlawful Israeli Hospital Strikes Worsen Health Crisis",
+        date: "2023-11-14",
         type: "documentation",
-      },
-    ],
+        url: "https://www.hrw.org/news/2023/11/14/gaza-unlawful-israeli-hospital-strikes-worsen-health-crisis"
+      }
+    ]
   },
   {
     id: "kamal-adwan-hospital",
@@ -5566,18 +5022,23 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى كمال عدوان",
     type: "hospital",
     yearBuilt: "unknown",
-    coordinates: [31.5662, 34.5012],
+    coordinates: [
+      31.5385,
+      34.5013
+    ],
     status: "destroyed",
     dateDestroyed: "2024-12-27",
     sourceAssessmentDate: "2024-12-28",
-    lastUpdated: "2025-11-01",
-    description:
-      "A hospital in Beit Lahia, northern Gaza. It was repeatedly raided and besieged across multiple operations. On 27 December 2024 Israeli forces stormed the hospital, removed patients and staff, and left the building burning.",
-    historicalSignificance:
-      "Kamal Adwan was the last operational hospital in the northern Gaza Strip for much of the conflict. Its director, Dr. Hussam Abu Safiya, was arrested by Israeli forces in December 2024.",
-    culturalValue:
-      "By late 2024 it was the only functioning hospital serving the northern Gaza governorate.",
-    verifiedBy: ["WHO", "UNRWA", "Human Rights Watch", "Amnesty International"],
+    lastUpdated: "2026-07-22",
+    description: "A hospital in Beit Lahia, northern Gaza. It was repeatedly raided and besieged across multiple operations. On 27 December 2024 Israeli forces stormed the hospital, removed patients and staff, and left the building burning.",
+    historicalSignificance: "Kamal Adwan was the last operational hospital in the northern Gaza Strip for much of the conflict. Its director, Dr. Hussam Abu Safiya, was arrested by Israeli forces in December 2024.",
+    culturalValue: "By late 2024 it was the only functioning hospital serving the northern Gaza governorate.",
+    verifiedBy: [
+      "WHO",
+      "UNRWA",
+      "Human Rights Watch",
+      "Amnesty International"
+    ],
     images: {
       before: {
         url: "/images/sites/kamal-adwan-hospital-before.jpg",
@@ -5596,22 +5057,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
         title: "Kamal Adwan Hospital out of service following a raid and repeated attacks",
         url: "https://www.who.int/news/item/28-12-2024-kamal-adwan-hospital-out-of-service-following-a-raid-today-and-repeated-attacks-since-october",
         date: "2024-12-28",
-        type: "official",
-      },
-      {
-        organization: "Amnesty International",
-        title: "Gaza: Kamal Adwan hospital attack a war crime",
-        date: "2024-12-27",
-        type: "documentation",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "indonesian-hospital",
@@ -5619,18 +5073,22 @@ export const mockSites: Site[] = [
     nameArabic: "المستشفى الإندونيسي",
     type: "hospital",
     yearBuilt: "2016",
-    coordinates: [31.5523, 34.5055],
+    coordinates: [
+      31.5351,
+      34.5092
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-11-20",
     sourceAssessmentDate: "2023-11-21",
-    lastUpdated: "2025-11-01",
-    description:
-      "Built with funds from the Indonesian government and people, the Indonesian Hospital in Beit Lahia was a modern facility providing surgical, emergency, and maternity services to northern Gaza. It was one of the most recently constructed hospitals in the Strip.",
-    historicalSignificance:
-      "Funded by Indonesian public donations collected through the Medical Emergency Rescue Committee (MER-C) and inaugurated January 2016. Struck and besieged in November 2023, forcing evacuation of patients and staff. The IDF subsequently occupied the building; it partially reopened in June 2024.",
-    culturalValue:
-      "Built through Indonesian public fundraising as a humanitarian contribution to Gaza's healthcare infrastructure.",
-    verifiedBy: ["WHO", "Indonesian Ministry of Foreign Affairs", "MSF"],
+    lastUpdated: "2026-07-22",
+    description: "Built with funds from the Indonesian government and people, the Indonesian Hospital in Beit Lahia was a modern facility providing surgical, emergency, and maternity services to northern Gaza. It was one of the most recently constructed hospitals in the Strip.",
+    historicalSignificance: "Funded by Indonesian public donations collected through the Medical Emergency Rescue Committee (MER-C) and inaugurated January 2016. Struck and besieged in November 2023, forcing evacuation of patients and staff. The IDF subsequently occupied the building; it partially reopened in June 2024.",
+    culturalValue: "Built through Indonesian public fundraising as a humanitarian contribution to Gaza's healthcare infrastructure.",
+    verifiedBy: [
+      "WHO",
+      "Indonesian Ministry of Foreign Affairs",
+      "MSF"
+    ],
     images: {
       before: {
         url: "/images/sites/indonesian-hospital-before.jpg",
@@ -5649,41 +5107,43 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
-        title: "WHO condemns damage to Indonesian Hospital in northern Gaza",
-        date: "2023-11-21",
+        title: "WHO appalled by latest attack on Indonesian Hospital in Gaza",
+        date: "2023-11-20",
         type: "official",
+        url: "https://www.emro.who.int/media/news/who-appalled-by-latest-attack-on-indonesian-hospital-in-gaza.html"
       },
       {
         organization: "MSF",
         title: "Northern Gaza hospitals systematically destroyed",
         date: "2023-11-22",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
-  // SCHOOLS & UNIVERSITIES
   {
     id: "islamic-university-gaza",
     name: "Islamic University of Gaza",
     nameArabic: "الجامعة الإسلامية بغزة",
     type: "school",
     yearBuilt: "1978",
-    coordinates: [31.5008, 34.4472],
+    coordinates: [
+      31.5136,
+      34.4398
+    ],
     status: "destroyed",
     dateDestroyed: "2023-10-11",
     sourceAssessmentDate: "2024-01-15",
-    lastUpdated: "2025-11-01",
-    description:
-      "Founded in 1978, the Islamic University of Gaza was the oldest and largest university in the Gaza Strip, with thousands of students enrolled across faculties including engineering, medicine, humanities, and Islamic law. It housed extensive research facilities, libraries, and laboratories.",
-    historicalSignificance:
-      "The oldest and largest university in the Gaza Strip. By November 2024, IUG reported that 16 buildings, its central library, over 240,000 books, 8,000 periodicals, and more than 16,000 theses had been destroyed. Fifty-six staff and faculty were killed.",
-    culturalValue:
-      "Its central library held over 240,000 volumes. The university's engineering, science, and medical faculties were the primary source of professional graduates in those fields for Gaza.",
-    verifiedBy: ["UNESCO", "Human Rights Watch", "Forensic Architecture"],
+    lastUpdated: "2026-07-22",
+    description: "Founded in 1978, the Islamic University of Gaza was the oldest and largest university in the Gaza Strip, with thousands of students enrolled across faculties including engineering, medicine, humanities, and Islamic law. It housed extensive research facilities, libraries, and laboratories.",
+    historicalSignificance: "The oldest and largest university in the Gaza Strip. By November 2024, IUG reported that 16 buildings, its central library, over 240,000 books, 8,000 periodicals, and more than 16,000 theses had been destroyed. Fifty-six staff and faculty were killed.",
+    culturalValue: "Its central library held over 240,000 volumes. The university's engineering, science, and medical faculties were the primary source of professional graduates in those fields for Gaza.",
+    verifiedBy: [
+      "Human Rights Watch",
+      "Forensic Architecture"
+    ],
     images: {
       before: {
         url: "/images/sites/islamic-university-gaza-before.jpg",
@@ -5702,22 +5162,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
-      {
-        organization: "UNESCO",
-        title: "UNESCO condemns destruction of Islamic University of Gaza",
-        url: "https://www.unesco.org/en/articles/damaged-cultural-sites-gaza",
-        date: "2024-01-15",
-        type: "official",
-      },
       {
         organization: "Human Rights Watch",
         title: "Gaza: Universities Targeted and Destroyed",
         date: "2024-01-20",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-azhar-university-gaza",
@@ -5725,18 +5177,21 @@ export const mockSites: Site[] = [
     nameArabic: "جامعة الأزهر - غزة",
     type: "school",
     yearBuilt: "1991",
-    coordinates: [31.5183, 34.4519],
+    coordinates: [
+      31.5148,
+      34.4398
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-04",
     sourceAssessmentDate: "2024-01-20",
-    lastUpdated: "2025-11-01",
-    description:
-      "Al-Azhar University Gaza, founded on 18 October 1991, was one of the major universities in the Strip with approximately 14,000 students across 12 colleges and 80 disciplines. It offered programs in education, arts, economics, sharia, law, and sciences across campuses in Gaza City.",
-    historicalSignificance:
-      "Founded 18 October 1991. By 2023 it had grown to 14,000 students across 12 colleges and 80 disciplines. Airstrikes in November 2023 caused material losses the university estimated at over $221 million.",
-    culturalValue:
-      "One of the larger universities in the Gaza Strip, with faculties spanning education, sharia, law, arts, economics, and sciences.",
-    verifiedBy: ["UNESCO", "Scholars at Risk", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "Al-Azhar University Gaza, founded on 18 October 1991, was one of the major universities in the Strip with approximately 14,000 students across 12 colleges and 80 disciplines. It offered programs in education, arts, economics, sharia, law, and sciences across campuses in Gaza City.",
+    historicalSignificance: "Founded 18 October 1991. By 2023 it had grown to 14,000 students across 12 colleges and 80 disciplines. Airstrikes in November 2023 caused material losses the university estimated at over $221 million.",
+    culturalValue: "One of the larger universities in the Gaza Strip, with faculties spanning education, sharia, law, arts, economics, and sciences.",
+    verifiedBy: [
+      "Scholars at Risk",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/al-azhar-university-gaza-before.jpg",
@@ -5755,22 +5210,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Scholars at Risk",
         title: "Attacks on Higher Education in Gaza",
         url: "https://www.scholarsatrisk.org/",
         date: "2024-02-01",
-        type: "documentation",
-      },
-      {
-        organization: "UNESCO",
-        title: "Higher education institutions damaged in Gaza",
-        date: "2024-01-20",
-        type: "official",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "university-college-applied-sciences",
@@ -5778,18 +5226,21 @@ export const mockSites: Site[] = [
     nameArabic: "كلية العلوم التطبيقية الجامعية",
     type: "school",
     yearBuilt: "unknown",
-    coordinates: [31.5248, 34.4483],
+    coordinates: [
+      31.498,
+      34.4368
+    ],
     status: "destroyed",
     dateDestroyed: "2023-12-15",
     sourceAssessmentDate: "2024-01-20",
-    lastUpdated: "2025-11-01",
-    description:
-      "A technical and applied sciences university offering programs in information technology, engineering technology, and business. UCAS played an important role in producing Gaza's technical workforce.",
-    historicalSignificance:
-      "A technical university offering applied engineering, IT, and business programs in Gaza City.",
-    culturalValue:
-      "One of several higher education institutions in Gaza providing technical and vocational training.",
-    verifiedBy: ["Scholars at Risk", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "A technical and applied sciences university offering programs in information technology, engineering technology, and business. UCAS played an important role in producing Gaza's technical workforce.",
+    historicalSignificance: "A technical university offering applied engineering, IT, and business programs in Gaza City.",
+    culturalValue: "One of several higher education institutions in Gaza providing technical and vocational training.",
+    verifiedBy: [
+      "Scholars at Risk",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/university-college-applied-sciences-before.jpg",
@@ -5808,16 +5259,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Scholars at Risk",
         title: "Attacks on Higher Education in Gaza",
         url: "https://www.scholarsatrisk.org/",
         date: "2024-02-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-aqsa-university",
@@ -5825,18 +5275,20 @@ export const mockSites: Site[] = [
     nameArabic: "جامعة الأقصى",
     type: "school",
     yearBuilt: "unknown",
-    coordinates: [31.3018, 34.2762],
+    coordinates: [
+      31.3561,
+      34.2755
+    ],
     status: "destroyed",
     dateDestroyed: "2024-01-20",
     sourceAssessmentDate: "2024-02-01",
-    lastUpdated: "2025-11-01",
-    description:
-      "Al-Aqsa University served students across campuses in Khan Younis and Gaza City, offering education, arts, and science programs. It was one of the major universities in the southern Gaza Strip.",
-    historicalSignificance:
-      "Al-Aqsa University's strong teacher-training tradition made it foundational to Palestinian education. It educated Gaza's schoolteachers across multiple generations.",
-    culturalValue:
-      "A major provider of teacher education in the southern Gaza Strip.",
-    verifiedBy: ["Scholars at Risk", "UNESCO"],
+    lastUpdated: "2026-07-22",
+    description: "Al-Aqsa University served students across campuses in Khan Younis and Gaza City, offering education, arts, and science programs. It was one of the major universities in the southern Gaza Strip.",
+    historicalSignificance: "Al-Aqsa University's strong teacher-training tradition made it foundational to Palestinian education. It educated Gaza's schoolteachers across multiple generations.",
+    culturalValue: "A major provider of teacher education in the southern Gaza Strip.",
+    verifiedBy: [
+      "Scholars at Risk"
+    ],
     images: {
       before: {
         url: "/images/sites/al-aqsa-university-before.jpg",
@@ -5855,16 +5307,15 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Scholars at Risk",
         title: "Attacks on Higher Education in Gaza",
         url: "https://www.scholarsatrisk.org/",
         date: "2024-02-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "unrwa-schools-gaza-north",
@@ -5872,22 +5323,26 @@ export const mockSites: Site[] = [
     nameArabic: "مدارس الأونروا - شمال غزة",
     type: "school",
     yearBuilt: "1950s",
-    coordinates: [31.5350, 34.4970],
+    coordinates: [
+      31.535,
+      34.497
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-01",
     sourceAssessmentDate: "2024-03-01",
-    lastUpdated: "2025-11-01",
-    description:
-      "UNRWA has operated schools in the northern Gaza governorate since the 1950s, educating Palestinian refugee children. By 2023, UNRWA ran approximately 183 schools across Gaza serving over 280,000 students. In northern Gaza alone, dozens of school buildings were damaged or destroyed or converted to emergency shelters.",
-    historicalSignificance:
-      "UNRWA has operated schools in northern Gaza since the early 1950s. By 2023 UNRWA ran approximately 183 schools across Gaza serving over 280,000 students. Dozens of northern school buildings were damaged, destroyed, or converted to emergency shelters.",
-    culturalValue:
-      "The primary source of formal education for Palestinian refugee children in northern Gaza for over 70 years.",
-    verifiedBy: ["UNRWA", "UNESCO", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "UNRWA has operated schools in the northern Gaza governorate since the 1950s, educating Palestinian refugee children. By 2023, UNRWA ran approximately 183 schools across Gaza serving over 280,000 students. In northern Gaza alone, dozens of school buildings were damaged or destroyed or converted to emergency shelters.",
+    historicalSignificance: "UNRWA has operated schools in northern Gaza since the early 1950s. By 2023 UNRWA ran approximately 183 schools across Gaza serving over 280,000 students. Dozens of northern school buildings were damaged, destroyed, or converted to emergency shelters.",
+    culturalValue: "The primary source of formal education for Palestinian refugee children in northern Gaza for over 70 years.",
+    verifiedBy: [
+      "UNRWA",
+      "Human Rights Watch"
+    ],
     metadata: {
       isCollection: true,
       estimatedBuildingCount: "50+",
-      collectionRationale: "UNRWA operated 183 schools across Gaza; this entry covers the northern governorate cluster most heavily affected in the initial phase of the conflict",
+      collectionRationale: "UNRWA operated 183 schools across Gaza; this entry covers the northern governorate cluster most heavily affected in the initial phase of the conflict"
     },
     images: {
       before: {
@@ -5907,41 +5362,37 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNRWA",
         title: "UNRWA Education in Gaza Emergency Update",
         url: "https://www.unrwa.org/newsroom/emergency-reports/gaza-emergency-situation-report",
         date: "2024-03-01",
-        type: "official",
-      },
-      {
-        organization: "UNESCO",
-        title: "No safe place: Attacks on schools and education in Gaza",
-        date: "2024-04-15",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
-  // 2024–2025 EXPANSION
   {
     id: "european-gaza-hospital",
     name: "European Gaza Hospital",
     nameArabic: "مستشفى غزة الأوروبي",
     type: "hospital",
     yearBuilt: "unknown",
-    coordinates: [31.3428, 34.3082],
+    coordinates: [
+      31.3035,
+      34.3206
+    ],
     status: "heavily-damaged",
     sourceAssessmentDate: "2024-08-12",
-    lastUpdated: "2025-11-01",
-    description:
-      "The largest hospital in southern Gaza, located in Khan Younis and funded by the European Union. It served as the main referral hospital for southern and central Gaza, providing specialist care unavailable elsewhere in the Strip.",
-    historicalSignificance:
-      "Came under repeated military pressure during the southern Gaza campaign in early-to-mid 2024, was ordered evacuated, and was forced to reduce services. WHO documented it as non-functional by August 2024.",
-    culturalValue:
-      "Built with EU funding as the main specialist referral hospital for southern and central Gaza.",
-    verifiedBy: ["WHO", "MSF", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "A major EU-funded referral hospital in southern Gaza, located in Khan Younis and funded by the European Union. It served as the main referral hospital for southern and central Gaza, providing specialist care unavailable elsewhere in the Strip.",
+    historicalSignificance: "Came under repeated military pressure during the southern Gaza campaign in early-to-mid 2024, was ordered evacuated, and was forced to reduce services. WHO documented it as non-functional by August 2024.",
+    culturalValue: "Built with EU funding as the main specialist referral hospital for southern and central Gaza.",
+    verifiedBy: [
+      "WHO",
+      "MSF",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/european-gaza-hospital-before.jpg",
@@ -5960,21 +5411,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
         title: "European Hospital in southern Gaza forced to reduce services",
         date: "2024-08-12",
-        type: "official",
+        type: "official"
       },
       {
         organization: "MSF",
         title: "Southern Gaza hospitals under siege — European Hospital",
         date: "2024-08-11",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-awda-hospital-jabalia",
@@ -5982,18 +5432,22 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى العودة",
     type: "hospital",
     yearBuilt: "unknown",
-    coordinates: [31.5381, 34.4892],
+    coordinates: [
+      31.5338,
+      34.5067
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2024-04-07",
     sourceAssessmentDate: "2024-04-08",
-    lastUpdated: "2025-11-01",
-    description:
-      "Located in the Jabalia refugee camp in northern Gaza, Al-Awda Hospital (Return Hospital) was the primary surgical and maternity facility for the north's civilian population. It sustained repeated damage over multiple phases of the conflict.",
-    historicalSignificance:
-      "Al-Awda served the densest refugee population in Gaza. The hospital was encircled and raided multiple times between late 2023 and mid-2024, including a large-scale operation in April 2024 during the second northern offensive that left the hospital non-functional for weeks.",
-    culturalValue:
-      "One of the few hospitals serving Jabalia refugee camp, the most densely populated area in the Gaza Strip.",
-    verifiedBy: ["WHO", "UNRWA", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "Located in the Jabalia refugee camp in northern Gaza, Al-Awda Hospital (Return Hospital) was the primary surgical and maternity facility for the north's civilian population. It sustained repeated damage over multiple phases of the conflict.",
+    historicalSignificance: "Al-Awda served the densest refugee population in Gaza. The hospital was encircled and raided multiple times between late 2023 and mid-2024, including a large-scale operation in April 2024 during the second northern offensive that left the hospital non-functional for weeks.",
+    culturalValue: "One of the few hospitals serving Jabalia refugee camp, the most densely populated area in the Gaza Strip.",
+    verifiedBy: [
+      "WHO",
+      "UNRWA",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/al-awda-hospital-jabalia-before.jpg",
@@ -6012,21 +5466,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
         title: "Al-Awda Hospital raided in northern Gaza, staff detained",
         date: "2024-04-08",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Human Rights Watch",
         title: "Gaza: Attacks on al-Awda Hospital Must Be Investigated",
         date: "2024-04-15",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "abu-yousuf-al-najjar-hospital",
@@ -6034,18 +5487,22 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى أبو يوسف النجار",
     type: "hospital",
     yearBuilt: "unknown",
-    coordinates: [31.2886, 34.2428],
+    coordinates: [
+      31.297,
+      34.2438
+    ],
     status: "destroyed",
     dateDestroyed: "2024-05-26",
     sourceAssessmentDate: "2024-05-28",
-    lastUpdated: "2025-11-01",
-    description:
-      "The main public hospital in Rafah city, Abu Yousuf Al-Najjar served as the primary healthcare facility for over 1.4 million displaced people who had sought refuge in Rafah by early 2024. When Israel launched the Rafah ground operation in May 2024, the hospital was forced to shut down entirely.",
-    historicalSignificance:
-      "The main public hospital in Rafah when over 1.4 million displaced people had gathered there. It was forced to close when Israeli forces seized the Rafah border crossing and expanded the ground operation in May 2024. MSF was operating inside the facility and suspended activities at the same time.",
-    culturalValue:
-      "Rafah's primary hospital, including its only dialysis center, serving the city's greatly expanded displaced population in 2024.",
-    verifiedBy: ["WHO", "MSF", "UNRWA"],
+    lastUpdated: "2026-07-22",
+    description: "The main public hospital in Rafah city, Abu Yousuf Al-Najjar served as the primary healthcare facility for over 1.4 million displaced people who had sought refuge in Rafah by early 2024. When Israel launched the Rafah ground operation in May 2024, the hospital was forced to shut down entirely.",
+    historicalSignificance: "The main public hospital in Rafah when over 1.4 million displaced people had gathered there. It was forced to close when Israeli forces seized the Rafah border crossing and expanded the ground operation in May 2024. MSF was operating inside the facility and suspended activities at the same time.",
+    culturalValue: "Rafah's primary hospital, including its only dialysis center, serving the city's greatly expanded displaced population in 2024.",
+    verifiedBy: [
+      "WHO",
+      "MSF",
+      "UNRWA"
+    ],
     images: {
       before: {
         url: "/images/sites/abu-yousuf-al-najjar-hospital-before.jpg",
@@ -6064,22 +5521,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "MSF",
         title: "Rafah: MSF forced to suspend activities at Abu Yousuf al-Najjar Hospital",
         url: "https://www.msf.org/",
         date: "2024-05-26",
-        type: "official",
+        type: "official"
       },
       {
         organization: "WHO",
         title: "Last hospital in Rafah closes as military operation expands",
         date: "2024-05-28",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
   {
     id: "al-rantisi-hospital",
@@ -6087,18 +5543,22 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى الدكتور عبد العزيز الرنتيسي للأطفال",
     type: "hospital",
     yearBuilt: "2008",
-    coordinates: [31.5322, 34.4568],
+    coordinates: [
+      31.5331,
+      34.4603
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2023-11-05",
     sourceAssessmentDate: "2023-11-06",
-    lastUpdated: "2025-11-01",
-    description:
-      "Gaza's largest children's hospital, opened in 2008 with 124 beds across specialties including the territory's only pediatric oncology and dialysis departments. The hospital was struck on 5 November 2023 and subsequently forced to close, then evacuated under IDF orders.",
-    historicalSignificance:
-      "The only hospital in the Gaza Strip providing pediatric cancer care. Its closure in November 2023 left children requiring oncology treatment without access to care within the territory. The Palestine Children's Relief Fund subsequently undertook reconstruction of the cancer ward.",
-    culturalValue:
-      "Named after Palestinian pediatrician Abdel Aziz al-Rantisi. With 124 beds it was Gaza's largest children's hospital.",
-    verifiedBy: ["WHO", "PCRF", "Save the Children"],
+    lastUpdated: "2026-07-22",
+    description: "Gaza's largest children's hospital, opened in 2008 with 124 beds across specialties including the territory's only pediatric oncology and dialysis departments. The hospital was struck on 5 November 2023 and subsequently forced to close, then evacuated under IDF orders.",
+    historicalSignificance: "The only hospital in the Gaza Strip providing pediatric cancer care. Its closure in November 2023 left children requiring oncology treatment without access to care within the territory. The Palestine Children's Relief Fund subsequently undertook reconstruction of the cancer ward.",
+    culturalValue: "Named after Palestinian pediatrician Abdel Aziz al-Rantisi. With 124 beds it was Gaza's largest children's hospital.",
+    verifiedBy: [
+      "WHO",
+      "PCRF",
+      "Save the Children"
+    ],
     images: {
       before: {
         url: "/images/sites/al-rantisi-hospital-before.jpg",
@@ -6117,22 +5577,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
         title: "Al-Rantisi pediatric hospital forced to close",
         date: "2023-11-05",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Palestine Children's Relief Fund",
         title: "Statement on the Forced Closure of PCRF's Pediatric Cancer Department in Gaza",
         url: "https://www.pcrf.net/pcrf-in-the-news/statement-on-cancer-department-in-gaza.html",
         date: "2023-11-06",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "gaza-psychiatric-hospital",
@@ -6140,18 +5599,23 @@ export const mockSites: Site[] = [
     nameArabic: "مستشفى غزة للطب النفسي",
     type: "hospital",
     yearBuilt: "1980",
-    coordinates: [31.5063, 34.4587],
+    coordinates: [
+      31.5063,
+      34.4587
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-05",
     sourceAssessmentDate: "2023-11-09",
     lastUpdated: "2025-11-01",
-    description:
-      "Established in 1980, the Gaza Psychiatric Hospital was the only Ministry of Health inpatient psychiatric facility in the Gaza Strip. It was the sole provider of inpatient mental health care for the territory's entire population. Israeli forces struck the hospital directly on 5 November 2023; it ceased all operations by 9 November 2023 after fuel ran out and damage made it non-functional.",
-    historicalSignificance:
-      "The only inpatient psychiatric facility in the Gaza Strip. Its destruction left no psychiatric hospital anywhere in the territory. A 2025 WHO EMRO journal article documented the resulting collapse of psychiatric emergency management across Gaza.",
-    culturalValue:
-      "The sole Ministry of Health psychiatric facility serving the entire Gaza Strip.",
-    verifiedBy: ["WHO", "Lancet Psychiatry", "UN OCHA"],
+    description: "Established in 1980, the Gaza Psychiatric Hospital was the only Ministry of Health inpatient psychiatric facility in the Gaza Strip. It was the sole provider of inpatient mental health care for the territory's entire population. Israeli forces struck the hospital directly on 5 November 2023; it ceased all operations by 9 November 2023 after fuel ran out and damage made it non-functional.",
+    historicalSignificance: "The only inpatient psychiatric facility in the Gaza Strip. Its destruction left no psychiatric hospital anywhere in the territory. A 2025 WHO EMRO journal article documented the resulting collapse of psychiatric emergency management across Gaza.",
+    culturalValue: "The sole Ministry of Health psychiatric facility serving the entire Gaza Strip.",
+    verifiedBy: [
+      "WHO",
+      "Lancet Psychiatry",
+      "UN OCHA"
+    ],
     images: {
       before: {
         url: "/images/sites/gaza-psychiatric-hospital-before.jpg",
@@ -6170,23 +5634,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "WHO",
         title: "Gaza Psychiatric Hospital out of service following direct targeting",
         url: "https://gazahcsector.palestine-studies.org/en/node/12",
         date: "2023-11-09",
-        type: "official",
+        type: "official"
       },
       {
         organization: "WHO EMRO",
         title: "Repercussions of the destruction of Gaza's sole psychiatric hospital",
         url: "https://www.emro.who.int/emhj-volume-31-2025/volume-31-issue-2/repercussions-of-the-destruction-of-gazas-sole-psychiatric-hospital.html",
         date: "2025-01-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "abu-hussein-school-jabalia",
@@ -6194,18 +5657,23 @@ export const mockSites: Site[] = [
     nameArabic: "مدرسة أبو حسين الابتدائية - الأونروا",
     type: "school",
     yearBuilt: "1960s",
-    coordinates: [31.5297, 34.4878],
+    coordinates: [
+      31.5297,
+      34.4878
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-10-17",
     sourceAssessmentDate: "2024-10-17",
     lastUpdated: "2025-11-01",
-    description:
-      "The UNRWA-run Abu Hussein Primary School in Jabalia refugee camp was being used as a displacement shelter when Israeli forces struck it on 17 October 2024. The strike killed at least 28 Palestinians and wounded approximately 160 others sheltering inside.",
-    historicalSignificance:
-      "The strike on Abu Hussein occurred during the third major Israeli offensive into Jabalia camp (launched 5 October 2024). UNRWA stated it had shared the coordinates with Israeli authorities as required under standard humanitarian practice. The attack drew international condemnation.",
-    culturalValue:
-      "An UNRWA primary school serving the Jabalia refugee camp community, converted to a displacement shelter during the conflict.",
-    verifiedBy: ["UNRWA", "UN OCHA", "Al Jazeera"],
+    description: "The UNRWA-run Abu Hussein Primary School in Jabalia refugee camp was being used as a displacement shelter when Israeli forces struck it on 17 October 2024. The strike killed at least 28 Palestinians and wounded approximately 160 others sheltering inside.",
+    historicalSignificance: "The strike on Abu Hussein occurred during the third major Israeli offensive into Jabalia camp (launched 5 October 2024). UNRWA stated it had shared the coordinates with Israeli authorities as required under standard humanitarian practice. The attack drew international condemnation.",
+    culturalValue: "An UNRWA primary school serving the Jabalia refugee camp community, converted to a displacement shelter during the conflict.",
+    verifiedBy: [
+      "UNRWA",
+      "UN OCHA",
+      "Al Jazeera"
+    ],
     images: {
       before: {
         url: "/images/sites/abu-hussein-school-jabalia-before.jpg",
@@ -6224,23 +5692,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNRWA",
         title: "UNRWA Situation Report #145 — strike on Abu Hussein school in Jabalia",
         url: "https://www.unrwa.org/resources/reports/unrwa-situation-report-145-situation-gaza-strip-and-west-bank-including-east-jerusalem",
         date: "2024-10-17",
-        type: "official",
+        type: "official"
       },
       {
         organization: "Al Jazeera",
         title: "Israeli strike on school sheltering displaced families in Jabalia kills 28",
         url: "https://www.aljazeera.com/news/2024/10/17/israeli-strike-on-school-sheltering-displaced-families-in-jabalia-kills",
         date: "2024-10-17",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "al-sardi-school-nuseirat",
@@ -6248,18 +5715,23 @@ export const mockSites: Site[] = [
     nameArabic: "مدرسة السردي الإعدادية للأولاد - الأونروا",
     type: "school",
     yearBuilt: "1950s",
-    coordinates: [31.4458, 34.3724],
+    coordinates: [
+      31.4458,
+      34.3724
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-06-06",
     sourceAssessmentDate: "2024-06-06",
-    lastUpdated: "2025-11-01",
-    description:
-      "The UNRWA Al-Sardi Boys' Preparatory School in Nuseirat refugee camp was sheltering approximately 6,000 displaced people when Israeli forces fired two missiles into the upper floors at around 2 am on 6 June 2024. At least 35 people were killed and dozens more wounded, including 6 UNRWA staff members.",
-    historicalSignificance:
-      "The Al-Sardi school attack was one of the most documented strikes on a UN facility during the conflict. CNN analysis confirmed US-made munitions were used. UNRWA chief Philippe Lazzarini called the attack a 'blatant disregard for International Humanitarian Law.'",
-    culturalValue:
-      "An UNRWA boys' preparatory school in Nuseirat refugee camp, sheltering approximately 6,000 displaced people at the time of the strike.",
-    verifiedBy: ["UNRWA", "CNN", "UN OCHA"],
+    lastUpdated: "2026-07-22",
+    description: "The UNRWA Al-Sardi Boys' Preparatory School in Nuseirat refugee camp was sheltering approximately 6,000 displaced people when Israeli forces fired two missiles into the upper floors at around 2 am on 6 June 2024. At least 40 people were killed and dozens more wounded, including 6 UNRWA staff members.",
+    historicalSignificance: "The Al-Sardi school attack was one of the most documented strikes on a UN facility during the conflict. CNN analysis confirmed US-made munitions were used. UNRWA chief Philippe Lazzarini called the attack a 'blatant disregard for International Humanitarian Law.'",
+    culturalValue: "An UNRWA boys' preparatory school in Nuseirat refugee camp, sheltering approximately 6,000 displaced people at the time of the strike.",
+    verifiedBy: [
+      "UNRWA",
+      "CNN",
+      "UN OCHA"
+    ],
     images: {
       before: {
         url: "/images/sites/al-sardi-school-nuseirat-before.jpg",
@@ -6278,41 +5750,45 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNRWA",
         title: "No shelter from war: The bombing of Block 2 at the UNRWA Nuseirat School",
         url: "https://www.unrwa.org/newsroom/features/no-shelter-war-bombing-block-2-unrwa-nuseirat-school",
         date: "2024-06-06",
-        type: "official",
+        type: "official"
       },
       {
         organization: "CNN",
         title: "US munitions used in Israeli attack on UNRWA school in Gaza",
         date: "2024-06-07",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "al-israa-university",
     name: "Al-Israa University",
     nameArabic: "جامعة الإسراء",
     type: "school",
-    yearBuilt: "2000",
-    coordinates: [31.5061, 34.4501],
+    yearBuilt: "2014",
+    coordinates: [
+      31.5061,
+      34.4501
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-01-17",
     sourceAssessmentDate: "2024-02-01",
-    lastUpdated: "2025-11-01",
-    description:
-      "A private university in Gaza City offering programs in business, law, engineering, and humanities. Al-Israa was founded in 2000 and had grown to serve thousands of students. Video footage verified by open-source investigators showed the university buildings being demolished by Israeli forces in January 2024.",
-    historicalSignificance:
-      "Al-Israa is the most thoroughly documented case of deliberate university demolition during the conflict. Verified footage shows controlled demolition of the campus buildings during Israeli military operations in Gaza City.",
-    culturalValue:
-      "Its destruction was cited by the UN Special Rapporteur on the right to education as evidence of 'scholasticide' — the deliberate targeting of educational institutions.",
-    verifiedBy: ["Forensic Architecture", "Scholars at Risk", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "A private university in Gaza City offering programs in business, law, engineering, and humanities. Al-Israa was founded in 2014 and had grown to serve thousands of students. Video footage verified by open-source investigators showed the university buildings being demolished by Israeli forces in January 2024.",
+    historicalSignificance: "Al-Israa is the most thoroughly documented case of deliberate university demolition during the conflict. Verified footage shows controlled demolition of the campus buildings during Israeli military operations in Gaza City.",
+    culturalValue: "Its destruction was cited by the UN Special Rapporteur on the right to education as evidence of 'scholasticide' — the deliberate targeting of educational institutions.",
+    verifiedBy: [
+      "Forensic Architecture",
+      "Scholars at Risk",
+      "Human Rights Watch"
+    ],
     images: {
       before: {
         url: "/images/sites/al-israa-university-before.jpg",
@@ -6331,22 +5807,21 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
-        organization: "Forensic Architecture",
-        title: "Al-Israa University: Forensic Analysis of Demolition",
-        url: "https://forensic-architecture.org/",
+        organization: "Wikipedia",
+        title: "Israa University (Palestine)",
+        url: "https://en.wikipedia.org/wiki/Israa_University_(Palestine)",
         date: "2024-02-15",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Human Rights Watch",
         title: "Gaza: Video Shows Israeli Forces Destroying University",
         date: "2024-02-01",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "rafah-refugee-camp-school-cluster",
@@ -6354,22 +5829,26 @@ export const mockSites: Site[] = [
     nameArabic: "مدارس الأونروا - محافظة رفح",
     type: "school",
     yearBuilt: "1950s",
-    coordinates: [31.2971, 34.2476],
+    coordinates: [
+      31.2971,
+      34.2476
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2024-05-15",
     sourceAssessmentDate: "2024-06-01",
-    lastUpdated: "2025-11-01",
-    description:
-      "Cluster of UNRWA schools across the Rafah governorate, most of which were converted to displacement shelters by early 2024 when over 1.4 million people had fled to Rafah. The Rafah ground operation launched on 6 May 2024 resulted in destruction of or forced closure of all schools in the governorate.",
-    historicalSignificance:
-      "By early 2024 over 1.4 million displaced people had gathered in Rafah, many sheltering in UNRWA schools. The Rafah ground operation launched 6 May 2024 resulted in the closure or destruction of all functioning UNRWA schools in the governorate.",
-    culturalValue:
-      "UNRWA schools in Rafah governorate have educated Palestinian refugee children since the early 1950s.",
-    verifiedBy: ["UNRWA", "UNESCO", "Human Rights Watch"],
+    lastUpdated: "2026-07-22",
+    description: "Cluster of UNRWA schools across the Rafah governorate, most of which were converted to displacement shelters by early 2024 when over 1.4 million people had fled to Rafah. The Rafah ground operation launched on 6 May 2024 resulted in destruction of or forced closure of all schools in the governorate.",
+    historicalSignificance: "By early 2024 over 1.4 million displaced people had gathered in Rafah, many sheltering in UNRWA schools. The Rafah ground operation launched 6 May 2024 resulted in the closure or destruction of all functioning UNRWA schools in the governorate.",
+    culturalValue: "UNRWA schools in Rafah governorate have educated Palestinian refugee children since the early 1950s.",
+    verifiedBy: [
+      "UNRWA",
+      "Human Rights Watch"
+    ],
     metadata: {
       isCollection: true,
       estimatedBuildingCount: "25+",
-      collectionRationale: "All UNRWA schools in Rafah governorate were rendered non-functional or destroyed during the May 2024 ground operation",
+      collectionRationale: "All UNRWA schools in Rafah governorate were rendered non-functional or destroyed during the May 2024 ground operation"
     },
     images: {
       before: {
@@ -6389,41 +5868,36 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "UNRWA",
         title: "UNRWA situation report: Rafah operation impact on education",
         url: "https://www.unrwa.org/",
         date: "2024-06-01",
-        type: "official",
-      },
-      {
-        organization: "UNESCO",
-        title: "Education destroyed: All schools in Rafah non-functional",
-        date: "2024-06-15",
-        type: "official",
-      },
-    ],
+        type: "official"
+      }
+    ]
   },
-  // --- BATCH 2: Additional heritage sites ---
-
   {
     id: "deir-el-balah-bronze-age-cemetery",
     name: "Deir el-Balah Bronze Age Cemetery",
     nameArabic: "مقبرة دير البلح من العصر البرونزي",
     type: "archaeological",
     yearBuilt: "BCE 1300",
-    coordinates: [31.418, 34.350],
+    coordinates: [
+      31.418,
+      34.35
+    ],
+    coordinatesApproximate: true,
     status: "damaged",
-    lastUpdated: "2025-12-01",
-    description:
-      "A Late Bronze Age cemetery near Deir al-Balah, central Gaza Strip, excavated by Trude Dothan between 1972 and 1982. The site yielded approximately 50 anthropoid clay sarcophagi dated to the 13th–14th centuries BCE, shaped in the Egyptian tradition. Among the most significant Bronze Age burial assemblages found in the southern Levant.",
-    historicalSignificance:
-      "The Deir el-Balah sarcophagi provide evidence of Egyptian cultural influence during the New Kingdom's administration of Canaan (~1550–1070 BCE). Anthropoid pottery coffins of this type are rare in the Levant and indicate Gaza's role as a provincial center under Egyptian rule.",
-    culturalValue:
-      "A Bronze Age burial site documenting ancient Gaza's position within the Egyptian–Canaanite cultural sphere. Damaged during military operations in the central Gaza Strip.",
-    verifiedBy: ["Institute for Palestine Studies", "UNESCO", "972 Magazine"],
+    lastUpdated: "2026-07-22",
+    description: "A Late Bronze Age cemetery near Deir al-Balah, central Gaza Strip, excavated by Trude Dothan between 1972 and 1982. The site yielded approximately 50 anthropoid clay sarcophagi dated to the 13th–14th centuries BCE, shaped in the Egyptian tradition. Among the most significant Bronze Age burial assemblages found in the southern Levant.",
+    historicalSignificance: "The Deir el-Balah sarcophagi provide evidence of Egyptian cultural influence during the New Kingdom's administration of Canaan (~1550–1070 BCE). Anthropoid pottery coffins of this type are rare in the Levant and indicate Gaza's role as a provincial center under Egyptian rule.",
+    culturalValue: "A Bronze Age burial site documenting ancient Gaza's position within the Egyptian–Canaanite cultural sphere. Damaged during military operations in the central Gaza Strip.",
+    verifiedBy: [
+      "Institute for Palestine Studies",
+      "972 Magazine"
+    ],
     images: {
       before: {
         url: "/images/sites/deir-el-balah-bronze-age-cemetery-before.jpg",
@@ -6442,42 +5916,43 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Institute for Palestine Studies",
         title: "Destruction of Cultural Heritage in Gaza",
         url: "https://www.palestine-studies.org/en/node/1655123",
         date: "2023-11-01",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Wikipedia",
         title: "Deir el-Balah sarcophagi",
         url: "https://en.wikipedia.org/wiki/Deir_el-Balah_sarcophagi",
-        type: "reference",
-      },
-    ],
+        type: "reference"
+      }
+    ]
   },
-
   {
     id: "souq-al-zawiya",
     name: "Souq al-Zawiya",
     nameArabic: "سوق الزاوية",
     type: "historic-building",
     yearBuilt: "1300",
-    coordinates: [31.505, 34.465],
+    coordinates: [
+      31.5056,
+      34.4629
+    ],
     status: "destroyed",
     dateDestroyed: "2023-11-23",
     sourceAssessmentDate: "2023-11-23",
-    lastUpdated: "2025-12-01",
-    description:
-      "Gaza's largest historic market, established in the Mamluk era, stretching over 250 metres through the Old City with 65 buildings and more than 1,150 shops. Located adjacent to the Great Omari Mosque, Hammam al-Sammara, and Qasr al-Basha along the trade route linking Asia and Africa. Destroyed by an Israeli airstrike on 23 November 2023.",
-    historicalSignificance:
-      "Rooted in the Mamluk era, the market takes its name from a zawiya (rest house) used by Indian spice traders for centuries. The site's Central Archives building, which held documents over a century old, was also destroyed. Souq al-Zawiya formed the commercial heart of Old Gaza alongside the city's principal Mamluk monuments.",
-    culturalValue:
-      "The main food and goods market of Gaza's Old City for centuries, embedded within the Mamluk historic district that UNESCO monitors as outstanding universal value.",
-    verifiedBy: ["GIG", "UNESCO", "Jordan Times"],
+    lastUpdated: "2026-07-22",
+    description: "Gaza's largest historic market, established in the Mamluk era, stretching over 250 metres through the Old City with 65 buildings and more than 1,150 shops. Located adjacent to the Great Omari Mosque, Hammam al-Sammara, and Qasr al-Basha along the trade route linking Asia and Africa. Destroyed by an Israeli airstrike on 23 November 2023.",
+    historicalSignificance: "Rooted in the Mamluk era, the market takes its name from a zawiya (rest house) used by Indian spice traders for centuries. The site's Central Archives building, which held documents over a century old, was also destroyed. Souq al-Zawiya formed the commercial heart of Old Gaza alongside the city's principal Mamluk monuments.",
+    culturalValue: "The main food and goods market of Gaza's Old City for centuries, embedded within the Mamluk historic district that UNESCO monitors as outstanding universal value.",
+    verifiedBy: [
+      "GIG",
+      "Jordan Times"
+    ],
     images: {
       before: {
         url: "/images/sites/souq-al-zawiya-before.jpg",
@@ -6496,43 +5971,45 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "GIG",
         title: "Al-Zawiya Popular Market — War Damage Documentation",
         url: "https://gigaza.org/en/war-damage/al-zawiya-popular-market/",
         date: "2023-11-23",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Jordan Times",
         title: "Heritage Alert: Cultural devastation in Gaza's historic market",
         url: "https://jordantimes.com/news/local/heritage-alert-cultural-devastation-gazas-historic-market",
         date: "2023-12-01",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
-
   {
     id: "khalid-ibn-walid-mosque-al-qarara",
     name: "Khalid ibn al-Walid Mosque",
     nameArabic: "مسجد خالد بن الوليد",
     type: "mosque",
     yearBuilt: "unknown",
-    coordinates: [31.375, 34.378],
+    coordinates: [
+      31.375,
+      34.378
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2023-11-08",
     sourceAssessmentDate: "2023-11-09",
-    lastUpdated: "2025-12-01",
-    description:
-      "A mosque in Al-Qarara town, Khan Yunis Governorate, targeted by Israeli aircraft on 8 November 2023. The strike destroyed the building without prior warning. The attack occurred during the early phase of Israeli ground operations expanding into southern Gaza.",
-    historicalSignificance:
-      "Documented by the Genocide in Gaza (GIG) database and reported by multiple international news outlets as one of dozens of mosques destroyed in Khan Yunis governorate in the first weeks of the conflict.",
-    culturalValue:
-      "A neighborhood mosque serving the Al-Qarara community in Khan Yunis Governorate.",
-    verifiedBy: ["GIG", "Wikipedia"],
+    lastUpdated: "2026-07-22",
+    description: "A mosque in Al-Qarara town, Khan Yunis Governorate, targeted by Israeli aircraft on 8 November 2023. The strike destroyed the building without prior warning. The attack occurred during the early phase of Israeli ground operations expanding into southern Gaza.",
+    historicalSignificance: "Documented by the Genocide in Gaza (GIG) database and reported by multiple international news outlets as one of dozens of mosques destroyed in Khan Yunis governorate in the first weeks of the conflict.",
+    culturalValue: "A neighborhood mosque serving the Al-Qarara community in Khan Yunis Governorate.",
+    verifiedBy: [
+      "GIG",
+      "Wikipedia"
+    ],
     images: {
       before: {
         url: "/images/sites/khalid-ibn-walid-mosque-al-qarara-before.jpg",
@@ -6551,90 +6028,44 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "GIG",
         title: "Khalid Ibn Al-Walid Mosque – Khan Yunis — War Damage Documentation",
-        url: "https://gigaza.org/en/war-damage/khalid-ibn-al-walid-mosque-khan-yunis/",
+        url: "https://en.wikipedia.org/wiki/Khalid_ibn_al-Walid_Mosque",
         date: "2023-11-09",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Wikipedia",
         title: "Attacks on religious sites during the Israeli invasion of Gaza",
         url: "https://en.wikipedia.org/wiki/Attacks_on_religious_sites_during_the_Israeli_invasion_of_Gaza",
-        type: "reference",
-      },
-    ],
-  },
-
-  {
-    id: "al-shuhada-mosque-khan-yunis",
-    name: "Al-Shuhada Mosque",
-    nameArabic: "مسجد الشهداء",
-    type: "mosque",
-    yearBuilt: "unknown",
-    coordinates: [31.344, 34.300],
-    status: "destroyed",
-    dateDestroyed: "2023-12-11",
-    sourceAssessmentDate: "2023-12-11",
-    lastUpdated: "2025-12-01",
-    description:
-      "One of the principal mosques in Khan Yunis, located in the Al-Balad (old town) district. The mosque hosted daily and Friday prayers and served as a center for religious gatherings. Targeted by Israeli aircraft on 11 December 2023, resulting in complete destruction.",
-    historicalSignificance:
-      "Documented by the GIG database as one of the main religious landmarks in Khan Yunis city, destroyed during the Israeli ground campaign in southern Gaza in late 2023.",
-    culturalValue:
-      "A congregational mosque in the historic core of Khan Yunis city.",
-    verifiedBy: ["GIG", "Middle East Monitor"],
-    images: {
-      before: {
-        url: "/images/sites/al-shuhada-mosque-khan-yunis-before.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2014-02-20",
-        description: "Satellite imagery from 2014-02-20"
-      },
-      after: {
-        url: "/images/sites/al-shuhada-mosque-khan-yunis-after.jpg",
-        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-        license: "Fair Use - Educational",
-        sourceUrl: "https://livingatlas.arcgis.com/",
-        date: "2026-05-28",
-        description: "Satellite imagery from 2026-05-28"
+        type: "reference"
       }
-    },
-    
-    sources: [
-      {
-        organization: "GIG",
-        title: "Al-Shuhada Mosque – Khan Younis — War Damage Documentation",
-        url: "https://gigaza.org/en/war-damage/al-shuhada-mosque-khan-younis/",
-        date: "2023-12-11",
-        type: "documentation",
-      },
-    ],
+    ]
   },
-
   {
     id: "al-faruq-mosque-khan-yunis",
     name: "Al-Faruq Mosque",
     nameArabic: "مسجد الفاروق",
     type: "mosque",
     yearBuilt: "unknown",
-    coordinates: [31.346, 34.307],
+    coordinates: [
+      31.3195,
+      34.296
+    ],
     status: "destroyed",
     dateDestroyed: "2024-10-25",
     sourceAssessmentDate: "2024-10-25",
-    lastUpdated: "2025-12-01",
-    description:
-      "One of the largest mosques in Khan Yunis, destroyed by an Israeli airstrike on 25 October 2024 without prior warning. The GIG database documents the complete destruction of the building. Middle East Eye described it as one of Khan Yunis's largest mosques.",
-    historicalSignificance:
-      "Struck more than a year into the conflict during renewed Israeli operations in Khan Yunis. Documented by GIG, Middle East Eye, and the Jerusalem Post as one of the principal mosques in the city.",
-    culturalValue:
-      "A large congregational mosque serving the Khan Yunis community.",
-    verifiedBy: ["GIG", "Middle East Eye", "Jerusalem Post"],
+    lastUpdated: "2026-07-22",
+    description: "One of the largest mosques in Khan Yunis, destroyed by an Israeli airstrike on 25 October 2024 without prior warning. The GIG database documents the complete destruction of the building. Middle East Eye described it as one of Khan Yunis's largest mosques.",
+    historicalSignificance: "Struck more than a year into the conflict during renewed Israeli operations in Khan Yunis. Documented by GIG, Middle East Eye, and the Jerusalem Post as one of the principal mosques in the city.",
+    culturalValue: "A large congregational mosque serving the Khan Yunis community.",
+    verifiedBy: [
+      "GIG",
+      "Middle East Eye",
+      "Jerusalem Post"
+    ],
     images: {
       before: {
         url: "/images/sites/al-faruq-mosque-khan-yunis-before.jpg",
@@ -6653,43 +6084,45 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "GIG",
         title: "Al-Faruq Mosque – Khan Yunis — War Damage Documentation",
         url: "https://gigaza.org/en/war-damage/al-faruq-mosque-khan-yunis/",
         date: "2024-10-25",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Jerusalem Post",
         title: "IDF strikes destroyed Al Farouq Mosque in Gaza",
         url: "https://www.jpost.com/israel-hamas-war/article-819531",
         date: "2024-10-25",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
-
   {
     id: "shuhada-al-aqsa-mosque-deir-balah",
     name: "Shuhada al-Aqsa Mosque",
     nameArabic: "مسجد شهداء الأقصى",
     type: "mosque",
     yearBuilt: "unknown",
-    coordinates: [31.415, 34.341],
+    coordinates: [
+      31.42,
+      34.3595
+    ],
     status: "destroyed",
     dateDestroyed: "2024-10-06",
     sourceAssessmentDate: "2024-10-06",
-    lastUpdated: "2025-12-01",
-    description:
-      "A mosque in Deir al-Balah, central Gaza Strip, that had been serving as a displacement shelter when Israeli forces bombed it on 6 October 2024. At least 26 Palestinians were killed and more than 93 wounded. The adjacent Ibn Rushd school was struck in the same attack.",
-    historicalSignificance:
-      "The attack is the subject of a dedicated Wikipedia article ('October 2024 Deir al-Balah mosque bombing'). Al Jazeera and NPR reported from the scene. Israel claimed the mosque was used as a Hamas command center; no evidence was provided for this claim.",
-    culturalValue:
-      "A mosque in Deir al-Balah serving as a civilian displacement shelter at the time of the attack.",
-    verifiedBy: ["Al Jazeera", "NPR", "Wikipedia"],
+    lastUpdated: "2026-07-22",
+    description: "A mosque in Deir al-Balah, central Gaza Strip, that had been serving as a displacement shelter when Israeli forces bombed it on 6 October 2024. At least 26 Palestinians were killed and more than 93 wounded. The adjacent Ibn Rushd school was struck in the same attack.",
+    historicalSignificance: "The attack is the subject of a dedicated Wikipedia article ('October 2024 Deir al-Balah mosque bombing'). Al Jazeera and NPR reported from the scene. Israel claimed the mosque was used as a Hamas command center; no evidence was provided for this claim.",
+    culturalValue: "A mosque in Deir al-Balah serving as a civilian displacement shelter at the time of the attack.",
+    verifiedBy: [
+      "Al Jazeera",
+      "NPR",
+      "Wikipedia"
+    ],
     images: {
       before: {
         url: "/images/sites/shuhada-al-aqsa-mosque-deir-balah-before.jpg",
@@ -6708,51 +6141,50 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Al Jazeera",
         title: "Israeli strike on Gaza mosque-turned-shelter kills at least 26",
         url: "https://www.aljazeera.com/gallery/2024/10/6/deadly-israeli-strike-on-gaza-mosque-turned-shelter",
         date: "2024-10-06",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Wikipedia",
         title: "October 2024 Deir al-Balah mosque bombing",
         url: "https://en.wikipedia.org/wiki/October_2024_Deir_al-Balah_mosque_bombing",
-        type: "reference",
+        type: "reference"
       },
       {
         organization: "NPR",
         title: "A strike on a mosque kills 19 as Israel bombards northern Gaza",
         url: "https://www.npr.org/2024/10/06/g-s1-26576/israel-bombards-northern-gaza-and-southern-beirut",
         date: "2024-10-06",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
-
-  // BATCH 2 END - Total: 128 sites
-
-  // BATCH 3 START - Historical sites (1948 Nakba, 1967 war, 2008-09 & 2014 Gaza wars)
   {
     id: "lifta-mosque",
     name: "Lifta Village Mosque",
     nameArabic: "جامع لفتا",
     type: "mosque",
     yearBuilt: "Ottoman era",
-    coordinates: [31.79, 35.19],
+    coordinates: [
+      31.7955,
+      35.1963
+    ],
+    coordinatesApproximate: true,
     status: "damaged",
-    dateDestroyed: "1948-01-15", // Estimated - village depopulated winter 1947-48, exact date unknown
-    lastUpdated: "2026-06-17",
-    description:
-      "Central mosque of Lifta, a Palestinian village of roughly 2,250 residents on Jerusalem's western edge, depopulated by Haganah and Lehi forces in the months around Israel's establishment.",
-    historicalSignificance:
-      "Lifta is widely cited as the only 1948-depopulated village whose physical structures (homes, mosque, spring, cemetery) remain largely intact rather than demolished or built over, making it a unique surviving record of pre-Nakba Palestinian village life.",
-    culturalValue:
-      "The mosque, cemetery, and courtyard were preserved after Israeli and Palestinian organizations objected to a development plan proposing luxury housing on the site; it remains a focal point of memory and ongoing heritage advocacy.",
-    verifiedBy: ["Institute for Palestine Studies", "Palquest"],
+    dateDestroyed: "1948-01-15",
+    lastUpdated: "2026-07-22",
+    description: "Central mosque of Lifta, a Palestinian village of roughly 2,550 residents on Jerusalem's western edge, depopulated by Haganah and Lehi forces in the months around Israel's establishment.",
+    historicalSignificance: "Lifta is widely cited as the only 1948-depopulated village whose physical structures (homes, mosque, spring, cemetery) remain largely intact rather than demolished or built over, making it a unique surviving record of pre-Nakba Palestinian village life.",
+    culturalValue: "The mosque, cemetery, and courtyard were preserved after Israeli and Palestinian organizations objected to a development plan proposing luxury housing on the site; it remains a focal point of memory and ongoing heritage advocacy.",
+    verifiedBy: [
+      "Institute for Palestine Studies",
+      "Palquest"
+    ],
     images: {
       before: {
         url: "/images/sites/lifta-mosque-before.jpg",
@@ -6771,21 +6203,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Institute for Palestine Studies",
         title: "Lifta: Register of a People, History, Cultural Heritage, and Struggle",
         url: "https://www.palestine-studies.org/en/node/1651173",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Palquest",
         title: "Lifta",
         url: "https://www.palquest.org/en/place/17085/lifta",
-        type: "reference",
-      },
-    ],
+        type: "reference"
+      }
+    ]
   },
   {
     id: "umar-ibn-al-khattab-mosque-ein-karem",
@@ -6793,17 +6224,20 @@ export const mockSites: Site[] = [
     nameArabic: "مسجد عمر بن الخطاب، عين كارم",
     type: "mosque",
     yearBuilt: "7th century tradition (Ottoman-era structure)",
-    coordinates: [31.77, 35.16],
+    coordinates: [
+      31.7652,
+      35.1613
+    ],
     status: "damaged",
-    dateDestroyed: "1948-07-13", // Estimated - village captured 9-18 July 1948
-    lastUpdated: "2026-06-17",
-    description:
-      "Mosque near the Ayn Maryam spring in Ein Karem, a village of over 3,000 Palestinians captured by Irgun, Gadna, and Haganah-affiliated units in July 1948 and later incorporated into West Jerusalem.",
-    historicalSignificance:
-      "Named for Caliph Umar ibn al-Khattab, reportedly linked to his presence during the 7th-century Islamic conquest, making it one of the few visibly standing Islamic-era structures in a depopulated Jerusalem-area village.",
-    culturalValue:
-      "Physical evidence of the centuries-long Muslim presence in Ein Karem, now a village known primarily for its Christian holy sites.",
-    verifiedBy: ["Palquest", "Palestine Remembered"],
+    dateDestroyed: "1948-07-13",
+    lastUpdated: "2026-07-22",
+    description: "Mosque near the Ayn Maryam spring in Ein Karem, a village of over 3,000 Palestinians captured by Irgun, Gadna, and Haganah-affiliated units in July 1948 and later incorporated into West Jerusalem.",
+    historicalSignificance: "Named for Caliph Umar ibn al-Khattab, reportedly linked to his presence during the 7th-century Islamic conquest, making it one of the few visibly standing Islamic-era structures in a depopulated Jerusalem-area village.",
+    culturalValue: "Physical evidence of the centuries-long Muslim presence in Ein Karem, now a village known primarily for its Christian holy sites.",
+    verifiedBy: [
+      "Palquest",
+      "Palestine Remembered"
+    ],
     images: {
       before: {
         url: "/images/sites/umar-ibn-al-khattab-mosque-ein-karem-before.jpg",
@@ -6822,21 +6256,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Palquest",
         title: "'Ayn Karim",
         url: "https://www.palquest.org/en/place/16928/ayn-karim",
-        type: "reference",
+        type: "reference"
       },
       {
         organization: "Palestine Remembered",
         title: "'Ayn Karim",
         url: "https://www.palestineremembered.com/Jerusalem/Ayn-Karim/index.html",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "iqrit-church",
@@ -6844,17 +6277,20 @@ export const mockSites: Site[] = [
     nameArabic: "كنيسة إقرت",
     type: "church",
     yearBuilt: "19th century (rebuilt after 1837 earthquake)",
-    coordinates: [33.04, 35.34],
+    coordinates: [
+      33.0755,
+      35.2752
+    ],
     status: "abandoned",
     dateDestroyed: "1948-11-05",
-    lastUpdated: "2026-06-17",
-    description:
-      "Village church of Iqrit, a Palestinian Christian community of roughly 490 people captured during Operation Hiram on 31 October 1948. Residents were expelled on 5 November under a promise of return; the rest of the village was demolished by the Israeli military in 1951, with the church spared.",
-    historicalSignificance:
-      "A landmark case of Israeli state demolition proceeding in direct defiance of an Israeli Supreme Court ruling that had upheld residents' right to return; frequently cited alongside Bir'im as a paired example of unresolved Nakba-era displacement.",
-    culturalValue:
-      "Remains in active use for religious services and reunions by descendants who continue a decades-long campaign for the right of return.",
-    verifiedBy: ["CNEWA", "Washington Report on Middle East Affairs"],
+    lastUpdated: "2026-07-22",
+    description: "Village church of Iqrit, a Palestinian Christian community of roughly 490 people captured during Operation Hiram on 31 October 1948. Residents were expelled on 5 November under a promise of return; the rest of the village was demolished by the Israeli military in 1951, with the church spared.",
+    historicalSignificance: "A landmark case of Israeli state demolition proceeding in direct defiance of an Israeli Supreme Court ruling that had upheld residents' right to return; frequently cited alongside Bir'im as a paired example of unresolved Nakba-era displacement.",
+    culturalValue: "Remains in active use for religious services and reunions by descendants who continue a decades-long campaign for the right of return.",
+    verifiedBy: [
+      "CNEWA",
+      "Washington Report on Middle East Affairs"
+    ],
     images: {
       before: {
         url: "/images/sites/iqrit-church-before.jpg",
@@ -6873,21 +6309,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "CNEWA",
         title: "In Destroyed Israeli Village, Exiled Residents Unite at the Church",
         url: "https://cnewa.org/in-destroyed-israeli-village-exiled-residents-unite-at-the-church/",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Washington Report on Middle East Affairs",
         title: "Iqrit Descendants Determined to Rebuild",
         url: "https://www.wrmea.org/2013-august/iqrit-descendants-determined-to-rebuild-return-to-their-destroyed-village.html",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "zirin-mosque",
@@ -6895,17 +6330,21 @@ export const mockSites: Site[] = [
     nameArabic: "مسجد زرعين",
     type: "mosque",
     yearBuilt: "13th century (Mamluk, Sultan Baybars)",
-    coordinates: [32.56, 35.32],
+    coordinates: [
+      32.5575,
+      35.3278
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "1948-05-28",
-    lastUpdated: "2026-06-17",
-    description:
-      "Central mosque of Zir'in, a village of over 1,400 people in the Jezreel Valley, shelled and captured by the 13th Battalion of the Golani Brigade after a written Palmach order to destroy most of the village's houses.",
-    historicalSignificance:
-      "One of the few cases with direct documentary evidence (a written military destruction order) tying a village's demolition to deliberate policy rather than incidental war damage.",
-    culturalValue:
-      "Represented continuity of Islamic religious architecture from the Mamluk period through to 1948; the kibbutz Yizre'el was established on the village's former lands shortly after.",
-    verifiedBy: ["Palquest", "Zochrot"],
+    lastUpdated: "2026-07-22",
+    description: "Central mosque of Zir'in, a village of over 1,400 people in the Jezreel Valley, shelled and captured by the 13th Battalion of the Golani Brigade after a written Palmach order to destroy most of the village's houses.",
+    historicalSignificance: "One of the few cases with direct documentary evidence (a written military destruction order) tying a village's demolition to deliberate policy rather than incidental war damage.",
+    culturalValue: "Represented continuity of Islamic religious architecture from the Mamluk period through to 1948; the kibbutz Yizre'el was established on the village's former lands shortly after.",
+    verifiedBy: [
+      "Palquest",
+      "Zochrot"
+    ],
     images: {
       before: {
         url: "/images/sites/zirin-mosque-before.jpg",
@@ -6924,21 +6363,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Palquest",
         title: "Zir'in",
         url: "https://www.palquest.org/en/place/17189/zirin",
-        type: "reference",
+        type: "reference"
       },
       {
         organization: "Zochrot",
         title: "Zir'in",
         url: "https://www.zochrot.org/villages/village_details/49147/en",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "qaqun-fortress",
@@ -6946,17 +6384,20 @@ export const mockSites: Site[] = [
     nameArabic: "قلعة قاقون",
     type: "archaeological",
     yearBuilt: "12th century (Crusader, rebuilt under Mamluk Sultan Baybars)",
-    coordinates: [32.36, 34.99],
+    coordinates: [
+      32.3594,
+      34.9952
+    ],
     status: "heavily-damaged",
     dateDestroyed: "1948-06-05",
-    lastUpdated: "2026-06-17",
-    description:
-      "Hilltop fortress and administrative seat of Qaqun, a town that commanded the only land route from the coastal Sharon plain into the Nablus hills, depopulated by the Alexandroni Brigade's 3rd Battalion.",
-    historicalSignificance:
-      "One of few sites in the region with a documented, continuous fortification history spanning Crusader, Mamluk, Ottoman, and British Mandate periods, including a church-to-mosque conversion under Baybars.",
-    culturalValue:
-      "Ruins remain a tangible link to centuries of regional strategic and religious history, now an empty archaeological site.",
-    verifiedBy: ["Palquest", "Zochrot"],
+    lastUpdated: "2026-07-22",
+    description: "Hilltop fortress and administrative seat of Qaqun, a town that commanded the only land route from the coastal Sharon plain into the Nablus hills, depopulated by the Alexandroni Brigade's 3rd Battalion.",
+    historicalSignificance: "One of few sites in the region with a documented, continuous fortification history spanning Crusader, Mamluk, Ottoman, and British Mandate periods, including a church-to-mosque conversion under Baybars.",
+    culturalValue: "Ruins remain a tangible link to centuries of regional strategic and religious history, now an empty archaeological site.",
+    verifiedBy: [
+      "Palquest",
+      "Zochrot"
+    ],
     images: {
       before: {
         url: "/images/sites/qaqun-fortress-before.jpg",
@@ -6975,21 +6416,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Palquest",
         title: "Qaqun",
         url: "https://www.palquest.org/en/place/17114/qaqun",
-        type: "reference",
+        type: "reference"
       },
       {
         organization: "Zochrot",
         title: "Qaqun",
         url: "https://www.zochrot.org/villages/village_details/49445/en",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "birim-church",
@@ -6997,17 +6437,19 @@ export const mockSites: Site[] = [
     nameArabic: "كنيسة كفر برعم",
     type: "church",
     yearBuilt: "19th century (rebuilt after 1837 earthquake)",
-    coordinates: [33.04, 35.4],
+    coordinates: [
+      33.0435,
+      35.4141
+    ],
     status: "abandoned",
     dateDestroyed: "1948-11-13",
-    lastUpdated: "2026-06-17",
-    description:
-      "Church of the predominantly Maronite Christian village of Kafr Bir'im, captured by Haganah forces in October 1948 despite residents raising white flags. Remaining village buildings were demolished by Israeli airstrikes in 1953; the church was spared.",
-    historicalSignificance:
-      "Along with neighboring Iqrit, one of the most legally and politically documented Nakba displacement cases in Israel, including a 1950s High Court ruling on property rights that was overridden by military demolition.",
-    culturalValue:
-      "Remains active for religious ceremonies and gatherings by descendants who continue advocacy for return, within what is now Bar'am National Park.",
-    verifiedBy: ["America Magazine"],
+    lastUpdated: "2026-07-22",
+    description: "Church of the predominantly Maronite Christian village of Kafr Bir'im, captured by Haganah forces in October 1948 despite residents raising white flags. Remaining village buildings were demolished by Israeli airstrikes in 1953; the church was spared.",
+    historicalSignificance: "Along with neighboring Iqrit, one of the most legally and politically documented Nakba displacement cases in Israel, including a 1950s High Court ruling on property rights that was overridden by military demolition.",
+    culturalValue: "Remains active for religious ceremonies and gatherings by descendants who continue advocacy for return, within what is now Bar'am National Park.",
+    verifiedBy: [
+      "America Magazine"
+    ],
     images: {
       before: {
         url: "/images/sites/birim-church-before.jpg",
@@ -7026,15 +6468,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "America Magazine",
         title: "In Destroyed Melkite Village, Exiles Unite at the Church",
         url: "https://www.americamagazine.org/from-our-archives/2015/04/14/destroyed-melkite-village-exiles-unite-church/",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "sheikh-eid-mosque-mughrabi-quarter",
@@ -7042,17 +6483,21 @@ export const mockSites: Site[] = [
     nameArabic: "جامع الشيخ عيد",
     type: "mosque",
     yearBuilt: "12th century (founded ~1193 by al-Malik al-Afdal)",
-    coordinates: [31.7766, 35.2341],
+    coordinates: [
+      31.7766,
+      35.2341
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "1967-06-11",
     lastUpdated: "2026-06-17",
-    description:
-      "Mosque and former Islamic school in Jerusalem's Mughrabi Quarter, an 800-year-old Islamic waqf neighborhood of roughly 135 buildings demolished within hours of the Six-Day War ceasefire on orders from Jerusalem mayor Teddy Kollek, to create the Western Wall Plaza.",
-    historicalSignificance:
-      "Founded as an Islamic school by Saladin's son; became a major Muslim pilgrimage site after the burial of preacher Sheikh Eid there.",
-    culturalValue:
-      "A 2012 discovery of 1930s aerial photography provided documentary proof of the mosque's existence and destruction.",
-    verifiedBy: ["Jerusalem Story", "Washington Report on Middle East Affairs"],
+    description: "Mosque and former Islamic school in Jerusalem's Mughrabi Quarter, an 800-year-old Islamic waqf neighborhood of roughly 135 buildings demolished within hours of the Six-Day War ceasefire on orders from Jerusalem mayor Teddy Kollek, to create the Western Wall Plaza.",
+    historicalSignificance: "Founded as an Islamic school by Saladin's son; became a major Muslim pilgrimage site after the burial of preacher Sheikh Eid there.",
+    culturalValue: "A 2012 discovery of 1930s aerial photography provided documentary proof of the mosque's existence and destruction.",
+    verifiedBy: [
+      "Jerusalem Story",
+      "Washington Report on Middle East Affairs"
+    ],
     images: {
       before: {
         url: "/images/sites/sheikh-eid-mosque-mughrabi-quarter-before.jpg",
@@ -7071,21 +6516,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Jerusalem Story",
         title: "The Destruction of Jerusalem's Moroccan Quarter",
         url: "https://www.jerusalemstory.com/en/article/destruction-jerusalems-moroccan-quarter-centuries-old-maghrebi-community-western-wall",
-        type: "documentation",
+        type: "documentation"
       },
       {
         organization: "Washington Report on Middle East Affairs",
         title: "The Nakba Continues: Proof Found That in 1967 Israel Destroyed Centuries-Old Jerusalem Mosque",
         url: "https://www.wrmea.org/2012-september/the-nakba-continues-proof-found-that-in-1967-israel-destroyed-centuries-old-jerusalem-mosque.html",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "bou-medyan-zaouia",
@@ -7093,17 +6537,20 @@ export const mockSites: Site[] = [
     nameArabic: "زاوية أبي مدين",
     type: "monument",
     yearBuilt: "12th century (founded ~1193)",
-    coordinates: [31.7766, 35.2341],
+    coordinates: [
+      31.7766,
+      35.2341
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "1967-06-11",
     lastUpdated: "2026-06-17",
-    description:
-      "Sufi religious lodge named for North African saint Abu Madyan, forming the spiritual core of Jerusalem's Mughrabi Quarter, demolished alongside the Sheikh Eid Mosque in the same June 1967 operation.",
-    historicalSignificance:
-      "Anchored the Maghrebi (North African) Muslim community in Jerusalem for centuries, linking the city to the broader Islamic world via its waqf structure.",
-    culturalValue:
-      "Its loss erased a physical link between Jerusalem and Maghrebi Islamic heritage; the site is now paved over as part of the Western Wall Plaza.",
-    verifiedBy: ["Jerusalem Story"],
+    description: "Sufi religious lodge named for North African saint Abu Madyan, forming the spiritual core of Jerusalem's Mughrabi Quarter, demolished alongside the Sheikh Eid Mosque in the same June 1967 operation.",
+    historicalSignificance: "Anchored the Maghrebi (North African) Muslim community in Jerusalem for centuries, linking the city to the broader Islamic world via its waqf structure.",
+    culturalValue: "Its loss erased a physical link between Jerusalem and Maghrebi Islamic heritage; the site is now paved over as part of the Western Wall Plaza.",
+    verifiedBy: [
+      "Jerusalem Story"
+    ],
     images: {
       before: {
         url: "/images/sites/bou-medyan-zaouia-before.jpg",
@@ -7122,15 +6569,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Jerusalem Story",
         title: "The Destruction of Jerusalem's Moroccan Quarter",
         url: "https://www.jerusalemstory.com/en/article/destruction-jerusalems-moroccan-quarter-centuries-old-maghrebi-community-western-wall",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "imwas-mosque",
@@ -7138,17 +6584,19 @@ export const mockSites: Site[] = [
     nameArabic: "جامع عمواس",
     type: "mosque",
     yearBuilt: "Ottoman era",
-    coordinates: [31.842, 34.9927],
+    coordinates: [
+      31.842,
+      34.9927
+    ],
     status: "destroyed",
-    dateDestroyed: "1967-06-15", // Estimated, days after June 1967 ceasefire
+    dateDestroyed: "1967-06-15",
     lastUpdated: "2026-06-17",
-    description:
-      "Mosque of Imwas, a Latrun-salient village traditionally identified with biblical Emmaus, razed along with the rest of the village's homes and civic buildings on orders attributed to Yitzhak Rabin shortly after the Six-Day War ceasefire. The village's older Byzantine-Crusader church was deliberately left standing.",
-    historicalSignificance:
-      "Continuously inhabited site with archaeological layers spanning Byzantine, Crusader, and Islamic periods, and a long-debated identification with the New Testament Emmaus.",
-    culturalValue:
-      "Complete erasure of a living village's mosque and civic infrastructure; the land was later forested as Canada Park, burying the rubble.",
-    verifiedBy: ["Palestine Remembered"],
+    description: "Mosque of Imwas, a Latrun-salient village traditionally identified with biblical Emmaus, razed along with the rest of the village's homes and civic buildings on orders attributed to Yitzhak Rabin shortly after the Six-Day War ceasefire. The village's older Byzantine-Crusader church was deliberately left standing.",
+    historicalSignificance: "Continuously inhabited site with archaeological layers spanning Byzantine, Crusader, and Islamic periods, and a long-debated identification with the New Testament Emmaus.",
+    culturalValue: "Complete erasure of a living village's mosque and civic infrastructure; the land was later forested as Canada Park, burying the rubble.",
+    verifiedBy: [
+      "Palestine Remembered"
+    ],
     images: {
       before: {
         url: "/images/sites/imwas-mosque-before.jpg",
@@ -7167,15 +6615,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Palestine Remembered",
         title: "The Association For Reconstruction Of Emmaus",
         url: "https://www.palestineremembered.com/al-Ramla/Imwas/Story260.html",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "yalo-village",
@@ -7183,17 +6630,19 @@ export const mockSites: Site[] = [
     nameArabic: "يالو",
     type: "monument",
     yearBuilt: "Ottoman era",
-    coordinates: [31.84, 34.97], // Approximate - village-level only, within present-day Canada Park
+    coordinates: [
+      31.8405,
+      35.0226
+    ],
     status: "destroyed",
-    dateDestroyed: "1967-06-15", // Estimated, days after June 1967 ceasefire
-    lastUpdated: "2026-06-17",
-    description:
-      "Depopulated Latrun-salient village identified by 19th-century scholars with ancient Aijalon; its homes, mosque, public buildings, and cemeteries were destroyed alongside neighboring Imwas and Beit Nuba on orders attributed to Yitzhak Rabin.",
-    historicalSignificance:
-      "Part of a coordinated, multi-village destruction operation that displaced 7,000-10,000 people across the three Latrun villages.",
-    culturalValue:
-      "Erasure documented as part of the same operation that created Canada Park over the village ruins.",
-    verifiedBy: ["+972 Magazine"],
+    dateDestroyed: "1967-06-15",
+    lastUpdated: "2026-07-22",
+    description: "Depopulated Latrun-salient village identified by 19th-century scholars with ancient Aijalon; its homes, mosque, public buildings, and cemeteries were destroyed alongside neighboring Imwas and Beit Nuba on orders attributed to Yitzhak Rabin.",
+    historicalSignificance: "Part of a coordinated, multi-village destruction operation that displaced 7,000-10,000 people across the three Latrun villages.",
+    culturalValue: "Erasure documented as part of the same operation that created Canada Park over the village ruins.",
+    verifiedBy: [
+      "+972 Magazine"
+    ],
     images: {
       before: {
         url: "/images/sites/yalo-village-before.jpg",
@@ -7212,15 +6661,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "+972 Magazine",
         title: "Turning entire Palestinian villages invisible",
         url: "https://www.972mag.com/turning-entire-palestinian-villages-invisible/",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "beit-nuba-mosque",
@@ -7228,17 +6676,20 @@ export const mockSites: Site[] = [
     nameArabic: "جامع بيت نوبا",
     type: "mosque",
     yearBuilt: "Pre-1863 (referenced in Victor Guérin's 19th-century surveys)",
-    coordinates: [31.85, 34.98], // Approximate - village-level only, near present-day Mevo Horon
+    coordinates: [
+      31.8531,
+      35.0317
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
-    dateDestroyed: "1967-06-15", // Estimated, days after June 1967 ceasefire
-    lastUpdated: "2026-06-17",
-    description:
-      "Mosque of Beit Nuba, a Latrun-salient village whose built-up area was destroyed by Israeli forces shortly after the Six-Day War, part of the same operation that razed neighboring Imwas and Yalo.",
-    historicalSignificance:
-      "Mosque referenced in 19th-century French explorer Victor Guérin's surveys, indicating pre-modern Islamic heritage in the village.",
-    culturalValue:
-      "Part of the coordinated destruction of the three Latrun villages; the site was replaced by the Israeli settlement Mevo Horon.",
-    verifiedBy: ["+972 Magazine"],
+    dateDestroyed: "1967-06-15",
+    lastUpdated: "2026-07-22",
+    description: "Mosque of Beit Nuba, a Latrun-salient village whose built-up area was destroyed by Israeli forces shortly after the Six-Day War, part of the same operation that razed neighboring Imwas and Yalo.",
+    historicalSignificance: "Mosque referenced in 19th-century French explorer Victor Guérin's surveys, indicating pre-modern Islamic heritage in the village.",
+    culturalValue: "Part of the coordinated destruction of the three Latrun villages; the site was replaced by the Israeli settlement Mevo Horon.",
+    verifiedBy: [
+      "+972 Magazine"
+    ],
     images: {
       before: {
         url: "/images/sites/beit-nuba-mosque-before.jpg",
@@ -7257,15 +6708,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "+972 Magazine",
         title: "Turning entire Palestinian villages invisible",
         url: "https://www.972mag.com/turning-entire-palestinian-villages-invisible/",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "ibrahim-al-maqadma-mosque",
@@ -7273,17 +6723,19 @@ export const mockSites: Site[] = [
     nameArabic: "مسجد إبراهيم المقادمة",
     type: "mosque",
     yearBuilt: "20th century",
-    coordinates: [31.5498, 34.5025],
+    coordinates: [
+      31.5589,
+      34.4674
+    ],
     status: "destroyed",
     dateDestroyed: "2009-01-03",
-    lastUpdated: "2026-06-17",
-    description:
-      "A community mosque in Beit Lahia struck by an Israeli Air Force missile during evening prayers, with more than 200 worshippers inside, killing at least 15 people including six children.",
-    historicalSignificance:
-      "One of the deadliest single attacks on a place of worship during Operation Cast Lead, cited extensively in the UN Goldstone Report.",
-    culturalValue:
-      "The Goldstone Report found no evidence the mosque was used for militant activity, concluding the strike could not be explained other than as a direct attack on a place of worship.",
-    verifiedBy: ["Wikipedia"],
+    lastUpdated: "2026-07-22",
+    description: "A community mosque in Beit Lahia struck by an Israeli Air Force missile during evening prayers, with more than 200 worshippers inside, killing at least 15 people including six children.",
+    historicalSignificance: "One of the deadliest single attacks on a place of worship during Operation Cast Lead, cited extensively in the UN Goldstone Report.",
+    culturalValue: "The Goldstone Report found no evidence the mosque was used for militant activity, concluding the strike could not be explained other than as a direct attack on a place of worship.",
+    verifiedBy: [
+      "Wikipedia"
+    ],
     images: {
       before: {
         url: "/images/sites/ibrahim-al-maqadma-mosque-before.jpg",
@@ -7302,15 +6754,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Wikipedia",
         title: "Ibrahim al-Maqadma Mosque missile strike",
         url: "https://en.wikipedia.org/wiki/Ibrahim_al-Maqadma_Mosque_missile_strike",
-        type: "reference",
-      },
-    ],
+        type: "reference"
+      }
+    ]
   },
   {
     id: "american-international-school-gaza",
@@ -7318,17 +6769,21 @@ export const mockSites: Site[] = [
     nameArabic: "المدرسة الأميركية الدولية في غزة",
     type: "school",
     yearBuilt: "1999",
-    coordinates: [31.5608, 34.4808],
+    coordinates: [
+      31.5608,
+      34.4808
+    ],
     status: "destroyed",
     dateDestroyed: "2009-01-03",
     lastUpdated: "2026-06-17",
-    description:
-      "Gaza's only private American-curriculum international school, with a $5 million Beit Lahia campus destroyed in a predawn Israeli airstrike during Operation Cast Lead. The IDF said rockets had been launched from the area; school officials disputed that any were fired from inside the campus.",
-    historicalSignificance:
-      "One of the most prominent education-sector losses of the war, frequently cited in debates over legitimate military targets during Cast Lead.",
-    culturalValue:
-      "Despite destruction, the school continued operating and rebuilt its campus.",
-    verifiedBy: ["Wikipedia", "NPR", "Haaretz"],
+    description: "Gaza's only private American-curriculum international school, with a $5 million Beit Lahia campus destroyed in a predawn Israeli airstrike during Operation Cast Lead. The IDF said rockets had been launched from the area; school officials disputed that any were fired from inside the campus.",
+    historicalSignificance: "One of the most prominent education-sector losses of the war, frequently cited in debates over legitimate military targets during Cast Lead.",
+    culturalValue: "Despite destruction, the school continued operating and rebuilt its campus.",
+    verifiedBy: [
+      "Wikipedia",
+      "NPR",
+      "Haaretz"
+    ],
     images: {
       before: {
         url: "/images/sites/american-international-school-gaza-before.jpg",
@@ -7347,21 +6802,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "NPR",
         title: "Despite Bombing, Gaza School Endures",
         url: "https://www.npr.org/2009/08/02/106662131/despite-bombing-gaza-school-endures",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Haaretz",
         title: "Was the Gaza School Bombed by IAF a 'Legitimate Target'?",
         url: "https://www.haaretz.com/2009-04-26/ty-article/was-the-gaza-school-bombed-by-iaf-a-legitimate-target/0000017f-db8b-d856-a37f-ffcb571f0000",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "islamic-university-gaza-library",
@@ -7369,17 +6823,20 @@ export const mockSites: Site[] = [
     nameArabic: "مكتبة الجامعة الإسلامية بغزة",
     type: "archive",
     yearBuilt: "1978",
-    coordinates: [31.5078, 34.4502],
+    coordinates: [
+      31.5134,
+      34.4401
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2008-12-29",
-    lastUpdated: "2026-06-17",
-    description:
-      "Central library and laboratory buildings of Gaza's first higher-education institution, struck by six Israeli airstrikes that fully destroyed two five-story lab buildings and damaged surrounding campus structures including the library.",
-    historicalSignificance:
-      "Among the earliest and most significant strikes on Palestinian higher-education infrastructure during the war, foreshadowing later debates over attacks on education ('scholasticide').",
-    culturalValue:
-      "Held academic materials, scientific equipment, and library holdings serving Gaza's student population; Israel alleged militant use of the facilities, which the university denied.",
-    verifiedBy: ["Wikipedia", "The Electronic Intifada"],
+    lastUpdated: "2026-07-22",
+    description: "Central library and laboratory buildings of Gaza's first higher-education institution, struck by six Israeli airstrikes that fully destroyed two five-story lab buildings and damaged surrounding campus structures including the library.",
+    historicalSignificance: "Among the earliest and most significant strikes on Palestinian higher-education infrastructure during the war, foreshadowing later debates over attacks on education ('scholasticide').",
+    culturalValue: "Held academic materials, scientific equipment, and library holdings serving Gaza's student population; Israel alleged militant use of the facilities, which the university denied.",
+    verifiedBy: [
+      "Wikipedia",
+      "The Electronic Intifada"
+    ],
     images: {
       before: {
         url: "/images/sites/islamic-university-gaza-library-before.jpg",
@@ -7398,21 +6855,20 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "The Electronic Intifada",
         title: "Haunted by the horrors of Cast Lead",
         url: "https://electronicintifada.net/content/haunted-horrors-cast-lead/22996",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "The Electronic Intifada",
         title: "Rebuilding the Islamic University of Gaza",
         url: "https://electronicintifada.net/content/rebuilding-islamic-university-gaza/8068",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "imad-akel-mosque",
@@ -7420,17 +6876,19 @@ export const mockSites: Site[] = [
     nameArabic: "مسجد عماد عقل",
     type: "mosque",
     yearBuilt: "20th century",
-    coordinates: [31.5327, 34.4982],
+    coordinates: [
+      31.5306,
+      34.4997
+    ],
     status: "destroyed",
     dateDestroyed: "2008-12-29",
-    lastUpdated: "2026-06-17",
-    description:
-      "Neighborhood mosque in the Jabaliya refugee camp bombed by an Israeli F-16 in the opening days of Operation Cast Lead; the strike also collapsed the home of the neighboring Balousha family three meters away, killing five daughters aged 4-18.",
-    historicalSignificance:
-      "One of 34 mosques reported destroyed during the 2008-09 war; the linked Balousha family deaths made this strike one of the most widely documented civilian-casualty incidents of Cast Lead.",
-    culturalValue:
-      "Served a densely populated refugee camp community, one of Gaza's largest.",
-    verifiedBy: ["Palestinian Centre for Human Rights"],
+    lastUpdated: "2026-07-22",
+    description: "Neighborhood mosque in the Jabaliya refugee camp bombed by an Israeli F-16 in the opening days of Operation Cast Lead; the strike also collapsed the home of the neighboring Balousha family three meters away, killing five daughters aged 4-18.",
+    historicalSignificance: "One of 34 mosques reported destroyed during the 2008-09 war; the linked Balousha family deaths made this strike one of the most widely documented civilian-casualty incidents of Cast Lead.",
+    culturalValue: "Served a densely populated refugee camp community, one of Gaza's largest.",
+    verifiedBy: [
+      "Palestinian Centre for Human Rights"
+    ],
     images: {
       before: {
         url: "/images/sites/imad-akel-mosque-before.jpg",
@@ -7449,15 +6907,14 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Palestinian Centre for Human Rights",
         title: "29 December 2008: Balousha Family",
         url: "https://pchrgaza.org/29-december-2008-balousha-family/",
-        type: "documentation",
-      },
-    ],
+        type: "documentation"
+      }
+    ]
   },
   {
     id: "al-omari-mosque-jabaliya",
@@ -7465,17 +6922,20 @@ export const mockSites: Site[] = [
     nameArabic: "المسجد العمري الكبير، جباليا",
     type: "mosque",
     yearBuilt: "7th century foundation (Mamluk-era minaret)",
-    coordinates: [31.528, 34.483],
+    coordinates: [
+      31.5257,
+      34.4839
+    ],
     status: "heavily-damaged",
     dateDestroyed: "2014-08-02",
-    lastUpdated: "2026-06-17",
-    description:
-      "Gaza's oldest and largest mosque outside the Old City, struck by an Israeli airstrike that tore through the roof and damaged the vaulted stone ceiling and courtyard; the muezzin was killed shortly after the call to prayer.",
-    historicalSignificance:
-      "Believed to have hosted a mosque on the site since the 7th century, with a surviving minaret and portico dating to the Mamluk era and capacity for roughly 2,000 worshippers.",
-    culturalValue:
-      "Most of the mosque's Qurans and religious manuscripts were destroyed or burned in the strike; residents later organized a self-financed restoration effort.",
-    verifiedBy: ["NPR", "Middle East Monitor"],
+    lastUpdated: "2026-07-22",
+    description: "Gaza's oldest and largest mosque outside the Old City, struck by an Israeli airstrike that tore through the roof and damaged the vaulted stone ceiling and courtyard; the muezzin was killed shortly after the call to prayer.",
+    historicalSignificance: "Believed to have hosted a mosque on the site since the 7th century, with a surviving minaret and portico dating to the Mamluk era and capacity for roughly 2,000 worshippers.",
+    culturalValue: "Most of the mosque's Qurans and religious manuscripts were destroyed or burned in the strike; residents later organized a self-financed restoration effort.",
+    verifiedBy: [
+      "NPR",
+      "Middle East Monitor"
+    ],
     images: {
       before: {
         url: "/images/sites/al-omari-mosque-jabaliya-before.jpg",
@@ -7494,23 +6954,22 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "NPR",
         title: "Gaza's Casualties Of War Include Its Historic Mosques",
         url: "https://www.npr.org/sections/parallels/2014/08/12/339828441/gazas-casualties-of-war-include-its-historic-mosques",
         date: "2014-08-12",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Middle East Monitor",
         title: "The ancient mosques of Gaza in ruins",
         url: "https://www.middleeastmonitor.com/20140910-the-ancient-mosques-of-gaza-in-ruins-how-israels-war-endangered-palestines-cultural-heritage/",
         date: "2014-09-10",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "mahkamah-mosque",
@@ -7518,17 +6977,20 @@ export const mockSites: Site[] = [
     nameArabic: "مسجد المحكمة",
     type: "mosque",
     yearBuilt: "1455 (Mamluk, Sayf al-Din Birdibak al-Ashrafi)",
-    coordinates: [31.501, 34.468],
+    coordinates: [
+      31.5018,
+      34.469
+    ],
     status: "destroyed",
     dateDestroyed: "2014-07-24",
-    lastUpdated: "2026-06-17",
-    description:
-      "Mamluk-era mosque on Baghdad Street near the western entrance to Gaza's Shuja'iyya district, destroyed in an Israeli airstrike during the height of the Shuja'iyya offensive.",
-    historicalSignificance:
-      "A rare, well-preserved example of Burji Mamluk architecture, strongly influenced by earlier Ayyubid mosque-madrasa design traditions.",
-    culturalValue:
-      "One of the few intact Mamluk-era religious buildings remaining in Gaza prior to 2014; its loss removed a key architectural record of the period.",
-    verifiedBy: ["Wikipedia", "Jordan Times"],
+    lastUpdated: "2026-07-22",
+    description: "Mamluk-era mosque on Baghdad Street near the western entrance to Gaza's Shuja'iyya district, destroyed in an Israeli airstrike during the height of the Shuja'iyya offensive.",
+    historicalSignificance: "A rare, well-preserved example of Burji Mamluk architecture, strongly influenced by earlier Ayyubid mosque-madrasa design traditions.",
+    culturalValue: "One of the few intact Mamluk-era religious buildings remaining in Gaza prior to 2014; its loss removed a key architectural record of the period.",
+    verifiedBy: [
+      "Wikipedia",
+      "Jordan Times"
+    ],
     images: {
       before: {
         url: "/images/sites/mahkamah-mosque-before.jpg",
@@ -7547,39 +7009,42 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "Jordan Times",
         title: "Gaza's historic mosques, shrines reduced to rubble in Israeli offensive",
         url: "https://jordantimes.com/news/local/gazas-historic-mosques-shrines-reduced-rubble-israeli-offensive-archeologist",
-        type: "journalism",
+        type: "journalism"
       },
       {
         organization: "Middle East Monitor",
         title: "The ancient mosques of Gaza in ruins",
         url: "https://www.middleeastmonitor.com/20140910-the-ancient-mosques-of-gaza-in-ruins-how-israels-war-endangered-palestines-cultural-heritage/",
         date: "2014-09-10",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
   {
     id: "ibby-library-beit-hanoun",
     name: "IBBY Children's Library, Beit Hanoun",
     type: "archive",
     yearBuilt: "2008",
-    coordinates: [31.538, 34.537],
+    coordinates: [
+      31.538,
+      34.537
+    ],
+    coordinatesApproximate: true,
     status: "destroyed",
     dateDestroyed: "2014-07-28",
-    lastUpdated: "2026-06-17",
-    description:
-      "A children's library supported by the International Board on Books for Young People (IBBY) since 2008, intended as a safe space for literacy programs near the Israeli border in Beit Hanoun, destroyed during the 2014 war.",
-    historicalSignificance:
-      "Part of a small network of children-focused literacy institutions in Gaza, notable for serving a border community frequently exposed to conflict.",
-    culturalValue:
-      "Represented international cultural investment in Palestinian children's literacy; IBBY launched a reconstruction appeal in October 2014.",
-    verifiedBy: ["IBBY", "Literary Hub"],
+    lastUpdated: "2026-07-22",
+    description: "A children's library supported by the International Board on Books for Young People (IBBY) since 2008, intended as a safe space for literacy programs near the Israeli border in Beit Hanoun, destroyed during the 2014 war.",
+    historicalSignificance: "Part of a small network of children-focused literacy institutions in Gaza, notable for serving a border community frequently exposed to conflict.",
+    culturalValue: "Represented international cultural investment in Palestinian children's literacy; IBBY launched a reconstruction appeal in October 2014.",
+    verifiedBy: [
+      "IBBY",
+      "Literary Hub"
+    ],
     images: {
       before: {
         url: "/images/sites/ibby-library-beit-hanoun-before.jpg",
@@ -7598,21 +7063,891 @@ export const mockSites: Site[] = [
         description: "Satellite imagery from 2026-05-28"
       }
     },
-    
     sources: [
       {
         organization: "IBBY",
         title: "Children in Crisis: Gaza Libraries",
-        url: "https://www.ibby.org/awards-activities/ibby-children-in-crisis-fund/ibby-children-in-crisis-gaza-libraries",
-        type: "official",
+        url: "http://web.archive.org/web/20260708150232/https://www.ibby.org/awards-activities/ibby-children-in-crisis-fund/ibby-children-in-crisis-gaza-libraries",
+        type: "official"
       },
       {
         organization: "Literary Hub",
         title: "Israel has damaged or destroyed at least 13 libraries in Gaza",
         url: "https://lithub.com/israel-has-damaged-or-destroyed-at-least-13-libraries-in-gaza/",
-        type: "journalism",
-      },
-    ],
+        type: "journalism"
+      }
+    ]
   },
-  // BATCH 3 END - Total: 146 sites
+  {
+    id: "al-husseini-shrine",
+    name: "Al-Husseini Shrine",
+    type: "monument",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.505,
+      34.4655
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A shrine in Gaza City included on UNESCO's verified list of damaged cultural heritage properties. No independent source beyond UNESCO's assessment gives construction date, precise location, or architectural details.",
+    historicalSignificance: "Traditional Islamic shrine architecture marking a religious figure's memorial or burial site, part of Gaza's tradition of venerating local religious figures.",
+    culturalValue: "Listed by UNESCO among Gaza City's verified damaged cultural heritage sites; represents a strand of Gaza's Islamic devotional heritage for which detailed documentation has not survived the war.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/al-husseini-shrine-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-husseini-shrine-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "ali-abu-al-kass-shrine",
+    name: "Ali Abu Al-Kass Shrine",
+    type: "monument",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.506,
+      34.464
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A shrine in Gaza City included on UNESCO's verified list of damaged cultural heritage properties. No independent source beyond UNESCO's assessment gives construction date, precise location, or architectural details.",
+    historicalSignificance: "Traditional Islamic shrine architecture marking a religious figure's memorial or burial site, part of Gaza's tradition of venerating local religious figures.",
+    culturalValue: "Listed by UNESCO among Gaza City's verified damaged cultural heritage sites; represents a strand of Gaza's Islamic devotional heritage for which detailed documentation has not survived the war.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/ali-abu-al-kass-shrine-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ali-abu-al-kass-shrine-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "al-ghussein-shrine-cemetery",
+    name: "Al-Ghussein Shrine and Cemetery",
+    type: "monument",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5065,
+      34.4648
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A shrine and adjoining burial ground associated with the Al-Ghussein family of Gaza City, included on UNESCO's verified list of damaged cultural heritage properties. Distinct from the separately listed Al-Ghussein House (Goethe Institute), a 19th-century family residence in Daraj. No independent source beyond UNESCO's assessment gives construction date or precise location.",
+    historicalSignificance: "Family shrine and cemetery associated with the Al-Ghussein family, one of Gaza City's notable historic families, reflecting local traditions of family burial grounds and memorial shrines.",
+    culturalValue: "Listed by UNESCO among Gaza City's verified damaged cultural heritage sites; loss or damage to family cemeteries erases physical genealogical and social history for Gaza's old established families.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/al-ghussein-shrine-cemetery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-ghussein-shrine-cemetery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "zawiya-al-ahmadiya",
+    name: "Zawiya Al-Ahmadiya",
+    nameArabic: "الزاوية الأحمدية",
+    type: "monument",
+    yearBuilt: "14th century",
+    coordinates: [
+      31.5072,
+      34.4657
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era Sufi zawiya (religious lodge) in Gaza City's Daraj quarter, founded in the 14th century by followers of the Sufi scholar Sheikh Ahmad al-Badawi. The complex comprises a domed prayer chamber and a prayer hall with three vaulted iwans around an octagonal fountain incorporating reused Roman-period marble columns. A marble tomb near the southern wall is attributed to Mamluk noblewoman Qutlugh Khatun, credited with financing construction, with an inscription recording her death in 1332 CE.",
+    historicalSignificance: "One of Gaza's Mamluk-period Sufi religious complexes, linking the city to the broader Sufi devotional tradition associated with Sheikh Ahmad al-Badawi (founder of the Badawiyya order). Underwent Ministry of Endowments repairs to cracked walls prior to the current war.",
+    culturalValue: "A rare surviving example of Mamluk zawiya architecture in Gaza's Old City, combining religious, funerary, and architectural significance including spolia from the Roman period.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/zawiya-al-ahmadiya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/zawiya-al-ahmadiya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      },
+      {
+        organization: "Arabic Wikipedia",
+        title: "الزاوية الأحمدية (Al-Zawiya Al-Ahmadiya)",
+        url: "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%B2%D8%A7%D9%88%D9%8A%D8%A9_%D8%A7%D9%84%D8%A3%D8%AD%D9%85%D8%AF%D9%8A%D8%A9",
+        type: "documentation"
+      },
+      {
+        organization: "Institute for Palestine Studies",
+        title: "الزاوية الأحمدية — Documenting the Destruction of the Cultural Sector in the Gaza Strip",
+        url: "https://gazacultrualsector.palestine-studies.org/ar/node/4646",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "aybaki-mosque",
+    name: "Aybaki Mosque",
+    nameArabic: "مسجد الأيبكي",
+    type: "mosque",
+    yearBuilt: "late 13th century",
+    coordinates: [
+      31.5084,
+      34.4686
+    ],
+    coordinatesApproximate: true,
+    status: "destroyed",
+    dateDestroyed: "2025-09-16",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-period mosque (also known as the Mosque of Sheikh Abdullah al-Aybaki) in the al-Tuffah neighborhood of Gaza City, built in the late 13th century and named for Sheikh Abdullah al-Aybaki, reputed to be a mamluk or relative of Izz al-Din Aybak, the first Mamluk sultan of Egypt. Destroyed, along with at least 16 neighboring residential buildings, by an Israeli airstrike at approximately 6:24 PM on 16 September 2025 during Israel's 2025 Gaza City offensive.",
+    historicalSignificance: "A Mamluk-era religious building tied by family lineage to the founding Mamluk dynasty of Egypt; Sheikh Abdullah al-Aybaki's descendants were buried at nearby shrines including the Sayed al-Hashim Mosque in al-Daraj.",
+    culturalValue: "Its destruction, documented on video showing a direct strike on the minaret, is part of the broader loss of Gaza's Mamluk-period built heritage during the 2025 offensive.",
+    verifiedBy: [
+      "Haaretz",
+      "Al Jazeera"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/aybaki-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/aybaki-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Wikipedia",
+        title: "Aybaki Mosque",
+        url: "https://en.wikipedia.org/wiki/Aybaki_Mosque",
+        type: "documentation"
+      },
+      {
+        organization: "Haaretz",
+        title: "In Gaza, the So-called 'Evacuation of Civilians' Is a Trail of Bombs and Death",
+        url: "https://www.haaretz.com/gaza/2025-09-17/ty-article/.premium/in-gaza-the-so-called-evacuation-of-civilians-is-a-trail-of-bombs-and-death/00000199-5759-d7ad-a1d9-577953760000",
+        date: "2025-09-17",
+        type: "journalism"
+      },
+      {
+        organization: "Al Jazeera",
+        title: "Thousands of Palestinians flee as Israeli bombs rain down on Gaza City",
+        url: "https://www.aljazeera.com/news/2025/9/16/thousands-of-palestinians-flee-as-israeli-bombs-rain-down-on-gaza-city",
+        date: "2025-09-16",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "al-soussi-mosque",
+    name: "Al-Soussi Mosque",
+    nameArabic: "مسجد السوسي (مسجد عبد الله بن عمر)",
+    type: "mosque",
+    yearBuilt: "1998",
+    coordinates: [
+      31.529588,
+      34.447093
+    ],
+    status: "destroyed",
+    dateDestroyed: "2023-10-09",
+    sourceAssessmentDate: "2023-10-09",
+    lastUpdated: "2026-07-22",
+    description: "A two-story neighborhood mosque (approximately 600 square metres), formally named after Abdullah ibn Omar and commonly known as al-Soussi, in Al-Shati (Beach) refugee camp west of Gaza City. It opened in Ramadan 1418 AH / 1998 CE. On 9 October 2023, Israeli aircraft struck the mosque with multiple missiles, completely destroying it and damaging surrounding homes; it was one of four mosques hit in Al-Shati camp that day.",
+    historicalSignificance: "Served as a central place of worship and community gathering point in Al-Shati camp, Gaza's third-largest refugee camp, home to more than 90,000 people.",
+    culturalValue: "A community mosque whose destruction, alongside three others in the same camp on the same day, removed key religious and communal infrastructure from one of Gaza's most densely populated refugee camps.",
+    verifiedBy: [
+      "GIG"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/al-soussi-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-soussi-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "The National",
+        title: "Israeli warplanes strike Al Sousi Mosque in Gaza refugee camp",
+        url: "https://www.thenationalnews.com/mena/palestine-israel/2023/10/09/israeli-warplanes-strike-al-sousi-mosque-in-gaza-refugee-camp/",
+        date: "2023-10-09",
+        type: "journalism"
+      },
+      {
+        organization: "GIG",
+        title: "Al-Sousi Mosque - Gaza (war damage record)",
+        url: "https://gigaza.org/en/war-damage/al-sousi-mosque-gaza/",
+        date: "2023-10-09",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "al-hassaina-mosque",
+    name: "Al-Hassaina Mosque",
+    nameArabic: "مسجد الحساينة",
+    type: "mosque",
+    yearBuilt: "2017",
+    coordinates: [
+      31.523083,
+      34.432944
+    ],
+    status: "destroyed",
+    dateDestroyed: "2023-11",
+    sourceAssessmentDate: "2023-11-28",
+    lastUpdated: "2026-07-22",
+    description: "A twin-minaret mosque on the Gaza City waterfront overlooking the port (al-Mina area), funded by Palestinian merchants and opened in 2017. Known locally as \"the Mosque by the Sea\" for its prominent coastal location. Destroyed by Israeli airstrikes in late November 2023; documentation sources place the strike on 27-28 November 2023.",
+    historicalSignificance: "One of Gaza City's most photographed modern religious landmarks, sited directly on the historic Gaza port/Anthedon Harbour waterfront and regularly used for Ramadan i'tikaf (retreat) and communal prayer.",
+    culturalValue: "A prominent recent addition to Gaza's mosque architecture on the ancient port site; its loss removed a major religious and social gathering space for the port/al-Mina neighborhood.",
+    verifiedBy: [
+      "GIG"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/al-hassaina-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-hassaina-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "GIG",
+        title: "Al-Hassaina Mosque - Gaza (war damage record)",
+        url: "https://gigaza.org/war-damage/%D9%85%D8%B3%D8%AC%D8%AF-%D8%A7%D9%84%D8%AD%D8%B3%D8%A7%D9%8A%D9%86%D8%A9-%D8%BA%D8%B2%D8%A9/",
+        date: "2023-11-28",
+        type: "documentation"
+      },
+      {
+        organization: "Palestine Chronicle",
+        title: "The Mosque by the Sea - Why Did Israel Bomb Al-Hassaina Islamic Landmark",
+        url: "https://www.palestinechronicle.com/the-mosque-by-the-sea-why-did-israel-bomb-al-hassaina-islamic-landmark/",
+        date: "2024-04-05",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "sheikh-khalid-mosque",
+    name: "Sheikh Khalid Mosque",
+    nameArabic: "مسجد الشيخ خالد",
+    type: "mosque",
+    yearBuilt: "14th century",
+    yearBuiltIslamic: "8th century AH",
+    coordinates: [
+      31.5085,
+      34.462
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    dateDestroyed: "2024-04-11",
+    lastUpdated: "2026-07-22",
+    description: "A Mamluk-era mosque (14th century / 8th century AH) in the Al-Fawakhir area at the intersection of Al-Fawakhir and Al-Wehda Streets, Al-Daraj quarter of Gaza's Old City. Named after Sheikh Khaled bin Shabeeb (d. 749 AH / 1348 CE); the mosque also contains the burial of Sheikh Jaqmaq, ancestor of the now-extinct Jaqmaq family, and was renovated in the 13th century AH (19th century CE) under Sheikh Saleh Abu Ades. On 11 April 2024, Israeli aircraft targeted the mosque, causing partial damage.",
+    historicalSignificance: "One of Gaza Old City's Mamluk-period mosques, part of the historic religious fabric of the Daraj quarter alongside the Great Omari Mosque and other Mamluk-era monuments.",
+    culturalValue: "Represents nearly 700 years of continuous Mamluk-era religious architecture and burial tradition in Gaza's Old City core.",
+    verifiedBy: [
+      "GIG"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/sheikh-khalid-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sheikh-khalid-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "GIG",
+        title: "Sheikh Khaled Mosque - Gaza (war damage record)",
+        url: "https://gigaza.org/en/war-damage/sheikh-khaled-mosque-gaza/",
+        date: "2024-04-11",
+        type: "documentation"
+      },
+      {
+        organization: "Arabic Wikipedia",
+        title: "مسجد الشيخ خالد",
+        url: "https://ar.wikipedia.org/wiki/%D9%85%D8%B3%D8%AC%D8%AF_%D8%A7%D9%84%D8%B4%D9%8A%D8%AE_%D8%AE%D8%A7%D9%84%D8%AF",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "st-philip-episcopal-church",
+    name: "St. Philip Episcopal Church",
+    nameArabic: "كنيسة القديس فيلبس",
+    type: "church",
+    yearBuilt: "early 20th century",
+    coordinates: [
+      31.5046,
+      34.4616
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    dateDestroyed: "2025-04-13",
+    lastUpdated: "2026-07-22",
+    description: "An Anglican church within the Al-Ahli Arab Hospital compound in Gaza City, run by the Episcopal Diocese of Jerusalem. Built at the turn of the 20th century and reconsecrated in 1996 in the presence of the then-Archbishop of Canterbury and Yasser Arafat, reopening in March 1997. On Palm Sunday, 13 April 2025, twin Israeli missile strikes on the hospital compound demolished the two-storey Genetic Laboratory and damaged the Pharmacy and Emergency Department; the Diocese of Jerusalem reported collateral damage to the St. Philip's church building in the same strikes. Church clergy had earlier converted the building into a medical clinic to help treat the wounded after Al-Shifa Hospital was destroyed.",
+    historicalSignificance: "Serves Gaza's small Christian community and is physically integrated with Al-Ahli Arab Hospital (founded 1882), one of the oldest continuously operating Christian institutions in Gaza.",
+    culturalValue: "One of Gaza's few remaining active church buildings, at a compound that has been struck multiple times since October 2023.",
+    verifiedBy: [
+      "Al Jazeera"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/st-philip-episcopal-church-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/st-philip-episcopal-church-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "Al Jazeera",
+        title: "Israeli forces bomb al-Ahli Hospital in Gaza, forcing patients to flee",
+        url: "https://www.aljazeera.com/news/2025/4/13/israeli-forces-bomb-al-ahli-hospital-in-gaza-forcing-patients-to-flee",
+        date: "2025-04-13",
+        type: "journalism"
+      },
+      {
+        organization: "The Living Church",
+        title: "Israeli Missile Strikes Close al-Ahli Hospital",
+        url: "https://livingchurch.org/news/news-anglican-communion/israeli-missile-strikes-close-al-ahli-hospital/",
+        date: "2025-04-14",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "khan-abu-shaban",
+    name: "Khan Abu Sha'ban",
+    nameArabic: "خان أبو شعبان",
+    type: "historic-building",
+    yearBuilt: "Ottoman period",
+    coordinates: [
+      31.5062,
+      34.4665
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2026-03-24",
+    lastUpdated: "2026-07-22",
+    description: "A historic khan (caravanserai/commercial warehouse building) in the Daraj/Barjiliyya quarter of Gaza's Old City, associated with the locally established Abu Sha'ban merchant family. Catalogued as a distinct site (\"Wikalat Abu Sha'ban\") in the Gaza Historical Database gazetteer maintained by Ruhr-Universitat Bochum. Listed by name among UNESCO's verified-damage cultural heritage sites in Gaza city as of UNESCO's assessment. No building-level coordinate, precise construction date, or dated destruction event is published by any source found.",
+    historicalSignificance: "One of Gaza Old City's historic khans, reflecting the city's centuries-long role as a commercial waystation on trade routes linking Egypt and the Levant.",
+    culturalValue: "Represents Gaza's historic commercial architecture in the Daraj/Barjiliyya quarter, alongside other Old City khans and markets.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/khan-abu-shaban-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/khan-abu-shaban-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment) - \"Khan Abu Sha'ban, Gaza city, Gaza Governorate\"",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2026-03-24",
+        type: "official"
+      },
+      {
+        organization: "Institute for Palestine Studies",
+        title: "Gaza Historical Database gazetteer entry: Wikalat Abu Sha'ban (Khan), Daraj/Barjiliyya",
+        url: "https://gaza.ub.rub.de/gaza/?p=gazetteer",
+        type: "academic"
+      }
+    ]
+  },
+  {
+    id: "ash-sheikh-sad-mosque",
+    name: "Ash Sheikh Sa'd Mosque",
+    type: "mosque",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5285,
+      34.4835
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "A mosque in Jabalia, North Gaza Governorate, included on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023. No independent secondary reporting on the mosque's construction history or specific damage extent was located beyond its listing.",
+    historicalSignificance: "One of several historic religious sites in the old town of Jabalia, alongside the Old Al-Omari Mosque and the Byzantine Church of Jabaliya, reflecting the area's long-standing role as a settlement north of Gaza City.",
+    culturalValue: "A local place of worship serving the Jabalia community; architectural or historical details beyond its UNESCO listing could not be independently verified.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/ash-sheikh-sad-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ash-sheikh-sad-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "rajab-abedrabboh-house-shop",
+    name: "Rajab Ibrahim Abedrabboh House & Shop",
+    type: "historic-building",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5275,
+      34.4825
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "A combined historic residence and shop in Jabalia, North Gaza Governorate, included on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023. No independent secondary reporting describing the building's construction date, architecture, or damage extent was located beyond its listing.",
+    historicalSignificance: "Represents Gaza's tradition of combined residential-commercial buildings typical of small-town Palestinian architecture, located in the historic core of Jabalia near the Old Al-Omari Mosque and Byzantine Church of Jabaliya.",
+    culturalValue: "A vernacular heritage property documenting everyday commercial and domestic life in Jabalia; specific ownership and architectural history have not been independently verified in available sources.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/rajab-abedrabboh-house-shop-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/rajab-abedrabboh-house-shop-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "hathat-house",
+    name: "HatHat House",
+    nameArabic: "بيت حتحت",
+    type: "historic-building",
+    yearBuilt: "18th century",
+    yearBuiltIslamic: "12th century AH",
+    coordinates: [
+      31.5006,
+      34.4696
+    ],
+    coordinatesApproximate: true,
+    status: "destroyed",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "Also known as Qasr Hathat, a two-story Ottoman-era mansion in the Shuja'iyya quarter east of Gaza City, near Baghdad Street, the Sayyida Ruqayya Mosque, and the Ibn Uthman Mosque. Built by Ibrahim Jalbi al-Hathat, a merchant of Kurdish descent, at the transition from Mamluk to Ottoman rule. The ground floor held seven rooms, an iwan hall, and two kitchens around an interior courtyard; the house was restored in 2009 by the Al-Rahma Charitable Society, Gaza's Ministry of Tourism, and the Iwan Center, and repurposed as a community and educational space.",
+    historicalSignificance: "One of Gaza's oldest surviving examples of Kurdish-Palestinian merchant-family domestic architecture, illustrating the courtyard-house tradition spanning the late Mamluk and Ottoman periods. Its 2009 restoration made it a rare functioning example of adaptive reuse of historic Gazan housing stock.",
+    culturalValue: "Documented Ottoman-era decorative stonework, including pink- and white-marble arches, and a traditional inward-facing courtyard plan. Its destruction eliminated one of the last intact merchant houses of Old Gaza's Shuja'iyya quarter.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/hathat-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/hathat-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      },
+      {
+        organization: "Arabic Wikipedia",
+        title: "قصر حتحت (Qasr Hathat)",
+        url: "https://ar.wikipedia.org/wiki/%D9%82%D8%B5%D8%B1_%D8%AD%D8%AA%D8%AD%D8%AA",
+        type: "documentation"
+      },
+      {
+        organization: "Institute for Palestine Studies",
+        title: "بيت حتحت الأثري (The Historic Hathat House)",
+        url: "https://gazacultrualsector.palestine-studies.org/en/node/4638",
+        type: "documentation"
+      }
+    ]
+  },
+  {
+    id: "theater-day-productions",
+    name: "Theater Day Productions",
+    nameArabic: "أيام المسرح",
+    type: "historic-building",
+    yearBuilt: "2000",
+    coordinates: [
+      31.5147,
+      34.4526
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "Theater Day Productions (Ayyam Al Masrah), founded in 2000, is Gaza's foremost community theatre organization, running drama workshops and productions for children and youth from an office in the YMCA compound on Al-Jalaa Street in Gaza City. It is included on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023; reporting confirms severe, war-wide destruction of Gaza's theatre infrastructure generally, but no source located during research specifically documents the physical condition of TDP's own premises.",
+    historicalSignificance: "Established community theatre practice in Gaza, producing dozens of original plays addressing siege, displacement, and trauma, and training generations of young Gazan actors and drama teachers.",
+    culturalValue: "One of the longest-running arts organizations in Gaza, sustaining theatre education and performance through repeated conflicts since 2000; its continued operation from displacement camps and shelters after 2023 reflects the resilience of Gaza's performing-arts community.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/theater-day-productions-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/theater-day-productions-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      },
+      {
+        organization: "Haaretz",
+        title: "End Stage: Israel Has Completely Erased Gaza's Theater World",
+        url: "https://www.haaretz.com/middle-east-news/palestinians/2025-01-22/ty-article-magazine/.premium/end-stage-israel-has-completely-erased-gazas-theater-world/00000193-6905-d584-a9df-fbff45c60000",
+        date: "2025-01-22",
+        type: "journalism"
+      }
+    ]
+  },
+  {
+    id: "palestinian-institute-of-music",
+    name: "The Palestinian Institute of Music",
+    type: "historic-building",
+    yearBuilt: "unknown",
+    coordinates: [
+      31.5017,
+      34.4668
+    ],
+    coordinatesApproximate: true,
+    status: "damaged",
+    sourceAssessmentDate: "2025-10-06",
+    lastUpdated: "2026-07-22",
+    description: "A Gaza City music-education institution listed separately from the Edward Sa'ed (Edward Said) National Conservatory of Music branch on UNESCO's verified list of Gaza cultural heritage properties impacted since October 2023. No independent secondary reporting describing the institute's founding, address, or specific damage was located beyond its UNESCO listing; it should not be confused with the Edward Said National Conservatory of Music - Gaza Branch, a separate, better-documented institution already recorded in this dataset.",
+    historicalSignificance: "One of a small number of formal music-education institutions that operated in Gaza City prior to October 2023, alongside the Edward Said National Conservatory of Music branch.",
+    culturalValue: "Represents part of Gaza's limited formal infrastructure for musical training and cultural transmission; further primary documentation of its specific history and holdings was not located during this research pass.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/palestinian-institute-of-music-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/palestinian-institute-of-music-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      }
+    ]
+  },
+  {
+    id: "riyad-al-qishawi-beit-sitti",
+    name: "Riyad Al-Qishawi House (Beit Sitti)",
+    nameArabic: "بيت ستي",
+    type: "historic-building",
+    yearBuilt: "c. 1587",
+    coordinates: [
+      31.4875,
+      34.4439
+    ],
+    coordinatesApproximate: true,
+    status: "abandoned",
+    sourceAssessmentDate: "2024-02-04",
+    lastUpdated: "2026-07-22",
+    description: "A roughly 430-year-old Ottoman-era mansion in the Zeitoun (Al-Zaytoun) quarter of Gaza's Old City, recorded on UNESCO's list under the name Riyad Al-Qishawi and known popularly as Beit Sitti ('my grandmother's house'). The three-story stone building, centered on a courtyard with an ornamental pool, was restored and reopened in December 2017 as a restaurant celebrating Palestinian culinary and cultural heritage, run by playwright and caricaturist Atef Salama. As of February 2024 reporting, the building remained structurally standing but locked and inaccessible, its keyholders unable to return to Gaza City.",
+    historicalSignificance: "One of Gaza's oldest documented domestic buildings, cited by Palestinian heritage authorities among roughly 134 structures in Gaza older than 180 years; its 2017 restoration and reuse as a cultural-culinary venue made it a rare example of a historic Gazan house remaining in active public use before the current war.",
+    culturalValue: "Preserved Ottoman-period architectural features including an inner courtyard, ornamental pool, and traditional guest rooms; hosted traditional Palestinian food, music, and gathering, making it a living link between Gaza's architectural past and contemporary cultural life.",
+    verifiedBy: [
+      "UNESCO"
+    ],
+    images: {
+      before: {
+        url: "/images/sites/riyad-al-qishawi-beit-sitti-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/riyad-al-qishawi-beit-sitti-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
+    sources: [
+      {
+        organization: "UNESCO",
+        title: "Gaza: Impact on Cultural Heritage (damage assessment)",
+        url: "https://www.unesco.org/en/gaza/assessment",
+        date: "2025-10-06",
+        type: "official"
+      },
+      {
+        organization: "Daily Sabah",
+        title: "430-year-old Ottoman house restored in Gaza",
+        url: "https://www.dailysabah.com/history/2017/12/21/430-year-old-ottoman-house-restored-in-gaza",
+        date: "2017-12-21",
+        type: "journalism"
+      },
+      {
+        organization: "NPR",
+        title: "A requiem for Gaza's iconic sites, destroyed in the war",
+        url: "https://www.npr.org/2024/02/04/1226295081/gaza-iconic-sites-destroyed-in-war",
+        date: "2024-02-04",
+        type: "journalism"
+      }
+    ]
+  }
 ];

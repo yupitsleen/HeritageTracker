@@ -76,12 +76,12 @@ export const TILE_CONFIGS = {
  * Wayback provides access to historical World Imagery basemap releases
  */
 export const HISTORICAL_IMAGERY = {
-  /** Baseline - February 20, 2014 (earliest available Wayback imagery) */
-  BASELINE_2014: {
-    releaseNum: 10,
-    date: "2014-02-20",
-    label: "2014 Baseline",
-    url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}",
+  /** Mid 2014 - July 30, 2014 (default - earliest imagery period shown) */
+  JULY_2014: {
+    releaseNum: 5232,
+    date: "2014-07-30",
+    label: "Jul 2014",
+    url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/5232/{z}/{y}/{x}",
     maxZoom: 17, // Older imagery has lower resolution
   },
   /** Early 2024 - January 18, 2024 (default - earliest 2024 imagery) */
@@ -102,4 +102,4 @@ export const HISTORICAL_IMAGERY = {
   },
 } as const;
 
-export type TimePeriod = "BASELINE_2014" | "EARLY_2024" | "CURRENT";
+export type TimePeriod = "JULY_2014" | "EARLY_2024" | "CURRENT";

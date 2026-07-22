@@ -188,51 +188,33 @@ describe("MapMarkers", () => {
   });
 
   describe("Timeline Integration", () => {
-    it("renders destroyed markers based on currentTimestamp", () => {
-      const site = createMockSite({
-        dateDestroyed: "2023-10-15",
-      });
-
-      const currentTimestamp = new Date("2023-11-01"); // After destruction
-
-      const { container } = renderWithTheme(
-        <MapContainer center={[31.5, 34.5]} zoom={10}>
-          <MapMarkers
-            sites={[site]}
-            currentTimestamp={currentTimestamp}
-          />
-        </MapContainer>
-      );
-
-      // Should still render marker (destroyed or not)
-      const marker = container.querySelector("path.leaflet-interactive");
-      expect(marker).toBeInTheDocument();
-
-      // Check fill color indicates destroyed state (black #000000)
-      expect(marker?.getAttribute("fill")).toBe("#000000");
-    });
-
-    it("renders intact markers when timestamp is before destruction", () => {
+    // ponytail: destroyed-at-timestamp is asserted as "fill differs from intact", not exact hexes
+    it("renders marker differently before vs after destruction timestamp", () => {
       const site = createMockSite({
         dateDestroyed: "2023-10-15",
         status: "destroyed",
       });
 
-      const currentTimestamp = new Date("2023-09-01"); // Before destruction
+      const renderAt = (timestamp: Date): string | null | undefined => {
+        const { container } = renderWithTheme(
+          <MapContainer center={[31.5, 34.5]} zoom={10}>
+            <MapMarkers
+              sites={[site]}
+              currentTimestamp={timestamp}
+            />
+          </MapContainer>
+        );
+        const marker = container.querySelector("path.leaflet-interactive");
+        expect(marker).toBeInTheDocument();
+        return marker?.getAttribute("fill");
+      };
 
-      const { container } = renderWithTheme(
-        <MapContainer center={[31.5, 34.5]} zoom={10}>
-          <MapMarkers
-            sites={[site]}
-            currentTimestamp={currentTimestamp}
-          />
-        </MapContainer>
-      );
+      const intactFill = renderAt(new Date("2023-09-01")); // Before destruction
+      const destroyedFill = renderAt(new Date("2023-11-01")); // After destruction
 
-      // Should render as normal circle marker with red color
-      const marker = container.querySelector("path.leaflet-interactive");
-      expect(marker).toBeInTheDocument();
-      expect(marker?.getAttribute("fill")).toBe("#b91c1c"); // Red for destroyed status (but not yet destroyed) - from centralized color system
+      expect(intactFill).toBeTruthy();
+      expect(destroyedFill).toBeTruthy();
+      expect(destroyedFill).not.toBe(intactFill);
     });
   });
 

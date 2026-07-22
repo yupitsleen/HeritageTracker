@@ -24,7 +24,7 @@ import type {
   FilterValue,
   FilterState,
 } from "../types/filterConfig";
-import { getSiteTypes } from "./siteTypes";
+import { getSiteTypes } from "./data.config";
 import { parseYearBuilt } from "../utils/siteFilters";
 
 /**

@@ -93,16 +93,6 @@ VITE_BUILD_DATE="December 6, 2025" npm run build
 VITE_BUILD_DATE="December 6, 2025" npm run dev
 ```
 
-### Build Version (Optional)
-
-You can also set a build version/commit hash:
-
-```bash
-VITE_BUILD_VERSION=$(git rev-parse --short HEAD) npm run build
-```
-
-This is exported as `BUILD_VERSION` from `src/constants/build.ts` and can be used for debugging or display purposes.
-
 ## Important Notes
 
 ### Statistics "Last Updated" vs Build Date

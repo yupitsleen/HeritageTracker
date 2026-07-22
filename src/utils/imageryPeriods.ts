@@ -44,12 +44,12 @@ const SORTED_PERIODS = (() => {
  * 3. Return "CURRENT" if date is after last dated period
  *
  * @param date - The timeline date to match against imagery periods
- * @returns The appropriate TimePeriod key (e.g., "BASELINE_2014", "PRE_CONFLICT_2023", "CURRENT")
+ * @returns The appropriate TimePeriod key (e.g., "JULY_2014", "EARLY_2024", "CURRENT")
  *
  * @example
- * getImageryPeriodForDate(new Date("2015-06-15")) // Returns "BASELINE_2014"
- * getImageryPeriodForDate(new Date("2023-09-20")) // Returns "PRE_CONFLICT_2023"
- * getImageryPeriodForDate(new Date("2024-01-10")) // Returns "CURRENT"
+ * getImageryPeriodForDate(new Date("2015-06-15")) // Returns "JULY_2014"
+ * getImageryPeriodForDate(new Date("2024-01-10")) // Returns "EARLY_2024"
+ * getImageryPeriodForDate(new Date("2025-02-01")) // Returns "CURRENT"
  */
 export function getImageryPeriodForDate(date: Date): TimePeriod {
   const timestamp = date.getTime(); // Single timestamp conversion

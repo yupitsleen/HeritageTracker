@@ -1,5 +1,5 @@
 import { select, type Selection } from "d3-selection";
-import type { ScaleTime } from "d3-scale";
+import type { ScaleTime } from "d3";
 import { axisBottom } from "d3-axis";
 import { timeFormat } from "d3-time-format";
 import { drag } from "d3-drag";

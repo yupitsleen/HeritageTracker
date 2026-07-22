@@ -99,7 +99,7 @@ e2e/                     # Playwright E2E specs (smoke, filters, timeline, compa
 - **Dates**: BC/BCE dates use `"BCE YYYY"` string format; use `normalizeYear()` from `src/utils/formatters.ts` for comparisons
 - **Backend mode**: Switched via `.env` variables (`VITE_USE_MOCK_API`, `VITE_USE_LOCAL_BACKEND`) — never in code
 - **Tests**: Co-located with source (`Component.test.tsx` next to `Component.tsx`); backend tests in `server/**/__tests__/`
-- **Quality gate**: All 1,457 unit tests + 16 E2E must pass before every commit
+- **Quality gate**: All unit + E2E tests must pass before every commit (never write hardcoded counts in docs — code is the source of truth)
 
 ---
 *Generated for Heritage Tracker on 2026-05-18. Mode: override.*

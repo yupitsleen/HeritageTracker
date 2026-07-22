@@ -227,6 +227,7 @@ export const ar: Translations = {
     sources: "المصادر",
     images: "الصور",
     coordinates: "الإحداثيات",
+    coordinatesApproximate: "تقريبية",
     verificationSources: "مصادر التحقق",
     siteType: "نوع الموقع",
     yearBuilt: "سنة البناء",

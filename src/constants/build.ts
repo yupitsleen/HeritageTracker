@@ -19,9 +19,3 @@
  */
 export const BUILD_DATE = import.meta.env.VITE_BUILD_DATE ||
   new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-/**
- * Build version/commit hash (optional)
- * Can be set via VITE_BUILD_VERSION in CI/CD
- */
-export const BUILD_VERSION = import.meta.env.VITE_BUILD_VERSION || undefined;

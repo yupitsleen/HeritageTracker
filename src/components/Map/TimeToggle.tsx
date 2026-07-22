@@ -24,11 +24,12 @@ function formatFullDate(dateStr: string): string {
 }
 
 /**
- * Extract year from date string (e.g., "2014" or "2023" or "2025")
+ * Format date string to short month + year (e.g., "Feb 2014")
+ * Distinguishes periods that share the same year
  */
-function formatYear(dateStr: string): string {
+function formatShortDate(dateStr: string): string {
   const date = new Date(dateStr + "T00:00:00Z"); // Parse as UTC
-  return date.getUTCFullYear().toString();
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
 }
 
 /**
@@ -49,7 +50,7 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
       return {
         value: key,
         label: period.label,
-        shortLabel: key === "CURRENT" ? period.label : formatYear(period.date),
+        shortLabel: key === "CURRENT" ? period.label : formatShortDate(period.date),
         tooltip: formatFullDate(period.date),
       };
     });
@@ -72,6 +73,7 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
                 : `${t.bg.primary} ${t.text.body} ${t.bg.hover}`
             }`}
             title={period.tooltip}
+            aria-pressed={selectedPeriod === period.value}
             aria-label={`${translate("map.switchTo")} ${period.label} ${translate("map.satelliteImagery")}`}
           >
             {period.shortLabel}

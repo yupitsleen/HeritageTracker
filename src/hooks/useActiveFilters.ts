@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import type { FilterState } from "../types";
+import { isDestructionDateFilterActive } from "../types/filters";
 
 /**
  * Hook to calculate derived filter state (active count and flags)
@@ -17,7 +18,12 @@ export function useActiveFilters(filters: FilterState) {
     return (
       filters.selectedTypes.length +
       filters.selectedStatuses.length +
-      (filters.destructionDateStart || filters.destructionDateEnd ? 1 : 0) +
+      (isDestructionDateFilterActive(
+        filters.destructionDateStart,
+        filters.destructionDateEnd
+      )
+        ? 1
+        : 0) +
       (filters.creationYearStart || filters.creationYearEnd ? 1 : 0)
     );
   }, [
@@ -33,8 +39,10 @@ export function useActiveFilters(filters: FilterState) {
     return (
       filters.selectedTypes.length > 0 ||
       filters.selectedStatuses.length > 0 ||
-      filters.destructionDateStart !== null ||
-      filters.destructionDateEnd !== null ||
+      isDestructionDateFilterActive(
+        filters.destructionDateStart,
+        filters.destructionDateEnd
+      ) ||
       filters.creationYearStart !== null ||
       filters.creationYearEnd !== null ||
       filters.searchTerm.trim().length > 0

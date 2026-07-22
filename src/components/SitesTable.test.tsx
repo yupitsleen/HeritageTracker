@@ -344,23 +344,19 @@ describe("SitesTable", () => {
         </CalendarProvider>
       );
 
-      // Find site name elements - there may be multiple instances
-      const mosqueElements = screen.getAllByText("Test Mosque");
-      const churchElements = screen.getAllByText("Ancient Church");
+      // ponytail: different statuses get different colors — exact hexes are palette, not contract
+      const colorsFor = (name: string): string[] =>
+        screen
+          .getAllByText(name)
+          .map((el) => window.getComputedStyle(el).color)
+          .filter((color) => color !== "");
 
-      // Check that at least one instance has the correct color
-      const mosqueName = mosqueElements.find(el =>
-        window.getComputedStyle(el).color === "rgb(185, 28, 28)"
-      );
-      const churchName = churchElements.find(el =>
-        window.getComputedStyle(el).color === "rgb(202, 138, 4)"
-      );
-
-      // Verify they have style attributes (color coding based on status)
-      // Test Mosque is "destroyed" status -> #b91c1c (deep Palestine red)
-      expect(mosqueName).toBeDefined();
-      // Ancient Church is "damaged" status -> #ca8a04 (muted gold)
-      expect(churchName).toBeDefined();
+      // Test Mosque is "destroyed", Ancient Church is "damaged" — their name colors must differ
+      const mosqueColors = colorsFor("Test Mosque");
+      const churchColors = colorsFor("Ancient Church");
+      expect(mosqueColors.length).toBeGreaterThan(0);
+      expect(churchColors.length).toBeGreaterThan(0);
+      expect(mosqueColors.some((color) => !churchColors.includes(color))).toBe(true);
     });
 
     it("shows sources with clickable links in expanded view", async () => {

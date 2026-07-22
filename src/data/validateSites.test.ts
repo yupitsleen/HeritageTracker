@@ -1,6 +1,14 @@
 import { describe, it, expect } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { mockSites } from "./mockSites";
 import type { Site } from "../types";
+
+const CAPTURE_MANIFEST_PATH = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../public/images/sites/capture-manifest.json"
+);
 
 /**
  * Data validation tests to ensure all sites meet schema requirements
@@ -117,13 +125,15 @@ describe("Site Data Validation", () => {
 
   describe("Date Validation", () => {
     it("all sites with dateDestroyed have valid ISO format", () => {
-      const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      // Day precision (YYYY-MM-DD) or month precision (YYYY-MM) when sources
+      // only support the month — never an invented day.
+      const isoDateRegex = /^\d{4}-\d{2}(-\d{2})?$/;
 
       mockSites.forEach((site) => {
         if (site.dateDestroyed) {
           expect(
             isoDateRegex.test(site.dateDestroyed),
-            `Site ${site.name} dateDestroyed "${site.dateDestroyed}" not in ISO format (YYYY-MM-DD)`
+            `Site ${site.name} dateDestroyed "${site.dateDestroyed}" not in ISO format (YYYY-MM-DD or YYYY-MM)`
           ).toBe(true);
 
           // Verify date is valid
@@ -248,6 +258,157 @@ describe("Site Data Validation", () => {
             `Site ${site.name} has empty yearBuiltIslamic`
           ).toBeGreaterThan(0);
         }
+      });
+    });
+  });
+
+  describe("Data Integrity", () => {
+    it("dateDestroyedIslamic matches dateDestroyed (Umm al-Qura ±1 day, any variant)", () => {
+      const MONTH_NUM = (raw: string): number | null => {
+        const t = raw.toLowerCase().replace(/[^a-z]/g, "");
+        if (t.includes("muharram")) return 1;
+        if (t.includes("safar")) return 2;
+        if (t.includes("rabi")) return t.includes("thani") || t.includes("akhir") || /ii$/.test(t) ? 4 : 3;
+        if (t.includes("jumada")) return t.includes("thani") || t.includes("akhir") || /ii$/.test(t) ? 6 : 5;
+        if (t.includes("rajab")) return 7;
+        if (t.includes("shaban")) return 8;
+        if (t.includes("ramadan")) return 9;
+        if (t.includes("shawwal")) return 10;
+        if (t.includes("qidah") || t.includes("qada")) return 11;
+        if (t.includes("hijjah")) return 12;
+        return null;
+      };
+      const VARIANTS = ["islamic-umalqura", "islamic-civil", "islamic-tbla", "islamic"];
+      const gregToIslamic = (iso: string, variant: string, offsetDays: number) => {
+        const dt = new Date(`${iso}T12:00:00Z`);
+        dt.setUTCDate(dt.getUTCDate() + offsetDays);
+        const parts = new Intl.DateTimeFormat(`en-u-ca-${variant}`, {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          timeZone: "UTC",
+        }).formatToParts(dt);
+        const get = (type: string): number =>
+          Number(parts.find((p) => p.type === type)?.value);
+        return { d: get("day"), m: get("month"), y: get("year") };
+      };
+
+      mockSites.forEach((site) => {
+        if (!site.dateDestroyed || !site.dateDestroyedIslamic) return;
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(site.dateDestroyed)) return;
+
+        const match = site.dateDestroyedIslamic.match(/^(\d{1,2})\s+(.+?)\s+(\d{3,4})\s*AH$/i);
+        expect(
+          match,
+          `Site ${site.name} dateDestroyedIslamic "${site.dateDestroyedIslamic}" is not "<day> <month> <year> AH"`
+        ).not.toBeNull();
+        const claimedMonth = MONTH_NUM(match![2]);
+        expect(
+          claimedMonth,
+          `Site ${site.name} has unrecognized Islamic month "${match![2]}"`
+        ).not.toBeNull();
+        const claimed = { d: Number(match![1]), m: claimedMonth, y: Number(match![3]) };
+
+        const matched = VARIANTS.some((variant) =>
+          [0, -1, 1].some((offset) => {
+            const got = gregToIslamic(site.dateDestroyed!, variant, offset);
+            return got.d === claimed.d && got.m === claimed.m && got.y === claimed.y;
+          })
+        );
+        const reference = gregToIslamic(site.dateDestroyed, "islamic-umalqura", 0);
+        expect(
+          matched,
+          `Site ${site.name}: dateDestroyedIslamic "${site.dateDestroyedIslamic}" does not match ` +
+            `dateDestroyed ${site.dateDestroyed} (expected ~${reference.d}/${reference.m}/${reference.y} AH)`
+        ).toBe(true);
+      });
+    });
+
+    it("month-precision destruction dates carry no day-precision Islamic date", () => {
+      mockSites.forEach((site) => {
+        if (site.dateDestroyed && /^\d{4}-\d{2}$/.test(site.dateDestroyed)) {
+          expect(
+            site.dateDestroyedIslamic,
+            `Site ${site.name} has month-precision dateDestroyed but a day-precision dateDestroyedIslamic "${site.dateDestroyedIslamic}"`
+          ).toBeUndefined();
+        }
+      });
+    });
+
+    it("sourceAssessmentDate is not before dateDestroyed", () => {
+      mockSites.forEach((site) => {
+        if (!site.dateDestroyed || !site.sourceAssessmentDate) return;
+        expect(
+          site.sourceAssessmentDate >= site.dateDestroyed,
+          `Site ${site.name} assessed ${site.sourceAssessmentDate}, before destruction ${site.dateDestroyed}`
+        ).toBe(true);
+      });
+    });
+
+    it("no two sites share exact coordinates unless documented as the same building", () => {
+      // Same physical place, deliberately separate entries (two destruction events,
+      // or a facility housed inside another listed building).
+      const SAME_BUILDING_PAIRS = new Set(
+        [
+          ["ibn-marwan-mosque", "ali-ibn-marwan-shrine"],
+          ["rashad-shawa-cultural-center", "diana-tamari-sabbagh-library"],
+          ["central-archives-gaza", "old-gaza-municipality-building"],
+          ["omari-mosque-jabaliya", "al-omari-mosque-jabaliya"],
+          ["commonwealth-war-cemetery", "gaza-war-cemetery-al-tuffah"],
+          ["islamic-university-central-library", "islamic-university-gaza-library"],
+          ["sheikh-eid-mosque-mughrabi-quarter", "bou-medyan-zaouia"],
+        ].map((pair) => pair.sort().join("|"))
+      );
+
+      const byCoord = new Map<string, string[]>();
+      mockSites.forEach((site) => {
+        const key = site.coordinates.join(",");
+        byCoord.set(key, [...(byCoord.get(key) ?? []), site.id]);
+      });
+
+      byCoord.forEach((siteIds, coord) => {
+        if (siteIds.length === 1) return;
+        siteIds.forEach((idA, i) =>
+          siteIds.slice(i + 1).forEach((idB) => {
+            const pairKey = [idA, idB].sort().join("|");
+            expect(
+              SAME_BUILDING_PAIRS.has(pairKey),
+              `Sites ${idA} and ${idB} share coordinates [${coord}] but are not a documented same-building pair — placeholder coordinates?`
+            ).toBe(true);
+          })
+        );
+      });
+    });
+  });
+
+  describe("Image Freshness", () => {
+    type ManifestEntry = { capturedAt: string; backfilled?: boolean };
+    const manifest: Record<string, ManifestEntry> = JSON.parse(
+      fs.readFileSync(CAPTURE_MANIFEST_PATH, "utf-8")
+    );
+
+    it("no site's images predate its last data update", () => {
+      mockSites.forEach((site) => {
+        if (!site.images) return;
+
+        const entry = manifest[site.id];
+        expect(
+          entry,
+          `Site ${site.name} has images but no capture-manifest.json entry — ` +
+            `run scripts/image-capture/capture-sites.js to record one`
+        ).toBeDefined();
+
+        // `backfilled` entries have no real capture date (recorded as "today"
+        // the day this check was introduced) — they can't tell us anything
+        // about staleness, only genuine capture dates going forward can.
+        if (entry.backfilled) return;
+
+        expect(
+          site.lastUpdated <= entry.capturedAt,
+          `Site ${site.name} lastUpdated (${site.lastUpdated}) is after its images were ` +
+            `captured (${entry.capturedAt}) — coordinates or other data likely changed since; ` +
+            `re-run scripts/image-capture/capture-sites.js ${site.id}`
+        ).toBe(true);
       });
     });
   });

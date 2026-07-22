@@ -5,6 +5,7 @@ import {
   createEmptyFilterState,
   isFilterStateEmpty,
   areFiltersEqual,
+  DEFAULT_DESTRUCTION_DATE_START,
 } from "../types/filters";
 
 /**
@@ -17,7 +18,10 @@ export function useFilterState() {
   // Applied filters
   const [selectedTypes, setSelectedTypes] = useState<Array<Site["type"]>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<Site["status"]>>([]);
-  const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(null);
+  // Default to the 2014 satellite-imagery baseline (see DEFAULT_DESTRUCTION_DATE_START)
+  const [destructionDateStart, setDestructionDateStart] = useState<Date | null>(
+    DEFAULT_DESTRUCTION_DATE_START
+  );
   const [destructionDateEnd, setDestructionDateEnd] = useState<Date | null>(null);
   const [creationYearStart, setCreationYearStart] = useState<number | null>(null);
   const [creationYearEnd, setCreationYearEnd] = useState<number | null>(null);
@@ -27,7 +31,9 @@ export function useFilterState() {
   // Temporary filters (for modal - not applied until "Apply Filters" clicked)
   const [tempSelectedTypes, setTempSelectedTypes] = useState<Array<Site["type"]>>([]);
   const [tempSelectedStatuses, setTempSelectedStatuses] = useState<Array<Site["status"]>>([]);
-  const [tempDestructionDateStart, setTempDestructionDateStart] = useState<Date | null>(null);
+  const [tempDestructionDateStart, setTempDestructionDateStart] = useState<Date | null>(
+    DEFAULT_DESTRUCTION_DATE_START
+  );
   const [tempDestructionDateEnd, setTempDestructionDateEnd] = useState<Date | null>(null);
   const [tempCreationYearStart, setTempCreationYearStart] = useState<number | null>(null);
   const [tempCreationYearEnd, setTempCreationYearEnd] = useState<number | null>(null);

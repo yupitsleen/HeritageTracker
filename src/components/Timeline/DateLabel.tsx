@@ -37,6 +37,7 @@ export function DateLabel({
 
   return (
     <div
+      data-testid={`date-label-${variant}`}
       className={`px-2 py-0.5 ${textColor} ${fontSize} font-semibold rounded whitespace-nowrap shadow-lg`}
       style={{ backgroundColor, opacity, outline: '1px solid black' }}
     >

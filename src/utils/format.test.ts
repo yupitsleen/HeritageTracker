@@ -1,5 +1,31 @@
 import { describe, it, expect } from "vitest";
-import { getEffectiveDestructionDate, hasUnknownDestructionDate } from "./format";
+import {
+  formatDateCompact,
+  formatDateLong,
+  formatDateStandard,
+  getEffectiveDestructionDate,
+  hasUnknownDestructionDate,
+} from "./format";
+
+describe("month-precision date formatting", () => {
+  it("formatDateCompact renders YYYY-MM without a day", () => {
+    expect(formatDateCompact("2023-12")).toBe("Dec 23");
+  });
+
+  it("formatDateStandard renders YYYY-MM without a day", () => {
+    expect(formatDateStandard("2023-12")).toBe("Dec 2023");
+  });
+
+  it("formatDateLong renders YYYY-MM without a day", () => {
+    expect(formatDateLong("2023-11")).toBe("November 2023");
+  });
+
+  it("day-precision dates still include the day", () => {
+    // UTC-midnight parsing may shift the displayed day by one in negative-offset
+    // timezones (pre-existing behavior) — assert a day is rendered, not which one.
+    expect(formatDateStandard("2023-12-07")).toMatch(/Dec \d{1,2}, 2023/);
+  });
+});
 
 describe("getEffectiveDestructionDate", () => {
   it("returns dateDestroyed when available", () => {

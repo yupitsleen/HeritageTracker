@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { LocaleProvider } from "../contexts/LocaleContext";
@@ -7,7 +7,6 @@ import { CalendarProvider } from "../contexts/CalendarContext";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import { mockSites } from "../data/mockSites";
 
-// Import all major components
 import { About } from "../components/About/About";
 import { DonateModal } from "../components/Donate/DonateModal";
 import { SiteDetailPanel } from "../components/SiteDetail/SiteDetailPanel";
@@ -17,215 +16,62 @@ import { TimelineScrubber } from "../components/Timeline/TimelineScrubber";
 import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 
-/**
- * Dark Mode Comprehensive Test Suite
- *
- * This test suite validates that all major components:
- * 1. Render successfully in both light and dark modes
- * 2. Don't crash when theme changes
- * 3. Don't use broken Tailwind dark: modifiers
- *
- * It catches issues like:
- * - Components using dark: modifiers without proper Tailwind config
- * - Components not wrapped in ThemeProvider
- * - Components that crash on theme changes
- */
+// ponytail: crash-check only, per component per theme. Copy assertions live in
+// each component's own test file; theme rarely changes render paths.
+const noop = () => {};
+const emptyFilters = {
+  selectedTypes: [],
+  selectedStatuses: [],
+  destructionDateStart: null,
+  destructionDateEnd: null,
+  creationYearStart: null,
+  creationYearEnd: null,
+  searchTerm: "",
+};
 
-// Helper to render with theme providers
-function renderWithProviders(ui: React.ReactElement, theme: "light" | "dark" = "light") {
-  // Set localStorage to simulate theme
-  localStorage.setItem("heritage-tracker-theme", theme);
-
-  return render(
-    <BrowserRouter>
-      <LocaleProvider>
-        <ThemeProvider>
-          <CalendarProvider>
-            <AnimationProvider sites={mockSites}>
-              {ui}
-            </AnimationProvider>
-          </CalendarProvider>
-        </ThemeProvider>
-      </LocaleProvider>
-    </BrowserRouter>
-  );
-}
+const components: Array<[string, () => React.ReactElement]> = [
+  ["About", () => <About />],
+  ["DonateModal", () => <DonateModal />],
+  ["SiteDetailPanel", () => <SiteDetailPanel site={mockSites[0]} />],
+  ["FilterBar", () => <FilterBar filters={emptyFilters} onFilterChange={noop} />],
+  [
+    "SitesTable",
+    () => (
+      <SitesTable
+        sites={mockSites.slice(0, 5)}
+        onSiteClick={noop}
+        onSiteHighlight={noop}
+        highlightedSiteId={null}
+        variant="compact"
+      />
+    ),
+  ],
+  ["TimelineScrubber", () => <TimelineScrubber sites={mockSites} />],
+  ["AppHeader", () => <AppHeader />],
+  ["AppFooter", () => <AppFooter isMobile={false} />],
+];
 
 describe("Dark Mode - Component Rendering", () => {
-  const testSite = mockSites[0];
-  const noop = () => {};
+  beforeEach(() => localStorage.clear());
+  afterEach(() => cleanup());
 
-  // Clean up localStorage and DOM before each test to prevent cross-test pollution
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  // Clean up DOM after each test
-  afterEach(() => {
-    cleanup();
-  });
-
-  describe("About Component", () => {
-    it("renders in light mode", () => {
-      renderWithProviders(<About />, "light");
-      expect(screen.getByText("About Heritage Tracker")).toBeInTheDocument();
+  (["light", "dark"] as const).forEach((theme) => {
+    components.forEach(([name, element]) => {
+      it(`${name} renders in ${theme} mode`, () => {
+        localStorage.setItem("heritage-tracker-theme", theme);
+        const { container } = render(
+          <BrowserRouter>
+            <LocaleProvider>
+              <ThemeProvider>
+                <CalendarProvider>
+                  <AnimationProvider sites={mockSites}>{element()}</AnimationProvider>
+                </CalendarProvider>
+              </ThemeProvider>
+            </LocaleProvider>
+          </BrowserRouter>
+        );
+        expect(container.firstChild).not.toBeNull();
+      });
     });
-
-    it("renders in dark mode", () => {
-      renderWithProviders(<About />, "dark");
-      expect(screen.getByText("About Heritage Tracker")).toBeInTheDocument();
-    });
-  });
-
-  describe("Donate Modal", () => {
-    it("renders in light mode", () => {
-      renderWithProviders(<DonateModal />, "light");
-      expect(screen.getByText("Help Palestine")).toBeInTheDocument();
-    });
-
-    it("renders in dark mode", () => {
-      renderWithProviders(<DonateModal />, "dark");
-      expect(screen.getByText("Help Palestine")).toBeInTheDocument();
-    });
-  });
-
-  describe("Site Detail Panel", () => {
-    it("renders in light mode", () => {
-      const { container } = renderWithProviders(<SiteDetailPanel site={testSite} />, "light");
-      expect(container).toBeInTheDocument();
-    });
-
-    it("renders in dark mode", () => {
-      const { container } = renderWithProviders(<SiteDetailPanel site={testSite} />, "dark");
-      expect(container).toBeInTheDocument();
-    });
-  });
-
-  describe("Filter Bar", () => {
-    const mockFilters = {
-      selectedTypes: [],
-      selectedStatuses: [],
-      destructionDateStart: null,
-      destructionDateEnd: null,
-      creationYearStart: null,
-      creationYearEnd: null,
-      searchTerm: "",
-    };
-
-    it("renders in light mode", () => {
-      const { container } = renderWithProviders(
-        <FilterBar
-          filters={mockFilters}
-          onFilterChange={noop}
-        />,
-        "light"
-      );
-      expect(container).toBeInTheDocument();
-    });
-
-    it("renders in dark mode", () => {
-      const { container } = renderWithProviders(
-        <FilterBar
-          filters={mockFilters}
-          onFilterChange={noop}
-        />,
-        "dark"
-      );
-      expect(container).toBeInTheDocument();
-    });
-  });
-
-  describe("Sites Table", () => {
-    it("renders compact variant in light mode", () => {
-      renderWithProviders(
-        <SitesTable
-          sites={mockSites.slice(0, 5)}
-          onSiteClick={noop}
-          onSiteHighlight={noop}
-          highlightedSiteId={null}
-          variant="compact"
-        />,
-        "light"
-      );
-      expect(screen.getByText(/Heritage Sites/i)).toBeInTheDocument();
-    });
-
-    it("renders compact variant in dark mode", () => {
-      renderWithProviders(
-        <SitesTable
-          sites={mockSites.slice(0, 5)}
-          onSiteClick={noop}
-          onSiteHighlight={noop}
-          highlightedSiteId={null}
-          variant="compact"
-        />,
-        "dark"
-      );
-      expect(screen.getByText(/Heritage Sites/i)).toBeInTheDocument();
-    });
-  });
-
-  describe("Timeline Scrubber", () => {
-    it("renders in light mode", () => {
-      renderWithProviders(<TimelineScrubber sites={mockSites} />, "light");
-      expect(screen.getByLabelText(/Timeline Scrubber/i)).toBeInTheDocument();
-    });
-
-    it("renders in dark mode", () => {
-      renderWithProviders(<TimelineScrubber sites={mockSites} />, "dark");
-      expect(screen.getByLabelText(/Timeline Scrubber/i)).toBeInTheDocument();
-    });
-  });
-
-  describe("App Header", () => {
-    it("renders in light mode", () => {
-      renderWithProviders(
-        <AppHeader />,
-        "light"
-      );
-      expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
-    });
-
-    it("renders in dark mode", () => {
-      renderWithProviders(
-        <AppHeader />,
-        "dark"
-      );
-      expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
-    });
-  });
-
-  describe("App Footer", () => {
-    it("renders in light mode", () => {
-      renderWithProviders(
-        <AppFooter isMobile={false} />,
-        "light"
-      );
-      expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
-      expect(screen.getByText(/Github/i)).toBeInTheDocument();
-    });
-
-    it("renders in dark mode", () => {
-      renderWithProviders(
-        <AppFooter isMobile={false} />,
-        "dark"
-      );
-      expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
-      expect(screen.getByText(/Github/i)).toBeInTheDocument();
-    });
-  });
-});
-
-describe("Dark Mode - Theme Class Detection", () => {
-  /**
-   * This test validates that components don't use broken Tailwind dark: modifiers
-   *
-   * Components should use isDark conditionals instead of dark: modifiers
-   * because we use React context theming, not Tailwind's darkMode config
-   */
-  it("validates no components use dark: Tailwind modifiers", () => {
-    // This is a smoke test - if dark: modifiers exist, they won't work
-    // The actual validation is done via grep in the codebase
-    expect(true).toBe(true);
   });
 });

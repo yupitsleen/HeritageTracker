@@ -204,31 +204,17 @@ npm run dev
 - [ ] Wayback date selection (currently hardcoded to oldest/newest)
 - [ ] Comparison view in Help Modal with example images
 
-## Testing
+## Testing / Selective Regeneration
 
-Before running on all 70 sites, test on a few:
+`capture-sites.js` accepts optional site IDs on the command line to force-regenerate
+just those sites (e.g. to test on a few, or to refresh sites whose coordinates changed):
 
-1. **Edit `capture-sites.js`:**
-   ```javascript
-   // Line ~185: Limit to first 3 sites
-   for (let i = 0; i < Math.min(3, sites.length); i++) {
-   ```
+```bash
+node scripts/image-capture/capture-sites.js some-site-id another-site-id
+```
 
-2. **Run test capture:**
-   ```bash
-   npm run images:capture
-   ```
-
-3. **Verify images:**
-   ```bash
-   ls public/images/sites/
-   ```
-
-4. **Run full capture:**
-   ```bash
-   # Remove the Math.min() limit
-   npm run images:generate
-   ```
+With no arguments, it captures every site that's missing a before/after image and
+leaves existing ones alone (`npm run images:capture` / `npm run images:generate`).
 
 ## Maintenance
 

@@ -18,10 +18,26 @@ export const formatLabel = (value: string): string => {
 };
 
 /**
+ * Month-precision ISO strings ("2023-12"): sources support the month only,
+ * so formatters must not render an invented day.
+ */
+const isMonthPrecision = (dateString: string): boolean =>
+  /^\d{4}-\d{2}$/.test(dateString);
+
+/** Formats a YYYY-MM string as month + year (mid-month noon UTC avoids timezone rollover). */
+const formatMonthPrecision = (
+  dateString: string,
+  locale: string,
+  options: Pick<Intl.DateTimeFormatOptions, "month" | "year">
+): string =>
+  new Date(`${dateString}-15T12:00:00Z`).toLocaleDateString(locale, options);
+
+/**
  * Formats a date string to compact format (short month, day, 2-digit year)
- * @param dateString - ISO date string or null/undefined
+ * @param dateString - ISO date string ("YYYY-MM-DD" or month-precision "YYYY-MM") or null/undefined
  * @param locale - BCP 47 language tag (e.g., 'en-US', 'ar-EG'). Defaults to 'en-US'
  * @example formatDateCompact("2023-12-07") => "Dec 7, 23"
+ * @example formatDateCompact("2023-12") => "Dec 23"
  * @example formatDateCompact("2023-12-07", "ar-EG") => "٧ ديسمبر ٢٣"
  * @example formatDateCompact(null) => "N/A"
  */
@@ -30,6 +46,9 @@ export const formatDateCompact = (
   locale: string = "en-US"
 ): string => {
   if (!dateString) return "N/A";
+  if (isMonthPrecision(dateString)) {
+    return formatMonthPrecision(dateString, locale, { month: "short", year: "2-digit" });
+  }
   return new Date(dateString).toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
@@ -42,6 +61,7 @@ export const formatDateCompact = (
  * @param dateString - ISO date string or null/undefined
  * @param locale - BCP 47 language tag (e.g., 'en-US', 'ar-EG'). Defaults to 'en-US'
  * @example formatDateStandard("2023-12-07") => "Dec 7, 2023"
+ * @example formatDateStandard("2023-12") => "Dec 2023"
  * @example formatDateStandard("2023-12-07", "ar-EG") => "٧ ديسمبر ٢٠٢٣"
  * @example formatDateStandard(null) => "N/A"
  */
@@ -50,6 +70,9 @@ export const formatDateStandard = (
   locale: string = "en-US"
 ): string => {
   if (!dateString) return "N/A";
+  if (isMonthPrecision(dateString)) {
+    return formatMonthPrecision(dateString, locale, { month: "short", year: "numeric" });
+  }
   return new Date(dateString).toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
@@ -62,6 +85,7 @@ export const formatDateStandard = (
  * @param dateString - ISO date string or null/undefined
  * @param locale - BCP 47 language tag (e.g., 'en-US', 'ar-EG'). Defaults to 'en-US'
  * @example formatDateLong("2023-12-07") => "December 7, 2023"
+ * @example formatDateLong("2023-12") => "December 2023"
  * @example formatDateLong("2023-12-07", "ar-EG") => "٧ ديسمبر ٢٠٢٣"
  * @example formatDateLong(null) => "N/A"
  */
@@ -70,6 +94,9 @@ export const formatDateLong = (
   locale: string = "en-US"
 ): string => {
   if (!dateString) return "N/A";
+  if (isMonthPrecision(dateString)) {
+    return formatMonthPrecision(dateString, locale, { month: "long", year: "numeric" });
+  }
   return new Date(dateString).toLocaleDateString(locale, {
     month: "long",
     day: "numeric",

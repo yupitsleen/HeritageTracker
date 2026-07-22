@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { mockSites } from "./data/mockSites";
 import { CalendarProvider } from "./contexts/CalendarContext";
-import { AnimationProvider } from "./contexts/AnimationContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LocaleProvider } from "./contexts/LocaleContext";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
@@ -27,7 +25,7 @@ import { BREAKPOINTS } from "./constants/layout";
 function AppRouter({ isMobile }: { isMobile: boolean }) {
   return (
     <Routes>
-      {/* On mobile, show DataPage instead of DashboardPage (no AnimationProvider needed) */}
+      {/* On mobile, show DataPage instead of DashboardPage (timeline not shown) */}
       <Route path="/" element={isMobile ? <DataPage /> : <DashboardPage />} />
       <Route path="/data" element={<DataPage />} />
       <Route path="/timeline" element={<Timeline />} />
@@ -49,8 +47,6 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
 
 /**
  * App wrapper with providers
- * ErrorBoundary wraps AnimationProvider to gracefully handle timeline errors
- * AnimationProvider only active on desktop (where timeline is shown)
  */
 export function App() {
   // Check if we're on mobile - initialize immediately from window.innerWidth
@@ -82,15 +78,7 @@ export function App() {
         <ThemeProvider>
           <CalendarProvider>
             <ErrorBoundary>
-              {isMobile ? (
-                // Mobile: No AnimationProvider (timeline not shown)
-                <AppRouter isMobile={true} />
-              ) : (
-                // Desktop: AnimationProvider for timeline features
-                <AnimationProvider sites={mockSites}>
-                  <AppRouter isMobile={false} />
-                </AnimationProvider>
-              )}
+              <AppRouter isMobile={isMobile} />
             </ErrorBoundary>
           </CalendarProvider>
         </ThemeProvider>

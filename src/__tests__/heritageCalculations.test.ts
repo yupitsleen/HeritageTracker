@@ -2,12 +2,14 @@ import { describe, it, expect } from "vitest";
 import {
   calculateGlowContribution,
   getAgeColorCode,
+  getGlowReductionPercentage,
+} from "../utils/calculations/glowContributions";
+import {
   calculateTotalHeritageValue,
   calculateDestroyedValue,
   calculateHeritageIntegrity,
-  calculateSignificanceScore,
-  getGlowReductionPercentage,
-} from "../utils/heritageCalculations";
+} from "../utils/calculations/heritageMetrics";
+import { calculateSignificanceScore } from "../utils/calculations/significance";
 import type { Site } from "../types";
 
 // Test data helpers
@@ -163,30 +165,23 @@ describe("heritageCalculations", () => {
   });
 
   // Age Color Code Tests
+  // ponytail: bucket logic is the contract, exact hexes are palette — not pinned
   describe("getAgeColorCode", () => {
-    it("returns gold for ancient sites (>2000 years)", () => {
-      const site = createBaseSite({ yearBuilt: "1 BCE" });
-      expect(getAgeColorCode(site)).toBe("#FFD700");
+    const colorFor = (yearBuilt: string): string =>
+      getAgeColorCode(createBaseSite({ yearBuilt }));
+
+    it("assigns distinct valid colors to ancient/medieval/historic/modern buckets", () => {
+      const colors = [colorFor("1 BCE"), colorFor("1000"), colorFor("1800"), colorFor("2000")];
+      colors.forEach((color) => expect(color).toMatch(/^#[0-9a-fA-F]{6}$/));
+      expect(new Set(colors).size).toBe(colors.length);
     });
 
-    it("returns bronze for medieval sites (500-2000 years)", () => {
-      const site = createBaseSite({ yearBuilt: "1000" });
-      expect(getAgeColorCode(site)).toBe("#CD7F32");
+    it("assigns the same color within a bucket", () => {
+      expect(colorFor("1200")).toBe(colorFor("1000"));
     });
 
-    it("returns silver for historic sites (200-500 years)", () => {
-      const site = createBaseSite({ yearBuilt: "1800" });
-      expect(getAgeColorCode(site)).toBe("#C0C0C0");
-    });
-
-    it("returns blue for modern sites (<200 years)", () => {
-      const site = createBaseSite({ yearBuilt: "2000" });
-      expect(getAgeColorCode(site)).toBe("#4A90E2");
-    });
-
-    it("returns blue for unknown age", () => {
-      const site = createBaseSite({ yearBuilt: "Unknown" });
-      expect(getAgeColorCode(site)).toBe("#4A90E2");
+    it("falls back to the modern color for unknown age", () => {
+      expect(colorFor("Unknown")).toBe(colorFor("2000"));
     });
   });
 

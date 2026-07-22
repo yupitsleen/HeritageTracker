@@ -233,6 +233,7 @@ export const it: Translations = {
     sources: "Fonti",
     images: "Immagini",
     coordinates: "Coordinate",
+    coordinatesApproximate: "approssimative",
     verificationSources: "Fonti di Verifica",
     siteType: "Tipo di Sito",
     yearBuilt: "Anno di Costruzione",

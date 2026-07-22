@@ -8,6 +8,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useAppState } from './useAppState';
+import { DEFAULT_DESTRUCTION_DATE_START } from '../types/filters';
 import type { Site } from '../types';
 
 describe('useAppState', () => {
@@ -18,7 +19,10 @@ describe('useAppState', () => {
       // Filter state
       expect(result.current.filters.selectedTypes).toEqual([]);
       expect(result.current.filters.selectedStatuses).toEqual([]);
-      expect(result.current.filters.destructionDateStart).toBeNull();
+      // Defaults to 2014 satellite-imagery baseline, not null
+      expect(result.current.filters.destructionDateStart).toEqual(
+        DEFAULT_DESTRUCTION_DATE_START
+      );
       expect(result.current.filters.destructionDateEnd).toBeNull();
       expect(result.current.filters.creationYearStart).toBeNull();
       expect(result.current.filters.creationYearEnd).toBeNull();

@@ -275,6 +275,7 @@ export interface Translations {
     sources: string;
     images: string;
     coordinates: string;
+    coordinatesApproximate: string;
     verificationSources: string;
     siteType: string;
     yearBuilt: string;

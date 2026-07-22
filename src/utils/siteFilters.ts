@@ -68,7 +68,7 @@ export const filterSitesByDestructionDate = (
  * - Islamic calendar: "750 AH" (converts to Gregorian)
  * - Centuries: "7th century" (returns midpoint)
  *
- * Exported for use in heritageCalculations.ts and filters
+ * Exported for use in calculations and filters
  *
  * @param yearBuilt - Year built string from site data
  * @returns Numeric year (negative for BCE) or null if unparseable

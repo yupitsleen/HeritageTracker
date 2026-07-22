@@ -14,6 +14,7 @@ import { CloseIcon } from "../Icons/CloseIcon";
 import { SiteTypeIcon } from "../Icons/SiteTypeIcon";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
+import { isDestructionDateFilterActive } from "../../types/filters";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
 import { useActiveFilters } from "../../hooks/useActiveFilters";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -243,7 +244,14 @@ export const FilterBar = memo(function FilterBar({
           {/* Destruction Date Filter */}
           <FilterButton
             label={translate("filters.destructionDate")}
-            count={filters.destructionDateStart || filters.destructionDateEnd ? 1 : 0}
+            count={
+              isDestructionDateFilterActive(
+                filters.destructionDateStart,
+                filters.destructionDateEnd
+              )
+                ? 1
+                : 0
+            }
             panelWidth="min-w-max"
             tooltip={TOOLTIPS.FILTERS.DATE_FILTER}
           >

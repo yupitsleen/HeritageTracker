@@ -17,21 +17,6 @@ global.ResizeObserver = class ResizeObserver {
   }
 };
 
-// Mock D3 drag behavior - returns a proper drag behavior function
-vi.mock("d3", async () => {
-  const actual = await vi.importActual<typeof import("d3")>("d3");
-  return {
-    ...actual,
-    drag: () => {
-      const dragBehavior = function () {
-        // Mock drag behavior that does nothing
-      };
-      dragBehavior.on = vi.fn().mockReturnValue(dragBehavior);
-      return dragBehavior;
-    },
-  };
-});
-
 const mockSites: Site[] = [
   {
     id: "test-site-1",

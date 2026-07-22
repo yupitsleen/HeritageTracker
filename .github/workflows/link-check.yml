@@ -1,0 +1,22 @@
+name: Link Check
+
+# Monthly liveness check of every source URL in the site database.
+# Catches link rot between releases; 403 bot-blocks are tolerated, dead links fail.
+on:
+  schedule:
+    - cron: "0 6 1 * *" # 06:00 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+jobs:
+  link-check:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      # No npm install: the script only needs Node's native TS import.
+      - run: npm run test:links
