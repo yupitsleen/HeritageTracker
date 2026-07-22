@@ -7097,6 +7097,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/al-husseini-shrine-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-husseini-shrine-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7126,6 +7145,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/ali-abu-al-kass-shrine-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ali-abu-al-kass-shrine-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7155,6 +7193,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/al-ghussein-shrine-cemetery-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-ghussein-shrine-cemetery-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7185,6 +7242,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/zawiya-al-ahmadiya-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/zawiya-al-ahmadiya-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7228,6 +7304,25 @@ export const mockSites: Site[] = [
       "Haaretz",
       "Al Jazeera"
     ],
+    images: {
+      before: {
+        url: "/images/sites/aybaki-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/aybaki-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "Wikipedia",
@@ -7271,6 +7366,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "GIG"
     ],
+    images: {
+      before: {
+        url: "/images/sites/al-soussi-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-soussi-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "The National",
@@ -7308,6 +7422,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "GIG"
     ],
+    images: {
+      before: {
+        url: "/images/sites/al-hassaina-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/al-hassaina-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -7346,6 +7479,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "GIG"
     ],
+    images: {
+      before: {
+        url: "/images/sites/sheikh-khalid-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/sheikh-khalid-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "GIG",
@@ -7382,6 +7534,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "Al Jazeera"
     ],
+    images: {
+      before: {
+        url: "/images/sites/st-philip-episcopal-church-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/st-philip-episcopal-church-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "Al Jazeera",
@@ -7419,6 +7590,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/khan-abu-shaban-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/khan-abu-shaban-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7454,6 +7644,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/ash-sheikh-sad-mosque-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/ash-sheikh-sad-mosque-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7483,6 +7692,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/rajab-abedrabboh-house-shop-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/rajab-abedrabboh-house-shop-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7514,6 +7742,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/hathat-house-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/hathat-house-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7556,6 +7803,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/theater-day-productions-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/theater-day-productions-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7592,6 +7858,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/palestinian-institute-of-music-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/palestinian-institute-of-music-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",
@@ -7622,6 +7907,25 @@ export const mockSites: Site[] = [
     verifiedBy: [
       "UNESCO"
     ],
+    images: {
+      before: {
+        url: "/images/sites/riyad-al-qishawi-beit-sitti-before.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2014-02-20",
+        description: "Satellite imagery from 2014-02-20"
+      },
+      after: {
+        url: "/images/sites/riyad-al-qishawi-beit-sitti-after.jpg",
+        credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        license: "Fair Use - Educational",
+        sourceUrl: "https://livingatlas.arcgis.com/",
+        date: "2026-06-30",
+        description: "Satellite imagery from 2026-06-30"
+      }
+    },
+    
     sources: [
       {
         organization: "UNESCO",

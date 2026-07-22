@@ -2,32 +2,26 @@
   {
     "id": "great-omari-mosque",
     "name": "Great Omari Mosque",
-    "lat": 31.5069,
-    "lng": 34.4668
+    "lat": 31.5042,
+    "lng": 34.4645
   },
   {
     "id": "church-st-porphyrius",
     "name": "Church of St. Porphyrius",
-    "lat": 31.5203,
-    "lng": 34.4547
-  },
-  {
-    "id": "blakhiyya-archaeological-site",
-    "name": "Blakhiyya Archaeological Site",
-    "lat": 31.2656,
-    "lng": 34.2945
+    "lat": 31.504,
+    "lng": 34.462
   },
   {
     "id": "qasr-al-basha",
     "name": "Qasr Al-Basha",
-    "lat": 31.505,
-    "lng": 34.462
+    "lat": 31.5044,
+    "lng": 34.466
   },
   {
     "id": "hammam-al-samra",
     "name": "Hammam al-Samra",
-    "lat": 31.512,
-    "lng": 34.471
+    "lat": 31.5036,
+    "lng": 34.4639
   },
   {
     "id": "sayed-al-hashim-mosque",
@@ -38,38 +32,38 @@
   {
     "id": "ibn-uthman-mosque",
     "name": "Ibn Uthman Mosque",
-    "lat": 31.5203,
-    "lng": 34.4668
+    "lat": 31.4998,
+    "lng": 34.4694
   },
   {
     "id": "ibn-marwan-mosque",
     "name": "Ibn Marwan Mosque",
-    "lat": 31.5073,
-    "lng": 34.4703
+    "lat": 31.5042,
+    "lng": 34.469
   },
   {
     "id": "byzantine-church-jabaliya",
     "name": "Byzantine Church of Jabaliya",
-    "lat": 31.5333,
-    "lng": 34.5
+    "lat": 31.5248,
+    "lng": 34.4994
   },
   {
     "id": "al-qarara-cultural-museum",
     "name": "Al Qarara Cultural Museum",
-    "lat": 31.3705,
-    "lng": 34.3265
+    "lat": 31.3699,
+    "lng": 34.3412
   },
   {
     "id": "rashad-shawa-cultural-center",
     "name": "Rashad Shawa Cultural Center",
-    "lat": 31.5203,
-    "lng": 34.4668
+    "lat": 31.5206,
+    "lng": 34.443
   },
   {
     "id": "anthedon-harbour",
     "name": "Anthedon Harbour",
-    "lat": 31.567,
-    "lng": 34.475
+    "lat": 31.541,
+    "lng": 34.452
   },
   {
     "id": "tell-el-ajjul",
@@ -86,8 +80,8 @@
   {
     "id": "central-archives-gaza",
     "name": "Central Archives of Gaza City",
-    "lat": 31.5203,
-    "lng": 34.4668
+    "lat": 31.5069,
+    "lng": 34.46
   },
   {
     "id": "saint-hilarion-monastery",
@@ -98,8 +92,8 @@
   {
     "id": "ard-al-moharbeen-cemetery",
     "name": "Ard-al-Moharbeen Roman Cemetery",
-    "lat": 31.533,
-    "lng": 34.5
+    "lat": 31.5487,
+    "lng": 34.4663
   },
   {
     "id": "israa-university-museum",
@@ -110,44 +104,44 @@
   {
     "id": "rafah-museum",
     "name": "Rafah Museum",
-    "lat": 31.2889,
-    "lng": 34.2463
+    "lat": 31.288,
+    "lng": 34.252
   },
   {
     "id": "omari-mosque-jabaliya",
     "name": "Omari Mosque of Jabaliya",
-    "lat": 31.5316,
-    "lng": 34.4833
+    "lat": 31.5257,
+    "lng": 34.4839
   },
   {
     "id": "al-saqqa-palace",
     "name": "Al-Saqqa Palace",
-    "lat": 31.5085,
-    "lng": 34.4655
+    "lat": 31.5006,
+    "lng": 34.4681
   },
   {
     "id": "al-ghussein-house",
     "name": "Al-Ghussein House / Goethe Institute",
-    "lat": 31.509,
-    "lng": 34.464
+    "lat": 31.5056,
+    "lng": 34.4658
   },
   {
     "id": "al-qissariya-market",
     "name": "Al-Qissariya Market",
-    "lat": 31.5055,
-    "lng": 34.465
+    "lat": 31.5031,
+    "lng": 34.4639
   },
   {
     "id": "commonwealth-war-cemetery",
     "name": "Commonwealth Gaza War Cemetery",
-    "lat": 31.5025,
-    "lng": 34.4615
+    "lat": 31.5121,
+    "lng": 34.482
   },
   {
     "id": "mathaf-al-funduq",
     "name": "Al Mat",
-    "lat": 31.5486,
-    "lng": 34.4571
+    "lat": 31.5476,
+    "lng": 34.4595
   },
   {
     "id": "deir-al-balah-museum",
@@ -158,26 +152,20 @@
   {
     "id": "tell-ruqeish",
     "name": "Tell Ruqeish",
-    "lat": 31.358,
-    "lng": 34.312
+    "lat": 31.4153,
+    "lng": 34.3281
   },
   {
     "id": "samir-mansour-bookshop",
     "name": "Samir Mansour Bookshop",
-    "lat": 31.5145,
-    "lng": 34.4675
+    "lat": 31.5135,
+    "lng": 34.4408
   },
   {
     "id": "dar-assaada-manuscript-center",
     "name": "Dar As-Sa",
     "lat": 31.5078,
     "lng": 34.4658
-  },
-  {
-    "id": "subat-al-alami",
-    "name": "Subat Al-Alami",
-    "lat": 31.5065,
-    "lng": 34.4645
   },
   {
     "id": "sabil-ar-rifaiya",
@@ -200,8 +188,8 @@
   {
     "id": "zofor-domri-mosque",
     "name": "Zofor Domri Mosque",
-    "lat": 31.5068,
-    "lng": 34.467
+    "lat": 31.501,
+    "lng": 34.4673
   },
   {
     "id": "akkad-museum",
@@ -212,26 +200,14 @@
   {
     "id": "shababeek-art-center",
     "name": "Shababeek Center for Contemporary Art",
-    "lat": 31.5125,
-    "lng": 34.4695
-  },
-  {
-    "id": "al-mahatta-house",
-    "name": "Al-Mahatta House",
-    "lat": 31.51,
-    "lng": 34.468
+    "lat": 31.5262,
+    "lng": 34.443
   },
   {
     "id": "katib-wilaya-mosque",
     "name": "Katib Wilaya Mosque",
-    "lat": 31.5072,
-    "lng": 34.4665
-  },
-  {
-    "id": "al-zeitoun-cultural-center",
-    "name": "Al-Zeitoun Cultural Center",
-    "lat": 31.494,
-    "lng": 34.4545
+    "lat": 31.504,
+    "lng": 34.4624
   },
   {
     "id": "al-shawa-house",
@@ -240,76 +216,34 @@
     "lng": 34.4648
   },
   {
-    "id": "mahkama-courthouse",
-    "name": "Al-Mahkama Courthouse",
-    "lat": 31.507,
-    "lng": 34.4655
-  },
-  {
-    "id": "khan-yunis-old-market",
-    "name": "Khan Yunis Old Market",
-    "lat": 31.3461,
-    "lng": 34.3043
-  },
-  {
     "id": "sheikh-radwan-cemetery",
     "name": "Sheikh Radwan Historic Cemetery",
-    "lat": 31.5285,
+    "lat": 31.527,
     "lng": 34.458
-  },
-  {
-    "id": "napoleon-fort",
-    "name": "Napoleon",
-    "lat": 31.5345,
-    "lng": 34.512
-  },
-  {
-    "id": "al-katib-mosque",
-    "name": "Al-Katib Mosque",
-    "lat": 31.5075,
-    "lng": 34.466
-  },
-  {
-    "id": "ibn-othman-mosque",
-    "name": "Ibn Othman Mosque",
-    "lat": 31.5045,
-    "lng": 34.4625
   },
   {
     "id": "shaikh-zakaria-mosque",
     "name": "Shaikh Zakaria Mosque",
-    "lat": 31.5055,
-    "lng": 34.4585
+    "lat": 31.5086,
+    "lng": 34.4614
   },
   {
     "id": "al-mughrabi-mosque",
     "name": "Al-Mughrabi Mosque",
-    "lat": 31.505,
-    "lng": 34.458
+    "lat": 31.5053,
+    "lng": 34.4667
   },
   {
     "id": "sett-ruqayya-mosque",
     "name": "Sett Ruqayya Mosque",
-    "lat": 31.5048,
-    "lng": 34.4575
-  },
-  {
-    "id": "ash-sheikh-shaban-mosque",
-    "name": "Ash-Sheikh Sha",
-    "lat": 31.5052,
-    "lng": 34.4578
-  },
-  {
-    "id": "zawiyat-al-hnoud-mosque",
-    "name": "Zawiyat Al Hnoud Mosque",
-    "lat": 31.5046,
-    "lng": 34.4582
+    "lat": 31.4999,
+    "lng": 34.4703
   },
   {
     "id": "ali-ibn-marwan-shrine",
     "name": "Ali Ibn Marwan Shrine",
-    "lat": 31.5044,
-    "lng": 34.459
+    "lat": 31.5042,
+    "lng": 34.469
   },
   {
     "id": "abu-al-azm-shamshon-shrine",
@@ -320,14 +254,14 @@
   {
     "id": "unknown-soldier-memorial-gaza",
     "name": "The Unknown Soldier Memorial",
-    "lat": 31.506,
-    "lng": 34.46
+    "lat": 31.5194,
+    "lng": 34.4446
   },
   {
     "id": "tell-al-muntar",
     "name": "Tell Al-Muntar",
-    "lat": 31.51,
-    "lng": 34.475
+    "lat": 31.4903,
+    "lng": 34.4744
   },
   {
     "id": "tell-rafah",
@@ -344,20 +278,20 @@
   {
     "id": "english-cemetery-az-zawaida",
     "name": "English Cemetery, Az-Zawaida",
-    "lat": 31.45,
-    "lng": 34.37
+    "lat": 31.4255,
+    "lng": 34.3741
   },
   {
     "id": "old-gaza-municipality-building",
     "name": "Old Gaza Municipality Building",
-    "lat": 31.505,
+    "lat": 31.5069,
     "lng": 34.46
   },
   {
     "id": "an-nassr-cinema",
     "name": "An-Nassr Cinema",
-    "lat": 31.5045,
-    "lng": 34.4595
+    "lat": 31.5103,
+    "lng": 34.4563
   },
   {
     "id": "as-samer-cinema",
@@ -368,14 +302,14 @@
   {
     "id": "baptist-hospital-emergency-building",
     "name": "Baptist Hospital - Emergency Building",
-    "lat": 31.5055,
-    "lng": 34.4605
+    "lat": 31.5047,
+    "lng": 34.4615
   },
   {
     "id": "baptist-hospital-surgery-building",
     "name": "Baptist Hospital - Surgery Building",
-    "lat": 31.5056,
-    "lng": 34.4606
+    "lat": 31.5048,
+    "lng": 34.4616
   },
   {
     "id": "ebaf-storage-facility",
@@ -404,8 +338,8 @@
   {
     "id": "historic-daraj-quarter-buildings",
     "name": "Historic Daraj Quarter Buildings (Collection B)",
-    "lat": 31.5055,
-    "lng": 34.4585
+    "lat": 31.5068,
+    "lng": 34.4661
   },
   {
     "id": "historic-gaza-commercial-public-buildings",
@@ -422,8 +356,8 @@
   {
     "id": "barquq-castle",
     "name": "Barquq Castle (Khan Yunis Caravanserai)",
-    "lat": 31.3444,
-    "lng": 34.3021
+    "lat": 31.3432,
+    "lng": 34.3033
   },
   {
     "id": "great-mosque-khan-yunis",
@@ -434,8 +368,8 @@
   {
     "id": "holy-family-church-gaza",
     "name": "Holy Family Church",
-    "lat": 31.4967,
-    "lng": 34.4698
+    "lat": 31.5241,
+    "lng": 34.452
   },
   {
     "id": "abasan-mosaics",
@@ -446,14 +380,14 @@
   {
     "id": "islamic-university-central-library",
     "name": "Islamic University of Gaza — Central Library",
-    "lat": 31.5071,
-    "lng": 34.4513
+    "lat": 31.5134,
+    "lng": 34.4401
   },
   {
     "id": "gaza-municipal-library",
     "name": "Gaza Municipal Library",
-    "lat": 31.5105,
-    "lng": 34.4668
+    "lat": 31.5167,
+    "lng": 34.45
   },
   {
     "id": "al-kalima-library",
@@ -468,12 +402,6 @@
     "lng": 34.5431
   },
   {
-    "id": "palestinian-costume-museum-rafah",
-    "name": "Palestinian Costume Museum, Rafah",
-    "lat": 31.2913,
-    "lng": 34.2437
-  },
-  {
     "id": "ibrahim-abu-shaar-heritage-diwan",
     "name": "Ibrahim Abu Sha",
     "lat": 31.2778,
@@ -482,20 +410,20 @@
   {
     "id": "mavi-marmara-memorial",
     "name": "Mavi Marmara Martyrs Memorial",
-    "lat": 31.525,
-    "lng": 34.435
+    "lat": 31.5238,
+    "lng": 34.4324
   },
   {
     "id": "othman-ibn-qushqar-mosque",
     "name": "Othman ibn Qushqar Mosque",
-    "lat": 31.4972,
-    "lng": 34.4655
+    "lat": 31.5038,
+    "lng": 34.4633
   },
   {
     "id": "gaza-war-cemetery-al-tuffah",
     "name": "Gaza War Cemetery (Al-Tuffah)",
-    "lat": 31.502,
-    "lng": 34.489
+    "lat": 31.5121,
+    "lng": 34.482
   },
   {
     "id": "edward-said-public-library",
@@ -510,12 +438,6 @@
     "lng": 34.251
   },
   {
-    "id": "bani-saleh-mosque",
-    "name": "Bani Saleh Mosque",
-    "lat": 31.3481,
-    "lng": 34.3053
-  },
-  {
     "id": "eltiqa-gallery",
     "name": "Eltiqa Gallery for Contemporary Art",
     "lat": 31.507,
@@ -524,8 +446,8 @@
   {
     "id": "diana-tamari-sabbagh-library",
     "name": "Diana Tamari Sabbagh Public Library",
-    "lat": 31.5203,
-    "lng": 34.4668
+    "lat": 31.5206,
+    "lng": 34.443
   },
   {
     "id": "enaim-library",
@@ -536,8 +458,8 @@
   {
     "id": "al-nahda-library",
     "name": "Al-Nahda Library",
-    "lat": 31.513,
-    "lng": 34.4635
+    "lat": 31.5276,
+    "lng": 34.4517
   },
   {
     "id": "kanaan-educational-institute",
@@ -548,8 +470,8 @@
   {
     "id": "umm-al-nasr-mosque",
     "name": "Umm al-Nasr Mosque",
-    "lat": 31.532,
-    "lng": 34.541
+    "lat": 31.5415,
+    "lng": 34.5361
   },
   {
     "id": "al-amin-muhammad-mosque",
@@ -566,8 +488,8 @@
   {
     "id": "maiuma-ancient-port",
     "name": "Maiuma (Ancient Port of Gaza)",
-    "lat": 31.555,
-    "lng": 34.418
+    "lat": 31.5252,
+    "lng": 34.4311
   },
   {
     "id": "atfaluna-society-deaf-children",
@@ -594,12 +516,6 @@
     "lng": 34.456
   },
   {
-    "id": "gaza-center-culture-arts",
-    "name": "Gaza Center for Culture and Arts",
-    "lat": 31.497,
-    "lng": 34.452
-  },
-  {
     "id": "al-shorouq-al-daem-library",
     "name": "Al-Shorouq Al-Daem Library",
     "lat": 31.516,
@@ -614,62 +530,62 @@
   {
     "id": "al-shifa-hospital",
     "name": "Al-Shifa Hospital",
-    "lat": 31.5218,
-    "lng": 34.4513
+    "lat": 31.5241,
+    "lng": 34.4435
   },
   {
     "id": "al-ahli-arab-hospital",
     "name": "Al-Ahli Arab Hospital",
-    "lat": 31.5255,
-    "lng": 34.454
+    "lat": 31.5047,
+    "lng": 34.4616
   },
   {
     "id": "nasser-medical-complex",
     "name": "Nasser Medical Complex",
-    "lat": 31.3269,
-    "lng": 34.2965
+    "lat": 31.3478,
+    "lng": 34.2933
   },
   {
     "id": "al-quds-hospital",
     "name": "Al-Quds Hospital",
-    "lat": 31.5072,
-    "lng": 34.4577
+    "lat": 31.506,
+    "lng": 34.4306
   },
   {
     "id": "kamal-adwan-hospital",
     "name": "Kamal Adwan Hospital",
-    "lat": 31.5662,
-    "lng": 34.5012
+    "lat": 31.5385,
+    "lng": 34.5013
   },
   {
     "id": "indonesian-hospital",
     "name": "Indonesian Hospital",
-    "lat": 31.5523,
-    "lng": 34.5055
+    "lat": 31.5351,
+    "lng": 34.5092
   },
   {
     "id": "islamic-university-gaza",
     "name": "Islamic University of Gaza",
-    "lat": 31.5008,
-    "lng": 34.4472
+    "lat": 31.5136,
+    "lng": 34.4398
   },
   {
     "id": "al-azhar-university-gaza",
     "name": "Al-Azhar University Gaza",
-    "lat": 31.5183,
-    "lng": 34.4519
+    "lat": 31.5148,
+    "lng": 34.4398
   },
   {
     "id": "university-college-applied-sciences",
     "name": "University College of Applied Sciences",
-    "lat": 31.5248,
-    "lng": 34.4483
+    "lat": 31.498,
+    "lng": 34.4368
   },
   {
     "id": "al-aqsa-university",
     "name": "Al-Aqsa University",
-    "lat": 31.3018,
-    "lng": 34.2762
+    "lat": 31.3561,
+    "lng": 34.2755
   },
   {
     "id": "unrwa-schools-gaza-north",
@@ -680,26 +596,26 @@
   {
     "id": "european-gaza-hospital",
     "name": "European Gaza Hospital",
-    "lat": 31.3428,
-    "lng": 34.3082
+    "lat": 31.3035,
+    "lng": 34.3206
   },
   {
     "id": "al-awda-hospital-jabalia",
     "name": "Al-Awda Hospital",
-    "lat": 31.5381,
-    "lng": 34.4892
+    "lat": 31.5338,
+    "lng": 34.5067
   },
   {
     "id": "abu-yousuf-al-najjar-hospital",
     "name": "Abu Yousuf Al-Najjar Hospital",
-    "lat": 31.2886,
-    "lng": 34.2428
+    "lat": 31.297,
+    "lng": 34.2438
   },
   {
     "id": "al-rantisi-hospital",
     "name": "Dr. Abdul Aziz Al-Rantisi Children",
-    "lat": 31.5322,
-    "lng": 34.4568
+    "lat": 31.5331,
+    "lng": 34.4603
   },
   {
     "id": "gaza-psychiatric-hospital",
@@ -740,8 +656,8 @@
   {
     "id": "souq-al-zawiya",
     "name": "Souq al-Zawiya",
-    "lat": 31.505,
-    "lng": 34.465
+    "lat": 31.5056,
+    "lng": 34.4629
   },
   {
     "id": "khalid-ibn-walid-mosque-al-qarara",
@@ -750,58 +666,52 @@
     "lng": 34.378
   },
   {
-    "id": "al-shuhada-mosque-khan-yunis",
-    "name": "Al-Shuhada Mosque",
-    "lat": 31.344,
-    "lng": 34.3
-  },
-  {
     "id": "al-faruq-mosque-khan-yunis",
     "name": "Al-Faruq Mosque",
-    "lat": 31.346,
-    "lng": 34.307
+    "lat": 31.3195,
+    "lng": 34.296
   },
   {
     "id": "shuhada-al-aqsa-mosque-deir-balah",
     "name": "Shuhada al-Aqsa Mosque",
-    "lat": 31.415,
-    "lng": 34.341
+    "lat": 31.42,
+    "lng": 34.3595
   },
   {
     "id": "lifta-mosque",
     "name": "Lifta Village Mosque",
-    "lat": 31.79,
-    "lng": 35.19
+    "lat": 31.7955,
+    "lng": 35.1963
   },
   {
     "id": "umar-ibn-al-khattab-mosque-ein-karem",
     "name": "Mosque of Umar ibn al-Khattab, Ein Karem",
-    "lat": 31.77,
-    "lng": 35.16
+    "lat": 31.7652,
+    "lng": 35.1613
   },
   {
     "id": "iqrit-church",
     "name": "Iqrit Melkite Greek Catholic Church",
-    "lat": 33.04,
-    "lng": 35.34
+    "lat": 33.0755,
+    "lng": 35.2752
   },
   {
     "id": "zirin-mosque",
     "name": "Zir",
-    "lat": 32.56,
-    "lng": 35.32
+    "lat": 32.5575,
+    "lng": 35.3278
   },
   {
     "id": "qaqun-fortress",
     "name": "Qaqun Fortress",
-    "lat": 32.36,
-    "lng": 34.99
+    "lat": 32.3594,
+    "lng": 34.9952
   },
   {
     "id": "birim-church",
     "name": "Kafr Bir",
-    "lat": 33.04,
-    "lng": 35.4
+    "lat": 33.0435,
+    "lng": 35.4141
   },
   {
     "id": "sheikh-eid-mosque-mughrabi-quarter",
@@ -824,20 +734,20 @@
   {
     "id": "yalo-village",
     "name": "Yalo Village",
-    "lat": 31.84,
-    "lng": 34.97
+    "lat": 31.8405,
+    "lng": 35.0226
   },
   {
     "id": "beit-nuba-mosque",
     "name": "Beit Nuba Village Mosque",
-    "lat": 31.85,
-    "lng": 34.98
+    "lat": 31.8531,
+    "lng": 35.0317
   },
   {
     "id": "ibrahim-al-maqadma-mosque",
     "name": "Ibrahim al-Maqadma Mosque",
-    "lat": 31.5498,
-    "lng": 34.5025
+    "lat": 31.5589,
+    "lng": 34.4674
   },
   {
     "id": "american-international-school-gaza",
@@ -848,31 +758,127 @@
   {
     "id": "islamic-university-gaza-library",
     "name": "Islamic University of Gaza - Central Library",
-    "lat": 31.5078,
-    "lng": 34.4502
+    "lat": 31.5134,
+    "lng": 34.4401
   },
   {
     "id": "imad-akel-mosque",
     "name": "Imad Akel Mosque",
-    "lat": 31.5327,
-    "lng": 34.4982
+    "lat": 31.5306,
+    "lng": 34.4997
   },
   {
     "id": "al-omari-mosque-jabaliya",
     "name": "Al-Omari Mosque, Jabaliya",
-    "lat": 31.528,
-    "lng": 34.483
+    "lat": 31.5257,
+    "lng": 34.4839
   },
   {
     "id": "mahkamah-mosque",
     "name": "Mahkamah Mosque",
-    "lat": 31.501,
-    "lng": 34.468
+    "lat": 31.5018,
+    "lng": 34.469
   },
   {
     "id": "ibby-library-beit-hanoun",
     "name": "IBBY Children",
     "lat": 31.538,
     "lng": 34.537
+  },
+  {
+    "id": "al-husseini-shrine",
+    "name": "Al-Husseini Shrine",
+    "lat": 31.505,
+    "lng": 34.4655
+  },
+  {
+    "id": "ali-abu-al-kass-shrine",
+    "name": "Ali Abu Al-Kass Shrine",
+    "lat": 31.506,
+    "lng": 34.464
+  },
+  {
+    "id": "al-ghussein-shrine-cemetery",
+    "name": "Al-Ghussein Shrine and Cemetery",
+    "lat": 31.5065,
+    "lng": 34.4648
+  },
+  {
+    "id": "zawiya-al-ahmadiya",
+    "name": "Zawiya Al-Ahmadiya",
+    "lat": 31.5072,
+    "lng": 34.4657
+  },
+  {
+    "id": "aybaki-mosque",
+    "name": "Aybaki Mosque",
+    "lat": 31.5084,
+    "lng": 34.4686
+  },
+  {
+    "id": "al-soussi-mosque",
+    "name": "Al-Soussi Mosque",
+    "lat": 31.529588,
+    "lng": 34.447093
+  },
+  {
+    "id": "al-hassaina-mosque",
+    "name": "Al-Hassaina Mosque",
+    "lat": 31.523083,
+    "lng": 34.432944
+  },
+  {
+    "id": "sheikh-khalid-mosque",
+    "name": "Sheikh Khalid Mosque",
+    "lat": 31.5085,
+    "lng": 34.462
+  },
+  {
+    "id": "st-philip-episcopal-church",
+    "name": "St. Philip Episcopal Church",
+    "lat": 31.5046,
+    "lng": 34.4616
+  },
+  {
+    "id": "khan-abu-shaban",
+    "name": "Khan Abu Sha",
+    "lat": 31.5062,
+    "lng": 34.4665
+  },
+  {
+    "id": "ash-sheikh-sad-mosque",
+    "name": "Ash Sheikh Sa",
+    "lat": 31.5285,
+    "lng": 34.4835
+  },
+  {
+    "id": "rajab-abedrabboh-house-shop",
+    "name": "Rajab Ibrahim Abedrabboh House & Shop",
+    "lat": 31.5275,
+    "lng": 34.4825
+  },
+  {
+    "id": "hathat-house",
+    "name": "HatHat House",
+    "lat": 31.5006,
+    "lng": 34.4696
+  },
+  {
+    "id": "theater-day-productions",
+    "name": "Theater Day Productions",
+    "lat": 31.5147,
+    "lng": 34.4526
+  },
+  {
+    "id": "palestinian-institute-of-music",
+    "name": "The Palestinian Institute of Music",
+    "lat": 31.5017,
+    "lng": 34.4668
+  },
+  {
+    "id": "riyad-al-qishawi-beit-sitti",
+    "name": "Riyad Al-Qishawi House (Beit Sitti)",
+    "lat": 31.4875,
+    "lng": 34.4439
   }
 ]
