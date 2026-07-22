@@ -19,6 +19,7 @@
     "e2e:debug": "playwright test --debug",
     "e2e:report": "playwright show-report",
     "test:all": "npm test -- --run && npm run e2e",
+    "test:links": "node scripts/check-links.mjs",
     "server:start": "node server/index.js",
     "server:dev": "nodemon server/index.js",
     "db:start": "docker-compose up -d",
