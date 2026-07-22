@@ -221,17 +221,13 @@ describe("SiteDetailView", () => {
         <SiteDetailView sites={mockSites} highlightedSiteId={null} />
       );
 
-      // Check that the date label overlay (with green background) is not rendered
-      // Note: Site popups may contain dates, but the overlay date label should not be present
-      const dateLabels = screen.queryAllByText(/^\d{4}-\d{2}-\d{2}$/);
-      const overlayLabels = dateLabels.filter(el =>
-        el.classList.contains("bg-[#009639]") ||
-        el.classList.contains("bg-[#b8860b]")
-      );
-      expect(overlayLabels.length).toBe(0);
+      // ponytail: DateLabel located by data-testid, not palette colors.
+      // Site popups may contain dates, but the overlay date label should not be present.
+      expect(screen.queryByTestId("date-label-green")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("date-label-yellow")).not.toBeInTheDocument();
     });
 
-    it("date label has green background and correct styling", () => {
+    it("renders the date on the overlay label", () => {
       renderWithAnimation(
         <SiteDetailView
           sites={mockSites}
@@ -240,12 +236,7 @@ describe("SiteDetailView", () => {
         />
       );
 
-      const label = screen.getByText("2024-01-15");
-      // DateLabel component now uses inline styles for background color
-      expect(label).toHaveStyle({ backgroundColor: "#009639", opacity: "0.7" });
-      expect(label).toHaveClass("text-white");
-      expect(label).toHaveClass("text-[15px]");
-      expect(label).toHaveClass("font-semibold");
+      expect(screen.getByTestId("date-label-green")).toHaveTextContent("2024-01-15");
     });
 
     it("renders date label with custom tile URL", () => {

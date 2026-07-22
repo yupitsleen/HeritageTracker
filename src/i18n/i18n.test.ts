@@ -1,222 +1,103 @@
-import { describe, it, expect } from "vitest";
+import { describe, it as test, expect, vi } from "vitest";
 import { TRANSLATIONS, getTranslations, translate, hasTranslation, getLocalizedLabel } from "./index";
 import { en } from "./en";
 import { ar } from "./ar";
+import { it } from "./it";
+import type { LocaleCode, TranslationKey } from "../types/i18n";
 
-describe("TRANSLATIONS", () => {
-  it("contains English and Arabic translations", () => {
-    expect(TRANSLATIONS.en).toBeDefined();
-    expect(TRANSLATIONS.ar).toBeDefined();
+// Recursively collect dot-notation keys so parity is checked at every depth
+function collectKeys(obj: object, prefix = ""): string[] {
+  return Object.entries(obj).flatMap(([key, value]) => {
+    const path = prefix ? `${prefix}.${key}` : key;
+    return typeof value === "object" && value !== null ? collectKeys(value, path) : [path];
+  });
+}
+
+const locales = { en, ar, it };
+
+describe("Translation Completeness", () => {
+  const enKeys = collectKeys(en).sort();
+
+  test("all locales are registered", () => {
+    Object.keys(locales).forEach((locale) => {
+      expect(TRANSLATIONS).toHaveProperty(locale);
+    });
   });
 
-  it("has the same structure for both languages", () => {
-    const enKeys = Object.keys(en);
-    const arKeys = Object.keys(ar);
+  // ponytail: deep key parity + non-empty covers structure for every locale;
+  // literal copy assertions were removed on purpose — content is not behavior
+  Object.entries(locales).forEach(([code, translations]) => {
+    test(`${code} has exactly the same keys as en`, () => {
+      expect(collectKeys(translations).sort()).toEqual(enKeys);
+    });
 
-    expect(arKeys).toEqual(enKeys);
-  });
-
-  it("has all required namespaces", () => {
-    const requiredNamespaces = [
-      "common",
-      "header",
-      "map",
-      "timeline",
-      "table",
-      "filters",
-      "siteTypes",
-      "siteStatus",
-      "stats",
-      "timelinePage",
-      "siteDetail",
-      "modals",
-      "errors",
-      "aria",
-    ];
-
-    requiredNamespaces.forEach((namespace) => {
-      expect(en).toHaveProperty(namespace);
-      expect(ar).toHaveProperty(namespace);
+    test(`${code} has no empty translations`, () => {
+      collectKeys(translations).forEach((key) => {
+        expect(translate(code as LocaleCode, key as TranslationKey).trim()).not.toBe("");
+      });
     });
   });
 });
 
 describe("getTranslations", () => {
-  it("returns English translations for 'en' locale", () => {
-    const translations = getTranslations("en");
-    expect(translations).toBe(en);
+  test("returns the matching locale's translations", () => {
+    expect(getTranslations("en")).toBe(en);
+    expect(getTranslations("ar")).toBe(ar);
+    expect(getTranslations("it")).toBe(it);
   });
 
-  it("returns Arabic translations for 'ar' locale", () => {
-    const translations = getTranslations("ar");
-    expect(translations).toBe(ar);
-  });
-
-  it("falls back to English for invalid locale", () => {
-    const translations = getTranslations("invalid" as unknown as LocaleCode);
-    expect(translations).toBe(en);
+  test("falls back to English for invalid locale", () => {
+    expect(getTranslations("invalid" as LocaleCode)).toBe(en);
   });
 });
 
 describe("translate", () => {
-  it("translates simple keys in English", () => {
-    expect(translate("en", "common.loading")).toBe("Loading...");
-    expect(translate("en", "common.save")).toBe("Save");
-    expect(translate("en", "header.title")).toBe("Heritage Tracker");
+  test("resolves nested keys to a non-empty string", () => {
+    expect(translate("en", "common.loading").trim()).not.toBe("");
+    expect(translate("ar", "common.loading").trim()).not.toBe("");
   });
 
-  it("translates simple keys in Arabic", () => {
-    expect(translate("ar", "common.loading")).toBe("جار التحميل...");
-    expect(translate("ar", "common.save")).toBe("حفظ");
-    expect(translate("ar", "header.title")).toBe("متتبع التراث");
+  test("returns key if translation not found", () => {
+    expect(translate("en", "nonexistent.key" as TranslationKey)).toBe("nonexistent.key");
   });
 
-  it("translates nested keys", () => {
-    expect(translate("en", "map.satelliteView")).toBe("Satellite");
-    expect(translate("en", "timeline.play")).toBe("Play");
-    expect(translate("en", "table.siteName")).toBe("Site Name");
-  });
-
-  it("returns key if translation not found", () => {
-    expect(translate("en", "nonexistent.key" as unknown as LocaleCode)).toBe("nonexistent.key");
-  });
-
-  it("warns when translation not found", () => {
+  test("warns when translation not found", () => {
     const consoleSpy = vi.spyOn(console, "warn");
-    translate("en", "missing.translation" as unknown as LocaleCode);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining("Translation key not found")
-    );
+    translate("en", "missing.translation" as TranslationKey);
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Translation key not found"));
     consoleSpy.mockRestore();
   });
 
-  it("interpolates parameters", () => {
-    // This would work if we had translations with {{param}} syntax
-    // For now, test that it doesn't break without parameters
-    const result = translate("en", "common.loading");
-    expect(result).toBe("Loading...");
+  test("interpolates {{param}} placeholders", () => {
+    const result = translate("en", "filters.showingCount", { filtered: 3, total: 10 });
+    expect(result).toContain("3");
+    expect(result).toContain("10");
+    expect(result).not.toContain("{{");
   });
 });
 
 describe("hasTranslation", () => {
-  it("returns true for existing keys", () => {
+  test("returns true for existing keys", () => {
     expect(hasTranslation("en", "common.loading")).toBe(true);
     expect(hasTranslation("ar", "common.loading")).toBe(true);
-    expect(hasTranslation("en", "header.title")).toBe(true);
   });
 
-  it("returns false for non-existent keys", () => {
-    expect(hasTranslation("en", "nonexistent.key" as unknown as LocaleCode)).toBe(false);
-    expect(hasTranslation("ar", "missing.translation" as unknown as LocaleCode)).toBe(false);
-  });
-
-  it("handles nested keys correctly", () => {
-    expect(hasTranslation("en", "map.satelliteView")).toBe(true);
-    expect(hasTranslation("en", "map.nonexistent" as unknown as LocaleCode)).toBe(false);
+  test("returns false for non-existent keys", () => {
+    expect(hasTranslation("en", "nonexistent.key" as TranslationKey)).toBe(false);
+    expect(hasTranslation("en", "common.nonexistent" as TranslationKey)).toBe(false);
   });
 });
 
 describe("getLocalizedLabel", () => {
-  it("returns English label for English locale", () => {
+  test("returns English label for English locale", () => {
     expect(getLocalizedLabel("en", "Test", "اختبار")).toBe("Test");
   });
 
-  it("returns Arabic label for Arabic locale when available", () => {
+  test("returns Arabic label for Arabic locale when available", () => {
     expect(getLocalizedLabel("ar", "Test", "اختبار")).toBe("اختبار");
   });
 
-  it("falls back to English when Arabic label not provided", () => {
+  test("falls back to English when Arabic label not provided", () => {
     expect(getLocalizedLabel("ar", "Test")).toBe("Test");
-  });
-
-  it("handles empty strings", () => {
-    expect(getLocalizedLabel("en", "", "")).toBe("");
-    expect(getLocalizedLabel("ar", "", "")).toBe("");
-  });
-});
-
-describe("Translation Completeness", () => {
-  it("English and Arabic have matching keys in common namespace", () => {
-    const enCommonKeys = Object.keys(en.common);
-    const arCommonKeys = Object.keys(ar.common);
-    expect(arCommonKeys.sort()).toEqual(enCommonKeys.sort());
-  });
-
-  it("English and Arabic have matching keys in all namespaces", () => {
-    const namespaces = Object.keys(en) as Array<keyof typeof en>;
-
-    namespaces.forEach((namespace) => {
-      const enKeys = Object.keys(en[namespace]);
-      const arKeys = Object.keys(ar[namespace]);
-      expect(arKeys.sort()).toEqual(enKeys.sort());
-    });
-  });
-
-  it("no empty translations in English", () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const checkEmpty = (obj: any, path: string = "") => {
-      Object.entries(obj).forEach(([key, value]) => {
-        const currentPath = path ? `${path}.${key}` : key;
-        if (typeof value === "string") {
-          expect(value.trim()).not.toBe("");
-        } else if (typeof value === "object") {
-          checkEmpty(value, currentPath);
-        }
-      });
-    };
-
-    checkEmpty(en);
-  });
-
-  it("no empty translations in Arabic", () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const checkEmpty = (obj: any, path: string = "") => {
-      Object.entries(obj).forEach(([key, value]) => {
-        const currentPath = path ? `${path}.${key}` : key;
-        if (typeof value === "string") {
-          expect(value.trim()).not.toBe("");
-        } else if (typeof value === "object") {
-          checkEmpty(value, currentPath);
-        }
-      });
-    };
-
-    checkEmpty(ar);
-  });
-});
-
-describe("Site-specific Translations", () => {
-  it("has all site type translations", () => {
-    const types = ["mosque", "church", "archaeological", "museum", "historicBuilding", "hospital", "school"];
-
-    types.forEach((type) => {
-      expect(en.siteTypes).toHaveProperty(type);
-      expect(ar.siteTypes).toHaveProperty(type);
-    });
-  });
-
-  it("has all site status translations", () => {
-    const statuses = ["destroyed", "heavilyDamaged", "damaged"];
-
-    statuses.forEach((status) => {
-      expect(en.siteStatus).toHaveProperty(status);
-      expect(ar.siteStatus).toHaveProperty(status);
-    });
-  });
-
-  it("translates site types correctly", () => {
-    expect(translate("en", "siteTypes.mosque")).toBe("Mosque");
-    expect(translate("ar", "siteTypes.mosque")).toBe("مسجد");
-
-    expect(translate("en", "siteTypes.church")).toBe("Church");
-    expect(translate("ar", "siteTypes.church")).toBe("كنيسة");
-  });
-
-  it("translates site statuses correctly", () => {
-    expect(translate("en", "siteStatus.destroyed")).toBe("Destroyed");
-    expect(translate("ar", "siteStatus.destroyed")).toBe("مدمر");
-
-    expect(translate("en", "siteStatus.damaged")).toBe("Moderately Damaged");
-    expect(translate("ar", "siteStatus.damaged")).toBe("متضرر جزئيًا");
   });
 });

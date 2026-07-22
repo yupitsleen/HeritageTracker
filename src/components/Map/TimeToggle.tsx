@@ -72,6 +72,7 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
                 : `${t.bg.primary} ${t.text.body} ${t.bg.hover}`
             }`}
             title={period.tooltip}
+            aria-pressed={selectedPeriod === period.value}
             aria-label={`${translate("map.switchTo")} ${period.label} ${translate("map.satelliteImagery")}`}
           >
             {period.shortLabel}

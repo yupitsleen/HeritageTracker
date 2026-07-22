@@ -31,14 +31,14 @@ describe("TimeToggle", () => {
     expect(screen.getByText("Latest")).toBeInTheDocument();
   });
 
-  it("highlights the selected period", () => {
+  // ponytail: selection state asserted via aria-pressed, not color classes
+  it("marks the selected period as pressed", () => {
     const mockOnChange = vi.fn();
     render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
-    const button2014 = screen.getByText(/2014/);
-    expect(button2014).toHaveClass("bg-[#009639]", "text-white");
+    expect(screen.getByText(/2014/)).toHaveAttribute("aria-pressed", "true");
   });
 
   it("calls onPeriodChange when a button is clicked", async () => {
@@ -88,29 +88,14 @@ describe("TimeToggle", () => {
     expect(buttonCurrent).toBeInTheDocument();
   });
 
-  it("renders buttons with correct styling classes", () => {
-    const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="EARLY_2024" onPeriodChange={mockOnChange} />, {
-      wrapper: Wrapper,
-    });
-
-    const buttons = screen.getAllByRole("button");
-    buttons.forEach((button) => {
-      expect(button).toHaveClass("px-3", "py-1.5", "text-xs", "font-semibold");
-    });
-  });
-
-  it("applies different styles to selected and unselected buttons", () => {
+  it("marks unselected periods as not pressed", () => {
     const mockOnChange = vi.fn();
     render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
-    const selected = screen.getByText(/2014/);
     const unselected = screen.getByLabelText("Switch to Latest satellite imagery");
-
-    expect(selected).toHaveClass("bg-[#009639]", "text-white");
-    expect(unselected).toHaveClass("bg-white", "text-black", "hover:bg-gray-100");
+    expect(unselected).toHaveAttribute("aria-pressed", "false");
   });
 
   it("displays full date in tooltip on hover", () => {

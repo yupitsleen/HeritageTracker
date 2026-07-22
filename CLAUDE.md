@@ -110,7 +110,7 @@ interface Site {
 }
 ```
 
-**BC/BCE dates:** `"BCE 800"` (no month/day). Ordering: 100 BCE < 50 BCE < 1 CE < 2024 CE. Use `normalizeYear()` from `src/utils/formatters.ts`.
+**BC/BCE dates:** `"BCE 800"` (no month/day). Ordering: 100 BCE < 50 BCE < 1 CE < 2024 CE. Use `parseYearBuilt()` from `src/utils/siteFilters.ts` (returns negative for BCE).
 
 ---
 
@@ -144,7 +144,7 @@ interface Site {
 | Issue | Solution |
 |-------|----------|
 | Map not rendering | Leaflet CSS import in `main.tsx` |
-| BC/BCE dates wrong | Use `normalizeYear()` |
+| BC/BCE dates wrong | Use `parseYearBuilt()` from `src/utils/siteFilters.ts` |
 | FilterBar laggy/not updating | 300ms debounce is intentional |
 | Docker won't start | Docker Desktop running? Port 5432 free? |
 | Backend connection fails | Check `.env.development` mode flags |

@@ -403,6 +403,7 @@ export function WaybackSlider({
 
           {/* Green progress fill - thinner and more subtle */}
           <div
+            data-testid="wayback-progress-fill"
             className="absolute top-1/2 -translate-y-1/2 left-0 h-1 bg-[#009639] rounded-l pointer-events-none"
             style={{ width: `${currentPositionPercent}%` }}
           />
@@ -454,6 +455,7 @@ export function WaybackSlider({
                     : 'left-1/2 -translate-x-1/2'
                 }`}
                 style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
+                data-testid="wayback-before-tooltip"
               >
                 <DateLabel
                   date={beforeRelease?.releaseDate || translate("timeline.unknownDate")}
@@ -463,6 +465,7 @@ export function WaybackSlider({
               </div>
               {/* Scrubber indicator - Yellow */}
               <div
+                data-testid="wayback-before-scrubber"
                 className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
                 style={{ borderColor: COLORS.FLAG_YELLOW }}
               />
@@ -484,6 +487,7 @@ export function WaybackSlider({
                   : 'left-1/2 -translate-x-1/2'
               }`}
               style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
+              data-testid="wayback-current-tooltip"
             >
               <DateLabel
                 date={currentRelease?.releaseDate || translate("timeline.unknownDate")}
@@ -493,6 +497,7 @@ export function WaybackSlider({
             </div>
             {/* Scrubber indicator - Green */}
             <div
+              data-testid="wayback-current-scrubber"
               className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
               style={{ borderColor: COLORS.FLAG_GREEN }}
             />

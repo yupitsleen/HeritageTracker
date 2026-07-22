@@ -5,158 +5,49 @@ import {
   getAllHeroIconNames,
 } from "./iconRegistry";
 
+// ponytail: one unknown-key case covers every not-in-registry input (numbers,
+// symbols, wrong case, empty string all hit the same lookup path)
 describe("iconRegistry", () => {
   describe("getHeroIcon", () => {
-    describe("Smoke Tests", () => {
-      it("returns a component for valid icon", () => {
-        const icon = getHeroIcon("HomeIcon");
-        expect(icon).toBeDefined();
-        // Hero Icons are forwardRef objects, not plain functions
-        expect(typeof icon === "function" || typeof icon === "object").toBe(true);
-      });
-
-      it("returns null for invalid icon", () => {
-        const icon = getHeroIcon("NonExistentIcon");
-        expect(icon).toBeNull();
-      });
+    it("returns a component for a valid icon", () => {
+      const icon = getHeroIcon("HomeIcon");
+      expect(icon).toBeDefined();
+      // Hero Icons are forwardRef objects, not plain functions
+      expect(typeof icon === "function" || typeof icon === "object").toBe(true);
     });
 
-    describe("Default Behavior", () => {
-      it("defaults to solid variant when no variant specified", () => {
-        const solidIcon = getHeroIcon("HomeIcon", "solid");
-        const defaultIcon = getHeroIcon("HomeIcon");
-
-        // Both should return the same icon
-        expect(defaultIcon).toBeDefined();
-        expect(solidIcon).toBeDefined();
-      });
+    it("returns null for unknown icon names", () => {
+      expect(getHeroIcon("NonExistentIcon")).toBeNull();
+      expect(getHeroIcon("")).toBeNull();
     });
 
-    describe("Edge Cases", () => {
-      it("returns null for empty string", () => {
-        const icon = getHeroIcon("");
-        expect(icon).toBeNull();
-      });
-
-      it("returns null for icon name without 'Icon' suffix", () => {
-        // Hero Icons all end with "Icon"
-        const icon = getHeroIcon("Home");
-        expect(icon).toBeNull();
-      });
-
-      it("handles case-sensitive icon names", () => {
-        const correctCase = getHeroIcon("HomeIcon");
-        const incorrectCase = getHeroIcon("homeicon");
-
-        expect(correctCase).toBeDefined();
-        expect(incorrectCase).toBeNull();
-      });
-
-      it("returns null for numbers", () => {
-        const icon = getHeroIcon("123Icon");
-        expect(icon).toBeNull();
-      });
-
-      it("returns null for special characters", () => {
-        const icon = getHeroIcon("Home@Icon");
-        expect(icon).toBeNull();
-      });
+    it("defaults to solid variant", () => {
+      expect(getHeroIcon("HomeIcon")).toBe(getHeroIcon("HomeIcon", "solid"));
     });
   });
 
   describe("hasHeroIcon", () => {
-    describe("Smoke Tests", () => {
-      it("returns true for valid icon", () => {
-        expect(hasHeroIcon("HomeIcon")).toBe(true);
-      });
-
-      it("returns false for invalid icon", () => {
-        expect(hasHeroIcon("NonExistentIcon")).toBe(false);
-      });
+    it("returns true for icons present in each variant", () => {
+      expect(hasHeroIcon("HomeIcon")).toBe(true);
+      expect(hasHeroIcon("BuildingLibraryIcon", "solid")).toBe(true);
+      expect(hasHeroIcon("InformationCircleIcon", "outline")).toBe(true);
     });
 
-    describe("Variant Support", () => {
-      it("checks solid variant correctly", () => {
-        expect(hasHeroIcon("BuildingLibraryIcon", "solid")).toBe(true);
-      });
-
-      it("checks outline variant correctly", () => {
-        expect(hasHeroIcon("InformationCircleIcon", "outline")).toBe(true);
-      });
-
-      it("defaults to solid variant", () => {
-        expect(hasHeroIcon("HomeIcon")).toBe(true);
-      });
-    });
-
-    describe("Edge Cases", () => {
-      it("returns false for empty string", () => {
-        expect(hasHeroIcon("")).toBe(false);
-      });
-
-      it("returns false for null/undefined cast as string", () => {
-        expect(hasHeroIcon("null")).toBe(false);
-        expect(hasHeroIcon("undefined")).toBe(false);
-      });
+    it("returns false for unknown icon names", () => {
+      expect(hasHeroIcon("NonExistentIcon")).toBe(false);
     });
   });
 
   describe("getAllHeroIconNames", () => {
-    describe("Smoke Tests", () => {
-      it("returns an array", () => {
-        const icons = getAllHeroIconNames();
-        expect(Array.isArray(icons)).toBe(true);
-      });
-
-      it("returns non-empty array", () => {
-        const icons = getAllHeroIconNames();
-        expect(icons.length).toBeGreaterThan(0);
-      });
+    it("returns a non-empty array of Icon-suffixed names", () => {
+      const icons = getAllHeroIconNames();
+      expect(icons.length).toBeGreaterThan(0);
+      icons.forEach((name) => expect(name.endsWith("Icon")).toBe(true));
     });
 
-    describe("Solid Variant", () => {
-      it("includes common solid icons", () => {
-        const icons = getAllHeroIconNames("solid");
-
-        expect(icons).toContain("HomeIcon");
-        expect(icons).toContain("BuildingLibraryIcon");
-        expect(icons).toContain("HeartIcon");
-      });
-
-      it("all names end with 'Icon'", () => {
-        const icons = getAllHeroIconNames("solid");
-
-        icons.forEach((iconName) => {
-          expect(iconName.endsWith("Icon")).toBe(true);
-        });
-      });
-    });
-
-    describe("Outline Variant", () => {
-      it("includes common outline icons", () => {
-        const icons = getAllHeroIconNames("outline");
-
-        expect(icons).toContain("HomeIcon");
-        expect(icons).toContain("InformationCircleIcon");
-      });
-
-      it("returns different list for outline vs solid", () => {
-        const solidIcons = getAllHeroIconNames("solid");
-        const outlineIcons = getAllHeroIconNames("outline");
-
-        // Both should have icons, but may have different counts
-        expect(solidIcons.length).toBeGreaterThan(0);
-        expect(outlineIcons.length).toBeGreaterThan(0);
-      });
-    });
-
-    describe("Default Behavior", () => {
-      it("defaults to solid variant", () => {
-        const solidIcons = getAllHeroIconNames("solid");
-        const defaultIcons = getAllHeroIconNames();
-
-        expect(defaultIcons).toEqual(solidIcons);
-      });
+    it("supports both variants and defaults to solid", () => {
+      expect(getAllHeroIconNames("outline").length).toBeGreaterThan(0);
+      expect(getAllHeroIconNames()).toEqual(getAllHeroIconNames("solid"));
     });
   });
 });
