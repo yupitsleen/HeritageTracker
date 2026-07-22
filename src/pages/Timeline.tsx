@@ -87,7 +87,19 @@ export function Timeline() {
   const [comparisonModeEnabled, setComparisonModeEnabled] = useState(true);
 
   // Before release index for comparison mode (earlier imagery)
+  // Will be set to the release closest to the Jul 2014 baseline once loaded
   const [beforeReleaseIndex, setBeforeReleaseIndex] = useState(0);
+  const beforeReleaseInitialized = useRef(false);
+
+  // Set initial "before" release to closest to Jul 30, 2014 when releases are loaded.
+  // Runs once only - a ref guard (not "index === 0") because 0 is also a real,
+  // user-selectable release index (the earliest/Feb 2014 release).
+  useEffect(() => {
+    if (releases.length > 0 && !beforeReleaseInitialized.current) {
+      beforeReleaseInitialized.current = true;
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, new Date("2014-07-30")));
+    }
+  }, [releases]);
 
   // Comparison interval - controls time gap between before/after imagery
   const [comparisonInterval, setComparisonInterval] = useState<ComparisonInterval>(

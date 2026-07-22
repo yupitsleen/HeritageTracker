@@ -26,19 +26,19 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    expect(screen.getByText("2014")).toBeInTheDocument();
-    expect(screen.getByText("2024")).toBeInTheDocument();
+    expect(screen.getByText("Jul 2014")).toBeInTheDocument();
+    expect(screen.getByText("Jan 2024")).toBeInTheDocument();
     expect(screen.getByText("Latest")).toBeInTheDocument();
   });
 
   // ponytail: selection state asserted via aria-pressed, not color classes
   it("marks the selected period as pressed", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />, {
+    render(<TimeToggle selectedPeriod="JULY_2014" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
-    expect(screen.getByText(/2014/)).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Jul 2014")).toHaveAttribute("aria-pressed", "true");
   });
 
   it("calls onPeriodChange when a button is clicked", async () => {
@@ -61,8 +61,8 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    await user.click(screen.getByLabelText("Switch to 2014 Baseline satellite imagery"));
-    expect(mockOnChange).toHaveBeenCalledWith("BASELINE_2014");
+    await user.click(screen.getByLabelText("Switch to Jul 2014 satellite imagery"));
+    expect(mockOnChange).toHaveBeenCalledWith("JULY_2014");
 
     await user.click(screen.getByLabelText("Switch to Jan 2024 satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("EARLY_2024");
@@ -77,20 +77,20 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const button2014 = screen.getByLabelText("Switch to 2014 Baseline satellite imagery");
+    const buttonJuly2014 = screen.getByLabelText("Switch to Jul 2014 satellite imagery");
     const buttonJan2024 = screen.getByLabelText(
       "Switch to Jan 2024 satellite imagery"
     );
     const buttonCurrent = screen.getByLabelText("Switch to Latest satellite imagery");
 
-    expect(button2014).toBeInTheDocument();
+    expect(buttonJuly2014).toBeInTheDocument();
     expect(buttonJan2024).toBeInTheDocument();
     expect(buttonCurrent).toBeInTheDocument();
   });
 
   it("marks unselected periods as not pressed", () => {
     const mockOnChange = vi.fn();
-    render(<TimeToggle selectedPeriod="BASELINE_2014" onPeriodChange={mockOnChange} />, {
+    render(<TimeToggle selectedPeriod="JULY_2014" onPeriodChange={mockOnChange} />, {
       wrapper: Wrapper,
     });
 
@@ -104,11 +104,11 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const button2014 = screen.getByText("2014");
-    const button2024 = screen.getByText("2024");
+    const buttonJuly2014 = screen.getByText("Jul 2014");
+    const button2024 = screen.getByText("Jan 2024");
 
     // Check that tooltips contain full dates
-    expect(button2014).toHaveAttribute("title", "Feb 20, 2014");
+    expect(buttonJuly2014).toHaveAttribute("title", "Jul 30, 2014");
     expect(button2024).toHaveAttribute("title", "Jan 18, 2024");
   });
 });
