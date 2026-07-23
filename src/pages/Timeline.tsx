@@ -203,13 +203,11 @@ export function Timeline() {
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
 
-          // Set "after" imagery (post-destruction)
-          // For "as_large_as_possible" interval in comparison mode, use the last release to maximize the interval
-          const nearestReleaseIndex =
-            comparisonModeEnabled && comparisonInterval === "as_large_as_possible"
-              ? releases.length - 1 // Use last release for maximum interval
-              : findNearestWaybackRelease(destructionDate);
-          setCurrentReleaseIndex(nearestReleaseIndex);
+          // Set "after" imagery (post-destruction).
+          // Always the release just after destruction - "as_large_as_possible" widens
+          // the interval on the "before" side only, otherwise every site would show
+          // the same (newest) imagery and sync would look broken.
+          setCurrentReleaseIndex(findNearestWaybackRelease(destructionDate));
 
           // If comparison mode is enabled, also set "before" imagery using interval
           if (comparisonModeEnabled) {
