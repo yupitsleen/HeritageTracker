@@ -7,6 +7,8 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 interface TimeToggleProps {
   selectedPeriod: TimePeriod;
   onPeriodChange: (period: TimePeriod) => void;
+  /** Actual date of the newest Wayback release, overriding the CURRENT constant's stale date */
+  latestReleaseDate?: string;
 }
 
 /**
@@ -38,7 +40,7 @@ function formatShortDate(dateStr: string): string {
  * Tooltips display full dates on hover
  * Manual period selection disables timeline sync temporarily (until timeline reset)
  */
-export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) {
+export function TimeToggle({ selectedPeriod, onPeriodChange, latestReleaseDate }: TimeToggleProps) {
   const { setSyncActive } = useAnimation();
   const translate = useTranslation();
   const t = useThemeClasses();
@@ -47,14 +49,14 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
   const periods = useMemo(() => {
     return (Object.keys(HISTORICAL_IMAGERY) as TimePeriod[]).map((key) => {
       const period = HISTORICAL_IMAGERY[key];
+      const date = key === "CURRENT" && latestReleaseDate ? latestReleaseDate : period.date;
       return {
         value: key,
-        label: period.label,
-        shortLabel: key === "CURRENT" ? period.label : formatShortDate(period.date),
-        tooltip: formatFullDate(period.date),
+        label: formatShortDate(date),
+        tooltip: formatFullDate(date),
       };
     });
-  }, []);
+  }, [latestReleaseDate]);
 
   return (
     <div className={`absolute top-2 right-2 z-[1000] ${t.containerBg.opaque} backdrop-blur-sm rounded-lg shadow-md overflow-hidden`}>
@@ -76,7 +78,7 @@ export function TimeToggle({ selectedPeriod, onPeriodChange }: TimeToggleProps) 
             aria-pressed={selectedPeriod === period.value}
             aria-label={`${translate("map.switchTo")} ${period.label} ${translate("map.satelliteImagery")}`}
           >
-            {period.shortLabel}
+            {period.label}
           </button>
         ))}
       </div>

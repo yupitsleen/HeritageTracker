@@ -12,6 +12,7 @@ import { useAnimation } from "../../contexts/AnimationContext";
 import { getImageryPeriodForDate } from "../../utils/imageryPeriods";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { useWaybackReleases } from "../../hooks/useWaybackReleases";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -69,8 +70,14 @@ export function SiteDetailView({
   const setZoomToSiteEnabled = onZoomToSiteChange || contextSetZoomToSite;
   const setMapMarkersVisible = onMapMarkersChange || contextSetMapMarkers;
 
-  // Time period state for historical imagery (default to Jul 2014 baseline)
-  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("JULY_2014");
+  // Time period state for historical imagery (defaults to the newest available imagery)
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("CURRENT");
+
+  // Newest Wayback release backs the "CURRENT" period, so its label/tiles stay accurate
+  // as ESRI publishes new imagery. Falls back to the HISTORICAL_IMAGERY constant if the
+  // API is unreachable. Skipped when custom imagery is supplied (comparison mode).
+  const { releases } = useWaybackReleases();
+  const latestRelease = customTileUrl ? undefined : releases[releases.length - 1];
 
   // Sync satellite imagery with timeline (only if syncActive is true)
   useEffect(() => {
@@ -96,9 +103,12 @@ export function SiteDetailView({
         maxZoom: customMaxZoom || 19,
       };
     }
+    if (selectedPeriod === "CURRENT" && latestRelease) {
+      return { url: latestRelease.tileUrl, maxZoom: latestRelease.maxZoom };
+    }
     // Otherwise use standard historical imagery periods
     return HISTORICAL_IMAGERY[selectedPeriod];
-  }, [customTileUrl, customMaxZoom, selectedPeriod]);
+  }, [customTileUrl, customMaxZoom, selectedPeriod, latestRelease]);
 
   // Determine map center and zoom level (clamped to period's max zoom)
   // When zoomToSiteEnabled is OFF, only show marker without zooming in
@@ -155,7 +165,11 @@ export function SiteDetailView({
 
       {/* Time period toggle - hide when using custom Wayback imagery */}
       {!customTileUrl && (
-        <TimeToggle selectedPeriod={selectedPeriod} onPeriodChange={setSelectedPeriod} />
+        <TimeToggle
+          selectedPeriod={selectedPeriod}
+          onPeriodChange={setSelectedPeriod}
+          latestReleaseDate={latestRelease?.releaseDate}
+        />
       )}
 
       <MapContainer
@@ -174,7 +188,7 @@ export function SiteDetailView({
 
         {/* Satellite tile layer - supports historical imagery via Wayback */}
         <TileLayer
-          key={selectedPeriod} // Force re-render when time period changes
+          key={tileUrl} // Force re-render when the imagery source changes
           url={tileUrl}
           attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
           maxZoom={periodMaxZoom}

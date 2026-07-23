@@ -92,11 +92,14 @@ export const HISTORICAL_IMAGERY = {
     url: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/41468/{z}/{y}/{x}",
     maxZoom: 18, // Recent imagery, but zoom 18 ensures tile availability
   },
-  /** Current - Live ESRI World Imagery (always the latest available) */
+  /**
+   * Current - fallback only. At runtime SiteDetailView replaces this with the newest
+   * ESRI Wayback release; these values are used only if the Wayback API is unreachable.
+   */
   CURRENT: {
     releaseNum: 44000,
     date: "2025-01-15",
-    label: "Latest",
+    label: "Jan 2025",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     maxZoom: 19,
   },
