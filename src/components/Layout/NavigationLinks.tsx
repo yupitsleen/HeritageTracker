@@ -18,7 +18,7 @@ interface NavigationLinksProps {
 }
 
 const NAV_ITEMS: NavigationItem[] = [
-  { path: "/", translationKey: "header.dashboard", variant: "primary", hideOnMobile: true },
+  { path: "/dashboard", translationKey: "header.dashboard", variant: "primary", hideOnMobile: true },
   { path: "/data", translationKey: "header.data", variant: "primary" },
   { path: "/timeline", translationKey: "header.timeline", variant: "secondary" },
 ];
@@ -57,7 +57,7 @@ export function NavigationLinks({
         }
 
         // Determine if this nav item is active
-        const pageKey = path === "/" ? "dashboard" : path.substring(1); // '/data' -> 'data'
+        const pageKey = path.substring(1); // '/data' -> 'data'
         const isActive = activePage === pageKey;
 
         return (

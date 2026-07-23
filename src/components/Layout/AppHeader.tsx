@@ -66,7 +66,8 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   // Determine active page for highlighting
   const getActivePage = () => {
     const path = location.pathname;
-    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "dashboard";
+    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "timeline";
+    if (path.includes("/dashboard")) return "dashboard";
     if (path.includes("/data")) return "data";
     if (path.includes("/timeline")) return "timeline";
     if (path.includes("/about")) return "about";

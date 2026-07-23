@@ -25,10 +25,11 @@ import { BREAKPOINTS } from "./constants/layout";
 function AppRouter({ isMobile }: { isMobile: boolean }) {
   return (
     <Routes>
-      {/* On mobile, show DataPage instead of DashboardPage (timeline not shown) */}
-      <Route path="/" element={isMobile ? <DataPage /> : <DashboardPage />} />
+      <Route path="/" element={<Timeline />} />
       <Route path="/data" element={<DataPage />} />
       <Route path="/timeline" element={<Timeline />} />
+      {/* On mobile, show DataPage instead of DashboardPage (timeline not shown) */}
+      <Route path="/dashboard" element={isMobile ? <DataPage /> : <DashboardPage />} />
 
       {/* Legacy donate route - redirect to resources/donate */}
       <Route path="/donate" element={<DonatePage />} />
