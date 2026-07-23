@@ -19,18 +19,13 @@ export function TrackersPage() {
     >
       <ResourceSection title={t('resources.trackers.palestineSection')}>
         <ResourceLink
-          title="Gaza Mosque Archive"
-          url="https://gazamosques.com/"
-          description={t('resources.trackers.gazaMosquesDesc')}
-        />
-        <ResourceLink
           title="Palestine Open Maps"
           url="https://palopenmaps.org/"
           description={t('resources.trackers.openMapsDesc')}
         />
         <ResourceLink
           title="Visualizing Palestine"
-          url="https://www.visualizingpalestine.org/"
+          url="https://visualizingpalestine.org/"
           description={t('resources.trackers.vizPalDesc')}
         />
       </ResourceSection>
@@ -38,8 +33,8 @@ export function TrackersPage() {
       <ResourceSection title={t('resources.trackers.syriaSection')}>
         <ResourceLink
           title="Syrian Heritage Archive Project"
-          organization="Heritage for Peace"
-          url="https://www.heritageforpeace.org/syrian-heritage-initiative/syrian-heritage-archive-project/"
+          organization="German Archaeological Institute / Museum für Islamische Kunst, Berlin"
+          url="https://syrian-heritage.org/shap/"
           description={t('resources.trackers.syrianArchiveDesc')}
         />
         <ResourceLink
@@ -49,8 +44,8 @@ export function TrackersPage() {
         />
         <ResourceLink
           title="ASOR Cultural Heritage Initiatives - Syria"
-          organization="American Schools of Oriental Research"
-          url="https://www.asor-syrianheritage.org/"
+          organization="American Society of Overseas Research"
+          url="https://www.asor.org/chi/reports/weekly-monthly"
           description={t('resources.trackers.asorSyriaDesc')}
         />
       </ResourceSection>
@@ -69,12 +64,6 @@ export function TrackersPage() {
       </ResourceSection>
 
       <ResourceSection title={t('resources.trackers.ukraineSection')}>
-        <ResourceLink
-          title="Conflict Observatory - Ukraine"
-          organization="U.S. Department of State"
-          url="https://hub.conflictobservatory.org/"
-          description={t('resources.trackers.conflictObsDesc')}
-        />
         <ResourceLink
           title="Ukraine Cultural Heritage Monitoring Lab"
           organization="Virginia Museum of Natural History / Smithsonian"

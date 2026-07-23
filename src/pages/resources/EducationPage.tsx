@@ -21,17 +21,18 @@ export function EducationPage() {
       <ResourceSection title={t('resources.education.teachingResourcesSection')}>
         <ResourceLink
           title="Zinn Education Project - Teaching Palestine"
-          url="https://www.zinnedproject.org/campaigns/teach-palestine/"
+          url="https://www.zinnedproject.org/materials/teaching-palestine/"
           description={t('resources.education.zinnDesc')}
         />
         <ResourceLink
-          title="Teaching for Change - Palestine Resources"
-          url="https://www.teachingforchange.org/"
+          title="Social Justice Books - Palestine Booklist"
+          organization="Teaching for Change"
+          url="https://socialjusticebooks.org/booklists/palestine/"
           description={t('resources.education.t4cDesc')}
         />
         <ResourceLink
-          title="Rethinking Schools - Palestine Curriculum"
-          url="https://rethinkingschools.org/"
+          title="Rethinking Schools - Palestine Teaching Resources"
+          url="https://rethinkingschools.org/palestine/"
           description={t('resources.education.rethinkingDesc')}
         />
       </ResourceSection>
@@ -57,23 +58,18 @@ export function EducationPage() {
       <ResourceSection title={t('resources.education.booksSection')}>
         <ResourceLink
           title="'The Hundred Years' War on Palestine' by Rashid Khalidi"
-          url="https://www.penguinrandomhouse.com/books/565905/the-hundred-years-war-on-palestine-by-rashid-khalidi/"
+          url="https://us.macmillan.com/books/9781250787651"
           description={t('resources.education.khalidiDesc')}
         />
         <ResourceLink
           title="'The Ethnic Cleansing of Palestine' by Ilan Pappé"
-          url="https://oneworld-publications.com/the-ethnic-cleansing-of-palestine-pb.html"
+          url="https://oneworld-publications.com/work/the-ethnic-cleansing-of-palestine/"
           description={t('resources.education.pappeDesc')}
         />
         <ResourceLink
           title="'Palestine: A Four Thousand Year History' by Nur Masalha"
-          url="https://www.bloomsbury.com/uk/palestine-9781786992727/"
+          url="https://www.bloomsburycollections.com/book/palestine-a-four-thousand-year-history/"
           description={t('resources.education.masalhaDesc')}
-        />
-        <ResourceLink
-          title="'Except for Palestine' by Marc Lamont Hill & Mitchell Plitnick"
-          url="https://thenewpress.com/books/except-for-palestine"
-          description={t('resources.education.hillPlitnickDesc')}
         />
       </ResourceSection>
 
@@ -85,7 +81,7 @@ export function EducationPage() {
         />
         <ResourceLink
           title="Sitti's Key - Children's Story"
-          url="https://www.goodreads.com/book/show/23995614-sitti-s-key"
+          url="https://www.goodreads.com/book/show/157978277"
           description={t('resources.education.sittisKeyDesc')}
         />
       </ResourceSection>

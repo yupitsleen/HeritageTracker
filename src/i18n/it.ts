@@ -368,7 +368,7 @@ export const it: Translations = {
       academicSection: "Pubblicazioni Accademiche",
       databasesSection: "Database e Archivi",
       unescoReportDesc:
-        "Comprehensive damage assessment of cultural heritage sites in Gaza (October 2025).",
+        "Ongoing satellite-based assessment of damage to cultural heritage sites in Gaza.",
       ochaDesc:
         "Real-time humanitarian situation reports and data on occupied Palestinian territory.",
       unrwaReportsDesc: "Detailed reports on humanitarian conditions and refugee needs.",
@@ -395,9 +395,8 @@ export const it: Translations = {
       newsOutletsSection: "Testate Giornalistiche",
       documentariesSection: "Film Documentari",
       socialMediaSection: "Documentazione sui Social Media",
-      palMuseumDesc: "Digital archive preserving Palestinian cultural heritage and history.",
-      photoCollectionDesc:
-        "Curated collection of historical and contemporary Palestinian photographs.",
+      palMuseumDesc:
+        "Public digital archive of Palestinian social history built by The Palestinian Museum.",
       unrwaArchiveDesc: "70+ years of photographs and films documenting Palestinian refugee life.",
       alJazeeraDesc:
         "Comprehensive coverage of Palestinian news, politics, and humanitarian situation.",
@@ -407,8 +406,6 @@ export const it: Translations = {
       mondoweissDesc:
         "News website devoted to covering American foreign policy in the Middle East.",
       "972Desc": "Magazine providing news and analysis from Israeli and Palestinian journalists.",
-      "5camerasDesc":
-        "Oscar-nominated documentary following Palestinian farmer's nonviolent resistance (2011).",
       occupationMindDesc: "Documentary examining US media coverage of Israel-Palestine conflict.",
       gazaFightsDesc: "Documentary on Gaza's 2018-2019 Great March of Return protests.",
       eyeOnPalDesc:
@@ -426,9 +423,9 @@ export const it: Translations = {
       zinnDesc:
         "Free downloadable lessons and resources for teaching Palestine in K-12 classrooms.",
       t4cDesc:
-        "Non-profit providing social justice teaching resources including Palestine curriculum.",
+        "Booklist of vetted children's and young adult titles on Palestine, from Teaching for Change.",
       rethinkingDesc:
-        "Publisher of educational materials promoting social and environmental justice in education.",
+        "Social justice education publisher with a collection of Palestine teaching resources.",
       timelineDesc:
         "Interactive visual timeline of key events in Palestinian history from 1799 to present.",
       nakbaArchiveDesc:
@@ -440,8 +437,6 @@ export const it: Translations = {
       pappeDesc:
         "Groundbreaking historical account of systematic expulsion of Palestinians in 1947-1949.",
       masalhaDesc: "Comprehensive history challenging colonial narratives about Palestine's past.",
-      hillPlitnickDesc:
-        "Analysis of how Palestinian rights are treated as exception in progressive movements.",
       pisforpalDesc:
         "Alphabet book introducing children to Palestinian culture, food, and history.",
       sittisKeyDesc: "Children's story about Palestinian family memory and connection to homeland.",
@@ -469,7 +464,7 @@ export const it: Translations = {
       gaResolutionsDesc:
         "Collection of General Assembly resolutions on Palestinian rights and self-determination.",
       scResolutionsDesc:
-        "Security Council resolutions on Israel-Palestine conflict including Resolution 242.",
+        "Security Council resolutions on the question of Palestine.",
       unCommitteeDesc: "Committee supporting inalienable rights of Palestinian people since 1975.",
       bdsDesc:
         "Palestinian-led movement for boycott, divestment, and sanctions until international law compliance.",
@@ -488,20 +483,18 @@ export const it: Translations = {
       yemenSection: "Documentazione del Conflitto Yemenita",
       ukraineSection: "Protezione del Patrimonio Ucraino",
       globalSection: "Documentazione Globale del Patrimonio e dei Conflitti",
-      gazaMosquesDesc:
-        "Dedicated documentation of mosque destruction in Gaza with satellite imagery.",
       openMapsDesc:
         "Interactive maps of Palestinian geography, demolished villages, and cultural sites.",
       vizPalDesc:
         "Data-driven storytelling about Palestine through infographics and visualizations.",
-      syrianArchiveDesc: "Database of endangered Syrian heritage sites with damage assessments.",
+      syrianArchiveDesc:
+        "Digital register of Syrian cultural heritage built from over 300,000 archived items.",
       dayAfterDesc:
         "Syrian civil society organization working on heritage protection and post-conflict planning.",
       asorSyriaDesc: "Weekly reports on cultural heritage destruction in Syria since 2014.",
       yemenDataDesc: "Independent project documenting airstrikes and civilian casualties in Yemen.",
       yemenArchiveDesc:
         "Digital archive preserving documentation of Yemen conflict for accountability.",
-      conflictObsDesc: "US government initiative documenting atrocities and war crimes in Ukraine.",
       ukraineLabDesc:
         "Real-time monitoring of cultural heritage sites at risk in Ukraine using satellite imagery.",
       smithsonianDesc:
