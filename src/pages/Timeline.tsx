@@ -41,7 +41,7 @@ const SiteDetailPanel = lazy(() =>
 
 /**
  * Timeline Page
- * Full-screen satellite map with Wayback imagery (186 historical versions)
+ * Full-screen satellite map with Wayback imagery (historical versions)
  * Timeline scrubber for site filtering
  * Reuses SiteDetailView and TimelineScrubber from home page
  */
@@ -203,13 +203,11 @@ export function Timeline() {
         if (site?.dateDestroyed) {
           const destructionDate = new Date(site.dateDestroyed);
 
-          // Set "after" imagery (post-destruction)
-          // For "as_large_as_possible" interval in comparison mode, use the last release to maximize the interval
-          const nearestReleaseIndex =
-            comparisonModeEnabled && comparisonInterval === "as_large_as_possible"
-              ? releases.length - 1 // Use last release for maximum interval
-              : findNearestWaybackRelease(destructionDate);
-          setCurrentReleaseIndex(nearestReleaseIndex);
+          // Set "after" imagery (post-destruction).
+          // Always the release just after destruction - "as_large_as_possible" widens
+          // the interval on the "before" side only, otherwise every site would show
+          // the same (newest) imagery and sync would look broken.
+          setCurrentReleaseIndex(findNearestWaybackRelease(destructionDate));
 
           // If comparison mode is enabled, also set "before" imagery using interval
           if (comparisonModeEnabled) {
@@ -284,7 +282,7 @@ export function Timeline() {
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
             <div className="text-center">
               <div className={`text-xl mb-2 ${t.text.heading}`}>Loading Wayback Archive...</div>
-              <div className={`text-sm ${t.text.muted}`}>Fetching 186 historical imagery versions...</div>
+              <div className={`text-sm ${t.text.muted}`}>Fetching historical imagery versions...</div>
             </div>
           </div>
         )}

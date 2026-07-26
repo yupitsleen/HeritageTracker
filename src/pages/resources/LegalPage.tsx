@@ -22,7 +22,7 @@ export function LegalPage() {
         <ResourceLink
           title="ICJ Case: South Africa v. Israel"
           organization="International Court of Justice"
-          url="https://www.icj-cij.org/"
+          url="https://www.icj-cij.org/case/192"
           description={t('resources.legal.icjCaseDesc')}
         />
         <ResourceLink
@@ -66,13 +66,13 @@ export function LegalPage() {
         <ResourceLink
           title="UN General Assembly Resolutions on Palestine"
           organization="United Nations"
-          url="https://www.un.org/unispal/document-tags/general-assembly-resolutions/"
+          url="https://www.un.org/unispal/document-category/general-assembly-resolution/"
           description={t('resources.legal.gaResolutionsDesc')}
         />
         <ResourceLink
           title="UN Security Council Resolutions on Palestine"
           organization="United Nations"
-          url="https://www.un.org/unispal/document-tags/security-council-resolutions/"
+          url="https://www.un.org/unispal/document-category/security-council-resolution/"
           description={t('resources.legal.scResolutionsDesc')}
         />
         <ResourceLink

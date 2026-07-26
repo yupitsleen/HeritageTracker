@@ -20,14 +20,10 @@ export function MediaPage() {
     >
       <ResourceSection title={t('resources.media.photoArchivesSection')}>
         <ResourceLink
-          title="The Palestine Museum Digital Archive"
-          url="https://www.palmuseum.org/"
+          title="The Palestinian Museum Digital Archive"
+          organization="The Palestinian Museum"
+          url="https://palarchive.org/"
           description={t('resources.media.palMuseumDesc')}
-        />
-        <ResourceLink
-          title="Palestinian Museum Photo Collection"
-          url="https://www.palmuseum.org/en/collection"
-          description={t('resources.media.photoCollectionDesc')}
         />
         <ResourceLink
           title="UNRWA Photo and Film Archive"
@@ -66,11 +62,6 @@ export function MediaPage() {
       </ResourceSection>
 
       <ResourceSection title={t('resources.media.documentariesSection')}>
-        <ResourceLink
-          title="5 Broken Cameras"
-          url="https://www.5brokencameras.com/"
-          description={t('resources.media.5camerasDesc')}
-        />
         <ResourceLink
           title="The Occupation of the American Mind"
           url="https://www.occupationmovie.org/"

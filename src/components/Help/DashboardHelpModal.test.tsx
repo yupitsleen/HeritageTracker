@@ -38,9 +38,9 @@ describe("DashboardHelpModal", () => {
       expect(screen.getByText("Timeline Page")).toBeInTheDocument();
     });
 
-    it("mentions 70 sites representing 140-160 buildings", () => {
+    it("describes the project in the overview", () => {
       renderWithContext(<DashboardHelpModal />);
-      expect(screen.getByText(/70 cultural heritage sites in Gaza \(representing 140-160 buildings\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/documents cultural heritage sites in Gaza/i)).toBeInTheDocument();
     });
 
     it("describes site table features", () => {
@@ -70,7 +70,7 @@ describe("DashboardHelpModal", () => {
 
     it("mentions Timeline Page with ESRI Wayback", () => {
       renderWithContext(<DashboardHelpModal />);
-      expect(screen.getByText(/186 historical satellite imagery versions/i)).toBeInTheDocument();
+      expect(screen.getByText(/specialized page with historical satellite imagery/i)).toBeInTheDocument();
       expect(screen.getByText(/ESRI Wayback/i)).toBeInTheDocument();
     });
   });

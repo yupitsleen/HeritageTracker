@@ -63,8 +63,8 @@ export type WaybackSliderProps = BaseWaybackSliderProps &
  * WaybackSlider - Interactive timeline for Wayback imagery releases
  *
  * Features:
- * - Year labels (2014-2025) spaced by date
- * - Tick marks for each of 186 releases positioned by date
+ * - Year labels spaced by date
+ * - Tick marks for each release positioned by date
  * - Clickable timeline bar to jump to any release
  * - Previous/Next step buttons
  * - Visual scrubber showing current position

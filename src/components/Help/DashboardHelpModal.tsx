@@ -16,7 +16,7 @@ export function DashboardHelpModal() {
         <section>
           <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
           <p className="text-sm">
-            Heritage Tracker documents 70 cultural heritage sites in Gaza (representing 140-160 buildings) that have been damaged or destroyed.
+            Heritage Tracker documents cultural heritage sites in Gaza that have been damaged or destroyed.
             Explore the interactive map, timeline, and table to learn about these historically significant locations.
           </p>
         </section>
@@ -63,8 +63,8 @@ export function DashboardHelpModal() {
         <section>
           <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Timeline Page</h3>
           <p className="text-sm">
-            Click "Timeline" in the header to view a specialized page with 186 historical satellite imagery versions
-            from ESRI Wayback (2014-2025), showing how the landscape has changed over time with side-by-side comparison mode.
+            Click "Timeline" in the header to view a specialized page with historical satellite imagery
+            from ESRI Wayback, showing how the landscape has changed over time with side-by-side comparison mode.
           </p>
         </section>
       </div>

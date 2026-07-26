@@ -28,7 +28,7 @@ describe("TimeToggle", () => {
 
     expect(screen.getByText("Jul 2014")).toBeInTheDocument();
     expect(screen.getByText("Jan 2024")).toBeInTheDocument();
-    expect(screen.getByText("Latest")).toBeInTheDocument();
+    expect(screen.getByText("Jan 2025")).toBeInTheDocument();
   });
 
   // ponytail: selection state asserted via aria-pressed, not color classes
@@ -48,7 +48,7 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const currentButton = screen.getByLabelText("Switch to Latest satellite imagery");
+    const currentButton = screen.getByLabelText("Switch to Jan 2025 satellite imagery");
     await user.click(currentButton);
 
     expect(mockOnChange).toHaveBeenCalledWith("CURRENT");
@@ -67,7 +67,7 @@ describe("TimeToggle", () => {
     await user.click(screen.getByLabelText("Switch to Jan 2024 satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("EARLY_2024");
 
-    await user.click(screen.getByLabelText("Switch to Latest satellite imagery"));
+    await user.click(screen.getByLabelText("Switch to Jan 2025 satellite imagery"));
     expect(mockOnChange).toHaveBeenCalledWith("CURRENT");
   });
 
@@ -81,7 +81,7 @@ describe("TimeToggle", () => {
     const buttonJan2024 = screen.getByLabelText(
       "Switch to Jan 2024 satellite imagery"
     );
-    const buttonCurrent = screen.getByLabelText("Switch to Latest satellite imagery");
+    const buttonCurrent = screen.getByLabelText("Switch to Jan 2025 satellite imagery");
 
     expect(buttonJuly2014).toBeInTheDocument();
     expect(buttonJan2024).toBeInTheDocument();
@@ -94,7 +94,7 @@ describe("TimeToggle", () => {
       wrapper: Wrapper,
     });
 
-    const unselected = screen.getByLabelText("Switch to Latest satellite imagery");
+    const unselected = screen.getByLabelText("Switch to Jan 2025 satellite imagery");
     expect(unselected).toHaveAttribute("aria-pressed", "false");
   });
 

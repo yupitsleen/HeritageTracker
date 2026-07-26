@@ -22,7 +22,7 @@ export function ResearchPage() {
         <ResourceLink
           title="UNESCO Gaza Heritage Damage Assessment"
           organization="UNESCO"
-          url="https://www.unesco.org/"
+          url="https://www.unesco.org/en/gaza/assessment"
           description={t('resources.research.unescoReportDesc')}
         />
         <ResourceLink
@@ -41,9 +41,9 @@ export function ResearchPage() {
 
       <ResourceSection title={t('resources.research.documentationSection')}>
         <ResourceLink
-          title="Forensic Architecture - Gaza Investigations"
+          title="Forensic Architecture - Palestine Investigations"
           organization="Goldsmiths, University of London"
-          url="https://forensic-architecture.org/"
+          url="https://forensic-architecture.org/category/palestine"
           description={t('resources.research.forensicProjectsDesc')}
         />
         <ResourceLink

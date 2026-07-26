@@ -426,14 +426,12 @@ export interface Translations {
       documentariesSection: string;
       socialMediaSection: string;
       palMuseumDesc: string;
-      photoCollectionDesc: string;
       unrwaArchiveDesc: string;
       alJazeeraDesc: string;
       meeDesc: string;
       eintifadaDesc: string;
       mondoweissDesc: string;
       "972Desc": string;
-      "5camerasDesc": string;
       occupationMindDesc: string;
       gazaFightsDesc: string;
       eyeOnPalDesc: string;
@@ -455,7 +453,6 @@ export interface Translations {
       khalidiDesc: string;
       pappeDesc: string;
       masalhaDesc: string;
-      hillPlitnickDesc: string;
       pisforpalDesc: string;
       sittisKeyDesc: string;
     };
@@ -489,7 +486,6 @@ export interface Translations {
       yemenSection: string;
       ukraineSection: string;
       globalSection: string;
-      gazaMosquesDesc: string;
       openMapsDesc: string;
       vizPalDesc: string;
       syrianArchiveDesc: string;
@@ -497,7 +493,6 @@ export interface Translations {
       asorSyriaDesc: string;
       yemenDataDesc: string;
       yemenArchiveDesc: string;
-      conflictObsDesc: string;
       ukraineLabDesc: string;
       smithsonianDesc: string;
       bellingcatDesc: string;

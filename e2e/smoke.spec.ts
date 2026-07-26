@@ -54,15 +54,17 @@ test.describe('Smoke Tests - Navigation', () => {
 
 test.describe('Smoke Tests - Mock Data', () => {
   test('map shows site markers', async ({ page }) => {
-    await page.goto('/');
+    // The landing page (/) is the Timeline's comparison satellite view, which hides
+    // site markers by default. The Dashboard is the marker map, so test it here.
+    await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
 
-    // Wait for map to render
+    // Wait for map to render (dashboard map is lazy-loaded; allow extra time under parallel CI load)
     const map = page.locator('.leaflet-container').first();
-    await expect(map).toBeVisible();
+    await expect(map).toBeVisible({ timeout: 15000 });
 
-    // Look for markers or clusters (using more flexible selector)
-    const markers = page.locator('.leaflet-marker-icon, .leaflet-marker-cluster, .marker-cluster, canvas.leaflet-zoom-animated').first();
+    // Look for markers or clusters (flexible: divIcon markers, clusters, canvas, or SVG CircleMarkers)
+    const markers = page.locator('.leaflet-marker-icon, .leaflet-marker-cluster, .marker-cluster, canvas.leaflet-zoom-animated, path.leaflet-interactive').first();
     await expect(markers).toBeVisible({ timeout: 5000 });
   });
 

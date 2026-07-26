@@ -53,7 +53,7 @@ export function OrganizationsPage() {
         />
         <ResourceLink
           title="Amnesty International - Palestine"
-          url="https://www.amnesty.org/en/location/middle-east-and-north-africa/palestine-state-of/"
+          url="https://www.amnesty.org/en/location/middle-east-and-north-africa/middle-east/palestine-state-of/"
           description={t('resources.organizations.amnestyDesc')}
         />
         <ResourceLink
@@ -84,13 +84,13 @@ export function OrganizationsPage() {
 
       <ResourceSection title={t('resources.organizations.legalSection')}>
         <ResourceLink
-          title="International Court of Justice - Palestine Case"
+          title="International Court of Justice"
           organization="United Nations"
           url="https://www.icj-cij.org/"
           description={t('resources.organizations.icjDesc')}
         />
         <ResourceLink
-          title="International Criminal Court - Palestine"
+          title="International Criminal Court"
           url="https://www.icc-cpi.int/"
           description={t('resources.organizations.iccDesc')}
         />
