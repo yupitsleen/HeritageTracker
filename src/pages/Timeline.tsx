@@ -41,7 +41,7 @@ const SiteDetailPanel = lazy(() =>
 
 /**
  * Timeline Page
- * Full-screen satellite map with Wayback imagery (186 historical versions)
+ * Full-screen satellite map with Wayback imagery (historical versions)
  * Timeline scrubber for site filtering
  * Reuses SiteDetailView and TimelineScrubber from home page
  */
@@ -282,7 +282,7 @@ export function Timeline() {
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
             <div className="text-center">
               <div className={`text-xl mb-2 ${t.text.heading}`}>Loading Wayback Archive...</div>
-              <div className={`text-sm ${t.text.muted}`}>Fetching 186 historical imagery versions...</div>
+              <div className={`text-sm ${t.text.muted}`}>Fetching historical imagery versions...</div>
             </div>
           </div>
         )}

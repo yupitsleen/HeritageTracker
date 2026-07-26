@@ -16,8 +16,8 @@ export function TimelineHelpModal() {
         <section>
           <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
           <p className="text-sm">
-            The Satellite Timeline provides access to 186 historical satellite imagery versions from
-            ESRI Wayback (2014-2025). This specialized view lets you see how the landscape has changed over time,
+            The Satellite Timeline provides access to historical satellite imagery from
+            ESRI Wayback. This specialized view lets you see how the landscape has changed over time,
             with precise timestamps for each satellite image capture.
           </p>
         </section>
@@ -35,8 +35,8 @@ export function TimelineHelpModal() {
         <section>
           <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Wayback Timeline Slider</h3>
           <ul className="text-sm space-y-1 list-disc list-inside">
-            <li><strong>Year Markers:</strong> Vertical labels (2014-2025) mark each calendar year</li>
-            <li><strong>Gray Lines:</strong> Each line represents one satellite imagery capture date (186 total)</li>
+            <li><strong>Year Markers:</strong> Vertical labels mark each calendar year</li>
+            <li><strong>Gray Lines:</strong> Each line represents one satellite imagery capture date</li>
             <li><strong>Red Dots:</strong> Show when sites were destroyed (vertically stacked for visibility)</li>
             <li><strong>Green Scrubber:</strong> Drag to view different dates, tooltip shows current date</li>
             <li>Click anywhere on the timeline to jump to that date</li>

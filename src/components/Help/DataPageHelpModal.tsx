@@ -16,9 +16,8 @@ export function DataPageHelpModal() {
         <section>
           <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
           <p className="text-sm">
-            The Data page provides a comprehensive table view of all 70 cultural heritage sites in Gaza
-            (representing 140-160 buildings). Use the filters, search, and sorting features to explore and
-            analyze the complete dataset.
+            The Data page provides a comprehensive table view of all documented cultural heritage sites in Gaza.
+            Use the filters, search, and sorting features to explore and analyze the complete dataset.
           </p>
         </section>
 

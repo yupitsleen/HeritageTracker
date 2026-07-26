@@ -378,8 +378,8 @@ export const About = memo(function About() {
           <div className={`space-y-1.5 text-sm leading-relaxed ${t.text.body}`}>
             <p>
               <strong>Focus:</strong> 114 UNESCO-verified sites (Oct 2024). 64.7% of Gaza's 320
-              archaeological sites damaged or destroyed. Currently documenting 70 sites
-              (representing 140-160 buildings).
+              archaeological sites damaged or destroyed. This tracker documents the most
+              significant of these sites.
             </p>
             <p>
               <strong>Legal alignment:</strong> 1954 Hague Convention, Rome Statute (ICC), UN
