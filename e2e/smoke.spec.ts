@@ -26,16 +26,13 @@ test.describe('Smoke Tests - Navigation', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Look for Timeline link
-    const timelineLink = page.getByRole('link', { name: /timeline/i }).first();
-    const count = await timelineLink.count();
+    // Header nav items are buttons wired to the router (not <a> links).
+    const dashboardNav = page.getByRole('button', { name: /dashboard/i }).first();
+    await expect(dashboardNav).toBeVisible();
 
-    if (count > 0) {
-      await expect(timelineLink).toBeVisible();
-      await timelineLink.click();
-      await page.waitForLoadState('networkidle');
-      expect(page.url()).toContain('/timeline');
-    }
+    await dashboardNav.click();
+    await page.waitForLoadState('networkidle');
+    expect(page.url()).toContain('/dashboard');
   });
 
   test('browser back button works', async ({ page }) => {
@@ -59,31 +56,24 @@ test.describe('Smoke Tests - Mock Data', () => {
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
 
-    // Wait for map to render (dashboard map is lazy-loaded; allow extra time under parallel CI load)
+    // Wait for map to render. The dashboard map chunk (leaflet + map-vendor) is heavy and
+    // lazy-loaded; a cold dev server under parallel load can exceed 15s on first compile.
     const map = page.locator('.leaflet-container').first();
-    await expect(map).toBeVisible({ timeout: 15000 });
+    await expect(map).toBeVisible({ timeout: 30000 });
 
     // Look for markers or clusters (flexible: divIcon markers, clusters, canvas, or SVG CircleMarkers)
     const markers = page.locator('.leaflet-marker-icon, .leaflet-marker-cluster, .marker-cluster, canvas.leaflet-zoom-animated, path.leaflet-interactive').first();
     await expect(markers).toBeVisible({ timeout: 5000 });
   });
 
-  test('clicking on map marker shows site details', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    // Find and click a marker
-    const marker = page.locator('.leaflet-marker-icon').first();
-    const markerCount = await marker.count();
-
-    if (markerCount > 0) {
-      await marker.click();
-
-      // Should show popup or detail panel
-      const popup = page.locator('.leaflet-popup, .site-detail, [role="dialog"]').first();
-      await expect(popup).toBeVisible({ timeout: 3000 });
-    }
-  });
+  // FIXME — rebuild as a real journey in the workflow phase (docs/REDESIGN_TEST_PLAN.md →
+  // "Mobile: map marker tap" / site selection). The original test guarded marker existence on
+  // "/" (the Timeline landing view, which hides markers) so it never asserted anything. On the
+  // Dashboard the markers render fine (see "map shows site markers"), but they are SVG
+  // CircleMarkers that a plain Playwright .click() cannot satisfy actionability on — the click
+  // retries until the 60s test timeout. Selecting a site → opening its detail needs a deliberate
+  // approach (force-click / click at marker coordinates), built with the other selection journeys.
+  test.fixme('clicking on map marker shows site details', async () => {});
 });
 
 test.describe('Smoke Tests - Error Handling', () => {
