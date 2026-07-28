@@ -33,7 +33,9 @@ export function DateRangeFilter({
   return (
     <div>
       {label && <FilterLabel label={label} tooltip={tooltip} />}
-      <div className="flex items-center gap-1.5">
+      {/* flex-wrap so a narrow container (e.g. the filter sidebar) drops the second
+          input to its own line instead of clipping it. */}
+      <div className="flex flex-wrap items-center gap-1.5">
         <Input
           variant="date"
           value={startDate?.toISOString().split("T")[0] || ""}

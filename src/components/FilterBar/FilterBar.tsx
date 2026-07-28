@@ -12,7 +12,7 @@ import { Button } from "../Button/Button";
 import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { SiteTypeIcon } from "../Icons/SiteTypeIcon";
-import { useTranslation } from "../../contexts/LocaleContext";
+import { useLocale } from "../../contexts/LocaleContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { isDestructionDateFilterActive } from "../../types/filters";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -81,7 +81,7 @@ export const FilterBar = memo(function FilterBar({
   sidebarDefaultCollapsed = false,
   onVariantToggle,
 }: FilterBarProps) {
-  const translate = useTranslation();
+  const { t: translate, localeConfig } = useLocale();
   const t = useThemeClasses();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(sidebarDefaultCollapsed);
@@ -449,9 +449,9 @@ export const FilterBar = memo(function FilterBar({
           /* Collapsed: a thin rail with a re-open button + active-filter count. */
           <aside
             className={cn(
-              "hidden md:flex md:flex-col md:w-12 md:flex-shrink-0 items-center gap-2 p-2 border rounded",
+              "hidden md:flex md:flex-col md:w-12 md:flex-shrink-0 items-center gap-2 p-2 border rounded shadow-lg relative z-10",
               t.bg.primary,
-              t.border.subtle
+              t.border.primary
             )}
             aria-label={translate("filters.filters")}
           >
@@ -474,13 +474,17 @@ export const FilterBar = memo(function FilterBar({
           </aside>
         ) : (
           <aside
+            dir="rtl"
             className={cn(
-              "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 gap-3 p-3 overflow-y-auto border rounded",
+              "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 overflow-y-auto overflow-x-hidden border rounded shadow-lg relative z-10",
               t.bg.primary,
-              t.border.subtle
+              t.border.primary
             )}
             aria-label={translate("filters.filters")}
           >
+            {/* dir="rtl" on the scroll container puts the scrollbar on the left; this
+                inner wrapper restores the locale's reading direction for the content. */}
+            <div dir={localeConfig.direction} className="flex flex-col gap-3 p-3">
             {/* Header: title + layout toggle + collapse (hide) button */}
             <div className="flex items-center justify-between gap-2">
               <h2 className={cn("text-base font-bold", t.text.heading)}>
@@ -539,6 +543,7 @@ export const FilterBar = memo(function FilterBar({
             ))}
 
             <div>{showUnknownDatesCheckbox}</div>
+            </div>
           </aside>
         )}
 
@@ -560,6 +565,9 @@ export const FilterBar = memo(function FilterBar({
     <div className="space-y-2">
       {/* Main Filter Row */}
       <div className="flex flex-wrap items-center justify-between gap-1.5">
+        {/* Layout toggle — far left, before the count, so switching feels continuous */}
+        {onVariantToggle && <div className="hidden md:flex flex-shrink-0">{variantToggleButton}</div>}
+
         {/* Results Count - Far left, super small */}
         {showActions && (
           <div className={cn("text-[10px] whitespace-nowrap", t.text.muted)}>
@@ -603,8 +611,6 @@ export const FilterBar = memo(function FilterBar({
             {filters.showUnknownDates ? "✓ " : ""}
             {translate("timeline.showUnknownDates")}
           </button>
-
-          {variantToggleButton}
           </div>
 
           {mobileFiltersTrigger}

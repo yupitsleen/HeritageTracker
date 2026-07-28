@@ -62,8 +62,10 @@ export function YearRangeFilter({
   return (
     <div>
       {label && <FilterLabel label={label} tooltip={tooltip} />}
-      <div className="flex items-center gap-1.5">
-        <div className="flex items-center gap-1 flex-1">
+      {/* flex-wrap so a narrow container (e.g. the filter sidebar) drops the second
+          year+era group to its own line instead of clipping the BCE/CE selector. */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex items-center gap-1 flex-1 min-w-[130px]">
           <Input
             variant="number"
             value={startYearInput}
@@ -87,7 +89,7 @@ export function YearRangeFilter({
           )}
         </div>
         <span className={`text-xs font-medium ${t.text.body}`}>to</span>
-        <div className="flex items-center gap-1 flex-1">
+        <div className="flex items-center gap-1 flex-1 min-w-[130px]">
           <Input
             variant="number"
             value={endYearInput}
