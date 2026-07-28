@@ -303,13 +303,10 @@ export function Timeline() {
         {/* Success state - Map + Wayback controls */}
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
-            {/* Filter Bar Container */}
-            <div
-              className={`flex-shrink-0 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
-              style={{ zIndex: Z_INDEX.FILTER_BAR }}
-            >
-              {/* Unified FilterBar with search, filters, and actions */}
+            {/* Faceted filter sidebar (desktop) / search + drawer (mobile), beside the map column */}
+            <div className="flex flex-col md:flex-row gap-2 flex-1 min-h-0">
               <FilterBar
+                variant="sidebar"
                 filters={filters}
                 onFilterChange={handleFilterChange}
                 sites={mockSites}
@@ -320,7 +317,9 @@ export function Timeline() {
                 filteredSites={filteredSites.length}
                 onClearAll={clearAllFilters}
               />
-            </div>
+
+              {/* Map + Wayback + Scrubber column */}
+              <div className="flex-1 min-w-0 min-h-0 flex flex-col gap-2">
 
             {/* Full-screen satellite map with Wayback imagery */}
             <div
@@ -408,6 +407,8 @@ export function Timeline() {
                   }}
                 />
               </Suspense>
+            </div>
+              </div>
             </div>
           </AnimationProvider>
         )}
