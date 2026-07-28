@@ -174,4 +174,22 @@ describe("FilterBar — sidebar variant", () => {
     await user.click(screen.getByRole("checkbox", { name: /show unknown dates/i }));
     expect(onFilterChange).toHaveBeenCalledWith({ showUnknownDates: false });
   });
+
+  it("can be collapsed to a rail and re-expanded", async () => {
+    const { user } = setup({ variant: "sidebar" });
+    expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /hide filters/i }));
+    // Collapsed: facets gone, only the re-open control remains.
+    expect(screen.queryByRole("heading", { name: /^type$/i })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /show filters/i }));
+    expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
+  });
+
+  it("starts collapsed when sidebarDefaultCollapsed is set", () => {
+    setup({ variant: "sidebar", sidebarDefaultCollapsed: true });
+    expect(screen.queryByRole("heading", { name: /^type$/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /show filters/i })).toBeInTheDocument();
+  });
 });

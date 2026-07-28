@@ -155,6 +155,8 @@ export const ar: Translations = {
     search: "بحث",
     clearSearch: "مسح البحث",
     openFilters: "فتح قائمة المرشحات",
+    hideFilters: "إخفاء المرشحات",
+    showFilters: "إظهار المرشحات",
     typeFilter: "تصفية النوع",
     statusFilter: "تصفية الحالة",
     allTypes: "جميع الأنواع",

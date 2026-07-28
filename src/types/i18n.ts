@@ -198,6 +198,8 @@ export interface Translations {
     search: string;
     clearSearch: string;
     openFilters: string;
+    hideFilters: string;
+    showFilters: string;
     typeFilter: string;
     statusFilter: string;
     allTypes: string;

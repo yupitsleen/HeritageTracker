@@ -161,6 +161,8 @@ export const en: Translations = {
     search: "Search",
     clearSearch: "Clear search",
     openFilters: "Open filters menu",
+    hideFilters: "Hide filters",
+    showFilters: "Show filters",
     typeFilter: "Type Filter",
     statusFilter: "Status Filter",
     allTypes: "All Types",

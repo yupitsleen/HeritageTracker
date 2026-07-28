@@ -46,6 +46,8 @@ interface FilterBarProps {
    * - "sidebar": persistent vertical facet panel on desktop; mobile keeps the drawer.
    */
   variant?: "bar" | "sidebar";
+  /** Sidebar variant only: start collapsed to a thin rail (default false). */
+  sidebarDefaultCollapsed?: boolean;
 }
 
 /**
@@ -74,10 +76,12 @@ export const FilterBar = memo(function FilterBar({
   filteredSites = 0,
   onClearAll,
   variant = "bar",
+  sidebarDefaultCollapsed = false,
 }: FilterBarProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(sidebarDefaultCollapsed);
 
   // Local state for search input (for immediate UI feedback)
   const [searchInputValue, setSearchInputValue] = useState(filters.searchTerm);
@@ -414,51 +418,99 @@ export const FilterBar = memo(function FilterBar({
   if (variant === "sidebar") {
     return (
       <>
-        <aside
-          className={cn(
-            "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 gap-3 p-3 overflow-y-auto border rounded",
-            t.bg.primary,
-            t.border.subtle
-          )}
-          aria-label="Filters"
-        >
-          {/* Header: title + Clear All */}
-          <div className="flex items-center justify-between gap-2">
-            <h2 className={cn("text-base font-bold", t.text.heading)}>Filters</h2>
-            {showActions && hasActiveFilters && onClearAll && (
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={onClearAll}
-                className="whitespace-nowrap"
-                title={TOOLTIPS.FILTERS.CLEAR_ALL}
-              >
-                {translate("filters.clearAll")}
-              </Button>
+        {sidebarCollapsed ? (
+          /* Collapsed: a thin rail with a re-open button + active-filter count. */
+          <aside
+            className={cn(
+              "hidden md:flex md:flex-col md:w-12 md:flex-shrink-0 items-center gap-2 p-2 border rounded",
+              t.bg.primary,
+              t.border.subtle
             )}
-          </div>
-
-          {/* Result count — prominent (not the 10px of the bar) */}
-          {showActions && (
-            <div className={cn("text-sm font-semibold", t.text.body)}>
-              {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
+            aria-label={translate("filters.filters")}
+          >
+            <button
+              type="button"
+              onClick={() => setSidebarCollapsed(false)}
+              className={cn(
+                "p-1.5 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                t.bg.hover,
+                t.text.body
+              )}
+              aria-label={translate("filters.showFilters")}
+              title={translate("filters.showFilters")}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </button>
+            {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
+          </aside>
+        ) : (
+          <aside
+            className={cn(
+              "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 gap-3 p-3 overflow-y-auto border rounded",
+              t.bg.primary,
+              t.border.subtle
+            )}
+            aria-label={translate("filters.filters")}
+          >
+            {/* Header: title + collapse (hide) button */}
+            <div className="flex items-center justify-between gap-2">
+              <h2 className={cn("text-base font-bold", t.text.heading)}>
+                {translate("filters.filters")}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setSidebarCollapsed(true)}
+                className={cn(
+                  "p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                  t.bg.hover,
+                  t.text.body
+                )}
+                aria-label={translate("filters.hideFilters")}
+                title={translate("filters.hideFilters")}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
             </div>
-          )}
 
-          {searchBox}
+            {/* Result count — prominent (not the 10px of the bar) — + Clear All */}
+            {showActions && (
+              <div className="flex items-center justify-between gap-2">
+                <span className={cn("text-sm font-semibold", t.text.body)}>
+                  {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
+                </span>
+                {hasActiveFilters && onClearAll && (
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={onClearAll}
+                    className="whitespace-nowrap"
+                    title={TOOLTIPS.FILTERS.CLEAR_ALL}
+                  >
+                    {translate("filters.clearAll")}
+                  </Button>
+                )}
+              </div>
+            )}
 
-          {/* Facets — always visible, one <section> each */}
-          {filterSections.map((filterSection) => (
-            <section key={filterSection.key}>
-              <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                {filterSection.heading}
-              </h3>
-              {filterSection.content}
-            </section>
-          ))}
+            {searchBox}
 
-          <div>{showUnknownDatesCheckbox}</div>
-        </aside>
+            {/* Facets — always visible, one <section> each */}
+            {filterSections.map((filterSection) => (
+              <section key={filterSection.key}>
+                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
+                  {filterSection.heading}
+                </h3>
+                {filterSection.content}
+              </section>
+            ))}
+
+            <div>{showUnknownDatesCheckbox}</div>
+          </aside>
+        )}
 
         {/* Mobile: search + Filters trigger (the drawer holds the facets) —
             keeps the mobile experience identical to the bar variant. flex-wrap so

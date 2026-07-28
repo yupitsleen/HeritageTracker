@@ -160,6 +160,8 @@ export const it: Translations = {
     search: "Cerca",
     clearSearch: "Cancella ricerca",
     openFilters: "Apri menu filtri",
+    hideFilters: "Nascondi filtri",
+    showFilters: "Mostra filtri",
     typeFilter: "Filtro Tipo",
     statusFilter: "Filtro Stato",
     allTypes: "Tutti i Tipi",
