@@ -21,14 +21,35 @@ created: 2026-07-27
 | 2026-07-27 | Keep the previously-deleted page/sync smoke tests deleted; rebuild only the dark-mode convention test + (later) mobile scenarios | `Timeline.sync` tested a pasted copy of the algorithm; page tests were "renders without crashing"; mobile + dark-mode covered redesign-sensitive areas | Restore all deleted tests (rejected — most were correctly pruned) |
 | 2026-07-27 | Dark mode stays context-based (`isDark`/`useThemeClasses`); a guardrail test fails if any component/page uses a Tailwind `dark:` modifier | `darkMode` is not configured, so `dark:` silently does nothing; a redesign touches every component and could reintroduce it | Configure Tailwind `darkMode` (rejected — established pattern is context-based) |
 | 2026-07-27 | Defer marker→detail and comparison site-selection e2e to the workflow-build phase (now `test.fixme`) | Dashboard markers are SVG CircleMarkers a plain Playwright `.click()` can't action (hangs to the 60s cap); comparison selection needs Prev/Next buttons + async Wayback load | Force them into the quick-win batch (rejected — flaky/hanging tests) |
+| 2026-07-28 | **Filters** is the first redesign target; **desktop first, mobile deferred** | FilterBar is a self-contained 485-line single file (lowest blast radius); mobile needs the Playwright mobile project re-enabled — a separate pass | Timeline first (rejected — spans 2 folders + map-sync); full 14-workflow safety net first (rejected — builds guardrails for areas we won't touch this pass) |
+| 2026-07-28 | Build the safety net **per-area, just-in-time**, not the whole 14-workflow suite up front | Characterizing only the area we're about to change is cheaper and just as safe; matches refactor-safely's slice loop | Original test-plan sequence: full desktop+mobile suite before any redesign (rejected as over-building) |
+| 2026-07-28 | Filters slice 1 = **behavior-preserving dedupe** (kill desktop/mobile double-declaration), *then* UX direction as a separate gated step | The duplicated filter trees ARE the "hard to understand"; a clean single-source structure makes the later visual redesign a one-place edit. Pure refactor first keeps behavior provably intact | Redesign visuals immediately (rejected — no clean structure to redesign against, and mixes behavior change into a refactor) |
+| 2026-07-28 | Characterize Headless UI **widget interaction** (Popover/Dialog filters) in **e2e**, not jsdom component tests | In jsdom the Headless UI Popover renders its panel but never delivers inner click/change events, and its Dialog re-commits on open (detaching captured nodes → flaky). Fighting this is over-investment; a real browser runs the widgets correctly | Force component-level interaction (rejected — 0-call failures + irreducible flakiness); skip the wiring proof entirely (rejected — it's the dedupe's main risk) |
 
 ## Open Questions
 
 <!-- When resolved, capture as decision above and remove from here. -->
 
-- Is **mobile** in scope for the redesign safety net? Requires re-enabling the commented-out Playwright mobile project (`playwright.config.ts`).
-- Which of the 14 workflow-table rows in `docs/REDESIGN_TEST_PLAN.md` are in/out of scope? (Awaiting review.)
-- What is the actual redesign *direction* — which "complicated functions" get simplified first, and how? Filters and the timeline page are flagged as the hardest to understand.
+- **Filters UX direction** (slice 2, after the dedupe): what does "more discoverable" concretely mean — surface the most-used filters inline, add active-filter chips, progressive disclosure? To be designed together once the structure is clean.
+- Timeline redesign direction (deferred until Filters is done).
+- Mobile safety net + mobile redesign (deferred; requires re-enabling the Playwright mobile project, `playwright.config.ts:65`).
+
+## Active Refactor — Filters (slice 1: behavior-preserving dedupe)
+
+**Preservation boundary (must NOT change):**
+- `FilterBarProps` contract is identical for all 3 consumers (`DataPage`, `DesktopLayout`, `Timeline`). Every user action fires `onFilterChange(partial)` with the same keys: `searchTerm`, `selectedTypes`, `selectedStatuses`, `destructionDateStart/End`, `creationYearStart/End`, `showUnknownDates`; `onClearAll` clears.
+- Search debounce stays 300ms; local input resyncs when `searchTerm` is reset externally.
+- Count badges per filter; type/status counts from `sites`; **statuses with 0 count stay hidden**.
+- Both surfaces keep working: desktop inline popovers (md+), mobile drawer (<md). A11y (ARIA, `aria-pressed`, keyboard/focus, AA contrast), trilingual + RTL, no Tailwind `dark:` modifiers.
+
+**Out of scope:** new filters, filter-*logic* changes (lives in `useFilteredSites`/`siteFilters`, already tested), visual redesign, mobile-project re-enable.
+
+**Target structure:** declare each filter's content **once** as a `filterSections` array `[{ key, label, count, content }]` built inside the component (keeps handler closures); desktop `.map`s it into `<FilterButton>` popovers, mobile `.map`s it into drawer `<section>`s. Kills ~100 lines of duplicated JSX. Containers stay layout-specific; content is single-source.
+
+**Safety net (characterization) — ✅ GREEN (18/18 unit, 2/2 e2e, lint clean, stable over 8 runs):**
+- `src/components/FilterBar/FilterBar.baseline.test.tsx` — search debounce→`onFilterChange`, clear-search, show-unknown-dates→callback, Clear All→`onClearAll`, type popover renders a checkbox per type, status popover hides 0-count statuses, mobile drawer opens, all controls present. (Reliable, no-Headless-UI-event assertions.)
+- `e2e/filters.spec.ts` — rewritten honest (dropped the false "73 unit tests" comment + the `if (count>0)` guard); adds the real wiring proof: open type filter + apply → "Showing X of Y sites" count changes.
+- Removed one hollow test (`bodyText.length > 20`) from `FilterBar.test.tsx`.
 
 ## Constraints
 

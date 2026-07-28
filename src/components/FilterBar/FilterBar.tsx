@@ -173,6 +173,90 @@ export const FilterBar = memo(function FilterBar({
     onFilterChange({ showUnknownDates: !filters.showUnknownDates });
   }, [onFilterChange, filters.showUnknownDates]);
 
+  // Single source of truth for the four filters — the desktop popover row and the
+  // mobile drawer both render from this, so a filter is defined (and wired) once.
+  const filterSections: {
+    key: string;
+    label: string;
+    count: number;
+    panelWidth?: string;
+    tooltip?: string;
+    content: React.ReactNode;
+  }[] = [
+    {
+      key: "type",
+      label: translate("filters.selectTypes"),
+      count: filters.selectedTypes.length,
+      tooltip: TOOLTIPS.FILTERS.TYPE_FILTER,
+      content: (
+        <FilterCheckboxList
+          options={SITE_TYPES}
+          selectedValues={filters.selectedTypes}
+          onChange={handleTypesChange}
+          formatLabel={(type) => translateSiteType(translate, type)}
+          counts={typeCounts}
+          getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
+        />
+      ),
+    },
+    {
+      key: "status",
+      label: translate("filters.selectStatus"),
+      count: filters.selectedStatuses.length,
+      tooltip: TOOLTIPS.FILTERS.STATUS_FILTER,
+      content: (
+        <FilterCheckboxList
+          options={availableStatuses}
+          selectedValues={filters.selectedStatuses}
+          onChange={handleStatusesChange}
+          formatLabel={(status) => translateStatus(translate, status)}
+          counts={statusCounts}
+        />
+      ),
+    },
+    {
+      key: "destructionDate",
+      label: translate("filters.destructionDate"),
+      count: isDestructionDateFilterActive(
+        filters.destructionDateStart,
+        filters.destructionDateEnd
+      )
+        ? 1
+        : 0,
+      panelWidth: "min-w-max",
+      tooltip: TOOLTIPS.FILTERS.DATE_FILTER,
+      content: (
+        <DateRangeFilter
+          label=""
+          startDate={filters.destructionDateStart}
+          endDate={filters.destructionDateEnd}
+          onStartChange={handleDestructionStartDateChange}
+          onEndChange={handleDestructionEndDateChange}
+          defaultStartDate={defaultStartDate}
+          defaultEndDate={defaultEndDate}
+        />
+      ),
+    },
+    {
+      key: "yearBuilt",
+      label: translate("filters.yearBuilt"),
+      count: filters.creationYearStart || filters.creationYearEnd ? 1 : 0,
+      panelWidth: "min-w-max",
+      tooltip: TOOLTIPS.FILTERS.YEAR_FILTER,
+      content: (
+        <YearRangeFilter
+          label=""
+          onStartChange={handleCreationYearStartChange}
+          onEndChange={handleCreationYearEndChange}
+          supportBCE={true}
+          startYearDefault={defaultStartYear}
+          endYearDefault={defaultEndYear}
+          startEraDefault={defaultStartEra}
+        />
+      ),
+    },
+  ];
+
   return (
     <div className="space-y-2">
       {/* Main Filter Row */}
@@ -210,79 +294,17 @@ export const FilterBar = memo(function FilterBar({
 
           {/* Desktop Filter Buttons - Hidden on mobile */}
           <div className="hidden md:flex md:items-center md:gap-1.5">
-          {/* Type Filter */}
-          <FilterButton
-            label={translate("filters.selectTypes")}
-            count={filters.selectedTypes.length}
-            tooltip={TOOLTIPS.FILTERS.TYPE_FILTER}
-          >
-            <FilterCheckboxList
-              options={SITE_TYPES}
-              selectedValues={filters.selectedTypes}
-              onChange={handleTypesChange}
-              formatLabel={(type) => translateSiteType(translate, type)}
-              counts={typeCounts}
-              getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
-            />
-          </FilterButton>
-
-          {/* Status Filter */}
-          <FilterButton
-            label={translate("filters.selectStatus")}
-            count={filters.selectedStatuses.length}
-            tooltip={TOOLTIPS.FILTERS.STATUS_FILTER}
-          >
-            <FilterCheckboxList
-              options={availableStatuses}
-              selectedValues={filters.selectedStatuses}
-              onChange={handleStatusesChange}
-              formatLabel={(status) => translateStatus(translate, status)}
-              counts={statusCounts}
-            />
-          </FilterButton>
-
-          {/* Destruction Date Filter */}
-          <FilterButton
-            label={translate("filters.destructionDate")}
-            count={
-              isDestructionDateFilterActive(
-                filters.destructionDateStart,
-                filters.destructionDateEnd
-              )
-                ? 1
-                : 0
-            }
-            panelWidth="min-w-max"
-            tooltip={TOOLTIPS.FILTERS.DATE_FILTER}
-          >
-            <DateRangeFilter
-              label=""
-              startDate={filters.destructionDateStart}
-              endDate={filters.destructionDateEnd}
-              onStartChange={handleDestructionStartDateChange}
-              onEndChange={handleDestructionEndDateChange}
-              defaultStartDate={defaultStartDate}
-              defaultEndDate={defaultEndDate}
-            />
-          </FilterButton>
-
-          {/* Year Built Filter */}
-          <FilterButton
-            label={translate("filters.yearBuilt")}
-            count={filters.creationYearStart || filters.creationYearEnd ? 1 : 0}
-            panelWidth="min-w-max"
-            tooltip={TOOLTIPS.FILTERS.YEAR_FILTER}
-          >
-            <YearRangeFilter
-              label=""
-              onStartChange={handleCreationYearStartChange}
-              onEndChange={handleCreationYearEndChange}
-              supportBCE={true}
-              startYearDefault={defaultStartYear}
-              endYearDefault={defaultEndYear}
-              startEraDefault={defaultStartEra}
-            />
-          </FilterButton>
+          {filterSections.map((filterSection) => (
+            <FilterButton
+              key={filterSection.key}
+              label={filterSection.label}
+              count={filterSection.count}
+              panelWidth={filterSection.panelWidth}
+              tooltip={filterSection.tooltip}
+            >
+              {filterSection.content}
+            </FilterButton>
+          ))}
 
           {/* Show Unknown Dates Toggle — only at lg+ to avoid wrapping at md widths */}
           <button
@@ -379,66 +401,14 @@ export const FilterBar = memo(function FilterBar({
 
             {/* Filter Sections */}
             <div className="space-y-6">
-              {/* Type Filter */}
-              <div>
-                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                  {translate("filters.selectTypes")}
-                </h3>
-                <FilterCheckboxList
-                  options={SITE_TYPES}
-                  selectedValues={filters.selectedTypes}
-                  onChange={handleTypesChange}
-                  formatLabel={(type) => translateSiteType(translate, type)}
-                  counts={typeCounts}
-                  getIcon={(type) => <SiteTypeIcon type={type} className="w-6 h-6" />}
-                />
-              </div>
-
-              {/* Status Filter */}
-              <div>
-                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                  {translate("filters.selectStatus")}
-                </h3>
-                <FilterCheckboxList
-                  options={availableStatuses}
-                  selectedValues={filters.selectedStatuses}
-                  onChange={handleStatusesChange}
-                  formatLabel={(status) => translateStatus(translate, status)}
-                  counts={statusCounts}
-                />
-              </div>
-
-              {/* Destruction Date Filter */}
-              <div>
-                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                  {translate("filters.destructionDate")}
-                </h3>
-                <DateRangeFilter
-                  label=""
-                  startDate={filters.destructionDateStart}
-                  endDate={filters.destructionDateEnd}
-                  onStartChange={handleDestructionStartDateChange}
-                  onEndChange={handleDestructionEndDateChange}
-                  defaultStartDate={defaultStartDate}
-                  defaultEndDate={defaultEndDate}
-                />
-              </div>
-
-              {/* Year Built Filter */}
-              <div>
-                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                  {translate("filters.yearBuilt")}
-                </h3>
-                <YearRangeFilter
-                  label=""
-                  onStartChange={handleCreationYearStartChange}
-                  onEndChange={handleCreationYearEndChange}
-                  supportBCE={true}
-                  startYearDefault={defaultStartYear}
-                  endYearDefault={defaultEndYear}
-                  startEraDefault={defaultStartEra}
-                />
-              </div>
+              {filterSections.map((filterSection) => (
+                <div key={filterSection.key}>
+                  <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
+                    {filterSection.label}
+                  </h3>
+                  {filterSection.content}
+                </div>
+              ))}
 
               {/* Show Unknown Dates Toggle */}
               <div>

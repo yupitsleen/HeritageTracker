@@ -1,48 +1,45 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * E2E Tests - Filter Workflows
+ * E2E — Filter workflows (real browser)
  *
- * Purpose: Test critical filter UI interactions that only E2E can catch:
- * - Filter dropdown visibility (z-index layering issues)
- * - Filter bar element overlapping
+ * The FilterBar's popover/drawer widgets are Headless UI components that only deliver
+ * interaction events in a real browser (not jsdom), so the actual
+ * "apply a filter → results change" wiring is proven here. Component-level behavior
+ * (callbacks, popover contents, 0-count hidden, search debounce) is covered by
+ * src/components/FilterBar/FilterBar.baseline.test.tsx.
  *
- * Note: Filter logic (selection, clearing, search) is covered by 73 unit tests in FilterBar.test.tsx
+ * The Timeline landing ('/') renders the FilterBar only after Wayback imagery loads,
+ * so each test waits for the type-filter button before interacting.
  */
 
-test.describe('Filter Workflows - Visual Regression', () => {
-  test('user can open type filter dropdown', async ({ page }) => {
+test.describe('Filter workflows', () => {
+  test('user can open the type filter dropdown', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
 
-    // Look for the filter bar - it may be inside a button or dropdown
-    // Try multiple selectors to handle different responsive layouts
-    const filterButton = page.getByRole('button', { name: /type/i }).or(
-      page.getByText(/type/i).first()
-    );
+    const typeButton = page.getByRole('button', { name: /select types/i });
+    await expect(typeButton).toBeVisible({ timeout: 30000 });
 
-    // Verify filter controls are present and visible (catches z-index bugs)
-    await expect(filterButton.first()).toBeVisible({ timeout: 5000 });
+    await typeButton.click();
+    // The type options (checkboxes) become visible in the popover — catches z-index/render bugs.
+    await expect(page.getByRole('checkbox').first()).toBeVisible();
   });
 
-  test('filter bar does not overlap with other elements', async ({ page }) => {
+  test('applying a type filter changes the result count', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
 
-    // Check z-index layering by verifying filter controls are clickable
-    const filterButton = page.getByRole('button', { name: /type/i }).first();
-    const exists = await filterButton.count();
+    const typeButton = page.getByRole('button', { name: /select types/i });
+    await expect(typeButton).toBeVisible({ timeout: 30000 });
 
-    if (exists > 0) {
-      // Element should be clickable (not covered by another element)
-      await expect(filterButton).toBeVisible();
+    const count = page.getByText(/showing \d+ of \d+ sites/i);
+    await expect(count).toBeVisible();
+    const before = (await count.textContent())?.trim() ?? '';
 
-      // Try to interact with it - verifies it's not obscured
-      const boundingBox = await filterButton.boundingBox();
-      expect(boundingBox).not.toBeNull();
+    await typeButton.click();
+    await page.getByRole('checkbox').first().check();
 
-      // Verify element remains visible and clickable
-      await expect(filterButton).toBeVisible();
-    }
+    // Narrowing to a single type changes the visible result count (the observable
+    // outcome a redesign must preserve).
+    await expect(count).not.toHaveText(before);
   });
 });

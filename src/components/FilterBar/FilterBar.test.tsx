@@ -31,16 +31,6 @@ describe("FilterBar", () => {
     expect(container).toBeInTheDocument();
   });
 
-  it("displays filter controls", () => {
-    renderWithTheme(
-      <CalendarProvider>
-        <FilterBar {...mockProps} />
-      </CalendarProvider>
-    );
-    const bodyText = document.body.textContent || "";
-    expect(bodyText.length).toBeGreaterThan(20);
-  });
-
   describe("Default Date Values", () => {
     const mockSites: Site[] = [
       {
