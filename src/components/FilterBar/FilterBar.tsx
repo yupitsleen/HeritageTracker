@@ -40,6 +40,12 @@ interface FilterBarProps {
   totalSites?: number;
   filteredSites?: number;
   onClearAll?: () => void;
+  /**
+   * Presentation:
+   * - "bar" (default): horizontal strip of popover buttons + mobile drawer (unchanged).
+   * - "sidebar": persistent vertical facet panel on desktop; mobile keeps the drawer.
+   */
+  variant?: "bar" | "sidebar";
 }
 
 /**
@@ -67,6 +73,7 @@ export const FilterBar = memo(function FilterBar({
   totalSites = 0,
   filteredSites = 0,
   onClearAll,
+  variant = "bar",
 }: FilterBarProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
@@ -257,6 +264,202 @@ export const FilterBar = memo(function FilterBar({
     },
   ];
 
+  // Shared render fragments — identical across variants, so search and the whole
+  // mobile experience are defined once.
+  const searchBox = (
+    <div className="relative flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
+      <Input
+        type="text"
+        value={searchInputValue}
+        onChange={handleSearchInputChange}
+        placeholder={translate("filters.searchPlaceholder")}
+        className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
+      />
+      {searchInputValue.trim().length > 0 && (
+        <button
+          type="button"
+          onClick={handleClearSearch}
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
+          aria-label={translate("filters.clearSearch")}
+          title={TOOLTIPS.FILTERS.CLEAR_SEARCH}
+        >
+          <CloseIcon className="w-4 h-4" aria-hidden="true" />
+        </button>
+      )}
+    </div>
+  );
+
+  const showUnknownDatesCheckbox = (
+    <label className="flex items-center gap-3 cursor-pointer" title={translate("timeline.showUnknownDatesTooltip")}>
+      <input
+        type="checkbox"
+        checked={filters.showUnknownDates}
+        onChange={handleToggleUnknownDates}
+        className="w-5 h-5 rounded border-gray-300 text-[#009639] focus:ring-[#009639] cursor-pointer"
+      />
+      <span className={cn("text-sm", t.text.body)}>
+        {translate("timeline.showUnknownDates")}
+      </span>
+    </label>
+  );
+
+  const mobileFiltersTrigger = (
+    <button
+      type="button"
+      onClick={handleOpenMobileFilters}
+      className={cn(
+        "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
+        "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
+        t.bg.primary,
+        t.border.subtle,
+        t.bg.hover,
+        t.text.body
+      )}
+      aria-label={translate("filters.openFilters")}
+      aria-expanded={isMobileFiltersOpen}
+      title={TOOLTIPS.FILTERS.OPEN_MOBILE}
+    >
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+      </svg>
+      <span>Filters</span>
+      {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
+    </button>
+  );
+
+  const mobileDrawer = (
+    <Dialog
+      open={isMobileFiltersOpen}
+      onClose={handleCloseMobileFilters}
+      className="relative md:hidden"
+      style={{ zIndex: Z_INDEX.MODAL }}
+    >
+      {/* Backdrop */}
+      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+      {/* Drawer */}
+      <div className="fixed inset-0 flex items-end justify-center">
+        <DialogPanel
+          className={cn(
+            "w-full max-h-[85vh] rounded-t-2xl p-6 overflow-y-auto",
+            "animate-slide-up",
+            t.bg.primary
+          )}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <DialogTitle className={cn("text-lg font-semibold", t.text.heading)}>
+              Filters
+            </DialogTitle>
+            <button
+              type="button"
+              onClick={handleCloseMobileFilters}
+              className={cn("p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none", t.bg.hover)}
+              aria-label="Close filters"
+            >
+              <CloseIcon className="w-6 h-6" aria-hidden="true" />
+            </button>
+          </div>
+
+          {/* Filter Sections */}
+          <div className="space-y-6">
+            {filterSections.map((filterSection) => (
+              <div key={filterSection.key}>
+                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
+                  {filterSection.label}
+                </h3>
+                {filterSection.content}
+              </div>
+            ))}
+
+            {/* Show Unknown Dates Toggle */}
+            <div>{showUnknownDatesCheckbox}</div>
+          </div>
+
+          {/* Mobile Drawer Actions */}
+          <div className="mt-6 flex gap-3">
+            {hasActiveFilters && onClearAll && (
+              <Button
+                variant="danger"
+                size="md"
+                onClick={handleMobileClearAllAndClose}
+                fullWidth
+              >
+                {translate("filters.clearAll")}
+              </Button>
+            )}
+            <Button
+              variant="primary"
+              size="md"
+              onClick={handleCloseMobileFilters}
+              fullWidth
+            >
+              Apply
+            </Button>
+          </div>
+        </DialogPanel>
+      </div>
+    </Dialog>
+  );
+
+  // Sidebar: persistent vertical facet panel on desktop; mobile keeps the drawer.
+  // Each facet is a self-contained <section> so a collapse header can be added later.
+  if (variant === "sidebar") {
+    return (
+      <>
+        <aside
+          className={cn(
+            "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 gap-3 p-3 overflow-y-auto border rounded",
+            t.bg.primary,
+            t.border.subtle
+          )}
+          aria-label="Filters"
+        >
+          {/* Header: title + Clear All */}
+          <div className="flex items-center justify-between gap-2">
+            <h2 className={cn("text-base font-bold", t.text.heading)}>Filters</h2>
+            {showActions && hasActiveFilters && onClearAll && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={onClearAll}
+                className="whitespace-nowrap"
+                title={TOOLTIPS.FILTERS.CLEAR_ALL}
+              >
+                {translate("filters.clearAll")}
+              </Button>
+            )}
+          </div>
+
+          {/* Result count — prominent (not the 10px of the bar) */}
+          {showActions && (
+            <div className={cn("text-sm font-semibold", t.text.body)}>
+              {translate("filters.showingCount", { filtered: filteredSites, total: totalSites })}
+            </div>
+          )}
+
+          {searchBox}
+
+          {/* Facets — always visible, one <section> each */}
+          {filterSections.map((filterSection) => (
+            <section key={filterSection.key}>
+              <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
+                {filterSection.label}
+              </h3>
+              {filterSection.content}
+            </section>
+          ))}
+
+          <div>{showUnknownDatesCheckbox}</div>
+        </aside>
+
+        {mobileFiltersTrigger}
+        {mobileDrawer}
+      </>
+    );
+  }
+
+  // Bar (default): horizontal strip of popover buttons; mobile drawer.
   return (
     <div className="space-y-2">
       {/* Main Filter Row */}
@@ -270,27 +473,7 @@ export const FilterBar = memo(function FilterBar({
 
         {/* Center: Filters */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 flex-1">
-          {/* Search Bar - Always visible (with debouncing) */}
-          <div className="relative flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
-            <Input
-              type="text"
-              value={searchInputValue}
-              onChange={handleSearchInputChange}
-              placeholder={translate("filters.searchPlaceholder")}
-              className="w-full h-8 px-2.5 pr-8 text-xs text-black placeholder:text-gray-400"
-            />
-            {searchInputValue.trim().length > 0 && (
-              <button
-                type="button"
-                onClick={handleClearSearch}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
-                aria-label={translate("filters.clearSearch")}
-                title={TOOLTIPS.FILTERS.CLEAR_SEARCH}
-              >
-                <CloseIcon className="w-4 h-4" aria-hidden="true" />
-              </button>
-            )}
-          </div>
+          {searchBox}
 
           {/* Desktop Filter Buttons - Hidden on mobile */}
           <div className="hidden md:flex md:items-center md:gap-1.5">
@@ -326,28 +509,7 @@ export const FilterBar = memo(function FilterBar({
           </button>
           </div>
 
-          {/* Mobile Filters Button - Visible only on mobile */}
-          <button
-            type="button"
-            onClick={handleOpenMobileFilters}
-            className={cn(
-              "md:hidden flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border",
-              "transition-all duration-200 focus:ring-2 focus:ring-[#009639] focus:outline-none",
-              t.bg.primary,
-              t.border.subtle,
-              t.bg.hover,
-              t.text.body
-            )}
-            aria-label={translate("filters.openFilters")}
-            aria-expanded={isMobileFiltersOpen}
-            title={TOOLTIPS.FILTERS.OPEN_MOBILE}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-            </svg>
-            <span>Filters</span>
-            {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
-          </button>
+          {mobileFiltersTrigger}
 
           {/* Clear All Button */}
           {showActions && hasActiveFilters && onClearAll && (
@@ -364,92 +526,7 @@ export const FilterBar = memo(function FilterBar({
         </div>
       </div>
 
-
-      {/* Mobile Filters Drawer */}
-      <Dialog
-        open={isMobileFiltersOpen}
-        onClose={handleCloseMobileFilters}
-        className="relative md:hidden"
-        style={{ zIndex: Z_INDEX.MODAL }}
-      >
-        {/* Backdrop */}
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-
-        {/* Drawer */}
-        <div className="fixed inset-0 flex items-end justify-center">
-          <DialogPanel
-            className={cn(
-              "w-full max-h-[85vh] rounded-t-2xl p-6 overflow-y-auto",
-              "animate-slide-up",
-              t.bg.primary
-            )}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <DialogTitle className={cn("text-lg font-semibold", t.text.heading)}>
-                Filters
-              </DialogTitle>
-              <button
-                type="button"
-                onClick={handleCloseMobileFilters}
-                className={cn("p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none", t.bg.hover)}
-                aria-label="Close filters"
-              >
-                <CloseIcon className="w-6 h-6" aria-hidden="true" />
-              </button>
-            </div>
-
-            {/* Filter Sections */}
-            <div className="space-y-6">
-              {filterSections.map((filterSection) => (
-                <div key={filterSection.key}>
-                  <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                    {filterSection.label}
-                  </h3>
-                  {filterSection.content}
-                </div>
-              ))}
-
-              {/* Show Unknown Dates Toggle */}
-              <div>
-                <label className="flex items-center gap-3 cursor-pointer" title={translate("timeline.showUnknownDatesTooltip")}>
-                  <input
-                    type="checkbox"
-                    checked={filters.showUnknownDates}
-                    onChange={handleToggleUnknownDates}
-                    className="w-5 h-5 rounded border-gray-300 text-[#009639] focus:ring-[#009639] cursor-pointer"
-                  />
-                  <span className={cn("text-sm", t.text.body)}>
-                    {translate("timeline.showUnknownDates")}
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            {/* Mobile Drawer Actions */}
-            <div className="mt-6 flex gap-3">
-              {hasActiveFilters && onClearAll && (
-                <Button
-                  variant="danger"
-                  size="md"
-                  onClick={handleMobileClearAllAndClose}
-                  fullWidth
-                >
-                  {translate("filters.clearAll")}
-                </Button>
-              )}
-              <Button
-                variant="primary"
-                size="md"
-                onClick={handleCloseMobileFilters}
-                fullWidth
-              >
-                Apply
-              </Button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
+      {mobileDrawer}
     </div>
   );
 });

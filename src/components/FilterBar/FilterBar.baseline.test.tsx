@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { FilterBar } from "./FilterBar";
 import { ThemeProvider } from "../../contexts/ThemeContext";
@@ -126,5 +126,52 @@ describe("FilterBar — baseline behavior", () => {
     setup();
     fireEvent.click(screen.getByRole("button", { name: /open filters menu/i }));
     expect(await screen.findByRole("dialog")).toBeTruthy();
+  });
+});
+
+describe("FilterBar — sidebar variant", () => {
+  // In the sidebar, facets render inline (no Headless UI popover/dialog), so
+  // control→callback interaction works reliably at the component level.
+  function facet(name: RegExp): HTMLElement {
+    return screen.getByRole("heading", { name }).closest("section") as HTMLElement;
+  }
+
+  it("renders all four facets inline (nothing to open)", () => {
+    setup({ variant: "sidebar" });
+    expect(screen.getByRole("heading", { name: /select types/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /select status/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /destruction date range/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /year built range/i })).toBeInTheDocument();
+  });
+
+  it("checking a type fires onFilterChange with selectedTypes", async () => {
+    const { onFilterChange, user } = setup({ variant: "sidebar" });
+    await user.click(within(facet(/select types/i)).getAllByRole("checkbox")[0]);
+    expect(onFilterChange).toHaveBeenCalledWith({ selectedTypes: [SITE_TYPES[0]] });
+  });
+
+  it("offers only statuses present in the data (0-count hidden)", () => {
+    const sites = [makeSite({ status: "destroyed" }), makeSite({ id: "2", status: "destroyed" })];
+    setup({ variant: "sidebar", sites });
+    expect(within(facet(/select status/i)).getAllByRole("checkbox")).toHaveLength(1);
+  });
+
+  it("shows the result count and Clear All when filters are active", async () => {
+    const { onClearAll, user } = setup({
+      variant: "sidebar",
+      filters: { ...createEmptyFilterState(), selectedTypes: ["mosque"] },
+      showActions: true,
+      totalSites: 118,
+      filteredSites: 12,
+    });
+    expect(screen.getByText(/showing 12 of 118 sites/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /clear all/i }));
+    expect(onClearAll).toHaveBeenCalled();
+  });
+
+  it("toggling show-unknown-dates fires onFilterChange", async () => {
+    const { onFilterChange, user } = setup({ variant: "sidebar" });
+    await user.click(screen.getByRole("checkbox", { name: /show unknown dates/i }));
+    expect(onFilterChange).toHaveBeenCalledWith({ showUnknownDates: false });
   });
 });

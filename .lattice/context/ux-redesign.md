@@ -25,14 +25,28 @@ created: 2026-07-27
 | 2026-07-28 | Build the safety net **per-area, just-in-time**, not the whole 14-workflow suite up front | Characterizing only the area we're about to change is cheaper and just as safe; matches refactor-safely's slice loop | Original test-plan sequence: full desktop+mobile suite before any redesign (rejected as over-building) |
 | 2026-07-28 | Filters slice 1 = **behavior-preserving dedupe** (kill desktop/mobile double-declaration), *then* UX direction as a separate gated step | The duplicated filter trees ARE the "hard to understand"; a clean single-source structure makes the later visual redesign a one-place edit. Pure refactor first keeps behavior provably intact | Redesign visuals immediately (rejected — no clean structure to redesign against, and mixes behavior change into a refactor) |
 | 2026-07-28 | Characterize Headless UI **widget interaction** (Popover/Dialog filters) in **e2e**, not jsdom component tests | In jsdom the Headless UI Popover renders its panel but never delivers inner click/change events, and its Dialog re-commits on open (detaching captured nodes → flaky). Fighting this is over-investment; a real browser runs the widgets correctly | Force component-level interaction (rejected — 0-call failures + irreducible flakiness); skip the wiring proof entirely (rejected — it's the dedupe's main risk) |
+| 2026-07-28 | Slice 2 (redesign) direction = **faceted filter sidebar, on every surface, persistent** | Most discoverable option; user accepted the map-first trade-off (satellite map gets narrower) for consistency. Sidebar content = the same `filterSections` the drawer already renders | Active-filter chips only (rejected — smaller); inline primary pills (rejected); scope to /data only or collapsible-on-maps (rejected — user wants it everywhere) |
+| 2026-07-28 | Implement as `variant?: "bar" \| "sidebar"` on FilterBar (default `"bar"`); **mobile unchanged** (drawer) both variants | Reuses all existing state/handlers/`filterSections`; default `"bar"` keeps current behavior + baseline tests green; only the desktop presentation switches | New `FilterSidebar` component (rejected for now — would re-plumb state/counts; a variant branch is lazier and DRY) |
+| 2026-07-28 | Ship **flat facets + persistent** first; **accordion groups** and **user-controlled sidebar visibility** are the tracked END GOALS, built incrementally after | Smaller first step; structure so neither is precluded — each facet is a self-contained `<section>` (collapse header drops in later), sidebar presence is one decision point (a visibility toggle wraps it later) | Build accordion + collapse-toggle up front (rejected — bigger first step, per user "incremental changes first, keep end goal in mind") |
 
 ## Open Questions
 
 <!-- When resolved, capture as decision above and remove from here. -->
 
-- **Filters UX direction** (slice 2, after the dedupe): what does "more discoverable" concretely mean — surface the most-used filters inline, add active-filter chips, progressive disclosure? To be designed together once the structure is clean.
 - Timeline redesign direction (deferred until Filters is done).
 - Mobile safety net + mobile redesign (deferred; requires re-enabling the Playwright mobile project, `playwright.config.ts:65`).
+
+## Slice 2 — Faceted filter sidebar (design approved)
+
+**Direction:** faceted sidebar, every surface, persistent (see decisions log). **End goals (deferred, keep in mind):** (a) collapsible facet groups (accordion); (b) user-controlled sidebar visibility (show/hide toggle). Build **flat + persistent** first.
+
+**Contract:** `variant?: "bar" | "sidebar"` on FilterBar (default `"bar"`). Sidebar = desktop `<aside>` (~256px, full height, scrolls) rendering the `filterSections` facets always-visible; header with prominent count + Clear All; search on top; Show Unknown Dates toggle. **Mobile unchanged** (drawer) in both variants. Reuses `FilterCheckboxList`/`DateRangeFilter`/`YearRangeFilter` verbatim.
+
+**Facet counts** = dataset totals (as today). **Sub-choices settled:** flat now (accordion later); persistent now (visibility toggle later).
+
+**Build order (pause between):** 1) sidebar variant + its characterization tests; 2) `/data` → sidebar; 3) `/timeline` → sidebar + update `e2e/filters.spec.ts` (no more "Select types…" popover on desktop — check the type checkbox directly); 4) Dashboard → sidebar (known tight: sidebar│table│map│detail).
+
+**Safety net:** bar-variant baseline tests stay (default variant protects the dedupe). Add sidebar-variant tests (facets render inline, check type → `onFilterChange`, count + Clear All present) — sidebar has no Headless UI wrapper, so component-level interaction works.
 
 ## Active Refactor — Filters (slice 1: behavior-preserving dedupe)
 
