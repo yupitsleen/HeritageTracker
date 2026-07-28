@@ -28,6 +28,7 @@ created: 2026-07-27
 | 2026-07-28 | Slice 2 (redesign) direction = **faceted filter sidebar, on every surface, persistent** | Most discoverable option; user accepted the map-first trade-off (satellite map gets narrower) for consistency. Sidebar content = the same `filterSections` the drawer already renders | Active-filter chips only (rejected — smaller); inline primary pills (rejected); scope to /data only or collapsible-on-maps (rejected — user wants it everywhere) |
 | 2026-07-28 | Implement as `variant?: "bar" \| "sidebar"` on FilterBar (default `"bar"`); **mobile unchanged** (drawer) both variants | Reuses all existing state/handlers/`filterSections`; default `"bar"` keeps current behavior + baseline tests green; only the desktop presentation switches | New `FilterSidebar` component (rejected for now — would re-plumb state/counts; a variant branch is lazier and DRY) |
 | 2026-07-28 | Ship **flat facets + persistent** first; **accordion groups** and **user-controlled sidebar visibility** are the tracked END GOALS, built incrementally after | Smaller first step; structure so neither is precluded — each facet is a self-contained `<section>` (collapse header drops in later), sidebar presence is one decision point (a visibility toggle wraps it later) | Build accordion + collapse-toggle up front (rejected — bigger first step, per user "incremental changes first, keep end goal in mind") |
+| 2026-07-28 | **Defer the Dashboard** (`DesktopLayout`) to the sidebar — keep its top strip for now; revisit once the collapse-toggle end-goal exists | It's already `table │ map │ detail`; a persistent 4th sidebar column is too tight at 1280px. The collapse-toggle (end-goal b) is what makes it comfortable, so the Dashboard is now blocked on that, not on more sidebar work | Wire it persistent and judge live (rejected by user); bring the collapse-toggle here first out of order (rejected — do it as a proper end-goal step) |
 
 ## Open Questions
 
@@ -44,7 +45,9 @@ created: 2026-07-27
 
 **Facet counts** = dataset totals (as today). **Sub-choices settled:** flat now (accordion later); persistent now (visibility toggle later).
 
-**Build order (pause between):** 1) sidebar variant + its characterization tests; 2) `/data` → sidebar; 3) `/timeline` → sidebar + update `e2e/filters.spec.ts` (no more "Select types…" popover on desktop — check the type checkbox directly); 4) Dashboard → sidebar (known tight: sidebar│table│map│detail).
+**Build order / status:** 1) sidebar variant + characterization tests ✅; 2) `/data` → sidebar ✅ (+ short `heading` field reusing `table.*` keys); 3) `/timeline` → sidebar ✅ (+ e2e updated to the `<aside aria-label="Filters">` / role="complementary" interaction); 4) Dashboard → **deferred** (blocked on the collapse-toggle end-goal, see decisions log).
+
+**Remaining (end goals, not yet built):** (a) accordion facet groups; (b) user-controlled sidebar show/hide toggle → unblocks the Dashboard. Mobile redesign still deferred.
 
 **Safety net:** bar-variant baseline tests stay (default variant protects the dedupe). Add sidebar-variant tests (facets render inline, check type → `onFilterChange`, count + Clear All present) — sidebar has no Headless UI wrapper, so component-level interaction works.
 
