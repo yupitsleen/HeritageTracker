@@ -163,6 +163,8 @@ export const en: Translations = {
     openFilters: "Open filters menu",
     hideFilters: "Hide filters",
     showFilters: "Show filters",
+    switchToSidebar: "Switch to sidebar",
+    switchToTopBar: "Switch to top bar",
     typeFilter: "Type Filter",
     statusFilter: "Status Filter",
     allTypes: "All Types",

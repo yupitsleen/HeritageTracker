@@ -48,6 +48,8 @@ interface FilterBarProps {
   variant?: "bar" | "sidebar";
   /** Sidebar variant only: start collapsed to a thin rail (default false). */
   sidebarDefaultCollapsed?: boolean;
+  /** When provided, renders a control to switch between "bar" and "sidebar" presentations. */
+  onVariantToggle?: () => void;
 }
 
 /**
@@ -77,6 +79,7 @@ export const FilterBar = memo(function FilterBar({
   onClearAll,
   variant = "bar",
   sidebarDefaultCollapsed = false,
+  onVariantToggle,
 }: FilterBarProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
@@ -413,6 +416,30 @@ export const FilterBar = memo(function FilterBar({
     </Dialog>
   );
 
+  // Layout toggle (bar <-> sidebar) — only shown when a page opts in via onVariantToggle.
+  const variantToggleButton = onVariantToggle ? (
+    <button
+      type="button"
+      onClick={onVariantToggle}
+      className={cn(
+        "p-1.5 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
+        t.bg.hover,
+        t.text.body
+      )}
+      aria-label={translate(variant === "sidebar" ? "filters.switchToTopBar" : "filters.switchToSidebar")}
+      title={translate(variant === "sidebar" ? "filters.switchToTopBar" : "filters.switchToSidebar")}
+    >
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="4.5" width="18" height="15" rx="1.5" strokeWidth={2} />
+        {variant === "sidebar" ? (
+          <line x1="3" y1="9" x2="21" y2="9" strokeWidth={2} />
+        ) : (
+          <line x1="9" y1="4.5" x2="9" y2="19.5" strokeWidth={2} />
+        )}
+      </svg>
+    </button>
+  ) : null;
+
   // Sidebar: persistent vertical facet panel on desktop; mobile keeps the drawer.
   // Each facet is a self-contained <section> so a collapse header can be added later.
   if (variant === "sidebar") {
@@ -454,26 +481,29 @@ export const FilterBar = memo(function FilterBar({
             )}
             aria-label={translate("filters.filters")}
           >
-            {/* Header: title + collapse (hide) button */}
+            {/* Header: title + layout toggle + collapse (hide) button */}
             <div className="flex items-center justify-between gap-2">
               <h2 className={cn("text-base font-bold", t.text.heading)}>
                 {translate("filters.filters")}
               </h2>
-              <button
-                type="button"
-                onClick={() => setSidebarCollapsed(true)}
-                className={cn(
-                  "p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
-                  t.bg.hover,
-                  t.text.body
-                )}
-                aria-label={translate("filters.hideFilters")}
-                title={translate("filters.hideFilters")}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
+              <div className="flex items-center gap-1">
+                {variantToggleButton}
+                <button
+                  type="button"
+                  onClick={() => setSidebarCollapsed(true)}
+                  className={cn(
+                    "p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                    t.bg.hover,
+                    t.text.body
+                  )}
+                  aria-label={translate("filters.hideFilters")}
+                  title={translate("filters.hideFilters")}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             {/* Result count — prominent (not the 10px of the bar) — + Clear All */}
@@ -573,6 +603,8 @@ export const FilterBar = memo(function FilterBar({
             {filters.showUnknownDates ? "✓ " : ""}
             {translate("timeline.showUnknownDates")}
           </button>
+
+          {variantToggleButton}
           </div>
 
           {mobileFiltersTrigger}

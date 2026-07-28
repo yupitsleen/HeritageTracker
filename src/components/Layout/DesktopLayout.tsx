@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import type { Site, FilterState } from "../../types";
 import { FilterBar } from "../FilterBar/FilterBar";
 import { SitesTable } from "../SitesTable";
@@ -85,97 +85,133 @@ export function DesktopLayout({
   const { sites, filteredSites, totalSites } = siteData;
   const { highlightedSiteId, onSiteClick, onSiteHighlight, onExpandTable } = siteInteraction;
 
-  return (
-    <div className="hidden md:flex md:flex-col md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
-      {/* dir="ltr" keeps spatial layout consistent (table left, maps right) regardless of language */}
+  // Filter layout is a per-user Dashboard preference (top bar vs sidebar), remembered.
+  const [filterLayout, setFilterLayout] = useState<"bar" | "sidebar">(() =>
+    localStorage.getItem("heritage-tracker-dashboard-filter-layout") === "sidebar" ? "sidebar" : "bar"
+  );
+  useEffect(() => {
+    localStorage.setItem("heritage-tracker-dashboard-filter-layout", filterLayout);
+  }, [filterLayout]);
+  const toggleFilterLayout = () =>
+    setFilterLayout((prev) => (prev === "bar" ? "sidebar" : "bar"));
 
-      {/* Filter bar - Full width at top */}
-      <div
-        className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
-        style={{ zIndex: Z_INDEX.FILTER_BAR }}
+  const filterBar = (
+    <FilterBar
+      variant={filterLayout}
+      onVariantToggle={toggleFilterLayout}
+      filters={filters}
+      onFilterChange={onFilterChange}
+      sites={sites}
+      defaultDateRange={defaultDateRange}
+      defaultYearRange={defaultYearRange}
+      showActions={true}
+      totalSites={totalSites}
+      filteredSites={filteredSites.length}
+      onClearAll={onClearAll}
+    />
+  );
+
+  // Three-column layout: Table | Map | SiteDetailView (all same height)
+  const columns = (
+    <div className="flex gap-2 flex-1 min-h-0">
+      {/* Left Column - Sites Table (Resizable) */}
+      <aside
+        className="flex-shrink-0 relative flex flex-col z-10"
+        style={{ width: `${tableResize.width}px` }}
       >
-        {/* Unified FilterBar with search, filters, and actions */}
-        <FilterBar
-          filters={filters}
-          onFilterChange={onFilterChange}
-          sites={sites}
-          defaultDateRange={defaultDateRange}
-          defaultYearRange={defaultYearRange}
-          showActions={true}
-          totalSites={totalSites}
-          filteredSites={filteredSites.length}
-          onClearAll={onClearAll}
+        <SitesTable
+          sites={filteredSites}
+          onSiteHighlight={onSiteHighlight}
+          highlightedSiteId={highlightedSiteId}
+          onExpandTable={onExpandTable}
+          visibleColumns={tableResize.getVisibleColumns()}
+          tooltipText={translate("table.tooltipDashboard")}
         />
-      </div>
 
-      {/* Three-column layout: Table | Map | SiteDetailView (all same height) */}
-      <div className="flex gap-2 flex-1 min-h-0 px-4 pt-2">
-        {/* Left Column - Sites Table (Resizable) */}
-        <aside
-          className="flex-shrink-0 relative flex flex-col z-10"
-          style={{ width: `${tableResize.width}px` }}
-        >
-          <SitesTable
-            sites={filteredSites}
-            onSiteHighlight={onSiteHighlight}
-            highlightedSiteId={highlightedSiteId}
-            onExpandTable={onExpandTable}
-            visibleColumns={tableResize.getVisibleColumns()}
-            tooltipText={translate("table.tooltipDashboard")}
-          />
+        {/* Resize handle */}
+        <div
+          className={`absolute top-0 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${
+            tableResize.isResizing ? "bg-[#ed3039] bg-opacity-50" : ""
+          }`}
+          onMouseDown={tableResize.handleResizeStart}
+          title={translate("aria.dragToResizeTable")}
+          aria-label={translate("aria.resizeTable")}
+        />
+      </aside>
 
-          {/* Resize handle */}
-          <div
-            className={`absolute top-0 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors ${
-              tableResize.isResizing ? "bg-[#ed3039] bg-opacity-50" : ""
-            }`}
-            onMouseDown={tableResize.handleResizeStart}
-            title={translate("aria.dragToResizeTable")}
-            aria-label={translate("aria.resizeTable")}
-          />
-        </aside>
-
-        {/* Center - Heritage Map (Traditional/Satellite toggle) */}
-        <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
-          <Suspense fallback={<SkeletonMap />}>
-            <HeritageMap
-              sites={filteredSites}
-              onSiteClick={onSiteClick}
-              highlightedSiteId={highlightedSiteId}
-              onSiteHighlight={onSiteHighlight}
-              disableAutoCentering={true}
-            />
-          </Suspense>
-        </div>
-
-        {/* Right - Site Detail View (Satellite only, zooms on selection) */}
-        <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
-          <Suspense fallback={<SkeletonMap />}>
-            <SiteDetailView
-              sites={filteredSites}
-              highlightedSiteId={highlightedSiteId}
-            />
-          </Suspense>
-        </div>
-      </div>
-
-      {/* Timeline Scrubber - Full width at bottom, mb-8 to clear fixed footer */}
-      <div className="mx-4 mt-1.5 mb-8 flex-shrink-0 h-[100px] relative z-10">
+      {/* Center - Heritage Map (Traditional/Satellite toggle) */}
+      <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
         <Suspense fallback={<SkeletonMap />}>
-          <TimelineScrubber
+          <HeritageMap
             sites={filteredSites}
+            onSiteClick={onSiteClick}
             highlightedSiteId={highlightedSiteId}
             onSiteHighlight={onSiteHighlight}
-            advancedMode={{
-              syncMapOnDotClick: false,
-              showNavigation: true, // Show Previous/Next buttons
-              hidePlayControls: false, // Show Play/Pause/Speed controls
-              hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to right map)
-              // No onSyncMapToggle - hides "Sync Map" button on Dashboard
-            }}
+            disableAutoCentering={true}
           />
         </Suspense>
       </div>
+
+      {/* Right - Site Detail View (Satellite only, zooms on selection) */}
+      <div className={`flex-1 min-w-0 h-full border ${t.border.primary} rounded shadow-lg overflow-hidden relative z-10`}>
+        <Suspense fallback={<SkeletonMap />}>
+          <SiteDetailView
+            sites={filteredSites}
+            highlightedSiteId={highlightedSiteId}
+          />
+        </Suspense>
+      </div>
+    </div>
+  );
+
+  const scrubber = (
+    <div className="flex-shrink-0 h-[100px] relative z-10">
+      <Suspense fallback={<SkeletonMap />}>
+        <TimelineScrubber
+          sites={filteredSites}
+          highlightedSiteId={highlightedSiteId}
+          onSiteHighlight={onSiteHighlight}
+          advancedMode={{
+            syncMapOnDotClick: false,
+            showNavigation: true, // Show Previous/Next buttons
+            hidePlayControls: false, // Show Play/Pause/Speed controls
+            hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to right map)
+            // No onSyncMapToggle - hides "Sync Map" button on Dashboard
+          }}
+        />
+      </Suspense>
+    </div>
+  );
+
+  return (
+    <div className="hidden md:flex md:flex-col md:h-[calc(100vh-65px)] md:overflow-hidden relative" dir="ltr">
+      {/* dir="ltr" keeps spatial layout consistent (table left, maps right) regardless of language */}
+      {filterLayout === "bar" ? (
+        <>
+          {/* Filter bar - Full width at top */}
+          <div
+            className={`flex-shrink-0 mx-4 mt-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
+            style={{ zIndex: Z_INDEX.FILTER_BAR }}
+          >
+            {filterBar}
+          </div>
+
+          {/* Content: columns + scrubber, stacked */}
+          <div className="flex-1 min-h-0 flex flex-col gap-1.5 px-4 pt-2 pb-8">
+            {columns}
+            {scrubber}
+          </div>
+        </>
+      ) : (
+        // Sidebar mode: filter panel as the far-left column, content to its right.
+        <div className="flex-1 min-h-0 flex flex-row gap-2 px-4 pt-2 pb-8">
+          {filterBar}
+          <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+            {columns}
+            {scrubber}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

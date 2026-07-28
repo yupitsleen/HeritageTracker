@@ -157,6 +157,8 @@ export const ar: Translations = {
     openFilters: "فتح قائمة المرشحات",
     hideFilters: "إخفاء المرشحات",
     showFilters: "إظهار المرشحات",
+    switchToSidebar: "التبديل إلى الشريط الجانبي",
+    switchToTopBar: "التبديل إلى الشريط العلوي",
     typeFilter: "تصفية النوع",
     statusFilter: "تصفية الحالة",
     allTypes: "جميع الأنواع",

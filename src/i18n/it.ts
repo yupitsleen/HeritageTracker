@@ -162,6 +162,8 @@ export const it: Translations = {
     openFilters: "Apri menu filtri",
     hideFilters: "Nascondi filtri",
     showFilters: "Mostra filtri",
+    switchToSidebar: "Passa alla barra laterale",
+    switchToTopBar: "Passa alla barra superiore",
     typeFilter: "Filtro Tipo",
     statusFilter: "Filtro Stato",
     allTypes: "Tutti i Tipi",

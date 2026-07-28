@@ -193,3 +193,26 @@ describe("FilterBar — sidebar variant", () => {
     expect(screen.getByRole("button", { name: /show filters/i })).toBeInTheDocument();
   });
 });
+
+describe("FilterBar — layout toggle", () => {
+  it("bar variant: the switch-to-sidebar control fires onVariantToggle", async () => {
+    const onVariantToggle = vi.fn();
+    const { user } = setup({ variant: "bar", onVariantToggle });
+    await user.click(screen.getByRole("button", { name: /switch to sidebar/i }));
+    expect(onVariantToggle).toHaveBeenCalled();
+  });
+
+  it("sidebar variant: the switch-to-top-bar control fires onVariantToggle", async () => {
+    const onVariantToggle = vi.fn();
+    const { user } = setup({ variant: "sidebar", onVariantToggle });
+    await user.click(screen.getByRole("button", { name: /switch to top bar/i }));
+    expect(onVariantToggle).toHaveBeenCalled();
+  });
+
+  it("shows no layout-toggle control when onVariantToggle is absent", () => {
+    setup({ variant: "sidebar" });
+    expect(
+      screen.queryByRole("button", { name: /switch to (sidebar|top bar)/i })
+    ).not.toBeInTheDocument();
+  });
+});

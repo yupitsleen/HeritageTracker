@@ -200,6 +200,8 @@ export interface Translations {
     openFilters: string;
     hideFilters: string;
     showFilters: string;
+    switchToSidebar: string;
+    switchToTopBar: string;
     typeFilter: string;
     statusFilter: string;
     allTypes: string;
