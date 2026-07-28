@@ -7,7 +7,6 @@ import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Modal } from "../components/Modal/Modal";
 import { DataPageHelpModal } from "../components/Help";
 import { useThemeClasses } from "../hooks/useThemeClasses";
-import { useTheme } from "../contexts/ThemeContext";
 import { useTranslation } from "../contexts/LocaleContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
 import type { FilterState } from "../types/filters";
@@ -20,7 +19,6 @@ const SiteDetailPanel = lazy(() => import("../components/SiteDetail/SiteDetailPa
 
 export function DataPage() {
   const t = useThemeClasses();
-  const { isDark } = useTheme();
   const translate = useTranslation();
   const navigate = useNavigate();
 
@@ -77,28 +75,23 @@ export function DataPage() {
 
   return (
     <SharedLayout helpContent={<DataPageHelpModal />}>
-      <div className="h-[calc(100vh-58px)] flex flex-col pb-8">
-        {/* Filter Bar Container */}
-        <div
-          className={`flex-shrink-0 mx-4 mt-2 mb-2 p-2 backdrop-blur-sm border ${t.border.primary} rounded shadow-lg relative transition-colors duration-200 ${isDark ? "bg-[#000000]/95" : "bg-white/95"}`}
-          style={{ zIndex: Z_INDEX.CONTENT }}
-        >
-          {/* Unified FilterBar with search, filters, and actions */}
-          <FilterBar
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            sites={mockSites}
-            defaultDateRange={defaultDateRange}
-            defaultYearRange={defaultYearRange}
-            showActions={true}
-            totalSites={mockSites.length}
-            filteredSites={filteredSites.length}
-            onClearAll={clearAllFilters}
-          />
-        </div>
+      <div className="h-[calc(100vh-58px)] flex flex-col md:flex-row gap-2 px-4 pt-2 pb-8">
+        {/* Faceted filter sidebar (desktop) / search + drawer (mobile) */}
+        <FilterBar
+          variant="sidebar"
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          sites={mockSites}
+          defaultDateRange={defaultDateRange}
+          defaultYearRange={defaultYearRange}
+          showActions={true}
+          totalSites={mockSites.length}
+          filteredSites={filteredSites.length}
+          onClearAll={clearAllFilters}
+        />
 
         {/* Data Table */}
-        <div className="flex-1 min-h-0 px-4">
+        <div className="flex-1 min-h-0 min-w-0">
           <SitesTable
             sites={filteredSites}
             onSiteClick={handleSiteClick}

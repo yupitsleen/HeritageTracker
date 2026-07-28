@@ -138,22 +138,22 @@ describe("FilterBar — sidebar variant", () => {
 
   it("renders all four facets inline (nothing to open)", () => {
     setup({ variant: "sidebar" });
-    expect(screen.getByRole("heading", { name: /select types/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /select status/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /destruction date range/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /year built range/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^status$/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^destruction date$/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^year built$/i })).toBeInTheDocument();
   });
 
   it("checking a type fires onFilterChange with selectedTypes", async () => {
     const { onFilterChange, user } = setup({ variant: "sidebar" });
-    await user.click(within(facet(/select types/i)).getAllByRole("checkbox")[0]);
+    await user.click(within(facet(/^type$/i)).getAllByRole("checkbox")[0]);
     expect(onFilterChange).toHaveBeenCalledWith({ selectedTypes: [SITE_TYPES[0]] });
   });
 
   it("offers only statuses present in the data (0-count hidden)", () => {
     const sites = [makeSite({ status: "destroyed" }), makeSite({ id: "2", status: "destroyed" })];
     setup({ variant: "sidebar", sites });
-    expect(within(facet(/select status/i)).getAllByRole("checkbox")).toHaveLength(1);
+    expect(within(facet(/^status$/i)).getAllByRole("checkbox")).toHaveLength(1);
   });
 
   it("shows the result count and Clear All when filters are active", async () => {

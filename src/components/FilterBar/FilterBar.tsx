@@ -184,7 +184,10 @@ export const FilterBar = memo(function FilterBar({
   // mobile drawer both render from this, so a filter is defined (and wired) once.
   const filterSections: {
     key: string;
+    /** Verbose call-to-action label for the bar variant's popover button. */
     label: string;
+    /** Short noun heading for the sidebar/drawer facet sections. */
+    heading: string;
     count: number;
     panelWidth?: string;
     tooltip?: string;
@@ -193,6 +196,7 @@ export const FilterBar = memo(function FilterBar({
     {
       key: "type",
       label: translate("filters.selectTypes"),
+      heading: translate("table.type"),
       count: filters.selectedTypes.length,
       tooltip: TOOLTIPS.FILTERS.TYPE_FILTER,
       content: (
@@ -209,6 +213,7 @@ export const FilterBar = memo(function FilterBar({
     {
       key: "status",
       label: translate("filters.selectStatus"),
+      heading: translate("table.status"),
       count: filters.selectedStatuses.length,
       tooltip: TOOLTIPS.FILTERS.STATUS_FILTER,
       content: (
@@ -224,6 +229,7 @@ export const FilterBar = memo(function FilterBar({
     {
       key: "destructionDate",
       label: translate("filters.destructionDate"),
+      heading: translate("table.destructionDate"),
       count: isDestructionDateFilterActive(
         filters.destructionDateStart,
         filters.destructionDateEnd
@@ -247,6 +253,7 @@ export const FilterBar = memo(function FilterBar({
     {
       key: "yearBuilt",
       label: translate("filters.yearBuilt"),
+      heading: translate("table.yearBuilt"),
       count: filters.creationYearStart || filters.creationYearEnd ? 1 : 0,
       panelWidth: "min-w-max",
       tooltip: TOOLTIPS.FILTERS.YEAR_FILTER,
@@ -366,7 +373,7 @@ export const FilterBar = memo(function FilterBar({
             {filterSections.map((filterSection) => (
               <div key={filterSection.key}>
                 <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                  {filterSection.label}
+                  {filterSection.heading}
                 </h3>
                 {filterSection.content}
               </div>
@@ -444,7 +451,7 @@ export const FilterBar = memo(function FilterBar({
           {filterSections.map((filterSection) => (
             <section key={filterSection.key}>
               <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                {filterSection.label}
+                {filterSection.heading}
               </h3>
               {filterSection.content}
             </section>
@@ -453,7 +460,14 @@ export const FilterBar = memo(function FilterBar({
           <div>{showUnknownDatesCheckbox}</div>
         </aside>
 
-        {mobileFiltersTrigger}
+        {/* Mobile: search + Filters trigger (the drawer holds the facets) —
+            keeps the mobile experience identical to the bar variant. flex-wrap so
+            the full-width search doesn't push the trigger off-screen. */}
+        <div className="md:hidden flex flex-wrap items-center gap-1.5 p-2">
+          {searchBox}
+          {mobileFiltersTrigger}
+        </div>
+
         {mobileDrawer}
       </>
     );
