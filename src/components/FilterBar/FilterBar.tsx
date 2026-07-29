@@ -532,14 +532,40 @@ export const FilterBar = memo(function FilterBar({
 
             {searchBox}
 
-            {/* Facets — always visible, one <section> each */}
+            {/* Facets — collapsible accordion groups, open by default.
+                ponytail: native <details>, so open/close needs no state and is
+                keyboard-accessible for free. Open state is not persisted — add
+                localStorage only if users ask for it to survive reloads. */}
             {filterSections.map((filterSection) => (
-              <section key={filterSection.key}>
-                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
-                  {filterSection.heading}
-                </h3>
+              <details key={filterSection.key} open className="group">
+                <summary
+                  className={cn(
+                    "flex items-center gap-2 mb-2 cursor-pointer list-none rounded focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                    "[&::-webkit-details-marker]:hidden"
+                  )}
+                >
+                  <svg
+                    className={cn(
+                      "w-3.5 h-3.5 flex-shrink-0 transition-transform group-open:rotate-90",
+                      localeConfig.direction === "rtl" && "-scale-x-100",
+                      t.text.body
+                    )}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                  </svg>
+                  <h3 className={cn("text-sm font-semibold", t.text.heading)}>
+                    {filterSection.heading}
+                  </h3>
+                  {filterSection.count > 0 && (
+                    <CountBadge count={filterSection.count} variant="primary" />
+                  )}
+                </summary>
                 {filterSection.content}
-              </section>
+              </details>
             ))}
 
             <div>{showUnknownDatesCheckbox}</div>

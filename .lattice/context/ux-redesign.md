@@ -20,7 +20,7 @@ created: 2026-07-27
 - **Fixes:** `MapResizeHandler` re-tiles Leaflet on container resize; `DataPage` now filters by date/year/unknown via `useFilteredSites` (was a real bug — it had its own inline type/status/search-only filter); Date/Year inputs stack uniformly at any width; sidebar visual polish (opaque via `relative z-10` over the flag triangle, strong border, left scrollbar via a `dir="rtl"` wrapper, no bottom scrollbar); the timeline bottom bars span full width beneath the sidebar; date/year facet headings read "…Range".
 
 **Next / remaining:**
-- **Accordion facet groups** (end-goal a) — the last planned item. Each facet is already a self-contained `<section>`, so add a collapsible header.
+- ✅ **Accordion facet groups** (end-goal a) — done: sidebar facets are native `<details>`, open by default, chevron + active-count badge in the `<summary>`. Open state not persisted.
 - Optional polish: RTL collapse-chevron direction; promote the layout toggle to an app-wide persisted preference (and offer it on `/data` + `/timeline`); Date/Year are now stacked in the top-bar popovers too — revisit if horizontal is preferred there.
 - **Deferred:** mobile redesign (Playwright mobile project still off, `playwright.config.ts:65`); Timeline component internals (the *other* flagged-complex area — only its page layout changed so far).
 
@@ -54,6 +54,7 @@ created: 2026-07-27
 | 2026-07-29 | Date/Year range inputs **stack From/To vertically** at every width; the BCE/CE `Select` sits in a fixed-width box | Uniform, never-clipped inputs in the narrow sidebar; the `Select`'s base `w-full` otherwise made it hog the flex row while the year field collapsed. Also stacks in the top-bar popovers (reads fine) | A `stacked` prop toggled by variant (rejected — more plumbing) |
 | 2026-07-29 | In sidebar mode the timeline bottom bar(s) span **full width** beneath the `[sidebar │ map/columns]` row | Matches the user's ask ("like the data grid"); the bars aren't part of the filter column | Keep them confined to the right of the sidebar (rejected by user) |
 | 2026-07-29 | Sidebar visual polish: opaque via `relative z-10` (over the flag triangle), strong `t.border.primary`, left scrollbar via `dir="rtl"` container + inner locale-dir wrapper, `overflow-x-hidden` | User-reported issues; the aside had no z-index so the decorative triangle painted over it. Left scrollbar is the standard `dir` trick, kept content direction correct per locale | — |
+| 2026-07-29 | Accordion facets (end-goal a) = native **`<details>`/`<summary>`**, `open` by default, no state and no persistence | Native gives open/close, keyboard support and a11y semantics for free; `open` by default preserves today's all-visible behavior. Active-filter `CountBadge` in the summary so a collapsed facet still signals it's filtering | Headless UI `Disclosure` (rejected — the jsdom event problem that already forced popover tests into e2e); `useState` + conditional render (rejected — more code, same result); persist open state in localStorage (deferred — add if users ask) |
 | 2026-07-29 | Date/year facet **headings say "…Range"** in the sidebar/drawer (reuse `filters.destructionDate` / `filters.yearBuilt`, matching the bar); Type/Status stay short | User asked for it; keeps the section titles consistent with the top-bar labels | Keep the short `table.*` headings (rejected by user) |
 
 ## Open Questions
@@ -73,7 +74,7 @@ created: 2026-07-27
 
 **Build order / status:** 1) sidebar variant + characterization tests ✅; 2) `/data` → sidebar ✅ (+ short `heading` field reusing `table.*` keys); 3) `/timeline` → sidebar ✅ (+ e2e updated to the `<aside aria-label="Filters">` / role="complementary" interaction); 4) collapse toggle (end-goal b) ✅; 5) Dashboard ✅ via a remembered top-bar⇄sidebar user toggle (not sidebar-only); 6) map-resize fix ✅.
 
-**Remaining:** (a) accordion facet groups (end-goal a) — still open. Post-redesign fix rounds are done (see the handoff block at the top + the 2026-07-29 decision-log rows). Optional polish and mobile redesign still deferred.
+**Remaining:** none of the planned items — (a) accordion facet groups shipped ✅. Post-redesign fix rounds are done (see the handoff block at the top + the 2026-07-29 decision-log rows). Optional polish and mobile redesign still deferred.
 
 **Safety net:** bar-variant baseline tests stay (default variant protects the dedupe). Add sidebar-variant tests (facets render inline, check type → `onFilterChange`, count + Clear All present) — sidebar has no Headless UI wrapper, so component-level interaction works.
 

@@ -133,7 +133,7 @@ describe("FilterBar — sidebar variant", () => {
   // In the sidebar, facets render inline (no Headless UI popover/dialog), so
   // control→callback interaction works reliably at the component level.
   function facet(name: RegExp): HTMLElement {
-    return screen.getByRole("heading", { name }).closest("section") as HTMLElement;
+    return screen.getByRole("heading", { name }).closest("details") as HTMLElement;
   }
 
   it("renders all four facets inline (nothing to open)", () => {
@@ -142,6 +142,15 @@ describe("FilterBar — sidebar variant", () => {
     expect(screen.getByRole("heading", { name: /^status$/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /destruction date range/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /year built range/i })).toBeInTheDocument();
+  });
+
+  it("facets are open by default and can be collapsed", async () => {
+    const { user } = setup({ variant: "sidebar" });
+    const type = facet(/^type$/i);
+    expect(type).toHaveAttribute("open");
+
+    await user.click(within(type).getByRole("heading", { name: /^type$/i }));
+    expect(type).not.toHaveAttribute("open");
   });
 
   it("checking a type fires onFilterChange with selectedTypes", async () => {
