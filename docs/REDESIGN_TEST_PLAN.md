@@ -2,7 +2,7 @@
 
 **Goal:** Build a test safety net that survives a UX/UI redesign — so we can freely change *how the app looks* while proving *what the app does* still works.
 
-**Status:** Draft for review. Nothing here is executed yet. Approve sections and I'll implement.
+**Status:** Live. Quick wins done; the safety net is now built **per redesign area, just-in-time** (see "How we actually work" below). Filters are covered; every other area is still thin.
 
 ---
 
@@ -37,31 +37,41 @@ Rule of thumb: if the only way a test fails is a thrown exception, it's a smoke 
 
 ---
 
+## How we actually work (supersedes the original "write everything first" sequence)
+
+The original plan was: build the whole 14-workflow suite, *then* redesign. We changed it. The loop is now **per area, just-in-time**:
+
+1. **Characterize the area we're about to change** — behavior tests for what it does today, at the cheapest honest level (component if the widgets cooperate, e2e if they don't).
+2. **Make the design change.**
+3. **Prove the tests still pass** — plus a new test for any *new* behavior the change introduces, and a regression test for any bug it fixes.
+
+Why: characterizing an area we won't touch this pass is guardrails for nothing. It also keeps each redesign slice self-contained — the tests that protect it are written, used, and proven green in the same sitting.
+
+What that means for the table below: rows are **not a backlog to burn down**. A row gets built when its area is next in the redesign, and stays ✗ until then — that's the intended state, not a debt.
+
+---
+
 ## Where we stand today
 
-Coverage (v8, `npm run test:coverage`):
-
-| Metric | Now | Threshold in config |
-|---|---|---|
-| Lines | 65.4% | 80% |
-| Statements | 64.6% | 80% |
-| Branches | 61.1% | 80% |
-| Functions | 59.8% | 80% |
-
-1327 unit tests / 79 files, ~15 e2e tests. Thresholds are aspirational — they don't gate `npm test` (which skips coverage).
+Coverage (v8, `npm run test:coverage`) sits below the config's 80% thresholds on every metric. Those thresholds are aspirational — they don't gate `npm test`, which skips coverage — and per the decisions log we are deliberately not chasing them. Run the command for current numbers; counts are not recorded here (the code is the source of truth).
 
 **Strong (redesign-proof, keep as-is):** the filter and timeline *engines* — `useFilteredSites`, `siteFilters`, `filterStateAdapter`, `timelineCalculations`, `intervalCalculations`, `useTimelineData`, `heritageMetrics`. The hard logic is protected. Good.
 
-**Weak (the redesign risk):**
-1. **E2E journeys are thin and partly fake.** Only the filter dropdown *visibility* is checked, not filtering. Several tests hide assertions behind `if (count > 0)` — rename a class and they skip silently, still green.
-2. **Mobile has zero active coverage.** The Playwright mobile project is commented out (`playwright.config.ts:65`); the 517-line mobile suite was deleted.
-3. **No end-to-end proof of any cross-component workflow** (filter → results, scrubber → map, calendar toggle, language/RTL, theme, export).
+**Covered since (the areas we've redesigned):**
+- **Filters** — `src/components/FilterBar/FilterBar.baseline.test.tsx` characterizes the whole component (both variants, the collapse rail, the layout toggle, accordion facets); `e2e/filters.spec.ts` proves the real wiring (filter → result count changes) plus the `/data` year-filter regression and the Dashboard's remembered layout.
+- **Theming convention** — `src/__tests__/darkModeConvention.test.ts` fails if any component reintroduces a Tailwind `dark:` modifier.
+- The `if (count > 0)` guards are gone everywhere; what can't be proven yet is `test.fixme`, visibly pending instead of silently green.
+
+**Still weak (the remaining redesign risk):**
+1. **Mobile has zero active coverage.** The Playwright mobile project is still commented out (`playwright.config.ts:65`); the deleted mobile suite has not been rebuilt.
+2. **Timeline is uncharacterized** — and it's the other area flagged complex. Scrubber drag and comparison site-selection are still `test.fixme`; they're exactly what a Timeline redesign would break. **These get built when the Timeline redesign starts**, per the loop above.
+3. **No e2e proof of the remaining cross-component workflows** — calendar toggle, language/RTL, theme, export.
 
 ---
 
 ## Quick wins — ✅ DONE
 
-Executed. Result: the three affected e2e specs run **10 passing / 0 failing / 4 skipped**, and the skips are now *visible* (`test.fixme`) instead of silently green. Unit suite unaffected; lint clean.
+Executed. Result: the three affected e2e specs pass with zero failures, and the remaining gaps are now *visible* (`test.fixme`) instead of silently green. Unit suite unaffected; lint clean.
 
 | # | Fix | Outcome |
 |---|---|---|
@@ -83,28 +93,33 @@ Executed. Result: the three affected e2e specs run **10 passing / 0 failing / 4 
 
 ---
 
-## Workflows that need real e2e coverage
+## Workflow inventory — build each when its area is next in the redesign
 
-The core deliverable. Each is a user journey driven by roles/text, asserting an observable state change. Ordered by redesign-risk. **Review this list — add/cut before I build.**
+Each row is a user journey driven by roles/text, asserting an observable state change. ✗ means "not built yet, and that's fine until we touch that area."
 
 | Workflow | What a redesign can silently break | Assert (observable) | Today |
 |---|---|---|---|
-| **Apply a type filter** | Filter control moves into a drawer/menu; wiring lost | Result count / visible rows actually change | ✗ (only visibility) |
-| **Apply year + date range** | Slider/inputs restyled | Rows outside range disappear | ✗ |
-| **Clear / remove a filter tag** | Tag UI redesigned | Removed filter's results return | ✗ |
-| **Combine filters (multi)** | Layout reflow | AND-logic result set correct | partial (unit only) |
-| **Timeline scrubber drag** | Scrubber rebuilt | Active date changes *and* map/markers update | ✗ (silent-skip) |
-| **Timeline play/pause/next/prev/reset** | Controls relocated | Date advances/resets | partial (unit only) |
-| **Select site → comparison view** | Panel/layout change | Before/after maps show, site name shows | partial |
+| **Apply a type filter** | Filter control moves into a drawer/menu; wiring lost | Result count / visible rows actually change | ✅ `filters.spec.ts` |
+| **Apply year range** | Slider/inputs restyled | Result count changes on `/data` | ✅ `filters.spec.ts` (regression for the inline-filter bug) |
+| **Apply destruction-date range** | Date inputs restyled | Rows outside range disappear | ✗ |
+| **Sidebar layout preference persists** | Toggle/localStorage wiring lost | Sidebar survives a reload on `/dashboard` | ✅ `filters.spec.ts` |
+| **Facet accordion open/close** | Header markup changes | Facet collapses, content hidden | ✅ `FilterBar.baseline.test.tsx` |
+| **Clear all filters** | Button relocated | `onClearAll` fires / results return | 🟡 component-level only |
+| **Combine filters (multi)** | Layout reflow | AND-logic result set correct | 🟡 unit only (`useFilteredSites`) |
+| **Timeline scrubber drag** | Scrubber rebuilt | Active date changes *and* map/markers update | ✗ — build with the Timeline redesign |
+| **Timeline play/pause/next/prev/reset** | Controls relocated | Date advances/resets | 🟡 presence-only e2e + unit |
+| **Select site → comparison view** | Panel/layout change | Before/after maps show, site name shows | ✗ `test.fixme` ×3 |
 | **Calendar toggle (Gregorian ↔ Islamic)** | Toggle moves | Displayed dates switch systems | ✗ |
 | **Language switch + RTL (en/ar/it)** | Header/nav restyled | Text translates; `dir=rtl` applies for Arabic | ✗ |
-| **Theme toggle (light/dark)** | Theme control moves | Theme attribute/class flips; app still readable | ✗ |
+| **Theme toggle (light/dark)** | Theme control moves | Theme attribute/class flips; app still readable | 🟡 convention guardrail only |
 | **Export (CSV/JSON/GeoJSON)** | Export button relocated | Download triggers with expected filename/rows | ✗ (logic only) |
 | **Mobile: hamburger nav** | Responsive breakpoints change | Menu opens, link navigates, menu closes | ✗ (deleted) |
 | **Mobile: filter drawer** | Drawer redesigned | Opens, applies a filter, closes | ✗ (deleted) |
 | **Mobile: map marker tap** | Touch targets change | Tap marker → detail shows | ✗ (deleted) |
 
 Mobile rows require **re-enabling the Playwright mobile project** (`playwright.config.ts`) — a prerequisite, not optional, if we want mobile protected.
+
+**Where to put a new test:** component level when the widgets deliver events in jsdom (the sidebar facets do); e2e when they don't (Headless UI Popover/Dialog don't) or when the journey spans pages, reloads, or real layout. Don't fight jsdom — that call is already in the decisions log.
 
 ---
 
@@ -129,11 +144,14 @@ Checked the delete history. Verdicts:
 
 ---
 
-## Proposed sequence
+## Sequence
 
-1. **Quick wins (QW1–QW3)** — honest existing tests + theming guardrail. (~½ day)
-2. **Desktop workflow e2e** — filters, timeline, calendar, i18n/RTL, theme, export. (~1 day)
-3. **Re-enable mobile project + mobile workflow e2e.** (~½ day)
-4. Redesign begins against a green, meaningful suite.
+1. **Quick wins (QW1–QW3)** — honest existing tests + theming guardrail. ✅ done
+2. **Filters area** — characterize → redesign (dedupe, faceted sidebar, collapse rail, layout toggle, accordion) → green. ✅ done
+3. **Timeline area** — same loop, not started. Characterizing it means solving the two `test.fixme`s (SVG/D3 drag targets, comparison selection).
+4. **Mobile** — re-enable the Playwright mobile project, then characterize → redesign.
+5. Remaining cross-cutting journeys (calendar, i18n/RTL, theme, export) — build alongside whichever redesign touches their controls.
+
+> The original plan ran steps 2–4 as one big "write all the tests first" phase. Replaced by the per-area loop above; see "How we actually work".
 
 Stack confirmed for all of the above: Vitest + Testing Library (unit/component), Playwright chromium (e2e), MSW (network mocks) — per `.lattice/standards/language-idioms.md`.
