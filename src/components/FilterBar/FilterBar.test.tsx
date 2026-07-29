@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
+import { userEvent } from "@testing-library/user-event";
 import { renderWithTheme, screen } from "../../test-utils/renderWithTheme";
 import { FilterBar } from "./FilterBar";
 import { CalendarProvider } from "../../contexts/CalendarContext";
@@ -187,6 +188,42 @@ describe("FilterBar", () => {
         </CalendarProvider>
       );
       expect(container).toBeInTheDocument();
+    });
+  });
+
+  describe("Sidebar Settings tab", () => {
+    const SETTINGS_CONTENT = "Comparison Mode";
+
+    const renderSidebar = (settings?: React.ReactNode) =>
+      renderWithTheme(
+        <CalendarProvider>
+          <FilterBar {...mockProps} variant="sidebar" settings={settings} />
+        </CalendarProvider>
+      );
+
+    it("shows filter facets and hides settings content until the Settings tab is picked", () => {
+      renderSidebar(<div>{SETTINGS_CONTENT}</div>);
+
+      expect(screen.getByRole("tab", { name: "Filters" })).toHaveAttribute("aria-selected", "true");
+      expect(screen.getByRole("heading", { name: "Type" })).toBeInTheDocument();
+      expect(screen.queryByText(SETTINGS_CONTENT)).not.toBeInTheDocument();
+    });
+
+    it("swaps the sidebar body to the settings content when the Settings tab is clicked", async () => {
+      const user = userEvent.setup();
+      renderSidebar(<div>{SETTINGS_CONTENT}</div>);
+
+      await user.click(screen.getByRole("tab", { name: "Settings" }));
+
+      expect(screen.getByText(SETTINGS_CONTENT)).toBeInTheDocument();
+      expect(screen.queryByRole("heading", { name: "Type" })).not.toBeInTheDocument();
+    });
+
+    it("renders a plain heading instead of tabs when no settings are supplied", () => {
+      renderSidebar();
+
+      expect(screen.queryByRole("tab")).not.toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Filters" })).toBeInTheDocument();
     });
   });
 });

@@ -192,6 +192,7 @@ export interface Translations {
   /** Filter bar */
   filters: {
     filters: string;
+    settings: string;
     clear: string;
     clearAll: string;
     searchPlaceholder: string;

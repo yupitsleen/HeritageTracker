@@ -13,7 +13,7 @@ import { TimelineHelpModal } from "../components/Help";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
-import { WaybackSlider } from "../components/AdvancedTimeline";
+import { WaybackSlider, WaybackSettings } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { Site } from "../types";
 import type { FilterState } from "../types/filters";
@@ -318,6 +318,16 @@ export function Timeline() {
                   totalSites={mockSites.length}
                   filteredSites={filteredSites.length}
                   onClearAll={clearAllFilters}
+                  settings={
+                    <WaybackSettings
+                      comparisonMode={comparisonModeEnabled}
+                      onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
+                      comparisonInterval={comparisonInterval}
+                      onIntervalChange={setComparisonInterval}
+                      syncMapVersion={syncMapOnDotClick}
+                      onSyncMapVersionToggle={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
+                    />
+                  }
                 />
 
                 {/* Map column */}
@@ -386,11 +396,6 @@ export function Timeline() {
                 comparisonMode={comparisonModeEnabled}
                 beforeIndex={beforeReleaseIndex}
                 onBeforeIndexChange={setBeforeReleaseIndex}
-                onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
-                comparisonInterval={comparisonInterval}
-                onIntervalChange={setComparisonInterval}
-                syncMapVersion={syncMapOnDotClick}
-                onSyncMapVersionToggle={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
               />
             </div>
 

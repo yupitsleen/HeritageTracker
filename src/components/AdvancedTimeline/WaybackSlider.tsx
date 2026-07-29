@@ -5,10 +5,8 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
 import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
-import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
 import { InfoIcon } from "../Icons/InfoIcon";
 import { INFO_ICON_COLORS } from "../../constants/tooltip";
-import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
 import { TOOLTIPS } from "../../config/tooltips";
@@ -20,9 +18,12 @@ import { Z_INDEX } from "../../constants/layout";
 export type IndexChangeHandler = (index: number) => void;
 
 /**
- * Base props for WaybackSlider
+ * WaybackSlider props
+ *
+ * Comparison-mode *settings* (toggle, interval, sync) live in WaybackSettings;
+ * this component only needs to know the resulting mode and the before index.
  */
-interface BaseWaybackSliderProps {
+export interface WaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
@@ -31,33 +32,7 @@ interface BaseWaybackSliderProps {
   comparisonMode?: boolean;
   beforeIndex?: number;
   onBeforeIndexChange?: IndexChangeHandler;
-  onComparisonModeToggle?: () => void;
-  // Sync map version support
-  syncMapVersion?: boolean;
-  onSyncMapVersionToggle?: () => void;
 }
-
-/**
- * Comparison interval props - both must be provided together
- */
-interface WithComparisonInterval {
-  comparisonInterval: ComparisonInterval;
-  onIntervalChange: (interval: ComparisonInterval) => void;
-}
-
-/**
- * No comparison interval props
- */
-interface WithoutComparisonInterval {
-  comparisonInterval?: never;
-  onIntervalChange?: never;
-}
-
-/**
- * WaybackSlider props - comparisonInterval and onIntervalChange must be provided together
- */
-export type WaybackSliderProps = BaseWaybackSliderProps &
-  (WithComparisonInterval | WithoutComparisonInterval);
 
 /**
  * WaybackSlider - Interactive timeline for Wayback imagery releases
@@ -79,11 +54,6 @@ export function WaybackSlider({
   comparisonMode = false,
   beforeIndex = 0,
   onBeforeIndexChange,
-  onComparisonModeToggle,
-  comparisonInterval,
-  onIntervalChange,
-  syncMapVersion = false,
-  onSyncMapVersionToggle
 }: WaybackSliderProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -276,47 +246,9 @@ export function WaybackSlider({
       {/* Header: three-column flex so left controls never overlap the nav buttons */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
       <div className="flex items-start gap-2 mb-2 min-w-0" dir="ltr">
-        {/* Left: comparison controls (flex-1 so it takes equal space as the right column) */}
-        <div className="flex flex-1 items-center gap-1.5 flex-wrap min-w-0">
-          {onComparisonModeToggle && (
-            <>
-              <Button
-                variant="secondary"
-                size="xs"
-                active={comparisonMode}
-                onClick={onComparisonModeToggle}
-                aria-label={translate("timeline.comparisonMode")}
-                title={translate("timeline.comparisonMode")}
-              >
-                {comparisonMode ? "✓ " : ""}
-                {translate("timeline.comparisonMode")}
-              </Button>
-
-              {comparisonInterval && onIntervalChange && (
-                <IntervalSelector
-                  value={comparisonInterval}
-                  onChange={onIntervalChange}
-                  comparisonModeEnabled={comparisonMode}
-                  syncMapVersion={syncMapVersion}
-                />
-              )}
-
-              {onSyncMapVersionToggle && (
-                <Button
-                  variant="secondary"
-                  size="xs"
-                  active={syncMapVersion}
-                  onClick={onSyncMapVersionToggle}
-                  aria-label={translate("timeline.syncMapVersion")}
-                  title={translate("timeline.syncMapVersionTooltip")}
-                >
-                  {syncMapVersion ? "✓ " : ""}
-                  {translate("timeline.syncMapVersion")}
-                </Button>
-              )}
-            </>
-          )}
-        </div>
+        {/* Left: spacer so the nav buttons stay centered (comparison controls now
+            live in the filter sidebar's Settings tab). */}
+        <div className="flex-1 min-w-0" />
 
         {/* Center: nav buttons — flex-shrink-0 so they're always fully visible */}
         <div className="flex items-center gap-2 flex-shrink-0">

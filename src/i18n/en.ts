@@ -155,6 +155,7 @@ export const en: Translations = {
 
   filters: {
     filters: "Filters",
+    settings: "Settings",
     clear: "Clear",
     clearAll: "Clear All",
     searchPlaceholder: "Search...",

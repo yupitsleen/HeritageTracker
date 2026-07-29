@@ -1,4 +1,4 @@
-import { memo, useState, useMemo, useEffect, useCallback } from "react";
+import { memo, useState, useMemo, useEffect, useCallback, useRef, type ReactNode } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { Site, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
@@ -50,6 +50,11 @@ interface FilterBarProps {
   sidebarDefaultCollapsed?: boolean;
   /** When provided, renders a control to switch between "bar" and "sidebar" presentations. */
   onVariantToggle?: () => void;
+  /**
+   * Sidebar variant only: when provided, the sidebar gets Filters/Settings tabs and this
+   * renders under the Settings tab. Page-owned controls (e.g. Wayback comparison options).
+   */
+  settings?: ReactNode;
 }
 
 /**
@@ -80,11 +85,20 @@ export const FilterBar = memo(function FilterBar({
   variant = "bar",
   sidebarDefaultCollapsed = false,
   onVariantToggle,
+  settings,
 }: FilterBarProps) {
   const { t: translate, localeConfig } = useLocale();
   const t = useThemeClasses();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(sidebarDefaultCollapsed);
+  const [sidebarTab, setSidebarTab] = useState<"filters" | "settings">("filters");
+
+  // Browsers restore a scroll container's offset on reload, which can drop the
+  // sidebar in mid-list with its header off-screen. Always start at the top.
+  const sidebarRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (sidebarRef.current) sidebarRef.current.scrollTop = 0;
+  }, [sidebarCollapsed]);
 
   // Local state for search input (for immediate UI feedback)
   const [searchInputValue, setSearchInputValue] = useState(filters.searchTerm);
@@ -388,6 +402,16 @@ export const FilterBar = memo(function FilterBar({
 
             {/* Show Unknown Dates Toggle */}
             <div>{showUnknownDatesCheckbox}</div>
+
+            {/* Settings — the drawer has no tabs, so they just get their own section. */}
+            {settings && (
+              <div>
+                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
+                  {translate("filters.settings")}
+                </h3>
+                {settings}
+              </div>
+            )}
           </div>
 
           {/* Mobile Drawer Actions */}
@@ -474,6 +498,7 @@ export const FilterBar = memo(function FilterBar({
           </aside>
         ) : (
           <aside
+            ref={sidebarRef}
             dir="rtl"
             className={cn(
               "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 overflow-y-auto overflow-x-hidden border rounded shadow-lg relative z-10",
@@ -487,9 +512,33 @@ export const FilterBar = memo(function FilterBar({
             <div dir={localeConfig.direction} className="flex flex-col gap-3 p-3">
             {/* Header: title + layout toggle + collapse (hide) button */}
             <div className="flex items-center justify-between gap-2">
-              <h2 className={cn("text-base font-bold", t.text.heading)}>
-                {translate("filters.filters")}
-              </h2>
+              {settings ? (
+                /* Tabs — plain buttons; no roving-tabindex tablist for two items.
+                   ponytail: upgrade to full ARIA tabs if a third tab shows up. */
+                <div className="flex items-center gap-1" role="tablist">
+                  {(["filters", "settings"] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      role="tab"
+                      aria-selected={sidebarTab === tab}
+                      onClick={() => setSidebarTab(tab)}
+                      className={cn(
+                        "px-2 py-1 text-sm font-bold rounded-t border-b-2 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                        sidebarTab === tab
+                          ? cn("border-[#009639]", t.text.heading)
+                          : cn("border-transparent", t.text.muted, t.bg.hover)
+                      )}
+                    >
+                      {translate(`filters.${tab}`)}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <h2 className={cn("text-base font-bold", t.text.heading)}>
+                  {translate("filters.filters")}
+                </h2>
+              )}
               <div className="flex items-center gap-1">
                 {variantToggleButton}
                 <button
@@ -510,6 +559,8 @@ export const FilterBar = memo(function FilterBar({
               </div>
             </div>
 
+            {sidebarTab === "settings" ? settings : (
+              <>
             {/* Result count — prominent (not the 10px of the bar) — + Clear All */}
             {showActions && (
               <div className="flex items-center justify-between gap-2">
@@ -569,6 +620,8 @@ export const FilterBar = memo(function FilterBar({
             ))}
 
             <div>{showUnknownDatesCheckbox}</div>
+              </>
+            )}
             </div>
           </aside>
         )}
