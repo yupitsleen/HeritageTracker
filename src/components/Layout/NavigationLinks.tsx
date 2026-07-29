@@ -17,11 +17,19 @@ interface NavigationLinksProps {
   layout: "desktop" | "mobile";
 }
 
-const NAV_ITEMS: NavigationItem[] = [
+// ponytail: build-time flag, not a runtime toggle — routes stay reachable by URL,
+// only the nav entries are hidden in production builds.
+const HIDE_IN_PROD = import.meta.env.PROD;
+
+const ALL_NAV_ITEMS: NavigationItem[] = [
   { path: "/dashboard", translationKey: "header.dashboard", variant: "primary", hideOnMobile: true },
   { path: "/data", translationKey: "header.data", variant: "primary" },
   { path: "/timeline", translationKey: "header.timeline", variant: "secondary" },
 ];
+
+const NAV_ITEMS = ALL_NAV_ITEMS.filter(
+  (item) => !(HIDE_IN_PROD && item.path === "/dashboard")
+);
 
 /**
  * Reusable navigation links component
@@ -77,8 +85,10 @@ export function NavigationLinks({
         );
       })}
 
-      {/* Resources Dropdown */}
-      <ResourcesDropdown activePage={activePage} onNavigate={onNavigate} layout={layout} />
+      {/* Resources Dropdown - hidden in production builds */}
+      {!HIDE_IN_PROD && (
+        <ResourcesDropdown activePage={activePage} onNavigate={onNavigate} layout={layout} />
+      )}
     </>
   );
 }

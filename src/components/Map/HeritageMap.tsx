@@ -4,7 +4,7 @@ import type { Site } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM } from "../../constants/map";
 import { useMapGlow } from "../../hooks/useMapGlow";
 import { useAnimation } from "../../contexts/AnimationContext";
-import { MapCenterHandler, ZoomLogger, ScrollWheelHandler } from "./MapHelperComponents";
+import { MapCenterHandler, ZoomLogger, ScrollWheelHandler, MapResizeHandler } from "./MapHelperComponents";
 import { MapTileLayers } from "./MapTileLayers";
 import { MapGlowLayer } from "./MapGlowLayer";
 import { MapMarkers } from "./MapMarkers";
@@ -55,6 +55,9 @@ export const HeritageMap = memo(function HeritageMap({
       >
         {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}
         <ScrollWheelHandler />
+
+        {/* Re-render tiles when the container resizes (e.g. sidebar collapse, table resize) */}
+        <MapResizeHandler />
 
         {/* Map center handler for highlighted sites */}
         <MapCenterHandler sites={sites} highlightedSiteId={highlightedSiteId} zoomToSiteEnabled={!disableAutoCentering && zoomToSiteEnabled} />

@@ -55,6 +55,7 @@ vi.mock("react-leaflet", () => ({
 vi.mock("./MapHelperComponents", () => ({
   MapUpdater: () => null,
   ScrollWheelHandler: () => null,
+  MapResizeHandler: () => null,
 }));
 
 // Mock TimeToggle component

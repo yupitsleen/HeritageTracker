@@ -1,0 +1,120 @@
+---
+feature: UX/UI Redesign
+requirement_doc: null
+created: 2026-07-27
+---
+
+# UX/UI Redesign
+
+> Simplify the app's most complex, hard-to-discover features (filters and the timeline) so its capabilities actually get used — without breaking any existing functionality.
+
+## Current status — handoff for a new session (updated 2026-07-29)
+
+**Branch:** `ui-design-improvements` (many commits, not yet opened as a PR). **Orient with** `git log --oneline -25 && git status -sb`. **Full check:** `npx vitest --run` (unit) then `npm run e2e` (Playwright chromium, auto-starts the dev server); `npx tsc --noEmit -p tsconfig.app.json` + `npm run lint` must stay clean. Last known green: **unit 1343/0, e2e 12/0**, lint + tsc clean.
+
+**Done so far:**
+- **Slice 1 — dedup:** `FilterBar` declares each filter once in a `filterSections` array that feeds the bar popovers, the mobile drawer, and the sidebar.
+- **Faceted sidebar** (`variant="sidebar"`) on `/data` and `/timeline` (persistent). **Dashboard** keeps its top bar by default with a **remembered top-bar⇄sidebar toggle** (`localStorage` key `heritage-tracker-dashboard-filter-layout`).
+- **Collapse toggle** (end-goal b): sidebar collapses to a ~48px rail (filter icon + active-filter count badge); `sidebarDefaultCollapsed` prop.
+- **Layout toggle** control via the `onVariantToggle` FilterBar prop (icon far-left in the bar row / in the sidebar header).
+- **Fixes:** `MapResizeHandler` re-tiles Leaflet on container resize; `DataPage` now filters by date/year/unknown via `useFilteredSites` (was a real bug — it had its own inline type/status/search-only filter); Date/Year inputs stack uniformly at any width; sidebar visual polish (opaque via `relative z-10` over the flag triangle, strong border, left scrollbar via a `dir="rtl"` wrapper, no bottom scrollbar); the timeline bottom bars span full width beneath the sidebar; date/year facet headings read "…Range".
+
+**Next / remaining:**
+- ✅ **Accordion facet groups** (end-goal a) — done: sidebar facets are native `<details>`, open by default, chevron + active-count badge in the `<summary>`. Open state not persisted.
+- Optional polish: RTL collapse-chevron direction; promote the layout toggle to an app-wide persisted preference (and offer it on `/data` + `/timeline`); Date/Year are now stacked in the top-bar popovers too — revisit if horizontal is preferred there.
+- **Deferred:** mobile redesign (Playwright mobile project still off, `playwright.config.ts:65`); Timeline component internals (the *other* flagged-complex area — only its page layout changed so far).
+
+**FilterBar mental model** (`src/components/FilterBar/FilterBar.tsx`, one component): prop `variant: "bar" | "sidebar"` switches only the desktop presentation; **mobile is a drawer in both**. `filterSections` (built in-render) = `{ key, label, heading, count, panelWidth?, tooltip?, content }` per filter — `label` is the verbose bar-button text ("Select types…"), `heading` is the section title (Type/Status are short; destruction-date/year say "…Range"). **Testing gotcha:** Headless UI Popover/Dialog don't deliver click/change events in jsdom, so widget interaction is characterized in `e2e/filters.spec.ts`; component-level `FilterBar.baseline.test.tsx` only asserts things that work without those events (facets render inline in the sidebar, so its wiring *can* be tested there).
+
+## Decisions Log
+
+<!-- Add new at bottom. Never remove. -->
+
+| Date | Decision | Reasoning | Alternatives Considered |
+|------|----------|-----------|------------------------|
+| 2026-07-27 | Build a behavior-focused test safety net *before* redesigning | A visual redesign changes markup/classes/copy; only tests that drive the app by user-facing roles/text and assert observable outcomes survive it | Redesign first, fix tests after (rejected — no way to prove functionality preserved); chase 80% line coverage (rejected, see below) |
+| 2026-07-27 | Do **not** chase the config's 80% coverage threshold | Coverage % measures lines executed, not behavior protected; 80% is reachable with useless smoke tests | Enforcing the 80% gate as the goal (rejected) |
+| 2026-07-27 | E2E journeys select by accessible role/text, never by CSS class or DOM structure | Structure-coupled selectors break — or silently pass — on a redesign; roles/text are redesign-proof | `data-testid` selectors (kept only where no accessible role exists, e.g. `wayback-slider`) |
+| 2026-07-27 | Remove all `if (count>0)` e2e guards; convert unproven interactions to `test.fixme`, not silent skips | A guarded assertion that never runs is false confidence (lattice "Conditional Test Logic" anti-pattern); `fixme` keeps the gap visible | Leave guards (rejected); delete hollow tests outright (rejected — fixme documents the gap) |
+| 2026-07-27 | Keep the previously-deleted page/sync smoke tests deleted; rebuild only the dark-mode convention test + (later) mobile scenarios | `Timeline.sync` tested a pasted copy of the algorithm; page tests were "renders without crashing"; mobile + dark-mode covered redesign-sensitive areas | Restore all deleted tests (rejected — most were correctly pruned) |
+| 2026-07-27 | Dark mode stays context-based (`isDark`/`useThemeClasses`); a guardrail test fails if any component/page uses a Tailwind `dark:` modifier | `darkMode` is not configured, so `dark:` silently does nothing; a redesign touches every component and could reintroduce it | Configure Tailwind `darkMode` (rejected — established pattern is context-based) |
+| 2026-07-27 | Defer marker→detail and comparison site-selection e2e to the workflow-build phase (now `test.fixme`) | Dashboard markers are SVG CircleMarkers a plain Playwright `.click()` can't action (hangs to the 60s cap); comparison selection needs Prev/Next buttons + async Wayback load | Force them into the quick-win batch (rejected — flaky/hanging tests) |
+| 2026-07-28 | **Filters** is the first redesign target; **desktop first, mobile deferred** | FilterBar is a self-contained 485-line single file (lowest blast radius); mobile needs the Playwright mobile project re-enabled — a separate pass | Timeline first (rejected — spans 2 folders + map-sync); full 14-workflow safety net first (rejected — builds guardrails for areas we won't touch this pass) |
+| 2026-07-28 | Build the safety net **per-area, just-in-time**, not the whole 14-workflow suite up front | Characterizing only the area we're about to change is cheaper and just as safe; matches refactor-safely's slice loop | Original test-plan sequence: full desktop+mobile suite before any redesign (rejected as over-building) |
+| 2026-07-28 | Filters slice 1 = **behavior-preserving dedupe** (kill desktop/mobile double-declaration), *then* UX direction as a separate gated step | The duplicated filter trees ARE the "hard to understand"; a clean single-source structure makes the later visual redesign a one-place edit. Pure refactor first keeps behavior provably intact | Redesign visuals immediately (rejected — no clean structure to redesign against, and mixes behavior change into a refactor) |
+| 2026-07-28 | Characterize Headless UI **widget interaction** (Popover/Dialog filters) in **e2e**, not jsdom component tests | In jsdom the Headless UI Popover renders its panel but never delivers inner click/change events, and its Dialog re-commits on open (detaching captured nodes → flaky). Fighting this is over-investment; a real browser runs the widgets correctly | Force component-level interaction (rejected — 0-call failures + irreducible flakiness); skip the wiring proof entirely (rejected — it's the dedupe's main risk) |
+| 2026-07-28 | Slice 2 (redesign) direction = **faceted filter sidebar, on every surface, persistent** | Most discoverable option; user accepted the map-first trade-off (satellite map gets narrower) for consistency. Sidebar content = the same `filterSections` the drawer already renders | Active-filter chips only (rejected — smaller); inline primary pills (rejected); scope to /data only or collapsible-on-maps (rejected — user wants it everywhere) |
+| 2026-07-28 | Implement as `variant?: "bar" \| "sidebar"` on FilterBar (default `"bar"`); **mobile unchanged** (drawer) both variants | Reuses all existing state/handlers/`filterSections`; default `"bar"` keeps current behavior + baseline tests green; only the desktop presentation switches | New `FilterSidebar` component (rejected for now — would re-plumb state/counts; a variant branch is lazier and DRY) |
+| 2026-07-28 | Ship **flat facets + persistent** first; **accordion groups** and **user-controlled sidebar visibility** are the tracked END GOALS, built incrementally after | Smaller first step; structure so neither is precluded — each facet is a self-contained `<section>` (collapse header drops in later), sidebar presence is one decision point (a visibility toggle wraps it later) | Build accordion + collapse-toggle up front (rejected — bigger first step, per user "incremental changes first, keep end goal in mind") |
+| 2026-07-28 | **Defer the Dashboard** (`DesktopLayout`) to the sidebar — keep its top strip for now; revisit once the collapse-toggle end-goal exists | It's already `table │ map │ detail`; a persistent 4th sidebar column is too tight at 1280px. The collapse-toggle (end-goal b) is what makes it comfortable, so the Dashboard is now blocked on that, not on more sidebar work | Wire it persistent and judge live (rejected by user); bring the collapse-toggle here first out of order (rejected — do it as a proper end-goal step) |
+| 2026-07-28 | End-goal (b) collapse toggle: sidebar collapses to a ~48px rail (filter icon + active-count badge); `sidebarDefaultCollapsed` prop for pages that want to start collapsed | Gives the map/table space back on demand; the rail keeps a persistent affordance + shows that filters are active | Fully hide + floating button (rejected — loses the affordance) |
+| 2026-07-28 | **Dashboard gets a user toggle** (top bar ⇄ sidebar), default **top bar**, remembered in `localStorage` — supersedes the "defer" decision | User asked for choice rather than a forced sidebar; both variants already exist so it's cheap. Keeps the dense layout comfortable by default, sidebar is opt-in (and can further collapse) | Sidebar-only on Dashboard (rejected by user); app-wide persisted preference (deferred — Dashboard-only for now) |
+| 2026-07-28 | Fix: `MapResizeHandler` (ResizeObserver → `map.invalidateSize()`) on SiteDetailView + HeritageMap | Collapsing the sidebar widened the map column but Leaflet kept its old size, leaving a grey block; invalidateSize re-tiles the new area. Also fixes the dashboard table-resize case | Lift collapse state to the page + manual invalidate (rejected — a container ResizeObserver self-heals all resize causes) |
+| 2026-07-29 | **Bug fix:** `DataPage` uses the shared `useFilteredSites` hook instead of its own inline filter | The inline filter only handled type/status/search and silently ignored date/year/unknown — the shared hook is the single source of filtering truth the other pages already use | Extend the inline filter (rejected — duplicates the engine and drifts) |
+| 2026-07-29 | Date/Year range inputs **stack From/To vertically** at every width; the BCE/CE `Select` sits in a fixed-width box | Uniform, never-clipped inputs in the narrow sidebar; the `Select`'s base `w-full` otherwise made it hog the flex row while the year field collapsed. Also stacks in the top-bar popovers (reads fine) | A `stacked` prop toggled by variant (rejected — more plumbing) |
+| 2026-07-29 | In sidebar mode the timeline bottom bar(s) span **full width** beneath the `[sidebar │ map/columns]` row | Matches the user's ask ("like the data grid"); the bars aren't part of the filter column | Keep them confined to the right of the sidebar (rejected by user) |
+| 2026-07-29 | Sidebar visual polish: opaque via `relative z-10` (over the flag triangle), strong `t.border.primary`, left scrollbar via `dir="rtl"` container + inner locale-dir wrapper, `overflow-x-hidden` | User-reported issues; the aside had no z-index so the decorative triangle painted over it. Left scrollbar is the standard `dir` trick, kept content direction correct per locale | — |
+| 2026-07-29 | Accordion facets (end-goal a) = native **`<details>`/`<summary>`**, `open` by default, no state and no persistence | Native gives open/close, keyboard support and a11y semantics for free; `open` by default preserves today's all-visible behavior. Active-filter `CountBadge` in the summary so a collapsed facet still signals it's filtering | Headless UI `Disclosure` (rejected — the jsdom event problem that already forced popover tests into e2e); `useState` + conditional render (rejected — more code, same result); persist open state in localStorage (deferred — add if users ask) |
+| 2026-07-29 | Date/year facet **headings say "…Range"** in the sidebar/drawer (reuse `filters.destructionDate` / `filters.yearBuilt`, matching the bar); Type/Status stay short | User asked for it; keeps the section titles consistent with the top-bar labels | Keep the short `table.*` headings (rejected by user) |
+
+## Open Questions
+
+<!-- When resolved, capture as decision above and remove from here. -->
+
+- Timeline redesign direction (deferred until Filters is done).
+- Mobile safety net + mobile redesign (deferred; requires re-enabling the Playwright mobile project, `playwright.config.ts:65`).
+
+## Slice 2 — Faceted filter sidebar (design approved)
+
+**Direction:** faceted sidebar, every surface, persistent (see decisions log). **End goals (deferred, keep in mind):** (a) collapsible facet groups (accordion); (b) user-controlled sidebar visibility (show/hide toggle). Build **flat + persistent** first.
+
+**Contract:** `variant?: "bar" | "sidebar"` on FilterBar (default `"bar"`). Sidebar = desktop `<aside>` (~256px, full height, scrolls) rendering the `filterSections` facets always-visible; header with prominent count + Clear All; search on top; Show Unknown Dates toggle. **Mobile unchanged** (drawer) in both variants. Reuses `FilterCheckboxList`/`DateRangeFilter`/`YearRangeFilter` verbatim.
+
+**Facet counts** = dataset totals (as today). **Sub-choices settled:** flat now (accordion later); persistent now (visibility toggle later).
+
+**Build order / status:** 1) sidebar variant + characterization tests ✅; 2) `/data` → sidebar ✅ (+ short `heading` field reusing `table.*` keys); 3) `/timeline` → sidebar ✅ (+ e2e updated to the `<aside aria-label="Filters">` / role="complementary" interaction); 4) collapse toggle (end-goal b) ✅; 5) Dashboard ✅ via a remembered top-bar⇄sidebar user toggle (not sidebar-only); 6) map-resize fix ✅.
+
+**Remaining:** none of the planned items — (a) accordion facet groups shipped ✅. Post-redesign fix rounds are done (see the handoff block at the top + the 2026-07-29 decision-log rows). Optional polish and mobile redesign still deferred.
+
+**Safety net:** bar-variant baseline tests stay (default variant protects the dedupe). Add sidebar-variant tests (facets render inline, check type → `onFilterChange`, count + Clear All present) — sidebar has no Headless UI wrapper, so component-level interaction works.
+
+## Active Refactor — Filters (slice 1: behavior-preserving dedupe)
+
+**Preservation boundary (must NOT change):**
+- `FilterBarProps` contract is identical for all 3 consumers (`DataPage`, `DesktopLayout`, `Timeline`). Every user action fires `onFilterChange(partial)` with the same keys: `searchTerm`, `selectedTypes`, `selectedStatuses`, `destructionDateStart/End`, `creationYearStart/End`, `showUnknownDates`; `onClearAll` clears.
+- Search debounce stays 300ms; local input resyncs when `searchTerm` is reset externally.
+- Count badges per filter; type/status counts from `sites`; **statuses with 0 count stay hidden**.
+- Both surfaces keep working: desktop inline popovers (md+), mobile drawer (<md). A11y (ARIA, `aria-pressed`, keyboard/focus, AA contrast), trilingual + RTL, no Tailwind `dark:` modifiers.
+
+**Out of scope:** new filters, filter-*logic* changes (lives in `useFilteredSites`/`siteFilters`, already tested), visual redesign, mobile-project re-enable.
+
+**Target structure:** declare each filter's content **once** as a `filterSections` array `[{ key, label, count, content }]` built inside the component (keeps handler closures); desktop `.map`s it into `<FilterButton>` popovers, mobile `.map`s it into drawer `<section>`s. Kills ~100 lines of duplicated JSX. Containers stay layout-specific; content is single-source.
+
+**Safety net (characterization) — ✅ GREEN (18/18 unit, 2/2 e2e, lint clean, stable over 8 runs):**
+- `src/components/FilterBar/FilterBar.baseline.test.tsx` — search debounce→`onFilterChange`, clear-search, show-unknown-dates→callback, Clear All→`onClearAll`, type popover renders a checkbox per type, status popover hides 0-count statuses, mobile drawer opens, all controls present. (Reliable, no-Headless-UI-event assertions.)
+- `e2e/filters.spec.ts` — rewritten honest (dropped the false "73 unit tests" comment + the `if (count>0)` guard); adds the real wiring proof: open type filter + apply → "Showing X of Y sites" count changes.
+- Removed one hollow test (`bodyText.length > 20`) from `FilterBar.test.tsx`.
+
+## Constraints
+
+<!-- Non-negotiable once recorded. Add only when confirmed. -->
+
+- **WCAG 2.1 AA**: ARIA labels, keyboard nav (Tab/Enter/Escape), focus management, AA contrast — must hold through every visual change.
+- **Trilingual + RTL**: en / ar (RTL) / it must all keep working; use original Arabic names where available.
+- **Theme-aware**: light/dark via React context only — no Tailwind `dark:` modifiers (enforced by `darkModeConvention.test.ts`).
+- **Cultural sensitivity**: evidence-based only (UNESCO, Forensic Architecture, Heritage for Peace); factual language ("destruction" not "damage"); all sources linked and dated.
+- **No hardcoded counts** in docs or UI copy — the data is the source of truth.
+- **TypeScript strict**: no `any`, explicit return types; lint must stay zero-warning.
+- **Free/public-domain only**: Leaflet, D3, ESRI Wayback, Supabase free tier — no paid deps.
+
+## Key Files
+
+<!-- Add as dev progresses. List paths with brief role note. -->
+
+- `docs/REDESIGN_TEST_PLAN.md` — the safety-net plan + 14-row workflow table (the "what to protect" companion to this doc).
+- `e2e/*.spec.ts` — user-journey safety net (`smoke`, `timeline`, `comparison`, `filters`).
+- `src/__tests__/darkModeConvention.test.ts` — dark-mode `dark:`-modifier guardrail.
+- `src/hooks/useFilteredSites.ts`, `src/utils/siteFilters.ts` — filter engine (redesign-proof logic, well tested).
+- `src/components/FilterBar/` — filter UI (flagged complex; redesign target).
+- `src/components/Timeline/`, `src/components/AdvancedTimeline/` — timeline UI (flagged complex; redesign target).
+- `.lattice/standards/` — knowledge-base, language-idioms, architecture (stable project conventions).

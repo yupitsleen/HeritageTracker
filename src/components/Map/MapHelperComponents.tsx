@@ -118,3 +118,25 @@ export function ScrollWheelHandler() {
 
   return null;
 }
+
+/**
+ * MapResizeHandler - Keeps Leaflet in sync when its container is resized by a layout
+ * change (e.g. collapsing the filter sidebar, or dragging the table resize handle).
+ * Without invalidateSize(), Leaflet keeps its old pixel size and the newly exposed
+ * area renders as a blank/grey block instead of more satellite imagery.
+ */
+export function MapResizeHandler() {
+  const map = useMap();
+
+  useEffect(() => {
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => {
+      map.invalidateSize({ animate: false });
+    });
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, [map]);
+
+  return null;
+}

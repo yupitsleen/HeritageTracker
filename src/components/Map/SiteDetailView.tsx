@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { Site } from "../../types";
 import { GAZA_CENTER, DEFAULT_ZOOM, SITE_DETAIL_ZOOM, HISTORICAL_IMAGERY, MARKER_CLASSNAMES, type TimePeriod } from "../../constants/map";
 import { SITE_MARKER_CONFIG } from "../../constants/timeline";
-import { MapUpdater, ScrollWheelHandler } from "./MapHelperComponents";
+import { MapUpdater, ScrollWheelHandler, MapResizeHandler } from "./MapHelperComponents";
 import { TimeToggle } from "./TimeToggle";
 import { SitePopup } from "./SitePopup";
 import { MapMarkers } from "./MapMarkers";
@@ -182,6 +182,9 @@ export function SiteDetailView({
       >
         {/* Custom scroll wheel handler for Ctrl+Scroll zoom */}
         <ScrollWheelHandler />
+
+        {/* Re-render tiles when the container resizes (e.g. sidebar collapse) */}
+        <MapResizeHandler />
 
         {/* Map updater for smooth transitions */}
         <MapUpdater center={center} zoom={zoom} />
