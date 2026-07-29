@@ -140,8 +140,8 @@ describe("FilterBar — sidebar variant", () => {
     setup({ variant: "sidebar" });
     expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /^status$/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /^destruction date$/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /^year built$/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /destruction date range/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /year built range/i })).toBeInTheDocument();
   });
 
   it("checking a type fires onFilterChange with selectedTypes", async () => {

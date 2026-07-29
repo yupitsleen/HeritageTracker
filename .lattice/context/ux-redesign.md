@@ -8,6 +8,24 @@ created: 2026-07-27
 
 > Simplify the app's most complex, hard-to-discover features (filters and the timeline) so its capabilities actually get used — without breaking any existing functionality.
 
+## Current status — handoff for a new session (updated 2026-07-29)
+
+**Branch:** `ui-design-improvements` (many commits, not yet opened as a PR). **Orient with** `git log --oneline -25 && git status -sb`. **Full check:** `npx vitest --run` (unit) then `npm run e2e` (Playwright chromium, auto-starts the dev server); `npx tsc --noEmit -p tsconfig.app.json` + `npm run lint` must stay clean. Last known green: **unit 1343/0, e2e 12/0**, lint + tsc clean.
+
+**Done so far:**
+- **Slice 1 — dedup:** `FilterBar` declares each filter once in a `filterSections` array that feeds the bar popovers, the mobile drawer, and the sidebar.
+- **Faceted sidebar** (`variant="sidebar"`) on `/data` and `/timeline` (persistent). **Dashboard** keeps its top bar by default with a **remembered top-bar⇄sidebar toggle** (`localStorage` key `heritage-tracker-dashboard-filter-layout`).
+- **Collapse toggle** (end-goal b): sidebar collapses to a ~48px rail (filter icon + active-filter count badge); `sidebarDefaultCollapsed` prop.
+- **Layout toggle** control via the `onVariantToggle` FilterBar prop (icon far-left in the bar row / in the sidebar header).
+- **Fixes:** `MapResizeHandler` re-tiles Leaflet on container resize; `DataPage` now filters by date/year/unknown via `useFilteredSites` (was a real bug — it had its own inline type/status/search-only filter); Date/Year inputs stack uniformly at any width; sidebar visual polish (opaque via `relative z-10` over the flag triangle, strong border, left scrollbar via a `dir="rtl"` wrapper, no bottom scrollbar); the timeline bottom bars span full width beneath the sidebar; date/year facet headings read "…Range".
+
+**Next / remaining:**
+- **Accordion facet groups** (end-goal a) — the last planned item. Each facet is already a self-contained `<section>`, so add a collapsible header.
+- Optional polish: RTL collapse-chevron direction; promote the layout toggle to an app-wide persisted preference (and offer it on `/data` + `/timeline`); Date/Year are now stacked in the top-bar popovers too — revisit if horizontal is preferred there.
+- **Deferred:** mobile redesign (Playwright mobile project still off, `playwright.config.ts:65`); Timeline component internals (the *other* flagged-complex area — only its page layout changed so far).
+
+**FilterBar mental model** (`src/components/FilterBar/FilterBar.tsx`, one component): prop `variant: "bar" | "sidebar"` switches only the desktop presentation; **mobile is a drawer in both**. `filterSections` (built in-render) = `{ key, label, heading, count, panelWidth?, tooltip?, content }` per filter — `label` is the verbose bar-button text ("Select types…"), `heading` is the section title (Type/Status are short; destruction-date/year say "…Range"). **Testing gotcha:** Headless UI Popover/Dialog don't deliver click/change events in jsdom, so widget interaction is characterized in `e2e/filters.spec.ts`; component-level `FilterBar.baseline.test.tsx` only asserts things that work without those events (facets render inline in the sidebar, so its wiring *can* be tested there).
+
 ## Decisions Log
 
 <!-- Add new at bottom. Never remove. -->
@@ -32,6 +50,11 @@ created: 2026-07-27
 | 2026-07-28 | End-goal (b) collapse toggle: sidebar collapses to a ~48px rail (filter icon + active-count badge); `sidebarDefaultCollapsed` prop for pages that want to start collapsed | Gives the map/table space back on demand; the rail keeps a persistent affordance + shows that filters are active | Fully hide + floating button (rejected — loses the affordance) |
 | 2026-07-28 | **Dashboard gets a user toggle** (top bar ⇄ sidebar), default **top bar**, remembered in `localStorage` — supersedes the "defer" decision | User asked for choice rather than a forced sidebar; both variants already exist so it's cheap. Keeps the dense layout comfortable by default, sidebar is opt-in (and can further collapse) | Sidebar-only on Dashboard (rejected by user); app-wide persisted preference (deferred — Dashboard-only for now) |
 | 2026-07-28 | Fix: `MapResizeHandler` (ResizeObserver → `map.invalidateSize()`) on SiteDetailView + HeritageMap | Collapsing the sidebar widened the map column but Leaflet kept its old size, leaving a grey block; invalidateSize re-tiles the new area. Also fixes the dashboard table-resize case | Lift collapse state to the page + manual invalidate (rejected — a container ResizeObserver self-heals all resize causes) |
+| 2026-07-29 | **Bug fix:** `DataPage` uses the shared `useFilteredSites` hook instead of its own inline filter | The inline filter only handled type/status/search and silently ignored date/year/unknown — the shared hook is the single source of filtering truth the other pages already use | Extend the inline filter (rejected — duplicates the engine and drifts) |
+| 2026-07-29 | Date/Year range inputs **stack From/To vertically** at every width; the BCE/CE `Select` sits in a fixed-width box | Uniform, never-clipped inputs in the narrow sidebar; the `Select`'s base `w-full` otherwise made it hog the flex row while the year field collapsed. Also stacks in the top-bar popovers (reads fine) | A `stacked` prop toggled by variant (rejected — more plumbing) |
+| 2026-07-29 | In sidebar mode the timeline bottom bar(s) span **full width** beneath the `[sidebar │ map/columns]` row | Matches the user's ask ("like the data grid"); the bars aren't part of the filter column | Keep them confined to the right of the sidebar (rejected by user) |
+| 2026-07-29 | Sidebar visual polish: opaque via `relative z-10` (over the flag triangle), strong `t.border.primary`, left scrollbar via `dir="rtl"` container + inner locale-dir wrapper, `overflow-x-hidden` | User-reported issues; the aside had no z-index so the decorative triangle painted over it. Left scrollbar is the standard `dir` trick, kept content direction correct per locale | — |
+| 2026-07-29 | Date/year facet **headings say "…Range"** in the sidebar/drawer (reuse `filters.destructionDate` / `filters.yearBuilt`, matching the bar); Type/Status stay short | User asked for it; keeps the section titles consistent with the top-bar labels | Keep the short `table.*` headings (rejected by user) |
 
 ## Open Questions
 
@@ -50,7 +73,7 @@ created: 2026-07-27
 
 **Build order / status:** 1) sidebar variant + characterization tests ✅; 2) `/data` → sidebar ✅ (+ short `heading` field reusing `table.*` keys); 3) `/timeline` → sidebar ✅ (+ e2e updated to the `<aside aria-label="Filters">` / role="complementary" interaction); 4) collapse toggle (end-goal b) ✅; 5) Dashboard ✅ via a remembered top-bar⇄sidebar user toggle (not sidebar-only); 6) map-resize fix ✅.
 
-**Remaining:** (a) accordion facet groups (end-goal a) — still open; optional polish (RTL collapse-chevron direction, promoting the layout toggle to an app-wide persisted preference / offering it on `/data` + `/timeline`). Mobile redesign still deferred.
+**Remaining:** (a) accordion facet groups (end-goal a) — still open. Post-redesign fix rounds are done (see the handoff block at the top + the 2026-07-29 decision-log rows). Optional polish and mobile redesign still deferred.
 
 **Safety net:** bar-variant baseline tests stay (default variant protects the dedupe). Add sidebar-variant tests (facets render inline, check type → `onFilterChange`, count + Clear All present) — sidebar has no Headless UI wrapper, so component-level interaction works.
 

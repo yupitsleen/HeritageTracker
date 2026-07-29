@@ -236,7 +236,7 @@ export const FilterBar = memo(function FilterBar({
     {
       key: "destructionDate",
       label: translate("filters.destructionDate"),
-      heading: translate("table.destructionDate"),
+      heading: translate("filters.destructionDate"),
       count: isDestructionDateFilterActive(
         filters.destructionDateStart,
         filters.destructionDateEnd
@@ -260,7 +260,7 @@ export const FilterBar = memo(function FilterBar({
     {
       key: "yearBuilt",
       label: translate("filters.yearBuilt"),
-      heading: translate("table.yearBuilt"),
+      heading: translate("filters.yearBuilt"),
       count: filters.creationYearStart || filters.creationYearEnd ? 1 : 0,
       panelWidth: "min-w-max",
       tooltip: TOOLTIPS.FILTERS.YEAR_FILTER,
