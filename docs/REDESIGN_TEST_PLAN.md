@@ -65,7 +65,7 @@ Coverage (v8, `npm run test:coverage`) sits below the config's 80% thresholds on
 **Still weak (the remaining redesign risk):**
 1. **Mobile has zero active coverage.** The Playwright mobile project is still commented out (`playwright.config.ts:65`); the deleted mobile suite has not been rebuilt.
 2. **Timeline is uncharacterized** — and it's the other area flagged complex. Scrubber drag and comparison site-selection are still `test.fixme`; they're exactly what a Timeline redesign would break. **These get built when the Timeline redesign starts**, per the loop above.
-3. **No e2e proof of the remaining cross-component workflows** — calendar toggle, language/RTL, theme, export.
+3. **Timeline scrubber + comparison selection** are the only journeys left that need real work (SVG/D3 drag targets, async Wayback load). Everything else cross-cutting — language/RTL, theme, export — is now covered.
 
 ---
 
@@ -101,18 +101,18 @@ Each row is a user journey driven by roles/text, asserting an observable state c
 |---|---|---|---|
 | **Apply a type filter** | Filter control moves into a drawer/menu; wiring lost | Result count / visible rows actually change | ✅ `filters.spec.ts` |
 | **Apply year range** | Slider/inputs restyled | Result count changes on `/data` | ✅ `filters.spec.ts` (regression for the inline-filter bug) |
-| **Apply destruction-date range** | Date inputs restyled | Rows outside range disappear | ✗ |
+| **Apply destruction-date range** | Date inputs restyled | Result count changes on `/data` | ✅ `filters.spec.ts` |
 | **Sidebar layout preference persists** | Toggle/localStorage wiring lost | Sidebar survives a reload on `/dashboard` | ✅ `filters.spec.ts` |
 | **Facet accordion open/close** | Header markup changes | Facet collapses, content hidden | ✅ `FilterBar.baseline.test.tsx` |
-| **Clear all filters** | Button relocated | `onClearAll` fires / results return | 🟡 component-level only |
+| **Clear all filters** | Button relocated | Results return to the unfiltered count | ✅ `filters.spec.ts` |
 | **Combine filters (multi)** | Layout reflow | AND-logic result set correct | 🟡 unit only (`useFilteredSites`) |
 | **Timeline scrubber drag** | Scrubber rebuilt | Active date changes *and* map/markers update | ✗ — build with the Timeline redesign |
 | **Timeline play/pause/next/prev/reset** | Controls relocated | Date advances/resets | 🟡 presence-only e2e + unit |
 | **Select site → comparison view** | Panel/layout change | Before/after maps show, site name shows | ✗ `test.fixme` ×3 |
-| **Calendar toggle (Gregorian ↔ Islamic)** | Toggle moves | Displayed dates switch systems | ✗ |
-| **Language switch + RTL (en/ar/it)** | Header/nav restyled | Text translates; `dir=rtl` applies for Arabic | ✗ |
-| **Theme toggle (light/dark)** | Theme control moves | Theme attribute/class flips; app still readable | 🟡 convention guardrail only |
-| **Export (CSV/JSON/GeoJSON)** | Export button relocated | Download triggers with expected filename/rows | ✗ (logic only) |
+| **Calendar toggle (Gregorian ↔ Islamic)** | — | — | **N/A — no UI exists.** `CalendarProvider` is mounted in `App.tsx` but nothing consumes `useCalendar` outside tests. Either dead context or an unbuilt feature; decide before writing a test for it |
+| **Language switch + RTL (en/ar/it)** | Header/nav restyled | `<html dir>` flips to rtl, `lang` changes, survives reload | ✅ `preferences.spec.ts` |
+| **Theme toggle (light/dark)** | Theme control moves | `<html data-theme>` flips, survives reload | ✅ `preferences.spec.ts` + convention guardrail |
+| **Export (CSV/JSON/GeoJSON)** | Export button relocated | Download fires with the chosen format's filename | ✅ `export.spec.ts` (CSV + GeoJSON) |
 | **Mobile: hamburger nav** | Responsive breakpoints change | Menu opens, link navigates, menu closes | ✗ (deleted) |
 | **Mobile: filter drawer** | Drawer redesigned | Opens, applies a filter, closes | ✗ (deleted) |
 | **Mobile: map marker tap** | Touch targets change | Tap marker → detail shows | ✗ (deleted) |
@@ -150,7 +150,7 @@ Checked the delete history. Verdicts:
 2. **Filters area** — characterize → redesign (dedupe, faceted sidebar, collapse rail, layout toggle, accordion) → green. ✅ done
 3. **Timeline area** — same loop, not started. Characterizing it means solving the two `test.fixme`s (SVG/D3 drag targets, comparison selection).
 4. **Mobile** — re-enable the Playwright mobile project, then characterize → redesign.
-5. Remaining cross-cutting journeys (calendar, i18n/RTL, theme, export) — build alongside whichever redesign touches their controls.
+5. **Cross-cutting journeys** (i18n/RTL, theme, export) — ✅ done as a cheap batch; they assert `<html>` attributes and download filenames, so they cost little and break only on real regressions.
 
 > The original plan ran steps 2–4 as one big "write all the tests first" phase. Replaced by the per-area loop above; see "How we actually work".
 

@@ -51,6 +51,36 @@ test.describe("Filter workflows", () => {
     await expect(count).not.toHaveText(before);
   });
 
+  // Same regression class as the year filter above: destruction dates were the
+  // other range the old inline /data filter ignored.
+  test("the data page filters by destruction date range", async ({ page }) => {
+    await page.goto("/data");
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+
+    const count = sidebar.getByText(/showing \d+ of \d+ sites/i);
+    await expect(count).toBeVisible({ timeout: 30000 });
+    const before = (await count.textContent())?.trim() ?? "";
+
+    await sidebar.getByPlaceholder("From", { exact: true }).fill("2024-01-01");
+
+    await expect(count).not.toHaveText(before);
+  });
+
+  test("Clear All restores the unfiltered result set", async ({ page }) => {
+    await page.goto("/data");
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+
+    const count = sidebar.getByText(/showing \d+ of \d+ sites/i);
+    await expect(count).toBeVisible({ timeout: 30000 });
+    const unfiltered = (await count.textContent())?.trim() ?? "";
+
+    await sidebar.getByRole("checkbox").first().check();
+    await expect(count).not.toHaveText(unfiltered);
+
+    await sidebar.getByRole("button", { name: /clear all/i }).click();
+    await expect(count).toHaveText(unfiltered);
+  });
+
   test("the Dashboard remembers the sidebar filter layout across a reload", async ({ page }) => {
     await page.goto("/dashboard");
     const sidebar = page.getByRole("complementary", { name: /filters/i });
