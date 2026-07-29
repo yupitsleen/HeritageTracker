@@ -35,4 +35,33 @@ test.describe("Filter workflows", () => {
     // Narrowing to a single type changes the visible result count.
     await expect(count).not.toHaveText(before);
   });
+
+  // Regression: /data used to run its own inline filter that only understood
+  // type/status/search, so date and year filters silently did nothing there.
+  test("the data page filters by year built, not just type/status/search", async ({ page }) => {
+    await page.goto("/data");
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+
+    const count = sidebar.getByText(/showing \d+ of \d+ sites/i);
+    await expect(count).toBeVisible({ timeout: 30000 });
+    const before = (await count.textContent())?.trim() ?? "";
+
+    await sidebar.getByPlaceholder("From year").fill("1900");
+
+    await expect(count).not.toHaveText(before);
+  });
+
+  test("the Dashboard remembers the sidebar filter layout across a reload", async ({ page }) => {
+    await page.goto("/dashboard");
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+
+    // Default is the top bar; switching is a remembered per-user preference.
+    await expect(sidebar).toHaveCount(0);
+    await page.getByRole("button", { name: /switch to sidebar/i }).click();
+    await expect(sidebar).toBeVisible();
+
+    await page.reload();
+
+    await expect(sidebar).toBeVisible({ timeout: 30000 });
+  });
 });
