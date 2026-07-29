@@ -203,13 +203,13 @@ export function DesktopLayout({
           </div>
         </>
       ) : (
-        // Sidebar mode: filter panel as the far-left column, content to its right.
-        <div className="flex-1 min-h-0 flex flex-row gap-2 px-4 pt-2 pb-8">
-          {filterBar}
-          <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+        // Sidebar mode: filter panel + columns on top, timeline scrubber full-width below.
+        <div className="flex-1 min-h-0 flex flex-col gap-1.5 px-4 pt-2 pb-8">
+          <div className="flex-1 min-h-0 flex flex-row gap-2">
+            {filterBar}
             {columns}
-            {scrubber}
           </div>
+          {scrubber}
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, lazy, Suspense } from "react";
+import { useState, useCallback, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { mockSites } from "../data/mockSites";
 import { SitesTable } from "../components/SitesTable";
@@ -9,6 +9,7 @@ import { DataPageHelpModal } from "../components/Help";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTranslation } from "../contexts/LocaleContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
+import { useFilteredSites } from "../hooks/useFilteredSites";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
 import type { Site } from "../types";
@@ -28,32 +29,9 @@ export function DataPage() {
   // Use shared hook for default filter ranges (eliminates 50 lines of duplicated logic)
   const { dateRange: defaultDateRange, yearRange: defaultYearRange } = useDefaultFilterRanges(mockSites);
 
-  // Apply filters to sites (memoized for performance)
-  const filteredSites = useMemo(() => {
-    return mockSites.filter(site => {
-      // Type filter
-      if (filters.selectedTypes.length > 0 && !filters.selectedTypes.includes(site.type)) {
-        return false;
-      }
-
-      // Status filter
-      if (filters.selectedStatuses.length > 0 && !filters.selectedStatuses.includes(site.status)) {
-        return false;
-      }
-
-      // Search filter
-      if (filters.searchTerm) {
-        const searchLower = filters.searchTerm.toLowerCase();
-        const matchesName = site.name.toLowerCase().includes(searchLower);
-        const matchesArabicName = site.nameArabic?.toLowerCase().includes(searchLower);
-        if (!matchesName && !matchesArabicName) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }, [filters]);
+  // Apply filters via the shared hook so date/year/unknown-date filters work here too
+  // (the previous inline filter only handled type/status/search).
+  const { filteredSites } = useFilteredSites(mockSites, filters);
 
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
     setFilters(prev => ({ ...prev, ...updates }));

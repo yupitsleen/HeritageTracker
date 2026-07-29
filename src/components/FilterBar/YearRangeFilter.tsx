@@ -2,7 +2,6 @@ import React from "react";
 import { Input } from "../Form/Input";
 import { Select } from "../Form/Select";
 import { FilterLabel } from "./FilterLabel";
-import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface YearRangeFilterProps {
   onStartChange: (year: number | null) => void;
@@ -28,8 +27,6 @@ export function YearRangeFilter({
   tooltip,
   supportBCE = true,
 }: YearRangeFilterProps) {
-  const t = useThemeClasses();
-
   // Local state for year input and era selection (empty by default)
   const [startYearInput, setStartYearInput] = React.useState("");
   const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">("CE");
@@ -62,54 +59,58 @@ export function YearRangeFilter({
   return (
     <div>
       {label && <FilterLabel label={label} tooltip={tooltip} />}
-      {/* flex-wrap so a narrow container (e.g. the filter sidebar) drops the second
-          year+era group to its own line instead of clipping the BCE/CE selector. */}
-      <div className="flex flex-wrap items-center gap-1.5">
-        <div className="flex items-center gap-1 flex-1 min-w-[130px]">
+      {/* Stacked From/To rows so the year field and the BCE/CE selector stay uniform
+          and are never clipped, at any width. The select sits in a fixed-width box so
+          its base w-full fills that box instead of hogging the row. */}
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center gap-1.5">
           <Input
             variant="number"
             value={startYearInput}
             onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
-            placeholder="Year"
+            placeholder="From year"
             min="1"
-            className="flex-1 h-8 text-xs px-2"
+            className="flex-1 min-w-[5rem] h-8 text-xs px-2"
           />
           {supportBCE && (
-            <Select
-              size="small"
-              value={startYearEra}
-              onChange={(e) =>
-                handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")
-              }
-              className="h-8 px-1.5 text-xs"
-            >
-              <option value="BCE">BCE</option>
-              <option value="CE">CE</option>
-            </Select>
+            <div className="flex-none w-16">
+              <Select
+                size="small"
+                value={startYearEra}
+                onChange={(e) =>
+                  handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")
+                }
+                className="h-8 px-1.5 text-xs"
+              >
+                <option value="BCE">BCE</option>
+                <option value="CE">CE</option>
+              </Select>
+            </div>
           )}
         </div>
-        <span className={`text-xs font-medium ${t.text.body}`}>to</span>
-        <div className="flex items-center gap-1 flex-1 min-w-[130px]">
+        <div className="flex items-center gap-1.5">
           <Input
             variant="number"
             value={endYearInput}
             onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
-            placeholder="Year"
+            placeholder="To year"
             min="1"
-            className="flex-1 h-8 text-xs px-2"
+            className="flex-1 min-w-[5rem] h-8 text-xs px-2"
           />
           {supportBCE && (
-            <Select
-              size="small"
-              value={endYearEra}
-              onChange={(e) =>
-                handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")
-              }
-              className="h-8 px-1.5 text-xs"
-            >
-              <option value="BCE">BCE</option>
-              <option value="CE">CE</option>
-            </Select>
+            <div className="flex-none w-16">
+              <Select
+                size="small"
+                value={endYearEra}
+                onChange={(e) =>
+                  handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")
+                }
+                className="h-8 px-1.5 text-xs"
+              >
+                <option value="BCE">BCE</option>
+                <option value="CE">CE</option>
+              </Select>
+            </div>
           )}
         </div>
       </div>

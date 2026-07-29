@@ -1,6 +1,5 @@
 import { Input } from "../Form/Input";
 import { FilterLabel } from "./FilterLabel";
-import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 interface DateRangeFilterProps {
   startDate: Date | null;
@@ -28,36 +27,28 @@ export function DateRangeFilter({
   defaultStartDate,
   defaultEndDate,
 }: DateRangeFilterProps) {
-  const t = useThemeClasses();
-
   return (
     <div>
       {label && <FilterLabel label={label} tooltip={tooltip} />}
-      {/* flex-wrap so a narrow container (e.g. the filter sidebar) drops the second
-          input to its own line instead of clipping it. */}
-      <div className="flex flex-wrap items-center gap-1.5">
+      {/* Stacked From/To so both inputs stay uniform and are never clipped, at any width. */}
+      <div className="flex flex-col gap-1.5">
         <Input
           variant="date"
           value={startDate?.toISOString().split("T")[0] || ""}
-          onChange={(e) => {
-            onStartChange(e.target.value ? new Date(e.target.value) : null);
-          }}
+          onChange={(e) => onStartChange(e.target.value ? new Date(e.target.value) : null)}
           placeholder="From"
           min={defaultStartDate?.toISOString().split("T")[0]}
           max={defaultEndDate?.toISOString().split("T")[0]}
-          className="flex-1 h-8 text-xs px-2"
+          className="w-full min-w-[9rem] h-8 text-xs px-2"
         />
-        <span className={`text-xs font-medium ${t.text.body}`}>to</span>
         <Input
           variant="date"
           value={endDate?.toISOString().split("T")[0] || ""}
-          onChange={(e) => {
-            onEndChange(e.target.value ? new Date(e.target.value) : null);
-          }}
+          onChange={(e) => onEndChange(e.target.value ? new Date(e.target.value) : null)}
           placeholder="To"
           min={defaultStartDate?.toISOString().split("T")[0]}
           max={defaultEndDate?.toISOString().split("T")[0]}
-          className="flex-1 h-8 text-xs px-2"
+          className="w-full min-w-[9rem] h-8 text-xs px-2"
         />
       </div>
     </div>

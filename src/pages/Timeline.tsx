@@ -303,23 +303,25 @@ export function Timeline() {
         {/* Success state - Map + Wayback controls */}
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
-            {/* Faceted filter sidebar (desktop) / search + drawer (mobile), beside the map column */}
-            <div className="flex flex-col md:flex-row gap-2 flex-1 min-h-0">
-              <FilterBar
-                variant="sidebar"
-                filters={filters}
-                onFilterChange={handleFilterChange}
-                sites={mockSites}
-                defaultDateRange={defaultDateRange}
-                defaultYearRange={defaultYearRange}
-                showActions={true}
-                totalSites={mockSites.length}
-                filteredSites={filteredSites.length}
-                onClearAll={clearAllFilters}
-              />
+            {/* Sidebar + map on top; the Wayback slider and scrubber span full width below */}
+            <div className="flex flex-col gap-2 flex-1 min-h-0">
+              {/* Top row: filter sidebar beside the map */}
+              <div className="flex flex-col md:flex-row gap-2 flex-1 min-h-0">
+                <FilterBar
+                  variant="sidebar"
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                  sites={mockSites}
+                  defaultDateRange={defaultDateRange}
+                  defaultYearRange={defaultYearRange}
+                  showActions={true}
+                  totalSites={mockSites.length}
+                  filteredSites={filteredSites.length}
+                  onClearAll={clearAllFilters}
+                />
 
-              {/* Map + Wayback + Scrubber column */}
-              <div className="flex-1 min-w-0 min-h-0 flex flex-col gap-2">
+                {/* Map column */}
+                <div className="flex-1 min-w-0 min-h-0 flex flex-col">
 
             {/* Full-screen satellite map with Wayback imagery */}
             <div
@@ -371,6 +373,8 @@ export function Timeline() {
                 )}
               </Suspense>
             </div>
+                </div>
+              </div>
 
             {/* Wayback Release Slider - Visual timeline with year markers */}
             <div className="flex-shrink-0 relative z-10">
@@ -408,7 +412,6 @@ export function Timeline() {
                 />
               </Suspense>
             </div>
-              </div>
             </div>
           </AnimationProvider>
         )}
