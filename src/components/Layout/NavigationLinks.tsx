@@ -21,11 +21,15 @@ interface NavigationLinksProps {
 // only the nav entries are hidden in production builds.
 const HIDE_IN_PROD = import.meta.env.PROD;
 
-const NAV_ITEMS: NavigationItem[] = [
+const ALL_NAV_ITEMS: NavigationItem[] = [
   { path: "/dashboard", translationKey: "header.dashboard", variant: "primary", hideOnMobile: true },
   { path: "/data", translationKey: "header.data", variant: "primary" },
   { path: "/timeline", translationKey: "header.timeline", variant: "secondary" },
-].filter((item) => !(HIDE_IN_PROD && item.path === "/dashboard"));
+];
+
+const NAV_ITEMS = ALL_NAV_ITEMS.filter(
+  (item) => !(HIDE_IN_PROD && item.path === "/dashboard")
+);
 
 /**
  * Reusable navigation links component
