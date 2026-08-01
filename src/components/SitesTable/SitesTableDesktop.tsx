@@ -19,6 +19,7 @@ const VIRTUAL_SCROLL_THRESHOLD = 500;
 interface SitesTableDesktopProps {
   sites: Site[];
   onSiteClick?: (site: Site) => void;
+  onSiteTypeClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
@@ -49,6 +50,7 @@ interface SitesTableDesktopProps {
 export function SitesTableDesktop({
   sites,
   onSiteClick,
+  onSiteTypeClick,
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
@@ -117,6 +119,7 @@ export function SitesTableDesktop({
           <VirtualizedTableBody
             sites={sortedSites}
             onSiteClick={onSiteClick}
+            onSiteTypeClick={onSiteTypeClick}
             onSiteHighlight={onSiteHighlight}
             highlightedSiteId={highlightedSiteId}
             variant={variant}
@@ -142,6 +145,7 @@ export function SitesTableDesktop({
                 isHighlighted={highlightedSiteId === site.id}
                 visibleColumns={visibleColumnsSet}
                 onSiteClick={onSiteClick}
+                onSiteTypeClick={onSiteTypeClick}
                 onSiteHighlight={onSiteHighlight}
                 rowRef={highlightedSiteId === site.id ? highlightedRowRef : undefined}
                 clickableRow={clickableRow}

@@ -332,6 +332,7 @@ export function Timeline() {
                     <SitesTable
                       embedded
                       sites={filteredSites}
+                      onSiteTypeClick={setSelectedSite}
                       onSiteHighlight={handleSiteHighlight}
                       highlightedSiteId={highlightedSiteId}
                       visibleColumns={tableResize.getVisibleColumns()}

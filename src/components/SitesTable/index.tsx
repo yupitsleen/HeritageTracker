@@ -5,6 +5,7 @@ import { SitesTableDesktop } from "./SitesTableDesktop";
 interface SitesTableProps {
   sites: Site[];
   onSiteClick?: (site: Site) => void;
+  onSiteTypeClick?: (site: Site) => void; // Opens detail from the type icon only
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
@@ -28,6 +29,7 @@ interface SitesTableProps {
 export function SitesTable({
   sites,
   onSiteClick,
+  onSiteTypeClick,
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
@@ -46,6 +48,7 @@ export function SitesTable({
     <SitesTableDesktop
       sites={sites}
       onSiteClick={onSiteClick}
+      onSiteTypeClick={onSiteTypeClick}
       onSiteHighlight={onSiteHighlight}
       highlightedSiteId={highlightedSiteId}
       onExpandTable={onExpandTable}
