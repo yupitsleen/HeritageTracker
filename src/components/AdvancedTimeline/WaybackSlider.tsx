@@ -167,6 +167,22 @@ export function WaybackSlider({
   const handlePrevious = useCallback(() => step(-1), [step]);
   const handleNext = useCallback(() => step(1), [step]);
 
+  // Comparison mode: each scrubber gets its own prev/next, moving only itself.
+  const stepBefore = useCallback(
+    (delta: number) => {
+      const next = Math.max(0, Math.min(beforeIndex + delta, releases.length - 1));
+      if (next !== beforeIndex) onBeforeIndexChange?.(next);
+    },
+    [beforeIndex, releases.length, onBeforeIndexChange]
+  );
+  const stepAfter = useCallback(
+    (delta: number) => {
+      const next = Math.max(0, Math.min(currentIndex + delta, releases.length - 1));
+      if (next !== currentIndex) onIndexChange(next);
+    },
+    [currentIndex, releases.length, onIndexChange]
+  );
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -231,7 +247,56 @@ export function WaybackSlider({
           right — same pattern as TimelineScrubber below. */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
       <div className="relative flex items-center justify-center gap-2 mb-2" dir="ltr">
-        {/* Center: nav buttons */}
+        {/* Center: nav buttons. In comparison mode each scrubber gets its own
+            pair, outlined in its scrubber colour and centered on its half. */}
+        {dualMode ? (
+          <div className="grid grid-cols-2 w-full">
+            {[
+              {
+                key: "before",
+                color: COLORS.FLAG_YELLOW,
+                index: beforeIndex,
+                onStep: stepBefore,
+              },
+              {
+                key: "after",
+                color: COLORS.FLAG_GREEN,
+                index: currentIndex,
+                onStep: stepAfter,
+              },
+            ].map(({ key, color, index, onStep }) => (
+              <div key={key} className="flex items-center justify-center gap-2">
+                <Button
+                  onClick={() => onStep(-1)}
+                  disabled={index === 0}
+                  variant="secondary"
+                  size="xs"
+                  style={{ borderColor: color }}
+                  aria-label={`Go to previous ${key} imagery release`}
+                  title={TOOLTIPS.WAYBACK.PREV_RELEASE}
+                  data-testid={`wayback-${key}-prev`}
+                >
+                  <span className="xl:hidden">⏮</span>
+                  <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
+                </Button>
+
+                <Button
+                  onClick={() => onStep(1)}
+                  disabled={index === releases.length - 1}
+                  variant="secondary"
+                  size="xs"
+                  style={{ borderColor: color }}
+                  aria-label={`Go to next ${key} imagery release`}
+                  title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
+                  data-testid={`wayback-${key}-next`}
+                >
+                  <span className="xl:hidden">⏭</span>
+                  <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : (
         <div className="flex items-center gap-2">
           <Button
             onClick={handlePrevious}
@@ -257,6 +322,7 @@ export function WaybackSlider({
             <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
           </Button>
         </div>
+        )}
 
         {/* Right: dataset stats + info icon */}
         <div className="absolute right-0 top-0 flex items-center gap-1.5">

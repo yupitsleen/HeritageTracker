@@ -597,7 +597,7 @@ describe("WaybackSlider", () => {
     });
 
     describe("Navigation Buttons in Comparison Mode", () => {
-      it("slides both scrubbers forward keeping the gap when Next is clicked", () => {
+      it("moves only the after scrubber with its own Next button", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
@@ -611,15 +611,13 @@ describe("WaybackSlider", () => {
           />
         );
 
-        const nextButton = screen.getByRole("button", { name: /Next/i });
-        fireEvent.click(nextButton);
+        fireEvent.click(screen.getByTestId("wayback-after-next"));
 
-        // Both move one step; the 2-release gap is preserved
         expect(onIndexChange).toHaveBeenCalledWith(4);
-        expect(onBeforeIndexChange).toHaveBeenCalledWith(2);
+        expect(onBeforeIndexChange).not.toHaveBeenCalled();
       });
 
-      it("slides both scrubbers backward keeping the gap when Previous is clicked", () => {
+      it("moves only the before scrubber with its own Previous button", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
@@ -633,14 +631,13 @@ describe("WaybackSlider", () => {
           />
         );
 
-        const prevButton = screen.getByRole("button", { name: /Previous/i });
-        fireEvent.click(prevButton);
+        fireEvent.click(screen.getByTestId("wayback-before-prev"));
 
-        expect(onIndexChange).toHaveBeenCalledWith(3);
         expect(onBeforeIndexChange).toHaveBeenCalledWith(1);
+        expect(onIndexChange).not.toHaveBeenCalled();
       });
 
-      it("disables Previous once the before scrubber reaches the first release", () => {
+      it("disables the before Previous button at the first release", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
@@ -654,14 +651,14 @@ describe("WaybackSlider", () => {
           />
         );
 
-        const prevButton = screen.getByRole("button", { name: /Previous/i });
+        const prevButton = screen.getByTestId("wayback-before-prev");
         expect(prevButton).toBeDisabled();
 
         fireEvent.click(prevButton);
 
-        // Neither scrubber moves - the window can't slide past the track start
-        expect(onIndexChange).not.toHaveBeenCalled();
         expect(onBeforeIndexChange).not.toHaveBeenCalled();
+        // The after scrubber still has its own working controls
+        expect(screen.getByTestId("wayback-after-prev")).not.toBeDisabled();
       });
 
       it("does not update yellow slider when comparison mode is off", () => {

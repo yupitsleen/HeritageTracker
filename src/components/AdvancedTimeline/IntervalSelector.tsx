@@ -40,6 +40,9 @@ export function IntervalSelector({
   // Interval is only meaningful when both comparison mode AND sync map version are enabled
   const isEnabled = comparisonModeEnabled && syncMapVersion;
 
+  const selected = COMPARISON_INTERVAL_OPTIONS.find((option) => option.value === value);
+  const selectedTooltip = selected ? translate(selected.tooltipKey) : undefined;
+
   return (
     <div className="flex items-center gap-2">
       <label
@@ -62,9 +65,11 @@ export function IntervalSelector({
           transition-all duration-200
         `}
         aria-label={translate("timeline.interval")}
+        // ponytail: native option titles; a custom listbox only if these need styling
+        title={selectedTooltip}
       >
         {COMPARISON_INTERVAL_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} title={translate(option.tooltipKey)}>
             {translate(option.labelKey)}
           </option>
         ))}

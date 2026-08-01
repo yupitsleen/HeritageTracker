@@ -245,10 +245,39 @@ export const FilterBar = memo(function FilterBar({
     /** Short noun heading for the sidebar/drawer facet sections. */
     heading: string;
     count: number;
+    /** Range facets are on/off, not countable — the sidebar shows a dot, not "1". */
+    isRange?: boolean;
     panelWidth?: string;
     tooltip?: string;
     content: React.ReactNode;
   }[] = [
+    {
+      key: "destructionDate",
+      label: translate("filters.destructionDate"),
+      heading: translate("filters.destructionDate"),
+      // Badge whenever a range is applied — including the default window — so the
+      // user can see the list is date-limited without opening the facet.
+      count: isDestructionDateRangeApplied(
+        filters.destructionDateStart,
+        filters.destructionDateEnd
+      )
+        ? 1
+        : 0,
+      isRange: true,
+      panelWidth: "min-w-max",
+      tooltip: TOOLTIPS.FILTERS.DATE_FILTER,
+      content: (
+        <DateRangeFilter
+          label=""
+          startDate={filters.destructionDateStart}
+          endDate={filters.destructionDateEnd}
+          onStartChange={handleDestructionStartDateChange}
+          onEndChange={handleDestructionEndDateChange}
+          defaultStartDate={defaultStartDate}
+          defaultEndDate={defaultEndDate}
+        />
+      ),
+    },
     {
       key: "type",
       label: translate("filters.selectTypes"),
@@ -283,36 +312,11 @@ export const FilterBar = memo(function FilterBar({
       ),
     },
     {
-      key: "destructionDate",
-      label: translate("filters.destructionDate"),
-      heading: translate("filters.destructionDate"),
-      // Badge whenever a range is applied — including the default window — so the
-      // user can see the list is date-limited without opening the facet.
-      count: isDestructionDateRangeApplied(
-        filters.destructionDateStart,
-        filters.destructionDateEnd
-      )
-        ? 1
-        : 0,
-      panelWidth: "min-w-max",
-      tooltip: TOOLTIPS.FILTERS.DATE_FILTER,
-      content: (
-        <DateRangeFilter
-          label=""
-          startDate={filters.destructionDateStart}
-          endDate={filters.destructionDateEnd}
-          onStartChange={handleDestructionStartDateChange}
-          onEndChange={handleDestructionEndDateChange}
-          defaultStartDate={defaultStartDate}
-          defaultEndDate={defaultEndDate}
-        />
-      ),
-    },
-    {
       key: "yearBuilt",
       label: translate("filters.yearBuilt"),
       heading: translate("filters.yearBuilt"),
       count: filters.creationYearStart || filters.creationYearEnd ? 1 : 0,
+      isRange: true,
       panelWidth: "min-w-max",
       tooltip: TOOLTIPS.FILTERS.YEAR_FILTER,
       content: (
@@ -665,9 +669,16 @@ export const FilterBar = memo(function FilterBar({
                   <h3 className={cn("text-sm font-semibold", t.text.heading)}>
                     {filterSection.heading}
                   </h3>
-                  {filterSection.count > 0 && (
-                    <CountBadge count={filterSection.count} variant="primary" />
-                  )}
+                  {filterSection.count > 0 &&
+                    (filterSection.isRange ? (
+                      <span
+                        className="w-2 h-2 rounded-full bg-[#009639]"
+                        role="img"
+                        aria-label={translate("filters.filterActive")}
+                      />
+                    ) : (
+                      <CountBadge count={filterSection.count} variant="primary" />
+                    ))}
                 </summary>
                 {filterSection.content}
               </details>

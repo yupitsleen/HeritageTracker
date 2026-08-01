@@ -100,10 +100,17 @@ export const it: Translations = {
       "Fai clic sui punti (che rappresentano la data di distruzione di un particolare sito) per vederli sulla mappa e sui siti della tabella. Usa Precedente/Successivo per navigare tra gli eventi. Fai clic su Riproduci per guardare un'animazione sulla mappa di sinistra. Regola la velocità per vedere l'animazione più veloce/più lenta.",
     interval: "Intervallo",
     intervalAsLargeAsPossible: "Il più grande possibile",
+    intervalAsLargeAsPossibleTooltip:
+      "Le immagini «prima» sono la versione disponibile più antica — l'intervallo più ampio.",
     intervalAsSmallAsPossible: "Il più piccolo possibile",
+    intervalAsSmallAsPossibleTooltip:
+      "Le immagini «prima» sono l'ultima versione precedente alla data di distruzione — l'intervallo più stretto.",
     interval1Month: "1 mese (30 giorni)",
+    interval1MonthTooltip: "Le immagini «prima» sono datate 30 giorni prima della data di distruzione.",
     interval1Year: "1 anno",
+    interval1YearTooltip: "Le immagini «prima» sono datate 1 anno prima della data di distruzione.",
     interval5Years: "5 anni",
+    interval5YearsTooltip: "Le immagini «prima» sono datate 5 anni prima della data di distruzione.",
     syncMapVersion: "Sincronizza Versione Mappa",
     syncMapVersionTooltip:
       "Passa automaticamente alla versione di immagini satellitari più vicina a (e dopo) la data di distruzione di ogni sito",
@@ -167,6 +174,7 @@ export const it: Translations = {
 
   filters: {
     filters: "Filtri",
+    filterActive: "Filtro attivo",
     settings: "Impostazioni",
     sites: "Siti",
     clear: "Cancella",

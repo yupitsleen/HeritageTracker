@@ -140,10 +140,15 @@ export interface Translations {
     tooltipAdvanced: string;
     interval: string;
     intervalAsLargeAsPossible: string;
+    intervalAsLargeAsPossibleTooltip: string;
     intervalAsSmallAsPossible: string;
+    intervalAsSmallAsPossibleTooltip: string;
     interval1Month: string;
+    interval1MonthTooltip: string;
     interval1Year: string;
+    interval1YearTooltip: string;
     interval5Years: string;
+    interval5YearsTooltip: string;
     syncMapVersion: string;
     syncMapVersionTooltip: string;
     mapVersionRange: string;
@@ -202,6 +207,7 @@ export interface Translations {
   /** Filter bar */
   filters: {
     filters: string;
+    filterActive: string;
     settings: string;
     sites: string;
     clear: string;
