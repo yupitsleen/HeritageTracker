@@ -10,7 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Now & Then',
+        name: 'Now & Then: Gaza',
         short_name: 'Now & Then',
         description: "A God's-Eye View of the Genocide in Gaza: Before & After Satellite Imagery",
         theme_color: '#009639',

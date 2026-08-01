@@ -33,6 +33,7 @@ export const en: Translations = {
 
   header: {
     title: "Now & Then",
+    location: "Gaza",
     subtitle: "A God's-Eye View of the Genocide in Gaza: Before & After Satellite Imagery",
     dashboard: "Dashboard",
     data: "Data",

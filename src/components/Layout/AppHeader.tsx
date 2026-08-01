@@ -114,7 +114,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               />
               <div className="text-left">
                 <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-                  {t("header.title")}
+                  {t("header.title")}: <span className="text-[#ed3039]">{t("header.location")}</span>
                 </h1>
                 {/* ponytail: subtitle hidden below lg — no room in the compact header */}
                 <p className="hidden lg:block text-[10px] text-[#fefefe]/70 normal-case leading-tight">

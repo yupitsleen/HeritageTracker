@@ -33,6 +33,7 @@ export const ar: Translations = {
 
   header: {
     title: "Now & Then",
+    location: "غزة",
     subtitle: "نظرة من السماء على الإبادة الجماعية في غزة: صور الأقمار الصناعية قبل وبعد",
     dashboard: "لوحة التحكم",
     data: "البيانات",

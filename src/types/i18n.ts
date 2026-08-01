@@ -73,6 +73,8 @@ export interface Translations {
   /** Header navigation */
   header: {
     title: string;
+    /** Location shown in red after the brand name: "Now & Then: Gaza" */
+    location: string;
     subtitle: string;
     dashboard: string;
     data: string;
