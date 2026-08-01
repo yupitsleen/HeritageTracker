@@ -143,31 +143,29 @@ export function WaybackSlider({
     }
   }, [releasePositions, onIndexChange, comparisonMode, onBeforeIndexChange, currentPositionPercent, beforePositionPercent]);
 
-  const handlePrevious = useCallback(() => {
-    if (currentIndex > 0) {
-      const newIndex = currentIndex - 1;
-      onIndexChange(newIndex);
+  // Comparison mode steps both scrubbers as a fixed-width window: the gap
+  // between before/after is what the user (or the sync interval) chose, so
+  // navigation slides it instead of collapsing it to one release.
+  const dualMode = comparisonMode && !!onBeforeIndexChange;
+  const lowIndex = dualMode ? Math.min(currentIndex, beforeIndex) : currentIndex;
+  const highIndex = dualMode ? Math.max(currentIndex, beforeIndex) : currentIndex;
 
-      // In comparison mode, keep yellow slider one step before green slider
-      if (comparisonMode && onBeforeIndexChange) {
-        const newBeforeIndex = Math.max(0, newIndex - 1);
-        onBeforeIndexChange(newBeforeIndex);
-      }
-    }
-  }, [currentIndex, onIndexChange, comparisonMode, onBeforeIndexChange]);
+  const step = useCallback(
+    (delta: number) => {
+      const lo = dualMode ? Math.min(currentIndex, beforeIndex) : currentIndex;
+      const hi = dualMode ? Math.max(currentIndex, beforeIndex) : currentIndex;
+      // Clamp so neither scrubber leaves the track; the window stops as a unit.
+      const applied = Math.max(-lo, Math.min(delta, releases.length - 1 - hi));
+      if (applied === 0) return;
 
-  const handleNext = useCallback(() => {
-    if (currentIndex < releases.length - 1) {
-      const newIndex = currentIndex + 1;
-      onIndexChange(newIndex);
+      onIndexChange(currentIndex + applied);
+      if (dualMode && onBeforeIndexChange) onBeforeIndexChange(beforeIndex + applied);
+    },
+    [dualMode, currentIndex, beforeIndex, releases.length, onIndexChange, onBeforeIndexChange]
+  );
 
-      // In comparison mode, keep yellow slider one step before green slider
-      if (comparisonMode && onBeforeIndexChange) {
-        const newBeforeIndex = Math.max(0, newIndex - 1);
-        onBeforeIndexChange(newBeforeIndex);
-      }
-    }
-  }, [currentIndex, releases.length, onIndexChange, comparisonMode, onBeforeIndexChange]);
+  const handlePrevious = useCallback(() => step(-1), [step]);
+  const handleNext = useCallback(() => step(1), [step]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -175,55 +173,41 @@ export function WaybackSlider({
       // Only handle if there are releases available
       if (releases.length === 0) return;
 
+      // Don't hijack arrows/Home/End while the user is typing or in a select.
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
+
       switch (e.key) {
         case "ArrowLeft": // Step backward by 1 release
           e.preventDefault();
-          handlePrevious();
+          step(-1);
           break;
         case "ArrowRight": // Step forward by 1 release
           e.preventDefault();
-          handleNext();
+          step(1);
           break;
-        case "Home": // Jump to first release
+        case "Home": // Slide the window to the start of the track
           e.preventDefault();
-          onIndexChange(0);
-          if (comparisonMode && onBeforeIndexChange) {
-            onBeforeIndexChange(0);
-          }
+          step(-releases.length);
           break;
-        case "End": // Jump to last release
+        case "End": // Slide the window to the end of the track
           e.preventDefault();
-          onIndexChange(releases.length - 1);
-          if (comparisonMode && onBeforeIndexChange) {
-            onBeforeIndexChange(Math.max(0, releases.length - 2));
-          }
+          step(releases.length);
           break;
         case "PageUp": // Jump backward by 10 releases
           e.preventDefault();
-          {
-            const newIndex = Math.max(0, currentIndex - 10);
-            onIndexChange(newIndex);
-            if (comparisonMode && onBeforeIndexChange) {
-              onBeforeIndexChange(Math.max(0, newIndex - 1));
-            }
-          }
+          step(-10);
           break;
         case "PageDown": // Jump forward by 10 releases
           e.preventDefault();
-          {
-            const newIndex = Math.min(releases.length - 1, currentIndex + 10);
-            onIndexChange(newIndex);
-            if (comparisonMode && onBeforeIndexChange) {
-              onBeforeIndexChange(Math.max(0, newIndex - 1));
-            }
-          }
+          step(10);
           break;
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex, releases.length, comparisonMode, onIndexChange, onBeforeIndexChange, handlePrevious, handleNext]);
+  }, [releases.length, step]);
 
   if (releases.length === 0) {
     return (
@@ -251,7 +235,7 @@ export function WaybackSlider({
         <div className="flex items-center gap-2">
           <Button
             onClick={handlePrevious}
-            disabled={currentIndex === 0}
+            disabled={lowIndex === 0}
             variant="secondary"
             size="xs"
             aria-label="Go to previous satellite image release"
@@ -263,7 +247,7 @@ export function WaybackSlider({
 
           <Button
             onClick={handleNext}
-            disabled={currentIndex === releases.length - 1}
+            disabled={highIndex === releases.length - 1}
             variant="secondary"
             size="xs"
             aria-label="Go to next satellite image release"

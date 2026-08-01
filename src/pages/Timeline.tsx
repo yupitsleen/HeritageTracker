@@ -215,54 +215,46 @@ export function Timeline() {
   );
 
   /**
-   * Handle site selection from timeline
-   * When sync is enabled, automatically finds and displays the Wayback imagery
-   * from right before the site was destroyed
-   * In comparison mode, also sets the "before" imagery
-   *
-   * @param siteId - ID of the selected site, or null to deselect
+   * Handle site selection from timeline. Wayback positioning is handled by the
+   * sync effect below, so this is just selection.
    */
-  const handleSiteHighlight = useCallback(
-    (siteId: string | null) => {
-      setHighlightedSiteId(siteId);
+  const handleSiteHighlight = useCallback((siteId: string | null) => {
+    setHighlightedSiteId(siteId);
+  }, []);
 
-      // If sync is enabled and a site is selected, find and show the nearest Wayback release
-      if (syncMapOnDotClick && siteId) {
-        const site = filteredSites.find((s: Site) => s.id === siteId);
-        if (site?.dateDestroyed) {
-          const destructionDate = new Date(site.dateDestroyed);
+  /**
+   * Sync map versions to the highlighted site's destruction date.
+   *
+   * An effect (not a click handler) so that changing the interval — or turning
+   * sync on — re-applies immediately to the site already selected, instead of
+   * leaving the sliders wherever the last interval put them.
+   * Manual mode never runs this: the user's dates stay put.
+   */
+  useEffect(() => {
+    if (!syncMapOnDotClick || !highlightedSiteId || releases.length === 0) return;
 
-          // Set "after" imagery (post-destruction).
-          // Always the release just after destruction - "as_large_as_possible" widens
-          // the interval on the "before" side only, otherwise every site would show
-          // the same (newest) imagery and sync would look broken.
-          setCurrentReleaseIndex(findNearestWaybackRelease(destructionDate));
+    const site = mockSites.find((s: Site) => s.id === highlightedSiteId);
+    if (!site?.dateDestroyed) return;
 
-          // If comparison mode is enabled, also set "before" imagery using interval
-          if (comparisonModeEnabled) {
-            // Calculate "before" date based on selected interval
-            const beforeDate = calculateBeforeDate(
-              destructionDate,
-              comparisonInterval,
-              releases
-            );
+    const destructionDate = new Date(site.dateDestroyed);
 
-            // Find the closest Wayback release to the calculated "before" date
-            const beforeReleaseIdx = findClosestReleaseIndex(releases, beforeDate);
-            setBeforeReleaseIndex(beforeReleaseIdx);
-          }
-        }
-      }
-    },
-    [
-      syncMapOnDotClick,
-      comparisonModeEnabled,
-      comparisonInterval,
-      findNearestWaybackRelease,
-      filteredSites,
-      releases,
-    ]
-  );
+    // "after" imagery (post-destruction) is always the release just after
+    // destruction — "as_large_as_possible" widens the interval on the "before"
+    // side only, otherwise every site would show the same (newest) imagery.
+    setCurrentReleaseIndex(findNearestWaybackRelease(destructionDate));
+
+    if (comparisonModeEnabled) {
+      const beforeDate = calculateBeforeDate(destructionDate, comparisonInterval, releases);
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, beforeDate));
+    }
+  }, [
+    syncMapOnDotClick,
+    highlightedSiteId,
+    comparisonModeEnabled,
+    comparisonInterval,
+    findNearestWaybackRelease,
+    releases,
+  ]);
 
   // Apply the deep-linked site once releases are available
   useEffect(() => {

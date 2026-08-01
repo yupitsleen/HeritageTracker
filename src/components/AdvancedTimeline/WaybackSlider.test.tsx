@@ -597,13 +597,13 @@ describe("WaybackSlider", () => {
     });
 
     describe("Navigation Buttons in Comparison Mode", () => {
-      it("updates both scrubbers when Next button clicked", () => {
+      it("slides both scrubbers forward keeping the gap when Next is clicked", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
           <WaybackSlider
             releases={mockReleases}
-            currentIndex={2}
+            currentIndex={3}
             onIndexChange={onIndexChange}
             comparisonMode={true}
             beforeIndex={1}
@@ -614,19 +614,18 @@ describe("WaybackSlider", () => {
         const nextButton = screen.getByRole("button", { name: /Next/i });
         fireEvent.click(nextButton);
 
-        // Green slider should move to index 3
-        expect(onIndexChange).toHaveBeenCalledWith(3);
-        // Yellow slider should move to index 2 (one step before green)
+        // Both move one step; the 2-release gap is preserved
+        expect(onIndexChange).toHaveBeenCalledWith(4);
         expect(onBeforeIndexChange).toHaveBeenCalledWith(2);
       });
 
-      it("updates both scrubbers when Previous button clicked", () => {
+      it("slides both scrubbers backward keeping the gap when Previous is clicked", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
           <WaybackSlider
             releases={mockReleases}
-            currentIndex={3}
+            currentIndex={4}
             onIndexChange={onIndexChange}
             comparisonMode={true}
             beforeIndex={2}
@@ -637,19 +636,17 @@ describe("WaybackSlider", () => {
         const prevButton = screen.getByRole("button", { name: /Previous/i });
         fireEvent.click(prevButton);
 
-        // Green slider should move to index 2
-        expect(onIndexChange).toHaveBeenCalledWith(2);
-        // Yellow slider should move to index 1 (one step before green)
+        expect(onIndexChange).toHaveBeenCalledWith(3);
         expect(onBeforeIndexChange).toHaveBeenCalledWith(1);
       });
 
-      it("keeps yellow slider at 0 when Previous is clicked at green index 1", () => {
+      it("disables Previous once the before scrubber reaches the first release", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
           <WaybackSlider
             releases={mockReleases}
-            currentIndex={1}
+            currentIndex={3}
             onIndexChange={onIndexChange}
             comparisonMode={true}
             beforeIndex={0}
@@ -658,12 +655,13 @@ describe("WaybackSlider", () => {
         );
 
         const prevButton = screen.getByRole("button", { name: /Previous/i });
+        expect(prevButton).toBeDisabled();
+
         fireEvent.click(prevButton);
 
-        // Green slider should move to index 0
-        expect(onIndexChange).toHaveBeenCalledWith(0);
-        // Yellow slider should stay at 0 (can't go below 0)
-        expect(onBeforeIndexChange).toHaveBeenCalledWith(0);
+        // Neither scrubber moves - the window can't slide past the track start
+        expect(onIndexChange).not.toHaveBeenCalled();
+        expect(onBeforeIndexChange).not.toHaveBeenCalled();
       });
 
       it("does not update yellow slider when comparison mode is off", () => {
