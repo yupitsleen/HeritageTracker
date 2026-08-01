@@ -130,12 +130,23 @@ export function MapResizeHandler() {
 
   useEffect(() => {
     const container = map.getContainer();
+
+    // Coalesce to one invalidateSize per frame — a drag-resize fires the observer
+    // continuously, and each call is a full Leaflet re-layout.
+    let frame = 0;
     const observer = new ResizeObserver(() => {
-      map.invalidateSize({ animate: false });
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        map.invalidateSize({ animate: false });
+      });
     });
     observer.observe(container);
 
-    return () => observer.disconnect();
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, [map]);
 
   return null;

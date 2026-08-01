@@ -195,6 +195,12 @@ export const it: Translations = {
     destructionDate: "Data Distruzione",
     yearBuilt: "Anno di Costruzione",
     showingCount: "Mostrando {{filtered}} di {{total}} siti",
+    apply: "Applica",
+    closeFilters: "Chiudi i filtri",
+    fromDate: "Dal",
+    toDate: "Al",
+    fromYear: "Dall'anno",
+    toYear: "All'anno",
   },
 
   siteTypes: {

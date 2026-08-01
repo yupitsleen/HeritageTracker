@@ -1,7 +1,13 @@
 import type { Site } from "./index";
 
 /**
- * Default destruction-date start for the initial view.
+ * Default destruction-date window for the initial view.
+ *
+ * This is a bounded window, not "all data" — sites destroyed outside it are
+ * hidden until the user widens the range. The Destruction Date facet therefore
+ * always carries a count badge while a range is applied (see
+ * `isDestructionDateRangeApplied`), so the narrowing is never silent.
+ *
  * Users can expand/change via the date-range picker (min reaches back to the
  * earliest data) or "Clear all".
  */
@@ -13,17 +19,32 @@ export const DEFAULT_DESTRUCTION_DATE_END = new Date("2024-10-01");
 /**
  * Whether the destruction-date range is a real user filter, i.e. it deviates
  * from the defaults. The default range on its own is NOT active.
+ *
+ * A cleared (null) bound counts as a deviation on either side: unbounded is not
+ * the default, and it changes which sites are shown.
  */
 export function isDestructionDateFilterActive(
   start: Date | null,
   end: Date | null
 ): boolean {
   const startDeviates =
-    start != null &&
+    start == null ||
     start.getTime() !== DEFAULT_DESTRUCTION_DATE_START.getTime();
   const endDeviates =
     end == null || end.getTime() !== DEFAULT_DESTRUCTION_DATE_END.getTime();
   return startDeviates || endDeviates;
+}
+
+/**
+ * Whether any destruction-date bound is constraining the results — including
+ * the defaults. Drives the facet's count badge so a user can always see that
+ * the list is date-limited, even before they touch the filter.
+ */
+export function isDestructionDateRangeApplied(
+  start: Date | null,
+  end: Date | null
+): boolean {
+  return start != null || end != null;
 }
 
 /**

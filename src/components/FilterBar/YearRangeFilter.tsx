@@ -2,6 +2,7 @@ import React from "react";
 import { Input } from "../Form/Input";
 import { Select } from "../Form/Select";
 import { FilterLabel } from "./FilterLabel";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 interface YearRangeFilterProps {
   onStartChange: (year: number | null) => void;
@@ -30,6 +31,8 @@ export function YearRangeFilter({
   endYearDefault,
   startEraDefault,
 }: YearRangeFilterProps) {
+  const translate = useTranslation();
+
   // null = untouched, so the displayed value tracks the sites' actual range
   const [startYearInput, setStartYearInput] = React.useState<string | null>(null);
   const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE" | null>(null);
@@ -76,7 +79,8 @@ export function YearRangeFilter({
             variant="number"
             value={startYearValue}
             onChange={(e) => handleStartYearChange(e.target.value, startEraValue)}
-            placeholder="From year"
+            placeholder={translate("filters.fromYear")}
+            aria-label={translate("filters.fromYear")}
             min="1"
             className="flex-1 min-w-[5rem] h-8 text-xs px-2"
           />
@@ -101,7 +105,8 @@ export function YearRangeFilter({
             variant="number"
             value={endYearValue}
             onChange={(e) => handleEndYearChange(e.target.value, endEraValue)}
-            placeholder="To year"
+            placeholder={translate("filters.toYear")}
+            aria-label={translate("filters.toYear")}
             min="1"
             className="flex-1 min-w-[5rem] h-8 text-xs px-2"
           />

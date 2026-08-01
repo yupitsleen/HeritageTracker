@@ -190,6 +190,12 @@ export const ar: Translations = {
     destructionDate: "نطاق تاريخ التدمير",
     yearBuilt: "نطاق سنة البناء",
     showingCount: "عرض {{filtered}} من {{total}} موقع",
+    apply: "تطبيق",
+    closeFilters: "إغلاق عوامل التصفية",
+    fromDate: "من",
+    toDate: "إلى",
+    fromYear: "من سنة",
+    toYear: "إلى سنة",
   },
 
   siteTypes: {

@@ -1,5 +1,6 @@
 import { Input } from "../Form/Input";
 import { FilterLabel } from "./FilterLabel";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 interface DateRangeFilterProps {
   startDate: Date | null;
@@ -27,16 +28,19 @@ export function DateRangeFilter({
   defaultStartDate,
   defaultEndDate,
 }: DateRangeFilterProps) {
+  const translate = useTranslation();
+
   return (
     <div>
       {label && <FilterLabel label={label} tooltip={tooltip} />}
-      {/* Stacked From/To so both inputs stay uniform and are never clipped, at any width. */}
+      {/* Stacked From/To so both inputs stay uniform and are never clipped, at any width.
+          Native date inputs ignore placeholder, so the bound is named via aria-label. */}
       <div className="flex flex-col gap-1.5">
         <Input
           variant="date"
           value={startDate?.toISOString().split("T")[0] || ""}
           onChange={(e) => onStartChange(e.target.value ? new Date(e.target.value) : null)}
-          placeholder="From"
+          aria-label={translate("filters.fromDate")}
           min={defaultStartDate?.toISOString().split("T")[0]}
           max={defaultEndDate?.toISOString().split("T")[0]}
           className="w-full min-w-[9rem] h-8 text-xs px-2"
@@ -45,7 +49,7 @@ export function DateRangeFilter({
           variant="date"
           value={endDate?.toISOString().split("T")[0] || ""}
           onChange={(e) => onEndChange(e.target.value ? new Date(e.target.value) : null)}
-          placeholder="To"
+          aria-label={translate("filters.toDate")}
           min={defaultStartDate?.toISOString().split("T")[0]}
           max={defaultEndDate?.toISOString().split("T")[0]}
           className="w-full min-w-[9rem] h-8 text-xs px-2"

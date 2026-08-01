@@ -4,6 +4,7 @@ import {
   createEmptyFilterState,
   isFilterStateEmpty,
   isDestructionDateFilterActive,
+  isDestructionDateRangeApplied,
   areFiltersEqual,
   DEFAULT_DESTRUCTION_DATE_START,
   DEFAULT_DESTRUCTION_DATE_END,
@@ -57,6 +58,33 @@ describe('Filter Utilities', () => {
       expect(
         isDestructionDateFilterActive(DEFAULT_DESTRUCTION_DATE_START, null)
       ).toBe(true);
+    });
+
+    it('is active when the start is cleared to unbounded', () => {
+      expect(
+        isDestructionDateFilterActive(null, DEFAULT_DESTRUCTION_DATE_END)
+      ).toBe(true);
+    });
+  });
+
+  describe('isDestructionDateRangeApplied', () => {
+    it('is true for the default window, so the facet still shows a badge', () => {
+      expect(
+        isDestructionDateRangeApplied(
+          DEFAULT_DESTRUCTION_DATE_START,
+          DEFAULT_DESTRUCTION_DATE_END
+        )
+      ).toBe(true);
+    });
+
+    it('is true when only one bound is set', () => {
+      expect(
+        isDestructionDateRangeApplied(DEFAULT_DESTRUCTION_DATE_START, null)
+      ).toBe(true);
+    });
+
+    it('is false only when both bounds are cleared', () => {
+      expect(isDestructionDateRangeApplied(null, null)).toBe(false);
     });
   });
 

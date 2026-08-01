@@ -5,9 +5,9 @@ import { ReleaseDatePicker } from "./ReleaseDatePicker";
 import type { WaybackRelease } from "../../services/waybackService";
 
 const releases: WaybackRelease[] = [
-  { releaseNumber: 1, releaseDate: "2019-06-05", tileUrl: "a", maxZoom: 19 },
-  { releaseNumber: 2, releaseDate: "2019-06-20", tileUrl: "b", maxZoom: 19 },
-  { releaseNumber: 3, releaseDate: "2024-01-17", tileUrl: "c", maxZoom: 19 },
+  { releaseNum: 1, releaseDate: "2019-06-05", label: "2019-06-05", tileUrl: "a", maxZoom: 19 },
+  { releaseNum: 2, releaseDate: "2019-06-20", label: "2019-06-20", tileUrl: "b", maxZoom: 19 },
+  { releaseNum: 3, releaseDate: "2024-01-17", label: "2024-01-17", tileUrl: "c", maxZoom: 19 },
 ];
 
 function setup(disabled = false) {

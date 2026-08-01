@@ -196,6 +196,12 @@ export const en: Translations = {
     destructionDate: "Destruction Date Range",
     yearBuilt: "Year Built Range",
     showingCount: "Showing {{filtered}} of {{total}} sites",
+    apply: "Apply",
+    closeFilters: "Close filters",
+    fromDate: "From",
+    toDate: "To",
+    fromYear: "From year",
+    toYear: "To year",
   },
 
   siteTypes: {

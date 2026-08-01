@@ -65,6 +65,27 @@ export function WaybackSettings({
     </label>
   );
 
+  // Sync vs. manual is one exclusive choice, so it's a radio group, not two
+  // checkboxes — the markup itself guarantees they can never both be on.
+  const mapVersionRadio = (
+    label: string,
+    checked: boolean,
+    title: string
+  ) => (
+    <label className="flex items-center gap-3 cursor-pointer" title={title}>
+      <input
+        type="radio"
+        name="wayback-map-version-mode"
+        checked={checked}
+        onChange={() => {
+          if (!checked) onSyncMapVersionToggle();
+        }}
+        className="w-5 h-5 border-gray-300 text-[#009639] focus:ring-[#009639] cursor-pointer"
+      />
+      <span className={`text-sm ${t.text.body}`}>{label}</span>
+    </label>
+  );
+
   return (
     <div className="flex flex-col items-stretch gap-3">
       {checkbox(
@@ -74,10 +95,9 @@ export function WaybackSettings({
         translate("timeline.comparisonMode")
       )}
 
-      {checkbox(
+      {mapVersionRadio(
         translate("timeline.syncMapVersion"),
         syncMapVersion,
-        onSyncMapVersionToggle,
         translate("timeline.syncMapVersionTooltip")
       )}
 
@@ -89,12 +109,10 @@ export function WaybackSettings({
         syncMapVersion={syncMapVersion}
       />
 
-      {/* Mutually exclusive with Sync Map Version — the same toggle, shown inverted,
-          so the two can never both be on (or both off). */}
-      {checkbox(
+      {/* The other half of the map-version radio group. */}
+      {mapVersionRadio(
         translate("timeline.manualMapVersion"),
         !syncMapVersion,
-        onSyncMapVersionToggle,
         translate("timeline.manualMapVersionTooltip")
       )}
 

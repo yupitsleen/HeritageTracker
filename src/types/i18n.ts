@@ -230,6 +230,12 @@ export interface Translations {
     destructionDate: string;
     yearBuilt: string;
     showingCount: string;
+    apply: string;
+    closeFilters: string;
+    fromDate: string;
+    toDate: string;
+    fromYear: string;
+    toYear: string;
   };
 
   /** Site types */

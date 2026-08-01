@@ -137,6 +137,17 @@ export function Timeline() {
   // bordered container too), so the visible box is identical on either tab.
   const tabPanelClass = separateTimelines ? "" : "h-full [&>*]:h-full";
 
+  // Tab roles only apply while the tabs are on screen; the stacked layout has no
+  // tablist, so the panels are just sections.
+  const timelinePanelProps = (tab: "imagery" | "sites") =>
+    separateTimelines
+      ? {}
+      : {
+          role: "tabpanel",
+          id: `timeline-panel-${tab}`,
+          "aria-labelledby": `timeline-tab-${tab}`,
+        };
+
   // Get current release (for "after" imagery or single map mode)
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
 
@@ -441,7 +452,9 @@ export function Timeline() {
                     key={tab}
                     type="button"
                     role="tab"
+                    id={`timeline-tab-${tab}`}
                     aria-selected={timelineTab === tab}
+                    aria-controls={`timeline-panel-${tab}`}
                     onClick={() => setTimelineTab(tab)}
                     className={`px-1.5 py-0.5 text-[11px] font-bold rounded border-b-2 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none ${
                       timelineTab === tab
@@ -467,6 +480,7 @@ export function Timeline() {
               }
             >
               <div
+                {...timelinePanelProps("sites")}
                 className={`min-h-[100px] ${tabPanelClass} ${
                   !separateTimelines && timelineTab !== "sites"
                     ? "invisible pointer-events-none"
@@ -491,6 +505,7 @@ export function Timeline() {
               </div>
 
               <div
+                {...timelinePanelProps("imagery")}
                 className={`${tabPanelClass} ${
                   !separateTimelines && timelineTab !== "imagery"
                     ? "invisible pointer-events-none"

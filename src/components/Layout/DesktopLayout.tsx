@@ -8,6 +8,9 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Z_INDEX } from "../../constants/layout";
 
+/** Remembered Dashboard filter layout (top bar vs sidebar). */
+const FILTER_LAYOUT_STORAGE_KEY = "heritage-tracker-dashboard-filter-layout";
+
 // Lazy load heavy components
 const HeritageMap = lazy(() =>
   import("../Map/HeritageMap").then((m) => ({ default: m.HeritageMap }))
@@ -87,10 +90,10 @@ export function DesktopLayout({
 
   // Filter layout is a per-user Dashboard preference (top bar vs sidebar), remembered.
   const [filterLayout, setFilterLayout] = useState<"bar" | "sidebar">(() =>
-    localStorage.getItem("heritage-tracker-dashboard-filter-layout") === "sidebar" ? "sidebar" : "bar"
+    localStorage.getItem(FILTER_LAYOUT_STORAGE_KEY) === "sidebar" ? "sidebar" : "bar"
   );
   useEffect(() => {
-    localStorage.setItem("heritage-tracker-dashboard-filter-layout", filterLayout);
+    localStorage.setItem(FILTER_LAYOUT_STORAGE_KEY, filterLayout);
   }, [filterLayout]);
   const toggleFilterLayout = () =>
     setFilterLayout((prev) => (prev === "bar" ? "sidebar" : "bar"));

@@ -10,12 +10,24 @@ import { test, expect } from "@playwright/test";
  *
  * The sidebar is the <aside aria-label="Filters"> (ARIA role "complementary"), and
  * it only appears once Wayback imagery loads, so we wait on its content.
+ *
+ * On '/' the sidebar is tabbed (Sites | Filters | Settings) and opens on Sites, so
+ * these tests select the Filters tab first.
  */
+
+/** Open the sidebar's Filters tab and return the sidebar locator. */
+async function openFiltersTab(page: import("@playwright/test").Page) {
+  const sidebar = page.getByRole("complementary", { name: /filters/i });
+  const filtersTab = sidebar.getByRole("tab", { name: /^filters$/i });
+  await expect(filtersTab).toBeVisible({ timeout: 30000 });
+  await filtersTab.click();
+  return sidebar;
+}
 
 test.describe("Filter workflows", () => {
   test("the filter sidebar shows facet options directly", async ({ page }) => {
     await page.goto("/");
-    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    const sidebar = await openFiltersTab(page);
 
     await expect(sidebar.getByRole("heading", { name: /^type$/i })).toBeVisible({ timeout: 30000 });
     // Options are visible without opening anything (the discoverability win).
@@ -24,7 +36,7 @@ test.describe("Filter workflows", () => {
 
   test("applying a type filter changes the result count", async ({ page }) => {
     await page.goto("/");
-    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    const sidebar = await openFiltersTab(page);
 
     const count = sidebar.getByText(/showing \d+ of \d+ sites/i);
     await expect(count).toBeVisible({ timeout: 30000 });
@@ -61,7 +73,8 @@ test.describe("Filter workflows", () => {
     await expect(count).toBeVisible({ timeout: 30000 });
     const before = (await count.textContent())?.trim() ?? "";
 
-    await sidebar.getByPlaceholder("From", { exact: true }).fill("2024-01-01");
+    // Native date inputs ignore placeholder, so the bound is named via aria-label.
+    await sidebar.getByLabel("From", { exact: true }).fill("2024-01-01");
 
     await expect(count).not.toHaveText(before);
   });

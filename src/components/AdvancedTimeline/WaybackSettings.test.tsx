@@ -23,6 +23,14 @@ function setup(syncMapVersion: boolean) {
 }
 
 describe("WaybackSettings", () => {
+  it("offers map-version mode as one exclusive choice", () => {
+    setup(true);
+
+    const modes = screen.getAllByRole("radio");
+    expect(modes).toHaveLength(2);
+    expect(modes.filter((mode) => (mode as HTMLInputElement).checked)).toHaveLength(1);
+  });
+
   it("shows Manual Map Version Range as the opposite of Sync Map Version", () => {
     const { sync, manual } = setup(true);
 
