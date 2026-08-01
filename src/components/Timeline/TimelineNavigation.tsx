@@ -1,11 +1,16 @@
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
+import { TOOLTIPS } from "../../config/tooltips";
 
 interface TimelineNavigationProps {
   canGoPrevious: boolean;
   canGoNext: boolean;
   onPrevious: () => void;
   onNext: () => void;
+  /** When provided, Reset renders to the left of Previous instead of in TimelineControls */
+  onReset?: () => void;
+  resetDisabled?: boolean;
 }
 
 /**
@@ -25,11 +30,29 @@ export function TimelineNavigation({
   canGoNext,
   onPrevious,
   onNext,
+  onReset,
+  resetDisabled,
 }: TimelineNavigationProps) {
   const translate = useTranslation();
 
   return (
-    <div className="flex items-center gap-3" dir="ltr">
+    <div className="relative flex items-center gap-3" dir="ltr">
+      {/* Reset sits ~1in left of Previous, absolutely positioned so Prev/Next stay centered */}
+      {onReset && (
+        <div className="absolute right-full mr-24">
+          <Button
+            onClick={onReset}
+            disabled={resetDisabled}
+            variant="secondary"
+            size="xs"
+            icon={<ArrowPathIcon className="w-3 h-3" />}
+            aria-label={translate("common.reset")}
+            title={TOOLTIPS.TIMELINE.RESET}
+          >
+            <span className="hidden xl:inline">{translate("common.reset")}</span>
+          </Button>
+        </div>
+      )}
       <Button
         onClick={onPrevious}
         disabled={!canGoPrevious}

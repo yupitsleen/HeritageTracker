@@ -98,15 +98,35 @@ export const ar: Translations = {
     tooltipAdvanced: "انقر فوق النقاط (التي تمثل تاريخ تدمير موقع معين) لرؤيتها على الخريطة ومواقع الجدول. استخدم السابق/التالي للتنقل بين الأحداث. انقر فوق تشغيل لمشاهدة الرسوم المتحركة على الخريطة اليسرى. اضبط السرعة لرؤية الرسوم المتحركة بشكل أسرع/أبطأ.",
     interval: "الفاصل الزمني",
     intervalAsLargeAsPossible: "أكبر ما يمكن",
+    intervalAsLargeAsPossibleTooltip:
+      "صور ما قبل هي أقدم إصدار متاح — أوسع فارق زمني.",
     intervalAsSmallAsPossible: "أصغر ما يمكن",
+    intervalAsSmallAsPossibleTooltip:
+      "صور ما قبل هي آخر إصدار يسبق تاريخ التدمير — أضيق فارق زمني.",
     interval1Month: "شهر واحد (٣٠ يومًا)",
+    interval1MonthTooltip: "صور ما قبل مؤرخة قبل ٣٠ يومًا من تاريخ التدمير.",
     interval1Year: "سنة واحدة",
+    interval1YearTooltip: "صور ما قبل مؤرخة قبل سنة واحدة من تاريخ التدمير.",
     interval5Years: "٥ سنوات",
+    interval5YearsTooltip: "صور ما قبل مؤرخة قبل ٥ سنوات من تاريخ التدمير.",
     syncMapVersion: "مزامنة إصدار الخريطة",
     syncMapVersionTooltip:
       "ينتقل تلقائيًا إلى إصدار صور الأقمار الصناعية الأقرب إلى (وبعد) تاريخ تدمير كل موقع",
+    mapVersionRange: "نطاق إصدار الخريطة",
+    mapVersionRangeTooltip:
+      "اختر إصدارات صور الأقمار الصناعية المعروضة على الخرائط. يمكن اختيار الأيام التي يتوفر لها إصدار فقط.",
+    beforeImageryDate: "صور ما قبل",
+    afterImageryDate: "صور ما بعد",
+    manualMapVersion: "نطاق إصدار الخريطة يدويًا",
+    manualMapVersionTooltip:
+      "يحتفظ بصور الأقمار الصناعية التي اخترتها على شريط التمرير عند النقر على موقع",
     unknownDate: "غير معروف",
     noImageryAvailable: "لا توجد إصدارات صور متاحة",
+    separateTimelines: "خطوط زمنية منفصلة",
+    separateTimelinesTooltip:
+      "عرض شريط الصور والخط الزمني للمواقع فوق بعضهما بدلاً من علامات تبويب",
+    tabImagery: "الصور",
+    tabSites: "المواقع",
   },
 
   table: {
@@ -149,6 +169,9 @@ export const ar: Translations = {
 
   filters: {
     filters: "المرشحات",
+    filterActive: "مرشح نشط",
+    settings: "الإعدادات",
+    sites: "المواقع",
     clear: "مسح",
     clearAll: "مسح الكل",
     searchPlaceholder: "بحث...",
@@ -175,6 +198,12 @@ export const ar: Translations = {
     destructionDate: "نطاق تاريخ التدمير",
     yearBuilt: "نطاق سنة البناء",
     showingCount: "عرض {{filtered}} من {{total}} موقع",
+    apply: "تطبيق",
+    closeFilters: "إغلاق عوامل التصفية",
+    fromDate: "من",
+    toDate: "إلى",
+    fromYear: "من سنة",
+    toYear: "إلى سنة",
   },
 
   siteTypes: {

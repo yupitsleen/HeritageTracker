@@ -10,6 +10,7 @@ import type { CSSProperties } from "react";
 interface SiteTableRowProps {
   site: Site;
   onSiteClick?: (site: Site) => void;
+  onSiteTypeClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   variant: "compact" | "expanded";
@@ -24,6 +25,7 @@ interface SiteTableRowProps {
 export function SiteTableRow({
   site,
   onSiteClick,
+  onSiteTypeClick,
   onSiteHighlight,
   highlightedSiteId,
   variant,
@@ -81,9 +83,25 @@ export function SiteTableRow({
       )}
       {isColumnVisible("type") && (
         <td className={`${t.table.td} text-center`}>
-          <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
-            <SiteTypeIcon type={site.type} className={`w-6 h-6 ${t.text.body}`} />
-          </span>
+          {/* Only a control when it actually does something — otherwise a plain
+              icon, so keyboard users never land on a no-op button. */}
+          {onSiteTypeClick || onSiteClick ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                (onSiteTypeClick ?? onSiteClick)?.(site);
+              }}
+              className="inline-flex items-center justify-center cursor-pointer hover:opacity-70"
+              title={getSiteTypeLabel(site.type)}
+              aria-label={`${getSiteTypeLabel(site.type)} - ${site.name}`}
+            >
+              <SiteTypeIcon type={site.type} className={`w-6 h-6 ${t.text.body}`} />
+            </button>
+          ) : (
+            <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
+              <SiteTypeIcon type={site.type} className={`w-6 h-6 ${t.text.body}`} />
+            </span>
+          )}
         </td>
       )}
       {isColumnVisible("status") && (

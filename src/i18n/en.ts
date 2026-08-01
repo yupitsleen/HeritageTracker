@@ -101,15 +101,35 @@ export const en: Translations = {
       "Click the dots (representing the destruction date of a particular site) to see them on the map and table sites. Use Previous/Next to navigate between events. Click Play to watch an animation on the left map. Adjust the speed to see the animation faster/slower.",
     interval: "Interval",
     intervalAsLargeAsPossible: "As large as possible",
+    intervalAsLargeAsPossibleTooltip:
+      "Before map is the earliest available release, and After map is the latest available release.",
     intervalAsSmallAsPossible: "As small as possible",
+    intervalAsSmallAsPossibleTooltip:
+      "Before map is the last release preceding the destruction date.",
     interval1Month: "1 month (30 days)",
+    interval1MonthTooltip: "Before map is dated 30 days before the destruction date.",
     interval1Year: "1 year",
+    interval1YearTooltip: "Before map is dated 1 year before the destruction date.",
     interval5Years: "5 years",
+    interval5YearsTooltip: "Before map is dated 5 years before the destruction date.",
     syncMapVersion: "Sync Map Version",
     syncMapVersionTooltip:
       "Automatically jumps to the satellite imagery release closest to (and after) each site's destruction date",
+    mapVersionRange: "Map Version Range",
+    mapVersionRangeTooltip:
+      "Pick which satellite imagery releases the before/after maps show. Only days with a release can be selected.",
+    beforeImageryDate: "Before imagery",
+    afterImageryDate: "After imagery",
+    manualMapVersion: "Manual Map Version Range",
+    manualMapVersionTooltip:
+      "Keeps the satellite imagery you picked on the slider when you click a site",
     unknownDate: "Unknown",
     noImageryAvailable: "No imagery releases available",
+    separateTimelines: "Separate Timelines",
+    separateTimelinesTooltip:
+      "Show the imagery slider and the site timeline stacked instead of as tabs",
+    tabImagery: "Imagery",
+    tabSites: "Sites",
   },
 
   table: {
@@ -155,6 +175,9 @@ export const en: Translations = {
 
   filters: {
     filters: "Filters",
+    filterActive: "Filter active",
+    settings: "Settings",
+    sites: "Sites",
     clear: "Clear",
     clearAll: "Clear All",
     searchPlaceholder: "Search...",
@@ -181,6 +204,12 @@ export const en: Translations = {
     destructionDate: "Destruction Date Range",
     yearBuilt: "Year Built Range",
     showingCount: "Showing {{filtered}} of {{total}} sites",
+    apply: "Apply",
+    closeFilters: "Close filters",
+    fromDate: "From",
+    toDate: "To",
+    fromYear: "From year",
+    toYear: "To year",
   },
 
   siteTypes: {

@@ -1,4 +1,4 @@
-import { memo, useState, useMemo, useEffect, useCallback } from "react";
+import { memo, useState, useMemo, useEffect, useCallback, useRef, type ReactNode } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import type { Site, FilterState } from "../../types";
 import { SITE_TYPES, STATUS_OPTIONS } from "../../constants/filters";
@@ -13,8 +13,9 @@ import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { SiteTypeIcon } from "../Icons/SiteTypeIcon";
 import { useLocale } from "../../contexts/LocaleContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
-import { isDestructionDateFilterActive } from "../../types/filters";
+import { isDestructionDateRangeApplied } from "../../types/filters";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
 import { useActiveFilters } from "../../hooks/useActiveFilters";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -50,6 +51,22 @@ interface FilterBarProps {
   sidebarDefaultCollapsed?: boolean;
   /** When provided, renders a control to switch between "bar" and "sidebar" presentations. */
   onVariantToggle?: () => void;
+  /**
+   * Sidebar variant only: when provided, the sidebar gets Filters/Settings tabs and this
+   * renders under the Settings tab. Page-owned controls (e.g. Wayback comparison options).
+   */
+  settings?: ReactNode;
+  /**
+   * Sidebar variant only: when provided, adds a Sites tab holding this content
+   * (typically an embedded <SitesTable />).
+   */
+  sitesTab?: ReactNode;
+  /** Sidebar variant only: makes the panel drag-resizable (see useTableResize). */
+  resize?: {
+    width: number;
+    isResizing: boolean;
+    onResizeStart: () => void;
+  };
 }
 
 /**
@@ -80,11 +97,43 @@ export const FilterBar = memo(function FilterBar({
   variant = "bar",
   sidebarDefaultCollapsed = false,
   onVariantToggle,
+  settings,
+  sitesTab,
+  resize,
 }: FilterBarProps) {
   const { t: translate, localeConfig } = useLocale();
   const t = useThemeClasses();
+  const { isDark } = useTheme();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(sidebarDefaultCollapsed);
+  const sidebarTabs = [
+    ...(sitesTab ? (["sites"] as const) : []),
+    "filters" as const,
+    ...(settings ? (["settings"] as const) : []),
+  ];
+  const [sidebarTab, setSidebarTab] = useState<(typeof sidebarTabs)[number]>(sidebarTabs[0]);
+
+  // The available tabs depend on props, so a selected tab can disappear (e.g. a page
+  // stops passing `settings`). Fall back to the first tab rather than an empty panel.
+  const activeTab = sidebarTabs.includes(sidebarTab) ? sidebarTab : sidebarTabs[0];
+
+  // Only a tabpanel when there is actually a tablist above it — with a single
+  // section the header renders a plain heading instead.
+  const tabPanelProps =
+    sidebarTabs.length > 1
+      ? {
+          role: "tabpanel",
+          id: `filter-sidebar-panel-${activeTab}`,
+          "aria-labelledby": `filter-sidebar-tab-${activeTab}`,
+        }
+      : {};
+
+  // Browsers restore a scroll container's offset on reload, which can drop the
+  // sidebar in mid-list with its header off-screen. Always start at the top.
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (sidebarRef.current) sidebarRef.current.scrollTop = 0;
+  }, [sidebarCollapsed]);
 
   // Local state for search input (for immediate UI feedback)
   const [searchInputValue, setSearchInputValue] = useState(filters.searchTerm);
@@ -196,10 +245,39 @@ export const FilterBar = memo(function FilterBar({
     /** Short noun heading for the sidebar/drawer facet sections. */
     heading: string;
     count: number;
+    /** Range facets are on/off, not countable — the sidebar shows a dot, not "1". */
+    isRange?: boolean;
     panelWidth?: string;
     tooltip?: string;
     content: React.ReactNode;
   }[] = [
+    {
+      key: "destructionDate",
+      label: translate("filters.destructionDate"),
+      heading: translate("filters.destructionDate"),
+      // Badge whenever a range is applied — including the default window — so the
+      // user can see the list is date-limited without opening the facet.
+      count: isDestructionDateRangeApplied(
+        filters.destructionDateStart,
+        filters.destructionDateEnd
+      )
+        ? 1
+        : 0,
+      isRange: true,
+      panelWidth: "min-w-max",
+      tooltip: TOOLTIPS.FILTERS.DATE_FILTER,
+      content: (
+        <DateRangeFilter
+          label=""
+          startDate={filters.destructionDateStart}
+          endDate={filters.destructionDateEnd}
+          onStartChange={handleDestructionStartDateChange}
+          onEndChange={handleDestructionEndDateChange}
+          defaultStartDate={defaultStartDate}
+          defaultEndDate={defaultEndDate}
+        />
+      ),
+    },
     {
       key: "type",
       label: translate("filters.selectTypes"),
@@ -234,34 +312,11 @@ export const FilterBar = memo(function FilterBar({
       ),
     },
     {
-      key: "destructionDate",
-      label: translate("filters.destructionDate"),
-      heading: translate("filters.destructionDate"),
-      count: isDestructionDateFilterActive(
-        filters.destructionDateStart,
-        filters.destructionDateEnd
-      )
-        ? 1
-        : 0,
-      panelWidth: "min-w-max",
-      tooltip: TOOLTIPS.FILTERS.DATE_FILTER,
-      content: (
-        <DateRangeFilter
-          label=""
-          startDate={filters.destructionDateStart}
-          endDate={filters.destructionDateEnd}
-          onStartChange={handleDestructionStartDateChange}
-          onEndChange={handleDestructionEndDateChange}
-          defaultStartDate={defaultStartDate}
-          defaultEndDate={defaultEndDate}
-        />
-      ),
-    },
-    {
       key: "yearBuilt",
       label: translate("filters.yearBuilt"),
       heading: translate("filters.yearBuilt"),
       count: filters.creationYearStart || filters.creationYearEnd ? 1 : 0,
+      isRange: true,
       panelWidth: "min-w-max",
       tooltip: TOOLTIPS.FILTERS.YEAR_FILTER,
       content: (
@@ -336,7 +391,7 @@ export const FilterBar = memo(function FilterBar({
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
       </svg>
-      <span>Filters</span>
+      <span>{translate("filters.filters")}</span>
       {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
     </button>
   );
@@ -363,13 +418,13 @@ export const FilterBar = memo(function FilterBar({
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <DialogTitle className={cn("text-lg font-semibold", t.text.heading)}>
-              Filters
+              {translate("filters.filters")}
             </DialogTitle>
             <button
               type="button"
               onClick={handleCloseMobileFilters}
               className={cn("p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none", t.bg.hover)}
-              aria-label="Close filters"
+              aria-label={translate("filters.closeFilters")}
             >
               <CloseIcon className="w-6 h-6" aria-hidden="true" />
             </button>
@@ -388,6 +443,16 @@ export const FilterBar = memo(function FilterBar({
 
             {/* Show Unknown Dates Toggle */}
             <div>{showUnknownDatesCheckbox}</div>
+
+            {/* Settings — the drawer has no tabs, so they just get their own section. */}
+            {settings && (
+              <div>
+                <h3 className={cn("text-sm font-semibold mb-2", t.text.heading)}>
+                  {translate("filters.settings")}
+                </h3>
+                {settings}
+              </div>
+            )}
           </div>
 
           {/* Mobile Drawer Actions */}
@@ -408,7 +473,7 @@ export const FilterBar = memo(function FilterBar({
               onClick={handleCloseMobileFilters}
               fullWidth
             >
-              Apply
+              {translate("filters.apply")}
             </Button>
           </div>
         </DialogPanel>
@@ -474,22 +539,46 @@ export const FilterBar = memo(function FilterBar({
           </aside>
         ) : (
           <aside
-            dir="rtl"
             className={cn(
-              "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 overflow-y-auto overflow-x-hidden border rounded shadow-lg relative z-10",
-              t.bg.primary,
-              t.border.primary
+              "hidden md:flex md:flex-col md:flex-shrink-0 overflow-hidden backdrop-blur-sm border rounded shadow-lg relative z-10 transition-colors duration-200",
+              !resize && "md:w-64",
+              t.border.primary,
+              isDark ? "bg-[#000000]/95" : "bg-white/95"
             )}
+            style={resize ? { width: `${resize.width}px` } : undefined}
             aria-label={translate("filters.filters")}
           >
-            {/* dir="rtl" on the scroll container puts the scrollbar on the left; this
-                inner wrapper restores the locale's reading direction for the content. */}
-            <div dir={localeConfig.direction} className="flex flex-col gap-3 p-3">
-            {/* Header: title + layout toggle + collapse (hide) button */}
-            <div className="flex items-center justify-between gap-2">
-              <h2 className={cn("text-base font-bold", t.text.heading)}>
-                {translate("filters.filters")}
-              </h2>
+            {/* Header: tabs (or title) + layout toggle + collapse (hide) button */}
+            <div dir={localeConfig.direction} className="flex items-center justify-between gap-2 flex-shrink-0 p-3 pb-2">
+              {sidebarTabs.length > 1 ? (
+                /* Tabs — plain buttons; no roving-tabindex tablist.
+                   ponytail: upgrade to full ARIA tabs if keyboard users ask for arrow-key nav. */
+                <div className="flex items-center gap-1" role="tablist">
+                  {sidebarTabs.map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      role="tab"
+                      id={`filter-sidebar-tab-${tab}`}
+                      aria-selected={activeTab === tab}
+                      aria-controls={`filter-sidebar-panel-${tab}`}
+                      onClick={() => setSidebarTab(tab)}
+                      className={cn(
+                        "px-2 py-1 text-sm font-bold rounded-t border-b-2 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                        activeTab === tab
+                          ? cn("border-[#009639]", t.text.heading)
+                          : cn("border-transparent", t.text.muted, t.bg.hover)
+                      )}
+                    >
+                      {translate(`filters.${tab}`)}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <h2 className={cn("text-base font-bold", t.text.heading)}>
+                  {translate("filters.filters")}
+                </h2>
+              )}
               <div className="flex items-center gap-1">
                 {variantToggleButton}
                 <button
@@ -510,6 +599,26 @@ export const FilterBar = memo(function FilterBar({
               </div>
             </div>
 
+            {activeTab === "sites" ? (
+              /* Sites table fills the panel and scrolls internally. */
+              <div className="flex-1 min-h-0 px-1.5 pb-1.5" {...tabPanelProps}>
+                {sitesTab}
+              </div>
+            ) : (
+              /* dir="rtl" on the scroll container puts the scrollbar on the left; the
+                 inner wrapper restores the locale's reading direction for the content. */
+              <div
+                ref={sidebarRef}
+                dir="rtl"
+                className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden"
+              >
+                <div
+                  dir={localeConfig.direction}
+                  className="flex flex-col gap-3 p-3 pt-1"
+                  {...tabPanelProps}
+                >
+                  {activeTab === "settings" ? settings : (
+              <>
             {/* Result count — prominent (not the 10px of the bar) — + Clear All */}
             {showActions && (
               <div className="flex items-center justify-between gap-2">
@@ -560,16 +669,39 @@ export const FilterBar = memo(function FilterBar({
                   <h3 className={cn("text-sm font-semibold", t.text.heading)}>
                     {filterSection.heading}
                   </h3>
-                  {filterSection.count > 0 && (
-                    <CountBadge count={filterSection.count} variant="primary" />
-                  )}
+                  {filterSection.count > 0 &&
+                    (filterSection.isRange ? (
+                      <span
+                        className="w-2 h-2 rounded-full bg-[#009639]"
+                        role="img"
+                        aria-label={translate("filters.filterActive")}
+                      />
+                    ) : (
+                      <CountBadge count={filterSection.count} variant="primary" />
+                    ))}
                 </summary>
                 {filterSection.content}
               </details>
             ))}
 
             <div>{showUnknownDatesCheckbox}</div>
-            </div>
+              </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {resize && (
+              <div
+                className={cn(
+                  "absolute top-0 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors",
+                  resize.isResizing && "bg-[#ed3039] bg-opacity-50"
+                )}
+                onMouseDown={resize.onResizeStart}
+                title={translate("aria.dragToResizeTable")}
+                aria-label={translate("aria.resizeTable")}
+              />
+            )}
           </aside>
         )}
 

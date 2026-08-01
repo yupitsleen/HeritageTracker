@@ -5,6 +5,7 @@ import { SitesTableDesktop } from "./SitesTableDesktop";
 interface SitesTableProps {
   sites: Site[];
   onSiteClick?: (site: Site) => void;
+  onSiteTypeClick?: (site: Site) => void; // Opens detail from the type icon only
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
@@ -12,6 +13,7 @@ interface SitesTableProps {
   visibleColumns?: string[]; // For resizable table - which columns to show
   tooltipText?: string; // Optional custom tooltip text for the info icon
   clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
+  embedded?: boolean; // Drop the panel chrome (border/background/title) - host provides it
 }
 
 /**
@@ -27,6 +29,7 @@ interface SitesTableProps {
 export function SitesTable({
   sites,
   onSiteClick,
+  onSiteTypeClick,
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
@@ -34,6 +37,7 @@ export function SitesTable({
   visibleColumns,
   tooltipText,
   clickableRow = false,
+  embedded = false,
 }: SitesTableProps) {
   // Route to appropriate variant component
   if (variant === "mobile") {
@@ -44,6 +48,7 @@ export function SitesTable({
     <SitesTableDesktop
       sites={sites}
       onSiteClick={onSiteClick}
+      onSiteTypeClick={onSiteTypeClick}
       onSiteHighlight={onSiteHighlight}
       highlightedSiteId={highlightedSiteId}
       onExpandTable={onExpandTable}
@@ -51,6 +56,7 @@ export function SitesTable({
       visibleColumns={visibleColumns}
       tooltipText={tooltipText}
       clickableRow={clickableRow}
+      embedded={embedded}
     />
   );
 }

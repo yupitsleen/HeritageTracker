@@ -140,14 +140,29 @@ export interface Translations {
     tooltipAdvanced: string;
     interval: string;
     intervalAsLargeAsPossible: string;
+    intervalAsLargeAsPossibleTooltip: string;
     intervalAsSmallAsPossible: string;
+    intervalAsSmallAsPossibleTooltip: string;
     interval1Month: string;
+    interval1MonthTooltip: string;
     interval1Year: string;
+    interval1YearTooltip: string;
     interval5Years: string;
+    interval5YearsTooltip: string;
     syncMapVersion: string;
     syncMapVersionTooltip: string;
+    mapVersionRange: string;
+    mapVersionRangeTooltip: string;
+    beforeImageryDate: string;
+    afterImageryDate: string;
+    manualMapVersion: string;
+    manualMapVersionTooltip: string;
     unknownDate: string;
     noImageryAvailable: string;
+    separateTimelines: string;
+    separateTimelinesTooltip: string;
+    tabImagery: string;
+    tabSites: string;
   };
 
   /** Table component */
@@ -192,6 +207,9 @@ export interface Translations {
   /** Filter bar */
   filters: {
     filters: string;
+    filterActive: string;
+    settings: string;
+    sites: string;
     clear: string;
     clearAll: string;
     searchPlaceholder: string;
@@ -218,6 +236,12 @@ export interface Translations {
     destructionDate: string;
     yearBuilt: string;
     showingCount: string;
+    apply: string;
+    closeFilters: string;
+    fromDate: string;
+    toDate: string;
+    fromYear: string;
+    toYear: string;
   };
 
   /** Site types */

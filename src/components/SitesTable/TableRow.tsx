@@ -12,6 +12,7 @@ interface TableRowProps {
   isHighlighted: boolean;
   visibleColumns: Set<string>;
   onSiteClick?: (site: Site) => void;
+  onSiteTypeClick?: (site: Site) => void; // Type icon opens detail; falls back to onSiteClick
   onSiteHighlight?: (siteId: string | null) => void;
   rowRef?: React.RefObject<HTMLTableRowElement | null>;
   clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
@@ -26,6 +27,7 @@ export function TableRow({
   isHighlighted,
   visibleColumns,
   onSiteClick,
+  onSiteTypeClick,
   onSiteHighlight,
   rowRef,
   clickableRow = false,
@@ -62,9 +64,23 @@ export function TableRow({
     >
       {visibleColumns.has("type") && (
         <td className={`${COMPACT_TABLE.cellX} ${COMPACT_TABLE.cellY} text-center`}>
-          <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
-            <SiteTypeIcon type={site.type} className={`w-6 h-6 ${t.text.body}`} />
-          </span>
+          {onSiteTypeClick || onSiteClick ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                (onSiteTypeClick ?? onSiteClick)?.(site);
+              }}
+              className="inline-flex items-center justify-center cursor-pointer hover:opacity-70"
+              title={getSiteTypeLabel(site.type)}
+              aria-label={`${getSiteTypeLabel(site.type)} - ${primary}`}
+            >
+              <SiteTypeIcon type={site.type} className={`w-6 h-6 ${t.text.body}`} />
+            </button>
+          ) : (
+            <span className="inline-flex items-center justify-center" title={getSiteTypeLabel(site.type)}>
+              <SiteTypeIcon type={site.type} className={`w-6 h-6 ${t.text.body}`} />
+            </span>
+          )}
         </td>
       )}
       {visibleColumns.has("name") && (

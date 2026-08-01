@@ -5,10 +5,8 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
 import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
-import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
 import { InfoIcon } from "../Icons/InfoIcon";
 import { INFO_ICON_COLORS } from "../../constants/tooltip";
-import { IntervalSelector } from "./IntervalSelector";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
 import { TOOLTIPS } from "../../config/tooltips";
@@ -20,9 +18,12 @@ import { Z_INDEX } from "../../constants/layout";
 export type IndexChangeHandler = (index: number) => void;
 
 /**
- * Base props for WaybackSlider
+ * WaybackSlider props
+ *
+ * Comparison-mode *settings* (toggle, interval, sync) live in WaybackSettings;
+ * this component only needs to know the resulting mode and the before index.
  */
-interface BaseWaybackSliderProps {
+export interface WaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
@@ -31,33 +32,7 @@ interface BaseWaybackSliderProps {
   comparisonMode?: boolean;
   beforeIndex?: number;
   onBeforeIndexChange?: IndexChangeHandler;
-  onComparisonModeToggle?: () => void;
-  // Sync map version support
-  syncMapVersion?: boolean;
-  onSyncMapVersionToggle?: () => void;
 }
-
-/**
- * Comparison interval props - both must be provided together
- */
-interface WithComparisonInterval {
-  comparisonInterval: ComparisonInterval;
-  onIntervalChange: (interval: ComparisonInterval) => void;
-}
-
-/**
- * No comparison interval props
- */
-interface WithoutComparisonInterval {
-  comparisonInterval?: never;
-  onIntervalChange?: never;
-}
-
-/**
- * WaybackSlider props - comparisonInterval and onIntervalChange must be provided together
- */
-export type WaybackSliderProps = BaseWaybackSliderProps &
-  (WithComparisonInterval | WithoutComparisonInterval);
 
 /**
  * WaybackSlider - Interactive timeline for Wayback imagery releases
@@ -79,11 +54,6 @@ export function WaybackSlider({
   comparisonMode = false,
   beforeIndex = 0,
   onBeforeIndexChange,
-  onComparisonModeToggle,
-  comparisonInterval,
-  onIntervalChange,
-  syncMapVersion = false,
-  onSyncMapVersionToggle
 }: WaybackSliderProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -173,31 +143,45 @@ export function WaybackSlider({
     }
   }, [releasePositions, onIndexChange, comparisonMode, onBeforeIndexChange, currentPositionPercent, beforePositionPercent]);
 
-  const handlePrevious = useCallback(() => {
-    if (currentIndex > 0) {
-      const newIndex = currentIndex - 1;
-      onIndexChange(newIndex);
+  // Comparison mode steps both scrubbers as a fixed-width window: the gap
+  // between before/after is what the user (or the sync interval) chose, so
+  // navigation slides it instead of collapsing it to one release.
+  const dualMode = comparisonMode && !!onBeforeIndexChange;
+  const lowIndex = dualMode ? Math.min(currentIndex, beforeIndex) : currentIndex;
+  const highIndex = dualMode ? Math.max(currentIndex, beforeIndex) : currentIndex;
 
-      // In comparison mode, keep yellow slider one step before green slider
-      if (comparisonMode && onBeforeIndexChange) {
-        const newBeforeIndex = Math.max(0, newIndex - 1);
-        onBeforeIndexChange(newBeforeIndex);
-      }
-    }
-  }, [currentIndex, onIndexChange, comparisonMode, onBeforeIndexChange]);
+  const step = useCallback(
+    (delta: number) => {
+      const lo = dualMode ? Math.min(currentIndex, beforeIndex) : currentIndex;
+      const hi = dualMode ? Math.max(currentIndex, beforeIndex) : currentIndex;
+      // Clamp so neither scrubber leaves the track; the window stops as a unit.
+      const applied = Math.max(-lo, Math.min(delta, releases.length - 1 - hi));
+      if (applied === 0) return;
 
-  const handleNext = useCallback(() => {
-    if (currentIndex < releases.length - 1) {
-      const newIndex = currentIndex + 1;
-      onIndexChange(newIndex);
+      onIndexChange(currentIndex + applied);
+      if (dualMode && onBeforeIndexChange) onBeforeIndexChange(beforeIndex + applied);
+    },
+    [dualMode, currentIndex, beforeIndex, releases.length, onIndexChange, onBeforeIndexChange]
+  );
 
-      // In comparison mode, keep yellow slider one step before green slider
-      if (comparisonMode && onBeforeIndexChange) {
-        const newBeforeIndex = Math.max(0, newIndex - 1);
-        onBeforeIndexChange(newBeforeIndex);
-      }
-    }
-  }, [currentIndex, releases.length, onIndexChange, comparisonMode, onBeforeIndexChange]);
+  const handlePrevious = useCallback(() => step(-1), [step]);
+  const handleNext = useCallback(() => step(1), [step]);
+
+  // Comparison mode: each scrubber gets its own prev/next, moving only itself.
+  const stepBefore = useCallback(
+    (delta: number) => {
+      const next = Math.max(0, Math.min(beforeIndex + delta, releases.length - 1));
+      if (next !== beforeIndex) onBeforeIndexChange?.(next);
+    },
+    [beforeIndex, releases.length, onBeforeIndexChange]
+  );
+  const stepAfter = useCallback(
+    (delta: number) => {
+      const next = Math.max(0, Math.min(currentIndex + delta, releases.length - 1));
+      if (next !== currentIndex) onIndexChange(next);
+    },
+    [currentIndex, releases.length, onIndexChange]
+  );
 
   // Keyboard navigation
   useEffect(() => {
@@ -205,55 +189,41 @@ export function WaybackSlider({
       // Only handle if there are releases available
       if (releases.length === 0) return;
 
+      // Don't hijack arrows/Home/End while the user is typing or in a select.
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
+
       switch (e.key) {
         case "ArrowLeft": // Step backward by 1 release
           e.preventDefault();
-          handlePrevious();
+          step(-1);
           break;
         case "ArrowRight": // Step forward by 1 release
           e.preventDefault();
-          handleNext();
+          step(1);
           break;
-        case "Home": // Jump to first release
+        case "Home": // Slide the window to the start of the track
           e.preventDefault();
-          onIndexChange(0);
-          if (comparisonMode && onBeforeIndexChange) {
-            onBeforeIndexChange(0);
-          }
+          step(-releases.length);
           break;
-        case "End": // Jump to last release
+        case "End": // Slide the window to the end of the track
           e.preventDefault();
-          onIndexChange(releases.length - 1);
-          if (comparisonMode && onBeforeIndexChange) {
-            onBeforeIndexChange(Math.max(0, releases.length - 2));
-          }
+          step(releases.length);
           break;
         case "PageUp": // Jump backward by 10 releases
           e.preventDefault();
-          {
-            const newIndex = Math.max(0, currentIndex - 10);
-            onIndexChange(newIndex);
-            if (comparisonMode && onBeforeIndexChange) {
-              onBeforeIndexChange(Math.max(0, newIndex - 1));
-            }
-          }
+          step(-10);
           break;
         case "PageDown": // Jump forward by 10 releases
           e.preventDefault();
-          {
-            const newIndex = Math.min(releases.length - 1, currentIndex + 10);
-            onIndexChange(newIndex);
-            if (comparisonMode && onBeforeIndexChange) {
-              onBeforeIndexChange(Math.max(0, newIndex - 1));
-            }
-          }
+          step(10);
           break;
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex, releases.length, comparisonMode, onIndexChange, onBeforeIndexChange, handlePrevious, handleNext]);
+  }, [releases.length, step]);
 
   if (releases.length === 0) {
     return (
@@ -273,56 +243,64 @@ export function WaybackSlider({
       role="region"
       aria-label="Wayback Imagery Timeline"
     >
-      {/* Header: three-column flex so left controls never overlap the nav buttons */}
+      {/* Header: nav buttons centered on the container, stats absolutely positioned
+          right — same pattern as TimelineScrubber below. */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
-      <div className="flex items-start gap-2 mb-2 min-w-0" dir="ltr">
-        {/* Left: comparison controls (flex-1 so it takes equal space as the right column) */}
-        <div className="flex flex-1 items-center gap-1.5 flex-wrap min-w-0">
-          {onComparisonModeToggle && (
-            <>
-              <Button
-                variant="secondary"
-                size="xs"
-                active={comparisonMode}
-                onClick={onComparisonModeToggle}
-                aria-label={translate("timeline.comparisonMode")}
-                title={translate("timeline.comparisonMode")}
-              >
-                {comparisonMode ? "✓ " : ""}
-                {translate("timeline.comparisonMode")}
-              </Button>
-
-              {comparisonInterval && onIntervalChange && (
-                <IntervalSelector
-                  value={comparisonInterval}
-                  onChange={onIntervalChange}
-                  comparisonModeEnabled={comparisonMode}
-                  syncMapVersion={syncMapVersion}
-                />
-              )}
-
-              {onSyncMapVersionToggle && (
+      <div className="relative flex items-center justify-center gap-2 mb-2" dir="ltr">
+        {/* Center: nav buttons. In comparison mode each scrubber gets its own
+            pair, outlined in its scrubber colour and centered on its half. */}
+        {dualMode ? (
+          <div className="grid grid-cols-2 w-full">
+            {[
+              {
+                key: "before",
+                color: COLORS.FLAG_YELLOW,
+                index: beforeIndex,
+                onStep: stepBefore,
+              },
+              {
+                key: "after",
+                color: COLORS.FLAG_GREEN,
+                index: currentIndex,
+                onStep: stepAfter,
+              },
+            ].map(({ key, color, index, onStep }) => (
+              <div key={key} className="flex items-center justify-center gap-2">
                 <Button
+                  onClick={() => onStep(-1)}
+                  disabled={index === 0}
                   variant="secondary"
                   size="xs"
-                  active={syncMapVersion}
-                  onClick={onSyncMapVersionToggle}
-                  aria-label={translate("timeline.syncMapVersion")}
-                  title={translate("timeline.syncMapVersionTooltip")}
+                  style={{ borderColor: color }}
+                  aria-label={`Go to previous ${key} imagery release`}
+                  title={TOOLTIPS.WAYBACK.PREV_RELEASE}
+                  data-testid={`wayback-${key}-prev`}
                 >
-                  {syncMapVersion ? "✓ " : ""}
-                  {translate("timeline.syncMapVersion")}
+                  <span className="xl:hidden">⏮</span>
+                  <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
                 </Button>
-              )}
-            </>
-          )}
-        </div>
 
-        {/* Center: nav buttons — flex-shrink-0 so they're always fully visible */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+                <Button
+                  onClick={() => onStep(1)}
+                  disabled={index === releases.length - 1}
+                  variant="secondary"
+                  size="xs"
+                  style={{ borderColor: color }}
+                  aria-label={`Go to next ${key} imagery release`}
+                  title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
+                  data-testid={`wayback-${key}-next`}
+                >
+                  <span className="xl:hidden">⏭</span>
+                  <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : (
+        <div className="flex items-center gap-2">
           <Button
             onClick={handlePrevious}
-            disabled={currentIndex === 0}
+            disabled={lowIndex === 0}
             variant="secondary"
             size="xs"
             aria-label="Go to previous satellite image release"
@@ -334,7 +312,7 @@ export function WaybackSlider({
 
           <Button
             onClick={handleNext}
-            disabled={currentIndex === releases.length - 1}
+            disabled={highIndex === releases.length - 1}
             variant="secondary"
             size="xs"
             aria-label="Go to next satellite image release"
@@ -344,9 +322,10 @@ export function WaybackSlider({
             <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
           </Button>
         </div>
+        )}
 
-        {/* Right: dataset stats + info icon — shrink-0 so left column gets the real remaining space */}
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+        {/* Right: dataset stats + info icon */}
+        <div className="absolute right-0 top-0 flex items-center gap-1.5">
           <span className={`hidden md:block text-xs truncate pointer-events-none ${t.text.muted}`}>
             {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
           </span>

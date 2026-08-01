@@ -257,6 +257,9 @@ export function TimelineScrubber({
     endDate,
   ]);
 
+  // Nav (and the Reset button it hosts) only render in advanced mode
+  const showNavigation = !!advancedMode && advancedMode.showNavigation !== false;
+
   // Check if timeline is at the start or end position
   const isAtStart = currentTimestamp.getTime() === startDate.getTime();
   // Always stop at adjustedEndDate - this matches the visual timeline scale
@@ -395,6 +398,7 @@ export function TimelineScrubber({
             advancedMode={!!advancedMode}
             hidePlayControls={advancedMode?.hidePlayControls ?? false}
             hideMapSettings={advancedMode?.hideMapSettings ?? false}
+            hideReset={showNavigation}
             syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
             onPlay={handlePlay}
             onPause={pause}
@@ -406,13 +410,15 @@ export function TimelineScrubber({
           />
         </div>
 
-        {/* Center: Previous/Next navigation - centered in flex container */}
-        {advancedMode && (advancedMode.showNavigation !== false) && (
+        {/* Center: Reset + Previous/Next navigation - centered in flex container */}
+        {showNavigation && (
           <TimelineNavigation
             canGoPrevious={canGoPrevious}
             canGoNext={canGoNext}
             onPrevious={goToPreviousEvent}
             onNext={goToNextEvent}
+            onReset={handleReset}
+            resetDisabled={isAtStart}
           />
         )}
 

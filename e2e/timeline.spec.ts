@@ -15,6 +15,9 @@ test.describe('Timeline Page - Integration', () => {
     await page.goto('/timeline');
     await page.waitForLoadState('networkidle');
 
+    // The bottom panel is tabbed and opens on the site timeline, so select Imagery.
+    await page.getByRole('tab', { name: /^imagery$/i }).click();
+
     // Success is observable: the Wayback slider and the satellite map both render.
     await expect(page.getByTestId('wayback-slider')).toBeVisible({ timeout: 30000 });
     await expect(page.locator('.leaflet-container').first()).toBeVisible({ timeout: 30000 });

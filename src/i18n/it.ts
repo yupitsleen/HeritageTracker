@@ -100,15 +100,35 @@ export const it: Translations = {
       "Fai clic sui punti (che rappresentano la data di distruzione di un particolare sito) per vederli sulla mappa e sui siti della tabella. Usa Precedente/Successivo per navigare tra gli eventi. Fai clic su Riproduci per guardare un'animazione sulla mappa di sinistra. Regola la velocità per vedere l'animazione più veloce/più lenta.",
     interval: "Intervallo",
     intervalAsLargeAsPossible: "Il più grande possibile",
+    intervalAsLargeAsPossibleTooltip:
+      "Le immagini «prima» sono la versione disponibile più antica — l'intervallo più ampio.",
     intervalAsSmallAsPossible: "Il più piccolo possibile",
+    intervalAsSmallAsPossibleTooltip:
+      "Le immagini «prima» sono l'ultima versione precedente alla data di distruzione — l'intervallo più stretto.",
     interval1Month: "1 mese (30 giorni)",
+    interval1MonthTooltip: "Le immagini «prima» sono datate 30 giorni prima della data di distruzione.",
     interval1Year: "1 anno",
+    interval1YearTooltip: "Le immagini «prima» sono datate 1 anno prima della data di distruzione.",
     interval5Years: "5 anni",
+    interval5YearsTooltip: "Le immagini «prima» sono datate 5 anni prima della data di distruzione.",
     syncMapVersion: "Sincronizza Versione Mappa",
     syncMapVersionTooltip:
       "Passa automaticamente alla versione di immagini satellitari più vicina a (e dopo) la data di distruzione di ogni sito",
+    mapVersionRange: "Intervallo Versione Mappa",
+    mapVersionRangeTooltip:
+      "Scegli quali versioni di immagini satellitari mostrano le mappe prima/dopo. Solo i giorni con una versione sono selezionabili.",
+    beforeImageryDate: "Immagini prima",
+    afterImageryDate: "Immagini dopo",
+    manualMapVersion: "Intervallo Versione Mappa Manuale",
+    manualMapVersionTooltip:
+      "Mantiene le immagini satellitari scelte sul cursore quando si clicca su un sito",
     unknownDate: "Sconosciuto",
     noImageryAvailable: "Nessuna versione di immagini disponibile",
+    separateTimelines: "Timeline Separate",
+    separateTimelinesTooltip:
+      "Mostra il cursore delle immagini e la timeline dei siti impilati invece che a schede",
+    tabImagery: "Immagini",
+    tabSites: "Siti",
   },
 
   table: {
@@ -154,6 +174,9 @@ export const it: Translations = {
 
   filters: {
     filters: "Filtri",
+    filterActive: "Filtro attivo",
+    settings: "Impostazioni",
+    sites: "Siti",
     clear: "Cancella",
     clearAll: "Cancella Tutto",
     searchPlaceholder: "Cerca...",
@@ -180,6 +203,12 @@ export const it: Translations = {
     destructionDate: "Data Distruzione",
     yearBuilt: "Anno di Costruzione",
     showingCount: "Mostrando {{filtered}} di {{total}} siti",
+    apply: "Applica",
+    closeFilters: "Chiudi i filtri",
+    fromDate: "Dal",
+    toDate: "Al",
+    fromYear: "Dall'anno",
+    toYear: "All'anno",
   },
 
   siteTypes: {

@@ -1,19 +1,22 @@
 import { lazy, Suspense, useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
+import { useTranslation } from "../contexts/LocaleContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
+import { useTableResize } from "../hooks/useTableResize";
 import { Modal } from "../components/Modal/Modal";
 import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { Button } from "../components/Button";
 import { FilterBar } from "../components/FilterBar/FilterBar";
+import { SitesTable } from "../components/SitesTable";
 import { TimelineHelpModal } from "../components/Help";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
-import { WaybackSlider } from "../components/AdvancedTimeline";
+import { WaybackSlider, WaybackSettings } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { Site } from "../types";
 import type { FilterState } from "../types/filters";
@@ -39,6 +42,9 @@ const SiteDetailPanel = lazy(() =>
   import("../components/SiteDetail/SiteDetailPanel").then((m) => ({ default: m.SiteDetailPanel }))
 );
 
+/** Default "before" imagery baseline — pre-destruction reference point */
+const WAYBACK_BASELINE_DATE = new Date("2019-06-05");
+
 /**
  * Timeline Page
  * Full-screen satellite map with Wayback imagery (historical versions)
@@ -48,6 +54,7 @@ const SiteDetailPanel = lazy(() =>
 export function Timeline() {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
 
   // Fetch Wayback releases
   const { releases, isLoading, error } = useWaybackReleases();
@@ -66,6 +73,9 @@ export function Timeline() {
   // Filter state
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
 
+  // Combined side panel (Sites / Filters / Settings) is drag-resizable
+  const tableResize = useTableResize();
+
   // Get default filter ranges (calculated once from all sites)
   const { dateRange: defaultDateRange, yearRange: defaultYearRange } = useDefaultFilterRanges(mockSites);
 
@@ -79,25 +89,25 @@ export function Timeline() {
   const initialSiteHandled = useRef(false);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
-  // Default to ON for better user experience on Advanced Timeline page
-  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
+  // Default OFF so the initial Wayback scrubber positions survive the first dot click
+  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(false);
 
   // Comparison Mode toggle - when enabled, shows two maps side-by-side
   // Default to ON for first-load comparison view
   const [comparisonModeEnabled, setComparisonModeEnabled] = useState(true);
 
   // Before release index for comparison mode (earlier imagery)
-  // Will be set to the release closest to the Jul 2014 baseline once loaded
+  // Will be set to the release closest to the baseline below once loaded
   const [beforeReleaseIndex, setBeforeReleaseIndex] = useState(0);
   const beforeReleaseInitialized = useRef(false);
 
-  // Set initial "before" release to closest to Jul 30, 2014 when releases are loaded.
+  // Set initial "before" release to closest to Jun 5, 2019 when releases are loaded.
   // Runs once only - a ref guard (not "index === 0") because 0 is also a real,
   // user-selectable release index (the earliest/Feb 2014 release).
   useEffect(() => {
     if (releases.length > 0 && !beforeReleaseInitialized.current) {
       beforeReleaseInitialized.current = true;
-      setBeforeReleaseIndex(findClosestReleaseIndex(releases, new Date("2014-07-30")));
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, WAYBACK_BASELINE_DATE));
     }
   }, [releases]);
 
@@ -118,6 +128,25 @@ export function Timeline() {
 
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+  // View option: tabs (default) vs. both timelines stacked, as they used to be
+  const [separateTimelines, setSeparateTimelines] = useState(false);
+  const [timelineTab, setTimelineTab] = useState<"imagery" | "sites">("sites");
+
+  // Tabbed mode: both panels fill the shared grid cell (h-full on the panel's own
+  // bordered container too), so the visible box is identical on either tab.
+  const tabPanelClass = separateTimelines ? "" : "h-full [&>*]:h-full";
+
+  // Tab roles only apply while the tabs are on screen; the stacked layout has no
+  // tablist, so the panels are just sections.
+  const timelinePanelProps = (tab: "imagery" | "sites") =>
+    separateTimelines
+      ? {}
+      : {
+          role: "tabpanel",
+          id: `timeline-panel-${tab}`,
+          "aria-labelledby": `timeline-tab-${tab}`,
+        };
 
   // Get current release (for "after" imagery or single map mode)
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
@@ -186,54 +215,46 @@ export function Timeline() {
   );
 
   /**
-   * Handle site selection from timeline
-   * When sync is enabled, automatically finds and displays the Wayback imagery
-   * from right before the site was destroyed
-   * In comparison mode, also sets the "before" imagery
-   *
-   * @param siteId - ID of the selected site, or null to deselect
+   * Handle site selection from timeline. Wayback positioning is handled by the
+   * sync effect below, so this is just selection.
    */
-  const handleSiteHighlight = useCallback(
-    (siteId: string | null) => {
-      setHighlightedSiteId(siteId);
+  const handleSiteHighlight = useCallback((siteId: string | null) => {
+    setHighlightedSiteId(siteId);
+  }, []);
 
-      // If sync is enabled and a site is selected, find and show the nearest Wayback release
-      if (syncMapOnDotClick && siteId) {
-        const site = filteredSites.find((s: Site) => s.id === siteId);
-        if (site?.dateDestroyed) {
-          const destructionDate = new Date(site.dateDestroyed);
+  /**
+   * Sync map versions to the highlighted site's destruction date.
+   *
+   * An effect (not a click handler) so that changing the interval — or turning
+   * sync on — re-applies immediately to the site already selected, instead of
+   * leaving the sliders wherever the last interval put them.
+   * Manual mode never runs this: the user's dates stay put.
+   */
+  useEffect(() => {
+    if (!syncMapOnDotClick || !highlightedSiteId || releases.length === 0) return;
 
-          // Set "after" imagery (post-destruction).
-          // Always the release just after destruction - "as_large_as_possible" widens
-          // the interval on the "before" side only, otherwise every site would show
-          // the same (newest) imagery and sync would look broken.
-          setCurrentReleaseIndex(findNearestWaybackRelease(destructionDate));
+    const site = mockSites.find((s: Site) => s.id === highlightedSiteId);
+    if (!site?.dateDestroyed) return;
 
-          // If comparison mode is enabled, also set "before" imagery using interval
-          if (comparisonModeEnabled) {
-            // Calculate "before" date based on selected interval
-            const beforeDate = calculateBeforeDate(
-              destructionDate,
-              comparisonInterval,
-              releases
-            );
+    const destructionDate = new Date(site.dateDestroyed);
 
-            // Find the closest Wayback release to the calculated "before" date
-            const beforeReleaseIdx = findClosestReleaseIndex(releases, beforeDate);
-            setBeforeReleaseIndex(beforeReleaseIdx);
-          }
-        }
-      }
-    },
-    [
-      syncMapOnDotClick,
-      comparisonModeEnabled,
-      comparisonInterval,
-      findNearestWaybackRelease,
-      filteredSites,
-      releases,
-    ]
-  );
+    // "after" imagery (post-destruction) is always the release just after
+    // destruction — "as_large_as_possible" widens the interval on the "before"
+    // side only, otherwise every site would show the same (newest) imagery.
+    setCurrentReleaseIndex(findNearestWaybackRelease(destructionDate));
+
+    if (comparisonModeEnabled) {
+      const beforeDate = calculateBeforeDate(destructionDate, comparisonInterval, releases);
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, beforeDate));
+    }
+  }, [
+    syncMapOnDotClick,
+    highlightedSiteId,
+    comparisonModeEnabled,
+    comparisonInterval,
+    findNearestWaybackRelease,
+    releases,
+  ]);
 
   // Apply the deep-linked site once releases are available
   useEffect(() => {
@@ -244,14 +265,14 @@ export function Timeline() {
   }, [releases, handleSiteHighlight]);
 
   /**
-   * Reset wayback sliders to initial positions
+   * Reset wayback sliders to the same positions they load with
    * Green slider (after) goes to last release (most recent)
-   * Yellow slider (before) goes to first release (earliest)
+   * Yellow slider (before) goes back to the baseline release, not the earliest
    */
   const handleWaybackReset = useCallback(() => {
     if (releases.length > 0) {
       setCurrentReleaseIndex(releases.length - 1); // Most recent
-      setBeforeReleaseIndex(0); // Earliest
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, WAYBACK_BASELINE_DATE));
     }
   }, [releases]);
 
@@ -318,6 +339,38 @@ export function Timeline() {
                   totalSites={mockSites.length}
                   filteredSites={filteredSites.length}
                   onClearAll={clearAllFilters}
+                  resize={{
+                    width: tableResize.tableWidth,
+                    isResizing: tableResize.isResizing,
+                    onResizeStart: tableResize.handleResizeStart,
+                  }}
+                  sitesTab={
+                    <SitesTable
+                      embedded
+                      sites={filteredSites}
+                      onSiteTypeClick={setSelectedSite}
+                      onSiteHighlight={handleSiteHighlight}
+                      highlightedSiteId={highlightedSiteId}
+                      visibleColumns={tableResize.getVisibleColumns()}
+                    />
+                  }
+                  settings={
+                    <WaybackSettings
+                      comparisonMode={comparisonModeEnabled}
+                      onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
+                      comparisonInterval={comparisonInterval}
+                      onIntervalChange={setComparisonInterval}
+                      syncMapVersion={syncMapOnDotClick}
+                      onSyncMapVersionToggle={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
+                      releases={releases}
+                      beforeIndex={beforeReleaseIndex}
+                      onBeforeIndexChange={setBeforeReleaseIndex}
+                      afterIndex={currentReleaseIndex}
+                      onAfterIndexChange={setCurrentReleaseIndex}
+                      separateTimelines={separateTimelines}
+                      onSeparateTimelinesToggle={() => setSeparateTimelines(!separateTimelines)}
+                    />
+                  }
                 />
 
                 {/* Map column */}
@@ -376,41 +429,92 @@ export function Timeline() {
                 </div>
               </div>
 
-            {/* Wayback Release Slider - Visual timeline with year markers */}
-            <div className="flex-shrink-0 relative z-10">
-              <WaybackSlider
-                releases={releases}
-                currentIndex={currentReleaseIndex}
-                onIndexChange={setCurrentReleaseIndex}
-                totalSites={filteredSites.length}
-                comparisonMode={comparisonModeEnabled}
-                beforeIndex={beforeReleaseIndex}
-                onBeforeIndexChange={setBeforeReleaseIndex}
-                onComparisonModeToggle={() => setComparisonModeEnabled(!comparisonModeEnabled)}
-                comparisonInterval={comparisonInterval}
-                onIntervalChange={setComparisonInterval}
-                syncMapVersion={syncMapOnDotClick}
-                onSyncMapVersionToggle={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
-              />
-            </div>
+            {/* Combined panel: tabs sit inside the panel's free top-left corner
+                (both panels center their header controls, so nothing collides).
+                Hidden when the user opts into the stacked (separate) layout. */}
+            <div className="flex-shrink-0 flex flex-col gap-2 relative z-10">
+            {!separateTimelines && (
+              <div
+                className="absolute top-2 left-2 z-20 flex items-center gap-0.5"
+                role="tablist"
+                dir="ltr"
+              >
+                {(["sites", "imagery"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    role="tab"
+                    id={`timeline-tab-${tab}`}
+                    aria-selected={timelineTab === tab}
+                    aria-controls={`timeline-panel-${tab}`}
+                    onClick={() => setTimelineTab(tab)}
+                    className={`px-1.5 py-0.5 text-[11px] font-bold rounded border-b-2 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none ${
+                      timelineTab === tab
+                        ? `border-[#009639] ${t.text.heading}`
+                        : `border-transparent ${t.text.muted} ${t.bg.hover}`
+                    }`}
+                  >
+                    {translate(`timeline.tab${tab === "imagery" ? "Imagery" : "Sites"}`)}
+                  </button>
+                ))}
+              </div>
+            )}
 
-            {/* Timeline Scrubber - Site filtering with advanced mode sync */}
-            <div className="flex-shrink-0 min-h-[100px] relative z-10">
-              <Suspense fallback={<SkeletonMap />}>
-                <TimelineScrubber
-                  key="advanced-timeline-scrubber"
-                  sites={filteredSites}
-                  highlightedSiteId={highlightedSiteId}
-                  onSiteHighlight={handleSiteHighlight}
-                  advancedMode={{
-                    syncMapOnDotClick,
-                    showNavigation: true, // Show Previous/Next buttons
-                    hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
-                    hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to maps above)
-                    onReset: handleWaybackReset, // Reset wayback sliders to initial positions
-                  }}
+            {/* Tabbed: both panels stack in one grid cell, so the container is always
+                as tall as the taller panel and switching tabs shifts nothing. The
+                inactive one is `invisible` (not unmounted) — it keeps its box, so D3
+                still measures a real width. */}
+            <div
+              className={
+                separateTimelines
+                  ? "flex flex-col gap-2"
+                  : "grid [&>*]:[grid-area:1/1] items-stretch"
+              }
+            >
+              <div
+                {...timelinePanelProps("sites")}
+                className={`min-h-[100px] ${tabPanelClass} ${
+                  !separateTimelines && timelineTab !== "sites"
+                    ? "invisible pointer-events-none"
+                    : ""
+                }`}
+              >
+                <Suspense fallback={<SkeletonMap />}>
+                  <TimelineScrubber
+                    key="advanced-timeline-scrubber"
+                    sites={filteredSites}
+                    highlightedSiteId={highlightedSiteId}
+                    onSiteHighlight={handleSiteHighlight}
+                    advancedMode={{
+                      syncMapOnDotClick,
+                      showNavigation: true, // Show Previous/Next buttons
+                      hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
+                      hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to maps above)
+                      onReset: handleWaybackReset, // Reset wayback sliders to initial positions
+                    }}
+                  />
+                </Suspense>
+              </div>
+
+              <div
+                {...timelinePanelProps("imagery")}
+                className={`${tabPanelClass} ${
+                  !separateTimelines && timelineTab !== "imagery"
+                    ? "invisible pointer-events-none"
+                    : ""
+                }`}
+              >
+                <WaybackSlider
+                  releases={releases}
+                  currentIndex={currentReleaseIndex}
+                  onIndexChange={setCurrentReleaseIndex}
+                  totalSites={filteredSites.length}
+                  comparisonMode={comparisonModeEnabled}
+                  beforeIndex={beforeReleaseIndex}
+                  onBeforeIndexChange={setBeforeReleaseIndex}
                 />
-              </Suspense>
+              </div>
+            </div>
             </div>
             </div>
           </AnimationProvider>

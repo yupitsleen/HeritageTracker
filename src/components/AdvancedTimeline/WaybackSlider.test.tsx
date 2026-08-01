@@ -597,30 +597,7 @@ describe("WaybackSlider", () => {
     });
 
     describe("Navigation Buttons in Comparison Mode", () => {
-      it("updates both scrubbers when Next button clicked", () => {
-        const onIndexChange = vi.fn();
-        const onBeforeIndexChange = vi.fn();
-        renderWithTheme(
-          <WaybackSlider
-            releases={mockReleases}
-            currentIndex={2}
-            onIndexChange={onIndexChange}
-            comparisonMode={true}
-            beforeIndex={1}
-            onBeforeIndexChange={onBeforeIndexChange}
-          />
-        );
-
-        const nextButton = screen.getByRole("button", { name: /Next/i });
-        fireEvent.click(nextButton);
-
-        // Green slider should move to index 3
-        expect(onIndexChange).toHaveBeenCalledWith(3);
-        // Yellow slider should move to index 2 (one step before green)
-        expect(onBeforeIndexChange).toHaveBeenCalledWith(2);
-      });
-
-      it("updates both scrubbers when Previous button clicked", () => {
+      it("moves only the after scrubber with its own Next button", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
@@ -629,27 +606,44 @@ describe("WaybackSlider", () => {
             currentIndex={3}
             onIndexChange={onIndexChange}
             comparisonMode={true}
-            beforeIndex={2}
+            beforeIndex={1}
             onBeforeIndexChange={onBeforeIndexChange}
           />
         );
 
-        const prevButton = screen.getByRole("button", { name: /Previous/i });
-        fireEvent.click(prevButton);
+        fireEvent.click(screen.getByTestId("wayback-after-next"));
 
-        // Green slider should move to index 2
-        expect(onIndexChange).toHaveBeenCalledWith(2);
-        // Yellow slider should move to index 1 (one step before green)
-        expect(onBeforeIndexChange).toHaveBeenCalledWith(1);
+        expect(onIndexChange).toHaveBeenCalledWith(4);
+        expect(onBeforeIndexChange).not.toHaveBeenCalled();
       });
 
-      it("keeps yellow slider at 0 when Previous is clicked at green index 1", () => {
+      it("moves only the before scrubber with its own Previous button", () => {
         const onIndexChange = vi.fn();
         const onBeforeIndexChange = vi.fn();
         renderWithTheme(
           <WaybackSlider
             releases={mockReleases}
-            currentIndex={1}
+            currentIndex={4}
+            onIndexChange={onIndexChange}
+            comparisonMode={true}
+            beforeIndex={2}
+            onBeforeIndexChange={onBeforeIndexChange}
+          />
+        );
+
+        fireEvent.click(screen.getByTestId("wayback-before-prev"));
+
+        expect(onBeforeIndexChange).toHaveBeenCalledWith(1);
+        expect(onIndexChange).not.toHaveBeenCalled();
+      });
+
+      it("disables the before Previous button at the first release", () => {
+        const onIndexChange = vi.fn();
+        const onBeforeIndexChange = vi.fn();
+        renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={3}
             onIndexChange={onIndexChange}
             comparisonMode={true}
             beforeIndex={0}
@@ -657,13 +651,14 @@ describe("WaybackSlider", () => {
           />
         );
 
-        const prevButton = screen.getByRole("button", { name: /Previous/i });
+        const prevButton = screen.getByTestId("wayback-before-prev");
+        expect(prevButton).toBeDisabled();
+
         fireEvent.click(prevButton);
 
-        // Green slider should move to index 0
-        expect(onIndexChange).toHaveBeenCalledWith(0);
-        // Yellow slider should stay at 0 (can't go below 0)
-        expect(onBeforeIndexChange).toHaveBeenCalledWith(0);
+        expect(onBeforeIndexChange).not.toHaveBeenCalled();
+        // The after scrubber still has its own working controls
+        expect(screen.getByTestId("wayback-after-prev")).not.toBeDisabled();
       });
 
       it("does not update yellow slider when comparison mode is off", () => {

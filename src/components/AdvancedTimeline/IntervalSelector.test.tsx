@@ -70,6 +70,24 @@ describe("IntervalSelector", () => {
       expect(options).toContain("5_years");
     });
 
+    it("gives every option a tooltip", () => {
+      const onChange = vi.fn();
+      renderWithTheme(
+        <IntervalSelector
+          value="1_month"
+          onChange={onChange}
+          comparisonModeEnabled={true}
+          syncMapVersion={true}
+        />
+      );
+
+      const select = screen.getByLabelText(/interval/i) as HTMLSelectElement;
+
+      for (const option of Array.from(select.options)) {
+        expect(option.title, `missing tooltip for ${option.value}`).not.toBe("");
+      }
+    });
+
     it("displays the selected value", () => {
       const onChange = vi.fn();
       renderWithTheme(

@@ -13,6 +13,7 @@ import { SiteTableRow } from './SiteTableRow';
 interface VirtualizedTableBodyProps {
   sites: Site[];
   onSiteClick?: (site: Site) => void;
+  onSiteTypeClick?: (site: Site) => void;
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   variant: 'compact' | 'expanded';
@@ -32,6 +33,7 @@ interface VirtualizedTableBodyProps {
 export function VirtualizedTableBody({
   sites,
   onSiteClick,
+  onSiteTypeClick,
   onSiteHighlight,
   highlightedSiteId,
   variant,
@@ -88,6 +90,7 @@ export function VirtualizedTableBody({
                   <SiteTableRow
                     site={site}
                     onSiteClick={onSiteClick}
+                    onSiteTypeClick={onSiteTypeClick}
                     onSiteHighlight={onSiteHighlight}
                     highlightedSiteId={highlightedSiteId}
                     variant={variant}

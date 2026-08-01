@@ -2,6 +2,7 @@ import React from "react";
 import { Input } from "../Form/Input";
 import { Select } from "../Form/Select";
 import { FilterLabel } from "./FilterLabel";
+import { useTranslation } from "../../contexts/LocaleContext";
 
 interface YearRangeFilterProps {
   onStartChange: (year: number | null) => void;
@@ -18,7 +19,7 @@ interface YearRangeFilterProps {
  * YearRangeFilter - Reusable year range picker with BC/BCE support
  * Handles year input and era selection (BCE/CE)
  * Converts years to internal format: BCE = negative, CE = positive
- * Input fields are empty when no filter is active
+ * Inputs show the full year range of the visible sites until the user edits them
  */
 export function YearRangeFilter({
   onStartChange,
@@ -26,12 +27,22 @@ export function YearRangeFilter({
   label,
   tooltip,
   supportBCE = true,
+  startYearDefault,
+  endYearDefault,
+  startEraDefault,
 }: YearRangeFilterProps) {
-  // Local state for year input and era selection (empty by default)
-  const [startYearInput, setStartYearInput] = React.useState("");
-  const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE">("CE");
-  const [endYearInput, setEndYearInput] = React.useState("");
-  const [endYearEra, setEndYearEra] = React.useState<"CE" | "BCE">("CE");
+  const translate = useTranslation();
+
+  // null = untouched, so the displayed value tracks the sites' actual range
+  const [startYearInput, setStartYearInput] = React.useState<string | null>(null);
+  const [startYearEra, setStartYearEra] = React.useState<"CE" | "BCE" | null>(null);
+  const [endYearInput, setEndYearInput] = React.useState<string | null>(null);
+  const [endYearEra, setEndYearEra] = React.useState<"CE" | "BCE" | null>(null);
+
+  const startYearValue = startYearInput ?? startYearDefault ?? "";
+  const startEraValue = startYearEra ?? startEraDefault ?? "CE";
+  const endYearValue = endYearInput ?? endYearDefault ?? "";
+  const endEraValue = endYearEra ?? "CE";
 
   // Update parent state when year or era changes
   const handleStartYearChange = (input: string, era: "CE" | "BCE") => {
@@ -66,9 +77,10 @@ export function YearRangeFilter({
         <div className="flex items-center gap-1.5">
           <Input
             variant="number"
-            value={startYearInput}
-            onChange={(e) => handleStartYearChange(e.target.value, startYearEra)}
-            placeholder="From year"
+            value={startYearValue}
+            onChange={(e) => handleStartYearChange(e.target.value, startEraValue)}
+            placeholder={translate("filters.fromYear")}
+            aria-label={translate("filters.fromYear")}
             min="1"
             className="flex-1 min-w-[5rem] h-8 text-xs px-2"
           />
@@ -76,9 +88,9 @@ export function YearRangeFilter({
             <div className="flex-none w-16">
               <Select
                 size="small"
-                value={startYearEra}
+                value={startEraValue}
                 onChange={(e) =>
-                  handleStartYearChange(startYearInput, e.target.value as "CE" | "BCE")
+                  handleStartYearChange(startYearValue, e.target.value as "CE" | "BCE")
                 }
                 className="h-8 px-1.5 text-xs"
               >
@@ -91,9 +103,10 @@ export function YearRangeFilter({
         <div className="flex items-center gap-1.5">
           <Input
             variant="number"
-            value={endYearInput}
-            onChange={(e) => handleEndYearChange(e.target.value, endYearEra)}
-            placeholder="To year"
+            value={endYearValue}
+            onChange={(e) => handleEndYearChange(e.target.value, endEraValue)}
+            placeholder={translate("filters.toYear")}
+            aria-label={translate("filters.toYear")}
             min="1"
             className="flex-1 min-w-[5rem] h-8 text-xs px-2"
           />
@@ -101,9 +114,9 @@ export function YearRangeFilter({
             <div className="flex-none w-16">
               <Select
                 size="small"
-                value={endYearEra}
+                value={endEraValue}
                 onChange={(e) =>
-                  handleEndYearChange(endYearInput, e.target.value as "CE" | "BCE")
+                  handleEndYearChange(endYearValue, e.target.value as "CE" | "BCE")
                 }
                 className="h-8 px-1.5 text-xs"
               >
