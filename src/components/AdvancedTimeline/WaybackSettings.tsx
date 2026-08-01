@@ -116,14 +116,6 @@ export function WaybackSettings({
         translate("timeline.manualMapVersionTooltip")
       )}
 
-      {onSeparateTimelinesToggle &&
-        checkbox(
-          translate("timeline.separateTimelines"),
-          separateTimelines,
-          onSeparateTimelinesToggle,
-          translate("timeline.separateTimelinesTooltip")
-        )}
-
       {/* Slider positions - belong to Manual mode, so disabled while syncing */}
       {afterIndex !== undefined && onAfterIndexChange && (
         <ReleaseDatePicker
@@ -135,6 +127,14 @@ export function WaybackSettings({
           disabled={syncMapVersion}
         />
       )}
+
+      {onSeparateTimelinesToggle &&
+        checkbox(
+          translate("timeline.separateTimelines"),
+          separateTimelines,
+          onSeparateTimelinesToggle,
+          translate("timeline.separateTimelinesTooltip")
+        )}
     </div>
   );
 }
