@@ -13,6 +13,7 @@ import { CountBadge } from "../Badge/CountBadge";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { SiteTypeIcon } from "../Icons/SiteTypeIcon";
 import { useLocale } from "../../contexts/LocaleContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import { useDefaultDateRange } from "../../hooks/useDefaultDateRange";
 import { isDestructionDateFilterActive } from "../../types/filters";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
@@ -55,6 +56,17 @@ interface FilterBarProps {
    * renders under the Settings tab. Page-owned controls (e.g. Wayback comparison options).
    */
   settings?: ReactNode;
+  /**
+   * Sidebar variant only: when provided, adds a Sites tab holding this content
+   * (typically an embedded <SitesTable />).
+   */
+  sitesTab?: ReactNode;
+  /** Sidebar variant only: makes the panel drag-resizable (see useTableResize). */
+  resize?: {
+    width: number;
+    isResizing: boolean;
+    onResizeStart: () => void;
+  };
 }
 
 /**
@@ -86,16 +98,24 @@ export const FilterBar = memo(function FilterBar({
   sidebarDefaultCollapsed = false,
   onVariantToggle,
   settings,
+  sitesTab,
+  resize,
 }: FilterBarProps) {
   const { t: translate, localeConfig } = useLocale();
   const t = useThemeClasses();
+  const { isDark } = useTheme();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(sidebarDefaultCollapsed);
-  const [sidebarTab, setSidebarTab] = useState<"filters" | "settings">("filters");
+  const sidebarTabs = [
+    ...(sitesTab ? (["sites"] as const) : []),
+    "filters" as const,
+    ...(settings ? (["settings"] as const) : []),
+  ];
+  const [sidebarTab, setSidebarTab] = useState<(typeof sidebarTabs)[number]>(sidebarTabs[0]);
 
   // Browsers restore a scroll container's offset on reload, which can drop the
   // sidebar in mid-list with its header off-screen. Always start at the top.
-  const sidebarRef = useRef<HTMLElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (sidebarRef.current) sidebarRef.current.scrollTop = 0;
   }, [sidebarCollapsed]);
@@ -498,25 +518,22 @@ export const FilterBar = memo(function FilterBar({
           </aside>
         ) : (
           <aside
-            ref={sidebarRef}
-            dir="rtl"
             className={cn(
-              "hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 overflow-y-auto overflow-x-hidden border rounded shadow-lg relative z-10",
-              t.bg.primary,
-              t.border.primary
+              "hidden md:flex md:flex-col md:flex-shrink-0 overflow-hidden backdrop-blur-sm border rounded shadow-lg relative z-10 transition-colors duration-200",
+              !resize && "md:w-64",
+              t.border.primary,
+              isDark ? "bg-[#000000]/95" : "bg-white/95"
             )}
+            style={resize ? { width: `${resize.width}px` } : undefined}
             aria-label={translate("filters.filters")}
           >
-            {/* dir="rtl" on the scroll container puts the scrollbar on the left; this
-                inner wrapper restores the locale's reading direction for the content. */}
-            <div dir={localeConfig.direction} className="flex flex-col gap-3 p-3">
-            {/* Header: title + layout toggle + collapse (hide) button */}
-            <div className="flex items-center justify-between gap-2">
-              {settings ? (
-                /* Tabs — plain buttons; no roving-tabindex tablist for two items.
-                   ponytail: upgrade to full ARIA tabs if a third tab shows up. */
+            {/* Header: tabs (or title) + layout toggle + collapse (hide) button */}
+            <div dir={localeConfig.direction} className="flex items-center justify-between gap-2 flex-shrink-0 p-3 pb-2">
+              {sidebarTabs.length > 1 ? (
+                /* Tabs — plain buttons; no roving-tabindex tablist.
+                   ponytail: upgrade to full ARIA tabs if keyboard users ask for arrow-key nav. */
                 <div className="flex items-center gap-1" role="tablist">
-                  {(["filters", "settings"] as const).map((tab) => (
+                  {sidebarTabs.map((tab) => (
                     <button
                       key={tab}
                       type="button"
@@ -559,7 +576,19 @@ export const FilterBar = memo(function FilterBar({
               </div>
             </div>
 
-            {sidebarTab === "settings" ? settings : (
+            {sidebarTab === "sites" ? (
+              /* Sites table fills the panel and scrolls internally. */
+              <div className="flex-1 min-h-0 px-1.5 pb-1.5">{sitesTab}</div>
+            ) : (
+              /* dir="rtl" on the scroll container puts the scrollbar on the left; the
+                 inner wrapper restores the locale's reading direction for the content. */
+              <div
+                ref={sidebarRef}
+                dir="rtl"
+                className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden"
+              >
+                <div dir={localeConfig.direction} className="flex flex-col gap-3 p-3 pt-1">
+                  {sidebarTab === "settings" ? settings : (
               <>
             {/* Result count — prominent (not the 10px of the bar) — + Clear All */}
             {showActions && (
@@ -621,8 +650,22 @@ export const FilterBar = memo(function FilterBar({
 
             <div>{showUnknownDatesCheckbox}</div>
               </>
+                  )}
+                </div>
+              </div>
             )}
-            </div>
+
+            {resize && (
+              <div
+                className={cn(
+                  "absolute top-0 right-0 w-2 h-full cursor-col-resize z-20 hover:bg-[#ed3039] hover:bg-opacity-30 transition-colors",
+                  resize.isResizing && "bg-[#ed3039] bg-opacity-50"
+                )}
+                onMouseDown={resize.onResizeStart}
+                title={translate("aria.dragToResizeTable")}
+                aria-label={translate("aria.resizeTable")}
+              />
+            )}
           </aside>
         )}
 

@@ -163,6 +163,7 @@ export const it: Translations = {
   filters: {
     filters: "Filtri",
     settings: "Impostazioni",
+    sites: "Siti",
     clear: "Cancella",
     clearAll: "Cancella Tutto",
     searchPlaceholder: "Cerca...",

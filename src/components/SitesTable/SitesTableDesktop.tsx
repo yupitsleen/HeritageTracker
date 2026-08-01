@@ -26,6 +26,7 @@ interface SitesTableDesktopProps {
   visibleColumns?: string[]; // For resizable table - which columns to show
   tooltipText?: string; // Optional custom tooltip text for the info icon
   clickableRow?: boolean; // If true, entire row opens site detail (for Data page)
+  embedded?: boolean; // Drop the panel chrome (border/background/title) - host provides it
 }
 
 /**
@@ -55,6 +56,7 @@ export function SitesTableDesktop({
   visibleColumns,
   tooltipText,
   clickableRow = false,
+  embedded = false,
 }: SitesTableDesktopProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
@@ -96,6 +98,65 @@ export function SitesTableDesktop({
 
   // Determine if we should use virtual scrolling
   const shouldUseVirtualScroll = sortedSites.length > VIRTUAL_SCROLL_THRESHOLD;
+
+  // Scrollable table with sticky headers - shared by the standalone and embedded layouts
+  const tableBody = (
+    <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
+      {shouldUseVirtualScroll ? (
+        // Virtual scrolling for 100+ sites
+        <div>
+          <table className={t.table.base}>
+            <TableHeader
+              visibleColumns={visibleColumnsSet}
+              variant={variant}
+              sortField={sortField}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+            />
+          </table>
+          <VirtualizedTableBody
+            sites={sortedSites}
+            onSiteClick={onSiteClick}
+            onSiteHighlight={onSiteHighlight}
+            highlightedSiteId={highlightedSiteId}
+            variant={variant}
+            isColumnVisible={isColumnVisible}
+            clickableRow={clickableRow}
+          />
+        </div>
+      ) : (
+        // Standard rendering for < 100 sites
+        <table className={t.table.base}>
+          <TableHeader
+            visibleColumns={visibleColumnsSet}
+            variant={variant}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+          />
+          <tbody>
+            {sortedSites.map((site) => (
+              <TableRow
+                key={site.id}
+                site={site}
+                isHighlighted={highlightedSiteId === site.id}
+                visibleColumns={visibleColumnsSet}
+                onSiteClick={onSiteClick}
+                onSiteHighlight={onSiteHighlight}
+                rowRef={highlightedSiteId === site.id ? highlightedRowRef : undefined}
+                clickableRow={clickableRow}
+              />
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+
+  // Embedded: the host panel supplies the border, background and header
+  if (embedded) {
+    return <div className="flex flex-col h-full">{tableBody}</div>;
+  }
 
   return (
     <div
@@ -154,57 +215,7 @@ export function SitesTableDesktop({
         </div>
       </div>
 
-      {/* Scrollable table with sticky headers */}
-      <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
-        {shouldUseVirtualScroll ? (
-          // Virtual scrolling for 100+ sites
-          <div>
-            <table className={t.table.base}>
-              <TableHeader
-                visibleColumns={visibleColumnsSet}
-                variant={variant}
-                sortField={sortField}
-                sortDirection={sortDirection}
-                onSort={handleSort}
-              />
-            </table>
-            <VirtualizedTableBody
-              sites={sortedSites}
-              onSiteClick={onSiteClick}
-              onSiteHighlight={onSiteHighlight}
-              highlightedSiteId={highlightedSiteId}
-              variant={variant}
-              isColumnVisible={isColumnVisible}
-              clickableRow={clickableRow}
-            />
-          </div>
-        ) : (
-          // Standard rendering for < 100 sites
-          <table className={t.table.base}>
-            <TableHeader
-              visibleColumns={visibleColumnsSet}
-              variant={variant}
-              sortField={sortField}
-              sortDirection={sortDirection}
-              onSort={handleSort}
-            />
-            <tbody>
-              {sortedSites.map((site) => (
-                <TableRow
-                  key={site.id}
-                  site={site}
-                  isHighlighted={highlightedSiteId === site.id}
-                  visibleColumns={visibleColumnsSet}
-                  onSiteClick={onSiteClick}
-                  onSiteHighlight={onSiteHighlight}
-                  rowRef={highlightedSiteId === site.id ? highlightedRowRef : undefined}
-                  clickableRow={clickableRow}
-                />
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      {tableBody}
     </div>
   );
 }

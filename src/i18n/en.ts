@@ -164,6 +164,7 @@ export const en: Translations = {
   filters: {
     filters: "Filters",
     settings: "Settings",
+    sites: "Sites",
     clear: "Clear",
     clearAll: "Clear All",
     searchPlaceholder: "Search...",

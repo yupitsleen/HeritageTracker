@@ -199,6 +199,7 @@ export interface Translations {
   filters: {
     filters: string;
     settings: string;
+    sites: string;
     clear: string;
     clearAll: string;
     searchPlaceholder: string;

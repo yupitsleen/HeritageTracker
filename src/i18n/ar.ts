@@ -158,6 +158,7 @@ export const ar: Translations = {
   filters: {
     filters: "المرشحات",
     settings: "الإعدادات",
+    sites: "المواقع",
     clear: "مسح",
     clearAll: "مسح الكل",
     searchPlaceholder: "بحث...",

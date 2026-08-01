@@ -4,11 +4,13 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
+import { useTableResize } from "../hooks/useTableResize";
 import { Modal } from "../components/Modal/Modal";
 import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { Button } from "../components/Button";
 import { FilterBar } from "../components/FilterBar/FilterBar";
+import { SitesTable } from "../components/SitesTable";
 import { TimelineHelpModal } from "../components/Help";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
@@ -65,6 +67,9 @@ export function Timeline() {
 
   // Filter state
   const [filters, setFilters] = useState<FilterState>(createEmptyFilterState());
+
+  // Combined side panel (Sites / Filters / Settings) is drag-resizable
+  const tableResize = useTableResize();
 
   // Get default filter ranges (calculated once from all sites)
   const { dateRange: defaultDateRange, yearRange: defaultYearRange } = useDefaultFilterRanges(mockSites);
@@ -318,6 +323,20 @@ export function Timeline() {
                   totalSites={mockSites.length}
                   filteredSites={filteredSites.length}
                   onClearAll={clearAllFilters}
+                  resize={{
+                    width: tableResize.tableWidth,
+                    isResizing: tableResize.isResizing,
+                    onResizeStart: tableResize.handleResizeStart,
+                  }}
+                  sitesTab={
+                    <SitesTable
+                      embedded
+                      sites={filteredSites}
+                      onSiteHighlight={handleSiteHighlight}
+                      highlightedSiteId={highlightedSiteId}
+                      visibleColumns={tableResize.getVisibleColumns()}
+                    />
+                  }
                   settings={
                     <WaybackSettings
                       comparisonMode={comparisonModeEnabled}
