@@ -5,6 +5,10 @@ import { cn } from "../../styles/theme";
 import { SiteImage, SiteImagePlaceholder } from "./SiteImage";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
+import { InfoIcon } from "../Icons";
+
+const VERIFIED_TOOLTIP =
+  "Information about this site was initially gathered by AI. This indicates whether a human has since reviewed and verified the site and all its associated information.";
 
 interface SiteDetailPanelProps {
   site: Site;
@@ -31,6 +35,22 @@ export function SiteDetailPanel({ site, onViewOnMap }: SiteDetailPanelProps) {
       {/* Header Section */}
       <div className="space-y-3">
         <StatusBadge status={site.status} className="inline-block" />
+
+        {/* ponytail: read-only indicator, glyph instead of an icon component */}
+        <p className={`flex w-fit items-center gap-2 text-sm italic ${t.text.muted}`}>
+          <span
+            aria-hidden="true"
+            className={site.verified ? "text-green-600" : "text-red-600"}
+          >
+            {site.verified ? "✓" : "✗"}
+          </span>
+          {site.verified ? "Verified" : "Unverified"}
+          <InfoIcon
+            className="w-4 h-4"
+            title={VERIFIED_TOOLTIP}
+            aria-label={VERIFIED_TOOLTIP}
+          />
+        </p>
 
         {/* Site Names */}
         <div className="text-center">

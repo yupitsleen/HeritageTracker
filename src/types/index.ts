@@ -95,6 +95,8 @@ export interface Site {
   historicalSignificance: string;
   culturalValue: string;
   verifiedBy: string[];
+  /** A human manually reviewed every field on this site */
+  verified?: boolean;
   images?: {
     before?: ImageWithAttribution;
     after?: ImageWithAttribution;
