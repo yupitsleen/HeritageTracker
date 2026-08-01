@@ -105,6 +105,14 @@ export const ar: Translations = {
     syncMapVersion: "مزامنة إصدار الخريطة",
     syncMapVersionTooltip:
       "ينتقل تلقائيًا إلى إصدار صور الأقمار الصناعية الأقرب إلى (وبعد) تاريخ تدمير كل موقع",
+    mapVersionRange: "نطاق إصدار الخريطة",
+    mapVersionRangeTooltip:
+      "اختر إصدارات صور الأقمار الصناعية المعروضة على الخرائط. يمكن اختيار الأيام التي يتوفر لها إصدار فقط.",
+    beforeImageryDate: "صور ما قبل",
+    afterImageryDate: "صور ما بعد",
+    manualMapVersion: "نطاق إصدار الخريطة يدويًا",
+    manualMapVersionTooltip:
+      "يحتفظ بصور الأقمار الصناعية التي اخترتها على شريط التمرير عند النقر على موقع",
     unknownDate: "غير معروف",
     noImageryAvailable: "لا توجد إصدارات صور متاحة",
   },

@@ -1,7 +1,9 @@
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { IntervalSelector } from "./IntervalSelector";
+import { ReleaseDatePicker } from "./ReleaseDatePicker";
 import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
+import type { WaybackRelease } from "../../services/waybackService";
 
 interface WaybackSettingsProps {
   comparisonMode: boolean;
@@ -10,6 +12,12 @@ interface WaybackSettingsProps {
   onIntervalChange: (interval: ComparisonInterval) => void;
   syncMapVersion: boolean;
   onSyncMapVersionToggle: () => void;
+  /** Wayback slider positions - editable only in manual (non-synced) mode */
+  releases?: WaybackRelease[];
+  beforeIndex?: number;
+  onBeforeIndexChange?: (index: number) => void;
+  afterIndex?: number;
+  onAfterIndexChange?: (index: number) => void;
 }
 
 /**
@@ -25,6 +33,11 @@ export function WaybackSettings({
   onIntervalChange,
   syncMapVersion,
   onSyncMapVersionToggle,
+  releases = [],
+  beforeIndex,
+  onBeforeIndexChange,
+  afterIndex,
+  onAfterIndexChange,
 }: WaybackSettingsProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
@@ -48,7 +61,7 @@ export function WaybackSettings({
   );
 
   return (
-    <div className="flex flex-col items-start gap-3">
+    <div className="flex flex-col items-stretch gap-3">
       {checkbox(
         translate("timeline.comparisonMode"),
         comparisonMode,
@@ -63,12 +76,34 @@ export function WaybackSettings({
         translate("timeline.syncMapVersionTooltip")
       )}
 
+      {/* Belongs to Sync Map Version — sits directly under it. */}
       <IntervalSelector
         value={comparisonInterval}
         onChange={onIntervalChange}
         comparisonModeEnabled={comparisonMode}
         syncMapVersion={syncMapVersion}
       />
+
+      {/* Mutually exclusive with Sync Map Version — the same toggle, shown inverted,
+          so the two can never both be on (or both off). */}
+      {checkbox(
+        translate("timeline.manualMapVersion"),
+        !syncMapVersion,
+        onSyncMapVersionToggle,
+        translate("timeline.manualMapVersionTooltip")
+      )}
+
+      {/* Slider positions - belong to Manual mode, so disabled while syncing */}
+      {afterIndex !== undefined && onAfterIndexChange && (
+        <ReleaseDatePicker
+          releases={releases}
+          beforeIndex={comparisonMode ? beforeIndex : undefined}
+          onBeforeChange={comparisonMode ? onBeforeIndexChange : undefined}
+          afterIndex={afterIndex}
+          onAfterChange={onAfterIndexChange}
+          disabled={syncMapVersion}
+        />
+      )}
     </div>
   );
 }

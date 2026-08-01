@@ -2,15 +2,17 @@ import type { Site } from "./index";
 
 /**
  * Default destruction-date start for the initial view.
- * Satellite (ESRI Wayback) imagery only goes back to Feb 2014, so by default we
- * only show sites destroyed in that comparable window. Users can expand/change
- * via the date-range picker (min reaches back to the earliest data) or "Clear all".
+ * Users can expand/change via the date-range picker (min reaches back to the
+ * earliest data) or "Clear all".
  */
-export const DEFAULT_DESTRUCTION_DATE_START = new Date("2014-02-20");
+export const DEFAULT_DESTRUCTION_DATE_START = new Date("2023-10-01");
+
+/** Default destruction-date end for the initial view. */
+export const DEFAULT_DESTRUCTION_DATE_END = new Date("2024-10-01");
 
 /**
  * Whether the destruction-date range is a real user filter, i.e. it deviates
- * from the default 2014 baseline. The default start on its own is NOT active.
+ * from the defaults. The default range on its own is NOT active.
  */
 export function isDestructionDateFilterActive(
   start: Date | null,
@@ -19,7 +21,9 @@ export function isDestructionDateFilterActive(
   const startDeviates =
     start != null &&
     start.getTime() !== DEFAULT_DESTRUCTION_DATE_START.getTime();
-  return startDeviates || end != null;
+  const endDeviates =
+    end == null || end.getTime() !== DEFAULT_DESTRUCTION_DATE_END.getTime();
+  return startDeviates || endDeviates;
 }
 
 /**
@@ -45,7 +49,7 @@ export function createEmptyFilterState(): FilterState {
     selectedTypes: [],
     selectedStatuses: [],
     destructionDateStart: DEFAULT_DESTRUCTION_DATE_START,
-    destructionDateEnd: null,
+    destructionDateEnd: DEFAULT_DESTRUCTION_DATE_END,
     creationYearStart: null,
     creationYearEnd: null,
     searchTerm: "",
@@ -60,10 +64,11 @@ export function isFilterStateEmpty(state: FilterState): boolean {
   return (
     state.selectedTypes.length === 0 &&
     state.selectedStatuses.length === 0 &&
-    // Default destruction-date start (2014 satellite baseline) counts as "empty"
+    // The default destruction-date range counts as "empty"
     state.destructionDateStart?.getTime() ===
       DEFAULT_DESTRUCTION_DATE_START.getTime() &&
-    state.destructionDateEnd === null &&
+    state.destructionDateEnd?.getTime() ===
+      DEFAULT_DESTRUCTION_DATE_END.getTime() &&
     state.creationYearStart === null &&
     state.creationYearEnd === null &&
     state.searchTerm.trim().length === 0 &&

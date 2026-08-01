@@ -108,6 +108,14 @@ export const en: Translations = {
     syncMapVersion: "Sync Map Version",
     syncMapVersionTooltip:
       "Automatically jumps to the satellite imagery release closest to (and after) each site's destruction date",
+    mapVersionRange: "Map Version Range",
+    mapVersionRangeTooltip:
+      "Pick which satellite imagery releases the before/after maps show. Only days with a release can be selected.",
+    beforeImageryDate: "Before imagery",
+    afterImageryDate: "After imagery",
+    manualMapVersion: "Manual Map Version Range",
+    manualMapVersionTooltip:
+      "Keeps the satellite imagery you picked on the slider when you click a site",
     unknownDate: "Unknown",
     noImageryAvailable: "No imagery releases available",
   },

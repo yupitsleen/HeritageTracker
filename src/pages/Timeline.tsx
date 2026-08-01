@@ -79,25 +79,25 @@ export function Timeline() {
   const initialSiteHandled = useRef(false);
 
   // Sync Map toggle - when enabled, clicking timeline dots syncs map to nearest Wayback release
-  // Default to ON for better user experience on Advanced Timeline page
-  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(true);
+  // Default OFF so the initial Wayback scrubber positions survive the first dot click
+  const [syncMapOnDotClick, setSyncMapOnDotClick] = useState(false);
 
   // Comparison Mode toggle - when enabled, shows two maps side-by-side
   // Default to ON for first-load comparison view
   const [comparisonModeEnabled, setComparisonModeEnabled] = useState(true);
 
   // Before release index for comparison mode (earlier imagery)
-  // Will be set to the release closest to the Jul 2014 baseline once loaded
+  // Will be set to the release closest to the baseline below once loaded
   const [beforeReleaseIndex, setBeforeReleaseIndex] = useState(0);
   const beforeReleaseInitialized = useRef(false);
 
-  // Set initial "before" release to closest to Jul 30, 2014 when releases are loaded.
+  // Set initial "before" release to closest to Jun 5, 2019 when releases are loaded.
   // Runs once only - a ref guard (not "index === 0") because 0 is also a real,
   // user-selectable release index (the earliest/Feb 2014 release).
   useEffect(() => {
     if (releases.length > 0 && !beforeReleaseInitialized.current) {
       beforeReleaseInitialized.current = true;
-      setBeforeReleaseIndex(findClosestReleaseIndex(releases, new Date("2014-07-30")));
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, new Date("2019-06-05")));
     }
   }, [releases]);
 
@@ -326,6 +326,11 @@ export function Timeline() {
                       onIntervalChange={setComparisonInterval}
                       syncMapVersion={syncMapOnDotClick}
                       onSyncMapVersionToggle={() => setSyncMapOnDotClick(!syncMapOnDotClick)}
+                      releases={releases}
+                      beforeIndex={beforeReleaseIndex}
+                      onBeforeIndexChange={setBeforeReleaseIndex}
+                      afterIndex={currentReleaseIndex}
+                      onAfterIndexChange={setCurrentReleaseIndex}
                     />
                   }
                 />

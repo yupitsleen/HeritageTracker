@@ -107,6 +107,14 @@ export const it: Translations = {
     syncMapVersion: "Sincronizza Versione Mappa",
     syncMapVersionTooltip:
       "Passa automaticamente alla versione di immagini satellitari più vicina a (e dopo) la data di distruzione di ogni sito",
+    mapVersionRange: "Intervallo Versione Mappa",
+    mapVersionRangeTooltip:
+      "Scegli quali versioni di immagini satellitari mostrano le mappe prima/dopo. Solo i giorni con una versione sono selezionabili.",
+    beforeImageryDate: "Immagini prima",
+    afterImageryDate: "Immagini dopo",
+    manualMapVersion: "Intervallo Versione Mappa Manuale",
+    manualMapVersionTooltip:
+      "Mantiene le immagini satellitari scelte sul cursore quando si clicca su un sito",
     unknownDate: "Sconosciuto",
     noImageryAvailable: "Nessuna versione di immagini disponibile",
   },

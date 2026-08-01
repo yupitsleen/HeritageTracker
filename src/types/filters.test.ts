@@ -3,8 +3,10 @@ import {
   type FilterState,
   createEmptyFilterState,
   isFilterStateEmpty,
+  isDestructionDateFilterActive,
   areFiltersEqual,
   DEFAULT_DESTRUCTION_DATE_START,
+  DEFAULT_DESTRUCTION_DATE_END,
 } from './filters';
 
 describe('Filter Utilities', () => {
@@ -14,12 +16,47 @@ describe('Filter Utilities', () => {
 
       expect(empty.selectedTypes).toEqual([]);
       expect(empty.selectedStatuses).toEqual([]);
-      // Defaults to 2014 satellite-imagery baseline, not null
+      // Defaults to the initial destruction-date window, not null
       expect(empty.destructionDateStart).toEqual(DEFAULT_DESTRUCTION_DATE_START);
-      expect(empty.destructionDateEnd).toBeNull();
+      expect(empty.destructionDateEnd).toEqual(DEFAULT_DESTRUCTION_DATE_END);
       expect(empty.creationYearStart).toBeNull();
       expect(empty.creationYearEnd).toBeNull();
       expect(empty.searchTerm).toBe('');
+    });
+  });
+
+  describe('isDestructionDateFilterActive', () => {
+    it('treats the default window as not a filter', () => {
+      expect(
+        isDestructionDateFilterActive(
+          DEFAULT_DESTRUCTION_DATE_START,
+          DEFAULT_DESTRUCTION_DATE_END
+        )
+      ).toBe(false);
+    });
+
+    it('is active when the start deviates from the default', () => {
+      expect(
+        isDestructionDateFilterActive(
+          new Date('2024-01-01'),
+          DEFAULT_DESTRUCTION_DATE_END
+        )
+      ).toBe(true);
+    });
+
+    it('is active when the end deviates from the default', () => {
+      expect(
+        isDestructionDateFilterActive(
+          DEFAULT_DESTRUCTION_DATE_START,
+          new Date('2025-01-01')
+        )
+      ).toBe(true);
+    });
+
+    it('is active when the end is cleared to unbounded', () => {
+      expect(
+        isDestructionDateFilterActive(DEFAULT_DESTRUCTION_DATE_START, null)
+      ).toBe(true);
     });
   });
 

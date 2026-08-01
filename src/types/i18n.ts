@@ -146,6 +146,12 @@ export interface Translations {
     interval5Years: string;
     syncMapVersion: string;
     syncMapVersionTooltip: string;
+    mapVersionRange: string;
+    mapVersionRangeTooltip: string;
+    beforeImageryDate: string;
+    afterImageryDate: string;
+    manualMapVersion: string;
+    manualMapVersionTooltip: string;
     unknownDate: string;
     noImageryAvailable: string;
   };
