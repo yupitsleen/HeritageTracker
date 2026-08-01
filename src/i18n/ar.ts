@@ -342,13 +342,13 @@ export const ar: Translations = {
   },
 
   footer: {
-    title: "Now & Then",
+    title: "Now & Then: غزة",
     sources: "اليونسكو، العمارة الجنائية، التراث من أجل السلام",
     github: "جيت هاب",
     donate: "تبرع",
     stats: "الإحصائيات",
     about: "حول",
-    copyright: "© {year} Now & Then",
+    copyright: "© {year} Now & Then: غزة",
     lastUpdated: "آخر تحديث: {date}",
   },
 

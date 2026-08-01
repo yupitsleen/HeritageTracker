@@ -86,10 +86,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # Site lives at <pages-root>/gaza/ so the public URL is now-and-then/gaza
+      - name: Nest build under gaza/
+        run: mkdir -p site/gaza && cp -r dist/. site/gaza/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./site
 
   deploy:
     environment:

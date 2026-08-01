@@ -350,13 +350,13 @@ export const it: Translations = {
   },
 
   footer: {
-    title: "Now & Then",
+    title: "Now & Then: Gaza",
     sources: "UNESCO, Forensic Architecture, Heritage for Peace",
     github: "Github",
     donate: "Dona",
     stats: "Statistiche",
     about: "Informazioni",
-    copyright: "© {year} Now & Then",
+    copyright: "© {year} Now & Then: Gaza",
     lastUpdated: "Ultimo Aggiornamento: {date}",
   },
 
