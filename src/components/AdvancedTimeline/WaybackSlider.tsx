@@ -243,15 +243,12 @@ export function WaybackSlider({
       role="region"
       aria-label="Wayback Imagery Timeline"
     >
-      {/* Header: three-column flex so left controls never overlap the nav buttons */}
+      {/* Header: nav buttons centered on the container, stats absolutely positioned
+          right — same pattern as TimelineScrubber below. */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
-      <div className="flex items-start gap-2 mb-2 min-w-0" dir="ltr">
-        {/* Left: spacer so the nav buttons stay centered (comparison controls now
-            live in the filter sidebar's Settings tab). */}
-        <div className="flex-1 min-w-0" />
-
-        {/* Center: nav buttons — flex-shrink-0 so they're always fully visible */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="relative flex items-center justify-center gap-2 mb-2" dir="ltr">
+        {/* Center: nav buttons */}
+        <div className="flex items-center gap-2">
           <Button
             onClick={handlePrevious}
             disabled={currentIndex === 0}
@@ -277,8 +274,8 @@ export function WaybackSlider({
           </Button>
         </div>
 
-        {/* Right: dataset stats + info icon — shrink-0 so left column gets the real remaining space */}
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+        {/* Right: dataset stats + info icon */}
+        <div className="absolute right-0 top-0 flex items-center gap-1.5">
           <span className={`hidden md:block text-xs truncate pointer-events-none ${t.text.muted}`}>
             {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
           </span>

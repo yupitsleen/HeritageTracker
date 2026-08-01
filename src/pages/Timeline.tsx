@@ -41,6 +41,9 @@ const SiteDetailPanel = lazy(() =>
   import("../components/SiteDetail/SiteDetailPanel").then((m) => ({ default: m.SiteDetailPanel }))
 );
 
+/** Default "before" imagery baseline — pre-destruction reference point */
+const WAYBACK_BASELINE_DATE = new Date("2019-06-05");
+
 /**
  * Timeline Page
  * Full-screen satellite map with Wayback imagery (historical versions)
@@ -102,7 +105,7 @@ export function Timeline() {
   useEffect(() => {
     if (releases.length > 0 && !beforeReleaseInitialized.current) {
       beforeReleaseInitialized.current = true;
-      setBeforeReleaseIndex(findClosestReleaseIndex(releases, new Date("2019-06-05")));
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, WAYBACK_BASELINE_DATE));
     }
   }, [releases]);
 
@@ -249,14 +252,14 @@ export function Timeline() {
   }, [releases, handleSiteHighlight]);
 
   /**
-   * Reset wayback sliders to initial positions
+   * Reset wayback sliders to the same positions they load with
    * Green slider (after) goes to last release (most recent)
-   * Yellow slider (before) goes to first release (earliest)
+   * Yellow slider (before) goes back to the baseline release, not the earliest
    */
   const handleWaybackReset = useCallback(() => {
     if (releases.length > 0) {
       setCurrentReleaseIndex(releases.length - 1); // Most recent
-      setBeforeReleaseIndex(0); // Earliest
+      setBeforeReleaseIndex(findClosestReleaseIndex(releases, WAYBACK_BASELINE_DATE));
     }
   }, [releases]);
 
