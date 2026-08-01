@@ -1,5 +1,5 @@
 /**
- * GeoJSON exporter for Heritage Tracker
+ * GeoJSON exporter for Now & Then
  *
  * Exports site data in GeoJSON format (RFC 7946) for use with:
  * - QGIS, ArcGIS, and other GIS tools
@@ -112,7 +112,7 @@ export const exportGeoJSON: ExportFunction = (sites: Site[]): string => {
       title: "Gaza Heritage Sites",
       description: "Cultural heritage sites damaged or destroyed in Gaza",
       generated: new Date().toISOString(),
-      source: "Heritage Tracker (https://yupitsleen.github.io/HeritageTracker/)",
+      source: "Now & Then (https://yupitsleen.github.io/now-and-then/gaza/)",
       license: "Educational Fair Use - Attribution Required",
       siteCount: sites.length,
     },

@@ -66,7 +66,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
   // Determine active page for highlighting
   const getActivePage = () => {
     const path = location.pathname;
-    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "timeline";
+    if (path === "/" || path === "/now-and-then/gaza" || path === "/now-and-then/gaza/") return "timeline";
     if (path.includes("/dashboard")) return "dashboard";
     if (path.includes("/data")) return "data";
     if (path.includes("/timeline")) return "timeline";
@@ -109,12 +109,18 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
             >
               <img
                 src={logo}
-                alt="Heritage Tracker Logo"
+                alt="Now & Then Logo"
                 className="h-8 md:h-10 w-auto"
               />
-              <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-                {t("header.title")}
-              </h1>
+              <div className="text-left">
+                <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
+                  {t("header.title")}
+                </h1>
+                {/* ponytail: subtitle hidden below lg — no room in the compact header */}
+                <p className="hidden lg:block text-[10px] text-[#fefefe]/70 normal-case leading-tight">
+                  {t("header.subtitle")}
+                </p>
+              </div>
             </button>
           </div>
 

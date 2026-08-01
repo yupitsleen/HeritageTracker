@@ -10,13 +10,13 @@ export function DashboardHelpModal() {
 
   return (
     <div className="p-6">
-      <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Heritage Tracker</h2>
+      <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Now & Then</h2>
 
       <div className={`space-y-4 ${t.text.body}`}>
         <section>
           <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
           <p className="text-sm">
-            Heritage Tracker documents cultural heritage sites in Gaza that have been damaged or destroyed.
+            Now & Then documents cultural heritage sites in Gaza that have been damaged or destroyed.
             Explore the interactive map, timeline, and table to learn about these historically significant locations.
           </p>
         </section>

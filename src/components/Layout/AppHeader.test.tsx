@@ -20,14 +20,14 @@ describe("AppHeader", () => {
 
     it("displays the logo", () => {
       renderWithTheme(<AppHeaderWithRouter />);
-      const logo = screen.getByAltText(/Heritage Tracker Logo/i);
+      const logo = screen.getByAltText(/Now & Then Logo/i);
       expect(logo).toBeInTheDocument();
       expect(logo).toHaveAttribute("src");
     });
 
     it("displays the title", () => {
       renderWithTheme(<AppHeaderWithRouter />);
-      expect(screen.getByText(/Heritage Tracker/i)).toBeInTheDocument();
+      expect(screen.getByText(/Now & Then/i)).toBeInTheDocument();
     });
 
     it("title is clickable and navigates to home", () => {
@@ -38,7 +38,7 @@ describe("AppHeader", () => {
 
     it("logo is clickable and part of home navigation", () => {
       renderWithTheme(<AppHeaderWithRouter />);
-      const logo = screen.getByAltText(/Heritage Tracker Logo/i);
+      const logo = screen.getByAltText(/Now & Then Logo/i);
       const titleButton = screen.getByRole("button", { name: /go to home page/i });
 
       // Logo should be inside the clickable button
@@ -237,7 +237,7 @@ describe("AppHeader", () => {
 
     it("logo has proper alt text for screen readers", () => {
       renderWithTheme(<AppHeaderWithRouter />);
-      const logo = screen.getByAltText(/Heritage Tracker Logo/i);
+      const logo = screen.getByAltText(/Now & Then Logo/i);
       expect(logo).toBeInTheDocument();
     });
 

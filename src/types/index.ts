@@ -1,5 +1,5 @@
 /**
- * Core type definitions for Heritage Tracker MVP
+ * Core type definitions for Now & Then MVP
  * Only includes types we're actively using - following JIT principle
  */
 

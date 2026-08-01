@@ -3,7 +3,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 
 /**
  * About/Methodology page explaining the project's purpose, data sources, and verification process
- * Establishes credibility and transparency for the Heritage Tracker project
+ * Establishes credibility and transparency for the Now & Then project
  * Supports dark mode
  *
  * Performance optimizations:
@@ -21,7 +21,7 @@ export const About = memo(function About() {
         {/* About Header */}
         <div className="mb-4 md:mb-6 text-center">
           <h1 className={`text-3xl md:text-4xl font-bold mb-1.5 ${t.text.heading}`}>
-            About Heritage Tracker
+            About Now & Then
           </h1>
         </div>
 
@@ -436,13 +436,13 @@ export const About = memo(function About() {
           </p>
         </section>
 
-        {/* Using Heritage Tracker Section */}
+        {/* Using Now & Then Section */}
         <section className="mb-4 md:mb-6">
           <h2 className={`text-lg md:text-xl font-bold mb-2 md:mb-3 text-center ${t.text.heading}`}>
-            Using Heritage Tracker
+            Using Now & Then
           </h2>
           <p className={`text-sm leading-relaxed mb-2 ${t.text.body}`}>
-            Different audiences can use Heritage Tracker for various purposes. Click the "?" help
+            Different audiences can use Now & Then for various purposes. Click the "?" help
             button on any page for detailed instructions on using that page's features.
           </p>
 
@@ -537,7 +537,7 @@ export const About = memo(function About() {
         {/* Disclaimer Section */}
         <section className={`border-t ${t.border.default} pt-4 md:pt-6`}>
           <p className={`text-xs md:text-sm leading-relaxed ${t.text.body}`}>
-            <strong>Disclaimer:</strong> Heritage Tracker is an independent documentation project.
+            <strong>Disclaimer:</strong> Now & Then is an independent documentation project.
             All information is sourced from publicly available reports by UNESCO, Forensic
             Architecture, Heritage for Peace, and other reputable cultural heritage organizations.
             While we strive for accuracy, users should verify information through the original

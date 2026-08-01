@@ -3,7 +3,7 @@ import type { Translations } from "../types/i18n";
 /**
  * Italian translations
  *
- * Italian language support for Heritage Tracker application.
+ * Italian language support for Now & Then application.
  */
 export const it: Translations = {
   common: {
@@ -32,7 +32,8 @@ export const it: Translations = {
   },
 
   header: {
-    title: "Registro del Patrimonio",
+    title: "Now & Then",
+    subtitle: "Uno sguardo dall'alto sul genocidio a Gaza: immagini satellitari prima e dopo",
     dashboard: "Cruscotto",
     data: "Dati",
     timeline: "Timeline",
@@ -311,7 +312,7 @@ export const it: Translations = {
     viewGithub: "Visualizza codice sorgente su GitHub",
     helpPalestineDonate: "Aiuta la Palestina - Dona per gli sforzi di soccorso",
     viewStatistics: "Visualizza Statistiche",
-    aboutHeritageTracker: "Informazioni su Registro del Patrimonio",
+    aboutHeritageTracker: "Informazioni su Now & Then",
     resizeTable: "Ridimensiona tabella",
     dragToResizeTable: "Trascina per ridimensionare la tabella",
     clearSearch: "Cancella ricerca",
@@ -340,7 +341,7 @@ export const it: Translations = {
     donateButton: "Dona",
     disclaimer: "Nota:",
     disclaimerText:
-      "Heritage Tracker non è affiliato con queste organizzazioni. Effettua ricerche prima di donare.",
+      "Now & Then non è affiliato con queste organizzazioni. Effettua ricerche prima di donare.",
     unrwaDesc: "Agenzia ONU che fornisce istruzione, assistenza sanitaria e aiuti di emergenza ai rifugiati palestinesi.",
     mapDesc: "Servizi medici e forniture per i palestinesi nei territori occupati.",
     pcrfDesc: "Assistenza medica gratuita per bambini feriti e malati in Palestina.",
@@ -348,13 +349,13 @@ export const it: Translations = {
   },
 
   footer: {
-    title: "Registro del Patrimonio",
+    title: "Now & Then",
     sources: "UNESCO, Forensic Architecture, Heritage for Peace",
     github: "Github",
     donate: "Dona",
     stats: "Statistiche",
     about: "Informazioni",
-    copyright: "© {year} Registro del Patrimonio",
+    copyright: "© {year} Now & Then",
     lastUpdated: "Ultimo Aggiornamento: {date}",
   },
 

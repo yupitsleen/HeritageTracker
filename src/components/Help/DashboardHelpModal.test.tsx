@@ -22,7 +22,7 @@ describe("DashboardHelpModal", () => {
 
     it("renders main heading", () => {
       renderWithContext(<DashboardHelpModal />);
-      expect(screen.getByText("How to Use Heritage Tracker")).toBeInTheDocument();
+      expect(screen.getByText("How to Use Now & Then")).toBeInTheDocument();
     });
   });
 
@@ -87,7 +87,7 @@ describe("DashboardHelpModal", () => {
 
       const h2 = container.querySelector("h2");
       expect(h2).toBeInTheDocument();
-      expect(h2).toHaveTextContent("How to Use Heritage Tracker");
+      expect(h2).toHaveTextContent("How to Use Now & Then");
 
       const h3Elements = container.querySelectorAll("h3");
       expect(h3Elements.length).toBeGreaterThanOrEqual(6); // At least 6 subsections

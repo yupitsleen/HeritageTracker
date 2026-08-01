@@ -29,7 +29,7 @@ describe("AppHeader - Baseline Behavior", () => {
   describe("Basic Rendering", () => {
     it("renders title", () => {
       render(<AppHeader />, { wrapper: Wrapper });
-      expect(screen.getByText(/heritage tracker/i)).toBeInTheDocument();
+      expect(screen.getByText(/now & then/i)).toBeInTheDocument();
     });
 
     it("renders hamburger menu button", () => {

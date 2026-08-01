@@ -1,5 +1,5 @@
 /**
- * API Types for Heritage Tracker (Supabase Backend)
+ * API Types for Now & Then (Supabase Backend)
  *
  * Type definitions for API requests and responses.
  * These types wrap Supabase responses with pagination and metadata.

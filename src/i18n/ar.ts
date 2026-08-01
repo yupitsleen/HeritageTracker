@@ -3,7 +3,7 @@ import type { Translations } from "../types/i18n";
 /**
  * Arabic translations (العربية)
  *
- * RTL language support for Heritage Tracker application.
+ * RTL language support for Now & Then application.
  */
 export const ar: Translations = {
   common: {
@@ -32,7 +32,8 @@ export const ar: Translations = {
   },
 
   header: {
-    title: "متتبع التراث",
+    title: "Now & Then",
+    subtitle: "نظرة من السماء على الإبادة الجماعية في غزة: صور الأقمار الصناعية قبل وبعد",
     dashboard: "لوحة التحكم",
     data: "البيانات",
     timeline: "الجدول الزمني",
@@ -305,7 +306,7 @@ export const ar: Translations = {
     viewGithub: "عرض الكود المصدري على جيت هاب",
     helpPalestineDonate: "ساعد فلسطين - تبرع لجهود الإغاثة",
     viewStatistics: "عرض الإحصائيات",
-    aboutHeritageTracker: "حول متتبع التراث",
+    aboutHeritageTracker: "حول Now & Then",
     resizeTable: "تغيير حجم الجدول",
     dragToResizeTable: "اسحب لتغيير حجم الجدول",
     clearSearch: "مسح البحث",
@@ -332,7 +333,7 @@ export const ar: Translations = {
     focus: "التركيز:",
     donateButton: "تبرع",
     disclaimer: "ملاحظة:",
-    disclaimerText: "متتبع التراث غير تابع لهذه المنظمات. يرجى البحث قبل التبرع.",
+    disclaimerText: "Now & Then غير تابع لهذه المنظمات. يرجى البحث قبل التبرع.",
     unrwaDesc: "وكالة الأمم المتحدة لتوفير التعليم والرعاية الصحية والمساعدات الطارئة للاجئين الفلسطينيين.",
     mapDesc: "الخدمات الطبية والإمدادات للفلسطينيين في الأراضي المحتلة.",
     pcrfDesc: "رعاية طبية مجانية للأطفال المصابين والمرضى في فلسطين.",
@@ -340,13 +341,13 @@ export const ar: Translations = {
   },
 
   footer: {
-    title: "متتبع التراث",
+    title: "Now & Then",
     sources: "اليونسكو، العمارة الجنائية، التراث من أجل السلام",
     github: "جيت هاب",
     donate: "تبرع",
     stats: "الإحصائيات",
     about: "حول",
-    copyright: "© {year} متتبع التراث",
+    copyright: "© {year} Now & Then",
     lastUpdated: "آخر تحديث: {date}",
   },
 

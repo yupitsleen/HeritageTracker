@@ -1,5 +1,5 @@
 /**
- * Supabase Client for Heritage Tracker
+ * Supabase Client for Now & Then
  *
  * Centralized Supabase connection with TypeScript support.
  * Uses environment variables for configuration.

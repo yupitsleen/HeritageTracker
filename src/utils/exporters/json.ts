@@ -1,5 +1,5 @@
 /**
- * JSON exporter for Heritage Tracker
+ * JSON exporter for Now & Then
  *
  * Exports site data in simple JSON format for:
  * - API integration
@@ -39,7 +39,7 @@ export const exportJSON: ExportFunction = (sites: Site[]): string => {
       title: "Gaza Heritage Sites",
       description: "Cultural heritage sites damaged or destroyed in Gaza",
       generated: new Date().toISOString(),
-      source: "Heritage Tracker (https://yupitsleen.github.io/HeritageTracker/)",
+      source: "Now & Then (https://yupitsleen.github.io/now-and-then/gaza/)",
       license: "Educational Fair Use - Attribution Required",
       siteCount: sites.length,
       version: "1.0",

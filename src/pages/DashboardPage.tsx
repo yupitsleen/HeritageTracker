@@ -44,7 +44,7 @@ function HideMapMarkersByDefault() {
 }
 
 /**
- * DashboardPage - Main heritage tracker dashboard with table, maps, and timeline
+ * DashboardPage - Main dashboard with table, maps, and timeline
  * Desktop only - mobile users see DataPage instead (see App.tsx routing)
  */
 export function DashboardPage() {

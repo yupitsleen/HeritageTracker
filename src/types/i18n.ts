@@ -73,6 +73,7 @@ export interface Translations {
   /** Header navigation */
   header: {
     title: string;
+    subtitle: string;
     dashboard: string;
     data: string;
     timeline: string;

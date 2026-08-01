@@ -87,13 +87,13 @@ export function SharedLayout({ children, showFooter = true, helpContent }: Share
       >
         {helpContent || (
           <div className="p-6">
-            <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Heritage Tracker</h2>
+            <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Now & Then</h2>
 
             <div className={`space-y-4 ${t.text.body}`}>
               <section>
                 <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
                 <p className="text-sm">
-                  Heritage Tracker documents cultural heritage sites in Gaza that have been damaged or destroyed.
+                  Now & Then documents cultural heritage sites in Gaza that have been damaged or destroyed.
                   Use the interactive map, timeline, and filters to explore the data.
                 </p>
               </section>
