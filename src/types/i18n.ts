@@ -154,6 +154,10 @@ export interface Translations {
     manualMapVersionTooltip: string;
     unknownDate: string;
     noImageryAvailable: string;
+    separateTimelines: string;
+    separateTimelinesTooltip: string;
+    tabImagery: string;
+    tabSites: string;
   };
 
   /** Table component */

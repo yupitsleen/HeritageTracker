@@ -118,6 +118,11 @@ export const en: Translations = {
       "Keeps the satellite imagery you picked on the slider when you click a site",
     unknownDate: "Unknown",
     noImageryAvailable: "No imagery releases available",
+    separateTimelines: "Separate Timelines",
+    separateTimelinesTooltip:
+      "Show the imagery slider and the site timeline stacked instead of as tabs",
+    tabImagery: "Imagery",
+    tabSites: "Sites",
   },
 
   table: {

@@ -18,6 +18,9 @@ interface WaybackSettingsProps {
   onBeforeIndexChange?: (index: number) => void;
   afterIndex?: number;
   onAfterIndexChange?: (index: number) => void;
+  /** View option: stack the imagery slider and site timeline instead of tabbing between them */
+  separateTimelines?: boolean;
+  onSeparateTimelinesToggle?: () => void;
 }
 
 /**
@@ -38,6 +41,8 @@ export function WaybackSettings({
   onBeforeIndexChange,
   afterIndex,
   onAfterIndexChange,
+  separateTimelines = false,
+  onSeparateTimelinesToggle,
 }: WaybackSettingsProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
@@ -92,6 +97,14 @@ export function WaybackSettings({
         onSyncMapVersionToggle,
         translate("timeline.manualMapVersionTooltip")
       )}
+
+      {onSeparateTimelinesToggle &&
+        checkbox(
+          translate("timeline.separateTimelines"),
+          separateTimelines,
+          onSeparateTimelinesToggle,
+          translate("timeline.separateTimelinesTooltip")
+        )}
 
       {/* Slider positions - belong to Manual mode, so disabled while syncing */}
       {afterIndex !== undefined && onAfterIndexChange && (

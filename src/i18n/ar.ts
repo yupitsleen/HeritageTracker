@@ -115,6 +115,11 @@ export const ar: Translations = {
       "يحتفظ بصور الأقمار الصناعية التي اخترتها على شريط التمرير عند النقر على موقع",
     unknownDate: "غير معروف",
     noImageryAvailable: "لا توجد إصدارات صور متاحة",
+    separateTimelines: "خطوط زمنية منفصلة",
+    separateTimelinesTooltip:
+      "عرض شريط الصور والخط الزمني للمواقع فوق بعضهما بدلاً من علامات تبويب",
+    tabImagery: "الصور",
+    tabSites: "المواقع",
   },
 
   table: {

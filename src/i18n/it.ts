@@ -117,6 +117,11 @@ export const it: Translations = {
       "Mantiene le immagini satellitari scelte sul cursore quando si clicca su un sito",
     unknownDate: "Sconosciuto",
     noImageryAvailable: "Nessuna versione di immagini disponibile",
+    separateTimelines: "Timeline Separate",
+    separateTimelinesTooltip:
+      "Mostra il cursore delle immagini e la timeline dei siti impilati invece che a schede",
+    tabImagery: "Immagini",
+    tabSites: "Siti",
   },
 
   table: {

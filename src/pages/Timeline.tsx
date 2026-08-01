@@ -1,6 +1,7 @@
 import { lazy, Suspense, useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
+import { useTranslation } from "../contexts/LocaleContext";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useFilteredSites } from "../hooks/useFilteredSites";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
@@ -53,6 +54,7 @@ const WAYBACK_BASELINE_DATE = new Date("2019-06-05");
 export function Timeline() {
   const { isDark } = useTheme();
   const t = useThemeClasses();
+  const translate = useTranslation();
 
   // Fetch Wayback releases
   const { releases, isLoading, error } = useWaybackReleases();
@@ -126,6 +128,14 @@ export function Timeline() {
 
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+  // View option: tabs (default) vs. both timelines stacked, as they used to be
+  const [separateTimelines, setSeparateTimelines] = useState(false);
+  const [timelineTab, setTimelineTab] = useState<"imagery" | "sites">("sites");
+
+  // Tabbed mode: both panels fill the shared grid cell (h-full on the panel's own
+  // bordered container too), so the visible box is identical on either tab.
+  const tabPanelClass = separateTimelines ? "" : "h-full [&>*]:h-full";
 
   // Get current release (for "after" imagery or single map mode)
   const currentRelease = releases.length > 0 ? releases[currentReleaseIndex] : null;
@@ -354,6 +364,8 @@ export function Timeline() {
                       onBeforeIndexChange={setBeforeReleaseIndex}
                       afterIndex={currentReleaseIndex}
                       onAfterIndexChange={setCurrentReleaseIndex}
+                      separateTimelines={separateTimelines}
+                      onSeparateTimelinesToggle={() => setSeparateTimelines(!separateTimelines)}
                     />
                   }
                 />
@@ -414,36 +426,88 @@ export function Timeline() {
                 </div>
               </div>
 
-            {/* Wayback Release Slider - Visual timeline with year markers */}
-            <div className="flex-shrink-0 relative z-10">
-              <WaybackSlider
-                releases={releases}
-                currentIndex={currentReleaseIndex}
-                onIndexChange={setCurrentReleaseIndex}
-                totalSites={filteredSites.length}
-                comparisonMode={comparisonModeEnabled}
-                beforeIndex={beforeReleaseIndex}
-                onBeforeIndexChange={setBeforeReleaseIndex}
-              />
-            </div>
+            {/* Combined panel: tabs sit inside the panel's free top-left corner
+                (both panels center their header controls, so nothing collides).
+                Hidden when the user opts into the stacked (separate) layout. */}
+            <div className="flex-shrink-0 flex flex-col gap-2 relative z-10">
+            {!separateTimelines && (
+              <div
+                className="absolute top-2 left-2 z-20 flex items-center gap-0.5"
+                role="tablist"
+                dir="ltr"
+              >
+                {(["sites", "imagery"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    role="tab"
+                    aria-selected={timelineTab === tab}
+                    onClick={() => setTimelineTab(tab)}
+                    className={`px-1.5 py-0.5 text-[11px] font-bold rounded border-b-2 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none ${
+                      timelineTab === tab
+                        ? `border-[#009639] ${t.text.heading}`
+                        : `border-transparent ${t.text.muted} ${t.bg.hover}`
+                    }`}
+                  >
+                    {translate(`timeline.tab${tab === "imagery" ? "Imagery" : "Sites"}`)}
+                  </button>
+                ))}
+              </div>
+            )}
 
-            {/* Timeline Scrubber - Site filtering with advanced mode sync */}
-            <div className="flex-shrink-0 min-h-[100px] relative z-10">
-              <Suspense fallback={<SkeletonMap />}>
-                <TimelineScrubber
-                  key="advanced-timeline-scrubber"
-                  sites={filteredSites}
-                  highlightedSiteId={highlightedSiteId}
-                  onSiteHighlight={handleSiteHighlight}
-                  advancedMode={{
-                    syncMapOnDotClick,
-                    showNavigation: true, // Show Previous/Next buttons
-                    hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
-                    hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to maps above)
-                    onReset: handleWaybackReset, // Reset wayback sliders to initial positions
-                  }}
+            {/* Tabbed: both panels stack in one grid cell, so the container is always
+                as tall as the taller panel and switching tabs shifts nothing. The
+                inactive one is `invisible` (not unmounted) — it keeps its box, so D3
+                still measures a real width. */}
+            <div
+              className={
+                separateTimelines
+                  ? "flex flex-col gap-2"
+                  : "grid [&>*]:[grid-area:1/1] items-stretch"
+              }
+            >
+              <div
+                className={`min-h-[100px] ${tabPanelClass} ${
+                  !separateTimelines && timelineTab !== "sites"
+                    ? "invisible pointer-events-none"
+                    : ""
+                }`}
+              >
+                <Suspense fallback={<SkeletonMap />}>
+                  <TimelineScrubber
+                    key="advanced-timeline-scrubber"
+                    sites={filteredSites}
+                    highlightedSiteId={highlightedSiteId}
+                    onSiteHighlight={handleSiteHighlight}
+                    advancedMode={{
+                      syncMapOnDotClick,
+                      showNavigation: true, // Show Previous/Next buttons
+                      hidePlayControls: true, // Hide Play/Pause/Speed controls on Advanced Timeline page
+                      hideMapSettings: true, // Hide Zoom to Site and Show Map Markers (moved to maps above)
+                      onReset: handleWaybackReset, // Reset wayback sliders to initial positions
+                    }}
+                  />
+                </Suspense>
+              </div>
+
+              <div
+                className={`${tabPanelClass} ${
+                  !separateTimelines && timelineTab !== "imagery"
+                    ? "invisible pointer-events-none"
+                    : ""
+                }`}
+              >
+                <WaybackSlider
+                  releases={releases}
+                  currentIndex={currentReleaseIndex}
+                  onIndexChange={setCurrentReleaseIndex}
+                  totalSites={filteredSites.length}
+                  comparisonMode={comparisonModeEnabled}
+                  beforeIndex={beforeReleaseIndex}
+                  onBeforeIndexChange={setBeforeReleaseIndex}
                 />
-              </Suspense>
+              </div>
+            </div>
             </div>
             </div>
           </AnimationProvider>
