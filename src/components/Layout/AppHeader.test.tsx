@@ -58,19 +58,12 @@ describe("AppHeader", () => {
       // About page has been hidden from navigation
     });
 
-    it("renders theme toggle button", () => {
+    it("no longer renders theme or language controls (moved to Advanced Settings)", () => {
       renderWithTheme(<AppHeaderWithRouter />);
-      // Theme toggle should be in the DOM (now with proper aria-label)
-      const themeButton = screen.getByLabelText(/switch to (light|dark) mode/i);
-      expect(themeButton).toBeInTheDocument();
-    });
-
-    it("theme toggle changes theme when clicked", () => {
-      renderWithTheme(<AppHeaderWithRouter />);
-      const themeButton = screen.getByLabelText(/switch to (light|dark) mode/i);
-
-      // Click should not throw error
-      expect(() => fireEvent.click(themeButton)).not.toThrow();
+      expect(
+        screen.queryByLabelText(/switch to (light|dark) mode/i)
+      ).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/select language/i)).not.toBeInTheDocument();
     });
   });
 
@@ -122,18 +115,6 @@ describe("AppHeader", () => {
       expect(screen.getAllByRole("button", { name: /data/i })).toHaveLength(2); // Desktop + Mobile
       expect(screen.getAllByRole("button", { name: /timeline/i })).toHaveLength(2);
       // About page has been hidden from navigation
-    });
-
-    it("mobile menu includes theme toggle", () => {
-      renderWithTheme(<AppHeaderWithRouter />);
-
-      // Open menu
-      const hamburgerButton = screen.getByLabelText(/open menu/i);
-      fireEvent.click(hamburgerButton);
-
-      // Theme toggle should be in mobile menu (now with proper aria-label)
-      const themeButtons = screen.getAllByLabelText(/switch to (light|dark) mode/i);
-      expect(themeButtons.length).toBeGreaterThan(0);
     });
 
     it("clicking nav item closes mobile menu", () => {
@@ -230,9 +211,6 @@ describe("AppHeader", () => {
 
       // Help button (now with proper aria-label)
       expect(screen.getByLabelText(/help/i)).toBeInTheDocument();
-
-      // Theme toggle (now with proper aria-label)
-      expect(screen.getByLabelText(/switch to (light|dark) mode/i)).toBeInTheDocument();
     });
 
     it("logo has proper alt text for screen readers", () => {

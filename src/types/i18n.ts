@@ -166,6 +166,11 @@ export interface Translations {
     separateTimelinesTooltip: string;
     tabImagery: string;
     tabSites: string;
+    advancedSettings: string;
+    showImagerySlider: string;
+    showImagerySliderTooltip: string;
+    darkMode: string;
+    language: string;
   };
 
   /** Table component */

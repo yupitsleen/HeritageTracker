@@ -131,6 +131,12 @@ export const it: Translations = {
       "Mostra il cursore delle immagini e la timeline dei siti impilati invece che a schede",
     tabImagery: "Immagini",
     tabSites: "Siti",
+    advancedSettings: "Impostazioni Avanzate",
+    showImagerySlider: "Mostra Cursore Immagini",
+    showImagerySliderTooltip:
+      "Aggiunge il cursore delle immagini satellitari accanto alla timeline dei siti",
+    darkMode: "Modalità Scura",
+    language: "Lingua",
   },
 
   table: {

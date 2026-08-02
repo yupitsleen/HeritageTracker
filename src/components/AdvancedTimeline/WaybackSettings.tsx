@@ -1,8 +1,11 @@
-import { useTranslation } from "../../contexts/LocaleContext";
+import { useTranslation, useLocale } from "../../contexts/LocaleContext";
+import { useTheme } from "../../contexts/ThemeContext";
+import { getAllLocales } from "../../config/locales";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { IntervalSelector } from "./IntervalSelector";
 import { ReleaseDatePicker } from "./ReleaseDatePicker";
 import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
+import type { LocaleCode } from "../../types/i18n";
 import type { WaybackRelease } from "../../services/waybackService";
 
 interface WaybackSettingsProps {
@@ -18,6 +21,9 @@ interface WaybackSettingsProps {
   onBeforeIndexChange?: (index: number) => void;
   afterIndex?: number;
   onAfterIndexChange?: (index: number) => void;
+  /** Advanced: reveal the Wayback imagery slider (hidden by default) */
+  showImagerySlider?: boolean;
+  onShowImagerySliderToggle?: () => void;
   /** View option: stack the imagery slider and site timeline instead of tabbing between them */
   separateTimelines?: boolean;
   onSeparateTimelinesToggle?: () => void;
@@ -41,11 +47,15 @@ export function WaybackSettings({
   onBeforeIndexChange,
   afterIndex,
   onAfterIndexChange,
+  showImagerySlider = false,
+  onShowImagerySliderToggle,
   separateTimelines = false,
   onSeparateTimelinesToggle,
 }: WaybackSettingsProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
+  const { locale, setLocale } = useLocale();
+  const { isDark, toggleTheme } = useTheme();
 
   // Same shape as the sidebar's "Show unknown dates" checkbox so settings read as filters.
   const checkbox = (
@@ -128,13 +138,59 @@ export function WaybackSettings({
         />
       )}
 
-      {onSeparateTimelinesToggle &&
-        checkbox(
-          translate("timeline.separateTimelines"),
-          separateTimelines,
-          onSeparateTimelinesToggle,
-          translate("timeline.separateTimelinesTooltip")
-        )}
+      {/* ponytail: native <details> — collapsed by default, no state, no lib. */}
+      <details className="mt-1">
+        <summary
+          className={`text-sm font-semibold cursor-pointer ${t.text.heading}`}
+        >
+          {translate("timeline.advancedSettings")}
+        </summary>
+        <div className="flex flex-col items-stretch gap-3 mt-3">
+          {onShowImagerySliderToggle &&
+            checkbox(
+              translate("timeline.showImagerySlider"),
+              showImagerySlider,
+              onShowImagerySliderToggle,
+              translate("timeline.showImagerySliderTooltip")
+            )}
+
+          {/* Stacked-vs-tabbed only means anything once the slider exists. */}
+          {showImagerySlider &&
+            onSeparateTimelinesToggle &&
+            checkbox(
+              translate("timeline.separateTimelines"),
+              separateTimelines,
+              onSeparateTimelinesToggle,
+              translate("timeline.separateTimelinesTooltip")
+            )}
+
+          {checkbox(
+            translate("timeline.darkMode"),
+            isDark,
+            toggleTheme,
+            translate("timeline.darkMode")
+          )}
+
+          {/* Same shape as IntervalSelector so the settings tab reads as one list. */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="language-selector" className={`text-xs ${t.text.primary}`}>
+              {translate("timeline.language")}:
+            </label>
+            <select
+              id="language-selector"
+              value={locale}
+              onChange={(e) => setLocale(e.target.value as LocaleCode)}
+              className={`text-xs px-2 py-1 rounded border cursor-pointer transition-all duration-200 ${t.border.primary} ${t.bg.primary} ${t.text.primary}`}
+            >
+              {getAllLocales().map((loc) => (
+                <option key={loc.code} value={loc.code}>
+                  {loc.nativeName}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </details>
     </div>
   );
 }

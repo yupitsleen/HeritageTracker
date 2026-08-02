@@ -132,6 +132,12 @@ export const en: Translations = {
       "Show the imagery slider and the site timeline stacked instead of as tabs",
     tabImagery: "Imagery",
     tabSites: "Sites",
+    advancedSettings: "Advanced Settings",
+    showImagerySlider: "Show Imagery Slider",
+    showImagerySliderTooltip:
+      "Add the satellite imagery slider alongside the site timeline",
+    darkMode: "Dark Mode",
+    language: "Language",
   },
 
   table: {

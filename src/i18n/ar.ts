@@ -129,6 +129,12 @@ export const ar: Translations = {
       "عرض شريط الصور والخط الزمني للمواقع فوق بعضهما بدلاً من علامات تبويب",
     tabImagery: "الصور",
     tabSites: "المواقع",
+    advancedSettings: "إعدادات متقدمة",
+    showImagerySlider: "إظهار شريط الصور",
+    showImagerySliderTooltip:
+      "إضافة شريط صور الأقمار الصناعية إلى جانب الخط الزمني للمواقع",
+    darkMode: "الوضع الداكن",
+    language: "اللغة",
   },
 
   table: {

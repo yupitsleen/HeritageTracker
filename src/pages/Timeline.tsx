@@ -129,18 +129,24 @@ export function Timeline() {
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
+  // Imagery slider is opt-in (Advanced Settings); off means no tabs at all.
+  const [showImagerySlider, setShowImagerySlider] = useState(false);
   // View option: tabs (default) vs. both timelines stacked, as they used to be
   const [separateTimelines, setSeparateTimelines] = useState(false);
   const [timelineTab, setTimelineTab] = useState<"imagery" | "sites">("sites");
 
+  // Three layouts: sites only (default), tabbed, stacked.
+  const stacked = showImagerySlider && separateTimelines;
+  const tabbed = showImagerySlider && !separateTimelines;
+
   // Tabbed mode: both panels fill the shared grid cell (h-full on the panel's own
   // bordered container too), so the visible box is identical on either tab.
-  const tabPanelClass = separateTimelines ? "" : "h-full [&>*]:h-full";
+  const tabPanelClass = stacked ? "" : "h-full [&>*]:h-full";
 
   // Tab roles only apply while the tabs are on screen; the stacked layout has no
   // tablist, so the panels are just sections.
   const timelinePanelProps = (tab: "imagery" | "sites") =>
-    separateTimelines
+    !tabbed
       ? {}
       : {
           role: "tabpanel",
@@ -367,6 +373,8 @@ export function Timeline() {
                       onBeforeIndexChange={setBeforeReleaseIndex}
                       afterIndex={currentReleaseIndex}
                       onAfterIndexChange={setCurrentReleaseIndex}
+                      showImagerySlider={showImagerySlider}
+                      onShowImagerySliderToggle={() => setShowImagerySlider(!showImagerySlider)}
                       separateTimelines={separateTimelines}
                       onSeparateTimelinesToggle={() => setSeparateTimelines(!separateTimelines)}
                     />
@@ -433,7 +441,7 @@ export function Timeline() {
                 (both panels center their header controls, so nothing collides).
                 Hidden when the user opts into the stacked (separate) layout. */}
             <div className="flex-shrink-0 flex flex-col gap-2 relative z-10">
-            {!separateTimelines && (
+            {tabbed && (
               <div
                 className="absolute top-2 left-2 z-20 flex items-center gap-0.5"
                 role="tablist"
@@ -466,7 +474,7 @@ export function Timeline() {
                 still measures a real width. */}
             <div
               className={
-                separateTimelines
+                stacked
                   ? "flex flex-col gap-2"
                   : "grid [&>*]:[grid-area:1/1] items-stretch"
               }
@@ -474,7 +482,7 @@ export function Timeline() {
               <div
                 {...timelinePanelProps("sites")}
                 className={`min-h-[100px] ${tabPanelClass} ${
-                  !separateTimelines && timelineTab !== "sites"
+                  tabbed && timelineTab !== "sites"
                     ? "invisible pointer-events-none"
                     : ""
                 }`}
@@ -496,24 +504,26 @@ export function Timeline() {
                 </Suspense>
               </div>
 
-              <div
-                {...timelinePanelProps("imagery")}
-                className={`${tabPanelClass} ${
-                  !separateTimelines && timelineTab !== "imagery"
-                    ? "invisible pointer-events-none"
-                    : ""
-                }`}
-              >
-                <WaybackSlider
-                  releases={releases}
-                  currentIndex={currentReleaseIndex}
-                  onIndexChange={setCurrentReleaseIndex}
-                  totalSites={filteredSites.length}
-                  comparisonMode={comparisonModeEnabled}
-                  beforeIndex={beforeReleaseIndex}
-                  onBeforeIndexChange={setBeforeReleaseIndex}
-                />
-              </div>
+              {showImagerySlider && (
+                <div
+                  {...timelinePanelProps("imagery")}
+                  className={`${tabPanelClass} ${
+                    tabbed && timelineTab !== "imagery"
+                      ? "invisible pointer-events-none"
+                      : ""
+                  }`}
+                >
+                  <WaybackSlider
+                    releases={releases}
+                    currentIndex={currentReleaseIndex}
+                    onIndexChange={setCurrentReleaseIndex}
+                    totalSites={filteredSites.length}
+                    comparisonMode={comparisonModeEnabled}
+                    beforeIndex={beforeReleaseIndex}
+                    onBeforeIndexChange={setBeforeReleaseIndex}
+                  />
+                </div>
+              )}
             </div>
             </div>
             </div>

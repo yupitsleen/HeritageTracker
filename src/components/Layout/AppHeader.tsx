@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { cn } from "../../styles/theme";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../Button";
 import { IconButton } from "../Button/IconButton";
-import { LanguageSelector } from "../LanguageSelector";
 import { NavigationLinks } from "./NavigationLinks";
 import { COMPACT_HEADER } from "../../constants/compactDesign";
 import { Z_INDEX, BREAKPOINTS } from "../../constants/layout";
@@ -26,7 +25,7 @@ interface AppHeaderProps {
  * Mobile: Hamburger menu for navigation
  */
 export function AppHeader({ onOpenHelp }: AppHeaderProps) {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -147,20 +146,7 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
               />
             )}
 
-            {/* Language Selector - Dropdown showing all registered locales - desktop only */}
-            <div className="hidden xl:flex">
-              <LanguageSelector />
-            </div>
-
-            {/* Dark Mode Toggle - Discrete icon button - desktop only */}
-            <div className="hidden xl:flex">
-              <IconButton
-                icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
-                onClick={toggleTheme}
-                ariaLabel={isDark ? t("aria.switchToLightMode") : t("aria.switchToDarkMode")}
-                title={isDark ? TOOLTIPS.HEADER.DARK_MODE_ON : TOOLTIPS.HEADER.DARK_MODE_OFF}
-              />
-            </div>
+            {/* Language + theme now live in the Timeline sidebar's Advanced Settings. */}
 
             {/* Hamburger Menu Button - Mobile/Tablet only (< 1280px) */}
             <IconButton
@@ -190,22 +176,6 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
 
               {/* Divider */}
               <div className="border-t border-gray-700 my-2"></div>
-
-              {/* Utility Controls */}
-              <div className="flex items-center justify-between px-3">
-                <span className="text-sm text-gray-400">Language</span>
-                <LanguageSelector />
-              </div>
-
-              <div className="flex items-center justify-between px-3">
-                <span className="text-sm text-gray-400">Theme</span>
-                <IconButton
-                  icon={isDark ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-                  onClick={toggleTheme}
-                  ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                  title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                />
-              </div>
 
               {onOpenHelp && (
                 <Button

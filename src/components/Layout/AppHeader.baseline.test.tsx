@@ -96,7 +96,7 @@ describe("AppHeader - Baseline Behavior", () => {
       expect(navigation).toHaveTextContent(/timeline/i);
     });
 
-    it("mobile menu contains utility controls (language, theme)", async () => {
+    it("mobile menu no longer carries language/theme (moved to Advanced Settings)", async () => {
       const user = userEvent.setup();
       render(<AppHeader />, { wrapper: Wrapper });
 
@@ -104,9 +104,8 @@ describe("AppHeader - Baseline Behavior", () => {
 
       const navigation = screen.getByRole("navigation");
 
-      // Should have language and theme labels
-      expect(navigation).toHaveTextContent(/language/i);
-      expect(navigation).toHaveTextContent(/theme/i);
+      expect(navigation).not.toHaveTextContent(/language/i);
+      expect(navigation).not.toHaveTextContent(/theme/i);
     });
   });
 
