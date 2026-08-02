@@ -95,9 +95,7 @@ export function DashboardPage() {
       />
 
       {/* Header with flag line */}
-      <AppHeader
-        onOpenHelp={() => appState.setIsHelpOpen(true)}
-      />
+      <AppHeader />
 
       {/* Main Content - Non-blocking render with skeleton UI while loading */}
       <main id="main-content" className="pb-24 md:pb-0 relative">

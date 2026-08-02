@@ -1,90 +1,18 @@
-import { useState, useEffect } from "react";
-import { cn } from "../../styles/theme";
-import { QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "../Button";
-import { IconButton } from "../Button/IconButton";
-import { NavigationLinks } from "./NavigationLinks";
-import { COMPACT_HEADER } from "../../constants/compactDesign";
-import { Z_INDEX, BREAKPOINTS } from "../../constants/layout";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { useNavigate } from "react-router-dom";
+import { Z_INDEX } from "../../constants/layout";
 import { TOOLTIPS } from "../../config/tooltips";
 import logo from "../../assets/HeritageTrackerLogo.png";
 
-interface AppHeaderProps {
-  onOpenHelp?: () => void;
-}
-
 /**
- * Application header with title, description, and action buttons
- * Black background with Palestinian flag colors
- * Includes dark mode toggle and navigation to all pages
- * Dashboard, Data, Timeline, About, and Resources pages
- * Mobile: Hamburger menu for navigation
+ * Application header: centered logo + title, nothing else.
+ * Black background with Palestinian flag colors.
  */
-export function AppHeader({ onOpenHelp }: AppHeaderProps) {
+export function AppHeader() {
   const { isDark } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Check if screen is mobile size (< BREAKPOINTS.TABLET)
-  // Dashboard page redirects mobile users to Data page, so hide Dashboard nav on mobile
-  const isMobileSize = useMediaQuery(`(max-width: ${BREAKPOINTS.TABLET - 1}px)`);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      // Save current scroll position
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-    } else {
-      // Restore scroll position
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    }
-
-    return () => {
-      // Cleanup on unmount
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-    };
-  }, [isMobileMenuOpen]);
-
-  // Determine active page for highlighting
-  const getActivePage = () => {
-    const path = location.pathname;
-    if (path === "/" || path === "/now-and-then/gaza" || path === "/now-and-then/gaza/") return "timeline";
-    if (path.includes("/dashboard")) return "dashboard";
-    if (path.includes("/data")) return "data";
-    if (path.includes("/timeline")) return "timeline";
-    if (path.includes("/about")) return "about";
-    if (path.includes("/resources/")) {
-      // Return the specific resource page (e.g., "resources/donate")
-      const resourcePage = path.split("/resources/")[1];
-      return `resources/${resourcePage}`;
-    }
-    return null;
-  };
-
-  const activePage = getActivePage();
-
-  // Close mobile menu when navigating
-  const handleNavigation = (path: string) => {
-    navigate(path);
-    setIsMobileMenuOpen(false);
-  };
 
   return (
     <div
@@ -94,107 +22,22 @@ export function AppHeader({ onOpenHelp }: AppHeaderProps) {
       style={{ zIndex: Z_INDEX.STICKY }}
       dir="ltr"
     >
-      {/* Header - BLACK background, ultra compact */}
-      {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
       <header className="bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
-        <div className={cn("container mx-auto px-4", "py-1.5 relative flex items-center justify-between")}>
-          {/* Left: Logo + Title - clickable to return home */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/")}
-              className="cursor-pointer flex items-center gap-3"
-              aria-label="Go to home page"
-              title={TOOLTIPS.HEADER.HOME}
-            >
-              <img
-                src={logo}
-                alt="Now & Then Logo"
-                className="h-8 md:h-10 w-auto"
-              />
-              <div className="text-left">
-                <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-                  {t("header.title")}: <span className="text-[#ed3039]">{t("header.location")}</span>
-                </h1>
-                {/* ponytail: subtitle hidden below lg — no room in the compact header */}
-                <p className="hidden lg:block text-[10px] text-[#fefefe]/70 normal-case leading-tight">
-                  {t("header.subtitle")}
-                </p>
-              </div>
-            </button>
-          </div>
-
-          {/* Center: Main action buttons - hidden on small/medium screens, shown on large+ */}
-          <div className={`hidden xl:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            <NavigationLinks
-              activePage={activePage}
-              isMobileSize={isMobileSize}
-              onNavigate={(path) => navigate(path)}
-              layout="desktop"
-            />
-          </div>
-
-          {/* Right: Icon buttons */}
-          <div className={`flex ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Help Button - Question mark icon - desktop only */}
-            {onOpenHelp && (
-              <IconButton
-                icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
-                onClick={onOpenHelp}
-                ariaLabel={t("common.help")}
-                title={TOOLTIPS.HEADER.HELP}
-                className="hidden xl:flex"
-              />
-            )}
-
-            {/* Language + theme now live in the Timeline sidebar's Advanced Settings. */}
-
-            {/* Hamburger Menu Button - Mobile/Tablet only (< 1280px) */}
-            <IconButton
-              icon={isMobileMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              ariaLabel={isMobileMenuOpen ? "Close menu" : "Open menu"}
-              title={isMobileMenuOpen ? TOOLTIPS.HEADER.MENU_CLOSE : TOOLTIPS.HEADER.MENU_OPEN}
-              className="xl:hidden"
-            />
-          </div>
-        </div>
-
-        {/* Mobile Menu Drawer - Slides down from top */}
-        {isMobileMenuOpen && (
-          <div
-            className="xl:hidden bg-[#000000] border-t border-gray-700 animate-slideDown"
-            style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
+        <div className="container mx-auto px-4 py-1.5 flex items-center justify-center">
+          {/* Logo + Title - clickable to return home */}
+          <button
+            onClick={() => navigate("/")}
+            className="cursor-pointer flex items-center gap-3"
+            aria-label="Go to home page"
+            title={TOOLTIPS.HEADER.HOME}
           >
-            <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              {/* Navigation Links */}
-              <NavigationLinks
-                activePage={activePage}
-                isMobileSize={isMobileSize}
-                onNavigate={handleNavigation}
-                layout="mobile"
-              />
-
-              {/* Divider */}
-              <div className="border-t border-gray-700 my-2"></div>
-
-              {onOpenHelp && (
-                <Button
-                  onClick={() => {
-                    onOpenHelp();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  variant="ghost"
-                  size="sm"
-                  lightText
-                  className="w-full justify-start"
-                >
-                  <QuestionMarkCircleIcon className="w-5 h-5 mr-2" />
-                  {t("common.help")}
-                </Button>
-              )}
-            </nav>
-          </div>
-        )}
+            {/* ponytail: h-7 matches the title's line-height at both text sizes */}
+            <img src={logo} alt="Now & Then Logo" className="h-7 w-auto" />
+            <h1 className="text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide">
+              {t("header.title")}: <span className="text-[#ed3039]">{t("header.location")}</span>
+            </h1>
+          </button>
+        </div>
       </header>
 
       {/* Flag-colored horizontal line - RED, BLACK, RED, GREEN (4px high, 4 bars) */}

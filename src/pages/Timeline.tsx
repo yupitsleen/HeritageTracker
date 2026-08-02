@@ -326,7 +326,7 @@ export function Timeline() {
       <PalestinianFlagTriangle width={800} zIndex={Z_INDEX.BASE} />
 
       {/* Header - shared across all pages */}
-      <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
+      <AppHeader />
 
       {/* Main content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}

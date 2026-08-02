@@ -62,9 +62,7 @@ export function SharedLayout({ children, showFooter = true, helpContent }: Share
       />
 
       {/* Header with flag line */}
-      <AppHeader
-        onOpenHelp={() => setIsHelpOpen(true)}
-      />
+      <AppHeader />
 
       {/* Main Content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}
