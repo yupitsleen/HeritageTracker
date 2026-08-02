@@ -61,6 +61,15 @@ interface FilterBarProps {
    * (typically an embedded <SitesTable />).
    */
   sitesTab?: ReactNode;
+  /**
+   * Sites tab only: renders a floating expand button over the table header. While
+   * `sitesExpanded` is true the host owns the Sites view, so the tab drops out of the
+   * sidebar and only Filters/Settings remain.
+   */
+  sitesExpanded?: boolean;
+  onSitesExpandToggle?: () => void;
+  /** Sidebar variant only: fires when the panel is railed/unrailed (for hosts that lay out around it). */
+  onSidebarCollapsedChange?: (collapsed: boolean) => void;
   /** Sidebar variant only: makes the panel drag-resizable (see useTableResize). */
   resize?: {
     width: number;
@@ -99,6 +108,9 @@ export const FilterBar = memo(function FilterBar({
   onVariantToggle,
   settings,
   sitesTab,
+  sitesExpanded = false,
+  onSitesExpandToggle,
+  onSidebarCollapsedChange,
   resize,
 }: FilterBarProps) {
   const { t: translate, localeConfig } = useLocale();
@@ -106,8 +118,14 @@ export const FilterBar = memo(function FilterBar({
   const { isDark } = useTheme();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(sidebarDefaultCollapsed);
+  const railSidebar = (collapsed: boolean) => {
+    setSidebarCollapsed(collapsed);
+    onSidebarCollapsedChange?.(collapsed);
+  };
+
   const sidebarTabs = [
-    ...(sitesTab ? (["sites"] as const) : []),
+    // While the table is expanded it owns the Sites view, so the tab drops out here.
+    ...(sitesTab && !sitesExpanded ? (["sites"] as const) : []),
     "filters" as const,
     ...(settings ? (["settings"] as const) : []),
   ];
@@ -522,7 +540,7 @@ export const FilterBar = memo(function FilterBar({
           >
             <button
               type="button"
-              onClick={() => setSidebarCollapsed(false)}
+              onClick={() => railSidebar(false)}
               className={cn(
                 "p-1.5 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
                 t.bg.hover,
@@ -583,7 +601,7 @@ export const FilterBar = memo(function FilterBar({
                 {variantToggleButton}
                 <button
                   type="button"
-                  onClick={() => setSidebarCollapsed(true)}
+                  onClick={() => railSidebar(true)}
                   className={cn(
                     "p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
                     t.bg.hover,
@@ -601,7 +619,20 @@ export const FilterBar = memo(function FilterBar({
 
             {activeTab === "sites" ? (
               /* Sites table fills the panel and scrolls internally. */
-              <div className="flex-1 min-h-0 px-1.5 pb-1.5" {...tabPanelProps}>
+              <div className="flex-1 min-h-0 px-1.5 pb-1.5 relative" {...tabPanelProps}>
+                {onSitesExpandToggle && (
+                  <button
+                    type="button"
+                    onClick={onSitesExpandToggle}
+                    className="absolute top-0.5 right-1.5 z-20 p-1 rounded bg-inherit text-[#009639] hover:text-[#007b2f] transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none"
+                    aria-label={translate("table.expandTable")}
+                    title={translate("table.expandTable")}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                  </button>
+                )}
                 {sitesTab}
               </div>
             ) : (

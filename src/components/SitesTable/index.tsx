@@ -9,6 +9,7 @@ interface SitesTableProps {
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
+  onCloseExpanded?: () => void; // Expanded variant: green X to leave the full-screen table
   variant?: "compact" | "expanded" | "mobile";
   visibleColumns?: string[]; // For resizable table - which columns to show
   tooltipText?: string; // Optional custom tooltip text for the info icon
@@ -33,6 +34,7 @@ export function SitesTable({
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
+  onCloseExpanded,
   variant = "compact",
   visibleColumns,
   tooltipText,
@@ -52,6 +54,7 @@ export function SitesTable({
       onSiteHighlight={onSiteHighlight}
       highlightedSiteId={highlightedSiteId}
       onExpandTable={onExpandTable}
+      onCloseExpanded={onCloseExpanded}
       variant={variant}
       visibleColumns={visibleColumns}
       tooltipText={tooltipText}

@@ -135,6 +135,26 @@ export function Timeline() {
   const [separateTimelines, setSeparateTimelines] = useState(false);
   const [timelineTab, setTimelineTab] = useState<"imagery" | "sites">("sites");
 
+  // Full-screen sites table (same expanded variant the Data page uses)
+  const [tableExpanded, setTableExpanded] = useState(false);
+  // Mirrors the sidebar's own collapse state so the expanded table can reclaim its space.
+  const [sidebarRailed, setSidebarRailed] = useState(false);
+  const sidebarWidth = sidebarRailed ? 48 : tableResize.tableWidth; // 48px = the w-12 rail
+  useEffect(() => {
+    if (!tableExpanded) return;
+    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && setTableExpanded(false);
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [tableExpanded]);
+
+  // Clicking the layout's own padding/gaps (never a child) also leaves the expanded view.
+  // ponytail: target === currentTarget beats a ref-based outside-click listener here.
+  const exitExpandedOnOutsideClick = tableExpanded
+    ? (e: React.MouseEvent) => {
+        if (e.target === e.currentTarget) setTableExpanded(false);
+      }
+    : undefined;
+
   // Three layouts: sites only (default), tabbed, stacked.
   const stacked = showImagerySlider && separateTimelines;
   const tabbed = showImagerySlider && !separateTimelines;
@@ -303,7 +323,10 @@ export function Timeline() {
       {/* Main content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}
       {/* pb-8 adds bottom padding to prevent footer overlap */}
-      <main className="h-[calc(100vh-58px)] px-4 pb-8 flex flex-col gap-2 relative">
+      <main
+        className="h-[calc(100vh-58px)] px-4 pb-8 flex flex-col gap-2 relative"
+        onClick={exitExpandedOnOutsideClick}
+      >
         {/* Loading state */}
         {isLoading && (
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
@@ -331,9 +354,24 @@ export function Timeline() {
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
             {/* Sidebar + map on top; the Wayback slider and scrubber span full width below */}
-            <div className="flex flex-col gap-2 flex-1 min-h-0">
+            <div
+              className="flex flex-col gap-2 flex-1 min-h-0 relative"
+              onClick={exitExpandedOnOutsideClick}
+            >
               {/* Top row: filter sidebar beside the map */}
-              <div className="flex flex-col md:flex-row gap-2 flex-1 min-h-0">
+              <div
+                className="flex flex-col md:flex-row gap-2 flex-1 min-h-0"
+                onClick={exitExpandedOnOutsideClick}
+              >
+                {/* Expanded: the sidebar lifts above the backdrop and stretches to the full
+                    content height so it matches the table; a spacer holds its place in the
+                    row so the maps behind don't reflow. */}
+                {tableExpanded && (
+                  <div style={{ width: sidebarWidth }} className="flex-shrink-0" aria-hidden="true" />
+                )}
+                {/* Full content height, no vertical inset: the sidebar's top edge doesn't
+                    move when the table expands, it only grows downward past the timeline. */}
+                <div className={tableExpanded ? "absolute inset-y-0 left-0 z-40 flex" : "contents"}>
                 <FilterBar
                   variant="sidebar"
                   filters={filters}
@@ -350,6 +388,9 @@ export function Timeline() {
                     isResizing: tableResize.isResizing,
                     onResizeStart: tableResize.handleResizeStart,
                   }}
+                  sitesExpanded={tableExpanded}
+                  onSitesExpandToggle={() => setTableExpanded(true)}
+                  onSidebarCollapsedChange={setSidebarRailed}
                   sitesTab={
                     <SitesTable
                       embedded
@@ -380,6 +421,7 @@ export function Timeline() {
                     />
                   }
                 />
+                </div>
 
                 {/* Map column */}
                 <div className="flex-1 min-w-0 min-h-0 flex flex-col">
@@ -526,6 +568,38 @@ export function Timeline() {
               )}
             </div>
             </div>
+
+            {/* Expanded sites table — floats over the maps and timeline (both stay
+                visible behind the dimmed backdrop) but leaves the sidebar clear, so the
+                same FilterBar instance keeps running beside it. */}
+            {tableExpanded && (
+              <>
+              {/* Backdrop over the whole content area — sidebar and table sit above it. */}
+              <div
+                className="absolute inset-0 z-20 bg-black/80 animate-fade-in"
+                onClick={() => setTableExpanded(false)}
+                aria-hidden="true"
+              />
+              <div
+                className="absolute inset-y-0 right-0 z-30 px-6 animate-fade-in"
+                style={{ left: sidebarWidth + 8 }} // + the gap-2 between the columns
+                onClick={exitExpandedOnOutsideClick}
+              >
+                <div className="relative h-full rounded shadow-2xl">
+                  <SitesTable
+                    sites={filteredSites}
+                    variant="expanded"
+                    clickableRow={true}
+                    onSiteClick={setSelectedSite}
+                    onSiteHighlight={handleSiteHighlight}
+                    highlightedSiteId={highlightedSiteId}
+                    onCloseExpanded={() => setTableExpanded(false)}
+                    tooltipText={translate("table.tooltipDataPage")}
+                  />
+                </div>
+              </div>
+              </>
+            )}
             </div>
           </AnimationProvider>
         )}
