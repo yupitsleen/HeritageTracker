@@ -380,21 +380,6 @@ export function WaybackSlider({
           {/* Background track */}
           <div className={`absolute inset-0 rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
 
-          {/* Green progress fill - thinner and more subtle */}
-          {/* In comparison mode, only fill between the yellow (before) and green (after) scrubbers, not from the track start */}
-          <div
-            data-testid="wayback-progress-fill"
-            className="absolute top-1/2 -translate-y-1/2 h-1 bg-[#009639] rounded pointer-events-none"
-            style={{
-              left: `${comparisonMode ? beforePositionPercent : 0}%`,
-              width: `${
-                comparisonMode
-                  ? Math.max(0, currentPositionPercent - beforePositionPercent)
-                  : currentPositionPercent
-              }%`,
-            }}
-          />
-
           {/* Release tick marks with tooltips - wider hover area for easier interaction */}
           {releasePositions.map(({ index, position, date }) => {
             const isCurrentRelease = index === currentIndex;

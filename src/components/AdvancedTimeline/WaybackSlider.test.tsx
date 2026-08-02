@@ -258,15 +258,6 @@ describe("WaybackSlider", () => {
 
   // ponytail: visual elements located by data-testid, not color classes — palette changes shouldn't break tests
   describe("Visual Indicators", () => {
-    it("renders progress fill sized to current position", () => {
-      const onIndexChange = vi.fn();
-      renderWithTheme(
-        <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
-      );
-
-      expect(screen.getByTestId("wayback-progress-fill")).toBeInTheDocument();
-    });
-
     it("renders scrubber indicator at current position", () => {
       const onIndexChange = vi.fn();
       renderWithTheme(
@@ -360,17 +351,6 @@ describe("WaybackSlider", () => {
   });
 
   // NEW FEATURE TESTS
-
-  describe("Tick Mark Hover Improvements", () => {
-    it("progress fill has pointer-events-none so tick marks stay hoverable", () => {
-      const onIndexChange = vi.fn();
-      renderWithTheme(
-        <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
-      );
-
-      expect(screen.getByTestId("wayback-progress-fill")).toHaveClass("pointer-events-none");
-    });
-  });
 
   describe("Scrubber Tooltip", () => {
     it("renders always-visible tooltip with current release date", () => {
