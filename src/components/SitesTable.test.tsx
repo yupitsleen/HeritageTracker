@@ -455,5 +455,24 @@ describe("SitesTable", () => {
 
       expect(container).toBeInTheDocument();
     });
+
+    it("renders a close control only when the host passes onCloseExpanded, and fires it", async () => {
+      const onCloseExpanded = vi.fn();
+      const user = userEvent.setup();
+      const { rerender } = renderWithTheme(
+        <CalendarProvider>
+          <SitesTable sites={mockSites} variant="expanded" />
+        </CalendarProvider>
+      );
+      expect(screen.queryByRole("button", { name: /^close$/i })).not.toBeInTheDocument();
+
+      rerender(
+        <CalendarProvider>
+          <SitesTable sites={mockSites} variant="expanded" onCloseExpanded={onCloseExpanded} />
+        </CalendarProvider>
+      );
+      await user.click(screen.getByRole("button", { name: /^close$/i }));
+      expect(onCloseExpanded).toHaveBeenCalled();
+    });
   });
 });

@@ -19,7 +19,7 @@ import { isDestructionDateRangeApplied } from "../../types/filters";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
 import { useActiveFilters } from "../../hooks/useActiveFilters";
 import { useDebounce } from "../../hooks/useDebounce";
-import { Z_INDEX } from "../../constants/layout";
+import { SIDEBAR_RAIL_WIDTH, Z_INDEX } from "../../constants/layout";
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { TOOLTIPS } from "../../config/tooltips";
@@ -122,6 +122,13 @@ export const FilterBar = memo(function FilterBar({
     setSidebarCollapsed(collapsed);
     onSidebarCollapsedChange?.(collapsed);
   };
+
+  // Report the starting state too, so a host that lays out around the rail isn't left
+  // assuming "expanded" when `sidebarDefaultCollapsed` says otherwise.
+  useEffect(() => {
+    if (sidebarDefaultCollapsed) onSidebarCollapsedChange?.(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount only
+  }, []);
 
   const sidebarTabs = [
     // While the table is expanded it owns the Sites view, so the tab drops out here.
@@ -532,10 +539,11 @@ export const FilterBar = memo(function FilterBar({
           /* Collapsed: a thin rail with a re-open button + active-filter count. */
           <aside
             className={cn(
-              "hidden md:flex md:flex-col md:w-12 md:flex-shrink-0 items-center gap-2 p-2 border rounded shadow-lg relative z-10",
+              "hidden md:flex md:flex-col md:flex-shrink-0 items-center gap-2 p-2 border rounded shadow-lg relative z-10",
               t.bg.primary,
               t.border.primary
             )}
+            style={{ width: SIDEBAR_RAIL_WIDTH }}
             aria-label={translate("filters.filters")}
           >
             <button

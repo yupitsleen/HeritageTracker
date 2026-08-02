@@ -24,6 +24,9 @@ export const BREAKPOINTS = {
   DESKTOP: 1024,
 } as const;
 
+/** Width of the collapsed filter sidebar rail, in px. Hosts lay out around it. */
+export const SIDEBAR_RAIL_WIDTH = 48;
+
 /**
  * Z-index layers for consistent stacking order
  *

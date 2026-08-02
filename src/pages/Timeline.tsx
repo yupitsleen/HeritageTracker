@@ -24,7 +24,7 @@ import { createEmptyFilterState } from "../types/filters";
 import type { ComparisonInterval } from "../types/waybackTimelineTypes";
 import { DEFAULT_COMPARISON_INTERVAL } from "../config/comparisonIntervals";
 import { calculateBeforeDate, findClosestReleaseIndex } from "../utils/intervalCalculations";
-import { Z_INDEX } from "../constants/layout";
+import { BREAKPOINTS, SIDEBAR_RAIL_WIDTH, Z_INDEX } from "../constants/layout";
 import { PalestinianFlagTriangle } from "../components/Decorative";
 
 // Lazy load the map, timeline, and modal components
@@ -139,12 +139,20 @@ export function Timeline() {
   const [tableExpanded, setTableExpanded] = useState(false);
   // Mirrors the sidebar's own collapse state so the expanded table can reclaim its space.
   const [sidebarRailed, setSidebarRailed] = useState(false);
-  const sidebarWidth = sidebarRailed ? 48 : tableResize.tableWidth; // 48px = the w-12 rail
+  const sidebarWidth = sidebarRailed ? SIDEBAR_RAIL_WIDTH : tableResize.tableWidth;
   useEffect(() => {
     if (!tableExpanded) return;
     const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && setTableExpanded(false);
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    // The overlay is positioned against the desktop row (sidebar + map); below md that
+    // layout stacks, so close rather than leave a misplaced panel behind.
+    const onResize = () =>
+      window.innerWidth < BREAKPOINTS.MOBILE && setTableExpanded(false);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
   }, [tableExpanded]);
 
   // Clicking the layout's own padding/gaps (never a child) also leaves the expanded view.

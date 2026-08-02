@@ -203,6 +203,52 @@ describe("FilterBar — sidebar variant", () => {
   });
 });
 
+describe("FilterBar — sites tab", () => {
+  const sitesTab = <div>site rows</div>;
+
+  it("offers a Sites tab and an expand control when a host supplies both", async () => {
+    const onSitesExpandToggle = vi.fn();
+    const { user } = setup({ variant: "sidebar", sitesTab, onSitesExpandToggle });
+
+    expect(screen.getByRole("tab", { name: /^sites$/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /expand table/i }));
+    expect(onSitesExpandToggle).toHaveBeenCalled();
+  });
+
+  it("drops the Sites tab while the host owns the expanded table", () => {
+    setup({
+      variant: "sidebar",
+      sitesTab,
+      settings: <div>wayback settings</div>,
+      sitesExpanded: true,
+      onSitesExpandToggle: vi.fn(),
+    });
+
+    expect(screen.queryByRole("tab", { name: /^sites$/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /^filters$/i })).toBeInTheDocument();
+    // Falls back to the filters panel rather than an empty one.
+    expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
+  });
+
+  it("reports collapse state to the host, including the initial default", async () => {
+    const onSidebarCollapsedChange = vi.fn();
+    const { user } = setup({ variant: "sidebar", onSidebarCollapsedChange });
+    expect(onSidebarCollapsedChange).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: /hide filters/i }));
+    expect(onSidebarCollapsedChange).toHaveBeenLastCalledWith(true);
+
+    await user.click(screen.getByRole("button", { name: /show filters/i }));
+    expect(onSidebarCollapsedChange).toHaveBeenLastCalledWith(false);
+  });
+
+  it("reports the starting state when sidebarDefaultCollapsed is set", () => {
+    const onSidebarCollapsedChange = vi.fn();
+    setup({ variant: "sidebar", sidebarDefaultCollapsed: true, onSidebarCollapsedChange });
+    expect(onSidebarCollapsedChange).toHaveBeenCalledWith(true);
+  });
+});
+
 describe("FilterBar — layout toggle", () => {
   it("bar variant: the switch-to-sidebar control fires onVariantToggle", async () => {
     const onVariantToggle = vi.fn();
