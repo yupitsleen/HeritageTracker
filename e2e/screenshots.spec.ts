@@ -1,14 +1,16 @@
 import { test } from "@playwright/test";
 
 /**
- * Visual capture pass — not assertions. Run with SHOT_DIR to label a batch:
+ * Visual capture pass — not assertions. Opt in by naming the batch:
  *   SHOT_DIR=before npx playwright test e2e/screenshots.spec.ts
- * Excluded from the default e2e run via the `visual` tag.
+ * Without SHOT_DIR it skips, so `npm run e2e` stays a pure test run.
  */
-const dir = process.env.SHOT_DIR ?? "current";
+const dir = process.env.SHOT_DIR;
 const shot = (name: string) => ({ path: `screenshots/${dir}/${name}.png`, fullPage: false });
 
-test.describe("@visual", () => {
+test.describe("visual capture", () => {
+  test.skip(!dir, "set SHOT_DIR to capture a screenshot batch");
+
   test("timeline page states", async ({ page }) => {
     await page.goto("/timeline");
     await page.waitForTimeout(3000);
