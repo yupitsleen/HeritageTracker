@@ -71,7 +71,7 @@ describe("DesktopLayout - Timeline Integration", () => {
     });
 
     it("renders Previous/Next navigation buttons even when Sync Map is hidden", () => {
-      const { getByText, queryByText } = renderWithTheme(
+      const { getByRole, queryByText } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber
             sites={mockSites}
@@ -84,8 +84,8 @@ describe("DesktopLayout - Timeline Integration", () => {
       );
 
       // Should show Previous/Next buttons (advancedMode is truthy)
-      expect(getByText(/⏮ Previous/i)).toBeInTheDocument();
-      expect(getByText(/Next ⏭/i)).toBeInTheDocument();
+      expect(getByRole("button", { name: /previous destruction event/i })).toBeInTheDocument();
+      expect(getByRole("button", { name: /next destruction event/i })).toBeInTheDocument();
 
       // But NOT show Sync Map button
       expect(queryByText((content, element) => {
@@ -94,7 +94,7 @@ describe("DesktopLayout - Timeline Integration", () => {
     });
 
     it("hides map settings (Zoom to Site, Show Map Markers) when hideMapSettings is true", () => {
-      const { queryByText, getByText, getByRole, getAllByText } = renderWithTheme(
+      const { queryByText, getByRole, getAllByText } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber
             sites={mockSites}
@@ -110,9 +110,9 @@ describe("DesktopLayout - Timeline Integration", () => {
       );
 
       // Should show these buttons
-      expect(getByText(/Reset/i)).toBeInTheDocument();
-      expect(getByText(/⏮ Previous/i)).toBeInTheDocument();
-      expect(getByText(/Next ⏭/i)).toBeInTheDocument();
+      expect(getByRole("button", { name: /reset/i })).toBeInTheDocument();
+      expect(getByRole("button", { name: /previous destruction event/i })).toBeInTheDocument();
+      expect(getByRole("button", { name: /next destruction event/i })).toBeInTheDocument();
 
       // Should SHOW Play button when hidePlayControls is false
       expect(getByRole("button", { name: /^play$/i })).toBeInTheDocument();
@@ -242,8 +242,8 @@ describe("DesktopLayout - Timeline Integration", () => {
       );
 
       // Should NOT show Previous/Next in normal mode
-      expect(normalMode.queryByText(/⏮ Previous/i)).not.toBeInTheDocument();
-      expect(normalMode.queryByText(/Next ⏭/i)).not.toBeInTheDocument();
+      expect(normalMode.queryByRole("button", { name: /previous destruction event/i })).not.toBeInTheDocument();
+      expect(normalMode.queryByRole("button", { name: /next destruction event/i })).not.toBeInTheDocument();
 
       const advancedMode = renderWithTheme(
         <AnimationProvider>
@@ -258,8 +258,8 @@ describe("DesktopLayout - Timeline Integration", () => {
       );
 
       // Should show Previous/Next in advanced mode
-      expect(advancedMode.getByText(/⏮ Previous/i)).toBeInTheDocument();
-      expect(advancedMode.getByText(/Next ⏭/i)).toBeInTheDocument();
+      expect(advancedMode.getByRole("button", { name: /previous destruction event/i })).toBeInTheDocument();
+      expect(advancedMode.getByRole("button", { name: /next destruction event/i })).toBeInTheDocument();
     });
   });
 });

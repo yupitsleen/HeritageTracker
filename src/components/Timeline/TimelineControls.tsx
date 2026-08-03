@@ -17,7 +17,6 @@ interface TimelineControlsProps {
   advancedMode: boolean;
   hidePlayControls?: boolean;
   hideMapSettings?: boolean; // Hide Zoom to Site and Show Map Markers (moved to map)
-  hideReset?: boolean; // Reset rendered by TimelineNavigation instead
   syncMapOnDotClick?: boolean;
   onPlay: () => void;
   onPause: () => void;
@@ -50,7 +49,6 @@ export function TimelineControls({
   advancedMode,
   hidePlayControls = false,
   hideMapSettings = false,
-  hideReset = false,
   syncMapOnDotClick,
   onPlay,
   onPause,
@@ -163,20 +161,17 @@ export function TimelineControls({
       )}
 
       {/* Reset button */}
-      {!hideReset && (
-        <Button
-          onClick={onReset}
-          disabled={isAtStart}
-          variant="secondary"
-          size="xs"
-          icon={<ArrowPathIcon className="w-3 h-3" />}
-          aria-label={translate("common.reset")}
-          title={TOOLTIPS.TIMELINE.RESET}
-        >
-          {/* Icon only below xl, full text at xl+ */}
-          <span className="hidden xl:inline">{translate("common.reset")}</span>
-        </Button>
-      )}
+      <Button
+        onClick={onReset}
+        disabled={isAtStart}
+        variant="secondary"
+        size="xs"
+        icon={<ArrowPathIcon className="w-3 h-3" />}
+        aria-label={translate("common.reset")}
+        title={TOOLTIPS.TIMELINE.RESET}
+      >
+        {null}
+      </Button>
 
       {/* Settings menu - only show on Timeline page (not Dashboard where map settings are hidden) */}
       {!hideMapSettings && (
