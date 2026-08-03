@@ -577,68 +577,20 @@ describe("WaybackSlider", () => {
     });
 
     describe("Navigation Buttons in Comparison Mode", () => {
-      it("moves only the after scrubber with its own Next button", () => {
-        const onIndexChange = vi.fn();
-        const onBeforeIndexChange = vi.fn();
+      // The per-scrubber pairs live in the maps now (WaybackNav), not the slider.
+      it("renders no nav buttons of its own in comparison mode", () => {
         renderWithTheme(
           <WaybackSlider
             releases={mockReleases}
             currentIndex={3}
-            onIndexChange={onIndexChange}
+            onIndexChange={vi.fn()}
             comparisonMode={true}
             beforeIndex={1}
-            onBeforeIndexChange={onBeforeIndexChange}
+            onBeforeIndexChange={vi.fn()}
           />
         );
 
-        fireEvent.click(screen.getByTestId("wayback-after-next"));
-
-        expect(onIndexChange).toHaveBeenCalledWith(4);
-        expect(onBeforeIndexChange).not.toHaveBeenCalled();
-      });
-
-      it("moves only the before scrubber with its own Previous button", () => {
-        const onIndexChange = vi.fn();
-        const onBeforeIndexChange = vi.fn();
-        renderWithTheme(
-          <WaybackSlider
-            releases={mockReleases}
-            currentIndex={4}
-            onIndexChange={onIndexChange}
-            comparisonMode={true}
-            beforeIndex={2}
-            onBeforeIndexChange={onBeforeIndexChange}
-          />
-        );
-
-        fireEvent.click(screen.getByTestId("wayback-before-prev"));
-
-        expect(onBeforeIndexChange).toHaveBeenCalledWith(1);
-        expect(onIndexChange).not.toHaveBeenCalled();
-      });
-
-      it("disables the before Previous button at the first release", () => {
-        const onIndexChange = vi.fn();
-        const onBeforeIndexChange = vi.fn();
-        renderWithTheme(
-          <WaybackSlider
-            releases={mockReleases}
-            currentIndex={3}
-            onIndexChange={onIndexChange}
-            comparisonMode={true}
-            beforeIndex={0}
-            onBeforeIndexChange={onBeforeIndexChange}
-          />
-        );
-
-        const prevButton = screen.getByTestId("wayback-before-prev");
-        expect(prevButton).toBeDisabled();
-
-        fireEvent.click(prevButton);
-
-        expect(onBeforeIndexChange).not.toHaveBeenCalled();
-        // The after scrubber still has its own working controls
-        expect(screen.getByTestId("wayback-after-prev")).not.toBeDisabled();
+        expect(screen.queryByRole("button")).not.toBeInTheDocument();
       });
 
       it("does not update yellow slider when comparison mode is off", () => {

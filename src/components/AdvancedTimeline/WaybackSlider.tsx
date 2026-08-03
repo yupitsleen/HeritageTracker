@@ -167,22 +167,6 @@ export function WaybackSlider({
   const handlePrevious = useCallback(() => step(-1), [step]);
   const handleNext = useCallback(() => step(1), [step]);
 
-  // Comparison mode: each scrubber gets its own prev/next, moving only itself.
-  const stepBefore = useCallback(
-    (delta: number) => {
-      const next = Math.max(0, Math.min(beforeIndex + delta, releases.length - 1));
-      if (next !== beforeIndex) onBeforeIndexChange?.(next);
-    },
-    [beforeIndex, releases.length, onBeforeIndexChange]
-  );
-  const stepAfter = useCallback(
-    (delta: number) => {
-      const next = Math.max(0, Math.min(currentIndex + delta, releases.length - 1));
-      if (next !== currentIndex) onIndexChange(next);
-    },
-    [currentIndex, releases.length, onIndexChange]
-  );
-
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -237,93 +221,48 @@ export function WaybackSlider({
   }
 
   return (
+    // flex/justify-center: the panel is sized by the sites timeline, so the
+    // track sits in the middle of it instead of hugging the top edge.
     <div
-      className={t.timeline.container}
+      className={`${t.timeline.container} flex flex-col justify-center`}
       data-testid="wayback-slider"
       role="region"
       aria-label="Wayback Imagery Timeline"
     >
-      {/* Header: nav buttons centered on the map column, so each pair lands under
-          the map it drives. */}
+      {/* Header: nav buttons centered on the map column. Comparison mode has no
+          header — each map carries its own pair as an overlay (WaybackNav). */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
-      <div
-        className="relative flex items-center justify-center gap-2 mb-2"
-        style={{ paddingLeft: mapsInsetPx }}
-        dir="ltr"
-      >
-        {/* Center: nav buttons. In comparison mode each scrubber gets its own
-            pair, outlined in its scrubber colour and centered on its half. */}
-        {dualMode ? (
-          <div className="grid grid-cols-2 w-full">
-            {[
-              {
-                key: "before",
-                color: COLORS.FLAG_YELLOW,
-                index: beforeIndex,
-                onStep: stepBefore,
-              },
-              {
-                key: "after",
-                color: COLORS.FLAG_GREEN,
-                index: currentIndex,
-                onStep: stepAfter,
-              },
-            ].map(({ key, color, index, onStep }) => (
-              <div key={key} className="flex items-center justify-center gap-2">
-                <Button
-                  onClick={() => onStep(-1)}
-                  disabled={index === 0}
-                  variant="secondary"
-                  size="xs"
-                  style={{ borderColor: color }}
-                  aria-label={`Go to previous ${key} imagery release`}
-                  title={TOOLTIPS.WAYBACK.PREV_RELEASE}
-                  data-testid={`wayback-${key}-prev`}
-                >
-                  ⏮
-                </Button>
+      {!dualMode && (
+        <div
+          className="relative flex items-center justify-center gap-2 mb-2"
+          style={{ paddingLeft: mapsInsetPx }}
+          dir="ltr"
+        >
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handlePrevious}
+              disabled={lowIndex === 0}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to previous satellite image release"
+              title={TOOLTIPS.WAYBACK.PREV_RELEASE}
+            >
+              ⏮
+            </Button>
 
-                <Button
-                  onClick={() => onStep(1)}
-                  disabled={index === releases.length - 1}
-                  variant="secondary"
-                  size="xs"
-                  style={{ borderColor: color }}
-                  aria-label={`Go to next ${key} imagery release`}
-                  title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
-                  data-testid={`wayback-${key}-next`}
-                >
-                  ⏭
-                </Button>
-              </div>
-            ))}
+            <Button
+              onClick={handleNext}
+              disabled={highIndex === releases.length - 1}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to next satellite image release"
+              title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
+            >
+              ⏭
+            </Button>
           </div>
-        ) : (
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={handlePrevious}
-            disabled={lowIndex === 0}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to previous satellite image release"
-            title={TOOLTIPS.WAYBACK.PREV_RELEASE}
-          >
-            ⏮
-          </Button>
-
-          <Button
-            onClick={handleNext}
-            disabled={highIndex === releases.length - 1}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to next satellite image release"
-            title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
-          >
-            ⏭
-          </Button>
         </div>
-        )}
-      </div>
+      )}
 
       {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}
       <div className="relative pb-6">
@@ -465,15 +404,6 @@ export function WaybackSlider({
             />
           </div>
         </div>
-      </div>
-
-      {/* Keyboard shortcuts hint - hidden below 1280px */}
-      <div className={`hidden xl:block mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
-        {translate("timeline.keyboard")}: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> {translate("timeline.step")}
-        {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> {translate("timeline.jump")}
-        {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>PgUp/PgDn</kbd> Jump ±10
       </div>
     </div>
   );

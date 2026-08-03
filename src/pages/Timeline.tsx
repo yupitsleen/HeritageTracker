@@ -16,7 +16,7 @@ import { TimelineHelpModal } from "../components/Help";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
-import { WaybackSlider, WaybackSettings } from "../components/AdvancedTimeline";
+import { WaybackSlider, WaybackSettings, WaybackNav } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { Site } from "../types";
 import type { FilterState } from "../types/filters";
@@ -129,8 +129,8 @@ export function Timeline() {
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  // Imagery slider is opt-in (Advanced Settings); off means no tabs at all.
-  const [showImagerySlider, setShowImagerySlider] = useState(false);
+  // Imagery slider on by default; turning it off in Advanced Settings leaves no tabs.
+  const [showImagerySlider, setShowImagerySlider] = useState(true);
   // View option: tabs (default) vs. both timelines stacked, as they used to be
   const [separateTimelines, setSeparateTimelines] = useState(false);
   const [timelineTab, setTimelineTab] = useState<"imagery" | "sites">("sites");
@@ -175,6 +175,9 @@ export function Timeline() {
   // Tabbed mode: both panels fill the shared grid cell (h-full on the panel's own
   // bordered container too), so the visible box is identical on either tab.
   const tabPanelClass = stacked ? "" : "h-full [&>*]:h-full";
+
+  // The per-map imagery nav only makes sense while the imagery slider is on screen.
+  const imageryVisible = stacked || (tabbed && timelineTab === "imagery");
 
   // Tab roles only apply while the tabs are on screen; the stacked layout has no
   // tablist, so the panels are just sections.
@@ -473,6 +476,26 @@ export function Timeline() {
                       showMarkers: afterMapShowMarkers,
                       onShowMarkersChange: setAfterMapShowMarkers,
                     }}
+                    beforeControls={
+                      imageryVisible && (
+                        <WaybackNav
+                          variant="before"
+                          index={beforeReleaseIndex}
+                          releaseCount={releases.length}
+                          onIndexChange={setBeforeReleaseIndex}
+                        />
+                      )
+                    }
+                    afterControls={
+                      imageryVisible && (
+                        <WaybackNav
+                          variant="after"
+                          index={currentReleaseIndex}
+                          releaseCount={releases.length}
+                          onIndexChange={setCurrentReleaseIndex}
+                        />
+                      )
+                    }
                   />
                 ) : (
                   <SiteDetailView

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Site } from "../../types";
 import type { WaybackImagery } from "../../types/waybackTimelineTypes";
 import { SiteDetailView } from "./SiteDetailView";
@@ -26,6 +27,9 @@ interface ComparisonMapViewProps {
     showMarkers: boolean;
     onShowMarkersChange: (enabled: boolean) => void;
   };
+  /** Overlays pinned to the bottom-center of each map (imagery prev/next) */
+  beforeControls?: ReactNode;
+  afterControls?: ReactNode;
 }
 
 /**
@@ -51,6 +55,8 @@ export function ComparisonMapView({
   onSiteClick,
   beforeMapSettings,
   afterMapSettings,
+  beforeControls,
+  afterControls,
 }: ComparisonMapViewProps) {
   const t = useThemeClasses();
 
@@ -78,6 +84,11 @@ export function ComparisonMapView({
             mapMarkersOverride={beforeMapSettings?.showMarkers}
             onMapMarkersChange={beforeMapSettings?.onShowMarkersChange}
           />
+          {beforeControls && (
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-[1000]">
+              {beforeControls}
+            </div>
+          )}
         </div>
 
         {/* Right Map - Later imagery (green scrubber) */}
@@ -100,6 +111,11 @@ export function ComparisonMapView({
             mapMarkersOverride={afterMapSettings?.showMarkers}
             onMapMarkersChange={afterMapSettings?.onShowMarkersChange}
           />
+          {afterControls && (
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-[1000]">
+              {afterControls}
+            </div>
+          )}
         </div>
       </div>
     </div>
