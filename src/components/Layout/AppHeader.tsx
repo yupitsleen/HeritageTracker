@@ -34,7 +34,20 @@ export function AppHeader() {
             {/* ponytail: h-7 matches the title's line-height at both text sizes */}
             <img src={logo} alt="Now & Then Logo" className="h-7 w-auto" />
             <h1 className="text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide">
-              {t("header.title")}: <span className="text-[#ed3039]">{t("header.location")}</span>
+              {/* ponytail: split on "&" — every locale keeps the latin "Now & Then" */}
+              {t("header.title")
+                .split("&")
+                .flatMap((part, i) =>
+                  i === 0
+                    ? [part]
+                    : [
+                        <span key={i} className="text-[#009639]">
+                          &amp;
+                        </span>,
+                        part,
+                      ]
+                )}
+              : <span className="text-[#ed3039]">{t("header.location")}</span>
             </h1>
           </button>
         </div>

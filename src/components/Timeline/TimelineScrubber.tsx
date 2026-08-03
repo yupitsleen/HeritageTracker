@@ -424,7 +424,7 @@ export function TimelineScrubber({
           <p className={`truncate text-sm font-semibold leading-tight ${t.text.heading}`}>
             Timeline of destructive assaults on culturally significant sites
           </p>
-          <p className="text-xs font-medium text-red-600 leading-tight">
+          <p className="text-xs font-medium text-[#009639] leading-tight">
             {comparisonMode
               ? "Click on a site dot to see a before-and-after view of Israel's genocidal destruction"
               : "Click on a site dot to see what remains after Israel's genocidal destruction"}
