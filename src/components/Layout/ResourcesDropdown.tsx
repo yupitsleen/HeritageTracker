@@ -25,6 +25,8 @@ interface ResourcesDropdownProps {
   activePage: string | null;
   onNavigate: (path: string) => void;
   layout: 'desktop' | 'mobile';
+  /** Which way the panel opens. 'up' is for hosts pinned to the bottom (the footer). */
+  direction?: 'down' | 'up';
 }
 
 /**
@@ -39,7 +41,12 @@ interface ResourcesDropdownProps {
  * - Legal & Advocacy
  * - Other Heritage Trackers
  */
-export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesDropdownProps) {
+export function ResourcesDropdown({
+  activePage,
+  onNavigate,
+  layout,
+  direction = 'down',
+}: ResourcesDropdownProps) {
   const t = useTranslation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -136,7 +143,9 @@ export function ResourcesDropdown({ activePage, onNavigate, layout }: ResourcesD
 
       {isOpen && (
         <div
-          className="absolute top-full mt-1 bg-gray-800 rounded-md shadow-lg border border-gray-700 overflow-hidden min-w-[200px]"
+          className={`absolute ${
+            direction === 'up' ? 'bottom-full mb-1' : 'top-full mt-1'
+          } bg-gray-800 rounded-md shadow-lg border border-gray-700 overflow-hidden min-w-[200px]`}
           style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
         >
           {RESOURCE_ITEMS.map(({ path, translationKey }) => {

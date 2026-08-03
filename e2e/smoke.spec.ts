@@ -26,13 +26,29 @@ test.describe('Smoke Tests - Navigation', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Header nav items are buttons wired to the router (not <a> links).
-    const dashboardNav = page.getByRole('button', { name: /dashboard/i }).first();
-    await expect(dashboardNav).toBeVisible();
+    // The header is a logo and a title, so site navigation lives in the footer.
+    const nav = page.getByRole('navigation', { name: /main navigation/i });
+    await expect(nav).toBeVisible();
 
-    await dashboardNav.click();
+    await nav.getByRole('link', { name: /dashboard/i }).click();
     await page.waitForLoadState('networkidle');
     expect(page.url()).toContain('/dashboard');
+  });
+
+  test('every route the footer offers is reachable', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    const nav = page.getByRole('navigation', { name: /main navigation/i });
+    await nav.getByRole('link', { name: /^data$/i }).click();
+    await page.waitForLoadState('networkidle');
+    expect(page.url()).toContain('/data');
+
+    // Resource pages hang off a dropdown rather than sitting in the strip.
+    await nav.getByRole('button', { name: /resources/i }).click();
+    await nav.getByRole('button', { name: /organizations/i }).click();
+    await page.waitForLoadState('networkidle');
+    expect(page.url()).toContain('/resources/organizations');
   });
 
   test('browser back button works', async ({ page }) => {
