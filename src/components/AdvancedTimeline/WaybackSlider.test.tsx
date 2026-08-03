@@ -250,9 +250,9 @@ describe("WaybackSlider", () => {
         <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={onIndexChange} />
       );
 
-      // Should have tick marks with group class (one per release)
-      const tickMarkContainers = container.querySelectorAll(".group");
-      expect(tickMarkContainers.length).toBe(mockReleases.length);
+      // One hover group per release, plus the current scrubber's own date bubble
+      const hoverGroups = container.querySelectorAll(".group");
+      expect(hoverGroups.length).toBe(mockReleases.length + 1);
     });
   });
 
@@ -350,21 +350,6 @@ describe("WaybackSlider", () => {
     });
   });
 
-  // NEW FEATURE TESTS
-
-  describe("Scrubber Tooltip", () => {
-    it("renders always-visible tooltip with current release date", () => {
-      const onIndexChange = vi.fn();
-      renderWithTheme(
-        <WaybackSlider releases={mockReleases} currentIndex={2} onIndexChange={onIndexChange} />
-      );
-
-      const tooltip = screen.getByTestId("wayback-current-tooltip");
-      expect(tooltip).toHaveTextContent("2015-01-10");
-      expect(tooltip).not.toHaveClass("opacity-0");
-    });
-  });
-
   describe("Comparison Mode", () => {
     describe("Dual Scrubber Rendering", () => {
       it("renders two scrubbers when comparison mode is enabled", () => {
@@ -385,6 +370,27 @@ describe("WaybackSlider", () => {
         expect(screen.getByTestId("wayback-before-scrubber")).toBeInTheDocument();
       });
 
+      it("gives each scrubber a hover date bubble", () => {
+        renderWithTheme(
+          <WaybackSlider
+            releases={mockReleases}
+            currentIndex={4}
+            onIndexChange={vi.fn()}
+            comparisonMode={true}
+            beforeIndex={1}
+            onBeforeIndexChange={vi.fn()}
+          />
+        );
+
+        // CSS-only reveal (group-hover), so assert the bubble exists beside its scrubber
+        expect(
+          screen.getByTestId("wayback-before-scrubber").parentElement
+        ).toHaveTextContent("2014-06-15");
+        expect(
+          screen.getByTestId("wayback-current-scrubber").parentElement
+        ).toHaveTextContent("2016-03-05");
+      });
+
       it("renders only one scrubber when comparison mode is disabled", () => {
         const onIndexChange = vi.fn();
         renderWithTheme(
@@ -400,39 +406,6 @@ describe("WaybackSlider", () => {
         expect(screen.queryByTestId("wayback-before-scrubber")).not.toBeInTheDocument();
       });
 
-      it("shows before-index date on the before scrubber tooltip", () => {
-        const onIndexChange = vi.fn();
-        const onBeforeIndexChange = vi.fn();
-        renderWithTheme(
-          <WaybackSlider
-            releases={mockReleases}
-            currentIndex={4}
-            onIndexChange={onIndexChange}
-            comparisonMode={true}
-            beforeIndex={1}
-            onBeforeIndexChange={onBeforeIndexChange}
-          />
-        );
-
-        expect(screen.getByTestId("wayback-before-tooltip")).toHaveTextContent("2014-06-15");
-      });
-
-      it("shows current-index date on the current scrubber tooltip", () => {
-        const onIndexChange = vi.fn();
-        const onBeforeIndexChange = vi.fn();
-        renderWithTheme(
-          <WaybackSlider
-            releases={mockReleases}
-            currentIndex={4}
-            onIndexChange={onIndexChange}
-            comparisonMode={true}
-            beforeIndex={1}
-            onBeforeIndexChange={onBeforeIndexChange}
-          />
-        );
-
-        expect(screen.getByTestId("wayback-current-tooltip")).toHaveTextContent("2016-03-05");
-      });
     });
 
     describe("Click Behavior in Comparison Mode", () => {

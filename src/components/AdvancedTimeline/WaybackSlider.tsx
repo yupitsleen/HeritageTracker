@@ -3,12 +3,10 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
-import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
 import { TOOLTIPS } from "../../config/tooltips";
-import { Z_INDEX } from "../../constants/layout";
 
 /**
  * Callback type for Wayback release index changes
@@ -220,6 +218,11 @@ export function WaybackSlider({
     );
   }
 
+  // Hover date bubble, shared by the release ticks and the scrubbers.
+  const hoverTooltipClass = `hidden group-hover:block absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap pointer-events-none ${
+    isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"
+  } shadow-md z-10`;
+
   return (
     // flex/justify-center: the panel is sized by the sites timeline, so the
     // track sits in the middle of it instead of hugging the top edge.
@@ -264,33 +267,8 @@ export function WaybackSlider({
         </div>
       )}
 
-      {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}
-      <div className="relative pb-6">
-        {/* Year labels - positioned above the timeline */}
-        <div className="relative h-4 mb-2">
-          {yearMarkers.map(({ year, position }, index) => {
-            const isFirst = index === 0;
-            const isLast = index === yearMarkers.length - 1;
-            const transformClass = isFirst
-              ? "" // Left-align for first year to prevent left overflow
-              : isLast
-              ? "-translate-x-full" // Right-align for last year to prevent right overflow
-              : "-translate-x-1/2"; // Center for middle years
-
-            return (
-              <div
-                key={year}
-                className={`absolute ${transformClass}`}
-                style={{ left: `${position}%` }}
-              >
-                <span className={`text-[9px] font-semibold ${t.text.body}`}>
-                  {year}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
+      {/* Timeline visualization container */}
+      <div className="relative">
         {/* Interactive timeline bar */}
         <div
           ref={timelineRef}
@@ -333,7 +311,7 @@ export function WaybackSlider({
                 {/* Tooltip — `hidden` until hover, not just transparent: the first and
                     last ticks sit at the track's edges, so a laid-out invisible tooltip
                     overflows the page and raises a horizontal scrollbar. */}
-                <div className={`hidden group-hover:block absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap pointer-events-none ${isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"} shadow-md z-10`}>
+                <div className={hoverTooltipClass}>
                   {date}
                 </div>
               </div>
@@ -343,66 +321,59 @@ export function WaybackSlider({
           {/* Before position scrubber indicator (yellow) - only in comparison mode */}
           {comparisonMode && beforeRelease && (
             <div
-              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 group"
               style={{ left: `${beforePositionPercent}%` }}
             >
-              {/* Floating date tooltip - positioned below scrubber with edge detection */}
-              <div
-                className={`absolute top-full mt-2 pointer-events-none ${
-                  beforePositionPercent < 10
-                    ? 'left-0'
-                    : beforePositionPercent > 90
-                    ? 'right-0'
-                    : 'left-1/2 -translate-x-1/2'
-                }`}
-                style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
-                data-testid="wayback-before-tooltip"
-              >
-                <DateLabel
-                  date={beforeRelease?.releaseDate || translate("timeline.unknownDate")}
-                  variant="yellow"
-                  size="sm"
-                />
-              </div>
+              <div className={hoverTooltipClass}>{beforeRelease.releaseDate}</div>
               {/* Scrubber indicator - Yellow */}
               <div
                 data-testid="wayback-before-scrubber"
-                className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
-                style={{ borderColor: COLORS.FLAG_YELLOW }}
+                className="w-3 h-3 border-2 rounded-full shadow-md"
+                style={{ backgroundColor: COLORS.FLAG_YELLOW, borderColor: COLORS.FLAG_YELLOW }}
               />
             </div>
           )}
 
-          {/* Current position scrubber indicator with floating date tooltip (green) */}
+          {/* Current position scrubber indicator (green) */}
           <div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 group"
             style={{ left: `${currentPositionPercent}%` }}
           >
-            {/* Floating date tooltip - positioned above scrubber with edge detection */}
-            <div
-              className={`absolute bottom-full mb-2 pointer-events-none ${
-                currentPositionPercent < 10
-                  ? 'left-0'
-                  : currentPositionPercent > 90
-                  ? 'right-0'
-                  : 'left-1/2 -translate-x-1/2'
-              }`}
-              style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
-              data-testid="wayback-current-tooltip"
-            >
-              <DateLabel
-                date={currentRelease?.releaseDate || translate("timeline.unknownDate")}
-                variant="green"
-                size="sm"
-              />
+            <div className={hoverTooltipClass}>
+              {currentRelease?.releaseDate || translate("timeline.unknownDate")}
             </div>
             {/* Scrubber indicator - Green */}
             <div
               data-testid="wayback-current-scrubber"
-              className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
-              style={{ borderColor: COLORS.FLAG_GREEN }}
+              className="w-3 h-3 border-2 rounded-full shadow-md"
+              style={{ backgroundColor: COLORS.FLAG_GREEN, borderColor: COLORS.FLAG_GREEN }}
             />
           </div>
+        </div>
+
+        {/* Year labels - below the track */}
+        <div className="relative h-3">
+          {yearMarkers.map(({ year, position }, index) => {
+            const isFirst = index === 0;
+            const isLast = index === yearMarkers.length - 1;
+            const transformClass = isFirst
+              ? "" // Left-align for first year to prevent left overflow
+              : isLast
+              ? "-translate-x-full" // Right-align for last year to prevent right overflow
+              : "-translate-x-1/2"; // Center for middle years
+
+            return (
+              <div
+                key={year}
+                className={`absolute ${transformClass}`}
+                style={{ left: `${position}%` }}
+              >
+                <span className={`text-[9px] font-semibold ${t.text.body}`}>
+                  {year}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
