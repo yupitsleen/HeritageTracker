@@ -3,11 +3,15 @@ import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { ResourcesDropdown } from "./ResourcesDropdown";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { TOOLTIPS } from "../../config/tooltips";
 import { Z_INDEX } from "../../constants/layout";
 import type { TranslationKey } from "../../types/i18n";
 
 interface AppFooterProps {
   isMobile: boolean;
+  /** Pages with a help modal pass its opener; the footer renders the only trigger. */
+  onOpenHelp?: () => void;
 }
 
 /**
@@ -28,7 +32,7 @@ const NAV_ITEMS: { path: string; translationKey: TranslationKey; desktopOnly?: b
  * Stats, About, and Donate now navigate to dedicated pages for better performance
  * Shows dynamic copyright year and last updated date
  */
-export function AppFooter({ isMobile }: AppFooterProps) {
+export function AppFooter({ isMobile, onOpenHelp }: AppFooterProps) {
   const t = useThemeClasses();
   const translate = useTranslation();
   const { pathname } = useLocation();
@@ -63,6 +67,17 @@ export function AppFooter({ isMobile }: AppFooterProps) {
         layout="desktop"
         direction="up"
       />
+      {onOpenHelp && (
+        <button
+          type="button"
+          onClick={onOpenHelp}
+          className="flex items-center gap-1 underline hover:text-[#fefefe]/80 transition-colors focus:ring-2 focus:ring-white/60 focus:outline-none rounded"
+          title={TOOLTIPS.HEADER.HELP}
+        >
+          <QuestionMarkCircleIcon className="w-3.5 h-3.5" aria-hidden="true" />
+          {translate("common.help")}
+        </button>
+      )}
     </nav>
   );
 

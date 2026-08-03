@@ -51,6 +51,23 @@ test.describe('Smoke Tests - Navigation', () => {
     expect(page.url()).toContain('/resources/organizations');
   });
 
+  // The footer holds the only help trigger, so each page's modal is reachable or it
+  // is dead code. One test per page because each renders different help content.
+  for (const route of ['/timeline', '/data', '/dashboard'] as const) {
+    test(`help opens on ${route}`, async ({ page }) => {
+      test.slow();
+
+      await page.goto(route);
+      await page.waitForLoadState('networkidle');
+
+      await page.getByRole('button', { name: /^help$/i }).click();
+
+      const dialog = page.getByRole('dialog');
+      await expect(dialog).toBeVisible();
+      await expect(dialog.getByRole('heading', { name: /how to use/i })).toBeVisible();
+    });
+  }
+
   test('browser back button works', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');

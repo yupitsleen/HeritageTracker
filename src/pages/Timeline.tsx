@@ -653,10 +653,7 @@ export function Timeline() {
       </Modal>
 
       {/* Footer - Desktop only */}
-      <AppFooter
-        
-        isMobile={false}
-      />
+      <AppFooter isMobile={false} onOpenHelp={() => setIsHelpOpen(true)} />
     </div>
   );
 }
