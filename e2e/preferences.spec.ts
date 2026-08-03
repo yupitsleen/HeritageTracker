@@ -5,7 +5,10 @@ import { test, expect } from "@playwright/test";
  *
  * Both are persisted to localStorage and applied to <html>, so the assertions are
  * on document attributes rather than on any styling — they survive a redesign of
- * the header, the controls, or the theme palette itself.
+ * the footer, the controls, or the theme palette itself.
+ *
+ * Run against /data on purpose: these are app-wide preferences, so a page with no
+ * settings panel of its own still has to offer them.
  */
 
 test.describe("User preferences", () => {
@@ -26,10 +29,7 @@ test.describe("User preferences", () => {
     const html = page.locator("html");
     await expect(html).toHaveAttribute("dir", "ltr");
 
-    // .first() = BaseDropdown's role="button" wrapper, which carries the click
-    // handler; the inner <button> repeats the same accessible name.
-    await page.getByRole("button", { name: /select language/i }).first().click();
-    await page.getByRole("button", { name: "العربية" }).click();
+    await page.getByRole("combobox", { name: /language/i }).selectOption("ar");
 
     await expect(html).toHaveAttribute("dir", "rtl");
     await expect(html).toHaveAttribute("lang", /^ar/);

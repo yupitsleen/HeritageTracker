@@ -3,10 +3,13 @@ import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { ResourcesDropdown } from "./ResourcesDropdown";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { QuestionMarkCircleIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { useLocale } from "../../contexts/LocaleContext";
+import { useTheme } from "../../contexts/ThemeContext";
+import { getAllLocales } from "../../config/locales";
 import { TOOLTIPS } from "../../config/tooltips";
 import { Z_INDEX } from "../../constants/layout";
-import type { TranslationKey } from "../../types/i18n";
+import type { TranslationKey, LocaleCode } from "../../types/i18n";
 
 interface AppFooterProps {
   isMobile: boolean;
@@ -35,6 +38,8 @@ const NAV_ITEMS: { path: string; translationKey: TranslationKey; desktopOnly?: b
 export function AppFooter({ isMobile, onOpenHelp }: AppFooterProps) {
   const t = useThemeClasses();
   const translate = useTranslation();
+  const { locale, setLocale } = useLocale();
+  const { isDark, toggleTheme } = useTheme();
   const { pathname } = useLocation();
   const currentYear = new Date().getFullYear();
 
@@ -78,6 +83,35 @@ export function AppFooter({ isMobile, onOpenHelp }: AppFooterProps) {
           {translate("common.help")}
         </button>
       )}
+
+      {/* Theme and language are app-wide preferences, so they belong on every page
+          rather than inside one page's settings panel. */}
+      <button
+        type="button"
+        onClick={toggleTheme}
+        className="flex items-center hover:text-[#fefefe]/80 transition-colors focus:ring-2 focus:ring-white/60 focus:outline-none rounded"
+        aria-label={isDark ? translate("aria.switchToLightMode") : translate("aria.switchToDarkMode")}
+        title={isDark ? TOOLTIPS.HEADER.DARK_MODE_ON : TOOLTIPS.HEADER.DARK_MODE_OFF}
+      >
+        {isDark ? (
+          <SunIcon className="w-4 h-4" aria-hidden="true" />
+        ) : (
+          <MoonIcon className="w-4 h-4" aria-hidden="true" />
+        )}
+      </button>
+
+      <select
+        value={locale}
+        onChange={(e) => setLocale(e.target.value as LocaleCode)}
+        aria-label={translate("aria.toggleLanguage")}
+        className="bg-transparent text-[11px] cursor-pointer focus:ring-2 focus:ring-white/60 focus:outline-none rounded"
+      >
+        {getAllLocales().map((loc) => (
+          <option key={loc.code} value={loc.code} className="text-black">
+            {loc.nativeName}
+          </option>
+        ))}
+      </select>
     </nav>
   );
 
