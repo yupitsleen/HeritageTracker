@@ -5,8 +5,6 @@ import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
 import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
-import { InfoIcon } from "../Icons/InfoIcon";
-import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
 import { TOOLTIPS } from "../../config/tooltips";
@@ -27,7 +25,9 @@ export interface WaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
-  totalSites?: number;
+  // Left edge of the map column: the card runs the full page width, so the nav
+  // buttons need this inset to sit under the maps they drive.
+  mapsInsetPx?: number;
   // Comparison mode support
   comparisonMode?: boolean;
   beforeIndex?: number;
@@ -50,7 +50,7 @@ export function WaybackSlider({
   releases,
   currentIndex,
   onIndexChange,
-  totalSites,
+  mapsInsetPx = 0,
   comparisonMode = false,
   beforeIndex = 0,
   onBeforeIndexChange,
@@ -243,10 +243,14 @@ export function WaybackSlider({
       role="region"
       aria-label="Wayback Imagery Timeline"
     >
-      {/* Header: nav buttons centered on the container, stats absolutely positioned
-          right — same pattern as TimelineScrubber below. */}
+      {/* Header: nav buttons centered on the map column, so each pair lands under
+          the map it drives. */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
-      <div className="relative flex items-center justify-center gap-2 mb-2" dir="ltr">
+      <div
+        className="relative flex items-center justify-center gap-2 mb-2"
+        style={{ paddingLeft: mapsInsetPx }}
+        dir="ltr"
+      >
         {/* Center: nav buttons. In comparison mode each scrubber gets its own
             pair, outlined in its scrubber colour and centered on its half. */}
         {dualMode ? (
@@ -276,8 +280,7 @@ export function WaybackSlider({
                   title={TOOLTIPS.WAYBACK.PREV_RELEASE}
                   data-testid={`wayback-${key}-prev`}
                 >
-                  <span className="xl:hidden">⏮</span>
-                  <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
+                  ⏮
                 </Button>
 
                 <Button
@@ -290,8 +293,7 @@ export function WaybackSlider({
                   title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
                   data-testid={`wayback-${key}-next`}
                 >
-                  <span className="xl:hidden">⏭</span>
-                  <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
+                  ⏭
                 </Button>
               </div>
             ))}
@@ -306,8 +308,7 @@ export function WaybackSlider({
             aria-label="Go to previous satellite image release"
             title={TOOLTIPS.WAYBACK.PREV_RELEASE}
           >
-            <span className="xl:hidden">⏮</span>
-            <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
+            ⏮
           </Button>
 
           <Button
@@ -318,23 +319,10 @@ export function WaybackSlider({
             aria-label="Go to next satellite image release"
             title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
           >
-            <span className="xl:hidden">⏭</span>
-            <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
+            ⏭
           </Button>
         </div>
         )}
-
-        {/* Right: dataset stats + info icon */}
-        <div className="absolute right-0 top-0 flex items-center gap-1.5">
-          <span className={`hidden md:block text-xs truncate pointer-events-none ${t.text.muted}`}>
-            {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
-          </span>
-          <InfoIcon
-            title={translate("timelinePage.waybackTooltip")}
-            aria-label={translate("timelinePage.waybackTooltip")}
-            className={`w-4 h-4 flex-shrink-0 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
-          />
-        </div>
       </div>
 
       {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}

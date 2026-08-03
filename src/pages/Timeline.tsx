@@ -578,7 +578,7 @@ export function Timeline() {
                     releases={releases}
                     currentIndex={currentReleaseIndex}
                     onIndexChange={setCurrentReleaseIndex}
-                    totalSites={filteredSites.length}
+                    mapsInsetPx={sidebarWidth + CONTENT_GAP_PX}
                     comparisonMode={comparisonModeEnabled}
                     beforeIndex={beforeReleaseIndex}
                     onBeforeIndexChange={setBeforeReleaseIndex}
