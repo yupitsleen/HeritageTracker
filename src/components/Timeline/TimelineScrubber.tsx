@@ -383,14 +383,9 @@ export function TimelineScrubber({
       role="region"
       aria-label="Timeline Scrubber"
     >
-      {/* ponytail: theme text, not literal white — the card is white in light mode */}
-      <p className={`text-sm font-semibold text-center leading-tight ${t.text.heading}`}>
-        Timeline of destructive assaults on culturally significant sites
-      </p>
-
       {/* Controls sit above the track so the track keeps the full card width */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
-      <div className="flex items-center justify-between gap-2" dir="ltr">
+      <div className="relative flex items-center justify-between gap-2" dir="ltr">
         {/* Left: Reset/Play/Pause/Sync Map/Speed controls then Previous */}
         <div className="flex items-center gap-2 flex-wrap shrink-0">
           <TimelineControls
@@ -419,6 +414,14 @@ export function TimelineScrubber({
             />
           )}
         </div>
+
+        {/* ponytail: theme text, not literal white — the card is white in light mode */}
+        {/* Absolute so it centres on the card, not on the gap between the two clusters */}
+        <p
+          className={`absolute inset-x-0 mx-auto w-fit max-w-full truncate px-2 pointer-events-none text-sm font-semibold leading-tight ${t.text.heading}`}
+        >
+          Timeline of destructive assaults on culturally significant sites
+        </p>
 
         {/* Right: Next + info icon */}
         <div className="flex items-center gap-2 shrink-0">
