@@ -538,7 +538,7 @@ export function Timeline() {
             >
               <div
                 {...timelinePanelProps("sites")}
-                className={`min-h-[76px] ${tabPanelClass} ${
+                className={`min-h-[136px] ${tabPanelClass} ${
                   tabbed && timelineTab !== "sites"
                     ? "invisible pointer-events-none"
                     : ""

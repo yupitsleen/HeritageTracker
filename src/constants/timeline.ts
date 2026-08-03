@@ -19,7 +19,7 @@ export const TIMELINE_CONFIG = {
  */
 export const TOOLTIP_CONFIG = {
   /** Vertical offset from timeline (in pixels) - 40px to balance clearance from timeline and footer */
-  VERTICAL_OFFSET: 40,
+  VERTICAL_OFFSET: 36,
   /** Horizontal transform percentage */
   HORIZONTAL_TRANSFORM: "-50%",
 } as const;

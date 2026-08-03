@@ -383,9 +383,14 @@ export function TimelineScrubber({
       role="region"
       aria-label="Timeline Scrubber"
     >
-      {/* One row: controls + Previous | timeline track | Next + info */}
+      {/* ponytail: theme text, not literal white — the card is white in light mode */}
+      <p className={`text-sm font-semibold text-center leading-tight ${t.text.heading}`}>
+        Timeline of destructive assaults on culturally significant sites
+      </p>
+
+      {/* Controls sit above the track so the track keeps the full card width */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
-      <div className="flex items-center gap-2" dir="ltr">
+      <div className="flex items-center justify-between gap-2" dir="ltr">
         {/* Left: Reset/Play/Pause/Sync Map/Speed controls then Previous */}
         <div className="flex items-center gap-2 flex-wrap shrink-0">
           <TimelineControls
@@ -415,12 +420,31 @@ export function TimelineScrubber({
           )}
         </div>
 
-        {/* Center: the timeline track itself - takes the remaining width */}
-        <div
-          ref={containerRef}
-          className="relative flex-1 min-w-0"
-          style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}
-        >
+        {/* Right: Next + info icon */}
+        <div className="flex items-center gap-2 shrink-0">
+          {showNavigation && (
+            <TimelineNavigation direction="next" disabled={!canGoNext} onClick={goToNextEvent} />
+          )}
+          <InfoIcon
+            title={advancedMode
+              ? translate("timeline.tooltipAdvanced")
+              : translate("timeline.tooltipDefault")
+            }
+            aria-label={advancedMode
+              ? translate("timeline.tooltipAdvanced")
+              : translate("timeline.tooltipDefault")
+            }
+            className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
+          />
+        </div>
+      </div>
+
+      {/* The timeline track - full card width */}
+      <div
+        ref={containerRef}
+        className="relative"
+        style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}
+      >
           <div className="overflow-hidden">
             <svg
               ref={(node) => {
@@ -461,24 +485,10 @@ export function TimelineScrubber({
           )}
         </div>
 
-        {/* Right: Next + info icon */}
-        <div className="flex items-center gap-2 shrink-0">
-          {showNavigation && (
-            <TimelineNavigation direction="next" disabled={!canGoNext} onClick={goToNextEvent} />
-          )}
-          <InfoIcon
-            title={advancedMode
-              ? translate("timeline.tooltipAdvanced")
-              : translate("timeline.tooltipDefault")
-            }
-            aria-label={advancedMode
-              ? translate("timeline.tooltipAdvanced")
-              : translate("timeline.tooltipDefault")
-            }
-            className={`w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
-          />
-        </div>
-      </div>
+      {/* mt-4 clears the floating scrubber date badge, which hangs below the track */}
+      <p className="mt-4 text-xs font-medium text-red-600 text-center leading-tight">
+        Click on a site dot to see a before-and-after view of Israel's genocidal destruction
+      </p>
     </div>
   );
 }
