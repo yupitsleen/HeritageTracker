@@ -14,6 +14,8 @@ import { test, expect } from "@playwright/test";
 async function openAdvancedSettings(page: import("@playwright/test").Page) {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  // The sidebar starts collapsed to a rail, so open it before reaching the tabs.
+  await page.getByRole("button", { name: /show filters/i }).click();
   await page.getByRole("tab", { name: /^settings$/i }).click();
   await page.getByText(/advanced settings/i).click();
 }

@@ -138,7 +138,7 @@ export function Timeline() {
   // Full-screen sites table (same expanded variant the Data page uses)
   const [tableExpanded, setTableExpanded] = useState(false);
   // Owned here, not in FilterBar: the expanded table lays out around the rail.
-  const [sidebarRailed, setSidebarRailed] = useState(false);
+  const [sidebarRailed, setSidebarRailed] = useState(true);
   const sidebarWidth = sidebarRailed ? SIDEBAR_RAIL_WIDTH : tableResize.tableWidth;
   // The expanded table is a region, not a dialog — the filter sidebar stays live
   // beside it — so focus moves in but is never trapped. What the backdrop dims

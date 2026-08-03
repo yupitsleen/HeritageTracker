@@ -41,7 +41,7 @@ export function DataPage() {
   };
 
   // The sidebar collapses to a rail; the table beside it just takes the freed width.
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   // Handle site click to open detail panel
   const handleSiteClick = useCallback((site: Site) => {

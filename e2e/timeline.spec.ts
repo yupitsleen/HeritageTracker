@@ -21,6 +21,8 @@ test.describe('Timeline Page - Integration', () => {
     // The imagery slider is opt-in, so there is no Imagery tab until it is turned on.
     await expect(page.getByRole('tab', { name: /^imagery$/i })).toHaveCount(0);
 
+    // The sidebar starts collapsed to a rail, so open it before reaching the tabs.
+    await page.getByRole('button', { name: /show filters/i }).click();
     await page.getByRole('tab', { name: /^settings$/i }).click();
     await page.getByText(/advanced settings/i).click();
     await page.getByRole('checkbox', { name: /show imagery slider/i }).check();
@@ -41,6 +43,9 @@ test.describe('Timeline Page - Integration', () => {
     const zoomIn = page.getByRole('checkbox', { name: /zoom to site/i }).first();
     await expect(zoomIn).toBeVisible();
 
+    // The expand button lives in the sidebar's Sites tab, which starts collapsed.
+    await page.getByRole('button', { name: /show filters/i }).click();
+    await page.getByRole('tab', { name: /^sites$/i }).click();
     await page.getByRole('button', { name: /expand/i }).first().click();
 
     const expanded = page.getByRole('region', { name: /expand/i });
