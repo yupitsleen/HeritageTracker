@@ -1,8 +1,12 @@
-import { useTranslation } from "../../contexts/LocaleContext";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { useTranslation, useLocale } from "../../contexts/LocaleContext";
+import { useTheme } from "../../contexts/ThemeContext";
+import { getAllLocales } from "../../config/locales";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { IntervalSelector } from "./IntervalSelector";
 import { ReleaseDatePicker } from "./ReleaseDatePicker";
 import type { ComparisonInterval } from "../../types/waybackTimelineTypes";
+import type { LocaleCode } from "../../types/i18n";
 import type { WaybackRelease } from "../../services/waybackService";
 
 interface WaybackSettingsProps {
@@ -24,6 +28,8 @@ interface WaybackSettingsProps {
   /** View option: stack the imagery slider and site timeline instead of tabbing between them */
   separateTimelines?: boolean;
   onSeparateTimelinesToggle?: () => void;
+  /** Opens the page's help modal. Without it the modal has no trigger at all. */
+  onOpenHelp?: () => void;
 }
 
 /**
@@ -48,9 +54,12 @@ export function WaybackSettings({
   onShowImagerySliderToggle,
   separateTimelines = false,
   onSeparateTimelinesToggle,
+  onOpenHelp,
 }: WaybackSettingsProps) {
   const translate = useTranslation();
   const t = useThemeClasses();
+  const { locale, setLocale } = useLocale();
+  const { isDark, toggleTheme } = useTheme();
 
   // Same shape as the sidebar's "Show unknown dates" checkbox so settings read as filters.
   const checkbox = (
@@ -159,9 +168,43 @@ export function WaybackSettings({
               translate("timeline.separateTimelinesTooltip")
             )}
 
-          {/* Theme and language used to live here too. They are app-wide, and this
-              panel only exists on the Timeline page, so they moved to the footer -
-              where every page can reach them - rather than being duplicated. */}
+          {checkbox(
+            translate("timeline.darkMode"),
+            isDark,
+            toggleTheme,
+            translate("timeline.darkMode")
+          )}
+
+          {/* Same shape as IntervalSelector so the settings tab reads as one list. */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="language-selector" className={`text-xs ${t.text.primary}`}>
+              {translate("timeline.language")}:
+            </label>
+            <select
+              id="language-selector"
+              value={locale}
+              onChange={(e) => setLocale(e.target.value as LocaleCode)}
+              className={`text-xs px-2 py-1 rounded border cursor-pointer transition-all duration-200 ${t.border.primary} ${t.bg.primary} ${t.text.primary}`}
+            >
+              {getAllLocales().map((loc) => (
+                <option key={loc.code} value={loc.code}>
+                  {loc.nativeName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* The header no longer has a help button, so this is the only way in. */}
+          {onOpenHelp && (
+            <button
+              type="button"
+              onClick={onOpenHelp}
+              className={`flex items-center gap-2 text-sm text-left rounded focus:ring-2 focus:ring-[#009639] focus:outline-none ${t.text.body}`}
+            >
+              <QuestionMarkCircleIcon className="w-5 h-5 flex-none" aria-hidden="true" />
+              {translate("common.help")}
+            </button>
+          )}
         </div>
       </details>
     </div>

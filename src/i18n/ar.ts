@@ -313,7 +313,6 @@ export const ar: Translations = {
     viewGithub: "عرض الكود المصدري على جيت هاب",
     helpPalestineDonate: "ساعد فلسطين - تبرع لجهود الإغاثة",
     viewStatistics: "عرض الإحصائيات",
-    mainNavigation: "التنقل الرئيسي",
     aboutHeritageTracker: "حول Now & Then",
     resizeTable: "تغيير حجم الجدول",
     dragToResizeTable: "اسحب لتغيير حجم الجدول",

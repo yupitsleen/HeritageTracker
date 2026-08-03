@@ -359,7 +359,6 @@ export interface Translations {
     viewGithub: string;
     helpPalestineDonate: string;
     viewStatistics: string;
-    mainNavigation: string;
     aboutHeritageTracker: string;
     resizeTable: string;
     dragToResizeTable: string;

@@ -72,7 +72,7 @@ export function SharedLayout({ children, showFooter = true, helpContent }: Share
 
       {/* Footer (optional) */}
       {showFooter && (
-        <AppFooter isMobile={isMobile} onOpenHelp={() => setIsHelpOpen(true)} />
+        <AppFooter isMobile={isMobile} />
       )}
 
       {/* Help Modal (shared across all pages) */}

@@ -319,7 +319,6 @@ export const it: Translations = {
     viewGithub: "Visualizza codice sorgente su GitHub",
     helpPalestineDonate: "Aiuta la Palestina - Dona per gli sforzi di soccorso",
     viewStatistics: "Visualizza Statistiche",
-    mainNavigation: "Navigazione principale",
     aboutHeritageTracker: "Informazioni su Now & Then",
     resizeTable: "Ridimensiona tabella",
     dragToResizeTable: "Trascina per ridimensionare la tabella",

@@ -22,51 +22,8 @@ test.describe('Smoke Tests - Core Pages', () => {
 });
 
 test.describe('Smoke Tests - Navigation', () => {
-  test('navigation links work correctly', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    // The header is a logo and a title, so site navigation lives in the footer.
-    const nav = page.getByRole('navigation', { name: /main navigation/i });
-    await expect(nav).toBeVisible();
-
-    await nav.getByRole('link', { name: /dashboard/i }).click();
-    await page.waitForLoadState('networkidle');
-    expect(page.url()).toContain('/dashboard');
-  });
-
-  test('every route the footer offers is reachable', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    const nav = page.getByRole('navigation', { name: /main navigation/i });
-    await nav.getByRole('link', { name: /^data$/i }).click();
-    await page.waitForLoadState('networkidle');
-    expect(page.url()).toContain('/data');
-
-    // Resource pages hang off a dropdown rather than sitting in the strip.
-    await nav.getByRole('button', { name: /resources/i }).click();
-    await nav.getByRole('button', { name: /organizations/i }).click();
-    await page.waitForLoadState('networkidle');
-    expect(page.url()).toContain('/resources/organizations');
-  });
-
-  // The footer holds the only help trigger, so each page's modal is reachable or it
-  // is dead code. One test per page because each renders different help content.
-  for (const route of ['/timeline', '/data', '/dashboard'] as const) {
-    test(`help opens on ${route}`, async ({ page }) => {
-      test.slow();
-
-      await page.goto(route);
-      await page.waitForLoadState('networkidle');
-
-      await page.getByRole('button', { name: /^help$/i }).click();
-
-      const dialog = page.getByRole('dialog');
-      await expect(dialog).toBeVisible();
-      await expect(dialog.getByRole('heading', { name: /how to use/i })).toBeVisible();
-    });
-  }
+  // There is no in-app navigation: the header is a logo and a title, and /data,
+  // /dashboard and /resources/* are retiring. Routes are reached by URL.
 
   test('browser back button works', async ({ page }) => {
     await page.goto('/');

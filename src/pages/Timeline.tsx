@@ -432,6 +432,7 @@ export function Timeline() {
                       onShowImagerySliderToggle={() => setShowImagerySlider(!showImagerySlider)}
                       separateTimelines={separateTimelines}
                       onSeparateTimelinesToggle={() => setSeparateTimelines(!separateTimelines)}
+                      onOpenHelp={() => setIsHelpOpen(true)}
                     />
                   }
                 />
@@ -654,7 +655,7 @@ export function Timeline() {
       </Modal>
 
       {/* Footer - Desktop only */}
-      <AppFooter isMobile={false} onOpenHelp={() => setIsHelpOpen(true)} />
+      <AppFooter isMobile={false} />
     </div>
   );
 }

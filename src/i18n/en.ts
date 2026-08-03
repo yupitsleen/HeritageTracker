@@ -320,7 +320,6 @@ export const en: Translations = {
     viewGithub: "View source code on GitHub",
     helpPalestineDonate: "Help Palestine - Donate to relief efforts",
     viewStatistics: "View Statistics",
-    mainNavigation: "Main navigation",
     aboutHeritageTracker: "About Now & Then",
     resizeTable: "Resize table",
     dragToResizeTable: "Drag to resize table",

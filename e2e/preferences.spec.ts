@@ -5,19 +5,26 @@ import { test, expect } from "@playwright/test";
  *
  * Both are persisted to localStorage and applied to <html>, so the assertions are
  * on document attributes rather than on any styling — they survive a redesign of
- * the footer, the controls, or the theme palette itself.
+ * the controls or of the theme palette itself.
  *
- * Run against /data on purpose: these are app-wide preferences, so a page with no
- * settings panel of its own still has to offer them.
+ * Both controls live in the Timeline's sidebar, under Settings › Advanced Settings.
  */
+
+/** Opens the Advanced Settings block that holds the theme and language controls. */
+async function openAdvancedSettings(page: import("@playwright/test").Page) {
+  await page.goto("/timeline");
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("tab", { name: /^settings$/i }).click();
+  await page.getByText(/advanced settings/i).click();
+}
 
 test.describe("User preferences", () => {
   test("the theme toggle flips the document theme and is remembered", async ({ page }) => {
-    await page.goto("/data");
+    await openAdvancedSettings(page);
     const html = page.locator("html");
     await expect(html).toHaveAttribute("data-theme", "light");
 
-    await page.getByRole("button", { name: /switch to dark mode/i }).click();
+    await page.getByRole("checkbox", { name: /dark mode/i }).check();
     await expect(html).toHaveAttribute("data-theme", "dark");
 
     await page.reload();
@@ -25,7 +32,7 @@ test.describe("User preferences", () => {
   });
 
   test("switching to Arabic flips the document to RTL and is remembered", async ({ page }) => {
-    await page.goto("/data");
+    await openAdvancedSettings(page);
     const html = page.locator("html");
     await expect(html).toHaveAttribute("dir", "ltr");
 
@@ -36,5 +43,15 @@ test.describe("User preferences", () => {
 
     await page.reload();
     await expect(html).toHaveAttribute("dir", "rtl");
+  });
+
+  test("help is reachable from Advanced Settings", async ({ page }) => {
+    await openAdvancedSettings(page);
+
+    await page.getByRole("button", { name: /^help$/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByRole("heading", { name: /how to use/i })).toBeVisible();
   });
 });

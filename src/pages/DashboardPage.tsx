@@ -170,7 +170,7 @@ export function DashboardPage() {
       </Modal>
 
       {/* Footer - Desktop only */}
-      <AppFooter isMobile={false} onOpenHelp={() => appState.setIsHelpOpen(true)} />
+      <AppFooter isMobile={false} />
     </div>
   );
 }
