@@ -494,10 +494,13 @@ export function Timeline() {
                 </div>
               </div>
 
-            {/* Combined panel: tabs sit inside the panel's free top-left corner
-                (both panels center their header controls, so nothing collides).
-                Hidden when the user opts into the stacked (separate) layout. */}
-            <div className="flex-shrink-0 flex flex-col gap-2 relative z-10" inert={tableExpanded}>
+            {/* Combined panel: tabs sit inside the panel's top-left corner. The
+                `timeline-tabbed` class tells the panels' control rows to indent past
+                the tablist. Hidden when the user opts into the stacked layout. */}
+            <div
+              className={`flex-shrink-0 flex flex-col gap-2 relative z-10 ${tabbed ? "timeline-tabbed" : ""}`}
+              inert={tableExpanded}
+            >
             {tabbed && (
               <div
                 className="absolute top-2 left-2 z-20 flex items-center gap-0.5"
@@ -525,15 +528,15 @@ export function Timeline() {
               </div>
             )}
 
-            {/* Tabbed: both panels stack in one grid cell, so the container is always
-                as tall as the taller panel and switching tabs shifts nothing. The
-                inactive one is `invisible` (not unmounted) — it keeps its box, so D3
-                still measures a real width. */}
+            {/* Tabbed: both panels stack in one grid cell. The sites panel alone sets
+                the height — the imagery panel is absolutely positioned over it, so
+                turning imagery on (or switching tabs) never resizes the row. Neither
+                panel is unmounted: both keep a real box for D3 to measure. */}
             <div
               className={
                 stacked
                   ? "flex flex-col gap-2"
-                  : "grid [&>*]:[grid-area:1/1] items-stretch"
+                  : "relative grid [&>*]:[grid-area:1/1] items-stretch"
               }
             >
               <div
@@ -564,7 +567,7 @@ export function Timeline() {
               {showImagerySlider && (
                 <div
                   {...timelinePanelProps("imagery")}
-                  className={`${tabPanelClass} ${
+                  className={`${tabPanelClass} ${tabbed ? "absolute inset-0" : ""} ${
                     tabbed && timelineTab !== "imagery"
                       ? "invisible pointer-events-none"
                       : ""

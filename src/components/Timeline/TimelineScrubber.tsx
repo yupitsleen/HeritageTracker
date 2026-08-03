@@ -387,7 +387,9 @@ export function TimelineScrubber({
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
       <div className="relative flex items-center justify-between gap-2" dir="ltr">
         {/* Left: Reset/Play/Pause/Sync Map/Speed controls then Previous */}
-        <div className="flex items-center gap-2 flex-wrap shrink-0">
+        {/* ponytail: indent past the tab strip the Timeline page overlays on this
+            corner; plain padding beats plumbing a `tabbed` prop down two levels */}
+        <div className="flex items-center gap-2 flex-wrap shrink-0 [.timeline-tabbed_&]:pl-28">
           <TimelineControls
             isPlaying={isPlaying}
             isAtStart={isAtStart}

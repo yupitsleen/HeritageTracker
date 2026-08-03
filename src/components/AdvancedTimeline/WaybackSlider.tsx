@@ -403,8 +403,10 @@ export function WaybackSlider({
                   }`}
                 />
 
-                {/* Tooltip */}
-                <div className={`absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none ${isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"} shadow-md z-10`}>
+                {/* Tooltip — `hidden` until hover, not just transparent: the first and
+                    last ticks sit at the track's edges, so a laid-out invisible tooltip
+                    overflows the page and raises a horizontal scrollbar. */}
+                <div className={`hidden group-hover:block absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap pointer-events-none ${isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"} shadow-md z-10`}>
                   {date}
                 </div>
               </div>

@@ -239,8 +239,8 @@ describe("WaybackSlider", () => {
       );
 
       // Tooltips should contain release dates
-      // They use opacity-0 initially and group-hover:opacity-100
-      const tooltips = container.querySelectorAll(".group-hover\\:opacity-100");
+      // They are `hidden` initially and group-hover:block
+      const tooltips = container.querySelectorAll(".group-hover\\:block");
       expect(tooltips.length).toBeGreaterThan(0);
     });
 
