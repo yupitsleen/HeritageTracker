@@ -23,6 +23,36 @@ test.describe('Timeline Page - Integration', () => {
     await expect(page.locator('.leaflet-container').first()).toBeVisible({ timeout: 30000 });
   });
 
+  test('expanding the sites table takes focus and makes the dimmed content unreachable', async ({ page }) => {
+    test.slow();
+
+    await page.goto('/timeline');
+    await page.waitForLoadState('networkidle');
+
+    const map = page.locator('.leaflet-container').first();
+    await expect(map).toBeVisible({ timeout: 30000 });
+    // The map's own overlay controls stand in for "everything the backdrop dims".
+    const zoomIn = page.getByRole('checkbox', { name: /zoom to site/i }).first();
+    await expect(zoomIn).toBeVisible();
+
+    await page.getByRole('button', { name: /expand/i }).first().click();
+
+    const expanded = page.getByRole('region', { name: /expand/i });
+    await expect(expanded).toBeFocused();
+
+    // inert takes the dimmed content out of the tab order — it can't hold focus.
+    await zoomIn.focus().catch(() => {});
+    await expect(zoomIn).not.toBeFocused();
+
+    // Non-modal: the filter sidebar beside it stays reachable.
+    await expect(page.getByRole('tab', { name: /^filters$/i })).toBeVisible();
+
+    // Leaving the expanded view hands the map controls back.
+    await page.keyboard.press('Escape');
+    await zoomIn.focus();
+    await expect(zoomIn).toBeFocused();
+  });
+
   test('dashboard exposes timeline event-navigation controls', async ({ page }) => {
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');

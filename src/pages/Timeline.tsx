@@ -24,7 +24,7 @@ import { createEmptyFilterState } from "../types/filters";
 import type { ComparisonInterval } from "../types/waybackTimelineTypes";
 import { DEFAULT_COMPARISON_INTERVAL } from "../config/comparisonIntervals";
 import { calculateBeforeDate, findClosestReleaseIndex } from "../utils/intervalCalculations";
-import { BREAKPOINTS, SIDEBAR_RAIL_WIDTH, Z_INDEX } from "../constants/layout";
+import { BREAKPOINTS, CONTENT_GAP_PX, SIDEBAR_RAIL_WIDTH, Z_INDEX } from "../constants/layout";
 import { PalestinianFlagTriangle } from "../components/Decorative";
 
 // Lazy load the map, timeline, and modal components
@@ -140,8 +140,13 @@ export function Timeline() {
   // Mirrors the sidebar's own collapse state so the expanded table can reclaim its space.
   const [sidebarRailed, setSidebarRailed] = useState(false);
   const sidebarWidth = sidebarRailed ? SIDEBAR_RAIL_WIDTH : tableResize.tableWidth;
+  // The expanded table is a region, not a dialog — the filter sidebar stays live
+  // beside it — so focus moves in but is never trapped. What the backdrop dims
+  // (maps, timeline) goes `inert` instead, so Tab can't reach what's hidden.
+  const expandedPanelRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!tableExpanded) return;
+    expandedPanelRef.current?.focus();
     const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && setTableExpanded(false);
     document.addEventListener("keydown", onKeyDown);
     // The overlay is positioned against the desktop row (sidebar + map); below md that
@@ -431,8 +436,8 @@ export function Timeline() {
                 />
                 </div>
 
-                {/* Map column */}
-                <div className="flex-1 min-w-0 min-h-0 flex flex-col">
+                {/* Map column — dimmed and unreachable while the table is expanded */}
+                <div className="flex-1 min-w-0 min-h-0 flex flex-col" inert={tableExpanded}>
 
             {/* Full-screen satellite map with Wayback imagery */}
             <div
@@ -490,7 +495,7 @@ export function Timeline() {
             {/* Combined panel: tabs sit inside the panel's free top-left corner
                 (both panels center their header controls, so nothing collides).
                 Hidden when the user opts into the stacked (separate) layout. */}
-            <div className="flex-shrink-0 flex flex-col gap-2 relative z-10">
+            <div className="flex-shrink-0 flex flex-col gap-2 relative z-10" inert={tableExpanded}>
             {tabbed && (
               <div
                 className="absolute top-2 left-2 z-20 flex items-center gap-0.5"
@@ -590,10 +595,16 @@ export function Timeline() {
               />
               <div
                 className="absolute inset-y-0 right-0 z-30 px-6 animate-fade-in"
-                style={{ left: sidebarWidth + 8 }} // + the gap-2 between the columns
+                style={{ left: sidebarWidth + CONTENT_GAP_PX }}
                 onClick={exitExpandedOnOutsideClick}
               >
-                <div className="relative h-full rounded shadow-2xl">
+                <div
+                  ref={expandedPanelRef}
+                  tabIndex={-1}
+                  role="region"
+                  aria-label={translate("table.expandTable")}
+                  className="relative h-full rounded shadow-2xl focus:outline-none"
+                >
                   <SitesTable
                     sites={filteredSites}
                     variant="expanded"
