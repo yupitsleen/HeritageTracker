@@ -5,6 +5,9 @@ import { FilterLabel } from "./FilterLabel";
 import { useTranslation } from "../../contexts/LocaleContext";
 
 interface YearRangeFilterProps {
+  /** Current filter values. Needed so an outside reset ("Clear all") clears the inputs. */
+  startYear?: number | null;
+  endYear?: number | null;
   onStartChange: (year: number | null) => void;
   onEndChange: (year: number | null) => void;
   label: string;
@@ -22,6 +25,8 @@ interface YearRangeFilterProps {
  * Inputs show the full year range of the visible sites until the user edits them
  */
 export function YearRangeFilter({
+  startYear = null,
+  endYear = null,
   onStartChange,
   onEndChange,
   label,
@@ -44,27 +49,43 @@ export function YearRangeFilter({
   const endYearValue = endYearInput ?? endYearDefault ?? "";
   const endEraValue = endYearEra ?? "CE";
 
+  // What we last sent up. If the parent's value stops matching it, the change came
+  // from outside (e.g. "Clear all") and the local text has to give way to it -
+  // otherwise the input keeps displaying a year that is no longer filtering anything.
+  const reported = React.useRef({ start: startYear, end: endYear });
+
+  React.useEffect(() => {
+    if (startYear !== reported.current.start) {
+      reported.current.start = startYear;
+      setStartYearInput(null);
+      setStartYearEra(null);
+    }
+    if (endYear !== reported.current.end) {
+      reported.current.end = endYear;
+      setEndYearInput(null);
+      setEndYearEra(null);
+    }
+  }, [startYear, endYear]);
+
   // Update parent state when year or era changes
   const handleStartYearChange = (input: string, era: "CE" | "BCE") => {
     setStartYearInput(input);
     setStartYearEra(era);
-    if (input.trim() && !isNaN(parseInt(input))) {
-      const year = Math.abs(parseInt(input)); // Ensure positive
-      onStartChange(era === "BCE" ? -year : year);
-    } else {
-      onStartChange(null);
-    }
+    const parsed = input.trim() && !isNaN(parseInt(input))
+      ? (era === "BCE" ? -Math.abs(parseInt(input)) : Math.abs(parseInt(input)))
+      : null;
+    reported.current.start = parsed;
+    onStartChange(parsed);
   };
 
   const handleEndYearChange = (input: string, era: "CE" | "BCE") => {
     setEndYearInput(input);
     setEndYearEra(era);
-    if (input.trim() && !isNaN(parseInt(input))) {
-      const year = Math.abs(parseInt(input)); // Ensure positive
-      onEndChange(era === "BCE" ? -year : year);
-    } else {
-      onEndChange(null);
-    }
+    const parsed = input.trim() && !isNaN(parseInt(input))
+      ? (era === "BCE" ? -Math.abs(parseInt(input)) : Math.abs(parseInt(input)))
+      : null;
+    reported.current.end = parsed;
+    onEndChange(parsed);
   };
 
   return (

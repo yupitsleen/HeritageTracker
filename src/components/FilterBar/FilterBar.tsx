@@ -347,6 +347,8 @@ export const FilterBar = memo(function FilterBar({
       content: (
         <YearRangeFilter
           label=""
+          startYear={filters.creationYearStart}
+          endYear={filters.creationYearEnd}
           onStartChange={handleCreationYearStartChange}
           onEndChange={handleCreationYearEndChange}
           supportBCE={true}

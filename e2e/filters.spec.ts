@@ -94,6 +94,23 @@ test.describe("Filter workflows", () => {
     await expect(count).toHaveText(unfiltered);
   });
 
+  test("Clear All empties the year inputs, not just the filter behind them", async ({ page }) => {
+    await page.goto("/data");
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+
+    const fromYear = sidebar.getByPlaceholder("From year");
+    await expect(fromYear).toBeVisible({ timeout: 30000 });
+    const prefill = await fromYear.inputValue();
+
+    await fromYear.fill("1500");
+    await expect(fromYear).toHaveValue("1500");
+
+    await sidebar.getByRole("button", { name: /clear all/i }).click();
+
+    // A stale 1500 next to an inactive filter is the bug; the prefill is the reset.
+    await expect(fromYear).toHaveValue(prefill);
+  });
+
   test("the Dashboard remembers the sidebar filter layout across a reload", async ({ page }) => {
     await page.goto("/dashboard");
     const sidebar = page.getByRole("complementary", { name: /filters/i });
