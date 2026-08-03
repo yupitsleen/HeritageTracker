@@ -52,6 +52,8 @@ interface TimelineScrubberProps {
   onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
   advancedMode?: AdvancedTimelineMode;
+  // Side-by-side maps are showing, so a dot click gives a before-and-after view
+  comparisonMode?: boolean;
 }
 
 /**
@@ -70,6 +72,7 @@ export function TimelineScrubber({
   highlightedSiteId,
   onSiteHighlight,
   advancedMode,
+  comparisonMode = false,
 }: TimelineScrubberProps) {
   const {
     currentTimestamp,
@@ -385,7 +388,9 @@ export function TimelineScrubber({
     >
       {/* Controls sit above the track so the track keeps the full card width */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
-      <div className="relative flex items-center justify-between gap-2" dir="ltr">
+      {/* min-h fits the two-line centred caption, which is absolute and would
+          otherwise hang over the track */}
+      <div className="relative flex min-h-[2.25rem] items-center justify-between gap-2" dir="ltr">
         {/* Left: Reset/Play/Pause/Sync Map/Speed controls then Previous */}
         {/* ponytail: indent past the tab strip the Timeline page overlays on this
             corner; plain padding beats plumbing a `tabbed` prop down two levels */}
@@ -419,11 +424,16 @@ export function TimelineScrubber({
 
         {/* ponytail: theme text, not literal white — the card is white in light mode */}
         {/* Absolute so it centres on the card, not on the gap between the two clusters */}
-        <p
-          className={`absolute inset-x-0 mx-auto w-fit max-w-full truncate px-2 pointer-events-none text-sm font-semibold leading-tight ${t.text.heading}`}
-        >
-          Timeline of destructive assaults on culturally significant sites
-        </p>
+        <div className="absolute inset-x-0 mx-auto w-fit max-w-full px-2 pointer-events-none text-center">
+          <p className={`truncate text-sm font-semibold leading-tight ${t.text.heading}`}>
+            Timeline of destructive assaults on culturally significant sites
+          </p>
+          <p className="text-xs font-medium text-red-600 leading-tight">
+            {comparisonMode
+              ? "Click on a site dot to see a before-and-after view of Israel's genocidal destruction"
+              : "Click on a site dot to see what remains after Israel's genocidal destruction"}
+          </p>
+        </div>
 
         {/* Right: Next + info icon */}
         <div className="flex items-center gap-2 shrink-0">
@@ -490,10 +500,8 @@ export function TimelineScrubber({
           )}
         </div>
 
-      {/* mt-4 clears the floating scrubber date badge, which hangs below the track */}
-      <p className="mt-4 text-xs font-medium text-red-600 text-center leading-tight">
-        Click on a site dot to see a before-and-after view of Israel's genocidal destruction
-      </p>
+      {/* clears the floating scrubber date badge, which hangs below the track */}
+      <div className="h-4" aria-hidden="true" />
     </div>
   );
 }

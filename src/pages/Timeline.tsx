@@ -553,6 +553,7 @@ export function Timeline() {
                     sites={filteredSites}
                     highlightedSiteId={highlightedSiteId}
                     onSiteHighlight={handleSiteHighlight}
+                    comparisonMode={comparisonModeEnabled}
                     advancedMode={{
                       syncMapOnDotClick,
                       showNavigation: true, // Show Previous/Next buttons
