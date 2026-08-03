@@ -358,7 +358,6 @@ export interface Translations {
     switchToDarkMode: string;
     viewGithub: string;
     helpPalestineDonate: string;
-    viewStatistics: string;
     aboutHeritageTracker: string;
     resizeTable: string;
     dragToResizeTable: string;
@@ -402,7 +401,6 @@ export interface Translations {
     sources: string;
     github: string;
     donate: string;
-    stats: string;
     about: string;
     copyright: string;
     lastUpdated: string;

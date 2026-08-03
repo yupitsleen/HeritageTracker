@@ -78,6 +78,5 @@ export function useAppState() {
     setIsStatsOpen: modalState.setIsStatsOpen,
     setIsFilterOpen: modalState.setIsFilterOpen,
     setIsDonateOpen: modalState.setIsDonateOpen,
-    setIsHelpOpen: modalState.setIsHelpOpen,
   };
 }

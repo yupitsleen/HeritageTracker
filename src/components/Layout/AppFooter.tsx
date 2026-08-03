@@ -59,14 +59,6 @@ export function AppFooter({ isMobile }: AppFooterProps) {
                 {translate("footer.donate")}
               </Link>
               {" • "}
-              <Link
-                to="/stats"
-                className="underline hover:text-[#fefefe]/80 transition-colors"
-                aria-label={translate("aria.viewStatistics")}
-              >
-                {translate("footer.stats")}
-              </Link>
-              {" • "}
               <a
                 href="https://github.com/yupitsleen/HeritageTracker"
                 target="_blank"

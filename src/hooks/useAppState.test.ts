@@ -39,7 +39,6 @@ describe('useAppState', () => {
       expect(result.current.modals.isStatsOpen).toBe(false);
       expect(result.current.modals.isFilterOpen).toBe(false);
       expect(result.current.modals.isDonateOpen).toBe(false);
-      expect(result.current.modals.isHelpOpen).toBe(false);
 
       // Site selection state
       expect(result.current.selectedSite).toBeNull();
@@ -74,7 +73,6 @@ describe('useAppState', () => {
       expect(result.current).toHaveProperty('setIsStatsOpen');
       expect(result.current).toHaveProperty('setIsFilterOpen');
       expect(result.current).toHaveProperty('setIsDonateOpen');
-      expect(result.current).toHaveProperty('setIsHelpOpen');
 
       // Site selection properties
       expect(result.current).toHaveProperty('selectedSite');
@@ -147,16 +145,6 @@ describe('useAppState', () => {
       });
 
       expect(result.current.modals.isDonateOpen).toBe(true);
-    });
-
-    it('opens and closes help modal', () => {
-      const { result } = renderHook(() => useAppState());
-
-      act(() => {
-        result.current.setIsHelpOpen(true);
-      });
-
-      expect(result.current.modals.isHelpOpen).toBe(true);
     });
 
     it('supports multiple modals open simultaneously', () => {

@@ -1,17 +1,13 @@
-import { useState } from "react";
 import type { ReactNode } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { AppHeader } from "./AppHeader";
 import { AppFooter } from "./AppFooter";
-import { Modal } from "../Modal/Modal";
-import { Z_INDEX } from "../../constants/layout";
 import { COLORS } from "../../config/colorThemes";
 
 interface SharedLayoutProps {
   children: ReactNode;
   showFooter?: boolean; // Optional - some pages might not want footer
-  helpContent?: ReactNode; // Optional - page-specific help content
 }
 
 /**
@@ -22,15 +18,11 @@ interface SharedLayoutProps {
  * - App header with navigation
  * - App footer with links
  * - Skip to content link for accessibility
- * - Help modal (shared across all pages)
  * - Donate now navigates to dedicated page at /donate for better performance
  */
-export function SharedLayout({ children, showFooter = true, helpContent }: SharedLayoutProps) {
+export function SharedLayout({ children, showFooter = true }: SharedLayoutProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
-
-  // Modal state
-  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   // Determine if mobile based on page - DashboardPage passes isMobile prop, others assume desktop
   const isMobile = false; // Default to desktop for About/Stats/Donate pages
@@ -75,57 +67,6 @@ export function SharedLayout({ children, showFooter = true, helpContent }: Share
         <AppFooter isMobile={isMobile} />
       )}
 
-      {/* Help Modal (shared across all pages) */}
-      <Modal
-        isOpen={isHelpOpen}
-        onClose={() => setIsHelpOpen(false)}
-        zIndex={Z_INDEX.MODAL_DROPDOWN}
-      >
-        {helpContent || (
-          <div className="p-6">
-            <h2 className={`text-2xl font-bold mb-4 ${t.text.heading}`}>How to Use Now & Then</h2>
-
-            <div className={`space-y-4 ${t.text.body}`}>
-              <section>
-                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Overview</h3>
-                <p className="text-sm">
-                  Now & Then documents cultural heritage sites in Gaza that have been damaged or destroyed.
-                  Use the interactive map, timeline, and filters to explore the data.
-                </p>
-              </section>
-
-              <section>
-                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Navigation</h3>
-                <ul className="text-sm list-disc list-inside space-y-1">
-                  <li><strong>Statistics:</strong> View comprehensive statistics and charts</li>
-                  <li><strong>About:</strong> Learn about the project, methodology, and data sources</li>
-                  <li><strong>Timeline:</strong> Explore satellite imagery over time</li>
-                  <li><strong>Help Palestine:</strong> Support relief efforts</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Interactive Features</h3>
-                <ul className="text-sm list-disc list-inside space-y-1">
-                  <li><strong>Map:</strong> Click markers to view site details</li>
-                  <li><strong>Timeline:</strong> Click dots to highlight sites destroyed on specific dates</li>
-                  <li><strong>Table:</strong> Sort and filter the complete dataset</li>
-                  <li><strong>Filters:</strong> Filter by site type, status, and date range</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className={`text-lg font-semibold mb-2 ${t.text.subheading}`}>Keyboard Navigation</h3>
-                <ul className="text-sm list-disc list-inside space-y-1">
-                  <li><strong>Tab:</strong> Navigate between interactive elements</li>
-                  <li><strong>Enter/Space:</strong> Activate buttons and links</li>
-                  <li><strong>Escape:</strong> Close modals and dialogs</li>
-                </ul>
-              </section>
-            </div>
-          </div>
-        )}
-      </Modal>
     </div>
   );
 }

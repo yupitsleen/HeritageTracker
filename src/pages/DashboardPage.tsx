@@ -12,7 +12,6 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
-import { DashboardHelpModal } from "../components/Help";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 import { Z_INDEX } from "../constants/layout";
@@ -157,16 +156,6 @@ export function DashboardPage() {
             <SiteDetailPanel site={appState.selectedSite} />
           </Suspense>
         )}
-      </Modal>
-
-
-      {/* Help Modal */}
-      <Modal
-        isOpen={appState.modals.isHelpOpen}
-        onClose={() => appState.setIsHelpOpen(false)}
-        zIndex={Z_INDEX.MODAL_DROPDOWN}
-      >
-        <DashboardHelpModal />
       </Modal>
 
       {/* Footer - Desktop only */}

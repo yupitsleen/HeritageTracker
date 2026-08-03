@@ -5,7 +5,6 @@ import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
 import { FilterBar } from "../components/FilterBar/FilterBar";
 import { Modal } from "../components/Modal/Modal";
-import { DataPageHelpModal } from "../components/Help";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTranslation } from "../contexts/LocaleContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
@@ -55,7 +54,7 @@ export function DataPage() {
   }, [navigate]);
 
   return (
-    <SharedLayout helpContent={<DataPageHelpModal />}>
+    <SharedLayout>
       <div className="h-[calc(100vh-58px)] flex flex-col md:flex-row gap-2 px-4 pt-2 pb-8">
         {/* Faceted filter sidebar (desktop) / search + drawer (mobile) */}
         <FilterBar
