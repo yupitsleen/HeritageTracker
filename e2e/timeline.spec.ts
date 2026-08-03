@@ -15,12 +15,18 @@ test.describe('Timeline Page - Integration', () => {
     await page.goto('/timeline');
     await page.waitForLoadState('networkidle');
 
-    // The bottom panel is tabbed and opens on the site timeline, so select Imagery.
-    await page.getByRole('tab', { name: /^imagery$/i }).click();
-
-    // Success is observable: the Wayback slider and the satellite map both render.
-    await expect(page.getByTestId('wayback-slider')).toBeVisible({ timeout: 30000 });
+    // The comparison maps are the default view.
     await expect(page.locator('.leaflet-container').first()).toBeVisible({ timeout: 30000 });
+
+    // The imagery slider is opt-in, so there is no Imagery tab until it is turned on.
+    await expect(page.getByRole('tab', { name: /^imagery$/i })).toHaveCount(0);
+
+    await page.getByRole('tab', { name: /^settings$/i }).click();
+    await page.getByText(/advanced settings/i).click();
+    await page.getByRole('checkbox', { name: /show imagery slider/i }).check();
+
+    await page.getByRole('tab', { name: /^imagery$/i }).click();
+    await expect(page.getByTestId('wayback-slider')).toBeVisible({ timeout: 30000 });
   });
 
   test('expanding the sites table takes focus and makes the dimmed content unreachable', async ({ page }) => {
