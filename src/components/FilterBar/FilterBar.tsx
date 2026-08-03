@@ -47,8 +47,13 @@ interface FilterBarProps {
    * - "sidebar": persistent vertical facet panel on desktop; mobile keeps the drawer.
    */
   variant?: "bar" | "sidebar";
-  /** Sidebar variant only: start collapsed to a thin rail (default false). */
-  sidebarDefaultCollapsed?: boolean;
+  /**
+   * Sidebar variant only: whether the panel is railed. Owned by the host, because a
+   * host that lays out around the rail needs the same boolean - two copies of it
+   * drift. Omit both to get an uncollapsible sidebar.
+   */
+  sidebarCollapsed?: boolean;
+  onSidebarCollapsedChange?: (collapsed: boolean) => void;
   /** When provided, renders a control to switch between "bar" and "sidebar" presentations. */
   onVariantToggle?: () => void;
   /**
@@ -68,8 +73,6 @@ interface FilterBarProps {
    */
   sitesExpanded?: boolean;
   onSitesExpandToggle?: () => void;
-  /** Sidebar variant only: fires when the panel is railed/unrailed (for hosts that lay out around it). */
-  onSidebarCollapsedChange?: (collapsed: boolean) => void;
   /** Sidebar variant only: makes the panel drag-resizable (see useTableResize). */
   resize?: {
     width: number;
@@ -104,32 +107,19 @@ export const FilterBar = memo(function FilterBar({
   filteredSites = 0,
   onClearAll,
   variant = "bar",
-  sidebarDefaultCollapsed = false,
+  sidebarCollapsed = false,
+  onSidebarCollapsedChange,
   onVariantToggle,
   settings,
   sitesTab,
   sitesExpanded = false,
   onSitesExpandToggle,
-  onSidebarCollapsedChange,
   resize,
 }: FilterBarProps) {
   const { t: translate, localeConfig } = useLocale();
   const t = useThemeClasses();
   const { isDark } = useTheme();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(sidebarDefaultCollapsed);
-  const railSidebar = (collapsed: boolean) => {
-    setSidebarCollapsed(collapsed);
-    onSidebarCollapsedChange?.(collapsed);
-  };
-
-  // Report the starting state too, so a host that lays out around the rail isn't left
-  // assuming "expanded" when `sidebarDefaultCollapsed` says otherwise.
-  useEffect(() => {
-    if (sidebarDefaultCollapsed) onSidebarCollapsedChange?.(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount only
-  }, []);
-
   const sidebarTabs = [
     // While the table is expanded it owns the Sites view, so the tab drops out here.
     ...(sitesTab && !sitesExpanded ? (["sites"] as const) : []),
@@ -550,7 +540,7 @@ export const FilterBar = memo(function FilterBar({
           >
             <button
               type="button"
-              onClick={() => railSidebar(false)}
+              onClick={() => onSidebarCollapsedChange?.(false)}
               className={cn(
                 "p-1.5 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
                 t.bg.hover,
@@ -609,21 +599,25 @@ export const FilterBar = memo(function FilterBar({
               )}
               <div className="flex items-center gap-1">
                 {variantToggleButton}
-                <button
-                  type="button"
-                  onClick={() => railSidebar(true)}
-                  className={cn(
-                    "p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
-                    t.bg.hover,
-                    t.text.body
-                  )}
-                  aria-label={translate("filters.hideFilters")}
-                  title={translate("filters.hideFilters")}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
+                {/* No handler means the host does not lay out around a rail, so
+                    there is nowhere for the panel to collapse to. */}
+                {onSidebarCollapsedChange && (
+                  <button
+                    type="button"
+                    onClick={() => onSidebarCollapsedChange(true)}
+                    className={cn(
+                      "p-1 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
+                      t.bg.hover,
+                      t.text.body
+                    )}
+                    aria-label={translate("filters.hideFilters")}
+                    title={translate("filters.hideFilters")}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
 

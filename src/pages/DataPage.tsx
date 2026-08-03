@@ -41,6 +41,9 @@ export function DataPage() {
     setFilters(createEmptyFilterState());
   };
 
+  // The sidebar collapses to a rail; the table beside it just takes the freed width.
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   // Handle site click to open detail panel
   const handleSiteClick = useCallback((site: Site) => {
     setSelectedSite(site);
@@ -66,6 +69,8 @@ export function DataPage() {
           totalSites={mockSites.length}
           filteredSites={filteredSites.length}
           onClearAll={clearAllFilters}
+          sidebarCollapsed={sidebarCollapsed}
+          onSidebarCollapsedChange={setSidebarCollapsed}
         />
 
         {/* Data Table */}

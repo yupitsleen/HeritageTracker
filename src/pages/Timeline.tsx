@@ -137,7 +137,7 @@ export function Timeline() {
 
   // Full-screen sites table (same expanded variant the Data page uses)
   const [tableExpanded, setTableExpanded] = useState(false);
-  // Mirrors the sidebar's own collapse state so the expanded table can reclaim its space.
+  // Owned here, not in FilterBar: the expanded table lays out around the rail.
   const [sidebarRailed, setSidebarRailed] = useState(false);
   const sidebarWidth = sidebarRailed ? SIDEBAR_RAIL_WIDTH : tableResize.tableWidth;
   // The expanded table is a region, not a dialog — the filter sidebar stays live
@@ -403,6 +403,7 @@ export function Timeline() {
                   }}
                   sitesExpanded={tableExpanded}
                   onSitesExpandToggle={() => setTableExpanded(true)}
+                  sidebarCollapsed={sidebarRailed}
                   onSidebarCollapsedChange={setSidebarRailed}
                   sitesTab={
                     <SitesTable
