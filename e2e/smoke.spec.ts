@@ -29,13 +29,13 @@ test.describe('Smoke Tests - Navigation', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    await page.goto('/timeline');
+    await page.goto('/data');
     await page.waitForLoadState('networkidle');
 
     await page.goBack();
     await page.waitForLoadState('networkidle');
 
-    expect(page.url()).not.toContain('/timeline');
+    expect(page.url()).not.toContain('/data');
   });
 });
 

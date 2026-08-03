@@ -12,7 +12,7 @@ test.describe("visual capture", () => {
   test.skip(!dir, "set SHOT_DIR to capture a screenshot batch");
 
   test("timeline page states", async ({ page }) => {
-    await page.goto("/timeline");
+    await page.goto("/");
     await page.waitForTimeout(3000);
     await page.screenshot(shot("01-timeline-default"));
 

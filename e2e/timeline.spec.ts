@@ -12,7 +12,7 @@ test.describe('Timeline Page - Integration', () => {
   test('timeline page loads with the wayback comparison UI', async ({ page }) => {
     test.slow(); // Wayback archive fetch + lazy map chunks are slow under parallel load.
 
-    await page.goto('/timeline');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     // The comparison maps are the default view.
@@ -32,7 +32,7 @@ test.describe('Timeline Page - Integration', () => {
   test('expanding the sites table takes focus and makes the dimmed content unreachable', async ({ page }) => {
     test.slow();
 
-    await page.goto('/timeline');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     const map = page.locator('.leaflet-container').first();

@@ -16,7 +16,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Comparison Mode - Critical Workflows', () => {
   test('Timeline page loads with comparison view', async ({ page }) => {
-    await page.goto('/timeline');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     // Page should load successfully

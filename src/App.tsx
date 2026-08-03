@@ -27,7 +27,6 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
     <Routes>
       <Route path="/" element={<Timeline />} />
       <Route path="/data" element={<DataPage />} />
-      <Route path="/timeline" element={<Timeline />} />
       {/* On mobile, show DataPage instead of DashboardPage (timeline not shown) */}
       <Route path="/dashboard" element={isMobile ? <DataPage /> : <DashboardPage />} />
 

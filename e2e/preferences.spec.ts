@@ -12,7 +12,7 @@ import { test, expect } from "@playwright/test";
 
 /** Opens the Advanced Settings block that holds the theme and language controls. */
 async function openAdvancedSettings(page: import("@playwright/test").Page) {
-  await page.goto("/timeline");
+  await page.goto("/");
   await page.waitForLoadState("networkidle");
   await page.getByRole("tab", { name: /^settings$/i }).click();
   await page.getByText(/advanced settings/i).click();

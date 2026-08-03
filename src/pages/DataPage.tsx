@@ -50,7 +50,7 @@ export function DataPage() {
 
   const handleViewOnMap = useCallback((siteId: string) => {
     setSelectedSite(null);
-    navigate(`/timeline?siteId=${siteId}`);
+    navigate(`/?siteId=${siteId}`);
   }, [navigate]);
 
   return (
