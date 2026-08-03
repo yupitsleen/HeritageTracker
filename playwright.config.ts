@@ -9,6 +9,9 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e',
 
+  /* Visual-capture specs are opt-in: `npx playwright test --grep @visual` */
+  grepInvert: /@visual/,
+
   /* Maximum time one test can run for */
   timeout: 60 * 1000, // 60 seconds (increased from 30s default)
 
