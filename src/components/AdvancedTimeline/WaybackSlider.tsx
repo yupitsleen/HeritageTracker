@@ -7,6 +7,8 @@ import type { WaybackRelease } from "../../services/waybackService";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
 import { TOOLTIPS } from "../../config/tooltips";
+import { InfoIcon } from "../Icons";
+import { INFO_ICON_COLORS } from "../../constants/tooltip";
 
 /**
  * Callback type for Wayback release index changes
@@ -224,11 +226,18 @@ export function WaybackSlider({
     // flex/justify-center: the panel is sized by the sites timeline, so the
     // track sits in the middle of it instead of hugging the top edge.
     <div
-      className={`${t.timeline.container} flex flex-col`}
+      className={`${t.timeline.container} relative flex flex-col`}
       data-testid="wayback-slider"
       role="region"
       aria-label="Wayback Imagery Timeline"
     >
+      {/* Matches the sites timeline's icon, which sits in its right control cluster */}
+      <InfoIcon
+        title={translate("timeline.tooltipImagery")}
+        aria-label={translate("timeline.tooltipImagery")}
+        className={`absolute top-2 right-2 w-4 h-4 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
+      />
+
       {/* Label pair, mirroring the sites timeline's heading + green sublabel */}
       <div
         className="mx-auto w-fit max-w-full px-2 mb-1 text-center"
