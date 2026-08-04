@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import type { Site } from "../../types";
 import type { WaybackImagery } from "../../types/waybackTimelineTypes";
 import { SiteDetailView } from "./SiteDetailView";
@@ -58,12 +58,31 @@ export function ComparisonMapView({
   beforeControls,
   afterControls,
 }: ComparisonMapViewProps) {
+  // Publish the seam between the two maps so AppHeader can line its "&" up with it.
+  // ponytail: measured, not computed — survives sidebar collapse and window resize.
+  const leftMapRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = leftMapRef.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const update = () =>
+      root.style.setProperty("--map-gap-x", `${el.getBoundingClientRect().right + 4}px`);
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    update();
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--map-gap-x");
+    };
+  }, []);
+
   return (
     <div className="relative h-full">
       {/* Side-by-side map layout with gap-2 to match Dashboard */}
       <div className="flex h-full gap-2">
         {/* Left Map - Earlier imagery (before scrubber) */}
         <div
+          ref={leftMapRef}
           className="w-1/2 h-full border-2 rounded shadow-xl overflow-hidden relative"
           style={{ borderColor: COLORS.COMPARE_BEFORE }}
         >
