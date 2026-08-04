@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Site } from "../../types";
 import type { WaybackImagery } from "../../types/waybackTimelineTypes";
 import { SiteDetailView } from "./SiteDetailView";
-import { useThemeClasses } from "../../hooks/useThemeClasses";
+import { COLORS } from "../../config/colorThemes";
 import { DateLabel } from "../Timeline/DateLabel";
 
 interface ComparisonMapViewProps {
@@ -58,14 +58,15 @@ export function ComparisonMapView({
   beforeControls,
   afterControls,
 }: ComparisonMapViewProps) {
-  const t = useThemeClasses();
-
   return (
     <div className="relative h-full">
       {/* Side-by-side map layout with gap-2 to match Dashboard */}
       <div className="flex h-full gap-2">
         {/* Left Map - Earlier imagery (yellow scrubber) */}
-        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
+        <div
+          className="w-1/2 h-full border-2 rounded shadow-xl overflow-hidden relative"
+          style={{ borderColor: COLORS.FLAG_YELLOW }}
+        >
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {before.dateLabel && (
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
@@ -92,7 +93,10 @@ export function ComparisonMapView({
         </div>
 
         {/* Right Map - Later imagery (green scrubber) */}
-        <div className={`w-1/2 h-full ${t.border.primary2} rounded shadow-xl overflow-hidden relative`}>
+        <div
+          className="w-1/2 h-full border-2 rounded shadow-xl overflow-hidden relative"
+          style={{ borderColor: COLORS.FLAG_GREEN }}
+        >
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {after.dateLabel && (
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
