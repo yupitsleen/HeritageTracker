@@ -18,12 +18,12 @@ export function AppHeader({ leading }: { leading?: ReactNode }) {
   return (
     <div
       className={`sticky top-0 transition-colors duration-200 ${
-        isDark ? "bg-gray-900" : "bg-[#000000]"
+        isDark ? "bg-gray-900" : "bg-[#1f1f1f]"
       }`}
       style={{ zIndex: Z_INDEX.STICKY }}
       dir="ltr"
     >
-      <header className="relative bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
+      <header className="relative bg-[#1f1f1f] text-[#fefefe] shadow-lg">
         {/* Top-left square slot — absolute so it never shifts the centered title. */}
         {leading && <div className="absolute inset-y-0 left-0">{leading}</div>}
         <div className="container mx-auto px-4 py-1.5 flex items-center justify-center">
@@ -55,14 +55,6 @@ export function AppHeader({ leading }: { leading?: ReactNode }) {
           </button>
         </div>
       </header>
-
-      {/* Flag-colored horizontal line - RED, BLACK, RED, GREEN (4px high, 4 bars) */}
-      <div className="flex h-1">
-        <div className="flex-1 bg-[#ed3039]"></div>
-        <div className="flex-1 bg-[#000000]"></div>
-        <div className="flex-1 bg-[#ed3039]"></div>
-        <div className="flex-1 bg-[#009639]"></div>
-      </div>
     </div>
   );
 }
