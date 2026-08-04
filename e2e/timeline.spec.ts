@@ -18,16 +18,8 @@ test.describe('Timeline Page - Integration', () => {
     // The comparison maps are the default view.
     await expect(page.locator('.leaflet-container').first()).toBeVisible({ timeout: 30000 });
 
-    // The imagery slider is opt-in, so there is no Imagery tab until it is turned on.
-    await expect(page.getByRole('tab', { name: /^imagery$/i })).toHaveCount(0);
-
-    // The sidebar starts collapsed to a rail, so open it before reaching the tabs.
-    await page.getByRole('button', { name: /show filters/i }).click();
-    await page.getByRole('tab', { name: /^settings$/i }).click();
-    await page.getByText(/advanced settings/i).click();
-    await page.getByRole('checkbox', { name: /show imagery slider/i }).check();
-
-    await page.getByRole('tab', { name: /^imagery$/i }).click();
+    // The imagery slider ships on, as a tab beside the site timeline.
+    await page.locator('#timeline-tab-imagery').click();
     await expect(page.getByTestId('wayback-slider')).toBeVisible({ timeout: 30000 });
   });
 
@@ -44,9 +36,11 @@ test.describe('Timeline Page - Integration', () => {
     await expect(zoomIn).toBeVisible();
 
     // The expand button lives in the sidebar's Sites tab, which starts collapsed.
+    // Scope to the sidebar: the timeline has its own Sites tab.
     await page.getByRole('button', { name: /show filters/i }).click();
-    await page.getByRole('tab', { name: /^sites$/i }).click();
-    await page.getByRole('button', { name: /expand/i }).first().click();
+    const sidebar = page.getByRole('complementary', { name: /filters/i });
+    await sidebar.getByRole('tab', { name: /^sites$/i }).click();
+    await sidebar.getByRole('button', { name: /expand/i }).first().click();
 
     const expanded = page.getByRole('region', { name: /expand/i });
     await expect(expanded).toBeFocused();

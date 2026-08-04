@@ -19,7 +19,8 @@ import { test, expect } from "@playwright/test";
 /** Expand the sidebar (it loads collapsed to a rail) and return its locator. */
 async function openSidebar(page: import("@playwright/test").Page) {
   const sidebar = page.getByRole("complementary", { name: /filters/i });
-  const show = sidebar.getByRole("button", { name: /show filters/i });
+  // Collapsed, the sidebar renders nothing — the re-open button lives in the header.
+  const show = page.getByRole("button", { name: /show filters/i });
   await expect(show).toBeVisible({ timeout: 30000 });
   await show.click();
   return sidebar;
