@@ -11,6 +11,7 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { Button } from "../components/Button";
 import { FilterBar } from "../components/FilterBar/FilterBar";
+import { FiltersToggleButton } from "../components/FilterBar/FiltersToggleButton";
 import { SitesTable } from "../components/SitesTable";
 import { TimelineHelpModal } from "../components/Help";
 import { mockSites } from "../data/mockSites";
@@ -24,7 +25,8 @@ import { createEmptyFilterState } from "../types/filters";
 import type { ComparisonInterval } from "../types/waybackTimelineTypes";
 import { DEFAULT_COMPARISON_INTERVAL } from "../config/comparisonIntervals";
 import { calculateBeforeDate, findClosestReleaseIndex } from "../utils/intervalCalculations";
-import { BREAKPOINTS, CONTENT_GAP_PX, SIDEBAR_RAIL_WIDTH, Z_INDEX } from "../constants/layout";
+import { BREAKPOINTS, CONTENT_GAP_PX, Z_INDEX } from "../constants/layout";
+import { useActiveFilters } from "../hooks/useActiveFilters";
 import { PalestinianFlagTriangle } from "../components/Decorative";
 
 // Lazy load the map, timeline, and modal components
@@ -139,7 +141,8 @@ export function Timeline() {
   const [tableExpanded, setTableExpanded] = useState(false);
   // Owned here, not in FilterBar: the expanded table lays out around the rail.
   const [sidebarRailed, setSidebarRailed] = useState(true);
-  const sidebarWidth = sidebarRailed ? SIDEBAR_RAIL_WIDTH : tableResize.tableWidth;
+  // Railed leaves no rail behind — the re-open button lives in the header.
+  const sidebarWidth = sidebarRailed ? 0 : tableResize.tableWidth;
   // The expanded table is a region, not a dialog — the filter sidebar stays live
   // beside it — so focus moves in but is never trapped. What the backdrop dims
   // (maps, timeline) goes `inert` instead, so Tab can't reach what's hidden.
@@ -198,6 +201,7 @@ export function Timeline() {
 
   // Apply filters to sites using shared hook
   const { filteredSites } = useFilteredSites(mockSites, filters);
+  const { activeFilterCount } = useActiveFilters(filters);
 
   // Filter handlers
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
@@ -334,7 +338,16 @@ export function Timeline() {
       <PalestinianFlagTriangle width={800} zIndex={Z_INDEX.BASE} />
 
       {/* Header - shared across all pages */}
-      <AppHeader />
+      <AppHeader
+        leading={
+          sidebarRailed ? (
+            <FiltersToggleButton
+              onClick={() => setSidebarRailed(false)}
+              activeFilterCount={activeFilterCount}
+            />
+          ) : undefined
+        }
+      />
 
       {/* Main content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}

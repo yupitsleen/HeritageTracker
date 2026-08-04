@@ -4,11 +4,13 @@ import { mockSites } from "../data/mockSites";
 import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
 import { FilterBar } from "../components/FilterBar/FilterBar";
+import { FiltersToggleButton } from "../components/FilterBar/FiltersToggleButton";
 import { Modal } from "../components/Modal/Modal";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTranslation } from "../contexts/LocaleContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
 import { useFilteredSites } from "../hooks/useFilteredSites";
+import { useActiveFilters } from "../hooks/useActiveFilters";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
 import type { Site } from "../types";
@@ -31,6 +33,7 @@ export function DataPage() {
   // Apply filters via the shared hook so date/year/unknown-date filters work here too
   // (the previous inline filter only handled type/status/search).
   const { filteredSites } = useFilteredSites(mockSites, filters);
+  const { activeFilterCount } = useActiveFilters(filters);
 
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
     setFilters(prev => ({ ...prev, ...updates }));
@@ -54,7 +57,16 @@ export function DataPage() {
   }, [navigate]);
 
   return (
-    <SharedLayout>
+    <SharedLayout
+      headerLeading={
+        sidebarCollapsed ? (
+          <FiltersToggleButton
+            onClick={() => setSidebarCollapsed(false)}
+            activeFilterCount={activeFilterCount}
+          />
+        ) : undefined
+      }
+    >
       <div className="h-[calc(100vh-58px)] flex flex-col md:flex-row gap-2 px-4 pt-2 pb-8">
         {/* Faceted filter sidebar (desktop) / search + drawer (mobile) */}
         <FilterBar

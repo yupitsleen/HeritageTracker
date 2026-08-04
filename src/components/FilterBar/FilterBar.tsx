@@ -19,7 +19,7 @@ import { isDestructionDateRangeApplied } from "../../types/filters";
 import { useDefaultYearRange } from "../../hooks/useDefaultYearRange";
 import { useActiveFilters } from "../../hooks/useActiveFilters";
 import { useDebounce } from "../../hooks/useDebounce";
-import { SIDEBAR_RAIL_WIDTH, Z_INDEX } from "../../constants/layout";
+import { Z_INDEX } from "../../constants/layout";
 import { cn } from "../../styles/theme";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { TOOLTIPS } from "../../config/tooltips";
@@ -528,33 +528,9 @@ export const FilterBar = memo(function FilterBar({
     return (
       <>
         {sidebarCollapsed ? (
-          /* Collapsed: a thin rail with a re-open button + active-filter count. */
-          <aside
-            className={cn(
-              "hidden md:flex md:flex-col md:flex-shrink-0 items-center gap-2 p-2 border rounded shadow-lg relative z-10",
-              t.bg.primary,
-              t.border.primary
-            )}
-            style={{ width: SIDEBAR_RAIL_WIDTH }}
-            aria-label={translate("filters.filters")}
-          >
-            <button
-              type="button"
-              onClick={() => onSidebarCollapsedChange?.(false)}
-              className={cn(
-                "p-1.5 rounded-md transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none",
-                t.bg.hover,
-                t.text.body
-              )}
-              aria-label={translate("filters.showFilters")}
-              title={translate("filters.showFilters")}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-              </svg>
-            </button>
-            {activeFilterCount > 0 && <CountBadge count={activeFilterCount} variant="primary" />}
-          </aside>
+          /* Collapsed: nothing on desktop — the host renders <FiltersToggleButton /> in
+             the header's top-left square to bring the panel back. */
+          null
         ) : (
           <aside
             className={cn(

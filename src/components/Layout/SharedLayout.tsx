@@ -8,6 +8,8 @@ import { COLORS } from "../../config/colorThemes";
 interface SharedLayoutProps {
   children: ReactNode;
   showFooter?: boolean; // Optional - some pages might not want footer
+  /** Rendered in the header's top-left square (e.g. a collapsed sidebar's re-open button). */
+  headerLeading?: ReactNode;
 }
 
 /**
@@ -20,7 +22,7 @@ interface SharedLayoutProps {
  * - Skip to content link for accessibility
  * - Donate now navigates to dedicated page at /donate for better performance
  */
-export function SharedLayout({ children, showFooter = true }: SharedLayoutProps) {
+export function SharedLayout({ children, showFooter = true, headerLeading }: SharedLayoutProps) {
   const { isDark } = useTheme();
   const t = useThemeClasses();
 
@@ -54,7 +56,7 @@ export function SharedLayout({ children, showFooter = true }: SharedLayoutProps)
       />
 
       {/* Header with flag line */}
-      <AppHeader />
+      <AppHeader leading={headerLeading} />
 
       {/* Main Content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}

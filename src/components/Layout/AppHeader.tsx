@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +10,7 @@ import logo from "../../assets/HeritageTrackerLogo.png";
  * Application header: centered logo + title, nothing else.
  * Black background with Palestinian flag colors.
  */
-export function AppHeader() {
+export function AppHeader({ leading }: { leading?: ReactNode }) {
   const { isDark } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
@@ -22,7 +23,9 @@ export function AppHeader() {
       style={{ zIndex: Z_INDEX.STICKY }}
       dir="ltr"
     >
-      <header className="bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
+      <header className="relative bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
+        {/* Top-left square slot — absolute so it never shifts the centered title. */}
+        {leading && <div className="absolute inset-y-0 left-0">{leading}</div>}
         <div className="container mx-auto px-4 py-1.5 flex items-center justify-center">
           {/* Logo + Title - clickable to return home */}
           <button
