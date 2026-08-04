@@ -76,7 +76,7 @@ export function ReleaseDatePicker({
       {showBefore && (
         <ReleaseDateField
           label={translate("timeline.beforeImageryDate")}
-          color={COLORS.FLAG_YELLOW}
+          color={COLORS.COMPARE_BEFORE}
           releases={releases}
           indexByDate={indexByDate}
           selectedIndex={beforeIndex}
@@ -86,7 +86,7 @@ export function ReleaseDatePicker({
       )}
       <ReleaseDateField
         label={translate("timeline.afterImageryDate")}
-        color={COLORS.FLAG_GREEN}
+        color={COLORS.COMPARE_AFTER}
         releases={releases}
         indexByDate={indexByDate}
         selectedIndex={afterIndex}

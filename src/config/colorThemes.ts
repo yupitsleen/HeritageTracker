@@ -47,7 +47,9 @@ export const COLORS = {
 
   FLAG_BLACK: '#000000',
   FLAG_WHITE: '#fefefe',
-  FLAG_YELLOW: '#FDB927', // Palestinian flag yellow (used for comparison mode "before" scrubber)
+  // Comparison mode: "before" (intact) vs "after" (destroyed)
+  COMPARE_BEFORE: '#009639', // green
+  COMPARE_AFTER: '#ed3039', // red
 
   // Grays
   GRAY_LIGHT: '#f5f5f5',

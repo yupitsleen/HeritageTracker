@@ -62,15 +62,15 @@ export function ComparisonMapView({
     <div className="relative h-full">
       {/* Side-by-side map layout with gap-2 to match Dashboard */}
       <div className="flex h-full gap-2">
-        {/* Left Map - Earlier imagery (yellow scrubber) */}
+        {/* Left Map - Earlier imagery (before scrubber) */}
         <div
           className="w-1/2 h-full border-2 rounded shadow-xl overflow-hidden relative"
-          style={{ borderColor: COLORS.FLAG_YELLOW }}
+          style={{ borderColor: COLORS.COMPARE_BEFORE }}
         >
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {before.dateLabel && (
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-              <DateLabel date={before.dateLabel} variant="yellow" size="md" />
+              <DateLabel date={before.dateLabel} variant="before" size="md" />
             </div>
           )}
           <SiteDetailView
@@ -92,15 +92,15 @@ export function ComparisonMapView({
           )}
         </div>
 
-        {/* Right Map - Later imagery (green scrubber) */}
+        {/* Right Map - Later imagery (after scrubber) */}
         <div
           className="w-1/2 h-full border-2 rounded shadow-xl overflow-hidden relative"
-          style={{ borderColor: COLORS.FLAG_GREEN }}
+          style={{ borderColor: COLORS.COMPARE_AFTER }}
         >
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {after.dateLabel && (
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-              <DateLabel date={after.dateLabel} variant="green" size="md" />
+              <DateLabel date={after.dateLabel} variant="after" size="md" />
             </div>
           )}
           <SiteDetailView

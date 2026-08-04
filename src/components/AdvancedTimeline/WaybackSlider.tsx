@@ -315,23 +315,22 @@ export function WaybackSlider({
             );
           })}
 
-          {/* Before position scrubber indicator (yellow) - only in comparison mode */}
+          {/* Before position scrubber indicator - only in comparison mode */}
           {comparisonMode && beforeRelease && (
             <div
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 group"
               style={{ left: `${beforePositionPercent}%` }}
             >
               <div className={hoverTooltipClass}>{beforeRelease.releaseDate}</div>
-              {/* Scrubber indicator - Yellow */}
               <div
                 data-testid="wayback-before-scrubber"
                 className="w-3 h-3 border-2 rounded-full shadow-md"
-                style={{ backgroundColor: COLORS.FLAG_YELLOW, borderColor: COLORS.FLAG_YELLOW }}
+                style={{ backgroundColor: COLORS.COMPARE_BEFORE, borderColor: COLORS.COMPARE_BEFORE }}
               />
             </div>
           )}
 
-          {/* Current position scrubber indicator (green) */}
+          {/* Current position scrubber indicator */}
           <div
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 group"
             style={{ left: `${currentPositionPercent}%` }}
@@ -339,11 +338,10 @@ export function WaybackSlider({
             <div className={hoverTooltipClass}>
               {currentRelease?.releaseDate || translate("timeline.unknownDate")}
             </div>
-            {/* Scrubber indicator - Green */}
             <div
               data-testid="wayback-current-scrubber"
               className="w-3 h-3 border-2 rounded-full shadow-md"
-              style={{ backgroundColor: COLORS.FLAG_GREEN, borderColor: COLORS.FLAG_GREEN }}
+              style={{ backgroundColor: COLORS.COMPARE_AFTER, borderColor: COLORS.COMPARE_AFTER }}
             />
           </div>
         </div>

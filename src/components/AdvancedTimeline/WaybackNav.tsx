@@ -17,7 +17,7 @@ export interface WaybackNavProps {
  * the caller owns positioning.
  */
 export function WaybackNav({ variant, index, releaseCount, onIndexChange }: WaybackNavProps) {
-  const color = variant === "before" ? COLORS.FLAG_YELLOW : COLORS.FLAG_GREEN;
+  const color = variant === "before" ? COLORS.COMPARE_BEFORE : COLORS.COMPARE_AFTER;
   const step = (delta: number) => {
     const next = Math.max(0, Math.min(index + delta, releaseCount - 1));
     if (next !== index) onIndexChange(next);
