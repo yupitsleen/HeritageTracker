@@ -24,6 +24,15 @@ export const BREAKPOINTS = {
   DESKTOP: 1024,
 } as const;
 
+/** Width of the collapsed filter sidebar rail, in px. Hosts lay out around it. */
+export const SIDEBAR_RAIL_WIDTH = 48;
+
+/**
+ * The gap between content columns, in px — Tailwind `gap-2`. Absolutely
+ * positioned overlays that align to a column edge have to add it back by hand.
+ */
+export const CONTENT_GAP_PX = 8;
+
 /**
  * Z-index layers for consistent stacking order
  *

@@ -11,12 +11,13 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { Button } from "../components/Button";
 import { FilterBar } from "../components/FilterBar/FilterBar";
+import { FiltersToggleButton } from "../components/FilterBar/FiltersToggleButton";
 import { SitesTable } from "../components/SitesTable";
 import { TimelineHelpModal } from "../components/Help";
 import { mockSites } from "../data/mockSites";
 import { SkeletonMap } from "../components/Loading/Skeleton";
 import { useWaybackReleases } from "../hooks/useWaybackReleases";
-import { WaybackSlider, WaybackSettings } from "../components/AdvancedTimeline";
+import { WaybackSlider, WaybackSettings, WaybackNav } from "../components/AdvancedTimeline";
 import { AnimationProvider } from "../contexts/AnimationContext";
 import type { Site } from "../types";
 import type { FilterState } from "../types/filters";
@@ -24,7 +25,8 @@ import { createEmptyFilterState } from "../types/filters";
 import type { ComparisonInterval } from "../types/waybackTimelineTypes";
 import { DEFAULT_COMPARISON_INTERVAL } from "../config/comparisonIntervals";
 import { calculateBeforeDate, findClosestReleaseIndex } from "../utils/intervalCalculations";
-import { Z_INDEX } from "../constants/layout";
+import { BREAKPOINTS, CONTENT_GAP_PX, Z_INDEX } from "../constants/layout";
+import { useActiveFilters } from "../hooks/useActiveFilters";
 import { PalestinianFlagTriangle } from "../components/Decorative";
 
 // Lazy load the map, timeline, and modal components
@@ -129,18 +131,61 @@ export function Timeline() {
   // Modal states for footer and help
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
+  // Imagery slider on by default; turning it off in Advanced Settings leaves no tabs.
+  const [showImagerySlider, setShowImagerySlider] = useState(true);
   // View option: tabs (default) vs. both timelines stacked, as they used to be
   const [separateTimelines, setSeparateTimelines] = useState(false);
   const [timelineTab, setTimelineTab] = useState<"imagery" | "sites">("sites");
 
+  // Full-screen sites table (same expanded variant the Data page uses)
+  const [tableExpanded, setTableExpanded] = useState(false);
+  // Owned here, not in FilterBar: the expanded table lays out around the rail.
+  const [sidebarRailed, setSidebarRailed] = useState(true);
+  // Railed leaves no rail behind — the re-open button lives in the header.
+  const sidebarWidth = sidebarRailed ? 0 : tableResize.tableWidth;
+  // The expanded table is a region, not a dialog — the filter sidebar stays live
+  // beside it — so focus moves in but is never trapped. What the backdrop dims
+  // (maps, timeline) goes `inert` instead, so Tab can't reach what's hidden.
+  const expandedPanelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!tableExpanded) return;
+    expandedPanelRef.current?.focus();
+    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && setTableExpanded(false);
+    document.addEventListener("keydown", onKeyDown);
+    // The overlay is positioned against the desktop row (sidebar + map); below md that
+    // layout stacks, so close rather than leave a misplaced panel behind.
+    const onResize = () =>
+      window.innerWidth < BREAKPOINTS.MOBILE && setTableExpanded(false);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [tableExpanded]);
+
+  // Clicking the layout's own padding/gaps (never a child) also leaves the expanded view.
+  // ponytail: target === currentTarget beats a ref-based outside-click listener here.
+  const exitExpandedOnOutsideClick = tableExpanded
+    ? (e: React.MouseEvent) => {
+        if (e.target === e.currentTarget) setTableExpanded(false);
+      }
+    : undefined;
+
+  // Three layouts: sites only (default), tabbed, stacked.
+  const stacked = showImagerySlider && separateTimelines;
+  const tabbed = showImagerySlider && !separateTimelines;
+
   // Tabbed mode: both panels fill the shared grid cell (h-full on the panel's own
   // bordered container too), so the visible box is identical on either tab.
-  const tabPanelClass = separateTimelines ? "" : "h-full [&>*]:h-full";
+  const tabPanelClass = stacked ? "" : "h-full [&>*]:h-full";
+
+  // The per-map imagery nav only makes sense while the imagery slider is on screen.
+  const imageryVisible = stacked || (tabbed && timelineTab === "imagery");
 
   // Tab roles only apply while the tabs are on screen; the stacked layout has no
   // tablist, so the panels are just sections.
   const timelinePanelProps = (tab: "imagery" | "sites") =>
-    separateTimelines
+    !tabbed
       ? {}
       : {
           role: "tabpanel",
@@ -156,6 +201,7 @@ export function Timeline() {
 
   // Apply filters to sites using shared hook
   const { filteredSites } = useFilteredSites(mockSites, filters);
+  const { activeFilterCount } = useActiveFilters(filters);
 
   // Filter handlers
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
@@ -292,12 +338,24 @@ export function Timeline() {
       <PalestinianFlagTriangle width={800} zIndex={Z_INDEX.BASE} />
 
       {/* Header - shared across all pages */}
-      <AppHeader onOpenHelp={() => setIsHelpOpen(true)} />
+      <AppHeader
+        leading={
+          sidebarRailed ? (
+            <FiltersToggleButton
+              onClick={() => setSidebarRailed(false)}
+              activeFilterCount={activeFilterCount}
+            />
+          ) : undefined
+        }
+      />
 
       {/* Main content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}
-      {/* pb-8 adds bottom padding to prevent footer overlap */}
-      <main className="h-[calc(100vh-58px)] px-4 pb-8 flex flex-col gap-2 relative">
+      {/* 67px = 40px header + 27px fixed footer; py-2 keeps equal breathing room top and bottom */}
+      <main
+        className="h-[calc(100vh-67px)] px-4 py-2 flex flex-col gap-2 relative"
+        onClick={exitExpandedOnOutsideClick}
+      >
         {/* Loading state */}
         {isLoading && (
           <div className={`flex-1 flex items-center justify-center rounded ${t.border.primary2} ${t.containerBg.semiTransparent} shadow-xl`}>
@@ -325,9 +383,24 @@ export function Timeline() {
         {!isLoading && !error && releases.length > 0 && (
           <AnimationProvider sites={filteredSites}>
             {/* Sidebar + map on top; the Wayback slider and scrubber span full width below */}
-            <div className="flex flex-col gap-2 flex-1 min-h-0">
+            <div
+              className="flex flex-col gap-2 flex-1 min-h-0 relative"
+              onClick={exitExpandedOnOutsideClick}
+            >
               {/* Top row: filter sidebar beside the map */}
-              <div className="flex flex-col md:flex-row gap-2 flex-1 min-h-0">
+              <div
+                className="flex flex-col md:flex-row gap-2 flex-1 min-h-0"
+                onClick={exitExpandedOnOutsideClick}
+              >
+                {/* Expanded: the sidebar lifts above the backdrop and stretches to the full
+                    content height so it matches the table; a spacer holds its place in the
+                    row so the maps behind don't reflow. */}
+                {tableExpanded && (
+                  <div style={{ width: sidebarWidth }} className="flex-shrink-0" aria-hidden="true" />
+                )}
+                {/* Full content height, no vertical inset: the sidebar's top edge doesn't
+                    move when the table expands, it only grows downward past the timeline. */}
+                <div className={tableExpanded ? "absolute inset-y-0 left-0 z-40 flex" : "contents"}>
                 <FilterBar
                   variant="sidebar"
                   filters={filters}
@@ -344,6 +417,10 @@ export function Timeline() {
                     isResizing: tableResize.isResizing,
                     onResizeStart: tableResize.handleResizeStart,
                   }}
+                  sitesExpanded={tableExpanded}
+                  onSitesExpandToggle={() => setTableExpanded(true)}
+                  sidebarCollapsed={sidebarRailed}
+                  onSidebarCollapsedChange={setSidebarRailed}
                   sitesTab={
                     <SitesTable
                       embedded
@@ -367,14 +444,18 @@ export function Timeline() {
                       onBeforeIndexChange={setBeforeReleaseIndex}
                       afterIndex={currentReleaseIndex}
                       onAfterIndexChange={setCurrentReleaseIndex}
+                      showImagerySlider={showImagerySlider}
+                      onShowImagerySliderToggle={() => setShowImagerySlider(!showImagerySlider)}
                       separateTimelines={separateTimelines}
                       onSeparateTimelinesToggle={() => setSeparateTimelines(!separateTimelines)}
+                      onOpenHelp={() => setIsHelpOpen(true)}
                     />
                   }
                 />
+                </div>
 
-                {/* Map column */}
-                <div className="flex-1 min-w-0 min-h-0 flex flex-col">
+                {/* Map column — dimmed and unreachable while the table is expanded */}
+                <div className="flex-1 min-w-0 min-h-0 flex flex-col" inert={tableExpanded}>
 
             {/* Full-screen satellite map with Wayback imagery */}
             <div
@@ -408,6 +489,26 @@ export function Timeline() {
                       showMarkers: afterMapShowMarkers,
                       onShowMarkersChange: setAfterMapShowMarkers,
                     }}
+                    beforeControls={
+                      imageryVisible && (
+                        <WaybackNav
+                          variant="before"
+                          index={beforeReleaseIndex}
+                          releaseCount={releases.length}
+                          onIndexChange={setBeforeReleaseIndex}
+                        />
+                      )
+                    }
+                    afterControls={
+                      imageryVisible && (
+                        <WaybackNav
+                          variant="after"
+                          index={currentReleaseIndex}
+                          releaseCount={releases.length}
+                          onIndexChange={setCurrentReleaseIndex}
+                        />
+                      )
+                    }
                   />
                 ) : (
                   <SiteDetailView
@@ -429,11 +530,14 @@ export function Timeline() {
                 </div>
               </div>
 
-            {/* Combined panel: tabs sit inside the panel's free top-left corner
-                (both panels center their header controls, so nothing collides).
-                Hidden when the user opts into the stacked (separate) layout. */}
-            <div className="flex-shrink-0 flex flex-col gap-2 relative z-10">
-            {!separateTimelines && (
+            {/* Combined panel: tabs sit inside the panel's top-left corner. The
+                `timeline-tabbed` class tells the panels' control rows to indent past
+                the tablist. Hidden when the user opts into the stacked layout. */}
+            <div
+              className={`flex-shrink-0 flex flex-col gap-2 relative z-10 ${tabbed ? "timeline-tabbed" : ""}`}
+              inert={tableExpanded}
+            >
+            {tabbed && (
               <div
                 className="absolute top-2 left-2 z-20 flex items-center gap-0.5"
                 role="tablist"
@@ -460,21 +564,21 @@ export function Timeline() {
               </div>
             )}
 
-            {/* Tabbed: both panels stack in one grid cell, so the container is always
-                as tall as the taller panel and switching tabs shifts nothing. The
-                inactive one is `invisible` (not unmounted) — it keeps its box, so D3
-                still measures a real width. */}
+            {/* Tabbed: both panels stack in one grid cell. The sites panel alone sets
+                the height — the imagery panel is absolutely positioned over it, so
+                turning imagery on (or switching tabs) never resizes the row. Neither
+                panel is unmounted: both keep a real box for D3 to measure. */}
             <div
               className={
-                separateTimelines
+                stacked
                   ? "flex flex-col gap-2"
-                  : "grid [&>*]:[grid-area:1/1] items-stretch"
+                  : "relative grid [&>*]:[grid-area:1/1] items-stretch"
               }
             >
               <div
                 {...timelinePanelProps("sites")}
-                className={`min-h-[100px] ${tabPanelClass} ${
-                  !separateTimelines && timelineTab !== "sites"
+                className={`min-h-[116px] ${tabPanelClass} ${
+                  tabbed && timelineTab !== "sites"
                     ? "invisible pointer-events-none"
                     : ""
                 }`}
@@ -485,6 +589,7 @@ export function Timeline() {
                     sites={filteredSites}
                     highlightedSiteId={highlightedSiteId}
                     onSiteHighlight={handleSiteHighlight}
+                    comparisonMode={comparisonModeEnabled}
                     advancedMode={{
                       syncMapOnDotClick,
                       showNavigation: true, // Show Previous/Next buttons
@@ -496,26 +601,66 @@ export function Timeline() {
                 </Suspense>
               </div>
 
+              {showImagerySlider && (
+                <div
+                  {...timelinePanelProps("imagery")}
+                  className={`${tabPanelClass} ${tabbed ? "absolute inset-0" : ""} ${
+                    tabbed && timelineTab !== "imagery"
+                      ? "invisible pointer-events-none"
+                      : ""
+                  }`}
+                >
+                  <WaybackSlider
+                    releases={releases}
+                    currentIndex={currentReleaseIndex}
+                    onIndexChange={setCurrentReleaseIndex}
+                    mapsInsetPx={sidebarWidth + CONTENT_GAP_PX}
+                    comparisonMode={comparisonModeEnabled}
+                    beforeIndex={beforeReleaseIndex}
+                    onBeforeIndexChange={setBeforeReleaseIndex}
+                  />
+                </div>
+              )}
+            </div>
+            </div>
+
+            {/* Expanded sites table — floats over the maps and timeline (both stay
+                visible behind the dimmed backdrop) but leaves the sidebar clear, so the
+                same FilterBar instance keeps running beside it. */}
+            {tableExpanded && (
+              <>
+              {/* Backdrop over the whole content area — sidebar and table sit above it. */}
               <div
-                {...timelinePanelProps("imagery")}
-                className={`${tabPanelClass} ${
-                  !separateTimelines && timelineTab !== "imagery"
-                    ? "invisible pointer-events-none"
-                    : ""
-                }`}
+                className="absolute inset-0 z-20 bg-black/80 animate-fade-in"
+                onClick={() => setTableExpanded(false)}
+                aria-hidden="true"
+              />
+              <div
+                className="absolute inset-y-0 right-0 z-30 px-6 animate-fade-in"
+                style={{ left: sidebarWidth + CONTENT_GAP_PX }}
+                onClick={exitExpandedOnOutsideClick}
               >
-                <WaybackSlider
-                  releases={releases}
-                  currentIndex={currentReleaseIndex}
-                  onIndexChange={setCurrentReleaseIndex}
-                  totalSites={filteredSites.length}
-                  comparisonMode={comparisonModeEnabled}
-                  beforeIndex={beforeReleaseIndex}
-                  onBeforeIndexChange={setBeforeReleaseIndex}
-                />
+                <div
+                  ref={expandedPanelRef}
+                  tabIndex={-1}
+                  role="region"
+                  aria-label={translate("table.expandTable")}
+                  className="relative h-full rounded shadow-2xl focus:outline-none"
+                >
+                  <SitesTable
+                    sites={filteredSites}
+                    variant="expanded"
+                    clickableRow={true}
+                    onSiteClick={setSelectedSite}
+                    onSiteHighlight={handleSiteHighlight}
+                    highlightedSiteId={highlightedSiteId}
+                    onCloseExpanded={() => setTableExpanded(false)}
+                    tooltipText={translate("table.tooltipDataPage")}
+                  />
+                </div>
               </div>
-            </div>
-            </div>
+              </>
+            )}
             </div>
           </AnimationProvider>
         )}
@@ -550,10 +695,7 @@ export function Timeline() {
       </Modal>
 
       {/* Footer - Desktop only */}
-      <AppFooter
-        
-        isMobile={false}
-      />
+      <AppFooter isMobile={false} />
     </div>
   );
 }

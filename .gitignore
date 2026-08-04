@@ -27,6 +27,7 @@ nul
 
 # Playwright
 /test-results/
+/screenshots/
 /playwright-report/
 /playwright/.cache/
 

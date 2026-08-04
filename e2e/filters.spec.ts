@@ -11,16 +11,25 @@ import { test, expect } from "@playwright/test";
  * The sidebar is the <aside aria-label="Filters"> (ARIA role "complementary"), and
  * it only appears once Wayback imagery loads, so we wait on its content.
  *
- * On '/' the sidebar is tabbed (Sites | Filters | Settings) and opens on Sites, so
- * these tests select the Filters tab first.
+ * The sidebar loads collapsed to a rail, so these tests expand it first. On '/' it
+ * is tabbed (Sites | Filters | Settings) and opens on Sites, so they also select
+ * the Filters tab.
  */
+
+/** Expand the sidebar (it loads collapsed to a rail) and return its locator. */
+async function openSidebar(page: import("@playwright/test").Page) {
+  const sidebar = page.getByRole("complementary", { name: /filters/i });
+  // Collapsed, the sidebar renders nothing — the re-open button lives in the header.
+  const show = page.getByRole("button", { name: /show filters/i });
+  await expect(show).toBeVisible({ timeout: 30000 });
+  await show.click();
+  return sidebar;
+}
 
 /** Open the sidebar's Filters tab and return the sidebar locator. */
 async function openFiltersTab(page: import("@playwright/test").Page) {
-  const sidebar = page.getByRole("complementary", { name: /filters/i });
-  const filtersTab = sidebar.getByRole("tab", { name: /^filters$/i });
-  await expect(filtersTab).toBeVisible({ timeout: 30000 });
-  await filtersTab.click();
+  const sidebar = await openSidebar(page);
+  await sidebar.getByRole("tab", { name: /^filters$/i }).click();
   return sidebar;
 }
 
@@ -52,7 +61,7 @@ test.describe("Filter workflows", () => {
   // type/status/search, so date and year filters silently did nothing there.
   test("the data page filters by year built, not just type/status/search", async ({ page }) => {
     await page.goto("/data");
-    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    const sidebar = await openSidebar(page);
 
     const count = sidebar.getByText(/showing \d+ of \d+ sites/i);
     await expect(count).toBeVisible({ timeout: 30000 });
@@ -67,7 +76,7 @@ test.describe("Filter workflows", () => {
   // other range the old inline /data filter ignored.
   test("the data page filters by destruction date range", async ({ page }) => {
     await page.goto("/data");
-    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    const sidebar = await openSidebar(page);
 
     const count = sidebar.getByText(/showing \d+ of \d+ sites/i);
     await expect(count).toBeVisible({ timeout: 30000 });
@@ -81,7 +90,7 @@ test.describe("Filter workflows", () => {
 
   test("Clear All restores the unfiltered result set", async ({ page }) => {
     await page.goto("/data");
-    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    const sidebar = await openSidebar(page);
 
     const count = sidebar.getByText(/showing \d+ of \d+ sites/i);
     await expect(count).toBeVisible({ timeout: 30000 });
@@ -92,6 +101,23 @@ test.describe("Filter workflows", () => {
 
     await sidebar.getByRole("button", { name: /clear all/i }).click();
     await expect(count).toHaveText(unfiltered);
+  });
+
+  test("Clear All empties the year inputs, not just the filter behind them", async ({ page }) => {
+    await page.goto("/data");
+    const sidebar = await openSidebar(page);
+
+    const fromYear = sidebar.getByPlaceholder("From year");
+    await expect(fromYear).toBeVisible({ timeout: 30000 });
+    const prefill = await fromYear.inputValue();
+
+    await fromYear.fill("1500");
+    await expect(fromYear).toHaveValue("1500");
+
+    await sidebar.getByRole("button", { name: /clear all/i }).click();
+
+    // A stale 1500 next to an inactive filter is the bug; the prefill is the reset.
+    await expect(fromYear).toHaveValue(prefill);
   });
 
   test("the Dashboard remembers the sidebar filter layout across a reload", async ({ page }) => {

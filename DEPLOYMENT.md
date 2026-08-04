@@ -146,7 +146,7 @@ jobs:
 After deployment, check the footer at the bottom of any page. It should show:
 
 ```
-© 2025 Heritage Tracker • Last Updated December 6, 2025 • GitHub
+© 2025 Now & Then • Last Updated December 6, 2025 • GitHub
 ```
 
 The date should match your deployment date (or the date you set via environment variable).

@@ -1,3 +1,4 @@
+import React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor, fireEvent, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
@@ -65,6 +66,38 @@ function setup(overrides?: Partial<React.ComponentProps<typeof FilterBar>>) {
   const user = userEvent.setup();
   render(<FilterBar {...props} />, { wrapper: Wrapper });
   return { onFilterChange, onClearAll, user };
+}
+
+/**
+ * Collapse is host-owned state, so these tests stand in for the page: they hold the
+ * boolean and feed it back, which is the only way the sidebar can rail at all.
+ */
+function setupCollapsible(
+  overrides?: Partial<React.ComponentProps<typeof FilterBar>> & { defaultCollapsed?: boolean }
+) {
+  const { defaultCollapsed = false, ...props } = overrides ?? {};
+  const onSidebarCollapsedChange = vi.fn();
+
+  function Host() {
+    const [collapsed, setCollapsed] = React.useState(defaultCollapsed);
+    return (
+      <FilterBar
+        variant="sidebar"
+        filters={createEmptyFilterState()}
+        onFilterChange={vi.fn()}
+        sidebarCollapsed={collapsed}
+        onSidebarCollapsedChange={(next) => {
+          onSidebarCollapsedChange(next);
+          setCollapsed(next);
+        }}
+        {...props}
+      />
+    );
+  }
+
+  const user = userEvent.setup();
+  render(<Host />, { wrapper: Wrapper });
+  return { onSidebarCollapsedChange, user };
 }
 
 describe("FilterBar — baseline behavior", () => {
@@ -184,22 +217,60 @@ describe("FilterBar — sidebar variant", () => {
     expect(onFilterChange).toHaveBeenCalledWith({ showUnknownDates: false });
   });
 
-  it("can be collapsed to a rail and re-expanded", async () => {
-    const { user } = setup({ variant: "sidebar" });
+  it("collapses away entirely — the host owns the re-open control", async () => {
+    const { user } = setupCollapsible();
     expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /hide filters/i }));
-    // Collapsed: facets gone, only the re-open control remains.
     expect(screen.queryByRole("heading", { name: /^type$/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /show filters/i })).not.toBeInTheDocument();
+  });
 
-    await user.click(screen.getByRole("button", { name: /show filters/i }));
+  it("starts collapsed when the host says it is", () => {
+    setupCollapsible({ defaultCollapsed: true });
+    expect(screen.queryByRole("heading", { name: /^type$/i })).not.toBeInTheDocument();
+  });
+
+  it("offers no collapse control when no host owns the state", () => {
+    setup({ variant: "sidebar" });
+    expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /hide filters/i })).not.toBeInTheDocument();
+  });
+});
+
+describe("FilterBar — sites tab", () => {
+  const sitesTab = <div>site rows</div>;
+
+  it("offers a Sites tab and an expand control when a host supplies both", async () => {
+    const onSitesExpandToggle = vi.fn();
+    const { user } = setup({ variant: "sidebar", sitesTab, onSitesExpandToggle });
+
+    expect(screen.getByRole("tab", { name: /^sites$/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /expand table/i }));
+    expect(onSitesExpandToggle).toHaveBeenCalled();
+  });
+
+  it("drops the Sites tab while the host owns the expanded table", () => {
+    setup({
+      variant: "sidebar",
+      sitesTab,
+      settings: <div>wayback settings</div>,
+      sitesExpanded: true,
+      onSitesExpandToggle: vi.fn(),
+    });
+
+    expect(screen.queryByRole("tab", { name: /^sites$/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /^filters$/i })).toBeInTheDocument();
+    // Falls back to the filters panel rather than an empty one.
     expect(screen.getByRole("heading", { name: /^type$/i })).toBeInTheDocument();
   });
 
-  it("starts collapsed when sidebarDefaultCollapsed is set", () => {
-    setup({ variant: "sidebar", sidebarDefaultCollapsed: true });
-    expect(screen.queryByRole("heading", { name: /^type$/i })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /show filters/i })).toBeInTheDocument();
+  it("asks the host to collapse", async () => {
+    const { onSidebarCollapsedChange, user } = setupCollapsible();
+    expect(onSidebarCollapsedChange).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: /hide filters/i }));
+    expect(onSidebarCollapsedChange).toHaveBeenLastCalledWith(true);
   });
 });
 

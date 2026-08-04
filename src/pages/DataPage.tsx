@@ -4,12 +4,13 @@ import { mockSites } from "../data/mockSites";
 import { SitesTable } from "../components/SitesTable";
 import { SharedLayout } from "../components/Layout/SharedLayout";
 import { FilterBar } from "../components/FilterBar/FilterBar";
+import { FiltersToggleButton } from "../components/FilterBar/FiltersToggleButton";
 import { Modal } from "../components/Modal/Modal";
-import { DataPageHelpModal } from "../components/Help";
 import { useThemeClasses } from "../hooks/useThemeClasses";
 import { useTranslation } from "../contexts/LocaleContext";
 import { useDefaultFilterRanges } from "../hooks/useDefaultFilterRanges";
 import { useFilteredSites } from "../hooks/useFilteredSites";
+import { useActiveFilters } from "../hooks/useActiveFilters";
 import type { FilterState } from "../types/filters";
 import { createEmptyFilterState } from "../types/filters";
 import type { Site } from "../types";
@@ -32,6 +33,7 @@ export function DataPage() {
   // Apply filters via the shared hook so date/year/unknown-date filters work here too
   // (the previous inline filter only handled type/status/search).
   const { filteredSites } = useFilteredSites(mockSites, filters);
+  const { activeFilterCount } = useActiveFilters(filters);
 
   const handleFilterChange = useCallback((updates: Partial<FilterState>) => {
     setFilters(prev => ({ ...prev, ...updates }));
@@ -41,6 +43,9 @@ export function DataPage() {
     setFilters(createEmptyFilterState());
   };
 
+  // The sidebar collapses to a rail; the table beside it just takes the freed width.
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+
   // Handle site click to open detail panel
   const handleSiteClick = useCallback((site: Site) => {
     setSelectedSite(site);
@@ -48,11 +53,20 @@ export function DataPage() {
 
   const handleViewOnMap = useCallback((siteId: string) => {
     setSelectedSite(null);
-    navigate(`/timeline?siteId=${siteId}`);
+    navigate(`/?siteId=${siteId}`);
   }, [navigate]);
 
   return (
-    <SharedLayout helpContent={<DataPageHelpModal />}>
+    <SharedLayout
+      headerLeading={
+        sidebarCollapsed ? (
+          <FiltersToggleButton
+            onClick={() => setSidebarCollapsed(false)}
+            activeFilterCount={activeFilterCount}
+          />
+        ) : undefined
+      }
+    >
       <div className="h-[calc(100vh-58px)] flex flex-col md:flex-row gap-2 px-4 pt-2 pb-8">
         {/* Faceted filter sidebar (desktop) / search + drawer (mobile) */}
         <FilterBar
@@ -66,6 +80,8 @@ export function DataPage() {
           totalSites={mockSites.length}
           filteredSites={filteredSites.length}
           onClearAll={clearAllFilters}
+          sidebarCollapsed={sidebarCollapsed}
+          onSidebarCollapsedChange={setSidebarCollapsed}
         />
 
         {/* Data Table */}

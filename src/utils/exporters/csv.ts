@@ -1,5 +1,5 @@
 /**
- * CSV exporter for Heritage Tracker
+ * CSV exporter for Now & Then
  *
  * Exports site data in CSV format (RFC 4180) for:
  * - Excel and spreadsheet applications

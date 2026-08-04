@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import type { Site } from "../../types";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
-import { useTranslation } from "../../contexts/LocaleContext";
+import { useLocale, useTranslation } from "../../contexts/LocaleContext";
 import { useTableSort } from "../../hooks/useTableSort";
 import { useTableScroll } from "../../hooks/useTableScroll";
 import { useTableExport } from "../../hooks/useTableExport";
@@ -11,6 +11,7 @@ import { TableRow } from "./TableRow";
 import { ExportControls } from "./ExportControls";
 import { VirtualizedTableBody } from "./VirtualizedTableBody";
 import { InfoIcon } from "../Icons/InfoIcon";
+import { CloseIcon } from "../Icons/CloseIcon";
 import { INFO_ICON_COLORS } from "../../constants/tooltip";
 
 // Threshold for enabling virtual scrolling
@@ -23,6 +24,7 @@ interface SitesTableDesktopProps {
   onSiteHighlight?: (siteId: string | null) => void;
   highlightedSiteId?: string | null;
   onExpandTable?: () => void;
+  onCloseExpanded?: () => void;
   variant: "compact" | "expanded";
   visibleColumns?: string[]; // For resizable table - which columns to show
   tooltipText?: string; // Optional custom tooltip text for the info icon
@@ -54,6 +56,7 @@ export function SitesTableDesktop({
   onSiteHighlight,
   highlightedSiteId,
   onExpandTable,
+  onCloseExpanded,
   variant,
   visibleColumns,
   tooltipText,
@@ -63,6 +66,7 @@ export function SitesTableDesktop({
   const { isDark } = useTheme();
   const t = useThemeClasses();
   const translate = useTranslation();
+  const { localeConfig } = useLocale();
 
   // Islamic date columns are opt-in (default hidden) in the expanded table
   const [showIslamicDates, setShowIslamicDates] = useState(false);
@@ -101,9 +105,16 @@ export function SitesTableDesktop({
   // Determine if we should use virtual scrolling
   const shouldUseVirtualScroll = sortedSites.length > VIRTUAL_SCROLL_THRESHOLD;
 
-  // Scrollable table with sticky headers - shared by the standalone and embedded layouts
+  // Scrollable table with sticky headers - shared by the standalone and embedded layouts.
+  // Embedded (sidebar): dir="rtl" on the scroll container puts the scrollbar on the left so
+  // it doesn't sit under the floating expand button; the inner wrapper restores direction.
   const tableBody = (
-    <div className="flex-1 overflow-y-auto pb-2" ref={tableContainerRef}>
+    <div
+      className="flex-1 overflow-y-auto pb-2"
+      ref={tableContainerRef}
+      dir={embedded ? "rtl" : undefined}
+    >
+      <div dir={embedded ? localeConfig.direction : undefined}>
       {shouldUseVirtualScroll ? (
         // Virtual scrolling for 100+ sites
         <div>
@@ -154,6 +165,7 @@ export function SitesTableDesktop({
           </tbody>
         </table>
       )}
+      </div>
     </div>
   );
 
@@ -213,6 +225,19 @@ export function SitesTableDesktop({
                   onExport={handleExport}
                   exportConfigs={exportConfigs}
                 />
+                {onCloseExpanded && (
+                  /* autoFocus: the expand button that opened this view unmounts with the
+                     sidebar's Sites tab, so focus would otherwise fall back to <body>. */
+                  <button
+                    autoFocus
+                    onClick={onCloseExpanded}
+                    className="text-[#009639] hover:text-[#007b2f] p-1 transition-colors focus:ring-2 focus:ring-[#009639] focus:outline-none rounded"
+                    aria-label={translate("common.close")}
+                    title={translate("common.close")}
+                  >
+                    <CloseIcon className="w-6 h-6" />
+                  </button>
+                )}
               </div>
             )}
           </div>

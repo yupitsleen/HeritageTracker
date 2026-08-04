@@ -1,4 +1,4 @@
-# Heritage Tracker - Developer Guide
+# Now & Then - Developer Guide
 
 **Palestinian cultural heritage destruction tracker with interactive satellite comparison**
 

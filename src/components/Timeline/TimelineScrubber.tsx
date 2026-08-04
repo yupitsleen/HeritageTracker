@@ -7,9 +7,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { D3TimelineRenderer } from "../../utils/d3Timeline";
 import { useTimelineData } from "../../hooks/useTimelineData";
-import { TIMELINE_CONFIG, TOOLTIP_CONFIG } from "../../constants/timeline";
-import { Z_INDEX } from "../../constants/layout";
-import { COLORS } from "../../config/colorThemes";
+import { TIMELINE_CONFIG } from "../../constants/timeline";
 import {
   calculateDefaultDateRange,
   calculateAdjustedDateRange,
@@ -52,6 +50,8 @@ interface TimelineScrubberProps {
   onSiteHighlight?: SiteHighlightHandler;
   // Advanced Timeline mode: Sync Map button syncs on dot click instead of during playback
   advancedMode?: AdvancedTimelineMode;
+  // Side-by-side maps are showing, so a dot click gives a before-and-after view
+  comparisonMode?: boolean;
 }
 
 /**
@@ -70,6 +70,7 @@ export function TimelineScrubber({
   highlightedSiteId,
   onSiteHighlight,
   advancedMode,
+  comparisonMode = false,
 }: TimelineScrubberProps) {
   const {
     currentTimestamp,
@@ -94,7 +95,6 @@ export function TimelineScrubber({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(800);
   const rendererRef = useRef<D3TimelineRenderer | null>(null);
-  const [scrubberPosition, setScrubberPosition] = useState<number | null>(null);
 
   // Extract timeline data using custom hook
   // Note: sites are already filtered by useFilteredSites (includes showUnknownDates logic)
@@ -167,7 +167,6 @@ export function TimelineScrubber({
             // Highlight the site when timeline dot is clicked
             onSiteHighlight(event.siteId);
           } : undefined,
-          onScrubberPositionChange: setScrubberPosition,
         }
       );
     }
@@ -379,16 +378,19 @@ export function TimelineScrubber({
 
   return (
     <div
-      ref={containerRef}
       className={t.timeline.container}
       role="region"
       aria-label="Timeline Scrubber"
     >
-      {/* Controls */}
+      {/* Controls sit above the track so the track keeps the full card width */}
       {/* dir="ltr" keeps media controls left-to-right regardless of language */}
-      <div className="flex items-center justify-center mb-2 gap-2 relative" dir="ltr">
-        {/* Left: Play/Pause/Reset/Sync Map/Speed controls - absolutely positioned */}
-        <div className="absolute left-0 top-0 flex items-center gap-2 flex-wrap">
+      {/* min-h fits the two-line centred caption, which is absolute and would
+          otherwise hang over the track */}
+      <div className="relative flex min-h-[2.25rem] items-center justify-between gap-2" dir="ltr">
+        {/* Left: Reset/Play/Pause/Sync Map/Speed controls then Previous */}
+        {/* ponytail: indent past the tab strip the Timeline page overlays on this
+            corner; plain padding beats plumbing a `tabbed` prop down two levels */}
+        <div className="flex items-center gap-2 flex-wrap shrink-0 [.timeline-tabbed_&]:pl-28">
           <TimelineControls
             isPlaying={isPlaying}
             isAtStart={isAtStart}
@@ -398,7 +400,6 @@ export function TimelineScrubber({
             advancedMode={!!advancedMode}
             hidePlayControls={advancedMode?.hidePlayControls ?? false}
             hideMapSettings={advancedMode?.hideMapSettings ?? false}
-            hideReset={showNavigation}
             syncMapOnDotClick={advancedMode?.syncMapOnDotClick}
             onPlay={handlePlay}
             onPause={pause}
@@ -408,22 +409,33 @@ export function TimelineScrubber({
             onMapMarkersToggle={() => setMapMarkersVisible(!mapMarkersVisible)}
             onSyncMapToggle={advancedMode?.onSyncMapToggle}
           />
+          {showNavigation && (
+            <TimelineNavigation
+              direction="previous"
+              disabled={!canGoPrevious}
+              onClick={goToPreviousEvent}
+            />
+          )}
         </div>
 
-        {/* Center: Reset + Previous/Next navigation - centered in flex container */}
-        {showNavigation && (
-          <TimelineNavigation
-            canGoPrevious={canGoPrevious}
-            canGoNext={canGoNext}
-            onPrevious={goToPreviousEvent}
-            onNext={goToNextEvent}
-            onReset={handleReset}
-            resetDisabled={isAtStart}
-          />
-        )}
+        {/* ponytail: theme text, not literal white — the card is white in light mode */}
+        {/* Absolute so it centres on the card, not on the gap between the two clusters */}
+        <div className="absolute inset-x-0 mx-auto w-fit max-w-full px-2 pointer-events-none text-center">
+          <p className={`truncate text-sm font-semibold leading-tight ${t.text.heading}`}>
+            Timeline of destructive assaults on culturally significant sites
+          </p>
+          <p className="text-xs font-medium text-[#009639] leading-tight">
+            {comparisonMode
+              ? "Click on a site dot to see a before-and-after view of Israel's genocidal destruction"
+              : "Click on a site dot to see what remains after Israel's genocidal destruction"}
+          </p>
+        </div>
 
-        {/* Right: Info icon - absolutely positioned */}
-        <div className="absolute right-0 top-0">
+        {/* Right: Next + info icon */}
+        <div className="flex items-center gap-2 shrink-0">
+          {showNavigation && (
+            <TimelineNavigation direction="next" disabled={!canGoNext} onClick={goToNextEvent} />
+          )}
           <InfoIcon
             title={advancedMode
               ? translate("timeline.tooltipAdvanced")
@@ -438,57 +450,27 @@ export function TimelineScrubber({
         </div>
       </div>
 
-      {/* D3 Timeline SVG - Ultra compact */}
-      <div className="relative" style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}>
-        <div className="overflow-hidden">
-          <svg
-            ref={(node) => {
-              if (node && node !== svgRef.current) {
-                svgRef.current = node;
-                setSvgMounted(true);
-              }
-            }}
-            key={`timeline-${containerWidth}-${startDate.getTime()}`}
-            width="100%"
-            height={TIMELINE_CONFIG.HEIGHT}
-            className="mt-1"
-            aria-hidden="true"
-          />
-        </div>
-        {/*
-          Floating scrubber date tooltip - positioned below timeline
-
-          NOTE: This tooltip uses custom positioning instead of native browser tooltips.
-          Reason: Must follow the scrubber's dynamic position as user drags along timeline.
-          Native tooltips (title attribute) cannot track moving elements precisely.
-
-          All other tooltips in the app use native browser tooltips for simplicity.
-        */}
-        {scrubberPosition !== null && (
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              left: `${scrubberPosition}px`,
-              top: `${TOOLTIP_CONFIG.VERTICAL_OFFSET}px`,
-              transform: `translateX(${TOOLTIP_CONFIG.HORIZONTAL_TRANSFORM})`,
-              zIndex: Z_INDEX.TIMELINE_TOOLTIP,
-            }}
-          >
-            <div className="px-2 py-0.5 bg-[#009639] text-white text-[10px] font-semibold rounded whitespace-nowrap shadow-lg" style={{ outline: `1px solid ${COLORS.BORDER_BLACK}` }}>
-              {currentTimestamp.toISOString().split('T')[0]}
-            </div>
+      {/* The timeline track - full card width */}
+      <div
+        ref={containerRef}
+        className="relative"
+        style={{ minHeight: TIMELINE_CONFIG.MIN_HEIGHT }}
+      >
+          <div className="overflow-hidden">
+            <svg
+              ref={(node) => {
+                if (node && node !== svgRef.current) {
+                  svgRef.current = node;
+                  setSvgMounted(true);
+                }
+              }}
+              key={`timeline-${containerWidth}-${startDate.getTime()}`}
+              width="100%"
+              height={TIMELINE_CONFIG.HEIGHT}
+              aria-hidden="true"
+            />
           </div>
-        )}
-      </div>
-
-      {/* Keyboard shortcuts hint - hidden below 1280px */}
-      <div className={`hidden xl:block mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
-        {translate("timeline.keyboard")}: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Space</kbd> {translate("timeline.playPause")}
-        {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> {translate("timeline.step")}
-        {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> {translate("timeline.jump")}
-      </div>
+        </div>
     </div>
   );
 }

@@ -24,7 +24,7 @@
 import type { ColorThemeConfig } from "../types/colorThemeTypes";
 
 /**
- * Consolidated color constants for the Heritage Tracker application
+ * Consolidated color constants for the Now & Then application
  * Based on the Palestinian flag theme colors
  *
  * This consolidates colors from:
@@ -47,7 +47,9 @@ export const COLORS = {
 
   FLAG_BLACK: '#000000',
   FLAG_WHITE: '#fefefe',
-  FLAG_YELLOW: '#FDB927', // Palestinian flag yellow (used for comparison mode "before" scrubber)
+  // Comparison mode: "before" (intact) vs "after" (destroyed)
+  COMPARE_BEFORE: '#009639', // green
+  COMPARE_AFTER: '#ed3039', // red
 
   // Grays
   GRAY_LIGHT: '#f5f5f5',
@@ -101,7 +103,7 @@ export const COLOR_THEME_REGISTRY: Record<string, ColorThemeConfig> = {
     description:
       "Official Palestinian flag colors: Red (#ed3039), Green (#009639), Black (#000000), White (#fefefe)",
     metadata: {
-      author: "Heritage Tracker Team",
+      author: "Now & Then Team",
       version: "1.0.0",
       culturalSignificance:
         "Palestinian flag colors represent identity and resistance",

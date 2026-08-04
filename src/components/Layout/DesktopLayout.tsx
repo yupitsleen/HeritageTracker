@@ -168,7 +168,7 @@ export function DesktopLayout({
   );
 
   const scrubber = (
-    <div className="flex-shrink-0 h-[100px] relative z-10">
+    <div className="flex-shrink-0 h-[116px] relative z-10">
       <Suspense fallback={<SkeletonMap />}>
         <TimelineScrubber
           sites={filteredSites}

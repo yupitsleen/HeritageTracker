@@ -1,5 +1,5 @@
 /**
- * Site-specific API functions for Heritage Tracker
+ * Site-specific API functions for Now & Then
  *
  * All site-related data fetching goes through this module.
  * Uses adapter pattern to switch between Mock, Local Backend, and Supabase.

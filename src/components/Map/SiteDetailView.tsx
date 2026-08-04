@@ -159,7 +159,7 @@ export function SiteDetailView({
       {/* Date label - shown when provided (e.g., from Wayback imagery) */}
       {dateLabel && (
         <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-          <DateLabel date={dateLabel} variant="green" size="md" />
+          <DateLabel date={dateLabel} variant="single" size="md" />
         </div>
       )}
 

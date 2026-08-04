@@ -73,6 +73,9 @@ export interface Translations {
   /** Header navigation */
   header: {
     title: string;
+    /** Location shown in red after the brand name: "Now & Then: Gaza" */
+    location: string;
+    subtitle: string;
     dashboard: string;
     data: string;
     timeline: string;
@@ -163,6 +166,11 @@ export interface Translations {
     separateTimelinesTooltip: string;
     tabImagery: string;
     tabSites: string;
+    advancedSettings: string;
+    showImagerySlider: string;
+    showImagerySliderTooltip: string;
+    darkMode: string;
+    language: string;
   };
 
   /** Table component */
@@ -350,7 +358,6 @@ export interface Translations {
     switchToDarkMode: string;
     viewGithub: string;
     helpPalestineDonate: string;
-    viewStatistics: string;
     aboutHeritageTracker: string;
     resizeTable: string;
     dragToResizeTable: string;
@@ -394,7 +401,6 @@ export interface Translations {
     sources: string;
     github: string;
     donate: string;
-    stats: string;
     about: string;
     copyright: string;
     lastUpdated: string;

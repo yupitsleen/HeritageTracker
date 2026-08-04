@@ -224,8 +224,7 @@ describe("SiteDetailView", () => {
 
       // ponytail: DateLabel located by data-testid, not palette colors.
       // Site popups may contain dates, but the overlay date label should not be present.
-      expect(screen.queryByTestId("date-label-green")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("date-label-yellow")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("date-label-single")).not.toBeInTheDocument();
     });
 
     it("renders the date on the overlay label", () => {
@@ -237,7 +236,7 @@ describe("SiteDetailView", () => {
         />
       );
 
-      expect(screen.getByTestId("date-label-green")).toHaveTextContent("2024-01-15");
+      expect(screen.getByTestId("date-label-single")).toHaveTextContent("2024-01-15");
     });
 
     it("renders date label with custom tile URL", () => {

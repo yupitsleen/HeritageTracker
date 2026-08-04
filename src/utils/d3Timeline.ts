@@ -59,7 +59,6 @@ export class D3TimelineRenderer {
   private onTimestampChange: (date: Date) => void;
   private onPause: () => void;
   private onSiteHighlight?: (event: TimelineEvent) => void;
-  private onScrubberPositionChange?: (position: number) => void;
   private highlightedSiteId: string | null = null;
 
   constructor(
@@ -70,7 +69,6 @@ export class D3TimelineRenderer {
       onTimestampChange: (date: Date) => void;
       onPause: () => void;
       onSiteHighlight?: (event: TimelineEvent) => void;
-      onScrubberPositionChange?: (position: number) => void;
     }
   ) {
     this.svg = select(svgElement);
@@ -79,7 +77,6 @@ export class D3TimelineRenderer {
     this.onTimestampChange = callbacks.onTimestampChange;
     this.onPause = callbacks.onPause;
     this.onSiteHighlight = callbacks.onSiteHighlight;
-    this.onScrubberPositionChange = callbacks.onScrubberPositionChange;
   }
 
   /**
@@ -239,11 +236,6 @@ export class D3TimelineRenderer {
 
     const xPosition = this.timeScale(currentTimestamp);
 
-    // Notify React component of scrubber position for floating tooltip
-    if (this.onScrubberPositionChange) {
-      this.onScrubberPositionChange(xPosition);
-    }
-
     scrubberGroup
       .append("line")
       .attr("class", "scrubber-line")
@@ -265,6 +257,9 @@ export class D3TimelineRenderer {
       .attr("stroke-width", 2)
       .style("cursor", "grab");
 
+    // Native tooltip, same as the event dots: the date is on hover, not always on.
+    handle.append("title").text(timeFormat("%B %d, %Y")(currentTimestamp));
+
     const dragBehavior = drag<SVGCircleElement, unknown>()
       .on("start", function () {
         select(this)
@@ -281,11 +276,6 @@ export class D3TimelineRenderer {
           Math.min(this.timeScale.range()[1], event.x)
         );
         const newDate = this.timeScale.invert(x);
-
-        // Update scrubber position for React tooltip
-        if (this.onScrubberPositionChange) {
-          this.onScrubberPositionChange(x);
-        }
 
         this.onTimestampChange(newDate);
       })

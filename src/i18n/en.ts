@@ -3,7 +3,7 @@ import type { Translations } from "../types/i18n";
 /**
  * English translations
  *
- * Default language for Heritage Tracker application.
+ * Default language for Now & Then application.
  */
 export const en: Translations = {
   common: {
@@ -32,7 +32,9 @@ export const en: Translations = {
   },
 
   header: {
-    title: "Heritage Tracker",
+    title: "Now & Then",
+    location: "Gaza",
+    subtitle: "A God's-Eye View of the Genocide in Gaza: Before & After Satellite Imagery",
     dashboard: "Dashboard",
     data: "Data",
     timeline: "Timeline",
@@ -130,6 +132,12 @@ export const en: Translations = {
       "Show the imagery slider and the site timeline stacked instead of as tabs",
     tabImagery: "Imagery",
     tabSites: "Sites",
+    advancedSettings: "Advanced Settings",
+    showImagerySlider: "Show Imagery Slider",
+    showImagerySliderTooltip:
+      "Add the satellite imagery slider alongside the site timeline",
+    darkMode: "Dark Mode",
+    language: "Language",
   },
 
   table: {
@@ -311,8 +319,7 @@ export const en: Translations = {
     switchToDarkMode: "Switch to dark mode",
     viewGithub: "View source code on GitHub",
     helpPalestineDonate: "Help Palestine - Donate to relief efforts",
-    viewStatistics: "View Statistics",
-    aboutHeritageTracker: "About Heritage Tracker",
+    aboutHeritageTracker: "About Now & Then",
     resizeTable: "Resize table",
     dragToResizeTable: "Drag to resize table",
     clearSearch: "Clear search",
@@ -340,7 +347,7 @@ export const en: Translations = {
     donateButton: "Donate",
     disclaimer: "Note:",
     disclaimerText:
-      "Heritage Tracker is not affiliated with these organizations. Please research before donating.",
+      "Now & Then is not affiliated with these organizations. Please research before donating.",
     unrwaDesc:
       "UN agency providing education, healthcare, and emergency aid to Palestinian refugees.",
     mapDesc: "Medical services and supplies for Palestinians in occupied territories.",
@@ -349,13 +356,12 @@ export const en: Translations = {
   },
 
   footer: {
-    title: "Heritage Tracker",
+    title: "Now & Then: Gaza",
     sources: "UNESCO, Forensic Architecture, Heritage for Peace",
     github: "Github",
     donate: "Donate",
-    stats: "Stats",
     about: "About",
-    copyright: "© {year} Heritage Tracker",
+    copyright: "© {year} Now & Then: Gaza",
     lastUpdated: "Last Updated: {date}",
   },
 

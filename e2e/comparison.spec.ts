@@ -16,11 +16,11 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Comparison Mode - Critical Workflows', () => {
   test('Timeline page loads with comparison view', async ({ page }) => {
-    await page.goto('/timeline');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     // Page should load successfully
-    await expect(page).toHaveTitle(/heritage tracker/i);
+    await expect(page).toHaveTitle(/now & then/i);
 
     // Map should be visible (Timeline page always shows map)
     const map = page.locator('.leaflet-container').first();

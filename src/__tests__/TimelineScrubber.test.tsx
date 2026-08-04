@@ -369,7 +369,7 @@ describe("TimelineScrubber", () => {
 
       // Get all SVGs and find the timeline SVG (not the InfoIcon SVG)
       const svgs = container.querySelectorAll("svg");
-      const timelineSvg = Array.from(svgs).find((svg) => svg.classList.contains("mt-1"));
+      const timelineSvg = Array.from(svgs).find((svg) => svg.getAttribute("height") === "40");
       expect(timelineSvg).toBeInTheDocument();
       // Timeline SVG should have aria-hidden for accessibility
       expect(timelineSvg).toHaveAttribute("aria-hidden", "true");
@@ -390,7 +390,7 @@ describe("TimelineScrubber", () => {
 
   describe("Previous/Next Navigation (Advanced Mode)", () => {
     it("renders Previous and Next buttons in advanced mode", () => {
-      const { getByText } = renderWithTheme(
+      const { getByRole } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber
             sites={mockSites}
@@ -403,32 +403,32 @@ describe("TimelineScrubber", () => {
       );
 
       // Should show Previous and Next buttons in center
-      expect(getByText(/⏮ Previous/i)).toBeInTheDocument();
-      expect(getByText(/Next ⏭/i)).toBeInTheDocument();
+      expect(getByRole("button", { name: /previous destruction event/i })).toBeInTheDocument();
+      expect(getByRole("button", { name: /next destruction event/i })).toBeInTheDocument();
     });
 
     it("does not render Previous/Next buttons in normal mode", () => {
-      const { queryByText } = renderWithTheme(
+      const { queryByRole } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber sites={mockSites} />
         </AnimationProvider>
       );
 
       // Should NOT show Previous/Next in normal mode
-      expect(queryByText(/⏮ Previous/i)).not.toBeInTheDocument();
-      expect(queryByText(/Next ⏭/i)).not.toBeInTheDocument();
+      expect(queryByRole("button", { name: /previous destruction event/i })).not.toBeInTheDocument();
+      expect(queryByRole("button", { name: /next destruction event/i })).not.toBeInTheDocument();
     });
 
     it("does not show Previous/Next or current date display in normal mode", () => {
-      const { queryByText } = renderWithTheme(
+      const { queryByText, queryByRole } = renderWithTheme(
         <AnimationProvider>
           <TimelineScrubber sites={mockSites} />
         </AnimationProvider>
       );
 
       // Should NOT show Previous/Next in normal mode
-      expect(queryByText(/⏮ Previous/i)).not.toBeInTheDocument();
-      expect(queryByText(/Next ⏭/i)).not.toBeInTheDocument();
+      expect(queryByRole("button", { name: /previous destruction event/i })).not.toBeInTheDocument();
+      expect(queryByRole("button", { name: /next destruction event/i })).not.toBeInTheDocument();
       // Should NOT show "Current:" date display (removed for space)
       expect(queryByText(/Current:/i)).not.toBeInTheDocument();
     });

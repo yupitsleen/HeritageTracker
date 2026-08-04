@@ -3,14 +3,10 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useThemeClasses } from "../../hooks/useThemeClasses";
 import { useTranslation } from "../../contexts/LocaleContext";
 import { Button } from "../Button";
-import { DateLabel } from "../Timeline/DateLabel";
 import type { WaybackRelease } from "../../services/waybackService";
-import { InfoIcon } from "../Icons/InfoIcon";
-import { INFO_ICON_COLORS } from "../../constants/tooltip";
 import { COLORS } from "../../config/colorThemes";
 import { EmptyState } from "../EmptyState";
 import { TOOLTIPS } from "../../config/tooltips";
-import { Z_INDEX } from "../../constants/layout";
 
 /**
  * Callback type for Wayback release index changes
@@ -27,7 +23,9 @@ export interface WaybackSliderProps {
   releases: WaybackRelease[];
   currentIndex: number;
   onIndexChange: IndexChangeHandler;
-  totalSites?: number;
+  // Left edge of the map column: the card runs the full page width, so the nav
+  // buttons need this inset to sit under the maps they drive.
+  mapsInsetPx?: number;
   // Comparison mode support
   comparisonMode?: boolean;
   beforeIndex?: number;
@@ -50,7 +48,7 @@ export function WaybackSlider({
   releases,
   currentIndex,
   onIndexChange,
-  totalSites,
+  mapsInsetPx = 0,
   comparisonMode = false,
   beforeIndex = 0,
   onBeforeIndexChange,
@@ -67,28 +65,25 @@ export function WaybackSlider({
   const { yearMarkers, releasePositions, currentPositionPercent, beforePositionPercent } = useMemo(() => {
     if (releases.length === 0) return { yearMarkers: [], releasePositions: [], currentPositionPercent: 0, beforePositionPercent: 0 };
 
-    const firstDate = new Date(releases[0].releaseDate);
-    const lastDate = new Date(releases[releases.length - 1].releaseDate);
-    const startYear = firstDate.getFullYear();
-    const endYear = lastDate.getFullYear();
+    const startYear = new Date(releases[0].releaseDate).getFullYear();
+    const endYear = new Date(releases[releases.length - 1].releaseDate).getFullYear();
 
-    // Create year markers (positioned by actual date)
+    // The scale spans whole years, not first release → last release: that gives
+    // every year an equal-width band (so the labels are evenly spaced) while the
+    // ticks keep their true dates. Cost is a small empty margin at each end.
+    const scaleStart = new Date(`${startYear}-01-01`).getTime();
+    const totalRange = new Date(`${endYear + 1}-01-01`).getTime() - scaleStart;
+    const bandWidth = 100 / (endYear - startYear + 1);
+
+    // One marker per year, centered in its band
     const years: Array<{ year: number; position: number }> = [];
-    const totalRange = lastDate.getTime() - firstDate.getTime();
     for (let year = startYear; year <= endYear; year++) {
-      const isLastYear = year === endYear;
-      // Pin the last year label to 100% so it aligns with the last tick rather
-      // than floating at Jan 1 of that year (which leaves an unlabeled tail).
-      const position = isLastYear
-        ? 100
-        : ((new Date(`${year}-01-01`).getTime() - firstDate.getTime()) / totalRange) * 100;
-      years.push({ year, position: Math.max(0, Math.min(100, position)) });
+      years.push({ year, position: (year - startYear) * bandWidth + bandWidth / 2 });
     }
 
     // Calculate position for each release
     const positions = releases.map((release, idx) => {
-      const releaseDate = new Date(release.releaseDate).getTime();
-      const releaseOffset = releaseDate - firstDate.getTime();
+      const releaseOffset = new Date(release.releaseDate).getTime() - scaleStart;
       const position = (releaseOffset / totalRange) * 100;
       return {
         index: idx,
@@ -167,22 +162,6 @@ export function WaybackSlider({
   const handlePrevious = useCallback(() => step(-1), [step]);
   const handleNext = useCallback(() => step(1), [step]);
 
-  // Comparison mode: each scrubber gets its own prev/next, moving only itself.
-  const stepBefore = useCallback(
-    (delta: number) => {
-      const next = Math.max(0, Math.min(beforeIndex + delta, releases.length - 1));
-      if (next !== beforeIndex) onBeforeIndexChange?.(next);
-    },
-    [beforeIndex, releases.length, onBeforeIndexChange]
-  );
-  const stepAfter = useCallback(
-    (delta: number) => {
-      const next = Math.max(0, Math.min(currentIndex + delta, releases.length - 1));
-      if (next !== currentIndex) onIndexChange(next);
-    },
-    [currentIndex, releases.length, onIndexChange]
-  );
-
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -236,134 +215,57 @@ export function WaybackSlider({
     );
   }
 
+  // Hover date bubble, shared by the release ticks and the scrubbers.
+  const hoverTooltipClass = `hidden group-hover:block absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap pointer-events-none ${
+    isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"
+  } shadow-md z-10`;
+
   return (
+    // flex/justify-center: the panel is sized by the sites timeline, so the
+    // track sits in the middle of it instead of hugging the top edge.
     <div
-      className={t.timeline.container}
+      className={`${t.timeline.container} flex flex-col justify-center`}
       data-testid="wayback-slider"
       role="region"
       aria-label="Wayback Imagery Timeline"
     >
-      {/* Header: nav buttons centered on the container, stats absolutely positioned
-          right — same pattern as TimelineScrubber below. */}
+      {/* Header: nav buttons centered on the map column. Comparison mode has no
+          header — each map carries its own pair as an overlay (WaybackNav). */}
       {/* dir="ltr" keeps temporal controls left-to-right regardless of language */}
-      <div className="relative flex items-center justify-center gap-2 mb-2" dir="ltr">
-        {/* Center: nav buttons. In comparison mode each scrubber gets its own
-            pair, outlined in its scrubber colour and centered on its half. */}
-        {dualMode ? (
-          <div className="grid grid-cols-2 w-full">
-            {[
-              {
-                key: "before",
-                color: COLORS.FLAG_YELLOW,
-                index: beforeIndex,
-                onStep: stepBefore,
-              },
-              {
-                key: "after",
-                color: COLORS.FLAG_GREEN,
-                index: currentIndex,
-                onStep: stepAfter,
-              },
-            ].map(({ key, color, index, onStep }) => (
-              <div key={key} className="flex items-center justify-center gap-2">
-                <Button
-                  onClick={() => onStep(-1)}
-                  disabled={index === 0}
-                  variant="secondary"
-                  size="xs"
-                  style={{ borderColor: color }}
-                  aria-label={`Go to previous ${key} imagery release`}
-                  title={TOOLTIPS.WAYBACK.PREV_RELEASE}
-                  data-testid={`wayback-${key}-prev`}
-                >
-                  <span className="xl:hidden">⏮</span>
-                  <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
-                </Button>
+      {!dualMode && (
+        <div
+          className="relative flex items-center justify-center gap-2 mb-2"
+          style={{ paddingLeft: mapsInsetPx }}
+          dir="ltr"
+        >
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handlePrevious}
+              disabled={lowIndex === 0}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to previous satellite image release"
+              title={TOOLTIPS.WAYBACK.PREV_RELEASE}
+            >
+              ⏮
+            </Button>
 
-                <Button
-                  onClick={() => onStep(1)}
-                  disabled={index === releases.length - 1}
-                  variant="secondary"
-                  size="xs"
-                  style={{ borderColor: color }}
-                  aria-label={`Go to next ${key} imagery release`}
-                  title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
-                  data-testid={`wayback-${key}-next`}
-                >
-                  <span className="xl:hidden">⏭</span>
-                  <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
-                </Button>
-              </div>
-            ))}
+            <Button
+              onClick={handleNext}
+              disabled={highIndex === releases.length - 1}
+              variant="secondary"
+              size="xs"
+              aria-label="Go to next satellite image release"
+              title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
+            >
+              ⏭
+            </Button>
           </div>
-        ) : (
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={handlePrevious}
-            disabled={lowIndex === 0}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to previous satellite image release"
-            title={TOOLTIPS.WAYBACK.PREV_RELEASE}
-          >
-            <span className="xl:hidden">⏮</span>
-            <span className="hidden xl:inline">⏮ {translate("timeline.previous")}</span>
-          </Button>
-
-          <Button
-            onClick={handleNext}
-            disabled={highIndex === releases.length - 1}
-            variant="secondary"
-            size="xs"
-            aria-label="Go to next satellite image release"
-            title={TOOLTIPS.WAYBACK.NEXT_RELEASE}
-          >
-            <span className="xl:hidden">⏭</span>
-            <span className="hidden xl:inline">{translate("timeline.next")} ⏭</span>
-          </Button>
         </div>
-        )}
+      )}
 
-        {/* Right: dataset stats + info icon */}
-        <div className="absolute right-0 top-0 flex items-center gap-1.5">
-          <span className={`hidden md:block text-xs truncate pointer-events-none ${t.text.muted}`}>
-            {releases.length} Imagery Versions{totalSites ? ` | ${totalSites} Heritage Sites` : ''}
-          </span>
-          <InfoIcon
-            title={translate("timelinePage.waybackTooltip")}
-            aria-label={translate("timelinePage.waybackTooltip")}
-            className={`w-4 h-4 flex-shrink-0 ${INFO_ICON_COLORS.DEFAULT} ${INFO_ICON_COLORS.HOVER} transition-colors cursor-help`}
-          />
-        </div>
-      </div>
-
-      {/* Timeline visualization container - extra pb-6 for yellow tooltip below */}
-      <div className="relative pb-6">
-        {/* Year labels - positioned above the timeline */}
-        <div className="relative h-4 mb-2">
-          {yearMarkers.map(({ year, position }, index) => {
-            const isFirst = index === 0;
-            const isLast = index === yearMarkers.length - 1;
-            const transformClass = isFirst
-              ? "" // Left-align for first year to prevent left overflow
-              : isLast
-              ? "-translate-x-full" // Right-align for last year to prevent right overflow
-              : "-translate-x-1/2"; // Center for middle years
-
-            return (
-              <div
-                key={year}
-                className={`absolute ${transformClass}`}
-                style={{ left: `${position}%` }}
-              >
-                <span className={`text-[9px] font-semibold ${t.text.body}`}>
-                  {year}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
+      {/* Timeline visualization container */}
+      <div className="relative">
         {/* Interactive timeline bar */}
         <div
           ref={timelineRef}
@@ -379,21 +281,6 @@ export function WaybackSlider({
         >
           {/* Background track */}
           <div className={`absolute inset-0 rounded ${isDark ? "bg-gray-600" : "bg-gray-300"}`} />
-
-          {/* Green progress fill - thinner and more subtle */}
-          {/* In comparison mode, only fill between the yellow (before) and green (after) scrubbers, not from the track start */}
-          <div
-            data-testid="wayback-progress-fill"
-            className="absolute top-1/2 -translate-y-1/2 h-1 bg-[#009639] rounded pointer-events-none"
-            style={{
-              left: `${comparisonMode ? beforePositionPercent : 0}%`,
-              width: `${
-                comparisonMode
-                  ? Math.max(0, currentPositionPercent - beforePositionPercent)
-                  : currentPositionPercent
-              }%`,
-            }}
-          />
 
           {/* Release tick marks with tooltips - wider hover area for easier interaction */}
           {releasePositions.map(({ index, position, date }) => {
@@ -418,87 +305,61 @@ export function WaybackSlider({
                   }`}
                 />
 
-                {/* Tooltip */}
-                <div className={`absolute bottom-full mb-1 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none ${isDark ? "bg-gray-800 text-white" : "bg-gray-700 text-white"} shadow-md z-10`}>
+                {/* Tooltip — `hidden` until hover, not just transparent: the first and
+                    last ticks sit at the track's edges, so a laid-out invisible tooltip
+                    overflows the page and raises a horizontal scrollbar. */}
+                <div className={hoverTooltipClass}>
                   {date}
                 </div>
               </div>
             );
           })}
 
-          {/* Before position scrubber indicator (yellow) - only in comparison mode */}
+          {/* Before position scrubber indicator - only in comparison mode */}
           {comparisonMode && beforeRelease && (
             <div
-              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 group"
               style={{ left: `${beforePositionPercent}%` }}
             >
-              {/* Floating date tooltip - positioned below scrubber with edge detection */}
-              <div
-                className={`absolute top-full mt-2 pointer-events-none ${
-                  beforePositionPercent < 10
-                    ? 'left-0'
-                    : beforePositionPercent > 90
-                    ? 'right-0'
-                    : 'left-1/2 -translate-x-1/2'
-                }`}
-                style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
-                data-testid="wayback-before-tooltip"
-              >
-                <DateLabel
-                  date={beforeRelease?.releaseDate || translate("timeline.unknownDate")}
-                  variant="yellow"
-                  size="sm"
-                />
-              </div>
-              {/* Scrubber indicator - Yellow */}
+              <div className={hoverTooltipClass}>{beforeRelease.releaseDate}</div>
               <div
                 data-testid="wayback-before-scrubber"
-                className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
-                style={{ borderColor: COLORS.FLAG_YELLOW }}
+                className="w-3 h-3 border-2 rounded-full shadow-md"
+                style={{ backgroundColor: COLORS.COMPARE_BEFORE, borderColor: COLORS.COMPARE_BEFORE }}
               />
             </div>
           )}
 
-          {/* Current position scrubber indicator with floating date tooltip (green) */}
+          {/* Current position scrubber indicator */}
           <div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 group"
             style={{ left: `${currentPositionPercent}%` }}
           >
-            {/* Floating date tooltip - positioned above scrubber with edge detection */}
-            <div
-              className={`absolute bottom-full mb-2 pointer-events-none ${
-                currentPositionPercent < 10
-                  ? 'left-0'
-                  : currentPositionPercent > 90
-                  ? 'right-0'
-                  : 'left-1/2 -translate-x-1/2'
-              }`}
-              style={{ zIndex: Z_INDEX.TIMELINE_TOOLTIP }}
-              data-testid="wayback-current-tooltip"
-            >
-              <DateLabel
-                date={currentRelease?.releaseDate || translate("timeline.unknownDate")}
-                variant="green"
-                size="sm"
-              />
+            <div className={hoverTooltipClass}>
+              {currentRelease?.releaseDate || translate("timeline.unknownDate")}
             </div>
-            {/* Scrubber indicator - Green */}
             <div
               data-testid="wayback-current-scrubber"
-              className="w-3 h-3 bg-white border-2 rounded-full shadow-md"
-              style={{ borderColor: COLORS.FLAG_GREEN }}
+              className="w-3 h-3 border-2 rounded-full shadow-md"
+              style={{ backgroundColor: COLORS.COMPARE_AFTER, borderColor: COLORS.COMPARE_AFTER }}
             />
           </div>
         </div>
-      </div>
 
-      {/* Keyboard shortcuts hint - hidden below 1280px */}
-      <div className={`hidden xl:block mt-0.5 text-[10px] text-center leading-tight ${t.text.muted}`}>
-        {translate("timeline.keyboard")}: <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>←/→</kbd> {translate("timeline.step")}
-        {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>Home/End</kbd> {translate("timeline.jump")}
-        {" • "}
-        <kbd className={`${t.timeline.kbdKey} ${t.bg.secondary} ${t.border.default} ${t.text.body}`}>PgUp/PgDn</kbd> Jump ±10
+        {/* Year labels - below the track */}
+        <div className="relative h-3">
+          {/* Centered in its year band, which sits inside the track — so no
+              edge-overflow special cases for the first and last labels. */}
+          {yearMarkers.map(({ year, position }) => (
+            <div
+              key={year}
+              className="absolute -translate-x-1/2"
+              style={{ left: `${position}%` }}
+            >
+              <span className={`text-[9px] font-semibold ${t.text.body}`}>{year}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

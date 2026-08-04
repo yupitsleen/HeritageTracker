@@ -13,7 +13,7 @@ test.describe('Smoke Tests - Core Pages', () => {
     await page.waitForLoadState('networkidle');
 
     // Check for key elements
-    await expect(page).toHaveTitle(/heritage tracker/i);
+    await expect(page).toHaveTitle(/now & then/i);
 
     // Map should be visible
     const map = page.locator('.leaflet-container').first();
@@ -22,30 +22,20 @@ test.describe('Smoke Tests - Core Pages', () => {
 });
 
 test.describe('Smoke Tests - Navigation', () => {
-  test('navigation links work correctly', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    // Header nav items are buttons wired to the router (not <a> links).
-    const dashboardNav = page.getByRole('button', { name: /dashboard/i }).first();
-    await expect(dashboardNav).toBeVisible();
-
-    await dashboardNav.click();
-    await page.waitForLoadState('networkidle');
-    expect(page.url()).toContain('/dashboard');
-  });
+  // There is no in-app navigation: the header is a logo and a title, and /data,
+  // /dashboard and /resources/* are retiring. Routes are reached by URL.
 
   test('browser back button works', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    await page.goto('/timeline');
+    await page.goto('/data');
     await page.waitForLoadState('networkidle');
 
     await page.goBack();
     await page.waitForLoadState('networkidle');
 
-    expect(page.url()).not.toContain('/timeline');
+    expect(page.url()).not.toContain('/data');
   });
 });
 

@@ -28,12 +28,12 @@ import type { WaybackTimelineConfig } from "../types/waybackTimelineTypes";
 export const WAYBACK_TIMELINE_REGISTRY: Record<string, WaybackTimelineConfig> = {
   "heritage-tracker-v1": {
     id: "heritage-tracker-v1",
-    label: "Heritage Tracker Configuration v1",
+    label: "Now & Then Configuration v1",
     labelArabic: "تكوين متتبع التراث الإصدار 1",
     isDefault: true,
     description: "Original wayback timeline configuration for Advanced Animation page",
     metadata: {
-      author: "Heritage Tracker Team",
+      author: "Now & Then Team",
       version: "1.0.0",
       notes: "Optimized for visual clarity and smooth playback experience",
     },

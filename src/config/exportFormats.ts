@@ -1,5 +1,5 @@
 /**
- * Export Format Registry for Heritage Tracker
+ * Export Format Registry for Now & Then
  *
  * Central registry for all export formats with extensibility support.
  * Follows the same pattern as Site Type and Status registries.

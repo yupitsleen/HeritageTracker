@@ -1,5 +1,5 @@
 /**
- * Export system types for Heritage Tracker
+ * Export system types for Now & Then
  *
  * Defines interfaces for extensible export functionality supporting
  * multiple formats (CSV, JSON, GeoJSON, etc.)

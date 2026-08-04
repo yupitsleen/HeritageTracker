@@ -27,7 +27,6 @@ function AppRouter({ isMobile }: { isMobile: boolean }) {
     <Routes>
       <Route path="/" element={<Timeline />} />
       <Route path="/data" element={<DataPage />} />
-      <Route path="/timeline" element={<Timeline />} />
       {/* On mobile, show DataPage instead of DashboardPage (timeline not shown) */}
       <Route path="/dashboard" element={isMobile ? <DataPage /> : <DashboardPage />} />
 
@@ -68,9 +67,9 @@ export function App() {
   }, []);
 
   // Determine basename - should match Vite's base config
-  // Production (GitHub Pages): /HeritageTracker/
+  // Production (GitHub Pages): /now-and-then/gaza/
   // Development/E2E: /
-  const basename = import.meta.env.PROD ? "/HeritageTracker" : "";
+  const basename = import.meta.env.PROD ? "/now-and-then/gaza" : "";
 
   return (
     <BrowserRouter basename={basename}>

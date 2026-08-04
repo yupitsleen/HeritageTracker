@@ -228,8 +228,8 @@ describe("ComparisonMapView", () => {
       );
 
       // ponytail: DateLabel located by data-testid, not palette colors
-      expect(screen.queryByTestId("date-label-yellow")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("date-label-green")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("date-label-before")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("date-label-after")).not.toBeInTheDocument();
     });
 
     it("renders before date on the yellow label variant", () => {
@@ -249,7 +249,7 @@ describe("ComparisonMapView", () => {
         />
       );
 
-      expect(screen.getByTestId("date-label-yellow")).toHaveTextContent("2023-10-01");
+      expect(screen.getByTestId("date-label-before")).toHaveTextContent("2023-10-01");
     });
 
     it("renders after date on the green label variant", () => {
@@ -269,7 +269,7 @@ describe("ComparisonMapView", () => {
         />
       );
 
-      expect(screen.getByTestId("date-label-green")).toHaveTextContent("2024-01-15");
+      expect(screen.getByTestId("date-label-after")).toHaveTextContent("2024-01-15");
     });
 
     it("date labels match wayback release dates format", () => {

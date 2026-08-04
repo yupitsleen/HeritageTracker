@@ -1,233 +1,60 @@
-import { useState, useEffect } from "react";
-import { cn } from "../../styles/theme";
-import { MoonIcon, SunIcon, QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import type { ReactNode } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "../../contexts/LocaleContext";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "../Button";
-import { IconButton } from "../Button/IconButton";
-import { LanguageSelector } from "../LanguageSelector";
-import { NavigationLinks } from "./NavigationLinks";
-import { COMPACT_HEADER } from "../../constants/compactDesign";
-import { Z_INDEX, BREAKPOINTS } from "../../constants/layout";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { useNavigate } from "react-router-dom";
+import { Z_INDEX } from "../../constants/layout";
 import { TOOLTIPS } from "../../config/tooltips";
 import logo from "../../assets/HeritageTrackerLogo.png";
 
-interface AppHeaderProps {
-  onOpenHelp?: () => void;
-}
-
 /**
- * Application header with title, description, and action buttons
- * Black background with Palestinian flag colors
- * Includes dark mode toggle and navigation to all pages
- * Dashboard, Data, Timeline, About, and Resources pages
- * Mobile: Hamburger menu for navigation
+ * Application header: centered logo + title, nothing else.
+ * Black background with Palestinian flag colors.
  */
-export function AppHeader({ onOpenHelp }: AppHeaderProps) {
-  const { isDark, toggleTheme } = useTheme();
+export function AppHeader({ leading }: { leading?: ReactNode }) {
+  const { isDark } = useTheme();
   const t = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Check if screen is mobile size (< BREAKPOINTS.TABLET)
-  // Dashboard page redirects mobile users to Data page, so hide Dashboard nav on mobile
-  const isMobileSize = useMediaQuery(`(max-width: ${BREAKPOINTS.TABLET - 1}px)`);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      // Save current scroll position
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-    } else {
-      // Restore scroll position
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    }
-
-    return () => {
-      // Cleanup on unmount
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-    };
-  }, [isMobileMenuOpen]);
-
-  // Determine active page for highlighting
-  const getActivePage = () => {
-    const path = location.pathname;
-    if (path === "/" || path === "/HeritageTracker" || path === "/HeritageTracker/") return "timeline";
-    if (path.includes("/dashboard")) return "dashboard";
-    if (path.includes("/data")) return "data";
-    if (path.includes("/timeline")) return "timeline";
-    if (path.includes("/about")) return "about";
-    if (path.includes("/resources/")) {
-      // Return the specific resource page (e.g., "resources/donate")
-      const resourcePage = path.split("/resources/")[1];
-      return `resources/${resourcePage}`;
-    }
-    return null;
-  };
-
-  const activePage = getActivePage();
-
-  // Close mobile menu when navigating
-  const handleNavigation = (path: string) => {
-    navigate(path);
-    setIsMobileMenuOpen(false);
-  };
 
   return (
     <div
       className={`sticky top-0 transition-colors duration-200 ${
-        isDark ? "bg-gray-900" : "bg-[#000000]"
+        isDark ? "bg-gray-900" : "bg-[#121212]"
       }`}
       style={{ zIndex: Z_INDEX.STICKY }}
       dir="ltr"
     >
-      {/* Header - BLACK background, ultra compact */}
-      {/* dir="ltr" keeps navigation and utility controls in consistent positions */}
-      <header className="bg-[#000000] text-[#fefefe] shadow-lg border-b-2 border-[#009639]">
-        <div className={cn("container mx-auto px-4", "py-1.5 relative flex items-center justify-between")}>
-          {/* Left: Logo + Title - clickable to return home */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/")}
-              className="cursor-pointer flex items-center gap-3"
-              aria-label="Go to home page"
-              title={TOOLTIPS.HEADER.HOME}
-            >
-              <img
-                src={logo}
-                alt="Heritage Tracker Logo"
-                className="h-8 md:h-10 w-auto"
-              />
-              <h1 className={`text-lg md:text-xl font-bold text-[#fefefe] uppercase tracking-wide`}>
-                {t("header.title")}
-              </h1>
-            </button>
-          </div>
-
-          {/* Center: Main action buttons - hidden on small/medium screens, shown on large+ */}
-          <div className={`hidden xl:flex absolute left-1/2 -translate-x-1/2 ${COMPACT_HEADER.buttonGap} items-center`}>
-            <NavigationLinks
-              activePage={activePage}
-              isMobileSize={isMobileSize}
-              onNavigate={(path) => navigate(path)}
-              layout="desktop"
-            />
-          </div>
-
-          {/* Right: Icon buttons */}
-          <div className={`flex ${COMPACT_HEADER.buttonGap} items-center`}>
-            {/* Help Button - Question mark icon - desktop only */}
-            {onOpenHelp && (
-              <IconButton
-                icon={<QuestionMarkCircleIcon className="w-4 h-4" />}
-                onClick={onOpenHelp}
-                ariaLabel={t("common.help")}
-                title={TOOLTIPS.HEADER.HELP}
-                className="hidden xl:flex"
-              />
-            )}
-
-            {/* Language Selector - Dropdown showing all registered locales - desktop only */}
-            <div className="hidden xl:flex">
-              <LanguageSelector />
-            </div>
-
-            {/* Dark Mode Toggle - Discrete icon button - desktop only */}
-            <div className="hidden xl:flex">
-              <IconButton
-                icon={isDark ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
-                onClick={toggleTheme}
-                ariaLabel={isDark ? t("aria.switchToLightMode") : t("aria.switchToDarkMode")}
-                title={isDark ? TOOLTIPS.HEADER.DARK_MODE_ON : TOOLTIPS.HEADER.DARK_MODE_OFF}
-              />
-            </div>
-
-            {/* Hamburger Menu Button - Mobile/Tablet only (< 1280px) */}
-            <IconButton
-              icon={isMobileMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              ariaLabel={isMobileMenuOpen ? "Close menu" : "Open menu"}
-              title={isMobileMenuOpen ? TOOLTIPS.HEADER.MENU_CLOSE : TOOLTIPS.HEADER.MENU_OPEN}
-              className="xl:hidden"
-            />
-          </div>
-        </div>
-
-        {/* Mobile Menu Drawer - Slides down from top */}
-        {isMobileMenuOpen && (
-          <div
-            className="xl:hidden bg-[#000000] border-t border-gray-700 animate-slideDown"
-            style={{ zIndex: Z_INDEX.HEADER_DROPDOWN }}
+      <header className="relative bg-[#121212] text-[#fefefe] shadow-lg">
+        {/* Top-left square slot — absolute so it never shifts the centered title. */}
+        {leading && <div className="absolute inset-y-0 left-0">{leading}</div>}
+        <div className="h-10">
+          {/* Logo + Title - clickable to return home.
+              ponytail: split on "&" — every locale keeps the latin "Now & Then".
+              The "&" is the anchor: it sits on --map-gap-x (the seam between the two
+              maps, set by DesktopLayout) and falls back to page center elsewhere. */}
+          <button
+            onClick={() => navigate("/")}
+            className="absolute top-1.5 -translate-x-1/2 cursor-pointer text-lg md:text-xl font-bold uppercase tracking-wide leading-7"
+            style={{ left: "var(--map-gap-x, 50%)" }}
+            aria-label="Go to home page"
+            title={TOOLTIPS.HEADER.HOME}
           >
-            <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              {/* Navigation Links */}
-              <NavigationLinks
-                activePage={activePage}
-                isMobileSize={isMobileSize}
-                onNavigate={handleNavigation}
-                layout="mobile"
-              />
-
-              {/* Divider */}
-              <div className="border-t border-gray-700 my-2"></div>
-
-              {/* Utility Controls */}
-              <div className="flex items-center justify-between px-3">
-                <span className="text-sm text-gray-400">Language</span>
-                <LanguageSelector />
-              </div>
-
-              <div className="flex items-center justify-between px-3">
-                <span className="text-sm text-gray-400">Theme</span>
-                <IconButton
-                  icon={isDark ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-                  onClick={toggleTheme}
-                  ariaLabel={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                  title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                />
-              </div>
-
-              {onOpenHelp && (
-                <Button
-                  onClick={() => {
-                    onOpenHelp();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  variant="ghost"
-                  size="sm"
-                  lightText
-                  className="w-full justify-start"
-                >
-                  <QuestionMarkCircleIcon className="w-5 h-5 mr-2" />
-                  {t("common.help")}
-                </Button>
-              )}
-            </nav>
-          </div>
-        )}
+            <h1>
+              {/* w-max: a right:100% box gets zero available width, so it would
+                  shrink-wrap to nothing and let the glyphs spill over the "&". */}
+              <span className="absolute right-full mr-2 w-max flex items-center gap-3 text-[#ed3039]">
+                {/* ponytail: h-7 matches the title's line-height at both text sizes */}
+                <img src={logo} alt="Now & Then Logo" className="h-7 w-auto" />
+                {t("header.title").split("&")[0].trim()}
+              </span>
+              <span className="text-[#fefefe]">&amp;</span>
+              <span className="absolute left-full ml-2 w-max text-[#009639]">
+                {t("header.title").split("&")[1]?.trim()}
+                <span className="text-[#fefefe]">: {t("header.location")}</span>
+              </span>
+            </h1>
+          </button>
+        </div>
       </header>
-
-      {/* Flag-colored horizontal line - RED, BLACK, RED, GREEN (4px high, 4 bars) */}
-      <div className="flex h-1">
-        <div className="flex-1 bg-[#ed3039]"></div>
-        <div className="flex-1 bg-[#000000]"></div>
-        <div className="flex-1 bg-[#ed3039]"></div>
-        <div className="flex-1 bg-[#009639]"></div>
-      </div>
     </div>
   );
 }

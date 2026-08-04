@@ -12,7 +12,6 @@ import { AppHeader } from "../components/Layout/AppHeader";
 import { AppFooter } from "../components/Layout/AppFooter";
 import { LoadingSpinner } from "../components/Loading/LoadingSpinner";
 import { ErrorMessage } from "../components/Error/ErrorMessage";
-import { DashboardHelpModal } from "../components/Help";
 import { applyFilterUpdates } from "../utils/filterHelpers";
 import type { FilterState } from "../types";
 import { Z_INDEX } from "../constants/layout";
@@ -44,7 +43,7 @@ function HideMapMarkersByDefault() {
 }
 
 /**
- * DashboardPage - Main heritage tracker dashboard with table, maps, and timeline
+ * DashboardPage - Main dashboard with table, maps, and timeline
  * Desktop only - mobile users see DataPage instead (see App.tsx routing)
  */
 export function DashboardPage() {
@@ -95,9 +94,7 @@ export function DashboardPage() {
       />
 
       {/* Header with flag line */}
-      <AppHeader
-        onOpenHelp={() => appState.setIsHelpOpen(true)}
-      />
+      <AppHeader />
 
       {/* Main Content - Non-blocking render with skeleton UI while loading */}
       <main id="main-content" className="pb-24 md:pb-0 relative">
@@ -159,16 +156,6 @@ export function DashboardPage() {
             <SiteDetailPanel site={appState.selectedSite} />
           </Suspense>
         )}
-      </Modal>
-
-
-      {/* Help Modal */}
-      <Modal
-        isOpen={appState.modals.isHelpOpen}
-        onClose={() => appState.setIsHelpOpen(false)}
-        zIndex={Z_INDEX.MODAL_DROPDOWN}
-      >
-        <DashboardHelpModal />
       </Modal>
 
       {/* Footer - Desktop only */}

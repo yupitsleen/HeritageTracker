@@ -1,4 +1,4 @@
-# AI Coding Agent Instructions for Heritage Tracker
+# AI Coding Agent Instructions for Now & Then
 
 **Project:** Palestinian cultural heritage destruction tracker with interactive satellite comparison
 **Stack:** React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS v4 + Leaflet + D3.js + Supabase + Playwright
@@ -153,14 +153,14 @@ npm run e2e:debug    # Step-through debugger
 ### Build & Deploy
 
 ```bash
-npm run build         # Production build (base path = /HeritageTracker/ for GitHub Pages)
+npm run build         # Production build (base path = /now-and-then/gaza/ for GitHub Pages)
 npm run preview       # Local production preview
 ```
 
 **Important:** Base path logic in `vite.config.ts`:
 
 - Dev/E2E tests: `/` (root)
-- Production: `/HeritageTracker/` (GitHub Pages subdirectory)
+- Production: `/now-and-then/gaza/` (GitHub Pages subdirectory)
 
 ### Database Commands
 

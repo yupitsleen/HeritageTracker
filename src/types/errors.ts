@@ -1,5 +1,5 @@
 /**
- * Error Types for Heritage Tracker
+ * Error Types for Now & Then
  *
  * Provides type-safe error handling across the application.
  * All async operations should throw or return these typed errors.

@@ -15,16 +15,6 @@ export const TIMELINE_CONFIG = {
 } as const;
 
 /**
- * Tooltip positioning
- */
-export const TOOLTIP_CONFIG = {
-  /** Vertical offset from timeline (in pixels) - 40px to balance clearance from timeline and footer */
-  VERTICAL_OFFSET: 40,
-  /** Horizontal transform percentage */
-  HORIZONTAL_TRANSFORM: "-50%",
-} as const;
-
-/**
  * Custom marker icon configuration for SiteDetailView
  */
 export const SITE_MARKER_CONFIG = {
