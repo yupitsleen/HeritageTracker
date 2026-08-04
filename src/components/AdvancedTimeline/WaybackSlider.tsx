@@ -65,28 +65,25 @@ export function WaybackSlider({
   const { yearMarkers, releasePositions, currentPositionPercent, beforePositionPercent } = useMemo(() => {
     if (releases.length === 0) return { yearMarkers: [], releasePositions: [], currentPositionPercent: 0, beforePositionPercent: 0 };
 
-    const firstDate = new Date(releases[0].releaseDate);
-    const lastDate = new Date(releases[releases.length - 1].releaseDate);
-    const startYear = firstDate.getFullYear();
-    const endYear = lastDate.getFullYear();
+    const startYear = new Date(releases[0].releaseDate).getFullYear();
+    const endYear = new Date(releases[releases.length - 1].releaseDate).getFullYear();
 
-    // Create year markers (positioned by actual date)
+    // The scale spans whole years, not first release → last release: that gives
+    // every year an equal-width band (so the labels are evenly spaced) while the
+    // ticks keep their true dates. Cost is a small empty margin at each end.
+    const scaleStart = new Date(`${startYear}-01-01`).getTime();
+    const totalRange = new Date(`${endYear + 1}-01-01`).getTime() - scaleStart;
+    const bandWidth = 100 / (endYear - startYear + 1);
+
+    // One marker per year, centered in its band
     const years: Array<{ year: number; position: number }> = [];
-    const totalRange = lastDate.getTime() - firstDate.getTime();
     for (let year = startYear; year <= endYear; year++) {
-      const isLastYear = year === endYear;
-      // Pin the last year label to 100% so it aligns with the last tick rather
-      // than floating at Jan 1 of that year (which leaves an unlabeled tail).
-      const position = isLastYear
-        ? 100
-        : ((new Date(`${year}-01-01`).getTime() - firstDate.getTime()) / totalRange) * 100;
-      years.push({ year, position: Math.max(0, Math.min(100, position)) });
+      years.push({ year, position: (year - startYear) * bandWidth + bandWidth / 2 });
     }
 
     // Calculate position for each release
     const positions = releases.map((release, idx) => {
-      const releaseDate = new Date(release.releaseDate).getTime();
-      const releaseOffset = releaseDate - firstDate.getTime();
+      const releaseOffset = new Date(release.releaseDate).getTime() - scaleStart;
       const position = (releaseOffset / totalRange) * 100;
       return {
         index: idx,
@@ -353,27 +350,17 @@ export function WaybackSlider({
 
         {/* Year labels - below the track */}
         <div className="relative h-3">
-          {yearMarkers.map(({ year, position }, index) => {
-            const isFirst = index === 0;
-            const isLast = index === yearMarkers.length - 1;
-            const transformClass = isFirst
-              ? "" // Left-align for first year to prevent left overflow
-              : isLast
-              ? "-translate-x-full" // Right-align for last year to prevent right overflow
-              : "-translate-x-1/2"; // Center for middle years
-
-            return (
-              <div
-                key={year}
-                className={`absolute ${transformClass}`}
-                style={{ left: `${position}%` }}
-              >
-                <span className={`text-[9px] font-semibold ${t.text.body}`}>
-                  {year}
-                </span>
-              </div>
-            );
-          })}
+          {/* Centered in its year band, which sits inside the track — so no
+              edge-overflow special cases for the first and last labels. */}
+          {yearMarkers.map(({ year, position }) => (
+            <div
+              key={year}
+              className="absolute -translate-x-1/2"
+              style={{ left: `${position}%` }}
+            >
+              <span className={`text-[9px] font-semibold ${t.text.body}`}>{year}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

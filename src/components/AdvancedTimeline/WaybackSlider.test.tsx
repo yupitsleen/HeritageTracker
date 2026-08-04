@@ -85,6 +85,25 @@ describe("WaybackSlider", () => {
       expect(screen.getByText("2015")).toBeInTheDocument();
       expect(screen.getByText("2016")).toBeInTheDocument();
     });
+
+    it("spaces year labels evenly and keeps the ticks on their true dates", () => {
+      renderWithTheme(
+        <WaybackSlider releases={mockReleases} currentIndex={0} onIndexChange={vi.fn()} />
+      );
+
+      // 3 years → bands of 33.3%, labels centered at 16.7 / 50 / 83.3
+      const left = (year: string) =>
+        parseFloat(screen.getByText(year).parentElement!.style.left);
+      expect(left("2015") - left("2014")).toBeCloseTo(left("2016") - left("2015"), 5);
+      expect(left("2015")).toBeCloseTo(50, 5);
+
+      // First release is Feb 20 2014, so its tick sits inside the track, not at 0%
+      const firstTickPercent = parseFloat(
+        (document.querySelectorAll(".group")[0] as HTMLElement).style.left
+      );
+      expect(firstTickPercent).toBeGreaterThan(0);
+      expect(firstTickPercent).toBeLessThan(100 / 3); // still inside the 2014 band
+    });
   });
 
   describe("Previous/Next Buttons", () => {
