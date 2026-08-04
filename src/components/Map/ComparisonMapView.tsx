@@ -30,6 +30,9 @@ interface ComparisonMapViewProps {
   /** Overlays pinned to the bottom-center of each map (imagery prev/next) */
   beforeControls?: ReactNode;
   afterControls?: ReactNode;
+  /** When provided, the date labels become editable and snap to the nearest release */
+  onBeforeDateChange?: (date: string) => void;
+  onAfterDateChange?: (date: string) => void;
 }
 
 /**
@@ -57,6 +60,8 @@ export function ComparisonMapView({
   afterMapSettings,
   beforeControls,
   afterControls,
+  onBeforeDateChange,
+  onAfterDateChange,
 }: ComparisonMapViewProps) {
   // Publish the seam between the two maps so AppHeader can line its "&" up with it.
   // ponytail: measured, not computed — survives sidebar collapse and window resize.
@@ -88,8 +93,13 @@ export function ComparisonMapView({
         >
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {before.dateLabel && (
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-              <DateLabel date={before.dateLabel} variant="before" size="md" />
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000]">
+              <DateLabel
+                date={before.dateLabel}
+                variant="before"
+                size="md"
+                onDateChange={onBeforeDateChange}
+              />
             </div>
           )}
           <SiteDetailView
@@ -118,8 +128,13 @@ export function ComparisonMapView({
         >
           {/* Date label - styled like wayback tooltip but 1.5x larger with 70% opacity */}
           {after.dateLabel && (
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-none">
-              <DateLabel date={after.dateLabel} variant="after" size="md" />
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000]">
+              <DateLabel
+                date={after.dateLabel}
+                variant="after"
+                size="md"
+                onDateChange={onAfterDateChange}
+              />
             </div>
           )}
           <SiteDetailView

@@ -477,6 +477,12 @@ export function Timeline() {
                       dateLabel: currentRelease?.releaseDate,
                     }}
                     onSiteClick={setSelectedSite}
+                    onBeforeDateChange={(date) =>
+                      setBeforeReleaseIndex(findClosestReleaseIndex(releases, new Date(date)))
+                    }
+                    onAfterDateChange={(date) =>
+                      setCurrentReleaseIndex(findClosestReleaseIndex(releases, new Date(date)))
+                    }
                     beforeMapSettings={{
                       zoomToSite: beforeMapZoomToSite,
                       onZoomToSiteChange: setBeforeMapZoomToSite,
@@ -517,6 +523,9 @@ export function Timeline() {
                     customTileUrl={currentRelease?.tileUrl}
                     customMaxZoom={currentRelease?.maxZoom}
                     dateLabel={currentRelease?.releaseDate}
+                    onDateLabelChange={(date) =>
+                      setCurrentReleaseIndex(findClosestReleaseIndex(releases, new Date(date)))
+                    }
                     onSiteClick={setSelectedSite}
                     comparisonModeActive={false}
                     zoomToSiteOverride={singleMapZoomToSite}
