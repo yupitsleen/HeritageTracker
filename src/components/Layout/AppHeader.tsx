@@ -18,12 +18,12 @@ export function AppHeader({ leading }: { leading?: ReactNode }) {
   return (
     <div
       className={`sticky top-0 transition-colors duration-200 ${
-        isDark ? "bg-gray-900" : "bg-[#1f1f1f]"
+        isDark ? "bg-gray-900" : "bg-[#121212]"
       }`}
       style={{ zIndex: Z_INDEX.STICKY }}
       dir="ltr"
     >
-      <header className="relative bg-[#1f1f1f] text-[#fefefe] shadow-lg">
+      <header className="relative bg-[#121212] text-[#fefefe] shadow-lg">
         {/* Top-left square slot — absolute so it never shifts the centered title. */}
         {leading && <div className="absolute inset-y-0 left-0">{leading}</div>}
         <div className="container mx-auto px-4 py-1.5 flex items-center justify-center">

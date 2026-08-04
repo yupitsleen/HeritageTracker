@@ -351,9 +351,9 @@ export function Timeline() {
 
       {/* Main content */}
       {/* Relative positioning creates stacking context above z-0 triangle */}
-      {/* pb-8 adds bottom padding to prevent footer overlap */}
+      {/* 67px = 40px header + 27px fixed footer; py-2 keeps equal breathing room top and bottom */}
       <main
-        className="h-[calc(100vh-58px)] px-4 pb-8 flex flex-col gap-2 relative"
+        className="h-[calc(100vh-67px)] px-4 py-2 flex flex-col gap-2 relative"
         onClick={exitExpandedOnOutsideClick}
       >
         {/* Loading state */}
