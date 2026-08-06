@@ -29,12 +29,11 @@ export function AppHeader({ leading }: { leading?: ReactNode }) {
         <div className="h-10">
           {/* Logo + Title - clickable to return home.
               ponytail: split on "&" — every locale keeps the latin "Now & Then".
-              The "&" is the anchor: it sits on --map-gap-x (the seam between the two
-              maps, set by DesktopLayout) and falls back to page center elsewhere. */}
+              The "&" anchors on page center, which is also the seam between the two
+              comparison maps. Fixed, so opening the side panel doesn't drag the title. */}
           <button
             onClick={() => navigate("/")}
-            className="absolute top-1.5 -translate-x-1/2 cursor-pointer text-lg md:text-xl font-bold uppercase tracking-wide leading-7"
-            style={{ left: "var(--map-gap-x, 50%)" }}
+            className="absolute top-1.5 left-1/2 -translate-x-1/2 cursor-pointer text-lg md:text-xl font-bold uppercase tracking-wide leading-7"
             aria-label="Go to home page"
             title={TOOLTIPS.HEADER.HOME}
           >
