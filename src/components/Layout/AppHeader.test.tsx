@@ -13,13 +13,13 @@ const AppHeaderWithRouter = () => (
 describe("AppHeader", () => {
   it("renders the logo inside the home button", () => {
     renderWithTheme(<AppHeaderWithRouter />);
-    const logo = screen.getByAltText(/Now & Then Logo/i);
+    const logo = screen.getByAltText(/Then & Now Logo/i);
     expect(screen.getByRole("button", { name: /go to home page/i })).toContainElement(logo);
   });
 
   it("displays the title", () => {
     renderWithTheme(<AppHeaderWithRouter />);
-    expect(screen.getByRole("heading", { name: /Now & Then/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Then & Now/i })).toBeInTheDocument();
   });
 
   it("renders nothing but the home button", () => {

@@ -32,7 +32,7 @@ export const ar: Translations = {
   },
 
   header: {
-    title: "Now & Then",
+    title: "Then & Now",
     location: "غزة",
     subtitle: "نظرة من السماء على الإبادة الجماعية في غزة: صور الأقمار الصناعية قبل وبعد",
     dashboard: "لوحة التحكم",
@@ -187,7 +187,7 @@ export const ar: Translations = {
     search: "بحث",
     clearSearch: "مسح البحث",
     openFilters: "فتح قائمة المرشحات",
-    hideFilters: "إخفاء المرشحات",
+    hideFilters: "إخفاء",
     showFilters: "إظهار المرشحات",
     switchToSidebar: "التبديل إلى الشريط الجانبي",
     switchToTopBar: "التبديل إلى الشريط العلوي",
@@ -348,12 +348,12 @@ export const ar: Translations = {
   },
 
   footer: {
-    title: "Now & Then: غزة",
+    title: "غزة: Then & Now",
     sources: "اليونسكو، العمارة الجنائية، التراث من أجل السلام",
     github: "جيت هاب",
     donate: "تبرع",
     about: "حول",
-    copyright: "© {year} Now & Then: غزة",
+    copyright: "© {year} غزة: Then & Now",
     lastUpdated: "آخر تحديث: {date}",
   },
 

@@ -32,7 +32,7 @@ export const it: Translations = {
   },
 
   header: {
-    title: "Now & Then",
+    title: "Then & Now",
     location: "Gaza",
     subtitle: "Uno sguardo dall'alto sul genocidio a Gaza: immagini satellitari prima e dopo",
     dashboard: "Cruscotto",
@@ -193,7 +193,7 @@ export const it: Translations = {
     search: "Cerca",
     clearSearch: "Cancella ricerca",
     openFilters: "Apri menu filtri",
-    hideFilters: "Nascondi filtri",
+    hideFilters: "Nascondi",
     showFilters: "Mostra filtri",
     switchToSidebar: "Passa alla barra laterale",
     switchToTopBar: "Passa alla barra superiore",
@@ -357,12 +357,12 @@ export const it: Translations = {
   },
 
   footer: {
-    title: "Now & Then: Gaza",
+    title: "Gaza: Then & Now",
     sources: "UNESCO, Forensic Architecture, Heritage for Peace",
     github: "Github",
     donate: "Dona",
     about: "Informazioni",
-    copyright: "© {year} Now & Then: Gaza",
+    copyright: "© {year} Gaza: Then & Now",
     lastUpdated: "Ultimo Aggiornamento: {date}",
   },
 
