@@ -24,15 +24,31 @@ export interface TimelineConfig {
     axisLine: string;
     axisDomain: string;
     eventMarker: string;
-    eventMarkerStroke: string;
     scrubberLine: string;
     scrubberHandle: string;
     scrubberStroke: string;
   };
 }
 
+/** Vertical distance between stacked dots (diameter + a hairline of daylight). */
+const ROW_PITCH = 7;
+
+/**
+ * How tall a column can grow before it saturates.
+ * ponytail: beyond this, dots pile on the top row and the column just reads
+ * "full" — raise the strip height and this together if the cap starts hiding
+ * real differences.
+ */
+const MAX_ROWS = 6;
+
+/** Gap between the axis line and the first row of dots. */
+const BASELINE_GAP = 5;
+
+/** Space kept below the axis line for its tick marks and labels (with descenders). */
+const AXIS_LABEL_SPACE = 17;
+
 export const DEFAULT_TIMELINE_CONFIG: TimelineConfig = {
-  height: 40,
+  height: 64,
   margin: 25,
   eventMarkerRadius: 3, // Compact: reduced from 6 to 3
   scrubberRadius: 7, // Compact: reduced from 12 to 7
@@ -41,7 +57,6 @@ export const DEFAULT_TIMELINE_CONFIG: TimelineConfig = {
     axisLine: "#d4d4d4",
     axisDomain: "#a3a3a3",
     eventMarker: "#ed3039", // Palestinian flag red (default)
-    eventMarkerStroke: "#000000",
     scrubberLine: "#009639", // Palestinian flag green
     scrubberHandle: "#009639",
     scrubberStroke: "#000000",
@@ -100,8 +115,13 @@ export class D3TimelineRenderer {
   /**
    * Render the time axis
    */
+  /** Y of the axis line — dots stack upward from here, tick labels sit below. */
+  private get baselineY(): number {
+    return this.config.height - AXIS_LABEL_SPACE;
+  }
+
   private renderAxis() {
-    const { height, colors } = this.config;
+    const { colors } = this.config;
 
     const xAxis = axisBottom(this.timeScale).ticks(6).tickFormat((d) => {
       const date = d as Date;
@@ -110,7 +130,7 @@ export class D3TimelineRenderer {
 
     const axisGroup = this.svg
       .append("g")
-      .attr("transform", `translate(0, ${height / 2})`)
+      .attr("transform", `translate(0, ${this.baselineY})`)
       .call(xAxis);
 
     axisGroup.selectAll("text").attr("fill", colors.axis).attr("font-size", "9px");
@@ -127,32 +147,46 @@ export class D3TimelineRenderer {
   }
 
   /**
-   * Get color for event marker based on status
+   * Assign each event a row above the baseline so dots never sit on top of one
+   * another. Greedy, left to right: an event drops into the lowest row whose
+   * last dot has already cleared its x. Same-day events therefore stack into a
+   * column, and the column's height is the day's toll.
    */
-  private getMarkerColor(status?: string): string {
-    switch (status) {
-      case "destroyed":
-        return "#dc2626"; // red-600 (most severe)
-      case "heavily-damaged":
-        return "#ea580c"; // orange-600 (moderate)
-      case "damaged":
-        return "#ca8a04"; // yellow-600 (minor)
-      default:
-        return this.config.colors.eventMarker; // Default red
-    }
+  private assignRows(events: TimelineEvent[]): Array<{ event: TimelineEvent; row: number }> {
+    const minGap = this.config.eventMarkerRadius * 2 + 1;
+    const rowEndX: number[] = [];
+
+    return [...events]
+      .sort((a, b) => a.date.getTime() - b.date.getTime())
+      .map((event) => {
+        const x = this.timeScale(event.date);
+        let row = rowEndX.findIndex((endX) => x - endX >= minGap);
+        if (row === -1) row = rowEndX.length;
+        rowEndX[row] = x;
+        return { event, row: Math.min(row, MAX_ROWS - 1) };
+      });
+  }
+
+  /** Y of a dot in the given stack row. */
+  private rowY(row: number): number {
+    return this.baselineY - BASELINE_GAP - row * ROW_PITCH;
   }
 
   /**
-   * Render event markers (destruction dates)
-   * Enhanced with color-coding by status, hover effects, and better tooltips
+   * Render event markers (destruction dates), stacked into columns so a dense
+   * week reads as height rather than as one unreadable blob.
+   *
+   * Deliberately one colour: the dots used to be shaded by status, but every
+   * event on this timeline is a destruction event, so the shading encoded
+   * nothing the reader could act on.
    */
   private renderEventMarkers(events: TimelineEvent[]) {
-    const { height, eventMarkerRadius, colors } = this.config;
+    const { eventMarkerRadius, colors } = this.config;
 
     // Create a group for each event marker so we can add text labels
     const markerGroups = this.svg
       .selectAll("g.event-marker-group")
-      .data(events)
+      .data(this.assignRows(events))
       .enter()
       .append("g")
       .attr("class", "event-marker-group");
@@ -160,36 +194,38 @@ export class D3TimelineRenderer {
     const markers = markerGroups
       .append("circle")
       .attr("class", "event-marker")
-      .attr("cx", (d) => this.timeScale(d.date))
-      .attr("cy", height / 2)
-      .attr("r", (d) => d.siteId === this.highlightedSiteId ? eventMarkerRadius + 2 : eventMarkerRadius)
-      .attr("fill", (d) => this.getMarkerColor(d.status))
-      .attr("stroke", (d) => d.siteId === this.highlightedSiteId ? "#009639" : colors.eventMarkerStroke) // Green for highlighted
-      .attr("stroke-width", (d) => d.siteId === this.highlightedSiteId ? 3 : 1.5)
+      .attr("cx", (d) => this.timeScale(d.event.date))
+      .attr("cy", (d) => this.rowY(d.row))
+      .attr("r", (d) => d.event.siteId === this.highlightedSiteId ? eventMarkerRadius + 2 : eventMarkerRadius)
+      .attr("fill", colors.eventMarker)
+      // No outline by default — the row assignment already keeps dots apart, so
+      // a stroke on every dot only thickens the dense columns into a smear.
+      .attr("stroke", (d) => d.event.siteId === this.highlightedSiteId ? "#009639" : "none")
+      .attr("stroke-width", (d) => d.event.siteId === this.highlightedSiteId ? 3 : 0)
       .style("cursor", "pointer")
       .style("transition", "all 0.2s");
 
     markerGroups
       .append("text")
       .attr("class", "event-date-label")
-      .attr("x", (d) => this.timeScale(d.date))
-      .attr("y", height / 2 - eventMarkerRadius - 8)
+      .attr("x", (d) => this.timeScale(d.event.date))
+      .attr("y", (d) => this.rowY(d.row) - eventMarkerRadius - 5)
       .attr("text-anchor", "middle")
       .attr("font-size", "10px")
       .attr("font-weight", "500")
       .attr("fill", "#9ca3af")
       .attr("opacity", 0)
       .style("pointer-events", "none")
-      .text((d) => timeFormat("%b %d, %Y")(d.date));
+      .text((d) => timeFormat("%b %d, %Y")(d.event.date));
 
     markerGroups
       .on("mouseenter", function () {
-        const group = select(this);
+        // Lift above neighbours so the grown dot and its label aren't overdrawn
+        const group = select(this).raise();
         group.select("circle")
           .transition()
           .duration(150)
-          .attr("r", eventMarkerRadius + 2)
-          .attr("stroke-width", 2);
+          .attr("r", eventMarkerRadius + 2);
 
         group.select("text")
           .transition()
@@ -201,8 +237,7 @@ export class D3TimelineRenderer {
         group.select("circle")
           .transition()
           .duration(150)
-          .attr("r", eventMarkerRadius)
-          .attr("stroke-width", 1.5);
+          .attr("r", eventMarkerRadius);
 
         group.select("text")
           .transition()
@@ -210,18 +245,18 @@ export class D3TimelineRenderer {
           .attr("opacity", 0);
       })
       .on("click", (_event, d) => {
-        this.onTimestampChange(d.date);
+        this.onTimestampChange(d.event.date);
         this.onPause();
         // Highlight site when timeline dot is clicked (doesn't open modal)
         if (this.onSiteHighlight) {
-          this.onSiteHighlight(d);
+          this.onSiteHighlight(d.event);
         }
       });
 
     markers
       .append("title")
       .text(
-        (d) =>
+        ({ event: d }) =>
           `${d.siteName}\n${timeFormat("%B %d, %Y")(d.date)}${d.status ? `\nStatus: ${d.status.replace("-", " ")}` : ""}`
       );
   }
@@ -230,19 +265,20 @@ export class D3TimelineRenderer {
    * Render the scrubber (vertical line + draggable handle)
    */
   private renderScrubber(currentTimestamp: Date) {
-    const { height, scrubberRadius, colors } = this.config;
+    const { scrubberRadius, colors } = this.config;
 
     const scrubberGroup = this.svg.append("g").attr("class", "scrubber-group");
 
     const xPosition = this.timeScale(currentTimestamp);
 
+    // Spans the full stack so the playhead crosses every dot, not just row 0
     scrubberGroup
       .append("line")
       .attr("class", "scrubber-line")
       .attr("x1", xPosition)
-      .attr("y1", 10)
+      .attr("y1", 2)
       .attr("x2", xPosition)
-      .attr("y2", height - 10)
+      .attr("y2", this.baselineY)
       .attr("stroke", colors.scrubberLine)
       .attr("stroke-width", 3);
 
@@ -250,7 +286,7 @@ export class D3TimelineRenderer {
       .append("circle")
       .attr("class", "scrubber-handle")
       .attr("cx", xPosition)
-      .attr("cy", height / 2)
+      .attr("cy", this.baselineY)
       .attr("r", scrubberRadius)
       .attr("fill", colors.scrubberHandle)
       .attr("stroke", colors.scrubberStroke)
