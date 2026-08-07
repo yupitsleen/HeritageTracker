@@ -339,9 +339,7 @@ export function Timeline() {
 
       {/* Header - shared across all pages */}
       <AppHeader
-        // Map area starts after the px-4 gutter, the sidebar, and its gap-2.
-        contentInsetLeft={16 + (sidebarWidth ? sidebarWidth + 8 : 0)}
-        // Logo parks at the green map's left edge with the panel open, and stays
+        // Lockup parks at the green map's left edge with the panel open, and stays
         // there when it rails — so railing doesn't slide it onto the toggle.
         titleLeft={16 + tableResize.tableWidth + 8}
         leading={
