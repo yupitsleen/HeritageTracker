@@ -1,7 +1,10 @@
 import { select, type Selection } from "d3-selection";
 import type { ScaleTime } from "d3";
 import { axisBottom } from "d3-axis";
-import { timeFormat } from "d3-time-format";
+// utcFormat, not timeFormat: "YYYY-MM-DD" and "YYYY-MM" parse as UTC midnight,
+// so formatting them in local time renders every date a day early west of UTC —
+// a "2023-11" record read back as "October 2023".
+import { utcFormat } from "d3-time-format";
 import { drag } from "d3-drag";
 import "d3-transition";
 
@@ -12,12 +15,17 @@ export interface TimelineEvent {
   siteName: string;
   siteId: string;
   status?: "destroyed" | "heavily-damaged" | "damaged";
+  /**
+   * How precisely the sources date this event. "month" events parse to the 1st
+   * of the month and are drawn hollow, so the chart doesn't claim a day it
+   * doesn't have. Defaults to "day" when absent.
+   */
+  datePrecision?: "day" | "month";
 }
 
 export interface TimelineConfig {
   height: number;
   margin: number;
-  eventMarkerRadius: number;
   scrubberRadius: number;
   colors: {
     axis: string;
@@ -30,7 +38,22 @@ export interface TimelineConfig {
   };
 }
 
-/** Vertical distance between stacked dots (diameter + a hairline of daylight). */
+/** An event plus the stack row it was assigned. */
+type PlacedEvent = { event: TimelineEvent; row: number };
+
+/**
+ * Events are drawn as small bricks rather than dots: stacked, they read as
+ * accumulation instead of as scattered points.
+ */
+const BRICK_W = 7;
+const BRICK_H = 5;
+const BRICK_RADIUS = 1.5;
+
+/** How much a brick grows on hover, so the pointed-at one reads clearly. */
+const HOVER_GROW_W = 3;
+const HOVER_GROW_H = 2;
+
+/** Vertical distance between stacked bricks (height + a hairline of daylight). */
 const ROW_PITCH = 7;
 
 /**
@@ -50,7 +73,6 @@ const AXIS_LABEL_SPACE = 17;
 export const DEFAULT_TIMELINE_CONFIG: TimelineConfig = {
   height: 64,
   margin: 25,
-  eventMarkerRadius: 3, // Compact: reduced from 6 to 3
   scrubberRadius: 7, // Compact: reduced from 12 to 7
   colors: {
     axis: "#525252",
@@ -123,10 +145,15 @@ export class D3TimelineRenderer {
   private renderAxis() {
     const { colors } = this.config;
 
-    const xAxis = axisBottom(this.timeScale).ticks(6).tickFormat((d) => {
-      const date = d as Date;
-      return timeFormat("%b %Y")(date);
-    });
+    // tickSizeOuter(0): the domain path otherwise ends in a bare downward stub
+    // at each end, which reads as the axis breaking off mid-render
+    const xAxis = axisBottom(this.timeScale)
+      .ticks(8)
+      .tickSizeOuter(0)
+      .tickFormat((d) => {
+        const date = d as Date;
+        return utcFormat("%b %Y")(date);
+      });
 
     const axisGroup = this.svg
       .append("g")
@@ -152,8 +179,8 @@ export class D3TimelineRenderer {
    * last dot has already cleared its x. Same-day events therefore stack into a
    * column, and the column's height is the day's toll.
    */
-  private assignRows(events: TimelineEvent[]): Array<{ event: TimelineEvent; row: number }> {
-    const minGap = this.config.eventMarkerRadius * 2 + 1;
+  private assignRows(events: TimelineEvent[]): PlacedEvent[] {
+    const minGap = BRICK_W + 1;
     const rowEndX: number[] = [];
 
     return [...events]
@@ -167,21 +194,27 @@ export class D3TimelineRenderer {
       });
   }
 
-  /** Y of a dot in the given stack row. */
+  /** Y of the centre of a brick in the given stack row. */
   private rowY(row: number): number {
     return this.baselineY - BASELINE_GAP - row * ROW_PITCH;
+  }
+
+  /** Is the day itself unknown — i.e. sources pin only the month? */
+  private isMonthOnly(event: TimelineEvent): boolean {
+    return event.datePrecision === "month";
   }
 
   /**
    * Render event markers (destruction dates), stacked into columns so a dense
    * week reads as height rather than as one unreadable blob.
    *
-   * Deliberately one colour: the dots used to be shaded by status, but every
+   * Deliberately one colour: the markers used to be shaded by status, but every
    * event on this timeline is a destruction event, so the shading encoded
-   * nothing the reader could act on.
+   * nothing the reader could act on. The one distinction left is factual —
+   * hollow means the sources give the month but not the day.
    */
   private renderEventMarkers(events: TimelineEvent[]) {
-    const { eventMarkerRadius, colors } = this.config;
+    const { colors } = this.config;
 
     // Create a group for each event marker so we can add text labels
     const markerGroups = this.svg
@@ -191,58 +224,81 @@ export class D3TimelineRenderer {
       .append("g")
       .attr("class", "event-marker-group");
 
-    const markers = markerGroups
-      .append("circle")
+    const isHighlighted = (d: PlacedEvent) =>
+      d.event.siteId === this.highlightedSiteId;
+
+    markerGroups
+      .append("rect")
       .attr("class", "event-marker")
-      .attr("cx", (d) => this.timeScale(d.event.date))
-      .attr("cy", (d) => this.rowY(d.row))
-      .attr("r", (d) => d.event.siteId === this.highlightedSiteId ? eventMarkerRadius + 2 : eventMarkerRadius)
-      .attr("fill", colors.eventMarker)
-      // No outline by default — the row assignment already keeps dots apart, so
-      // a stroke on every dot only thickens the dense columns into a smear.
-      .attr("stroke", (d) => d.event.siteId === this.highlightedSiteId ? "#009639" : "none")
-      .attr("stroke-width", (d) => d.event.siteId === this.highlightedSiteId ? 3 : 0)
+      .attr("x", (d) => this.timeScale(d.event.date) - BRICK_W / 2)
+      .attr("y", (d) => this.rowY(d.row) - BRICK_H / 2)
+      .attr("width", BRICK_W)
+      .attr("height", BRICK_H)
+      .attr("rx", BRICK_RADIUS)
+      // Hollow when only the month is known: the brick sits on the 1st because
+      // that is where the date parses, and the outline says the day is not fact.
+      .attr("fill", (d) => (this.isMonthOnly(d.event) ? "none" : colors.eventMarker))
+      // No outline on solid bricks — the row assignment already keeps them
+      // apart, so a stroke on every one only smears the dense columns.
+      .attr("stroke", (d) =>
+        isHighlighted(d) ? "#009639" : this.isMonthOnly(d.event) ? colors.eventMarker : "none"
+      )
+      .attr("stroke-width", (d) => (isHighlighted(d) ? 2 : this.isMonthOnly(d.event) ? 1.25 : 0))
       .style("cursor", "pointer")
-      .style("transition", "all 0.2s");
+      .append("title")
+      .text(
+        ({ event: d }) =>
+          `${d.siteName}\n${
+            this.isMonthOnly(d) ? utcFormat("%B %Y")(d.date) : utcFormat("%B %d, %Y")(d.date)
+          }${this.isMonthOnly(d) ? " (day not recorded)" : ""}${
+            d.status ? `\nStatus: ${d.status.replace("-", " ")}` : ""
+          }`
+      );
 
     markerGroups
       .append("text")
       .attr("class", "event-date-label")
       .attr("x", (d) => this.timeScale(d.event.date))
-      .attr("y", (d) => this.rowY(d.row) - eventMarkerRadius - 5)
+      .attr("y", (d) => this.rowY(d.row) - BRICK_H / 2 - 5)
       .attr("text-anchor", "middle")
       .attr("font-size", "10px")
       .attr("font-weight", "500")
       .attr("fill", "#9ca3af")
       .attr("opacity", 0)
       .style("pointer-events", "none")
-      .text((d) => timeFormat("%b %d, %Y")(d.event.date));
+      .text((d) =>
+        this.isMonthOnly(d.event)
+          ? utcFormat("%b %Y")(d.event.date)
+          : utcFormat("%b %d, %Y")(d.event.date)
+      );
 
     markerGroups
-      .on("mouseenter", function () {
-        // Lift above neighbours so the grown dot and its label aren't overdrawn
-        const group = select(this).raise();
-        group.select("circle")
+      .on("mouseenter", (hoverEvent: MouseEvent) => {
+        // Lift above neighbours so the grown brick and its label aren't overdrawn
+        const group = select<SVGGElement, PlacedEvent>(hoverEvent.currentTarget as SVGGElement).raise();
+        group
+          .select<SVGRectElement>("rect")
           .transition()
           .duration(150)
-          .attr("r", eventMarkerRadius + 2);
+          .attr("width", BRICK_W + HOVER_GROW_W)
+          .attr("height", BRICK_H + HOVER_GROW_H)
+          .attr("x", (d) => this.timeScale(d.event.date) - (BRICK_W + HOVER_GROW_W) / 2)
+          .attr("y", (d) => this.rowY(d.row) - (BRICK_H + HOVER_GROW_H) / 2);
 
-        group.select("text")
-          .transition()
-          .duration(150)
-          .attr("opacity", 1);
+        group.select("text").transition().duration(150).attr("opacity", 1);
       })
-      .on("mouseleave", function () {
-        const group = select(this);
-        group.select("circle")
+      .on("mouseleave", (hoverEvent: MouseEvent) => {
+        const group = select<SVGGElement, PlacedEvent>(hoverEvent.currentTarget as SVGGElement);
+        group
+          .select<SVGRectElement>("rect")
           .transition()
           .duration(150)
-          .attr("r", eventMarkerRadius);
+          .attr("width", BRICK_W)
+          .attr("height", BRICK_H)
+          .attr("x", (d) => this.timeScale(d.event.date) - BRICK_W / 2)
+          .attr("y", (d) => this.rowY(d.row) - BRICK_H / 2);
 
-        group.select("text")
-          .transition()
-          .duration(150)
-          .attr("opacity", 0);
+        group.select("text").transition().duration(150).attr("opacity", 0);
       })
       .on("click", (_event, d) => {
         this.onTimestampChange(d.event.date);
@@ -252,13 +308,6 @@ export class D3TimelineRenderer {
           this.onSiteHighlight(d.event);
         }
       });
-
-    markers
-      .append("title")
-      .text(
-        ({ event: d }) =>
-          `${d.siteName}\n${timeFormat("%B %d, %Y")(d.date)}${d.status ? `\nStatus: ${d.status.replace("-", " ")}` : ""}`
-      );
   }
 
   /**
@@ -294,7 +343,7 @@ export class D3TimelineRenderer {
       .style("cursor", "grab");
 
     // Native tooltip, same as the event dots: the date is on hover, not always on.
-    handle.append("title").text(timeFormat("%B %d, %Y")(currentTimestamp));
+    handle.append("title").text(utcFormat("%B %d, %Y")(currentTimestamp));
 
     const dragBehavior = drag<SVGCircleElement, unknown>()
       .on("start", function () {
