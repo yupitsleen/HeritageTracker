@@ -17,8 +17,8 @@ export interface TimelineEvent {
   status?: "destroyed" | "heavily-damaged" | "damaged";
   /**
    * How precisely the sources date this event. "month" events parse to the 1st
-   * of the month and are drawn hollow, so the chart doesn't claim a day it
-   * doesn't have. Defaults to "day" when absent.
+   * of the month and are drawn as a ring at partial fill, so the chart doesn't
+   * claim a day it doesn't have. Defaults to "day" when absent.
    */
   datePrecision?: "day" | "month";
 }
@@ -42,18 +42,20 @@ export interface TimelineConfig {
 type PlacedEvent = { event: TimelineEvent; row: number };
 
 /**
- * Events are drawn as small bricks rather than dots: stacked, they read as
- * accumulation instead of as scattered points.
+ * Events are drawn as dots. Rectangles read as bars — spans of time — which is
+ * the wrong claim: each mark is one destruction on one date. Stacking carries
+ * the accumulation instead, so the mark itself can stay a discrete point.
  */
-const BRICK_W = 7;
-const BRICK_H = 5;
-const BRICK_RADIUS = 1.5;
+const DOT_R = 3;
 
-/** How much a brick grows on hover, so the pointed-at one reads clearly. */
-const HOVER_GROW_W = 3;
-const HOVER_GROW_H = 2;
+/** How much a dot grows on hover, so the pointed-at one reads clearly. */
+const HOVER_R = 4.5;
 
-/** Vertical distance between stacked bricks (height + a hairline of daylight). */
+/** Fill strength of a month-only dot: present enough to point at, light enough
+ * to read as provisional next to a solid one. */
+const MONTH_ONLY_FILL_OPACITY = 0.35;
+
+/** Vertical distance between stacked dots (diameter + a hairline of daylight). */
 const ROW_PITCH = 7;
 
 /**
@@ -180,7 +182,7 @@ export class D3TimelineRenderer {
    * column, and the column's height is the day's toll.
    */
   private assignRows(events: TimelineEvent[]): PlacedEvent[] {
-    const minGap = BRICK_W + 1;
+    const minGap = DOT_R * 2 + 1;
     const rowEndX: number[] = [];
 
     return [...events]
@@ -210,8 +212,8 @@ export class D3TimelineRenderer {
    *
    * Deliberately one colour: the markers used to be shaded by status, but every
    * event on this timeline is a destruction event, so the shading encoded
-   * nothing the reader could act on. The one distinction left is factual —
-   * hollow means the sources give the month but not the day.
+   * nothing the reader could act on. The one distinction left is factual — a
+   * ring at partial fill means the sources give the month but not the day.
    */
   private renderEventMarkers(events: TimelineEvent[]) {
     const { colors } = this.config;
@@ -228,18 +230,19 @@ export class D3TimelineRenderer {
       d.event.siteId === this.highlightedSiteId;
 
     markerGroups
-      .append("rect")
+      .append("circle")
       .attr("class", "event-marker")
-      .attr("x", (d) => this.timeScale(d.event.date) - BRICK_W / 2)
-      .attr("y", (d) => this.rowY(d.row) - BRICK_H / 2)
-      .attr("width", BRICK_W)
-      .attr("height", BRICK_H)
-      .attr("rx", BRICK_RADIUS)
-      // Hollow when only the month is known: the brick sits on the 1st because
-      // that is where the date parses, and the outline says the day is not fact.
-      .attr("fill", (d) => (this.isMonthOnly(d.event) ? "none" : colors.eventMarker))
-      // No outline on solid bricks — the row assignment already keeps them
-      // apart, so a stroke on every one only smears the dense columns.
+      .attr("cx", (d) => this.timeScale(d.event.date))
+      .attr("cy", (d) => this.rowY(d.row))
+      .attr("r", DOT_R)
+      // A month-only dot sits on the 1st because that is where the date parses;
+      // the ring and the lighter fill say the day itself is not fact. It keeps a
+      // real fill rather than fill="none" — an unfilled shape has no interior to
+      // hover, which is what left these markers without a working tooltip.
+      .attr("fill", colors.eventMarker)
+      .attr("fill-opacity", (d) => (this.isMonthOnly(d.event) ? MONTH_ONLY_FILL_OPACITY : 1))
+      // No outline on solid dots — the row assignment already keeps them apart,
+      // so a stroke on every one only smears the dense columns.
       .attr("stroke", (d) =>
         isHighlighted(d) ? "#009639" : this.isMonthOnly(d.event) ? colors.eventMarker : "none"
       )
@@ -259,7 +262,8 @@ export class D3TimelineRenderer {
       .append("text")
       .attr("class", "event-date-label")
       .attr("x", (d) => this.timeScale(d.event.date))
-      .attr("y", (d) => this.rowY(d.row) - BRICK_H / 2 - 5)
+      // Clamped: a top-row dot's label would otherwise sit above the SVG and clip
+      .attr("y", (d) => Math.max(9, this.rowY(d.row) - HOVER_R - 4))
       .attr("text-anchor", "middle")
       .attr("font-size", "10px")
       .attr("font-weight", "500")
@@ -274,29 +278,23 @@ export class D3TimelineRenderer {
 
     markerGroups
       .on("mouseenter", (hoverEvent: MouseEvent) => {
-        // Lift above neighbours so the grown brick and its label aren't overdrawn
+        // Lift above neighbours so the grown dot and its label aren't overdrawn
         const group = select<SVGGElement, PlacedEvent>(hoverEvent.currentTarget as SVGGElement).raise();
         group
-          .select<SVGRectElement>("rect")
+          .select<SVGCircleElement>("circle.event-marker")
           .transition()
           .duration(150)
-          .attr("width", BRICK_W + HOVER_GROW_W)
-          .attr("height", BRICK_H + HOVER_GROW_H)
-          .attr("x", (d) => this.timeScale(d.event.date) - (BRICK_W + HOVER_GROW_W) / 2)
-          .attr("y", (d) => this.rowY(d.row) - (BRICK_H + HOVER_GROW_H) / 2);
+          .attr("r", HOVER_R);
 
         group.select("text").transition().duration(150).attr("opacity", 1);
       })
       .on("mouseleave", (hoverEvent: MouseEvent) => {
         const group = select<SVGGElement, PlacedEvent>(hoverEvent.currentTarget as SVGGElement);
         group
-          .select<SVGRectElement>("rect")
+          .select<SVGCircleElement>("circle.event-marker")
           .transition()
           .duration(150)
-          .attr("width", BRICK_W)
-          .attr("height", BRICK_H)
-          .attr("x", (d) => this.timeScale(d.event.date) - BRICK_W / 2)
-          .attr("y", (d) => this.rowY(d.row) - BRICK_H / 2);
+          .attr("r", DOT_R);
 
         group.select("text").transition().duration(150).attr("opacity", 0);
       })
