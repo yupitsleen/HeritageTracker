@@ -21,6 +21,50 @@ export interface TimelineEvent {
    * claim a day it doesn't have. Defaults to "day" when absent.
    */
   datePrecision?: "day" | "month";
+  /**
+   * Where the mark sits, as opposed to when the event happened. They differ only
+   * for month-only events, which spread across their month rather than piling on
+   * the 1st. Set by withMarkDates(); falls back to `date` when absent.
+   *
+   * This is a drawing coordinate expressed as a date, never a claim about when
+   * anything happened — `date` remains the only sourced value.
+   */
+  markDate?: Date;
+}
+
+/**
+ * Give every month-only event the point it occupies, and return the events in
+ * the order their marks appear along the strip.
+ *
+ * Month-only events all parse to the 1st, so the chart spreads them across the
+ * month their sources give. That spread is a fixed fraction of the month, so it
+ * can be expressed as a date rather than as pixels — which keeps it independent
+ * of the scale, and lets event-to-event navigation step in the order the marks
+ * are actually drawn. Sorting by `date` instead walks a November ring backwards
+ * into the November 1st column it is drawn to the right of.
+ */
+export function withMarkDates(events: TimelineEvent[]): TimelineEvent[] {
+  const monthTotals = new Map<number, number>();
+  for (const e of events) {
+    if (e.datePrecision === "month")
+      monthTotals.set(e.date.getTime(), (monthTotals.get(e.date.getTime()) ?? 0) + 1);
+  }
+
+  const seen = new Map<number, number>();
+  return events
+    .map((event) => {
+      if (event.datePrecision !== "month") return { ...event, markDate: event.date };
+
+      const key = event.date.getTime();
+      const i = seen.get(key) ?? 0;
+      seen.set(key, i + 1);
+
+      const total = monthTotals.get(key) ?? 1;
+      const monthEnd = Date.UTC(event.date.getUTCFullYear(), event.date.getUTCMonth() + 1, 1);
+      const span = monthEnd - key;
+      return { ...event, markDate: new Date(key + (span * (i + 0.5)) / total) };
+    })
+    .sort((a, b) => a.markDate.getTime() - b.markDate.getTime());
 }
 
 export interface TimelineConfig {
@@ -202,49 +246,34 @@ export class D3TimelineRenderer {
    * they spread evenly across the month the sources give.
    */
   private placeEvents(events: TimelineEvent[]): PlacedEvent[] {
-    const monthTotals = new Map<number, number>();
-    for (const e of events) {
-      if (this.isMonthOnly(e))
-        monthTotals.set(e.date.getTime(), (monthTotals.get(e.date.getTime()) ?? 0) + 1);
-    }
-    // One counter per lane. Sharing a single one lets a date's dated events
-    // consume the indices its month-only events need — which both overflows the
-    // stack's row cap and pushes a ring clean out of the month it belongs to.
+    // Rows are per-date, and only dated events take one — month-only events go to
+    // the lane. Counting them together would let a date's dated events consume the
+    // rows and overflow the cap.
     const seenDated = new Map<number, number>();
-    const seenMonth = new Map<number, number>();
 
     return [...events]
       .sort((a, b) => a.date.getTime() - b.date.getTime())
       .map((event) => {
-        const key = event.date.getTime();
-        const lane = this.isMonthOnly(event) ? seenMonth : seenDated;
-        const i = lane.get(key) ?? 0;
-        lane.set(key, i + 1);
-
-        // Month-only events drop into their own lane under the axis and spread
-        // across the month they belong to. The lane is what says "day unknown",
-        // so the spread is a window, not a claim about a date.
+        // Month-only events drop into the lane under the axis, at the point
+        // withMarkDates() spread them to. The lane is what says "day unknown", so
+        // the spread reads as a window rather than as a claim about a date.
         if (this.isMonthOnly(event)) {
-          const span = this.monthSpan(event.date);
-          const total = monthTotals.get(key) ?? 1;
           return {
             event,
-            cx: this.timeScale(event.date) + (span * (i + 0.5)) / total,
+            cx: this.timeScale(event.markDate ?? event.date),
             cy: this.baselineY + MONTH_LANE_H / 2,
           };
         }
+
+        const key = event.date.getTime();
+        const row = seenDated.get(key) ?? 0;
+        seenDated.set(key, row + 1);
         return {
           event,
           cx: this.timeScale(event.date),
-          cy: this.rowY(Math.min(i, MAX_ROWS - 1)),
+          cy: this.rowY(Math.min(row, MAX_ROWS - 1)),
         };
       });
-  }
-
-  /** Pixel width of the month a month-only event falls in. */
-  private monthSpan(date: Date): number {
-    const end = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 1));
-    return this.timeScale(end) - this.timeScale(date);
   }
 
   /** Y of the centre of a dot in the given stack row. */

@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { scaleTime } from "d3-scale";
-import { D3TimelineRenderer, DEFAULT_TIMELINE_CONFIG, type TimelineEvent } from "./d3Timeline";
+import {
+  D3TimelineRenderer,
+  DEFAULT_TIMELINE_CONFIG,
+  withMarkDates,
+  type TimelineEvent,
+} from "./d3Timeline";
 
 /**
  * Marker placement — the part of the renderer that makes a factual claim.
@@ -38,7 +43,9 @@ function render(events: TimelineEvent[], at: Date = DOMAIN_START, highlighted: s
     onTimestampChange: () => {},
     onPause: () => {},
   });
-  renderer.render(events, at, highlighted);
+  // withMarkDates is what useTimelineData feeds the renderer, so the tests go
+  // through it too — the spread lives there, not in the renderer.
+  renderer.render(withMarkDates(events), at, highlighted);
 
   return {
     marks: [...svg.querySelectorAll("circle.event-marker")].map((c) => ({
@@ -210,5 +217,49 @@ describe("D3TimelineRenderer playhead", () => {
     const events = Array.from({ length: 3 }, (_, i) => makeEvent("2023-11", `m${i}`, "month"));
 
     expect(render(events, dragged, "m1").handleCx).toBeCloseTo(scale(dragged), 5);
+  });
+});
+
+describe("withMarkDates", () => {
+  it("leaves a dated event's mark on its own date", () => {
+    const [e] = withMarkDates([makeEvent("2023-11-09", "a")]);
+    expect(e.markDate?.getTime()).toBe(e.date.getTime());
+  });
+
+  it("spreads month-only events across their month without moving their date", () => {
+    const events = withMarkDates(
+      Array.from({ length: 4 }, (_, i) => makeEvent("2023-12", `m${i}`, "month"))
+    );
+
+    const monthStart = Date.UTC(2023, 11, 1);
+    const monthEnd = Date.UTC(2024, 0, 1);
+
+    for (const e of events) {
+      // The sourced date is untouched — only the drawing point moves.
+      expect(e.date.getTime()).toBe(monthStart);
+      expect(e.markDate!.getTime()).toBeGreaterThan(monthStart);
+      expect(e.markDate!.getTime()).toBeLessThan(monthEnd);
+    }
+    expect(new Set(events.map((e) => e.markDate!.getTime())).size).toBe(4);
+  });
+
+  it("orders events the way their marks are drawn, not by timestamp", () => {
+    // The bug this exists for: three November month-only events share a Nov 1
+    // timestamp with five dated ones, but are drawn to the right of them. Sorted
+    // by date, stepping forward from a ring walked left into the Nov 1 column.
+    const events = withMarkDates([
+      ...Array.from({ length: 3 }, (_, i) => makeEvent("2023-11", `ring${i}`, "month")),
+      ...Array.from({ length: 5 }, (_, i) => makeEvent("2023-11-01", `dated${i}`)),
+      makeEvent("2023-11-20", "late"),
+    ]);
+
+    const order = events.map((e) => e.siteId);
+    // Every dated Nov 1 site comes before every ring.
+    expect(order.slice(0, 5).every((id) => id.startsWith("dated"))).toBe(true);
+    // Marks are in non-decreasing drawn order throughout.
+    const marks = events.map((e) => e.markDate!.getTime());
+    expect([...marks].sort((a, b) => a - b)).toEqual(marks);
+    // The Nov 20 event still sorts after the rings placed earlier in the month.
+    expect(order.indexOf("late")).toBeGreaterThan(order.indexOf("ring0"));
   });
 });

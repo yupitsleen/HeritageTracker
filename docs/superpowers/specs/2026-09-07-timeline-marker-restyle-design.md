@@ -75,6 +75,34 @@ Two alternatives were prototyped and rejected:
 Encoding uncertainty by *adding a shape* fails when the uncertain cases are
 contiguous. Encoding it by *position* does not.
 
+### Where a mark sits: `markDate`
+
+Spreading the rings split "when the event happened" from "where its mark is", and
+everything downstream that assumed those were the same broke.
+
+`withMarkDates()` resolves the second as a **date**. The spread is a fixed
+fraction of the month, so it needs no pixels and no scale: a ring's `markDate` is
+`monthStart + monthLength * (i + 0.5) / total`. `date` is untouched and remains
+the only sourced value; `markDate` is a drawing coordinate that happens to be
+typed as a date.
+
+Because the time scale is monotonic, ordering by `markDate` *is* left-to-right
+drawn order. `useTimelineData` returns events in that order, which is what
+Previous/Next walks.
+
+This fixed a bug the pixel-based spread had caused: Next stepped through
+date-sorted order, so from a November ring (drawn at x 147) it advanced to a
+dated November 1st site (drawn at x 115) — visibly backwards, by an amount that
+looked arbitrary. Ordering by `markDate` interleaves rings and dated events the
+way the eye sees them.
+
+It also simplified the renderer, which no longer computes a spread at all — it
+reads `markDate` and no longer needs per-month totals, a per-lane ring counter,
+or `monthSpan()`.
+
+`calculateDefaultDateRange` takes its end from `markDate`, so a month-only event
+in the final month cannot be drawn off the right edge.
+
 ### The playhead on a month-only event
 
 A month-only ring's x is not a date, but the scrubber's x normally is. That left
