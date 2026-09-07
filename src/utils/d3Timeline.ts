@@ -206,14 +206,19 @@ export class D3TimelineRenderer {
       if (this.isMonthOnly(e))
         monthTotals.set(e.date.getTime(), (monthTotals.get(e.date.getTime()) ?? 0) + 1);
     }
-    const seen = new Map<number, number>();
+    // One counter per lane. Sharing a single one lets a date's dated events
+    // consume the indices its month-only events need — which both overflows the
+    // stack's row cap and pushes a ring clean out of the month it belongs to.
+    const seenDated = new Map<number, number>();
+    const seenMonth = new Map<number, number>();
 
     return [...events]
       .sort((a, b) => a.date.getTime() - b.date.getTime())
       .map((event) => {
         const key = event.date.getTime();
-        const i = seen.get(key) ?? 0;
-        seen.set(key, i + 1);
+        const lane = this.isMonthOnly(event) ? seenMonth : seenDated;
+        const i = lane.get(key) ?? 0;
+        lane.set(key, i + 1);
 
         // Month-only events drop into their own lane under the axis and spread
         // across the month they belong to. The lane is what says "day unknown",

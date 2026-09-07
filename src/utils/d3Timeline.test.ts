@@ -120,6 +120,37 @@ describe("D3TimelineRenderer marker placement", () => {
     expect(new Set(marks.map((m) => m.cy)).size).toBe(1);
   });
 
+  it("keeps the lanes independent when a date carries both kinds of event", () => {
+    // Regression: dated and month-only events once shared one per-date counter,
+    // so the five dated sites on Nov 1 consumed the indices the three month-only
+    // ones needed. That overflowed the row cap *and* threw a November ring out
+    // past the end of November — a site drawn in the wrong month entirely.
+    const scale = scaleTime().domain([DOMAIN_START, DOMAIN_END]).range([0, WIDTH]);
+    const novStart = scale(new Date("2023-11-01T00:00:00Z"));
+    const decStart = scale(new Date("2023-12-01T00:00:00Z"));
+
+    const marks = place([
+      ...Array.from({ length: 5 }, (_, i) => makeEvent("2023-11-01", `dated${i}`)),
+      ...Array.from({ length: 3 }, (_, i) => makeEvent("2023-11", `month${i}`, "month")),
+    ]);
+
+    const rings = marks.filter((m) => m.cy > BASELINE_Y);
+    const dots = marks.filter((m) => m.cy < BASELINE_Y);
+
+    // Every ring stays inside its own month.
+    expect(rings).toHaveLength(3);
+    for (const r of rings) {
+      expect(r.cx).toBeGreaterThan(novStart);
+      expect(r.cx).toBeLessThan(decStart);
+    }
+    // Evenly spread, so none of the three shares a position.
+    expect(new Set(rings.map((r) => r.cx)).size).toBe(3);
+
+    // The five dated dots get five distinct rows — none lost to the cap.
+    expect(dots).toHaveLength(5);
+    expect(new Set(dots.map((d) => d.cy)).size).toBe(5);
+  });
+
   it("says the day is unrecorded in a month-only tooltip", () => {
     const [monthOnly] = place([makeEvent("2023-12", "a", "month")]);
 
