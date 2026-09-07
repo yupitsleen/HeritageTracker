@@ -29,7 +29,7 @@ function makeEvent(date: string, siteId: string, precision?: "day" | "month"): T
 }
 
 /** Render into a detached SVG and read back every event marker's centre. */
-function place(events: TimelineEvent[]): Array<{ cx: number; cy: number; title: string }> {
+function render(events: TimelineEvent[], at: Date = DOMAIN_START, highlighted: string | null = null) {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   document.body.appendChild(svg);
 
@@ -38,13 +38,22 @@ function place(events: TimelineEvent[]): Array<{ cx: number; cy: number; title: 
     onTimestampChange: () => {},
     onPause: () => {},
   });
-  renderer.render(events, DOMAIN_START);
+  renderer.render(events, at, highlighted);
 
-  return [...svg.querySelectorAll("circle.event-marker")].map((c) => ({
-    cx: Number(c.getAttribute("cx")),
-    cy: Number(c.getAttribute("cy")),
-    title: c.querySelector("title")?.textContent ?? "",
-  }));
+  return {
+    marks: [...svg.querySelectorAll("circle.event-marker")].map((c) => ({
+      cx: Number(c.getAttribute("cx")),
+      cy: Number(c.getAttribute("cy")),
+      title: c.querySelector("title")?.textContent ?? "",
+    })),
+    handleCx: Number(svg.querySelector(".scrubber-handle")?.getAttribute("cx")),
+    lineX: Number(svg.querySelector(".scrubber-line")?.getAttribute("x1")),
+  };
+}
+
+/** Just the markers, for the placement assertions. */
+function place(events: TimelineEvent[]): Array<{ cx: number; cy: number; title: string }> {
+  return render(events).marks;
 }
 
 describe("D3TimelineRenderer marker placement", () => {
@@ -156,5 +165,50 @@ describe("D3TimelineRenderer marker placement", () => {
 
     expect(monthOnly.title).toContain("December 2023");
     expect(monthOnly.title).toContain("day not recorded");
+  });
+});
+
+describe("D3TimelineRenderer playhead", () => {
+  beforeEach(() => {
+    document.body.replaceChildren();
+  });
+
+  const NOV_1 = new Date("2023-11-01T00:00:00Z");
+
+  it("sits at the current time when nothing month-only is selected", () => {
+    const scale = scaleTime().domain([DOMAIN_START, DOMAIN_END]).range([0, WIDTH]);
+    const { handleCx, lineX } = render([makeEvent("2023-11-01", "a")], NOV_1, "a");
+
+    expect(handleCx).toBeCloseTo(scale(NOV_1), 5);
+    expect(lineX).toBeCloseTo(scale(NOV_1), 5);
+  });
+
+  it("follows the selected month-only ring rather than the month's 1st", () => {
+    const events = Array.from({ length: 3 }, (_, i) => makeEvent("2023-11", `m${i}`, "month"));
+    const { marks, handleCx, lineX } = render(events, NOV_1, "m2");
+
+    const selected = marks[2];
+    expect(handleCx).toBeCloseTo(selected.cx, 5);
+    // The line stays attached to the handle.
+    expect(lineX).toBeCloseTo(selected.cx, 5);
+  });
+
+  it("advances across the month as selection steps through events sharing a date", () => {
+    // The point of the rule: all three carry the same timestamp, so without it
+    // the playhead would not move at all while stepping between them.
+    const events = Array.from({ length: 3 }, (_, i) => makeEvent("2023-11", `m${i}`, "month"));
+    const xs = ["m0", "m1", "m2"].map((id) => render(events, NOV_1, id).handleCx);
+
+    expect(xs[0]).toBeLessThan(xs[1]);
+    expect(xs[1]).toBeLessThan(xs[2]);
+  });
+
+  it("ignores the ring rule when the timestamp is not that event's date", () => {
+    // Dragging lands on arbitrary times; the playhead must track the pointer.
+    const scale = scaleTime().domain([DOMAIN_START, DOMAIN_END]).range([0, WIDTH]);
+    const dragged = new Date("2023-11-17T09:00:00Z");
+    const events = Array.from({ length: 3 }, (_, i) => makeEvent("2023-11", `m${i}`, "month"));
+
+    expect(render(events, dragged, "m1").handleCx).toBeCloseTo(scale(dragged), 5);
   });
 });

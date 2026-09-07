@@ -144,8 +144,9 @@ export class D3TimelineRenderer {
     this.highlightedSiteId = highlightedSiteId;
     this.svg.selectAll("*").remove();
     this.renderAxis();
-    this.renderEventMarkers(events);
-    this.renderScrubber(currentTimestamp);
+    const placed = this.placeEvents(events);
+    this.renderEventMarkers(placed);
+    this.renderScrubber(currentTimestamp, placed);
   }
 
   /**
@@ -265,13 +266,13 @@ export class D3TimelineRenderer {
    * nothing the reader could act on. The one distinction left is factual — a
    * ring at partial fill means the sources give the month but not the day.
    */
-  private renderEventMarkers(events: TimelineEvent[]) {
+  private renderEventMarkers(placed: PlacedEvent[]) {
     const { colors } = this.config;
 
     // Create a group for each event marker so we can add text labels
     const markerGroups = this.svg
       .selectAll("g.event-marker-group")
-      .data(this.placeEvents(events))
+      .data(placed)
       .enter()
       .append("g")
       .attr("class", "event-marker-group");
@@ -358,14 +359,38 @@ export class D3TimelineRenderer {
   }
 
   /**
+   * Where the playhead sits.
+   *
+   * Normally that is just the current time on the scale. The exception is a
+   * selected month-only event: its ring is drawn somewhere inside its month,
+   * while its timestamp is the 1st, so the honest position would leave the
+   * playhead stranded away from the mark it selected — and stepping through a
+   * month's worth of them would not move it at all, since they share a date.
+   * The playhead follows the ring instead.
+   *
+   * The trade is deliberate: while a month-only event is selected the playhead's
+   * x is a pointer to a mark, not a claim about a day. Only an exact timestamp
+   * match counts, so dragging (which lands on arbitrary times) is unaffected.
+   */
+  private scrubberX(currentTimestamp: Date, placed: PlacedEvent[]): number {
+    const selectedRing = placed.find(
+      (p) =>
+        this.isMonthOnly(p.event) &&
+        p.event.siteId === this.highlightedSiteId &&
+        p.event.date.getTime() === currentTimestamp.getTime()
+    );
+    return selectedRing ? selectedRing.cx : this.timeScale(currentTimestamp);
+  }
+
+  /**
    * Render the scrubber (vertical line + draggable handle)
    */
-  private renderScrubber(currentTimestamp: Date) {
+  private renderScrubber(currentTimestamp: Date, placed: PlacedEvent[]) {
     const { scrubberRadius, colors } = this.config;
 
     const scrubberGroup = this.svg.append("g").attr("class", "scrubber-group");
 
-    const xPosition = this.timeScale(currentTimestamp);
+    const xPosition = this.scrubberX(currentTimestamp, placed);
 
     // Spans the full stack so the playhead crosses every dot, not just row 0
     scrubberGroup

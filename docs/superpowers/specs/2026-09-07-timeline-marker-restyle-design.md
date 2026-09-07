@@ -75,6 +75,23 @@ Two alternatives were prototyped and rejected:
 Encoding uncertainty by *adding a shape* fails when the uncertain cases are
 contiguous. Encoding it by *position* does not.
 
+### The playhead on a month-only event
+
+A month-only ring's x is not a date, but the scrubber's x normally is. That left
+the playhead stranded: selecting a November ring parked it ~10px away at Nov 1,
+and stepping through December's ten rings — which all share a Dec 1 timestamp —
+never moved it at all, while the highlight travelled 65px to the right. It read
+as the playhead skipping those marks.
+
+`scrubberX()` resolves this: when the selected event is month-only *and* the
+current timestamp is exactly that event's date, the playhead is drawn at the
+ring's x instead of the timestamp's.
+
+The trade was raised and accepted: while a month-only event is selected, the
+playhead's x points at a mark rather than asserting a day. The exact-timestamp
+condition keeps the rule narrow — dragging lands on arbitrary times, so it never
+triggers there, and the playhead tracks the pointer as before.
+
 ### Layout
 
 `baselineY` moves up by `MONTH_LANE_H` to make room; the axis uses
